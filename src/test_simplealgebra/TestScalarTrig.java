@@ -32,7 +32,14 @@ import simplealgebra.DoubleElem;
 import simplealgebra.NotInvertibleException;
 
 /**
- * Tests for scalar e^x, sin( x ) and cos( x )
+ * Tests for scalar <math display="inline">
+ * <mrow>
+ *  <msup>
+ *          <mo>e</mo>
+ *        <mi>x</mi>
+ *  </msup>
+ * </mrow>
+ * </math>, sin( x ) and cos( x )
  * 
  * 
  * @author thorngreen
