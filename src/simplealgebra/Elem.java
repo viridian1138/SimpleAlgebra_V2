@@ -53,6 +53,19 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 	}
 	
 	
+	/**
+	 * Implements the exponential function <math display="inline">
+     * <mrow>
+     *  <msup>
+     *          <mo>e</mo>
+     *        <mi>x</mi>
+     *  </msup>
+     * </mrow>
+     * </math>
+	 * 
+	 * @param numIter
+	 * @return
+	 */
 	public T exp( int numIter )
 	{
 		if( numIter == 0 )
@@ -73,6 +86,12 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 	}
 	
 	
+	/**
+	 * Implements the sine function in units of radians.
+	 * 
+	 * @param numIter
+	 * @return
+	 */
 	public T sin( int numIter )
 	{
 		ComplexElem<T,R> tmp = new ComplexElem<T,R>( getFac().zero() , (T) this );
@@ -80,12 +99,82 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 		return( btmp.getIm() );
 	}
 	
-	
+	/**
+	 * Implements the cosine function in units of radians.
+	 * 
+	 * @param numIter
+	 * @return
+	 */
 	public T cos( int numIter )
 	{
 		ComplexElem<T,R> tmp = new ComplexElem<T,R>( getFac().zero() , (T) this );
 		ComplexElem<T,R> btmp = tmp.exp( numIter );
 		return( btmp.getRe() );
+	}
+	
+	/**
+	 * Implements the hyperbolic sine function defined by <math display="inline">
+     * <mrow>
+     *  <mo>sinh(</mo>
+     *  <mi>x</mi>
+     *  <mo>)</mo>
+     *  <mo>=</mo>
+     *  <msup>
+     *          <mo>e</mo>
+     *        <mi>x</mi>
+     *  </msup>
+     *  <mo>-</mo>
+     *  <msup>
+     *          <mo>e</mo>
+     *      <mrow>
+     *        <mo>-</mo>
+     *        <mi>x</mi>
+     *      </mrow>
+     *  </msup>
+     * </mrow>
+     * </math>
+	 * 
+	 * @param numIter
+	 * @return
+	 */
+	public T sinh( int numIter )
+	{
+		final T x = (T) this;
+		final T ret = ( x.exp( numIter ) ).add( x.negate().exp( numIter ).negate() );
+		return( ret );
+	}
+	
+	/**
+	 * Implements the hyperbolic cosine function defined by <math display="inline">
+     * <mrow>
+     *  <mo>cosh(</mo>
+     *  <mi>x</mi>
+     *  <mo>)</mo>
+     *  <mo>=</mo>
+     *  <msup>
+     *          <mo>e</mo>
+     *        <mi>x</mi>
+     *  </msup>
+     *  <mo>+</mo>
+     *  <msup>
+     *          <mo>e</mo>
+     *      <mrow>
+     *        <mo>-</mo>
+     *        <mi>x</mi>
+     *      </mrow>
+     *  </msup>
+     * </mrow>
+     * </math>
+     *
+	 * 
+	 * @param numIter
+	 * @return
+	 */
+	public T cosh( int numIter )
+	{
+		final T x = (T) this;
+		final T ret = ( x.exp( numIter ) ).add( x.negate().exp( numIter ) );
+		return( ret );
 	}
 	
 	
