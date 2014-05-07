@@ -52,5 +52,42 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 		throw( new RuntimeException( "Operation Not Supported" ) );
 	}
 	
+	
+	public T exp( int numIter )
+	{
+		if( numIter == 0 )
+		{
+			final T x0 = getFac().identity();
+			final T x1 = (T) this;
+			final T x2 = x1.mult( x1 );
+			final T x3 = x2.mult( x1 );
+			final T ret = x0.add( x1 ).add( x2.divideBy( 2 ) ).add( x3.divideBy( 6 ) );
+			return( ret );
+		}
+		else
+		{
+			final T x1 = (T) this;
+			final T tmp = x1.divideBy( 2 ).exp( numIter - 1 );
+			return( tmp.mult( tmp ) );
+		}
+	}
+	
+	
+	public T sin( int numIter )
+	{
+		ComplexElem<T,R> tmp = new ComplexElem<T,R>( getFac().zero() , (T) this );
+		ComplexElem<T,R> btmp = tmp.exp( numIter );
+		return( btmp.getIm() );
+	}
+	
+	
+	public T cos( int numIter )
+	{
+		ComplexElem<T,R> tmp = new ComplexElem<T,R>( getFac().zero() , (T) this );
+		ComplexElem<T,R> btmp = tmp.exp( numIter );
+		return( btmp.getRe() );
+	}
+	
+	
 }
 
