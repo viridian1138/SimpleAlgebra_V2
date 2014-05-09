@@ -140,7 +140,7 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 	public T sinh( int numIter )
 	{
 		final T x = (T) this;
-		final T ret = ( x.exp( numIter ) ).add( x.negate().exp( numIter ).negate() );
+		final T ret = ( x.exp( numIter ) ).add( x.negate().exp( numIter ).negate() ).divideBy( 2 );
 		return( ret );
 	}
 	
@@ -173,7 +173,7 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 	public T cosh( int numIter )
 	{
 		final T x = (T) this;
-		final T ret = ( x.exp( numIter ) ).add( x.negate().exp( numIter ) );
+		final T ret = ( x.exp( numIter ) ).add( x.negate().exp( numIter ) ).divideBy( 2 );
 		return( ret );
 	}
 	
