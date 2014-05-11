@@ -28,6 +28,8 @@ package simplealgebra.ga;
 
 import java.util.ArrayList;
 
+import org.kie.internal.runtime.StatefulKnowledgeSession;
+
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
@@ -76,6 +78,17 @@ public class SymbolicReverseRight<U extends NumDimensions, R extends Elem<R,?>, 
 	 */
 	public SymbolicElem<GeometricAlgebraMultivectorElem<U,R,S>,GeometricAlgebraMultivectorElemFactory<U,R,S>> getElemA() {
 		return elemA;
+	}
+	
+	
+	@Override
+	public void performInserts( StatefulKnowledgeSession session , int levels )
+	{
+		if( levels >= 0 )
+		{
+			elemA.performInserts( session , levels - 1 );
+			super.performInserts( session , levels );
+		}
 	}
 
 	

@@ -28,6 +28,8 @@ package simplealgebra.symbolic;
 
 import java.util.ArrayList;
 
+import org.kie.internal.runtime.StatefulKnowledgeSession;
+
 import simplealgebra.AbsoluteValue;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
@@ -76,6 +78,17 @@ public class SymbolicAbsoluteValue<R extends Elem<R,?>, S extends ElemFactory<R,
 		}
 		
 		return( false );
+	}
+	
+	
+	@Override
+	public void performInserts( StatefulKnowledgeSession session , int levels )
+	{
+		if( levels >= 0 )
+		{
+			elem.performInserts( session , levels - 1 );
+			super.performInserts( session , levels );
+		}
 	}
 
 

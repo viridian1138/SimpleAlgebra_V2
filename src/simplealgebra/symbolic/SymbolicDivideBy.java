@@ -26,6 +26,8 @@ package simplealgebra.symbolic;
 
 import java.util.ArrayList;
 
+import org.kie.internal.runtime.StatefulKnowledgeSession;
+
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
@@ -54,6 +56,17 @@ public class SymbolicDivideBy<R extends Elem<R,?>, S extends ElemFactory<R,S>> e
 	@Override
 	public String writeString( ) {
 		return( "divideBy( " + ( elem.writeString() ) + " , " + ( ival ) + " )" );
+	}
+	
+	
+	@Override
+	public void performInserts( StatefulKnowledgeSession session , int levels )
+	{
+		if( levels >= 0 )
+		{
+			elem.performInserts( session , levels - 1 );
+			super.performInserts( session , levels );
+		}
 	}
 	
 	private int ival;

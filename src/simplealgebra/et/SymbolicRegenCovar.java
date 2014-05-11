@@ -26,6 +26,8 @@ package simplealgebra.et;
 
 import java.util.ArrayList;
 
+import org.kie.internal.runtime.StatefulKnowledgeSession;
+
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
@@ -58,6 +60,16 @@ public class SymbolicRegenCovar<Z extends Object, R extends Elem<R,?>, S extends
 	@Override
 	public String writeString( ) {
 		return( "symbolicRegenCovar" );
+	}
+	
+	@Override
+	public void performInserts( StatefulKnowledgeSession session , int levels )
+	{
+		if( levels >= 0 )
+		{
+			elem.performInserts( session , levels - 1 );
+			super.performInserts( session , levels );
+		}
 	}
 	
 	private ArrayList<Z> newCovar;

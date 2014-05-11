@@ -29,6 +29,8 @@ package simplealgebra.symbolic;
 
 import java.util.ArrayList;
 
+import org.kie.internal.runtime.StatefulKnowledgeSession;
+
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
@@ -107,6 +109,17 @@ public class SymbolicInvertLeft<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 		}
 		
 		return( false );
+	}
+	
+	
+	@Override
+	public void performInserts( StatefulKnowledgeSession session , int levels )
+	{
+		if( levels >= 0 )
+		{
+			elem.performInserts( session , levels - 1 );
+			super.performInserts( session , levels );
+		}
 	}
 	
 	

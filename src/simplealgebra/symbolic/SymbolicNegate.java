@@ -28,6 +28,8 @@ package simplealgebra.symbolic;
 
 import java.util.ArrayList;
 
+import org.kie.internal.runtime.StatefulKnowledgeSession;
+
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
@@ -74,24 +76,18 @@ public class SymbolicNegate<R extends Elem<R,?>, S extends ElemFactory<R,S>> ext
 			{
 				case DISTRIBUTE_SIMPLIFY:
 				{
-					SymbolicNegate<R,S> ths = this;
 					SymbolicElem<R,S> r = elem.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
-					if( elem != r )
-					{
-						ths = new SymbolicNegate<R,S>( r , fac );
-					}
 					
-					if( ths.elem instanceof SymbolicZero )
-					{
-						return( ths.elem );
-					}
+					StatefulKnowledgeSession session = getDistributeSimplifyKnowledgeBase().newStatefulKnowledgeSession();
 					
-					if( ths.elem instanceof SymbolicNegate )
-					{
-						return( ((SymbolicNegate<R,S>) ths.elem).getElem() );
-					}
+					SymbolicPlaceholder<R,S> place = new SymbolicPlaceholder<R,S>( elem != r ?
+							new SymbolicNegate<R,S>( r , fac ) : this , fac );
 					
-					return( ths );
+					place.performInserts( session , 5 );
+					
+					session.fireAllRules();
+						
+					return( place.getElem() );
 				}
 				// break;
 			}
@@ -110,6 +106,17 @@ public class SymbolicNegate<R extends Elem<R,?>, S extends ElemFactory<R,S>> ext
 		}
 		
 		return( false );
+	}
+	
+	
+	@Override
+	public void performInserts( StatefulKnowledgeSession session , int levels )
+	{
+		if( levels >= 0 )
+		{
+			elem.performInserts( session , levels - 1 );
+			super.performInserts( session , levels );
+		}
 	}
 
 

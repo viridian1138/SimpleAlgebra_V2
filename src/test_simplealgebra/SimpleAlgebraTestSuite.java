@@ -57,6 +57,7 @@ public class SimpleAlgebraTestSuite extends TestSuite {
 		s.addTestSuite( TestMatrixExponential.class );
 		s.addTestSuite( TestMatrixExponentialCplx.class );
 		s.addTestSuite( TestMultivectorExponential.class );
+		s.addTestSuite( TestDoubleNegateSymbolic.class );
 		return( s );
 	}
 	

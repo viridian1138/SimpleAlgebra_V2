@@ -2,6 +2,7 @@
 
 
 
+
 //$$strtCprt
 /**
 * Simple Algebra 
@@ -22,6 +23,7 @@
 
 
 
+
 package simplealgebra.symbolic;
 
 import java.util.ArrayList;
@@ -32,45 +34,45 @@ import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
 
-public class SymbolicAdd<R extends Elem<R,?>, S extends ElemFactory<R,S>> extends SymbolicElem<R,S> 
+public class SymbolicPlaceholder<R extends Elem<R,?>, S extends ElemFactory<R,S>> extends SymbolicElem<R,S> 
 {
 
-	public SymbolicAdd( SymbolicElem<R,S> _elemA , SymbolicElem<R,S> _elemB , S _fac )
+	public SymbolicPlaceholder( SymbolicElem<R,S> _elem , S _fac )
 	{
 		super( _fac );
-		elemA = _elemA;
-		elemB = _elemB;
+		elem = _elem;
 	}
 	
 	@Override
 	public R eval( ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
-		return( elemA.eval().add( elemB.eval() ) );
+		return( elem.eval().negate() );
 	}
 	
 	@Override
 	public R evalPartialDerivative( ArrayList<Elem<?,?>> withRespectTo ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
-		return( elemA.evalPartialDerivative( withRespectTo ).add( elemB.evalPartialDerivative( withRespectTo ) ) );
+		return( elem.evalPartialDerivative( withRespectTo ).negate() );
 	}
 
 	@Override
 	public String writeString( ) {
-		return( "add( " + ( elemA.writeString() ) + " , " + ( elemB.writeString() ) + " )" );
+		return( "placeholder( " + ( elem.writeString() ) + " )" );
+	}
+	
+	/**
+	 * @return the elem
+	 */
+	public SymbolicElem<R, S> getElem() {
+		return elem;
 	}
 	
 	
 	/**
-	 * @return the elemA
+	 * 
+	 * @param _elem
 	 */
-	public SymbolicElem<R, S> getElemA() {
-		return elemA;
-	}
-
-	/**
-	 * @return the elemB
-	 */
-	public SymbolicElem<R, S> getElemB() {
-		return elemB;
+	public void setElem( SymbolicElem<R, S> _elem ) {
+		elem  = _elem;
 	}
 	
 	
@@ -83,33 +85,7 @@ public class SymbolicAdd<R extends Elem<R,?>, S extends ElemFactory<R,S>> extend
 			{
 				case DISTRIBUTE_SIMPLIFY:
 				{
-					SymbolicAdd<R,S> ths = this;
-					SymbolicElem<R,S> ra = elemA.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
-					SymbolicElem<R,S> rb = elemB.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
-					if( ( elemA != ra ) || ( elemB != rb ) )
-					{
-						ths = new SymbolicAdd<R,S>( ra , rb , fac );
-					}
-					
-					if( ths.elemA instanceof SymbolicZero )
-					{
-						return( ths.elemB );
-					}
-					
-					if( ths.elemB instanceof SymbolicZero )
-					{
-						return( ths.elemA );
-					}
-					
-					{
-						SymbolicElem<R,S> elA = ( new SymbolicNegate<R,S>( ths.elemA , fac ) ).handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
-						
-						if( elA.symbolicEquals( ths.elemB ) )
-						{
-							return( this.getFac().zero() );
-						}
-					}
-					
+					SymbolicPlaceholder<R,S> ths = this;
 					return( ths );
 				}
 				// break;
@@ -123,18 +99,9 @@ public class SymbolicAdd<R extends Elem<R,?>, S extends ElemFactory<R,S>> extend
 	@Override
 	public boolean symbolicEquals( SymbolicElem<R, S> b )
 	{
-		if( b instanceof SymbolicAdd )
+		if( b instanceof SymbolicPlaceholder )
 		{
-			boolean aa = this.getElemA().symbolicEquals( ((SymbolicAdd<R,S>) b).getElemA() );
-			boolean bb = this.getElemB().symbolicEquals( ((SymbolicAdd<R,S>) b).getElemB() );
-			if( aa && bb )
-			{
-				return( true );
-			}
-				
-			aa = this.getElemA().symbolicEquals( ((SymbolicAdd<R,S>) b).getElemB() );
-			bb = this.getElemB().symbolicEquals( ((SymbolicAdd<R,S>) b).getElemA() );
-			return( aa && bb );
+			return( elem.symbolicEquals( ((SymbolicPlaceholder<R,S>) b).getElem() ) );
 		}
 		
 		return( false );
@@ -146,15 +113,13 @@ public class SymbolicAdd<R extends Elem<R,?>, S extends ElemFactory<R,S>> extend
 	{
 		if( levels >= 0 )
 		{
-			elemA.performInserts( session , levels - 1 );
-			elemB.performInserts( session , levels - 1 );
+			elem.performInserts( session , levels - 1 );
 			super.performInserts( session , levels );
 		}
 	}
-	
 
-	private SymbolicElem<R,S> elemA;
-	private SymbolicElem<R,S> elemB;
+
+	private SymbolicElem<R,S> elem;
 
 }
 

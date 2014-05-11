@@ -27,6 +27,8 @@ package simplealgebra.et;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import org.kie.internal.runtime.StatefulKnowledgeSession;
+
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
@@ -61,6 +63,16 @@ public class SymbolicIndexReduction<Z extends Object, R extends Elem<R,?>, S ext
 	@Override
 	public String writeString( ) {
 		return( "symbolicIndexReduction" );
+	}
+	
+	@Override
+	public void performInserts( StatefulKnowledgeSession session , int levels )
+	{
+		if( levels >= 0 )
+		{
+			elem.performInserts( session , levels - 1 );
+			super.performInserts( session , levels );
+		}
 	}
 	
 	private HashSet<Z> contravariantReduce;

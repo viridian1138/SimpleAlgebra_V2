@@ -28,6 +28,8 @@ package simplealgebra.symbolic;
 
 import java.util.ArrayList;
 
+import org.kie.internal.runtime.StatefulKnowledgeSession;
+
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.MutableElem;
@@ -65,6 +67,16 @@ public class SymbolicMutable<T extends Elem<T,?>, U extends MutableElem<T,U,?>, 
 	@Override
 	public String writeString( ) {
 		return( elemB.writeString() + "( " + elemA.writeString() + " )" );
+	}
+	
+	@Override
+	public void performInserts( StatefulKnowledgeSession session , int levels )
+	{
+		if( levels >= 0 )
+		{
+			elemA.performInserts( session , levels - 1 );
+			super.performInserts( session , levels );
+		}
 	}
 
 }

@@ -29,6 +29,8 @@ package simplealgebra.symbolic;
 import java.util.ArrayList;
 import java.util.Iterator;
 
+import org.kie.internal.runtime.StatefulKnowledgeSession;
+
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
@@ -308,6 +310,18 @@ public class SymbolicMult<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 		}
 		
 		return( false );
+	}
+	
+	
+	@Override
+	public void performInserts( StatefulKnowledgeSession session , int levels )
+	{
+		if( levels >= 0 )
+		{
+			elemA.performInserts( session , levels - 1 );
+			elemB.performInserts( session , levels - 1 );
+			super.performInserts( session , levels );
+		}
 	}
 
 	private SymbolicElem<R,S> elemA;

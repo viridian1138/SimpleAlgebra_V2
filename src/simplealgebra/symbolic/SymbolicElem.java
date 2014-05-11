@@ -28,8 +28,14 @@ package simplealgebra.symbolic;
 
 import java.util.ArrayList;
 
-import simplealgebra.AbsoluteValue;
-import simplealgebra.DoubleElem;
+import org.kie.api.io.ResourceType;
+import org.kie.internal.KnowledgeBase;
+import org.kie.internal.KnowledgeBaseFactory;
+import org.kie.internal.builder.KnowledgeBuilder;
+import org.kie.internal.builder.KnowledgeBuilderFactory;
+import org.kie.internal.io.ResourceFactory;
+import org.kie.internal.runtime.StatefulKnowledgeSession;
+
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
@@ -93,7 +99,15 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 			{
 				case DISTRIBUTE_SIMPLIFY:
 				{
-					return( this );
+					StatefulKnowledgeSession session = getDistributeSimplifyKnowledgeBase().newStatefulKnowledgeSession();
+						
+					SymbolicPlaceholder<R,S> place = new SymbolicPlaceholder<R,S>( this , fac );
+						
+					place.performInserts( session , 5 );
+								
+					session.fireAllRules();
+						
+					return( place.getElem() );
 				}
 				// break;
 			}
@@ -115,7 +129,42 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 	}
 	
 	
+	public void performInserts( StatefulKnowledgeSession session , int levels )
+	{
+		if( levels >= 0 )
+		{
+			session.insert( this );
+		}
+	}
+	
+	
 	protected S fac;
 	
+	
+	
+	
+	public static KnowledgeBase getDistributeSimplifyKnowledgeBase()
+	{
+		if( distributeSimplifyKnowledgeBase == null )
+		{
+			KnowledgeBuilder builder = KnowledgeBuilderFactory.newKnowledgeBuilder();
+			builder.add( ResourceFactory.newClassPathResource( "distributeSimplify.drl" )  , 
+					ResourceType.DRL );
+			if( builder.hasErrors() )
+			{
+				throw( new RuntimeException( builder.getErrors().toString() ) );
+			}
+			distributeSimplifyKnowledgeBase = KnowledgeBaseFactory.newKnowledgeBase();
+			distributeSimplifyKnowledgeBase.addKnowledgePackages( builder.getKnowledgePackages() );
+		}
+		
+		return( distributeSimplifyKnowledgeBase );
+	}
+	
+	
+	private static KnowledgeBase distributeSimplifyKnowledgeBase = null;
+	
+	
 }
+
 
