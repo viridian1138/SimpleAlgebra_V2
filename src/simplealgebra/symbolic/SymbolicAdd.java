@@ -83,34 +83,21 @@ public class SymbolicAdd<R extends Elem<R,?>, S extends ElemFactory<R,S>> extend
 			{
 				case DISTRIBUTE_SIMPLIFY:
 				{
-					SymbolicAdd<R,S> ths = this;
 					SymbolicElem<R,S> ra = elemA.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
 					SymbolicElem<R,S> rb = elemB.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
-					if( ( elemA != ra ) || ( elemB != rb ) )
-					{
-						ths = new SymbolicAdd<R,S>( ra , rb , fac );
-					}
 					
-					if( ths.elemA instanceof SymbolicZero )
-					{
-						return( ths.elemB );
-					}
 					
-					if( ths.elemB instanceof SymbolicZero )
-					{
-						return( ths.elemA );
-					}
+					StatefulKnowledgeSession session = getDistributeSimplifyKnowledgeBase().newStatefulKnowledgeSession();
 					
-					{
-						SymbolicElem<R,S> elA = ( new SymbolicNegate<R,S>( ths.elemA , fac ) ).handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
+					SymbolicPlaceholder<R,S> place = new SymbolicPlaceholder<R,S>( 
+							( elemA != ra ) || ( elemB != rb ) ?
+							new SymbolicAdd<R,S>( ra , rb , fac ) : this , fac );
+					
+					place.performInserts( session , 5 );
+					
+					session.fireAllRules();
 						
-						if( elA.symbolicEquals( ths.elemB ) )
-						{
-							return( this.getFac().zero() );
-						}
-					}
-					
-					return( ths );
+					return( place.getElem() );
 				}
 				// break;
 			}

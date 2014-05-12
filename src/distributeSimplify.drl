@@ -26,7 +26,7 @@ rule "Double Negate"
           n1 : SymbolicNegate( elem == n0 )
           p : SymbolicPlaceholder( elem == n1 )
      then
-          p.setElem( e0 );
+          modify( p ){ setElem( e0 ) };
 end
 
 
@@ -37,6 +37,50 @@ rule "Negate Zero"
           n1 : SymbolicNegate( elem == ez )
           p : SymbolicPlaceholder( elem == n1 )
       then
-          p.setElem( ez );
+          modify( p ){ setElem( ez ) };
 end
+
+
+
+rule "Add Zero A"
+      when
+          ez : SymbolicZero( )
+          nez : SymbolicElem( )
+          add1 : SymbolicAdd( elemA == ez , elemB == nez )
+          p : SymbolicPlaceholder( elem == add1 )
+      then
+          modify( p ){ setElem( nez ) };
+end
+
+
+
+
+rule "Add Zero B"
+      when
+          ez : SymbolicZero( )
+          nez : SymbolicElem( )
+          add1 : SymbolicAdd( elemA == nez , elemB == ez )
+          p : SymbolicPlaceholder( elem == add1 )
+      then
+          modify( p ){ setElem( nez ) };
+end
+
+
+
+
+rule "El Plus Negative El"
+      when
+          elA : SymbolicElem( )
+          elB : SymbolicElem( )
+          add1 : SymbolicAdd( elemA == elA , elemB == elB )
+          p : SymbolicPlaceholder( elem == add1 )
+          eval( elA.symbolicEquals( new SymbolicNegate( elB , elB.getFac() ) ) )
+      then
+          modify( p ){ setElem( new SymbolicZero( elA.getFac() ) ) };
+          insert( p.getElem() );
+end
+
+
+
+
 
