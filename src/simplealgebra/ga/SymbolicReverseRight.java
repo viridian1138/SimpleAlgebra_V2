@@ -82,13 +82,10 @@ public class SymbolicReverseRight<U extends NumDimensions, R extends Elem<R,?>, 
 	
 	
 	@Override
-	public void performInserts( StatefulKnowledgeSession session , int levels )
+	public void performInserts( StatefulKnowledgeSession session )
 	{
-		if( levels >= 0 )
-		{
-			elemA.performInserts( session , levels - 1 );
-			super.performInserts( session , levels );
-		}
+		elemA.performInserts( session );
+		super.performInserts( session );
 	}
 
 	

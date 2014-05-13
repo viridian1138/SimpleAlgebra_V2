@@ -103,7 +103,7 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 						
 					SymbolicPlaceholder<R,S> place = new SymbolicPlaceholder<R,S>( this , fac );
 						
-					place.performInserts( session , 5 );
+					place.performInserts( session );
 								
 					session.fireAllRules();
 						
@@ -129,12 +129,9 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 	}
 	
 	
-	public void performInserts( StatefulKnowledgeSession session , int levels )
+	public void performInserts( StatefulKnowledgeSession session )
 	{
-		if( levels >= 0 )
-		{
-			session.insert( this );
-		}
+		session.insert( this );
 	}
 	
 	

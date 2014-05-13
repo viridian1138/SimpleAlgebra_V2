@@ -63,13 +63,10 @@ public class SymbolicRegenCovar<Z extends Object, R extends Elem<R,?>, S extends
 	}
 	
 	@Override
-	public void performInserts( StatefulKnowledgeSession session , int levels )
+	public void performInserts( StatefulKnowledgeSession session )
 	{
-		if( levels >= 0 )
-		{
-			elem.performInserts( session , levels - 1 );
-			super.performInserts( session , levels );
-		}
+		elem.performInserts( session );
+		super.performInserts( session );
 	}
 	
 	private ArrayList<Z> newCovar;

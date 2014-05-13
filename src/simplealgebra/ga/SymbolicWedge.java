@@ -91,14 +91,11 @@ public class SymbolicWedge<U extends NumDimensions, R extends Elem<R,?>, S exten
 	
 	
 	@Override
-	public void performInserts( StatefulKnowledgeSession session , int levels )
+	public void performInserts( StatefulKnowledgeSession session )
 	{
-		if( levels >= 0 )
-		{
-			elemA.performInserts( session , levels - 1 );
-			elemB.performInserts( session , levels - 1 );
-			super.performInserts( session , levels );
-		}
+		elemA.performInserts( session );
+		elemB.performInserts( session );
+		super.performInserts( session );
 	}
 
 	

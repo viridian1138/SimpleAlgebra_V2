@@ -66,13 +66,10 @@ public class SymbolicIndexReduction<Z extends Object, R extends Elem<R,?>, S ext
 	}
 	
 	@Override
-	public void performInserts( StatefulKnowledgeSession session , int levels )
+	public void performInserts( StatefulKnowledgeSession session )
 	{
-		if( levels >= 0 )
-		{
-			elem.performInserts( session , levels - 1 );
-			super.performInserts( session , levels );
-		}
+		elem.performInserts( session );
+		super.performInserts( session );
 	}
 	
 	private HashSet<Z> contravariantReduce;

@@ -19,14 +19,100 @@
 
 package simplealgebra.symbolic
 
+
+
+
+rule "Reng Insert"
+
+     when
+          r0 : Reng( )
+     then
+          insert( r0.getEnd() );
+end
+
+
+
+
+rule "Apply Placeholder"
+     when
+          r0 : Reng( )
+          p : SymbolicPlaceholder( elem == r0.getStrt() )
+     then
+          modify( p ){ setElem( r0.getEnd() ) };
+end
+
+
+
+
+
+
+rule "Apply Negate"
+     when
+          r0 : Reng( )
+          p : SymbolicNegate( elem == r0.getStrt() )
+     then
+          insert( new Reng( p , new SymbolicNegate( r0.getEnd() , p.getFac() ) ) );
+end
+
+
+
+
+
+rule "Apply AddA"
+     when
+          r0 : Reng( )
+          p : SymbolicAdd( elemA == r0.getStrt() )
+     then
+          insert( new Reng( p , new SymbolicAdd( r0.getEnd() , p.getElemB() , p.getFac() ) ) );
+end
+
+
+
+
+
+rule "Apply AddB"
+     when
+          r0 : Reng( )
+          p : SymbolicAdd( elemB == r0.getStrt() )
+     then
+          insert( new Reng( p , new SymbolicAdd( p.getElemA() , r0.getEnd() , p.getFac() ) ) );
+end
+
+
+
+
+
+rule "Apply MultA"
+     when
+          r0 : Reng( )
+          p : SymbolicMult( elemA == r0.getStrt() )
+     then
+          insert( new Reng( p , new SymbolicMult( r0.getEnd() , p.getElemB() , p.getFac() ) ) );
+end
+
+
+
+
+
+rule "Apply MultB"
+     when
+          r0 : Reng( )
+          p : SymbolicMult( elemB == r0.getStrt() )
+     then
+          insert( new Reng( p , new SymbolicMult( p.getElemA() , r0.getEnd() , p.getFac() ) ) );
+end
+
+
+
+
+
 rule "Double Negate"
      when
           e0 : SymbolicElem( )
           n0 : SymbolicNegate( elem == e0 )
           n1 : SymbolicNegate( elem == n0 )
-          p : SymbolicPlaceholder( elem == n1 )
      then
-          modify( p ){ setElem( e0 ) };
+          insert( new Reng( n1 , e0 ) );
 end
 
 
@@ -35,9 +121,8 @@ rule "Negate Zero"
       when
           ez : SymbolicZero( )
           n1 : SymbolicNegate( elem == ez )
-          p : SymbolicPlaceholder( elem == n1 )
       then
-          modify( p ){ setElem( ez ) };
+          insert( new Reng( n1 , ez ) );
 end
 
 
@@ -47,9 +132,8 @@ rule "Add Zero A"
           ez : SymbolicZero( )
           nez : SymbolicElem( )
           add1 : SymbolicAdd( elemA == ez , elemB == nez )
-          p : SymbolicPlaceholder( elem == add1 )
       then
-          modify( p ){ setElem( nez ) };
+          insert( new Reng( add1 , nez ) );
 end
 
 
@@ -60,24 +144,99 @@ rule "Add Zero B"
           ez : SymbolicZero( )
           nez : SymbolicElem( )
           add1 : SymbolicAdd( elemA == nez , elemB == ez )
-          p : SymbolicPlaceholder( elem == add1 )
       then
-          modify( p ){ setElem( nez ) };
+          insert( new Reng( add1 , nez ) );
 end
 
 
 
 
+
+rule "Mult Ident A"
+      when
+          ez : SymbolicIdentity( )
+          nez : SymbolicElem( )
+          mult1 : SymbolicMult( elemA == ez , elemB == nez )
+      then
+          insert( new Reng( mult1 , nez ) );
+end
+
+
+
+
+rule "Mult Ident B"
+      when
+          ez : SymbolicIdentity( )
+          nez : SymbolicElem( )
+          mult1 : SymbolicMult( elemA == nez , elemB == ez )
+      then
+          insert( new Reng( mult1 , nez ) );
+end
+
+
+
+
+rule "Mult Zero A"
+      when
+          ez : SymbolicZero( )
+          nez : SymbolicElem( )
+          mult1 : SymbolicMult( elemA == ez , elemB == nez )
+      then
+          insert( new Reng( mult1 , ez ) );
+end
+
+
+
+
+rule "Mult Zero B"
+      when
+          ez : SymbolicZero( )
+          nez : SymbolicElem( )
+          mult1 : SymbolicMult( elemA == nez , elemB == ez )
+      then
+          insert( new Reng( mult1 , ez ) );
+end
+
+
+
+
+
+rule "Mult Over Negate A"
+      when
+          a : SymbolicElem( )
+          b : SymbolicElem( )
+          na : SymbolicNegate( elem == a )
+          mult1 : SymbolicMult( elemA == na , elemB == b )
+      then
+          insert( new Reng( mult1 , new SymbolicNegate( new SymbolicMult( a , b , mult1.getFac() ) , na.getFac() ) ) );
+end
+
+
+
+
+rule "Mult Over Negate B"
+      when
+          a : SymbolicElem( )
+          b : SymbolicElem( )
+          nb : SymbolicNegate( elem == b )
+          mult1 : SymbolicMult( elemA == a , elemB == nb )
+      then
+          insert( new Reng( mult1 , new SymbolicNegate( new SymbolicMult( a , b , mult1.getFac() ) , nb.getFac() ) ) );
+end
+
+
+
+
+
+// Needs to be revised !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 rule "El Plus Negative El"
       when
           elA : SymbolicElem( )
           elB : SymbolicElem( )
           add1 : SymbolicAdd( elemA == elA , elemB == elB )
-          p : SymbolicPlaceholder( elem == add1 )
           eval( elA.symbolicEquals( new SymbolicNegate( elB , elB.getFac() ) ) )
       then
-          modify( p ){ setElem( new SymbolicZero( elA.getFac() ) ) };
-          insert( p.getElem() );
+          insert( new Reng( add1 , new SymbolicZero( elA.getFac() ) ) );
 end
 
 

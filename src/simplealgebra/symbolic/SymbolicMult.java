@@ -183,46 +183,7 @@ public class SymbolicMult<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 				case DISTRIBUTE_SIMPLIFY:
 				{
 					SymbolicMult<R,S> ths = this;
-					SymbolicElem<R,S> ra = elemA.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
-					SymbolicElem<R,S> rb = elemB.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
-					if( ( elemA != ra ) || ( elemB != rb ) )
-					{
-						ths = new SymbolicMult<R,S>( ra , rb , fac );
-					}
 					
-					if( ths.elemA instanceof SymbolicZero )
-					{
-						return( ths.elemA );
-					}
-					
-					if( ths.elemB instanceof SymbolicZero )
-					{
-						return( ths.elemB );
-					}
-					
-					if( ths.elemA instanceof SymbolicIdentity )
-					{
-						return( ths.elemB );
-					}
-					
-					if( ths.elemB instanceof SymbolicIdentity )
-					{
-						return( ths.elemA );
-					}
-					
-					if( ths.elemA instanceof SymbolicNegate )
-					{
-						final SymbolicMult<R,S> am = 
-								new SymbolicMult<R,S>( ( (SymbolicNegate<R,S>)(ths.elemA) ).getElem() , ths.elemB , fac );
-						return( ( new SymbolicNegate<R,S>( am , fac ) ).handleOptionalOp(SymbolicOps.DISTRIBUTE_SIMPLIFY, args) );
-					}
-					
-					if( this.elemB instanceof SymbolicNegate )
-					{
-						final SymbolicMult<R,S> am = 
-								new SymbolicMult<R,S>( ths.elemA , ( (SymbolicNegate<R,S>)(ths.elemB) ).getElem() , fac );
-						return( ( new SymbolicNegate<R,S>( am , fac ) ).handleOptionalOp(SymbolicOps.DISTRIBUTE_SIMPLIFY, args) );
-					}
 					
 					if( ths.elemA instanceof SymbolicAdd )
 					{
@@ -314,14 +275,11 @@ public class SymbolicMult<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 	
 	
 	@Override
-	public void performInserts( StatefulKnowledgeSession session , int levels )
+	public void performInserts( StatefulKnowledgeSession session )
 	{
-		if( levels >= 0 )
-		{
-			elemA.performInserts( session , levels - 1 );
-			elemB.performInserts( session , levels - 1 );
-			super.performInserts( session , levels );
-		}
+		elemA.performInserts( session );
+		elemB.performInserts( session );
+		super.performInserts( session );
 	}
 
 	private SymbolicElem<R,S> elemA;

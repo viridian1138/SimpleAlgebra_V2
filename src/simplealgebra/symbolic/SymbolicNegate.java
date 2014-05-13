@@ -70,28 +70,6 @@ public class SymbolicNegate<R extends Elem<R,?>, S extends ElemFactory<R,S>> ext
 	@Override
 	public SymbolicElem<R, S> handleOptionalOp( Object id , ArrayList<SymbolicElem<R, S>> args ) throws NotInvertibleException
 	{
-		if( id instanceof SymbolicOps )
-		{
-			switch( (SymbolicOps) id )
-			{
-				case DISTRIBUTE_SIMPLIFY:
-				{
-					SymbolicElem<R,S> r = elem.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
-					
-					StatefulKnowledgeSession session = getDistributeSimplifyKnowledgeBase().newStatefulKnowledgeSession();
-					
-					SymbolicPlaceholder<R,S> place = new SymbolicPlaceholder<R,S>( elem != r ?
-							new SymbolicNegate<R,S>( r , fac ) : this , fac );
-					
-					place.performInserts( session , 5 );
-					
-					session.fireAllRules();
-						
-					return( place.getElem() );
-				}
-				// break;
-			}
-		}
 		
 		return( super.handleOptionalOp(id, args) );
 	}
@@ -110,13 +88,10 @@ public class SymbolicNegate<R extends Elem<R,?>, S extends ElemFactory<R,S>> ext
 	
 	
 	@Override
-	public void performInserts( StatefulKnowledgeSession session , int levels )
+	public void performInserts( StatefulKnowledgeSession session )
 	{
-		if( levels >= 0 )
-		{
-			elem.performInserts( session , levels - 1 );
-			super.performInserts( session , levels );
-		}
+		elem.performInserts( session );
+		super.performInserts( session );
 	}
 
 

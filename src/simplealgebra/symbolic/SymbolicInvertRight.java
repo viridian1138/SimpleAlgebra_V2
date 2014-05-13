@@ -113,10 +113,10 @@ public class SymbolicInvertRight<R extends Elem<R,?>, S extends ElemFactory<R,S>
 	
 	
 	@Override
-	public void performInserts( StatefulKnowledgeSession session , int levels )
+	public void performInserts( StatefulKnowledgeSession session )
 	{
-		elem.performInserts( session , levels - 1 );
-		super.performInserts( session , levels );
+		elem.performInserts( session );
+		super.performInserts( session );
 	}
 	
 	
