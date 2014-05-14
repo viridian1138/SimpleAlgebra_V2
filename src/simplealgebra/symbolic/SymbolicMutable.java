@@ -69,6 +69,22 @@ public class SymbolicMutable<T extends Elem<T,?>, U extends MutableElem<T,U,?>, 
 		return( elemB.writeString() + "( " + elemA.writeString() + " )" );
 	}
 	
+	
+	
+	/**
+	 * @return the elemA
+	 */
+	public SymbolicElem<U, R> getElemA() {
+		return elemA;
+	}
+
+	/**
+	 * @return the elemB
+	 */
+	public Mutator<U> getElemB() {
+		return elemB;
+	}
+
 	@Override
 	public void performInserts( StatefulKnowledgeSession session )
 	{

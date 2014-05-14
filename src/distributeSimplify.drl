@@ -58,6 +58,80 @@ end
 
 
 
+
+rule "Apply Absolute Value"
+     when
+          r0 : Reng( )
+          p : SymbolicAbsoluteValue( elem == r0.getStrt() )
+     then
+          insert( new Reng( p , new SymbolicAbsoluteValue( r0.getEnd() , p.getFac() ) ) );
+end
+
+
+
+
+
+
+
+rule "Apply Invert Left"
+     when
+          r0 : Reng( )
+          p : SymbolicInvertLeft( elem == r0.getStrt() )
+     then
+          insert( new Reng( p , new SymbolicInvertLeft( r0.getEnd() , p.getFac() ) ) );
+end
+
+
+
+
+
+
+
+rule "Apply Invert Right"
+     when
+          r0 : Reng( )
+          p : SymbolicInvertRight( elem == r0.getStrt() )
+     then
+          insert( new Reng( p , new SymbolicInvertRight( r0.getEnd() , p.getFac() ) ) );
+end
+
+
+
+
+
+
+
+
+rule "Apply Divide By"
+     when
+          r0 : Reng( )
+          p : SymbolicDivideBy( elem == r0.getStrt() )
+     then
+          insert( new Reng( p , new SymbolicDivideBy( r0.getEnd() , p.getFac() , p.getIval() ) ) );
+end
+
+
+
+
+
+
+
+
+rule "Apply Mutable"
+     when
+          r0 : Reng( )
+          p : SymbolicMutable( elemA == r0.getStrt() )
+     then
+          insert( new Reng( p , new SymbolicMutable( r0.getEnd() , p.getElemB() , p.getFac() ) ) );
+end
+
+
+
+
+
+
+
+
 rule "Apply AddA"
      when
           r0 : Reng( )
@@ -223,6 +297,77 @@ rule "Mult Over Negate B"
       then
           insert( new Reng( mult1 , new SymbolicNegate( new SymbolicMult( a , b , mult1.getFac() ) , nb.getFac() ) ) );
 end
+
+
+
+
+
+
+rule "Mult Over DivideBy A"
+      when
+          a : SymbolicElem( )
+          b : SymbolicElem( )
+          na : SymbolicDivideBy( elem == a )
+          mult1 : SymbolicMult( elemA == na , elemB == b )
+      then
+          insert( new Reng( mult1 , new SymbolicDivideBy( new SymbolicMult( a , b , mult1.getFac() ) , na.getFac() , na.getIval() ) ) );
+end
+
+
+
+
+rule "Mult Over DivideBy B"
+      when
+          a : SymbolicElem( )
+          b : SymbolicElem( )
+          nb : SymbolicDivideBy( elem == b )
+          mult1 : SymbolicMult( elemA == a , elemB == nb )
+      then
+          insert( new Reng( mult1 , new SymbolicDivideBy( new SymbolicMult( a , b , mult1.getFac() ) , nb.getFac() , nb.getIval() ) ) );
+end
+
+
+
+
+
+
+rule "Negate Over Add"
+      when
+          a : SymbolicElem( )
+          b : SymbolicElem( )
+          c : SymbolicAdd( elemA == a , elemB == b )
+          d : SymbolicNegate( elem == c )
+      then
+          insert( new Reng( d , new SymbolicAdd( new SymbolicNegate( a , d.getFac() ) , new SymbolicNegate( b , d.getFac() ) , c.getFac() ) ) );
+end
+
+
+
+
+
+rule "DivideBy Over Add"
+      when
+          a : SymbolicElem( )
+          b : SymbolicElem( )
+          c : SymbolicAdd( elemA == a , elemB == b )
+          d : SymbolicDivideBy( elem == c )
+      then
+          insert( new Reng( d , new SymbolicAdd( new SymbolicDivideBy( a , d.getFac() , d.getIval() ) , new SymbolicDivideBy( b , d.getFac() , d.getIval() ) , c.getFac() ) ) );
+end
+
+
+
+
+
+rule "DivideBy Over Negate"
+      when
+          a : SymbolicElem( )
+          b : SymbolicNegate( elem == a )
+          c : SymbolicDivideBy( elem == b )
+      then
+          insert( new Reng( c , new SymbolicNegate( new SymbolicDivideBy( a , c.getFac() , c.getIval() ) , b.getFac() ) ) );
+end
+
 
 
 

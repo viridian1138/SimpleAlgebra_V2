@@ -59,6 +59,21 @@ public class SymbolicDivideBy<R extends Elem<R,?>, S extends ElemFactory<R,S>> e
 	}
 	
 	
+	
+	/**
+	 * @return the ival
+	 */
+	public int getIval() {
+		return ival;
+	}
+
+	/**
+	 * @return the elem
+	 */
+	public SymbolicElem<R, S> getElem() {
+		return elem;
+	}
+
 	@Override
 	public void performInserts( StatefulKnowledgeSession session )
 	{
