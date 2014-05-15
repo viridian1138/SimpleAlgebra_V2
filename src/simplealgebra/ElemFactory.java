@@ -46,5 +46,7 @@ public abstract class ElemFactory<T extends Elem<T,?>, R extends ElemFactory<T,R
 	
 	public abstract boolean isMultCommutative();
 	
+	public abstract boolean isNestedMultCommutative();
+	
 }
 

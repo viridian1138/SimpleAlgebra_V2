@@ -61,6 +61,12 @@ public class QuaternionElemFactory<U extends NumDimensions, R extends Elem<R,?>,
 		return( false );
 	}
 	
+	@Override
+	public boolean isNestedMultCommutative()
+	{
+		return( fac.isMultCommutative() );
+	}
+	
 	
 	public S getFac()
 	{

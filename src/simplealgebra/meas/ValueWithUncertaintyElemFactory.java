@@ -83,6 +83,13 @@ public class ValueWithUncertaintyElemFactory<R extends Elem<R,?>, S extends Elem
 	}
 	
 	
+	@Override
+	public boolean isNestedMultCommutative()
+	{
+		return( fac.isNestedMultCommutative() );
+	}
+	
+	
 	public S getFac()
 	{
 		return( fac );

@@ -173,76 +173,7 @@ public class SymbolicMult<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 		return elemB;
 	}
 	
-	@Override
-	public SymbolicElem<R, S> handleOptionalOp( Object id , ArrayList<SymbolicElem<R, S>> args ) throws NotInvertibleException
-	{
-		if( id instanceof SymbolicOps )
-		{
-			switch( (SymbolicOps) id )
-			{
-				case DISTRIBUTE_SIMPLIFY:
-				{
-					SymbolicMult<R,S> ths = this;
-					
-					
-					if( ths.elemA instanceof SymbolicAdd )
-					{
-						// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-					}
-					
-					if( ths.elemB instanceof SymbolicAdd )
-					{
-						// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-					}
-					
-					if( ths.elemA instanceof SymbolicInvertLeft )
-					{
-						SymbolicElem<R,S> aa = ((SymbolicInvertLeft<R,S>) ths.elemA).getElem();
-						if( aa.symbolicEquals( ths.elemB ) )
-						{
-							return( this.getFac().identity() );
-						}
-					}
-					
-					if( ths.elemB instanceof SymbolicInvertRight )
-					{
-						SymbolicElem<R,S> bb = ((SymbolicInvertRight<R,S>) ths.elemB).getElem();
-						if( ths.elemA.symbolicEquals( bb ) )
-						{
-							return( this.getFac().identity() );
-						}
-					}
-					
-					
-					if( this.getFac().isMultCommutative() )
-					{
-						if( ths.elemA instanceof SymbolicInvertRight )
-						{
-							SymbolicElem<R,S> aa = ((SymbolicInvertRight<R,S>) ths.elemA).getElem();
-							if( aa.symbolicEquals( ths.elemB ) )
-							{
-								return( this.getFac().identity() );
-							}
-						}
-						
-						if( ths.elemB instanceof SymbolicInvertLeft )
-						{
-							SymbolicElem<R,S> bb = ((SymbolicInvertLeft<R,S>) ths.elemB).getElem();
-							if( ths.elemA.symbolicEquals( bb ) )
-							{
-								return( this.getFac().identity() );
-							}
-						}
-					}
-					
-					return( ths );
-				}
-				// break;
-			}
-		}
-		
-		return( super.handleOptionalOp(id, args) );
-	}
+	
 	
 	@Override
 	public boolean symbolicEquals( SymbolicElem<R, S> b )

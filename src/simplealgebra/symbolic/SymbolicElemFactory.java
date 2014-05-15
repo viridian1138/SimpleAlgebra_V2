@@ -52,6 +52,12 @@ public class SymbolicElemFactory<R extends Elem<R,?>, S extends ElemFactory<R,S>
 		return( fac.isMultCommutative() );
 	}
 	
+	@Override
+	public boolean isNestedMultCommutative()
+	{
+		return( fac.isNestedMultCommutative() );
+	}
+	
 	public S getFac()
 	{
 		return( fac );

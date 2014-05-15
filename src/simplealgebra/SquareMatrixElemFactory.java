@@ -113,6 +113,13 @@ public class SquareMatrixElemFactory<U extends NumDimensions, R extends Elem<R,?
 	}
 	
 	
+	@Override
+	public boolean isNestedMultCommutative()
+	{
+		return( fac.isMultCommutative() );
+	}
+	
+	
 	public S getFac()
 	{
 		return( fac );

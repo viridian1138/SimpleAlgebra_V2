@@ -49,6 +49,12 @@ public class DoubleElemFactory extends ElemFactory<DoubleElem, DoubleElemFactory
 	}
 	
 	@Override
+	public boolean isNestedMultCommutative()
+	{
+		return( true );
+	}
+	
+	@Override
 	public SymbolicElem<DoubleElem, DoubleElemFactory> handleSymbolicOptionalOp( Object id , 
 			ArrayList<SymbolicElem<DoubleElem, DoubleElemFactory>> args )  throws NotInvertibleException
 	{

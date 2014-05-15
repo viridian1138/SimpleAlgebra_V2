@@ -86,6 +86,13 @@ public class ComplexElemFactory<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 	}
 	
 	
+	@Override
+	public boolean isNestedMultCommutative()
+	{
+		return( fac.isMultCommutative() );
+	}
+	
+	
 	public S getFac()
 	{
 		return( fac );

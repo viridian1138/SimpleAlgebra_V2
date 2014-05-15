@@ -65,6 +65,13 @@ public class GeometricAlgebraMultivectorElemFactory<U extends NumDimensions, R e
 	}
 	
 	
+	@Override
+	public boolean isNestedMultCommutative()
+	{
+		return( fac.isMultCommutative() );
+	}
+	
+	
 	public S getFac()
 	{
 		return( fac );
