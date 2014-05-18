@@ -100,20 +100,39 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 				case DISTRIBUTE_SIMPLIFY:
 				{
 					StatefulKnowledgeSession session = getDistributeSimplifyKnowledgeBase().newStatefulKnowledgeSession();
+					
+					session.insert( new DroolsSession( session ) );
 						
 					SymbolicPlaceholder<R,S> place = new SymbolicPlaceholder<R,S>( this , fac );
 						
 					place.performInserts( session );
 								
 					session.fireAllRules();
+					
+					SymbolicElem<R, S> ret = place.getElem();
+					
+					session.dispose();
 						
-					return( place.getElem() );
+					return( ret );
 				}
 				// break;
 			}
 		}
 		
 		return( getFac().getFac().handleSymbolicOptionalOp(id, args) );
+	}
+	
+	
+	public boolean extSymbolicEquals( SymbolicElem<R, S> b ) throws NotInvertibleException
+	{
+		SymbolicElem<R, S> aa = this.distSimp();
+		SymbolicElem<R, S> bb = b.distSimp();
+		boolean ret = aa.symbolicEquals( bb );
+		if( ret )
+		{
+//			System.out.println( "AAAAA" );
+		}
+		return( ret );
 	}
 	
 	

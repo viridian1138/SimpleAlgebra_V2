@@ -25,6 +25,7 @@
 package simplealgebra.symbolic;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 
 import org.kie.internal.runtime.StatefulKnowledgeSession;
 
@@ -110,6 +111,62 @@ public class SymbolicAdd<R extends Elem<R,?>, S extends ElemFactory<R,S>> extend
 		elemB.performInserts( session );
 		super.performInserts( session );
 	}
+	
+	
+	
+	public SymbolicAdd<R, S> handleAddSimplify( SymbolicElem<R, S> elA , SymbolicElem<R, S> elB , DroolsSession ds )
+	{
+		HashSet<SymbolicElem<R, S>> elS = new HashSet<SymbolicElem<R, S>>();
+		elS.add( elA );
+		elS.add( elB );
+		SymbolicAdd<R, S> ret = this.handleAddSimplify( elS , ds );
+		if( !( elS.isEmpty() ) )
+		{
+			throw( new RuntimeException( "Internal Error." ) );
+		}
+		return( ret );
+	}
+	
+	
+	
+	public SymbolicAdd<R, S> handleAddSimplify( HashSet<SymbolicElem<R, S>> elS , DroolsSession ds )
+	{
+		SymbolicElem<R,S> elA = elemA;
+		SymbolicElem<R,S> elB = elemB;
+		if( elS.contains( elA ) )
+		{
+			elS.remove( elA );
+			elA = this.getFac().zero();
+			ds.insert( elA );
+		}
+		else
+		{
+			if( elA instanceof SymbolicAdd )
+			{
+				elA = ((SymbolicAdd) elA).handleAddSimplify( elS , ds );
+			}
+		}
+		
+		if( elS.contains( elB ) )
+		{
+			elS.remove( elB );
+			elB = this.getFac().zero();
+			ds.insert( elB );
+		}
+		else
+		{
+			if( elB instanceof SymbolicAdd )
+			{
+				elB = ((SymbolicAdd) elB).handleAddSimplify( elS , ds );
+			}
+		}
+		
+		SymbolicAdd<R, S> ret = new SymbolicAdd( elA , elB , fac );
+		// System.out.println( "Insert: " + ret );
+		ds.insert( ret );
+		return( ret );
+	}
+	
 	
 
 	private SymbolicElem<R,S> elemA;

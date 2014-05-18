@@ -370,6 +370,7 @@ rule "Add Zero A"
           nez : SymbolicElem( )
           add1 : SymbolicAdd( elemA == ez , elemB == nez )
       then
+          // System.out.println( "Add Zero A" );
           insert( new Reng( add1 , nez ) );
 end
 
@@ -382,6 +383,7 @@ rule "Add Zero B"
           nez : SymbolicElem( )
           add1 : SymbolicAdd( elemA == nez , elemB == ez )
       then
+          // System.out.println( "Add Zero B" );
           insert( new Reng( add1 , nez ) );
 end
 
@@ -536,15 +538,103 @@ end
 
 
 
-// Needs to be revised !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-rule "El Plus Negative El"
+rule "Init Add Root"
       when
-          elA : SymbolicElem( )
-          elB : SymbolicElem( )
-          add1 : SymbolicAdd( elemA == elA , elemB == elB )
-          eval( elA.symbolicEquals( new SymbolicNegate( elB , elB.getFac().getFac() ) ) )
+          elA : SymbolicAdd( )
       then
-          insert( new Reng( add1 , new SymbolicZero( elA.getFac().getFac() ) ) );
+          // System.out.println( "Init Add Root " + elA );
+          insert( new AddRoot( elA , elA ) );
+end
+
+
+
+
+
+rule "Add RootA"
+      when
+          el0 : SymbolicAdd()
+          elA : AddRoot( elemB == el0 )
+          elB : SymbolicAdd( elemA == el0 )
+      then
+          // System.out.println( "Add Root A " + elA.getElemA() + " " + elB );
+          insert( new AddRoot( elA.getElemA() , elB ) );
+end
+
+
+
+
+
+rule "Add RootB"
+      when
+          el0 : SymbolicAdd()
+          elA : AddRoot( elemB == el0 )
+          elB : SymbolicAdd( elemB == el0 )
+      then
+          // System.out.println( "Add Root B " + elA.getElemA() + " " + elB );
+          insert( new AddRoot( elA.getElemA() , elB ) );
+end
+
+
+
+
+rule "El Plus Negative ElA"
+      when
+          elA : SymbolicElem( eval( !( elA instanceof SymbolicAdd ) ) )
+          elB : SymbolicElem( eval( !( elB instanceof SymbolicAdd ) ) )
+          addA : SymbolicAdd( elemA == elA )
+          addB : SymbolicAdd( elemA == elB )
+          r1: AddRoot( elemA == addA )
+          AddRoot( elemA == addB , elemB == r1.getElemB() )
+          eval( elA.extSymbolicEquals( new SymbolicNegate( elB , elB.getFac().getFac() ) ) )
+          eval( elA != elB )
+          ds: DroolsSession()
+          not( Reng( strt == r1.getElemB() ) )
+      then
+          // System.out.println( "ElA " + addA + " " + addB );
+          insert( new Reng( r1.getElemB() , r1.getElemB().handleAddSimplify( elA , elB , ds ) ) );
+end
+
+
+
+
+
+rule "El Plus Negative ElB"
+      when
+          elA : SymbolicElem( eval( !( elA instanceof SymbolicAdd ) ) )
+          elB : SymbolicElem( eval( !( elB instanceof SymbolicAdd ) ) )
+          addA : SymbolicAdd( elemB == elA )
+          addB : SymbolicAdd( elemA == elB )
+          r1: AddRoot( elemA == addA )
+          AddRoot( elemA == addB , elemB == r1.getElemB() )
+          eval( elA.extSymbolicEquals( new SymbolicNegate( elB , elB.getFac().getFac() ) ) )
+          eval( elA != elB )
+          ds:DroolsSession()
+          not( Reng( strt == r1.getElemB() ) )
+      then
+          // System.out.println( "ElB " + addA + " " + addB );
+          insert( new Reng( r1.getElemB() , r1.getElemB().handleAddSimplify( elA , elB , ds ) ) );
+end
+
+
+
+
+
+
+rule "El Plus Negative ElD"
+      when
+          elA : SymbolicElem( eval( !( elA instanceof SymbolicAdd ) ) )
+          elB : SymbolicElem( eval( !( elB instanceof SymbolicAdd ) ) )
+          addA : SymbolicAdd( elemB == elA )
+          addB : SymbolicAdd( elemB == elB )
+          r1: AddRoot( elemA == addA )
+          AddRoot( elemA == addB , elemB == r1.getElemB() )
+          eval( elA.extSymbolicEquals( new SymbolicNegate( elB , elB.getFac().getFac() ) ) )
+          eval( elA != elB )
+          ds:DroolsSession()
+          not( Reng( strt == r1.getElemB() ) )
+      then
+          // System.out.println( "ElB " + addA + " " + addB );
+          insert( new Reng( r1.getElemB() , r1.getElemB().handleAddSimplify( elA , elB , ds ) ) );
 end
 
 
