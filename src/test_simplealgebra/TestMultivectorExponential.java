@@ -49,6 +49,8 @@ import simplealgebra.ga.GeometricAlgebraMultivectorElem;
  * Test cases are adapted from "Valence Band of Cubic Semiconductors from Viewpoint of Clifford Algebra"
  * by A. Dargys, Acta Physica Polonica A, Vol. 116 (2009).
  * 
+ * (http://przyrbwn.icm.edu.pl/app/pdf/116/a116z219.pdf)
+ * 
  * 
  * @author thorngreen
  *
@@ -80,6 +82,32 @@ public class TestMultivectorExponential extends TestCase {
 		seedTestMultivectorExponential( 77777 );
 		seedTestMultivectorExponential( 88888 );
 		seedTestMultivectorExponential( 99999 );
+	}
+	
+	
+	/**
+	 * Test method for {@link simplealgebra.Elem#exp()}.
+	 */
+	public void testMultivectorExponentialBivec() throws NotInvertibleException
+	{
+		seedTestMultivectorExponentialBivec( 1111 );
+		seedTestMultivectorExponentialBivec( 2222 );
+		seedTestMultivectorExponentialBivec( 3333 );
+		seedTestMultivectorExponentialBivec( 4444 );
+		seedTestMultivectorExponentialBivec( 5555 );
+		seedTestMultivectorExponentialBivec( 6666 );
+		seedTestMultivectorExponentialBivec( 7777 );
+		seedTestMultivectorExponentialBivec( 8888 );
+		seedTestMultivectorExponentialBivec( 9999 );
+		seedTestMultivectorExponentialBivec( 11111 );
+		seedTestMultivectorExponentialBivec( 22222 );
+		seedTestMultivectorExponentialBivec( 33333 );
+		seedTestMultivectorExponentialBivec( 44444 );
+		seedTestMultivectorExponentialBivec( 55555 );
+		seedTestMultivectorExponentialBivec( 66666 );
+		seedTestMultivectorExponentialBivec( 77777 );
+		seedTestMultivectorExponentialBivec( 88888 );
+		seedTestMultivectorExponentialBivec( 99999 );
 	}
 	
 	
@@ -161,5 +189,78 @@ public class TestMultivectorExponential extends TestCase {
 	}
 	
 	
+	
+	
+	/**
+	 * Test method for {@link simplealgebra.Elem#exp()}.
+	 */
+	private void seedTestMultivectorExponentialBivec( long seed ) throws NotInvertibleException {
+		
+		final Random rand = new Random();
+		
+		rand.setSeed( seed );
+		
+		final DoubleElemFactory fac = new DoubleElemFactory();
+		
+		final TestDimensionFive td = new TestDimensionFive();
+		
+		final GeometricAlgebraMultivectorElem<TestDimensionFive,DoubleElem,DoubleElemFactory> el
+			= new GeometricAlgebraMultivectorElem<TestDimensionFive,DoubleElem,DoubleElemFactory>( fac , td );
+		
+		final double s = 20.0 * ( rand.nextDouble() - 0.5 );
+		
+		el.setVal( new HashSet<BigInteger>() , new DoubleElem( s ) );
+		
+		final double[] v = new double[ 5 ];
+		
+		int cnt;
+		for( cnt = 0 ; cnt < 5 ; cnt++ )
+		{
+			v[ cnt ] = 20.0 * ( rand.nextDouble() - 0.5 );
+			final HashSet<BigInteger> h = new HashSet<BigInteger>();
+			int cntx;
+			for( cntx = 0 ; cntx < 5 ; cntx++ )
+			{
+				if( cntx != cnt )
+				{
+					h.add( BigInteger.valueOf( cntx ) );
+				}
+			}
+			el.setVal( h , new DoubleElem( v[ cnt ] ) );
+		}
+		
+		final GeometricAlgebraMultivectorElem<TestDimensionFive,DoubleElem,DoubleElemFactory> exp = el.exp( 25 );
+		
+		
+		final double expS = Math.exp( s );
+		final double vmag = Math.sqrt( vmagSq( v ) );
+		final double sinhVmag = sinh( vmag );
+		final double coshVmag = cosh( vmag );
+		
+		
+		
+		Assert.assertEquals( expS * sinhVmag , exp.get( new HashSet<BigInteger>() ).getVal() , 1E+1 );
+		
+		for( cnt = 0 ; cnt < 5 ; cnt++ )
+		{
+			final HashSet<BigInteger> h = new HashSet<BigInteger>();
+			int cntx;
+			for( cntx = 0 ; cntx < 5 ; cntx++ )
+			{
+				if( cntx != cnt )
+				{
+					h.add( BigInteger.valueOf( cntx ) );
+				}
+			}
+			final double ival = v[ cnt ];
+			Assert.assertEquals( expS * ival * coshVmag / vmag , exp.get( h ).getVal() , 1E+1 );
+		}
+		
+		
+	}
+	
+	
+	
 }
+
 
