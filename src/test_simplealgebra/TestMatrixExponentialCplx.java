@@ -55,12 +55,101 @@ import simplealgebra.SquareMatrixElem;
 public class TestMatrixExponentialCplx extends TestCase {
 	
 	
-
 	
 	/**
 	 * Test method for {@link simplealgebra.Elem#exp()}.
 	 */
-	public void testMatrixExponentialA( ) throws NotInvertibleException {
+	public void testMatrixExponential1( ) throws NotInvertibleException {
+		
+		final DoubleElemFactory dfac = new DoubleElemFactory();
+		
+		final ComplexElemFactory<DoubleElem,DoubleElemFactory> fac =
+				new ComplexElemFactory<DoubleElem,DoubleElemFactory>( dfac );
+		
+		final TestDimensionTwo td = new TestDimensionTwo();
+		
+		final SquareMatrixElem<TestDimensionTwo,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> el
+			= new SquareMatrixElem<TestDimensionTwo,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>( fac , td );
+		
+		el.setVal( BigInteger.ZERO , BigInteger.ZERO , new ComplexElem<DoubleElem,DoubleElemFactory>( new DoubleElem( 1.0 ) , new DoubleElem( 0.0 ) ) );
+		
+		el.setVal( BigInteger.ZERO , BigInteger.ONE , new ComplexElem<DoubleElem,DoubleElemFactory>( new DoubleElem( 0.0 ) , new DoubleElem( 0.0 ) ) );
+		
+		el.setVal( BigInteger.ONE , BigInteger.ZERO , new ComplexElem<DoubleElem,DoubleElemFactory>( new DoubleElem( 0.0 ) , new DoubleElem( 0.0 ) ) );
+		
+		el.setVal( BigInteger.ONE , BigInteger.ONE , new ComplexElem<DoubleElem,DoubleElemFactory>( new DoubleElem( 2.0 ) , new DoubleElem( 0.0 ) ) );
+		
+		final SquareMatrixElem<TestDimensionTwo,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> exp = el.exp( 10 );
+		
+		Assert.assertEquals( 2.718281828459 , exp.get(BigInteger.ZERO , BigInteger.ZERO).getRe().getVal() , 1E-6 );
+		
+		Assert.assertEquals( 0.0 , exp.get(BigInteger.ZERO , BigInteger.ZERO).getIm().getVal() , 1E-6 );
+		
+		Assert.assertEquals( 0.0 , exp.get(BigInteger.ZERO , BigInteger.ONE).getRe().getVal() , 1E-6 );
+		
+		Assert.assertEquals( 0.0 , exp.get(BigInteger.ZERO , BigInteger.ONE).getIm().getVal() , 1E-6 );
+		
+		Assert.assertEquals( 0.0 , exp.get(BigInteger.ONE , BigInteger.ZERO).getRe().getVal() , 1E-6 );
+		
+		Assert.assertEquals( 0.0 , exp.get(BigInteger.ONE , BigInteger.ZERO).getIm().getVal() , 1E-6 );
+		
+		Assert.assertEquals( 7.3890560989 , exp.get(BigInteger.ONE , BigInteger.ONE).getRe().getVal() , 1E-6 );
+		
+		Assert.assertEquals( 0.0 , exp.get(BigInteger.ONE , BigInteger.ONE).getIm().getVal() , 1E-6 );
+		
+	}
+	
+	
+
+	/**
+	 * Test method for {@link simplealgebra.Elem#exp()}.
+	 */
+	public void testMatrixExponential2( ) throws NotInvertibleException {
+		
+		final DoubleElemFactory dfac = new DoubleElemFactory();
+		
+		final ComplexElemFactory<DoubleElem,DoubleElemFactory> fac =
+				new ComplexElemFactory<DoubleElem,DoubleElemFactory>( dfac );
+		
+		final TestDimensionTwo td = new TestDimensionTwo();
+		
+		final SquareMatrixElem<TestDimensionTwo,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> el
+			= new SquareMatrixElem<TestDimensionTwo,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>( fac , td );
+		
+		el.setVal( BigInteger.ZERO , BigInteger.ZERO , new ComplexElem<DoubleElem,DoubleElemFactory>( new DoubleElem( 0.0 ) , new DoubleElem( 3.0 ) ) );
+		
+		el.setVal( BigInteger.ZERO , BigInteger.ONE , new ComplexElem<DoubleElem,DoubleElemFactory>( new DoubleElem( 0.0 ) , new DoubleElem( 0.0 ) ) );
+		
+		el.setVal( BigInteger.ONE , BigInteger.ZERO , new ComplexElem<DoubleElem,DoubleElemFactory>( new DoubleElem( 0.0 ) , new DoubleElem( 0.0 ) ) );
+		
+		el.setVal( BigInteger.ONE , BigInteger.ONE , new ComplexElem<DoubleElem,DoubleElemFactory>( new DoubleElem( 0.0 ) , new DoubleElem( -4.0 ) ) );
+		
+		final SquareMatrixElem<TestDimensionTwo,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> exp = el.exp( 10 );
+		
+		Assert.assertEquals( -0.98999249 , exp.get(BigInteger.ZERO , BigInteger.ZERO).getRe().getVal() , 1E-6 );
+		
+		Assert.assertEquals( 0.14112000 , exp.get(BigInteger.ZERO , BigInteger.ZERO).getIm().getVal() , 1E-6 );
+		
+		Assert.assertEquals( 0.0 , exp.get(BigInteger.ZERO , BigInteger.ONE).getRe().getVal() , 1E-6 );
+		
+		Assert.assertEquals( 0.0 , exp.get(BigInteger.ZERO , BigInteger.ONE).getIm().getVal() , 1E-6 );
+		
+		Assert.assertEquals( 0.0 , exp.get(BigInteger.ONE , BigInteger.ZERO).getRe().getVal() , 1E-6 );
+		
+		Assert.assertEquals( 0.0 , exp.get(BigInteger.ONE , BigInteger.ZERO).getIm().getVal() , 1E-6 );
+		
+		Assert.assertEquals( -0.6536436208 , exp.get(BigInteger.ONE , BigInteger.ONE).getRe().getVal() , 1E-6 );
+		
+		Assert.assertEquals( 0.756802495307 , exp.get(BigInteger.ONE , BigInteger.ONE).getIm().getVal() , 1E-6 );
+		
+	}
+	
+	
+	
+	/**
+	 * Test method for {@link simplealgebra.Elem#exp()}.
+	 */
+	public void testMatrixExponential3( ) throws NotInvertibleException {
 		
 		final DoubleElemFactory dfac = new DoubleElemFactory();
 		
