@@ -1132,6 +1132,11 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, R extends 
 		map.put(el, val);
 	}
 	
+	public Iterator<HashSet<BigInteger>> getKeyIterator()
+	{
+		return( map.keySet().iterator() );
+	}
+	
 	
 	
 	private final HashMap<HashSet<BigInteger>,R> map = new HashMap<HashSet<BigInteger>,R>();

@@ -26,6 +26,7 @@ package test_simplealgebra;
 
 import java.math.BigInteger;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Random;
 
 import junit.framework.Assert;
@@ -186,6 +187,18 @@ public class TestMultivectorExponential extends TestCase {
 		}
 		
 		
+		Iterator<HashSet<BigInteger>> it = exp.getKeyIterator();
+		
+		while( it.hasNext() )
+		{
+			HashSet<BigInteger> h = it.next();
+			if( ( h.size() != 0 ) && ( h.size() != 1 ) )
+			{
+				Assert.assertEquals( 0.0 , exp.get( h ).getVal() , 1E+1 );
+			}
+		}
+		
+		
 	}
 	
 	
@@ -254,6 +267,18 @@ public class TestMultivectorExponential extends TestCase {
 			}
 			final double ival = v[ cnt ];
 			Assert.assertEquals( expS * ival * coshVmag / vmag , exp.get( h ).getVal() , 1E+1 );
+		}
+		
+		
+		Iterator<HashSet<BigInteger>> it = exp.getKeyIterator();
+		
+		while( it.hasNext() )
+		{
+			HashSet<BigInteger> h = it.next();
+			if( ( h.size() != 0 ) && ( h.size() != 4 ) )
+			{
+				Assert.assertEquals( 0.0 , exp.get( h ).getVal() , 1E+1 );
+			}
 		}
 		
 		
