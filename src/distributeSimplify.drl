@@ -274,6 +274,7 @@ rule "Double Negate"
           e0 : SymbolicElem( )
           n0 : SymbolicNegate( elem == e0 )
           n1 : SymbolicNegate( elem == n0 )
+          not( Reng( strt == n1 ) )
      then
           insert( new Reng( n1 , e0 ) );
 end
@@ -287,6 +288,7 @@ rule "Double Absolute Value"
      when
           n0 : SymbolicAbsoluteValue( )
           n1 : SymbolicAbsoluteValue( elem == n0 )
+          not( Reng( strt == n1 ) )
      then
           insert( new Reng( n1 , n0 ) );
 end
@@ -302,6 +304,7 @@ rule "Double Invert Left NonCommute"
           e0 : SymbolicElem( )
           n0 : SymbolicInvertLeft( elem == e0 )
           n1 : SymbolicInvertRight( elem == n0 )
+          not( Reng( strt == n1 ) )
      then
           insert( new Reng( n1 , e0 ) );
 end
@@ -316,6 +319,7 @@ rule "Double Invert Right NonCommute"
           e0 : SymbolicElem( )
           n0 : SymbolicInvertRight( elem == e0 )
           n1 : SymbolicInvertLeft( elem == n0 )
+          not( Reng( strt == n1 ) )
      then
           insert( new Reng( n1 , e0 ) );
 end
@@ -331,6 +335,7 @@ rule "Double Invert Left Commute"
           n0 : SymbolicInvertLeft( elem == e0 )
           n1 : SymbolicInvertLeft( elem == n0 )
           eval( e0.getFac().isNestedMultCommutative() )
+          not( Reng( strt == n1 ) )
      then
           insert( new Reng( n1 , e0 ) );
 end
@@ -346,6 +351,7 @@ rule "Double Invert Right Commute"
           n0 : SymbolicInvertRight( elem == e0 )
           n1 : SymbolicInvertRight( elem == n0 )
           eval( e0.getFac().isNestedMultCommutative() )
+          not( Reng( strt == n1 ) )
      then
           insert( new Reng( n1 , e0 ) );
 end
@@ -358,6 +364,7 @@ rule "Negate Zero"
       when
           ez : SymbolicZero( )
           n1 : SymbolicNegate( elem == ez )
+          not( Reng( strt == n1 ) )
       then
           insert( new Reng( n1 , ez ) );
 end
@@ -369,6 +376,7 @@ rule "Add Zero A"
           ez : SymbolicZero( )
           nez : SymbolicElem( )
           add1 : SymbolicAdd( elemA == ez , elemB == nez )
+          not( Reng( strt == add1 ) )
       then
           // System.out.println( "Add Zero A" );
           insert( new Reng( add1 , nez ) );
@@ -382,6 +390,7 @@ rule "Add Zero B"
           ez : SymbolicZero( )
           nez : SymbolicElem( )
           add1 : SymbolicAdd( elemA == nez , elemB == ez )
+          not( Reng( strt == add1 ) )
       then
           // System.out.println( "Add Zero B" );
           insert( new Reng( add1 , nez ) );
@@ -396,6 +405,7 @@ rule "Mult Ident A"
           ez : SymbolicIdentity( )
           nez : SymbolicElem( )
           mult1 : SymbolicMult( elemA == ez , elemB == nez )
+          not( Reng( strt == mult1 ) )
       then
           insert( new Reng( mult1 , nez ) );
 end
@@ -408,6 +418,7 @@ rule "Mult Ident B"
           ez : SymbolicIdentity( )
           nez : SymbolicElem( )
           mult1 : SymbolicMult( elemA == nez , elemB == ez )
+          not( Reng( strt == mult1 ) )
       then
           insert( new Reng( mult1 , nez ) );
 end
@@ -420,6 +431,7 @@ rule "Mult Zero A"
           ez : SymbolicZero( )
           nez : SymbolicElem( )
           mult1 : SymbolicMult( elemA == ez , elemB == nez )
+          not( Reng( strt == mult1 ) )
       then
           insert( new Reng( mult1 , ez ) );
 end
@@ -432,6 +444,7 @@ rule "Mult Zero B"
           ez : SymbolicZero( )
           nez : SymbolicElem( )
           mult1 : SymbolicMult( elemA == nez , elemB == ez )
+          not( Reng( strt == mult1 ) )
       then
           insert( new Reng( mult1 , ez ) );
 end
@@ -446,6 +459,7 @@ rule "Mult Over Negate A"
           b : SymbolicElem( )
           na : SymbolicNegate( elem == a )
           mult1 : SymbolicMult( elemA == na , elemB == b )
+          not( Reng( strt == mult1 ) )
       then
           insert( new Reng( mult1 , new SymbolicNegate( new SymbolicMult( a , b , mult1.getFac().getFac() ) , na.getFac().getFac() ) ) );
 end
@@ -459,6 +473,7 @@ rule "Mult Over Negate B"
           b : SymbolicElem( )
           nb : SymbolicNegate( elem == b )
           mult1 : SymbolicMult( elemA == a , elemB == nb )
+          not( Reng( strt == mult1 ) )
       then
           insert( new Reng( mult1 , new SymbolicNegate( new SymbolicMult( a , b , mult1.getFac().getFac() ) , nb.getFac().getFac() ) ) );
 end
@@ -474,6 +489,7 @@ rule "Mult Over DivideBy A"
           b : SymbolicElem( )
           na : SymbolicDivideBy( elem == a )
           mult1 : SymbolicMult( elemA == na , elemB == b )
+          not( Reng( strt == mult1 ) )
       then
           insert( new Reng( mult1 , new SymbolicDivideBy( new SymbolicMult( a , b , mult1.getFac().getFac() ) , na.getFac().getFac() , na.getIval() ) ) );
 end
@@ -487,6 +503,7 @@ rule "Mult Over DivideBy B"
           b : SymbolicElem( )
           nb : SymbolicDivideBy( elem == b )
           mult1 : SymbolicMult( elemA == a , elemB == nb )
+          not( Reng( strt == mult1 ) )
       then
           insert( new Reng( mult1 , new SymbolicDivideBy( new SymbolicMult( a , b , mult1.getFac().getFac() ) , nb.getFac().getFac() , nb.getIval() ) ) );
 end
@@ -502,6 +519,7 @@ rule "Negate Over Add"
           b : SymbolicElem( )
           c : SymbolicAdd( elemA == a , elemB == b )
           d : SymbolicNegate( elem == c )
+          not( Reng( strt == d ) )
       then
           insert( new Reng( d , new SymbolicAdd( new SymbolicNegate( a , d.getFac().getFac() ) , new SymbolicNegate( b , d.getFac().getFac() ) , c.getFac().getFac() ) ) );
 end
@@ -516,6 +534,7 @@ rule "DivideBy Over Add"
           b : SymbolicElem( )
           c : SymbolicAdd( elemA == a , elemB == b )
           d : SymbolicDivideBy( elem == c )
+          not( Reng( strt == d ) )
       then
           insert( new Reng( d , new SymbolicAdd( new SymbolicDivideBy( a , d.getFac().getFac() , d.getIval() ) , new SymbolicDivideBy( b , d.getFac().getFac() , d.getIval() ) , c.getFac().getFac() ) ) );
 end
@@ -529,6 +548,7 @@ rule "DivideBy Over Negate"
           a : SymbolicElem( )
           b : SymbolicNegate( elem == a )
           c : SymbolicDivideBy( elem == b )
+          not( Reng( strt == c ) )
       then
           insert( new Reng( c , new SymbolicNegate( new SymbolicDivideBy( a , c.getFac().getFac() , c.getIval() ) , b.getFac().getFac() ) ) );
 end
