@@ -40,6 +40,12 @@ public class SymbolicIdentity<R extends Elem<R,?>, S extends ElemFactory<R,S>> e
 		super( _fac );
 	}
 	
+	public SymbolicIdentity( S _fac , DroolsSession ds )
+	{
+		this( _fac );
+		ds.insert( this );
+	}
+	
 	@Override
 	public R eval( ) {
 		return( fac.identity() );

@@ -42,6 +42,12 @@ public class SymbolicDivideBy<R extends Elem<R,?>, S extends ElemFactory<R,S>> e
 		ival = _ival;
 	}
 	
+	public SymbolicDivideBy( SymbolicElem<R,S> _elem , S _fac , int _ival , DroolsSession ds )
+	{
+		this( _elem , _fac , _ival );
+		ds.insert( this );
+	}
+	
 	@Override
 	public R eval( ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
 		return( elem.eval().divideBy( ival ) );

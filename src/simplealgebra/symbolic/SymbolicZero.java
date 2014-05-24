@@ -41,6 +41,12 @@ public class SymbolicZero<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 		super( _fac );
 	}
 	
+	public SymbolicZero( S _fac , DroolsSession ds )
+	{
+		this( _fac );
+		ds.insert( this );
+	}
+	
 	@Override
 	public R eval( ) {
 		return( fac.zero() );

@@ -34,6 +34,7 @@ import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.NumDimensions;
+import simplealgebra.symbolic.DroolsSession;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SymbolicElem;
 
@@ -47,6 +48,15 @@ public class SymbolicReverseRight<U extends NumDimensions, R extends Elem<R,?>, 
 	{
 		super( _fac );
 		elemA = _elemA;
+	}
+	
+	
+	public SymbolicReverseRight( 
+			SymbolicElem<GeometricAlgebraMultivectorElem<U,R,S>,GeometricAlgebraMultivectorElemFactory<U,R,S>> _elemA , 
+			GeometricAlgebraMultivectorElemFactory<U, R, S> _fac , DroolsSession ds ) 
+	{
+		this( _elemA , _fac );
+		ds.insert( this );
 	}
 
 	

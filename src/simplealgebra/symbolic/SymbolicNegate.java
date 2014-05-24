@@ -43,6 +43,12 @@ public class SymbolicNegate<R extends Elem<R,?>, S extends ElemFactory<R,S>> ext
 		elem = _elem;
 	}
 	
+	public SymbolicNegate( SymbolicElem<R,S> _elem , S _fac , DroolsSession ds )
+	{
+		this( _elem , _fac );
+		ds.insert( this );
+	}
+	
 	@Override
 	public R eval( ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
 		return( elem.eval().negate() );

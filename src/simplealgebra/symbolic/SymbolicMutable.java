@@ -50,6 +50,12 @@ public class SymbolicMutable<T extends Elem<T,?>, U extends MutableElem<T,U,?>, 
 		elemB = _elemB;
 	}
 	
+	public SymbolicMutable( SymbolicElem<U,R> _elemA , Mutator<U> _elemB , R _fac , DroolsSession ds )
+	{
+		this( _elemA , _elemB , _fac );
+		ds.insert( this );
+	}
+	
 	@Override
 	public U eval( ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
 		final U evl = elemA.eval();

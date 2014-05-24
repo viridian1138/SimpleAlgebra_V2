@@ -43,6 +43,12 @@ public class SymbolicAdd<R extends Elem<R,?>, S extends ElemFactory<R,S>> extend
 		elemB = _elemB;
 	}
 	
+	public SymbolicAdd( SymbolicElem<R,S> _elemA , SymbolicElem<R,S> _elemB , S _fac , DroolsSession ds )
+	{
+		this( _elemA , _elemB , _fac );
+		ds.insert( this );
+	}
+	
 	@Override
 	public R eval( ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
 		return( elemA.eval().add( elemB.eval() ) );

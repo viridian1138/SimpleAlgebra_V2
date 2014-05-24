@@ -41,6 +41,12 @@ public class SymbolicVariable<R extends Elem<R,?>, S extends ElemFactory<R,S>> e
 		variableName = _variableName;
 	}
 	
+	public SymbolicVariable( S _fac , String _variableName , DroolsSession ds )
+	{
+		this( _fac , _variableName );
+		ds.insert( this );
+	}
+	
 	@Override
 	public R eval( ) {
 		return( val );

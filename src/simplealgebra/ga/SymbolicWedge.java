@@ -34,6 +34,7 @@ import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.NumDimensions;
+import simplealgebra.symbolic.DroolsSession;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SymbolicElem;
 
@@ -48,6 +49,16 @@ public class SymbolicWedge<U extends NumDimensions, R extends Elem<R,?>, S exten
 		super( _fac );
 		elemA = _elemA;
 		elemB = _elemB;
+	}
+	
+	
+	public SymbolicWedge( 
+			SymbolicElem<GeometricAlgebraMultivectorElem<U,R,S>,GeometricAlgebraMultivectorElemFactory<U,R,S>> _elemA , 
+			SymbolicElem<GeometricAlgebraMultivectorElem<U,R,S>,GeometricAlgebraMultivectorElemFactory<U,R,S>> _elemB , GeometricAlgebraMultivectorElemFactory<U, R, S> _fac ,
+			DroolsSession ds ) 
+	{
+		this( _elemA , _elemB , _fac );
+		ds.insert( this );
 	}
 
 	

@@ -47,6 +47,12 @@ public class SymbolicMult<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 		elemB = _elemB;
 	}
 	
+	public SymbolicMult( SymbolicElem<R,S> _elemA , SymbolicElem<R,S> _elemB , S _fac , DroolsSession ds )
+	{
+		this( _elemA , _elemB , _fac );
+		ds.insert( this );
+	}
+	
 	@Override
 	public R eval( ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
 		if( elemA instanceof DerivativeElem )

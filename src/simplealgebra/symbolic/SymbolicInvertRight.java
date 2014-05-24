@@ -44,6 +44,12 @@ public class SymbolicInvertRight<R extends Elem<R,?>, S extends ElemFactory<R,S>
 		elem = _elem;
 	}
 	
+	public SymbolicInvertRight( SymbolicElem<R,S> _elem , S _fac , DroolsSession ds )
+	{
+		this( _elem , _fac );
+		ds.insert( this );
+	}
+	
 	@Override
 	public R eval( ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
 		return( elem.eval().invertRight() );

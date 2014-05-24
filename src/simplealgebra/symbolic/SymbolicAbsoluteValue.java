@@ -44,6 +44,12 @@ public class SymbolicAbsoluteValue<R extends Elem<R,?>, S extends ElemFactory<R,
 		elem = _elem;
 	}
 	
+	public SymbolicAbsoluteValue( SymbolicElem<R,S> _elem , S _fac , DroolsSession ds )
+	{
+		this( _elem , _fac );
+		ds.insert( this );
+	}
+	
 	@Override
 	public R eval( ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
 		ArrayList<R> args = new ArrayList<R>();
