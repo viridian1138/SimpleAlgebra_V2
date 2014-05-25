@@ -51,6 +51,7 @@ rule "Apply Negate"
           r0 : Reng( )
           p : SymbolicNegate( elem == r0.getStrt() )
           ds : DroolsSession()
+          not( Reng( strt == p ) )
      then
           insert( new Reng( p , new SymbolicNegate( r0.getEnd() , p.getFac().getFac() , ds ) ) );
 end
@@ -65,6 +66,7 @@ rule "Apply Absolute Value"
           r0 : Reng( )
           p : SymbolicAbsoluteValue( elem == r0.getStrt() )
           ds : DroolsSession()
+          not( Reng( strt == p ) )
      then
           insert( new Reng( p , new SymbolicAbsoluteValue( r0.getEnd() , p.getFac().getFac() , ds ) ) );
 end
@@ -80,6 +82,7 @@ rule "Apply Invert Left"
           r0 : Reng( )
           p : SymbolicInvertLeft( elem == r0.getStrt() )
           ds : DroolsSession()
+          not( Reng( strt == p ) )
      then
           insert( new Reng( p , new SymbolicInvertLeft( r0.getEnd() , p.getFac().getFac() , ds ) ) );
 end
@@ -95,6 +98,7 @@ rule "Apply Invert Right"
           r0 : Reng( )
           p : SymbolicInvertRight( elem == r0.getStrt() )
           ds : DroolsSession()
+          not( Reng( strt == p ) )
      then
           insert( new Reng( p , new SymbolicInvertRight( r0.getEnd() , p.getFac().getFac() , ds ) ) );
 end
@@ -111,6 +115,7 @@ rule "Apply Reverse Left"
           r0 : Reng( )
           p : SymbolicReverseLeft( elemA == r0.getStrt() )
           ds : DroolsSession()
+          not( Reng( strt == p ) )
      then
           insert( new Reng( p , new SymbolicReverseLeft( r0.getEnd() , (GeometricAlgebraMultivectorElemFactory)( p.getFac().getFac() ) , ds ) ) );
 end
@@ -126,6 +131,7 @@ rule "Apply Reverse Right"
           r0 : Reng( )
           p : SymbolicReverseRight( elemA == r0.getStrt() )
           ds : DroolsSession()
+          not( Reng( strt == p ) )
      then
           insert( new Reng( p , new SymbolicReverseRight( r0.getEnd() , (GeometricAlgebraMultivectorElemFactory)( p.getFac().getFac() ) , ds ) ) );
 end
@@ -142,6 +148,7 @@ rule "Apply Divide By"
           r0 : Reng( )
           p : SymbolicDivideBy( elem == r0.getStrt() )
           ds : DroolsSession()
+          not( Reng( strt == p ) )
      then
           insert( new Reng( p , new SymbolicDivideBy( r0.getEnd() , p.getFac().getFac() , p.getIval() , ds ) ) );
 end
@@ -158,6 +165,7 @@ rule "Apply Mutable"
           r0 : Reng( )
           p : SymbolicMutable( elemA == r0.getStrt() )
           ds : DroolsSession()
+          not( Reng( strt == p ) )
      then
           insert( new Reng( p , new SymbolicMutable( r0.getEnd() , p.getElemB() , p.getFac().getFac() , ds ) ) );
 end
@@ -174,6 +182,7 @@ rule "Apply AddA"
           r0 : Reng( )
           p : SymbolicAdd( elemA == r0.getStrt() )
           ds : DroolsSession()
+          not( Reng( strt == p ) )
      then
           insert( new Reng( p , new SymbolicAdd( r0.getEnd() , p.getElemB() , p.getFac().getFac() , ds ) ) );
 end
@@ -187,6 +196,7 @@ rule "Apply AddB"
           r0 : Reng( )
           p : SymbolicAdd( elemB == r0.getStrt() )
           ds : DroolsSession()
+          not( Reng( strt == p ) )
      then
           insert( new Reng( p , new SymbolicAdd( p.getElemA() , r0.getEnd() , p.getFac().getFac() , ds ) ) );
 end
@@ -200,6 +210,7 @@ rule "Apply MultA"
           r0 : Reng( )
           p : SymbolicMult( elemA == r0.getStrt() )
           ds : DroolsSession()
+          not( Reng( strt == p ) )
      then
           insert( new Reng( p , new SymbolicMult( r0.getEnd() , p.getElemB() , p.getFac().getFac() , ds ) ) );
 end
@@ -213,6 +224,7 @@ rule "Apply MultB"
           r0 : Reng( )
           p : SymbolicMult( elemB == r0.getStrt() )
           ds : DroolsSession()
+          not( Reng( strt == p ) )
      then
           insert( new Reng( p , new SymbolicMult( p.getElemA() , r0.getEnd() , p.getFac().getFac() , ds ) ) );
 end
@@ -227,6 +239,7 @@ rule "Apply DotA"
           r0 : Reng( )
           p : SymbolicDot( elemA == r0.getStrt() )
           ds : DroolsSession()
+          not( Reng( strt == p ) )
      then
           insert( new Reng( p , new SymbolicDot( r0.getEnd() , p.getElemB() , (GeometricAlgebraMultivectorElemFactory)( p.getFac().getFac() ) , ds ) ) );
 end
@@ -240,6 +253,7 @@ rule "Apply DotB"
           r0 : Reng( )
           p : SymbolicDot( elemB == r0.getStrt() )
           ds : DroolsSession()
+          not( Reng( strt == p ) )
      then
           insert( new Reng( p , new SymbolicDot( p.getElemA() , r0.getEnd() , (GeometricAlgebraMultivectorElemFactory)( p.getFac().getFac() ) , ds ) ) );
 end
@@ -256,6 +270,7 @@ rule "Apply WedgeA"
           r0 : Reng( )
           p : SymbolicWedge( elemA == r0.getStrt() )
           ds : DroolsSession()
+          not( Reng( strt == p ) )
      then
           insert( new Reng( p , new SymbolicWedge( r0.getEnd() , p.getElemB() , (GeometricAlgebraMultivectorElemFactory)( p.getFac().getFac() ) , ds ) ) );
 end
@@ -269,6 +284,7 @@ rule "Apply WedgeB"
           r0 : Reng( )
           p : SymbolicWedge( elemB == r0.getStrt() )
           ds : DroolsSession()
+          not( Reng( strt == p ) )
      then
           insert( new Reng( p , new SymbolicWedge( p.getElemA() , r0.getEnd() , (GeometricAlgebraMultivectorElemFactory)( p.getFac().getFac() ) , ds ) ) );
 end
