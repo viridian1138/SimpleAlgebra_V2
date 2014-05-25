@@ -102,6 +102,11 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 					StatefulKnowledgeSession session = getDistributeSimplifyKnowledgeBase().newStatefulKnowledgeSession();
 					
 					session.insert( new DroolsSession( session ) );
+					
+					if( LoggingConfiguration.LOGGING_ON )
+					{
+						session.insert( new LoggingConfiguration() );
+					}
 						
 					SymbolicPlaceholder<R,S> place = new SymbolicPlaceholder<R,S>( this , fac );
 						
@@ -164,8 +169,16 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 		if( distributeSimplifyKnowledgeBase == null )
 		{
 			KnowledgeBuilder builder = KnowledgeBuilderFactory.newKnowledgeBuilder();
+			
 			builder.add( ResourceFactory.newClassPathResource( "distributeSimplify.drl" )  , 
 					ResourceType.DRL );
+			
+			if( LoggingConfiguration.LOGGING_ON )
+			{
+				builder.add( ResourceFactory.newClassPathResource( "logging.drl" )  , 
+						ResourceType.DRL );
+			}
+			
 			if( builder.hasErrors() )
 			{
 				throw( new RuntimeException( builder.getErrors().toString() ) );
