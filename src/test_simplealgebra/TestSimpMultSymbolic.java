@@ -54,7 +54,7 @@ import simplealgebra.symbolic.SymbolicZero;
 
 
 
-public class TestAddSimplifySymbolic extends TestCase 
+public class TestSimpMultSymbolic extends TestCase 
 {
 
 	
@@ -98,7 +98,50 @@ public class TestAddSimplifySymbolic extends TestCase
 	}
 	
 	
-	public void testAddSimplifySymbolic() throws NotInvertibleException
+	
+	private class BElem extends SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
+	{
+
+		
+		public BElem(SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory> _fac ) {
+			super(_fac);
+		}
+
+		@Override
+		public SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory> eval() throws NotInvertibleException,
+				MultiplicativeDistributionRequiredException {
+			throw( new RuntimeException( "NotSupported" ) );
+		}
+
+		@Override
+		public SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory> evalPartialDerivative(ArrayList<Elem<?, ?>> withRespectTo)
+				throws NotInvertibleException,
+				MultiplicativeDistributionRequiredException {
+			throw( new RuntimeException( "NotSupported" ) );
+		}
+		
+		@Override
+		public boolean symbolicEquals( SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>> b )
+		{
+			if( b instanceof BElem )
+			{
+				return( true );
+			}
+			
+			return( false );
+		}
+		
+		@Override
+		public String writeString( ) {
+			return( "b( )" );
+		}
+		
+	}
+	
+	
+	
+	
+	public void testSimpMultSymbolicRight() throws NotInvertibleException
 	{
 		final TestDimensionFour td = new TestDimensionFour();
 		
@@ -110,28 +153,69 @@ public class TestAddSimplifySymbolic extends TestCase
 		SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
 			a0 = new AElem( se );
 		
+		SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
+			b0 = new BElem( se );
+		
 		final SymbolicElemFactory<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>> ye = 
 				new SymbolicElemFactory<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>(se);
 		
 		SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
-			d0 = new SymbolicAdd<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>( a0 , a0 , se );
+			d0 = a0.mult( b0 );
 		
 		SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
-			d1 = new SymbolicAdd<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>( a0.negate() , a0.negate() , se );
+			d1 = d0.mult( b0.invertRight() );
 		
 		SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
-			d2 = new SymbolicAdd<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>( d0 , d1 , se );
-		
-		SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
-			d3 = d2.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
+			d2 = d1.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
 		
 //		System.out.println( d3 );
 		
 		
 		
-		Assert.assertTrue( d3 instanceof SymbolicZero );
+		Assert.assertTrue( d2 instanceof AElem );
 		
 	}
+	
+	
+	
+	
+	public void testSimpMultSymbolicLeft() throws NotInvertibleException
+	{
+		final TestDimensionFour td = new TestDimensionFour();
+		
+		final DoubleElemFactory dl = new DoubleElemFactory();
+		
+		final SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory> se = 
+				new SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>(dl, td);
+		
+		SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
+			a0 = new AElem( se );
+		
+		SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
+			b0 = new BElem( se );
+		
+		final SymbolicElemFactory<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>> ye = 
+				new SymbolicElemFactory<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>(se);
+		
+		SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
+			d0 = b0.mult( a0 );
+		
+		SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
+			d1 = ( b0.invertLeft() ).mult( d0 );
+		
+		SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
+			d2 = d1.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
+		
+//		System.out.println( d3 );
+		
+		
+		
+		Assert.assertTrue( d2 instanceof AElem );
+		
+	}
+	
+	
+	
 	
 	
 }

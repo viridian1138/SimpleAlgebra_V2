@@ -27,6 +27,7 @@
 package simplealgebra.symbolic;
 
 import java.util.ArrayList;
+import java.util.HashSet;
 import java.util.Iterator;
 
 import org.kie.internal.runtime.StatefulKnowledgeSession;
@@ -218,6 +219,99 @@ public class SymbolicMult<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 		elemB.performInserts( session );
 		super.performInserts( session );
 	}
+	
+	
+	
+	public SymbolicMult<R, S> handleMultSimplify( final SymbolicElem<R,S> elA , final SymbolicElem<R,S> elB , final DroolsSession ds )
+	{
+		final HashSet<Integer> hset = new HashSet<Integer>();
+		
+		{
+			final ArrayList<SymbolicElem<R,S>> ind = new ArrayList<SymbolicElem<R,S>>();
+			handleMultInsert( ind );
+			int cnt;
+			for( cnt = 0 ; cnt < ( ind.size() - 1 ) ; cnt++ )
+			{
+				final SymbolicElem<R,S> i0 = ind.get( cnt );
+				final SymbolicElem<R,S> i1 = ind.get( cnt + 1 );
+				if( ( elA == i0 ) && ( elB == i1 ) )
+				{
+					hset.add( cnt );
+					hset.add( cnt + 1 );
+				}
+			}
+		}
+		
+		
+		final int[] index = new int[] { 0 };
+		return( handleMultRewrite( index , hset , ds ) );
+	}
+	
+	
+	
+	private SymbolicMult<R,S> handleMultRewrite( final int[] index , final HashSet<Integer> hset ,
+			final DroolsSession session )
+	{
+		SymbolicElem<R,S> elA = null;
+		SymbolicElem<R,S> elB = null;
+		
+		if( elemA instanceof SymbolicMult )
+		{
+			elA = ((SymbolicMult) elemA).handleMultRewrite(index, hset, session);
+		}
+		else
+		{
+			elA = hset.contains( index[ 0 ] ) ? new SymbolicIdentity<R,S>( fac ) : elemA;
+			if( elA != elemA ) session.insert( elA );
+			( index[ 0 ] )++;
+		}
+		
+		if( elemB instanceof SymbolicMult )
+		{
+			elB = ((SymbolicMult) elemB).handleMultRewrite(index, hset, session);
+		}
+		else
+		{
+			elB = hset.contains( index[ 0 ] ) ? new SymbolicIdentity<R,S>( fac ) : elemB;
+			if( elB != elemB ) session.insert( elB );
+			( index[ 0 ] )++;
+		}
+		
+		if( ( elA == elemA ) && ( elB == elemB ) )
+		{
+			return( this );
+		}
+		
+		SymbolicMult<R,S> ret = new SymbolicMult<R,S>( elA , elB , fac );
+		session.insert( ret );
+		return( ret );
+	}
+	
+	
+	
+	private void handleMultInsert( final ArrayList<SymbolicElem<R,S>> ind )
+	{
+		
+		if( elemA instanceof SymbolicMult )
+		{
+			((SymbolicMult) elemA).handleMultInsert(ind);
+		}
+		else
+		{
+			ind.add( elemA );
+		}
+		
+		if( elemB instanceof SymbolicMult )
+		{
+			((SymbolicMult) elemB).handleMultInsert(ind);
+		}
+		else
+		{
+			ind.add( elemB );
+		}
+		
+	}
+	
 
 	private SymbolicElem<R,S> elemA;
 	private SymbolicElem<R,S> elemB;
