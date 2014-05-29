@@ -202,9 +202,22 @@ public class SymbolicMult<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 			}
 			else
 			{
-				boolean aa = this.getElemA().symbolicEquals( ((SymbolicMult<R,S>) b).getElemA() );
-				boolean bb = this.getElemB().symbolicEquals( ((SymbolicMult<R,S>) b).getElemB() );
-				return( aa && bb );
+				final ArrayList<SymbolicElem<R,S>> ind0 = new ArrayList<SymbolicElem<R,S>>();
+				final ArrayList<SymbolicElem<R,S>> ind1 = new ArrayList<SymbolicElem<R,S>>();
+				this.handleMultInsert( ind0 );
+				((SymbolicMult) b).handleMultInsert( ind1 );
+				if( ind0.size() == ind1.size() )
+				{
+					int cnt;
+					for( cnt = 0 ; cnt < ind0.size() ; cnt++ )
+					{
+						if( !( ind0.get( cnt ).symbolicEquals( ind1.get( cnt ) ) ) )
+						{
+							return( false );
+						}
+					}
+					return( true );
+				}
 			}
 		}
 		

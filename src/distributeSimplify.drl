@@ -836,6 +836,45 @@ end
 
 
 
+rule "Distribute InvertLeft Over Mult"
+      when
+          elm : SymbolicMult()
+          el0 : SymbolicInvertLeft( elem == elm )
+          ds: DroolsSession()
+          not( Reng( strt == el0 ) )
+      then
+         insert( new Reng( el0 , new SymbolicMult( new SymbolicInvertLeft( elm.getElemB() , el0.getFac().getFac() , ds ) , new SymbolicInvertLeft( elm.getElemA() , el0.getFac().getFac() , ds ) , elm.getFac().getFac() , ds ) ) );
+end
+
+
+
+
+
+
+
+
+
+
+rule "Distribute InvertRight Over Mult"
+      when
+          elm : SymbolicMult()
+          el0 : SymbolicInvertRight( elem == elm )
+          ds: DroolsSession()
+          not( Reng( strt == el0 ) )
+      then
+         insert( new Reng( el0 , new SymbolicMult( new SymbolicInvertRight( elm.getElemB() , el0.getFac().getFac() , ds ) , new SymbolicInvertRight( elm.getElemA() , el0.getFac().getFac() , ds ) , elm.getFac().getFac() , ds ) ) );
+end
+
+
+
+
+
+
+
+
+
+
+
 
 
 
