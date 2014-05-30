@@ -803,6 +803,8 @@ rule "Inv El Mult El"
           elA : SymbolicElem( eval( !( elA instanceof SymbolicMult ) ) )
           elB : SymbolicElem( eval( !( elB instanceof SymbolicMult ) ) )
           mn: MultNext( first == elA , next == elB )
+          eval( !( elA instanceof SymbolicIdentity ) )
+          eval( !( elB instanceof SymbolicIdentity ) )
           eval( elB.extSymbolicEquals( new SymbolicInvertRight( elA , elA.getFac().getFac() ) ) )
           eval( elA != elB )
           ds: DroolsSession()
@@ -821,6 +823,8 @@ rule "El Mult Inv El"
           elA : SymbolicElem( eval( !( elA instanceof SymbolicMult ) ) )
           elB : SymbolicElem( eval( !( elB instanceof SymbolicMult ) ) )
           mn: MultNext( first == elA , next == elB )
+          eval( !( elA instanceof SymbolicIdentity ) )
+          eval( !( elB instanceof SymbolicIdentity ) )
           eval( elA.extSymbolicEquals( new SymbolicInvertLeft( elB , elB.getFac().getFac() ) ) )
           eval( elA != elB )
           ds: DroolsSession()
@@ -864,6 +868,54 @@ rule "Distribute InvertRight Over Mult"
       then
          insert( new Reng( el0 , new SymbolicMult( new SymbolicInvertRight( elm.getElemB() , el0.getFac().getFac() , ds ) , new SymbolicInvertRight( elm.getElemA() , el0.getFac().getFac() , ds ) , elm.getFac().getFac() , ds ) ) );
 end
+
+
+
+
+
+
+
+
+
+
+
+
+
+rule "InvertLeft Over Negative"
+      when
+          elm : SymbolicElem()
+          el1 : SymbolicNegate( elem == elm )
+          el0 : SymbolicInvertLeft( elem == el1 )
+          ds: DroolsSession()
+          not( Reng( strt == el0 ) )
+      then
+         insert( new Reng( el0 , new SymbolicNegate( new SymbolicInvertLeft( elm , el0.getFac().getFac() , ds ) , el1.getFac().getFac() , ds ) ) );
+end
+
+
+
+
+
+
+
+
+
+
+rule "InvertRight Over Negative"
+      when
+          elm : SymbolicElem()
+          el1 : SymbolicNegate( elem == elm )
+          el0 : SymbolicInvertRight( elem == el1 )
+          ds: DroolsSession()
+          not( Reng( strt == el0 ) )
+      then
+         insert( new Reng( el0 , new SymbolicNegate( new SymbolicInvertRight( elm , el0.getFac().getFac() , ds ) , el1.getFac().getFac() , ds ) ) );
+end
+
+
+
+
+
 
 
 
