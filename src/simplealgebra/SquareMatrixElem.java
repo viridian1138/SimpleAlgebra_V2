@@ -1194,6 +1194,96 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 		}
 	}
 	
+	
+	
+	/**
+	 * 
+	 * This should only be used when R is commutative.
+	 * 
+	 * Adapted from:
+	 * 
+	 * http://stackoverflow.com/questions/16602350/calculating-matrix-determinant
+	 * 
+	 * @return
+	 */
+	public R determinant( )
+    {
+        R res;
+
+        // Trivial 1x1 matrix
+        if ( dim.equals( BigInteger.ONE ) )
+        {
+            res = this.getVal(BigInteger.ZERO, BigInteger.ZERO);
+        }
+        // Trivial 2x2 matrix
+        else if ( dim.equals( BigInteger.valueOf( 2 ) ) )
+        {
+        	final R t0 = ( this.getVal( BigInteger.ZERO ,  BigInteger.ZERO ) ).mult( this.getVal( BigInteger.ONE ,  BigInteger.ONE ) );
+        	final R t1 = ( this.getVal( BigInteger.ONE ,  BigInteger.ZERO ) ).mult( this.getVal( BigInteger.ZERO ,  BigInteger.ONE ) );
+            res = t0.add( t1.negate() );
+        }
+        // NxN matrix
+        else
+        {
+            res = fac.zero();
+            final Iterator<BigInteger> itj = columnMap.keySet().iterator();
+            while( itj.hasNext() )
+            {
+            	final BigInteger j1 = itj.next();
+            	final SquareMatrixElem<NumDimensions,R,S> m = genDeterminantSubMatrix( j1 );
+            	R tmp = ( this.getVal( BigInteger.ZERO , j1 ) ).mult( m.determinant() );
+            	if( ( j1.add( BigInteger.valueOf( 2 ) ) ).mod( BigInteger.valueOf( 2 ) ).equals( BigInteger.ONE ) )
+            		tmp = tmp.negate();
+                res = res.add( tmp );
+            }
+        }
+        
+        return res;
+    }
+	
+	
+	
+	private SquareMatrixElem<NumDimensions,R,S> genDeterminantSubMatrix( BigInteger j1 )
+	{
+		
+		final NumDimensions r = new NumDimensions()
+		{
+			@Override
+			public BigInteger getVal() {
+				return( dim.getVal().subtract( BigInteger.ONE ) );
+			}	
+		};
+		
+		
+		final SquareMatrixElem<NumDimensions,R,S> ret = new SquareMatrixElem<NumDimensions,R,S>( fac , r );
+		
+		
+		 final Iterator<BigInteger> iti = rowMap.keySet().iterator();
+		 while( iti.hasNext() )
+         {
+			     final BigInteger i = iti.next();
+			     if( i.equals( BigInteger.ZERO ) )
+                     continue;
+                 BigInteger j2 = BigInteger.ZERO;
+                 final HashMap<BigInteger,R> ccmap = rowMap.get( i );
+                 final Iterator<BigInteger> itj = ccmap.keySet().iterator();
+                 while( itj.hasNext() )
+                 {
+                   final BigInteger j = itj.next();
+                   if( j.equals( j1 ) )
+                           continue;
+                   ret.setVal( i.subtract( BigInteger.ONE ) , j2 , this.get(i, j) );
+                   j2 = j2.add( BigInteger.ONE );
+                 }
+         }
+		
+		
+		return( ret );
+	}
+	
+	
+	
+	
 	@Override
 	public void validate() throws RuntimeException
 	{
