@@ -121,6 +121,33 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 					return( ret );
 				}
 				// break;
+				
+				
+				case DISTRIBUTE_SIMPLIFY2:
+				{
+					StatefulKnowledgeSession session = getDistributeSimplify2KnowledgeBase().newStatefulKnowledgeSession();
+					
+					session.insert( new DroolsSession( session ) );
+					
+					if( LoggingConfiguration.LOGGING_ON )
+					{
+						session.insert( new LoggingConfiguration() );
+					}
+						
+					SymbolicPlaceholder<R,S> place = new SymbolicPlaceholder<R,S>( this , fac );
+						
+					place.performInserts( session );
+								
+					session.fireAllRules();
+					
+					SymbolicElem<R, S> ret = place.getElem();
+					
+					session.dispose();
+						
+					return( ret );
+				}
+				// break;
+				
 			}
 		}
 		
@@ -191,7 +218,35 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 	}
 	
 	
+	public static KnowledgeBase getDistributeSimplify2KnowledgeBase()
+	{
+		if( distributeSimplify2KnowledgeBase == null )
+		{
+			KnowledgeBuilder builder = KnowledgeBuilderFactory.newKnowledgeBuilder();
+			
+			builder.add( ResourceFactory.newClassPathResource( "distributeSimplify2.drl" )  , 
+					ResourceType.DRL );
+			
+			if( LoggingConfiguration.LOGGING_ON )
+			{
+				builder.add( ResourceFactory.newClassPathResource( "logging.drl" )  , 
+						ResourceType.DRL );
+			}
+			
+			if( builder.hasErrors() )
+			{
+				throw( new RuntimeException( builder.getErrors().toString() ) );
+			}
+			distributeSimplify2KnowledgeBase = KnowledgeBaseFactory.newKnowledgeBase();
+			distributeSimplify2KnowledgeBase.addKnowledgePackages( builder.getKnowledgePackages() );
+		}
+		
+		return( distributeSimplify2KnowledgeBase );
+	}
+	
+	
 	private static KnowledgeBase distributeSimplifyKnowledgeBase = null;
+	private static KnowledgeBase distributeSimplify2KnowledgeBase = null;
 	
 	
 }

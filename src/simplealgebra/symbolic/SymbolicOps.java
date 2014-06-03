@@ -31,6 +31,7 @@
 package simplealgebra.symbolic;
 
 public enum SymbolicOps {
-	DISTRIBUTE_SIMPLIFY
+	DISTRIBUTE_SIMPLIFY,
+	DISTRIBUTE_SIMPLIFY2
 }
 
