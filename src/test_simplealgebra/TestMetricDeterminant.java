@@ -181,7 +181,7 @@ public class TestMetricDeterminant extends TestCase
 		
 		
 		EinsteinTensorElem<Object, SymbolicElem<DoubleElem,DoubleElemFactory>, SymbolicElemFactory<DoubleElem,DoubleElemFactory>> 
-			metric = scfac.getMetricTensor(z0, z1);
+			metric = scfac.getMetricTensor( true, z0, z1, BigInteger.valueOf(4) );
 		
 		
 		SquareMatrixElem<TestDimensionFour, SymbolicElem<DoubleElem,DoubleElemFactory>, SymbolicElemFactory<DoubleElem,DoubleElemFactory>>

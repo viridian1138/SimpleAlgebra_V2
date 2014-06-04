@@ -33,7 +33,8 @@ import java.util.ArrayList;
 
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
-import simplealgebra.NotInvertibleException;
+import simplealgebra.ddx.DirectionalDerivativePartialFactory;
+import simplealgebra.ddx.PartialDerivativeOp;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 
@@ -47,33 +48,24 @@ import simplealgebra.symbolic.SymbolicElemFactory;
  * @param <R>
  * @param <S>
  */
-public class SimpleCurveMetricTensorFactory<Z extends Object, R extends Elem<R,?>, S extends ElemFactory<R,S>> {
+public class EmFieldTensorFactory<Z extends Object, R extends Elem<R,?>, S extends ElemFactory<R,S>, K extends Elem<?,?>> {
 	
 	SymbolicElemFactory<R, S> fac;
-	SymbolicElem<R, S> cSquared;
-	SymbolicElem<R, S> t_2Ux;
+	DirectionalDerivativePartialFactory<R, S, K> deriv;
+	VectorPotentialFactory<R, S> vect;
 	
-	/**
-	 * 
-	 * @param _fac
-	 * @param _cSquared
-	 * @param _t_2Ux -- 2 * U( x ) where U( x ) is the grav. potential along x.
-	 * 
-	 *  http://physics.stackexchange.com/questions/33950/what-is-the-equation-of-the-gravitational-potential-in-general-relativity
-	 *  
-	 *  http://en.wikipedia.org/wiki/Metric_tensor_%28general_relativity%29
-	 *  
-	 */
-	public SimpleCurveMetricTensorFactory( SymbolicElemFactory<R, S> _fac , SymbolicElem<R, S> _cSquared , SymbolicElem<R, S> _t_2Ux )
+	public EmFieldTensorFactory( SymbolicElemFactory<R, S> _fac , 
+			DirectionalDerivativePartialFactory<R, S, K> _deriv,
+			VectorPotentialFactory<R, S> _vect )
 	{
 		fac = _fac;
-		cSquared = _cSquared;
-		t_2Ux = _t_2Ux;
+		deriv = _deriv;
+		vect = _vect;
 	}
 	
 	
 	public EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>> 
-		getMetricTensor( boolean covariantIndic , Z index0 , Z index1 , BigInteger numElem ) throws NotInvertibleException
+		getEmFld( Z index0 , Z index1 , BigInteger numElem )
 		{
 		
 			ArrayList<Z> contravariantIndices = new ArrayList<Z>();
@@ -87,19 +79,21 @@ public class SimpleCurveMetricTensorFactory<Z extends Object, R extends Elem<R,?
 			EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>> tel =
 				new EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>( fac , contravariantIndices , covariantIndices );
 			
-			{
-				ArrayList<BigInteger> el = new ArrayList<BigInteger>();
-				el.add( BigInteger.ZERO );
-				el.add( BigInteger.ZERO );
-				tel.setVal( el , covariantIndic ? cSquared.negate().add( t_2Ux ) : cSquared.negate().add( t_2Ux ).invertLeft() );
-			}
 			
-			for( BigInteger cnt = BigInteger.ONE ; cnt.compareTo(numElem) < 0 ; cnt = cnt.add( BigInteger.ONE ) )
+			for( BigInteger cnti = BigInteger.ZERO ; cnti.compareTo(numElem) < 0 ; cnti = cnti.add( BigInteger.ONE ) )
 			{
-				ArrayList<BigInteger> el = new ArrayList<BigInteger>();
-				el.add( cnt );
-				el.add( cnt );
-				tel.setVal( el , fac.identity() );
+				for( BigInteger cntj = BigInteger.ZERO ; cntj.compareTo(numElem) < 0 ; cntj = cntj.add( BigInteger.ONE ) )
+				{
+					ArrayList<BigInteger> el = new ArrayList<BigInteger>();
+					el.add( cnti );
+					el.add( cntj );
+					final PartialDerivativeOp<R,S,K> di = deriv.getPartial( cnti );
+					final PartialDerivativeOp<R,S,K> dj = deriv.getPartial( cnti );
+					final SymbolicElem<R,S> vi = vect.getVectorPotential( cnti );
+					final SymbolicElem<R,S> vj = vect.getVectorPotential( cnti );
+					SymbolicElem<R,S> elem = ( di.mult( vj ) ).add( ( dj.mult( vi ) ).negate() );
+					tel.setVal( el , elem );
+				}
 			}
 			
 			return( tel );

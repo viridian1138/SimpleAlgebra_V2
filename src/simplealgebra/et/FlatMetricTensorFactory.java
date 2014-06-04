@@ -33,6 +33,7 @@ import java.util.ArrayList;
 
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
+import simplealgebra.NotInvertibleException;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 
@@ -59,7 +60,7 @@ public class FlatMetricTensorFactory<Z extends Object, R extends Elem<R,?>, S ex
 	
 	
 	public EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>> 
-		getMetricTensor( Z index0 , Z index1 )
+		getMetricTensor( boolean covariantIndic , Z index0 , Z index1 , BigInteger numElem ) throws NotInvertibleException 
 		{
 		
 			ArrayList<Z> contravariantIndices = new ArrayList<Z>();
@@ -77,27 +78,14 @@ public class FlatMetricTensorFactory<Z extends Object, R extends Elem<R,?>, S ex
 				ArrayList<BigInteger> el = new ArrayList<BigInteger>();
 				el.add( BigInteger.ZERO );
 				el.add( BigInteger.ZERO );
-				tel.setVal( el , cSquared.negate() );
+				tel.setVal( el , covariantIndic ? cSquared.negate() : cSquared.invertLeft().negate() );
 			}
 			
+			for( BigInteger cnt = BigInteger.ONE ; cnt.compareTo(numElem) < 0 ; cnt = cnt.add( BigInteger.ONE ) )
 			{
 				ArrayList<BigInteger> el = new ArrayList<BigInteger>();
-				el.add( BigInteger.ONE );
-				el.add( BigInteger.ONE );
-				tel.setVal( el , fac.identity() );
-			}
-			
-			{
-				ArrayList<BigInteger> el = new ArrayList<BigInteger>();
-				el.add( BigInteger.valueOf( 2 ) );
-				el.add( BigInteger.valueOf( 2 ) );
-				tel.setVal( el , fac.identity() );
-			}
-			
-			{
-				ArrayList<BigInteger> el = new ArrayList<BigInteger>();
-				el.add( BigInteger.valueOf( 3 ) );
-				el.add( BigInteger.valueOf( 3 ) );
+				el.add( cnt );
+				el.add( cnt );
 				tel.setVal( el , fac.identity() );
 			}
 			
