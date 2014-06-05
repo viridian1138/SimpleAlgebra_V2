@@ -27,6 +27,7 @@
 package simplealgebra.ddx;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
@@ -59,7 +60,22 @@ public class PartialDerivativeOp<R extends Elem<R,?>, S extends ElemFactory<R,S>
 
 	@Override
 	public String writeString( ) {
-		return( "partialDerivative( " + ( withRespectTo ) + " )" );
+		String ret = "partialDerivative( ";
+		Iterator<K> it = withRespectTo.iterator();
+		while( it.hasNext() )
+		{
+			K nxt = it.next();
+			if( nxt instanceof SymbolicElem )
+			{
+				ret = ret + ( (SymbolicElem) nxt ).writeString() + " ";
+			}
+			else
+			{
+				ret = ret + nxt + " ";
+			}
+		}
+		ret = ret + " )";
+		return( ret );
 	}
 	
 	/**

@@ -33,7 +33,6 @@ package test_simplealgebra;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.HashSet;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
@@ -42,24 +41,20 @@ import simplealgebra.ComplexElemFactory;
 import simplealgebra.DoubleElem;
 import simplealgebra.DoubleElemFactory;
 import simplealgebra.Elem;
-import simplealgebra.ElemFactory;
+import simplealgebra.Mutator;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.SquareMatrixElem;
-import simplealgebra.SquareMatrixElemFactory;
-import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
-import simplealgebra.symbolic.SymbolicAdd;
-import simplealgebra.symbolic.SymbolicElem;
-import simplealgebra.symbolic.SymbolicElemFactory;
-import simplealgebra.symbolic.SymbolicIdentity;
-import simplealgebra.symbolic.SymbolicOps;
-import simplealgebra.symbolic.SymbolicZero;
-
-
-import simplealgebra.ddx.DerivativeElem;
 import simplealgebra.ddx.DirectionalDerivativePartialFactory;
 import simplealgebra.ddx.PartialDerivativeOp;
-import simplealgebra.et.*;
-import simplealgebra.*;
+import simplealgebra.et.EinsteinTensorElem;
+import simplealgebra.et.EmFieldTensorFactory;
+import simplealgebra.et.SimpleCurveMetricTensorFactory;
+import simplealgebra.et.VectorPotentialFactory;
+import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
+import simplealgebra.symbolic.SymbolicElem;
+import simplealgebra.symbolic.SymbolicElemFactory;
+import simplealgebra.symbolic.SymbolicOps;
+import simplealgebra.symbolic.SymbolicSqrt;
 
 
 
@@ -616,10 +611,6 @@ public class TestDesResSymbolic extends TestCase
 		};
 		
 		
-		final Object SQRT = new Object()
-		{
-			
-		};
 		
 		
 		EinsteinTensorElem<Object, SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>> 
@@ -645,7 +636,8 @@ public class TestDesResSymbolic extends TestCase
 		
 		
 		final SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
-			d2Msqrt = d2M.handleOptionalOp(SQRT, null);
+			d2Msqrt = new SymbolicSqrt<ComplexElem<DoubleElem, DoubleElemFactory>, 
+				ComplexElemFactory<DoubleElem, DoubleElemFactory>>( d2M , ce );
 		
 		
 		
@@ -722,6 +714,31 @@ public class TestDesResSymbolic extends TestCase
 		
 	
 		// System.out.println( d3.writeString() );
+		
+		
+		System.out.println( "***" );
+		int i;
+		int j;
+		for( i = 0 ; i < 4 ; i++ )
+		{
+			for( j = 0 ; j < 4 ; j++ )
+			{
+				BigInteger ii = BigInteger.valueOf( i );
+				BigInteger jj = BigInteger.valueOf( j );
+				ArrayList<BigInteger> el = new ArrayList<BigInteger>();
+				el.add( ii );
+				el.add( jj );
+				
+				final SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>
+					valI = fmutate.getVal( el );
+				final SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
+					val = valI.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY2 , null);
+				// final SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
+				//	val = valA.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
+				
+				System.out.println( "" + i + " " + j + " " + ( val.writeString() ) );
+			}
+		}
 		
 		
 		
