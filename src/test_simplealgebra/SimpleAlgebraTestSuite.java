@@ -65,6 +65,7 @@ public class SimpleAlgebraTestSuite extends TestSuite {
 		s.addTestSuite( TestInvOverMultSymbolic.class );
 		s.addTestSuite( TestInvOverNegMultSymbolic.class );
 		s.addTestSuite( TestMetricDeterminant.class );
+		s.addTestSuite( TestDesResSymbolic.class );
 		return( s );
 	}
 	

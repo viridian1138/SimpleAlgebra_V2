@@ -78,6 +78,41 @@ public class PartialDerivativeOp<R extends Elem<R,?>, S extends ElemFactory<R,S>
 		return( ret );
 	}
 	
+	@Override
+	public boolean symbolicEquals( SymbolicElem<R, S> b )
+	{
+		if( b instanceof PartialDerivativeOp )
+		{
+			PartialDerivativeOp bp = (PartialDerivativeOp) b;
+			if( withRespectTo.size() == bp.withRespectTo.size() )
+			{
+				for( int cnt = 0 ; cnt < withRespectTo.size() ; cnt++ )
+				{
+					final K elA = withRespectTo.get( cnt );
+					final Object elB = bp.withRespectTo.get( cnt );
+					if( ( elA instanceof SymbolicElem ) && ( elB instanceof SymbolicElem ) )
+					{
+						if( !( ( (SymbolicElem) elA ).symbolicEquals( (SymbolicElem) elB ) ) )
+						{
+							return( false );
+						}
+					}
+					else
+					{
+						if( !( elA.equals( elB ) ) )
+						{
+							return( false );
+						}
+					}
+				}
+				
+				return( true );
+			}
+		}
+		
+		return( false );
+	}
+	
 	/**
 	 * @return the withRespectTo
 	 */

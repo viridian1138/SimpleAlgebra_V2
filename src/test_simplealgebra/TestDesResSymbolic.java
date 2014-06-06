@@ -55,6 +55,7 @@ import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicOps;
 import simplealgebra.symbolic.SymbolicSqrt;
+import simplealgebra.symbolic.SymbolicZero;
 
 
 
@@ -716,7 +717,12 @@ public class TestDesResSymbolic extends TestCase
 		// System.out.println( d3.writeString() );
 		
 		
-		System.out.println( "***" );
+		
+		Assert.assertTrue( fmutate != null );
+		
+		
+		
+		// System.out.println( "***" );
 		int i;
 		int j;
 		for( i = 0 ; i < 4 ; i++ )
@@ -732,17 +738,20 @@ public class TestDesResSymbolic extends TestCase
 				final SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>
 					valI = fmutate.getVal( el );
 				final SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
-					val = valI.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY2 , null);
-				// final SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
-				//	val = valA.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
+					valA = valI.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY2 , null);
+				final SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
+					val = valA.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
+				
+				if( ii.equals( jj ) )
+				{
+					Assert.assertTrue( val instanceof SymbolicZero );
+				}
 				
 				System.out.println( "" + i + " " + j + " " + ( val.writeString() ) );
 			}
 		}
 		
 		
-		
-		Assert.assertTrue( fmutate != null ); // For Now.
 		
 	}
 	
