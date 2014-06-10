@@ -75,10 +75,12 @@ public class FlatMetricTensorFactory<Z extends Object, R extends Elem<R,?>, S ex
 				new EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>( fac , contravariantIndices , covariantIndices );
 			
 			{
+				NonAlteredCSquared<R,S> cSq =
+						new NonAlteredCSquared<R,S>( fac , cSquared );
 				ArrayList<BigInteger> el = new ArrayList<BigInteger>();
 				el.add( BigInteger.ZERO );
 				el.add( BigInteger.ZERO );
-				tel.setVal( el , covariantIndic ? cSquared.negate() : cSquared.invertLeft().negate() );
+				tel.setVal( el , cSq.getAlteredCSquared( covariantIndic ) );
 			}
 			
 			for( BigInteger cnt = BigInteger.ONE ; cnt.compareTo(numElem) < 0 ; cnt = cnt.add( BigInteger.ONE ) )

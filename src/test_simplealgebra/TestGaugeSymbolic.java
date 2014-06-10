@@ -41,25 +41,21 @@ import simplealgebra.ComplexElemFactory;
 import simplealgebra.DoubleElem;
 import simplealgebra.DoubleElemFactory;
 import simplealgebra.Elem;
-import simplealgebra.Mutator;
 import simplealgebra.NotInvertibleException;
-import simplealgebra.SquareMatrixElem;
 import simplealgebra.ddx.DirectionalDerivativePartialFactory;
 import simplealgebra.ddx.PartialDerivativeOp;
-import simplealgebra.et.EinsteinTensorElem;
-import simplealgebra.et.EmFieldTensorFactory;
-import simplealgebra.et.SimpleCurveMetricTensorFactory;
+import simplealgebra.et.PotentialAlteredCSquared;
 import simplealgebra.et.VectorPotentialFactory;
+import simplealgebra.gauge.LorentzGauge;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicOps;
-import simplealgebra.symbolic.SymbolicSqrt;
 import simplealgebra.symbolic.SymbolicZero;
 
 
 
-public class TestDesResSymbolic extends TestCase 
+public class TestGaugeSymbolic extends TestCase 
 {
 
 	
@@ -179,7 +175,7 @@ public class TestDesResSymbolic extends TestCase
 		
 		@Override
 		public String writeString( ) {
-			return( "A0( )" );
+			return( "Phi( )" );
 		}
 		
 	}
@@ -388,7 +384,7 @@ public class TestDesResSymbolic extends TestCase
 		
 		@Override
 		public String writeString( ) {
-			return( "X0( )" );
+			return( "T( )" );
 		}
 		
 	}
@@ -575,7 +571,7 @@ public class TestDesResSymbolic extends TestCase
 	
 	
 	
-	public void testDesResSymbolic() throws NotInvertibleException
+	public void testGaugeSymbolic() throws NotInvertibleException
 	{
 		final TestDimensionFour td = new TestDimensionFour();
 		
@@ -596,83 +592,6 @@ public class TestDesResSymbolic extends TestCase
 				new SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>(ce);
 		
 		
-		SimpleCurveMetricTensorFactory<Object, ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
-			scfac = new SimpleCurveMetricTensorFactory<Object, ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>( ye , cSquared , t_2Ux );
-		
-		
-		final Object z0 = new Object()
-		{
-			
-		};
-		
-		
-		final Object z1 = new Object()
-		{
-			
-		};
-		
-		
-		
-		
-		EinsteinTensorElem<Object, SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>> 
-			metric = scfac.getMetricTensor( true, z0, z1, BigInteger.valueOf(4) );
-		
-		
-		SquareMatrixElem<TestDimensionFour, SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>
-			matrix = new SquareMatrixElem<TestDimensionFour, SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>(ye, td  );
-		
-		
-		metric.rankTwoTensorToSquareMatrix( matrix );
-		
-		
-		
-		SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> det
-			= matrix.determinant().negate();
-		
-		
-		
-		final SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
-			d2M = det.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY2 , null);
-		
-		
-		
-		final SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
-			d2Msqrt = new SymbolicSqrt<ComplexElem<DoubleElem, DoubleElemFactory>, 
-				ComplexElemFactory<DoubleElem, DoubleElemFactory>>( d2M , ce );
-		
-		
-		
-		final Object uu = new Object()
-		{
-			
-		};
-		
-		
-		final Object aa = new Object()
-		{
-			
-		};
-		
-		
-		final Object bb = new Object()
-		{
-			
-		};
-		
-		
-		final Object vv = new Object()
-		{
-			
-		};
-		
-		
-		
-		EinsteinTensorElem<Object, SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>> 
-			firstMetric = scfac.getMetricTensor( false , uu, aa , BigInteger.valueOf(4) );
-		
-		
-		EinsteinTensorElem<Object, SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>> 
-			lastMetric = scfac.getMetricTensor( false , bb , vv , BigInteger.valueOf(4) );
 		
 		
 		VectFac vectFac = new VectFac( ce );
@@ -681,75 +600,36 @@ public class TestDesResSymbolic extends TestCase
 		DirecFac direcFac = new DirecFac( ce );
 		
 		
-		EmFieldTensorFactory<Object, ComplexElem<DoubleElem,DoubleElemFactory>, ComplexElemFactory<DoubleElem,DoubleElemFactory>, SymbolicElem<DoubleElem,DoubleElemFactory>>
-			emFldFac = new EmFieldTensorFactory<Object, ComplexElem<DoubleElem,DoubleElemFactory>, ComplexElemFactory<DoubleElem,DoubleElemFactory>, 
-			SymbolicElem<DoubleElem,DoubleElemFactory>>(ye, direcFac, vectFac);
+		
+		PotentialAlteredCSquared<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> cSq =
+				new PotentialAlteredCSquared<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>( 
+					ye , cSquared , t_2Ux );
 		
 		
-		EinsteinTensorElem<Object, SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>
-			emFld = emFldFac.getEmFld(aa, bb, BigInteger.valueOf(4) );
+		
+		LorentzGauge<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>,SymbolicElem<DoubleElem,DoubleElemFactory>> lor = 
+				new LorentzGauge<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>,SymbolicElem<DoubleElem,DoubleElemFactory>>( 
+						ye , cSq , direcFac, vectFac );
 		
 		
-		EinsteinTensorElem<Object, SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>
-			fmult = ( firstMetric.mult( emFld ) ).mult( lastMetric );
 		
-		
-		EinsteinTensorElem<Object, SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>
-			fmutate = fmult.mutate( new Mutator<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>()
-			{
-
-				@Override
-				public String writeString() {
-					// TODO Auto-generated method stub
-					return( "mutate mult." );
-				}
-
-				@Override
-				public SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> mutate(
-						SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> in)
-						throws NotInvertibleException {
-					return( in.mult( d2Msqrt ) );
-				}
-				
-			} );
+		SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
+			elem = lor.getGauge( BigInteger.valueOf(4) );
 		
 	
-		// System.out.println( d3.writeString() );
+		
+		SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
+			elemS = elem.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY2 , null);
+		
+		
+		// System.out.println( elemS.writeString() );
 		
 		
 		
-		Assert.assertTrue( fmutate != null );
+		Assert.assertTrue( elemS != null );
 		
 		
 		
-		// System.out.println( "***" );
-		int i;
-		int j;
-		for( i = 0 ; i < 4 ; i++ )
-		{
-			for( j = 0 ; j < 4 ; j++ )
-			{
-				BigInteger ii = BigInteger.valueOf( i );
-				BigInteger jj = BigInteger.valueOf( j );
-				ArrayList<BigInteger> el = new ArrayList<BigInteger>();
-				el.add( ii );
-				el.add( jj );
-				
-				final SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>
-					valI = fmutate.getVal( el );
-				final SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
-					valA = valI.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY2 , null);
-				final SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
-					val = valA.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
-				
-				if( ii.equals( jj ) )
-				{
-					Assert.assertTrue( val instanceof SymbolicZero );
-				}
-				
-				// System.out.println( "" + i + " " + j + " " + ( val.writeString() ) );
-			}
-		}
 		
 		
 		

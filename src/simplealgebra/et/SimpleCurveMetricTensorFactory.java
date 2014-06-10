@@ -88,10 +88,12 @@ public class SimpleCurveMetricTensorFactory<Z extends Object, R extends Elem<R,?
 				new EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>( fac , contravariantIndices , covariantIndices );
 			
 			{
+				PotentialAlteredCSquared<R,S> cSq =
+						new PotentialAlteredCSquared<R,S>( fac , cSquared , t_2Ux );
 				ArrayList<BigInteger> el = new ArrayList<BigInteger>();
 				el.add( BigInteger.ZERO );
 				el.add( BigInteger.ZERO );
-				tel.setVal( el , covariantIndic ? cSquared.negate().add( t_2Ux ) : cSquared.negate().add( t_2Ux ).invertLeft() );
+				tel.setVal( el , cSq.getAlteredCSquared( covariantIndic ) );
 			}
 			
 			for( BigInteger cnt = BigInteger.ONE ; cnt.compareTo(numElem) < 0 ; cnt = cnt.add( BigInteger.ONE ) )
