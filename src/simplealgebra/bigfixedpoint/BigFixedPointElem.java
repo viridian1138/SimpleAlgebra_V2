@@ -45,10 +45,10 @@ public class BigFixedPointElem<T extends Precision> extends Elem<BigFixedPointEl
 	
 	public BigFixedPointElem( double vl , T _prec ) 
 	{
+		prec = _prec;
 		final BigDecimal bd = new BigDecimal( vl * prec.getVal().doubleValue() );
 		final BigInteger _val = bd.toBigInteger();
 		val = _val;
-		prec = _prec;
 	}
 
 	@Override
