@@ -25,6 +25,7 @@
 package simplealgebra;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
@@ -44,13 +45,13 @@ public class SymbolicInvertRightRevCoeff<U extends NumDimensions, R extends Elem
 	}
 	
 	@Override
-	public SquareMatrixElem<U, R, S> eval( ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
+	public SquareMatrixElem<U, R, S> eval( HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
 		ArrayList<SquareMatrixElem<U, R, S>> args = new ArrayList<SquareMatrixElem<U, R, S>>();
-		return( elem.eval().handleOptionalOp( SquareMatrixElem.SquareMatrixCmd.INVERT_RIGHT_REV_COEFF , args) );
+		return( elem.eval( implicitSpace ).handleOptionalOp( SquareMatrixElem.SquareMatrixCmd.INVERT_RIGHT_REV_COEFF , args) );
 	}
 	
 	@Override
-	public SquareMatrixElem<U, R, S> evalPartialDerivative(ArrayList<Elem<?, ?>> withRespectTo)
+	public SquareMatrixElem<U, R, S> evalPartialDerivative(ArrayList<Elem<?, ?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace )
 			throws NotInvertibleException, MultiplicativeDistributionRequiredException {
 		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TBD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		return null;

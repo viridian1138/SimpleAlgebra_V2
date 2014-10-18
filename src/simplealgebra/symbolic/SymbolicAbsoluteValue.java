@@ -27,6 +27,7 @@
 package simplealgebra.symbolic;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.kie.internal.runtime.StatefulKnowledgeSession;
 
@@ -51,13 +52,13 @@ public class SymbolicAbsoluteValue<R extends Elem<R,?>, S extends ElemFactory<R,
 	}
 	
 	@Override
-	public R eval( ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
+	public R eval( HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
 		ArrayList<R> args = new ArrayList<R>();
-		return( elem.eval().handleOptionalOp( AbsoluteValue.ABSOLUTE_VALUE , args ) );
+		return( elem.eval( implicitSpace ).handleOptionalOp( AbsoluteValue.ABSOLUTE_VALUE , args ) );
 	}
 	
 	@Override
-	public R evalPartialDerivative( ArrayList<Elem<?,?>> withRespectTo ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	public R evalPartialDerivative( ArrayList<Elem<?,?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
 		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TBD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		return null;

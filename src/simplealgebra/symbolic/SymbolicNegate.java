@@ -27,6 +27,7 @@
 package simplealgebra.symbolic;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.kie.internal.runtime.StatefulKnowledgeSession;
 
@@ -50,14 +51,14 @@ public class SymbolicNegate<R extends Elem<R,?>, S extends ElemFactory<R,S>> ext
 	}
 	
 	@Override
-	public R eval( ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
-		return( elem.eval().negate() );
+	public R eval( HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
+		return( elem.eval( implicitSpace ).negate() );
 	}
 	
 	@Override
-	public R evalPartialDerivative( ArrayList<Elem<?,?>> withRespectTo ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	public R evalPartialDerivative( ArrayList<Elem<?,?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
-		return( elem.evalPartialDerivative( withRespectTo ).negate() );
+		return( elem.evalPartialDerivative( withRespectTo , implicitSpace ).negate() );
 	}
 
 	@Override

@@ -28,6 +28,7 @@ package simplealgebra.et;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
@@ -70,7 +71,8 @@ public class OrdinaryDerivative<Z extends Object, U extends NumDimensions, R ext
 	
 	@Override
 	public EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>> evalDerivative(
-			SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> in )
+			SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> in ,
+			HashMap<Elem<?,?>,Elem<?,?>> implicitSpace )
 			throws NotInvertibleException, MultiplicativeDistributionRequiredException {
 		
 		final SymbolicElemFactory<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, 
@@ -107,7 +109,7 @@ public class OrdinaryDerivative<Z extends Object, U extends NumDimensions, R ext
 		
 		
 		final EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>> ret =
-				mul.mult( in.eval() );
+				mul.mult( in.eval( implicitSpace ) );
 		
 		return( ret );
 	}

@@ -27,6 +27,7 @@
 package simplealgebra;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SymbolicElem;
@@ -43,16 +44,16 @@ public class SymbolicConjugateLeft<R extends Elem<R,?>, S extends ElemFactory<R,
 
 	
 	@Override
-	public ComplexElem<R, S> eval() throws NotInvertibleException,
+	public ComplexElem<R, S> eval( HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException,
 			MultiplicativeDistributionRequiredException {
 		ArrayList<ComplexElem<R,S>> args = new ArrayList<ComplexElem<R,S>>();
-		return( elem.eval().handleOptionalOp( ComplexElem.ComplexCmd.CONJUGATE_LEFT , args ) );
+		return( elem.eval( implicitSpace ).handleOptionalOp( ComplexElem.ComplexCmd.CONJUGATE_LEFT , args ) );
 	}
 
 	
 	@Override
 	public ComplexElem<R, S> evalPartialDerivative(
-			ArrayList<Elem<?, ?>> withRespectTo) throws NotInvertibleException,
+			ArrayList<Elem<?, ?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException,
 			MultiplicativeDistributionRequiredException {
 		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TBD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		return null;

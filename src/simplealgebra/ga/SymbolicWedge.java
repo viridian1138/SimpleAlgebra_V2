@@ -27,6 +27,7 @@
 package simplealgebra.ga;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.kie.internal.runtime.StatefulKnowledgeSession;
 
@@ -63,17 +64,17 @@ public class SymbolicWedge<U extends NumDimensions, R extends Elem<R,?>, S exten
 
 	
 	@Override
-	public GeometricAlgebraMultivectorElem<U, R, S> eval() throws NotInvertibleException,
+	public GeometricAlgebraMultivectorElem<U, R, S> eval( HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException,
 			MultiplicativeDistributionRequiredException {
 		ArrayList<GeometricAlgebraMultivectorElem<U,R,S>> args = new ArrayList<GeometricAlgebraMultivectorElem<U,R,S>>();
-		args.add( elemB.eval() );
-		return( elemA.eval().handleOptionalOp( GeometricAlgebraMultivectorElem.GeometricAlgebraMultivectorCmd.WEDGE , args ) );
+		args.add( elemB.eval( implicitSpace ) );
+		return( elemA.eval( implicitSpace ).handleOptionalOp( GeometricAlgebraMultivectorElem.GeometricAlgebraMultivectorCmd.WEDGE , args ) );
 	}
 
 	
 	@Override
 	public GeometricAlgebraMultivectorElem<U, R, S> evalPartialDerivative(
-			ArrayList<Elem<?, ?>> withRespectTo) throws NotInvertibleException,
+			ArrayList<Elem<?, ?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException,
 			MultiplicativeDistributionRequiredException {
 		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TBD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		return null;

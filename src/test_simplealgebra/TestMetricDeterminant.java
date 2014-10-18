@@ -33,6 +33,7 @@ package test_simplealgebra;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 
 import junit.framework.Assert;
@@ -71,13 +72,13 @@ public class TestMetricDeterminant extends TestCase
 		}
 
 		@Override
-		public DoubleElem eval() throws NotInvertibleException,
+		public DoubleElem eval( HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
 			throw( new RuntimeException( "NotSupported" ) );
 		}
 
 		@Override
-		public DoubleElem evalPartialDerivative(ArrayList<Elem<?, ?>> withRespectTo)
+		public DoubleElem evalPartialDerivative(ArrayList<Elem<?, ?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace )
 				throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
 			throw( new RuntimeException( "NotSupported" ) );
@@ -112,13 +113,13 @@ public class TestMetricDeterminant extends TestCase
 		}
 
 		@Override
-		public DoubleElem eval() throws NotInvertibleException,
+		public DoubleElem eval( HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
 			throw( new RuntimeException( "NotSupported" ) );
 		}
 
 		@Override
-		public DoubleElem evalPartialDerivative(ArrayList<Elem<?, ?>> withRespectTo)
+		public DoubleElem evalPartialDerivative(ArrayList<Elem<?, ?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace )
 				throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
 			throw( new RuntimeException( "NotSupported" ) );

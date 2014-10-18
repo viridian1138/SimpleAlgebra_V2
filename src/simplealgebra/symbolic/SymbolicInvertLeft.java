@@ -28,6 +28,7 @@
 package simplealgebra.symbolic;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.kie.internal.runtime.StatefulKnowledgeSession;
 
@@ -51,12 +52,12 @@ public class SymbolicInvertLeft<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 	}
 	
 	@Override
-	public R eval( ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
-		return( elem.eval().invertLeft() );
+	public R eval( HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
+		return( elem.eval( implicitSpace ).invertLeft() );
 	}
 	
 	@Override
-	public R evalPartialDerivative(ArrayList<Elem<?, ?>> withRespectTo)
+	public R evalPartialDerivative(ArrayList<Elem<?, ?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace )
 			throws NotInvertibleException, MultiplicativeDistributionRequiredException {
 		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TBD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		return null;

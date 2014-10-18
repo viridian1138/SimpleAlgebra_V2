@@ -27,6 +27,7 @@
 package simplealgebra.ddx;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 
 import simplealgebra.Elem;
@@ -78,7 +79,7 @@ public class CovariantDerivative<Z extends Object, U extends NumDimensions, R ex
 	
 	
 	public SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>
-		genTerms() throws NotInvertibleException, MultiplicativeDistributionRequiredException 
+		genTerms( HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException 
 	{
 		final SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>
 			deriv = odfac.getOrdinaryDerivative( tensorWithRespectTo , derivativeIndex );
@@ -89,7 +90,7 @@ public class CovariantDerivative<Z extends Object, U extends NumDimensions, R ex
 		AffineConnectionFactory<Z,U,R,S,K> afac = new AffineConnectionFactory<Z,U,R,S,K>( metric , 
 				temp , odfac );
 		
-		final ArrayList<Z> iCovar = tensorWithRespectTo.eval().getCovariantIndices();
+		final ArrayList<Z> iCovar = tensorWithRespectTo.eval( implicitSpace ).getCovariantIndices();
 		
 		Iterator<Z> it = iCovar.iterator();
 		
@@ -124,9 +125,10 @@ public class CovariantDerivative<Z extends Object, U extends NumDimensions, R ex
 	
 	@Override
 	public EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>> evalDerivative(
-			SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> in )
+			SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> in ,
+			HashMap<Elem<?,?>,Elem<?,?>> implicitSpace )
 			throws NotInvertibleException, MultiplicativeDistributionRequiredException {
-		return( this.genTerms().eval() );
+		return( this.genTerms( implicitSpace ).eval( implicitSpace ) );
 	}
 	
 

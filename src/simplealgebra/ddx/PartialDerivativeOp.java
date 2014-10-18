@@ -27,6 +27,7 @@
 package simplealgebra.ddx;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.Iterator;
 
 import simplealgebra.Elem;
@@ -54,8 +55,8 @@ public class PartialDerivativeOp<R extends Elem<R,?>, S extends ElemFactory<R,S>
 	}
 	
 	@Override
-	public R evalDerivative( SymbolicElem<R,S> in ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
-		return( in.evalPartialDerivative( (ArrayList<Elem<?, ?>>) withRespectTo ) );
+	public R evalDerivative( SymbolicElem<R,S> in , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
+		return( in.evalPartialDerivative( (ArrayList<Elem<?, ?>>) withRespectTo , implicitSpace ) );
 	}	
 
 	@Override

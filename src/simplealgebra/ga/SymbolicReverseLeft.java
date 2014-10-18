@@ -27,6 +27,7 @@
 package simplealgebra.ga;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.kie.internal.runtime.StatefulKnowledgeSession;
 
@@ -61,16 +62,16 @@ public class SymbolicReverseLeft<U extends NumDimensions, R extends Elem<R,?>, S
 
 	
 	@Override
-	public GeometricAlgebraMultivectorElem<U, R, S> eval() throws NotInvertibleException,
+	public GeometricAlgebraMultivectorElem<U, R, S> eval( HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException,
 			MultiplicativeDistributionRequiredException {
 		ArrayList<GeometricAlgebraMultivectorElem<U,R,S>> args = new ArrayList<GeometricAlgebraMultivectorElem<U,R,S>>();
-		return( elemA.eval().handleOptionalOp( GeometricAlgebraMultivectorElem.GeometricAlgebraMultivectorCmd.REVERSE_LEFT , args ) );
+		return( elemA.eval( implicitSpace ).handleOptionalOp( GeometricAlgebraMultivectorElem.GeometricAlgebraMultivectorCmd.REVERSE_LEFT , args ) );
 	}
 
 	
 	@Override
 	public GeometricAlgebraMultivectorElem<U, R, S> evalPartialDerivative(
-			ArrayList<Elem<?, ?>> withRespectTo) throws NotInvertibleException,
+			ArrayList<Elem<?, ?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException,
 			MultiplicativeDistributionRequiredException {
 		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TBD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		return null;

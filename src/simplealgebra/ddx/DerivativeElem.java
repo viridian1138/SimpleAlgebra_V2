@@ -27,6 +27,7 @@
 package simplealgebra.ddx;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
@@ -41,15 +42,15 @@ public abstract class DerivativeElem<R extends Elem<R,?>, S extends ElemFactory<
 		super(_fac);
 	}
 
-	public abstract R evalDerivative( SymbolicElem<R,S> in ) throws NotInvertibleException, MultiplicativeDistributionRequiredException;
+	public abstract R evalDerivative( SymbolicElem<R,S> in , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException;
 	
 	@Override
-	public R eval( ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
+	public R eval( HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
 		throw( new MultiplicativeDistributionRequiredException() );
 	}
 	
 	@Override
-	public R evalPartialDerivative( ArrayList<Elem<?,?>> withRespectTo ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	public R evalPartialDerivative( ArrayList<Elem<?,?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
 		throw( new MultiplicativeDistributionRequiredException() );
 	}

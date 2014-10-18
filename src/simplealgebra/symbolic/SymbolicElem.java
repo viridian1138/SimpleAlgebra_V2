@@ -27,6 +27,7 @@
 package simplealgebra.symbolic;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.kie.api.io.ResourceType;
 import org.kie.internal.KnowledgeBase;
@@ -42,9 +43,9 @@ import simplealgebra.NotInvertibleException;
 
 public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,S>> extends Elem<SymbolicElem<R,S>, SymbolicElemFactory<R,S>> {
 
-	abstract public R eval( ) throws NotInvertibleException, MultiplicativeDistributionRequiredException;
+	abstract public R eval( HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException;
 	
-	abstract public R evalPartialDerivative( ArrayList<Elem<?,?>> withRespectTo ) throws NotInvertibleException, MultiplicativeDistributionRequiredException;
+	abstract public R evalPartialDerivative( ArrayList<Elem<?,?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException;
 	
 	abstract public String writeString( );
 	

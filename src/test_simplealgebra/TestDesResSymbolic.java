@@ -33,6 +33,7 @@ package test_simplealgebra;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
@@ -72,13 +73,13 @@ public class TestDesResSymbolic extends TestCase
 		}
 
 		@Override
-		public ComplexElem<DoubleElem,DoubleElemFactory> eval() throws NotInvertibleException,
+		public ComplexElem<DoubleElem,DoubleElemFactory> eval( HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
 			throw( new RuntimeException( "NotSupported" ) );
 		}
 
 		@Override
-		public ComplexElem<DoubleElem,DoubleElemFactory> evalPartialDerivative(ArrayList<Elem<?, ?>> withRespectTo)
+		public ComplexElem<DoubleElem,DoubleElemFactory> evalPartialDerivative(ArrayList<Elem<?, ?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace)
 				throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
 			throw( new RuntimeException( "NotSupported" ) );
@@ -113,13 +114,13 @@ public class TestDesResSymbolic extends TestCase
 		}
 
 		@Override
-		public ComplexElem<DoubleElem,DoubleElemFactory> eval() throws NotInvertibleException,
+		public ComplexElem<DoubleElem,DoubleElemFactory> eval( HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
 			throw( new RuntimeException( "NotSupported" ) );
 		}
 
 		@Override
-		public ComplexElem<DoubleElem,DoubleElemFactory> evalPartialDerivative(ArrayList<Elem<?, ?>> withRespectTo)
+		public ComplexElem<DoubleElem,DoubleElemFactory> evalPartialDerivative(ArrayList<Elem<?, ?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace)
 				throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
 			throw( new RuntimeException( "NotSupported" ) );
@@ -154,13 +155,13 @@ public class TestDesResSymbolic extends TestCase
 		}
 
 		@Override
-		public ComplexElem<DoubleElem,DoubleElemFactory> eval() throws NotInvertibleException,
+		public ComplexElem<DoubleElem,DoubleElemFactory> eval( HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
 			throw( new RuntimeException( "NotSupported" ) );
 		}
 
 		@Override
-		public ComplexElem<DoubleElem,DoubleElemFactory> evalPartialDerivative(ArrayList<Elem<?, ?>> withRespectTo)
+		public ComplexElem<DoubleElem,DoubleElemFactory> evalPartialDerivative(ArrayList<Elem<?, ?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace)
 				throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
 			throw( new RuntimeException( "NotSupported" ) );
@@ -194,13 +195,13 @@ public class TestDesResSymbolic extends TestCase
 		}
 
 		@Override
-		public ComplexElem<DoubleElem,DoubleElemFactory> eval() throws NotInvertibleException,
+		public ComplexElem<DoubleElem,DoubleElemFactory> eval( HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
 			throw( new RuntimeException( "NotSupported" ) );
 		}
 
 		@Override
-		public ComplexElem<DoubleElem,DoubleElemFactory> evalPartialDerivative(ArrayList<Elem<?, ?>> withRespectTo)
+		public ComplexElem<DoubleElem,DoubleElemFactory> evalPartialDerivative(ArrayList<Elem<?, ?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace)
 				throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
 			throw( new RuntimeException( "NotSupported" ) );
@@ -236,13 +237,13 @@ public class TestDesResSymbolic extends TestCase
 		}
 
 		@Override
-		public ComplexElem<DoubleElem,DoubleElemFactory> eval() throws NotInvertibleException,
+		public ComplexElem<DoubleElem,DoubleElemFactory> eval( HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
 			throw( new RuntimeException( "NotSupported" ) );
 		}
 
 		@Override
-		public ComplexElem<DoubleElem,DoubleElemFactory> evalPartialDerivative(ArrayList<Elem<?, ?>> withRespectTo)
+		public ComplexElem<DoubleElem,DoubleElemFactory> evalPartialDerivative(ArrayList<Elem<?, ?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace)
 				throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
 			throw( new RuntimeException( "NotSupported" ) );
@@ -281,13 +282,13 @@ public class TestDesResSymbolic extends TestCase
 		}
 
 		@Override
-		public ComplexElem<DoubleElem,DoubleElemFactory> eval() throws NotInvertibleException,
+		public ComplexElem<DoubleElem,DoubleElemFactory> eval( HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
 			throw( new RuntimeException( "NotSupported" ) );
 		}
 
 		@Override
-		public ComplexElem<DoubleElem,DoubleElemFactory> evalPartialDerivative(ArrayList<Elem<?, ?>> withRespectTo)
+		public ComplexElem<DoubleElem,DoubleElemFactory> evalPartialDerivative(ArrayList<Elem<?, ?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace)
 				throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
 			throw( new RuntimeException( "NotSupported" ) );
@@ -363,13 +364,13 @@ public class TestDesResSymbolic extends TestCase
 		}
 
 		@Override
-		public DoubleElem eval() throws NotInvertibleException,
+		public DoubleElem eval( HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
 			throw( new RuntimeException( "NotSupported" ) );
 		}
 
 		@Override
-		public DoubleElem evalPartialDerivative(ArrayList<Elem<?, ?>> withRespectTo)
+		public DoubleElem evalPartialDerivative(ArrayList<Elem<?, ?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace)
 				throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
 			throw( new RuntimeException( "NotSupported" ) );
@@ -405,13 +406,13 @@ public class TestDesResSymbolic extends TestCase
 		}
 
 		@Override
-		public DoubleElem eval() throws NotInvertibleException,
+		public DoubleElem eval( HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
 			throw( new RuntimeException( "NotSupported" ) );
 		}
 
 		@Override
-		public DoubleElem evalPartialDerivative(ArrayList<Elem<?, ?>> withRespectTo)
+		public DoubleElem evalPartialDerivative(ArrayList<Elem<?, ?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace)
 				throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
 			throw( new RuntimeException( "NotSupported" ) );
@@ -447,13 +448,13 @@ public class TestDesResSymbolic extends TestCase
 		}
 
 		@Override
-		public DoubleElem eval() throws NotInvertibleException,
+		public DoubleElem eval( HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
 			throw( new RuntimeException( "NotSupported" ) );
 		}
 
 		@Override
-		public DoubleElem evalPartialDerivative(ArrayList<Elem<?, ?>> withRespectTo)
+		public DoubleElem evalPartialDerivative(ArrayList<Elem<?, ?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace)
 				throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
 			throw( new RuntimeException( "NotSupported" ) );
@@ -489,13 +490,13 @@ public class TestDesResSymbolic extends TestCase
 		}
 
 		@Override
-		public DoubleElem eval() throws NotInvertibleException,
+		public DoubleElem eval( HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
 			throw( new RuntimeException( "NotSupported" ) );
 		}
 
 		@Override
-		public DoubleElem evalPartialDerivative(ArrayList<Elem<?, ?>> withRespectTo)
+		public DoubleElem evalPartialDerivative(ArrayList<Elem<?, ?>> withRespectTo, HashMap<Elem<?,?>,Elem<?,?>> implicitSpace)
 				throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
 			throw( new RuntimeException( "NotSupported" ) );

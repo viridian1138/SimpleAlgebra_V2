@@ -27,6 +27,7 @@
 package simplealgebra.symbolic;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
@@ -48,12 +49,12 @@ public class SymbolicVariable<R extends Elem<R,?>, S extends ElemFactory<R,S>> e
 	}
 	
 	@Override
-	public R eval( ) {
+	public R eval( HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) {
 		return( val );
 	}
 	
 	@Override
-	public R evalPartialDerivative(ArrayList<Elem<?, ?>> withRespectTo)
+	public R evalPartialDerivative(ArrayList<Elem<?, ?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace )
 			throws NotInvertibleException {
 		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TBD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		return null;

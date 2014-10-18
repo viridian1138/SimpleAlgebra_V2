@@ -265,13 +265,13 @@ public class QuaternionElem<U extends NumDimensions, R extends Elem<R,?>, S exte
 		}
 
 		@Override
-		public R eval() throws NotInvertibleException,
+		public R eval( HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
 			throw( new RuntimeException( "NotSupported" ) );
 		}
 
 		@Override
-		public R evalPartialDerivative(ArrayList<Elem<?, ?>> withRespectTo)
+		public R evalPartialDerivative(ArrayList<Elem<?, ?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace)
 				throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
 			throw( new RuntimeException( "NotSupported" ) );
@@ -312,13 +312,13 @@ public class QuaternionElem<U extends NumDimensions, R extends Elem<R,?>, S exte
 		}
 
 		@Override
-		public R eval() throws NotInvertibleException,
+		public R eval( HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
 			throw( new RuntimeException( "NotSupported" ) );
 		}
 
 		@Override
-		public R evalPartialDerivative(ArrayList<Elem<?, ?>> withRespectTo)
+		public R evalPartialDerivative(ArrayList<Elem<?, ?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace )
 				throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
 			throw( new RuntimeException( "NotSupported" ) );

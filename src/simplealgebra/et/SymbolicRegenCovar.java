@@ -25,6 +25,7 @@
 package simplealgebra.et;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import org.kie.internal.runtime.StatefulKnowledgeSession;
 
@@ -47,14 +48,14 @@ public class SymbolicRegenCovar<Z extends Object, R extends Elem<R,?>, S extends
 	}
 	
 	@Override
-	public EinsteinTensorElem<Z,R,S> eval( ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
-		return( elem.eval().regenCovar( newCovar ) );
+	public EinsteinTensorElem<Z,R,S> eval( HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
+		return( elem.eval( implicitSpace ).regenCovar( newCovar ) );
 	}
 	
 	@Override
-	public EinsteinTensorElem<Z,R,S> evalPartialDerivative( ArrayList<Elem<?,?>> withRespectTo ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	public EinsteinTensorElem<Z,R,S> evalPartialDerivative( ArrayList<Elem<?,?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
-		return( elem.evalPartialDerivative( withRespectTo ).regenCovar( newCovar ) );
+		return( elem.evalPartialDerivative( withRespectTo , implicitSpace ).regenCovar( newCovar ) );
 	}
 
 	@Override

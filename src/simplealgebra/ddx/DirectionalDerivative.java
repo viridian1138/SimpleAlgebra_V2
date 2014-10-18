@@ -28,6 +28,7 @@ package simplealgebra.ddx;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 
 import simplealgebra.Elem;
@@ -67,7 +68,8 @@ public class DirectionalDerivative<U extends NumDimensions, R extends Elem<R,?>,
 	
 	@Override
 	public GeometricAlgebraMultivectorElem<U, SymbolicElem<R, S>, SymbolicElemFactory<R, S>> evalDerivative(
-			SymbolicElem<GeometricAlgebraMultivectorElem<U, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, GeometricAlgebraMultivectorElemFactory<U, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> in )
+			SymbolicElem<GeometricAlgebraMultivectorElem<U, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, GeometricAlgebraMultivectorElemFactory<U, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> in ,
+			HashMap<Elem<?,?>,Elem<?,?>> implicitSpace )
 			throws NotInvertibleException, MultiplicativeDistributionRequiredException {
 		
 		final SymbolicElemFactory<GeometricAlgebraMultivectorElem<U, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, 
@@ -98,7 +100,7 @@ public class DirectionalDerivative<U extends NumDimensions, R extends Elem<R,?>,
 		
 		
 		final GeometricAlgebraMultivectorElem<U, SymbolicElem<R, S>, SymbolicElemFactory<R, S>> ret =
-				mul.mult( in.eval() );
+				mul.mult( in.eval( implicitSpace ) );
 		
 		return( ret );
 	}

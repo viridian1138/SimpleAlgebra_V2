@@ -27,6 +27,7 @@
 package simplealgebra.symbolic;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
@@ -55,37 +56,37 @@ public class SymbolicMult<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 	}
 	
 	@Override
-	public R eval( ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
+	public R eval( HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
 		if( elemA instanceof DerivativeElem )
 		{
-			return( ( (DerivativeElem<R,S>) elemA ).evalDerivative( elemB ) );
+			return( ( (DerivativeElem<R,S>) elemA ).evalDerivative( elemB , implicitSpace ) );
 		}
 		R ea = null;
 		try
 		{
-			ea = elemA.eval();
+			ea = elemA.eval( implicitSpace );
 		}
 		catch( MultiplicativeDistributionRequiredException ex )
 		{
 			if( elemA instanceof SymbolicNegate )
 			{
-				return( ((SymbolicNegate<R,S>) elemA).getElem().mult(elemB).eval().negate() );
+				return( ((SymbolicNegate<R,S>) elemA).getElem().mult(elemB).eval( implicitSpace ).negate() );
 			}
 			
 			if( elemA instanceof SymbolicAdd )
 			{
 				final SymbolicElem<R,S> ia = ((SymbolicAdd) elemA).getElemA();
 				final SymbolicElem<R,S> ib = ((SymbolicAdd) elemA).getElemB();
-				return( ( ia.mult( elemB ) ).add( ib.mult( elemB ) ).eval() );
+				return( ( ia.mult( elemB ) ).add( ib.mult( elemB ) ).eval( implicitSpace ) );
 			}
 			
 			throw( ex );
 		}
-		return( ea.mult( elemB.eval() ) );
+		return( ea.mult( elemB.eval( implicitSpace ) ) );
 	}
 	
 	@Override
-	public R evalPartialDerivative( ArrayList<Elem<?, ?>> withRespectTo ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	public R evalPartialDerivative( ArrayList<Elem<?, ?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
 		if( elemA instanceof PartialDerivativeOp )
 		{
@@ -100,62 +101,62 @@ public class SymbolicMult<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 			{
 				newWrt.add( it.next() );
 			}
-			return( elemB.evalPartialDerivative(newWrt) );
+			return( elemB.evalPartialDerivative(newWrt, implicitSpace) );
 		}
 		if( elemA instanceof DerivativeElem )
 		{
-			SymbolicElem<R,S> sym = (SymbolicElem<R,S>)(((DerivativeElem) elemA).evalDerivative( elemA ) );
-			return( sym.evalPartialDerivative(withRespectTo) );
+			SymbolicElem<R,S> sym = (SymbolicElem<R,S>)(((DerivativeElem) elemA).evalDerivative( elemA , implicitSpace ) );
+			return( sym.evalPartialDerivative(withRespectTo, implicitSpace) );
 		}
 		R lt = null;
 		{
 			R ea = null;
 			try
 			{
-				ea = elemA.evalPartialDerivative( withRespectTo );
+				ea = elemA.evalPartialDerivative( withRespectTo , implicitSpace );
 			}
 			catch( MultiplicativeDistributionRequiredException ex )
 			{
 				if( elemA instanceof SymbolicNegate )
 				{
-					return( ((SymbolicNegate<R,S>) elemA).getElem().mult(elemB).evalPartialDerivative(withRespectTo).negate() );
+					return( ((SymbolicNegate<R,S>) elemA).getElem().mult(elemB).evalPartialDerivative(withRespectTo, implicitSpace).negate() );
 				}
 				
 				if( elemA instanceof SymbolicAdd )
 				{
 					final SymbolicElem<R,S> ia = ((SymbolicAdd<R,S>) elemA).getElemA();
 					final SymbolicElem<R,S> ib = ((SymbolicAdd<R,S>) elemA).getElemB();
-					return( ( ia.mult( elemB ) ).add( ib.mult( elemB ) ).evalPartialDerivative( withRespectTo ) );
+					return( ( ia.mult( elemB ) ).add( ib.mult( elemB ) ).evalPartialDerivative( withRespectTo , implicitSpace ) );
 				}
 				
 				throw( ex );
 			}
-			lt = ea.mult( elemB.eval() );
+			lt = ea.mult( elemB.eval(implicitSpace) );
 		}
 		R rt = null;
 		{
 			R ea = null;
 			try
 			{
-				ea = elemA.eval();
+				ea = elemA.eval(implicitSpace);
 			}
 			catch( MultiplicativeDistributionRequiredException ex )
 			{
 				if( elemA instanceof SymbolicNegate )
 				{
-					return( ((SymbolicNegate<R,S>) elemA).getElem().mult(elemB).evalPartialDerivative(withRespectTo).negate() );
+					return( ((SymbolicNegate<R,S>) elemA).getElem().mult(elemB).evalPartialDerivative(withRespectTo, implicitSpace).negate() );
 				}
 				
 				if( elemA instanceof SymbolicAdd )
 				{
 					final SymbolicElem<R,S> ia = ((SymbolicAdd<R,S>) elemA).getElemA();
 					final SymbolicElem<R,S> ib = ((SymbolicAdd<R,S>) elemA).getElemB();
-					return( ( ia.mult( elemB ) ).add( ib.mult( elemB ) ).evalPartialDerivative( withRespectTo ) );
+					return( ( ia.mult( elemB ) ).add( ib.mult( elemB ) ).evalPartialDerivative( withRespectTo , implicitSpace ) );
 				}
 				
 				throw( ex );
 			}
-			rt = ea.mult( elemB.evalPartialDerivative( withRespectTo ) );
+			rt = ea.mult( elemB.evalPartialDerivative( withRespectTo , implicitSpace ) );
 		}
 		
 		return( lt.add( rt ) );

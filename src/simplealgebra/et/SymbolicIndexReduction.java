@@ -25,6 +25,7 @@
 package simplealgebra.et;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 
 import org.kie.internal.runtime.StatefulKnowledgeSession;
@@ -50,14 +51,14 @@ public class SymbolicIndexReduction<Z extends Object, R extends Elem<R,?>, S ext
 	}
 	
 	@Override
-	public EinsteinTensorElem<Z,R,S> eval( ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
-		return( elem.eval().indexReduction( contravariantReduce , covariantReduce ) );
+	public EinsteinTensorElem<Z,R,S> eval( HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
+		return( elem.eval( implicitSpace ).indexReduction( contravariantReduce , covariantReduce ) );
 	}
 	
 	@Override
-	public EinsteinTensorElem<Z,R,S> evalPartialDerivative( ArrayList<Elem<?,?>> withRespectTo ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	public EinsteinTensorElem<Z,R,S> evalPartialDerivative( ArrayList<Elem<?,?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
-		return( elem.evalPartialDerivative( withRespectTo ).indexReduction( contravariantReduce , covariantReduce ) );
+		return( elem.evalPartialDerivative( withRespectTo , implicitSpace ).indexReduction( contravariantReduce , covariantReduce ) );
 	}
 
 	@Override

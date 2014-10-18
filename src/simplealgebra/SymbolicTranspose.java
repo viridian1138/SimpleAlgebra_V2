@@ -27,6 +27,7 @@
 package simplealgebra;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SymbolicElem;
@@ -43,16 +44,16 @@ public class SymbolicTranspose<U extends NumDimensions, R extends Elem<R,?>, S e
 
 	
 	@Override
-	public SquareMatrixElem<U, R, S> eval() throws NotInvertibleException,
+	public SquareMatrixElem<U, R, S> eval( HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException,
 			MultiplicativeDistributionRequiredException {
 		ArrayList<SquareMatrixElem<U,R,S>> args = new ArrayList<SquareMatrixElem<U,R,S>>();
-		return( elem.eval().handleOptionalOp( SquareMatrixElem.SquareMatrixCmd.TRANSPOSE , args ) );
+		return( elem.eval( implicitSpace ).handleOptionalOp( SquareMatrixElem.SquareMatrixCmd.TRANSPOSE , args ) );
 	}
 
 	
 	@Override
 	public SquareMatrixElem<U, R, S> evalPartialDerivative(
-			ArrayList<Elem<?, ?>> withRespectTo) throws NotInvertibleException,
+			ArrayList<Elem<?, ?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException,
 			MultiplicativeDistributionRequiredException {
 		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TBD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		return null;
