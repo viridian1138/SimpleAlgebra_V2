@@ -37,23 +37,24 @@ import simplealgebra.NotInvertibleException;
 import simplealgebra.symbolic.DroolsSession;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SymbolicElem;
+import simplealgebra.symbolic.SymbolicElemFactory;
 
-public abstract class Stelem<R extends Elem<R,?>, S extends ElemFactory<R,S>, K extends Elem<?,?>> extends SymbolicElem<R,S> 
+public abstract class Stelem<R extends Elem<R,?>, S extends ElemFactory<R,S>, K extends Elem<?,?>> extends SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>> 
 {
 
-	public Stelem( S _fac )
+	public Stelem( SymbolicElemFactory<R,S> _fac )
 	{
 		super( _fac );
 	}
 	
-	public Stelem( S _fac , DroolsSession ds )
+	public Stelem( SymbolicElemFactory<R,S> _fac , DroolsSession ds )
 	{
 		this( _fac );
 		ds.insert( this );
 	}
 	
 	@Override
-	public R evalPartialDerivative(ArrayList<Elem<?, ?>> withRespectTo, HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws MultiplicativeDistributionRequiredException, NotInvertibleException {
+	public SymbolicElem<R,S> evalPartialDerivative(ArrayList<Elem<?, ?>> withRespectTo, HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws MultiplicativeDistributionRequiredException, NotInvertibleException {
 		Stelem<R,S,K> rm = this.cloneInstance();
 		rm.applyPartialDerivative( (ArrayList<K>) withRespectTo );
 		return( rm.eval( implicitSpace ) );
