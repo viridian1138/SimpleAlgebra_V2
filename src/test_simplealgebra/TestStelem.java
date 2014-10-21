@@ -17,6 +17,7 @@ import simplealgebra.stelem.Stelem;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
+import simplealgebra.symbolic.SymbolicReduction;
 
 
 
@@ -61,6 +62,16 @@ public class TestStelem extends TestCase {
 			return( false );
 		}
 		
+		@Override
+		public boolean equals( Object b )
+		{
+			if( b instanceof AElem )
+			{
+				return( col == ( (AElem) b ).col );
+			}
+			return( false );
+		}
+		
 		/**
 		 * @return the col
 		 */
@@ -71,34 +82,16 @@ public class TestStelem extends TestCase {
 	}
 	
 	
-	
-	
-	private class SymbolicConst extends SymbolicElem<DoubleElem, DoubleElemFactory>
+	private class SymbolicConst extends SymbolicReduction<DoubleElem, DoubleElemFactory>
 	{
-		private DoubleElem elem;
 
+		public SymbolicConst(DoubleElem _elem, DoubleElemFactory _fac) {
+			super(_elem, _fac);
+		}
 		
-		public SymbolicConst(DoubleElemFactory _fac, DoubleElem _elem) {
-			super(_fac);
-			elem = _elem;
-		}
-
-		@Override
-		public DoubleElem eval( HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException,
-				MultiplicativeDistributionRequiredException {
-			return( elem );
-		}
-
-		@Override
-		public DoubleElem evalPartialDerivative(ArrayList<Elem<?, ?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace)
-				throws NotInvertibleException,
-				MultiplicativeDistributionRequiredException {
-			return( fac.zero() );
-		}
-
 		@Override
 		public String writeString() {
-			return( "" + elem.getVal() );
+			return( "" + getElem().getVal() );
 		}
 		
 		@Override
@@ -106,16 +99,9 @@ public class TestStelem extends TestCase {
 		{
 			if( b instanceof SymbolicConst )
 			{
-				return( elem.getVal() == ( (SymbolicConst) b ).getElem().getVal() );
+				return( getElem().getVal() == ( (SymbolicConst) b ).getElem().getVal() );
 			}
 			return( false );
-		}
-		
-		/**
-		 * @return the elem
-		 */
-		public DoubleElem getElem() {
-			return elem;
 		}
 		
 	}
@@ -304,9 +290,9 @@ public class TestStelem extends TestCase {
 					HashMap<AElem, BigInteger> spaceAe = it.next();
 					CoeffNode coeff = spacesA.get( spaceAe );
 					ANelem an0 = new ANelem( fac.getFac() , spaceAe );
-					SymbolicElem<DoubleElem, DoubleElemFactory> an1 = an0.mult( new SymbolicConst( fac.getFac() , coeff.getNumer() ) );
+					SymbolicElem<DoubleElem, DoubleElemFactory> an1 = an0.mult( new SymbolicConst( coeff.getNumer() , fac.getFac() ) );
 					SymbolicElem<DoubleElem, DoubleElemFactory> an2 = an1.mult( 
-							( new SymbolicConst( fac.getFac() , coeff.getDenom() ) ).invertLeft() );
+							( new SymbolicConst( coeff.getDenom() , fac.getFac() ) ).invertLeft() );
 					ret = ret.add( an2 );
 				}
 			}
