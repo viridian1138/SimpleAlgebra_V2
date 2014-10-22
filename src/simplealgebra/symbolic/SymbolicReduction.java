@@ -34,6 +34,7 @@ import org.kie.internal.runtime.StatefulKnowledgeSession;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
+import simplealgebra.ddx.PartialDerivativeOp;
 
 public class SymbolicReduction<R extends Elem<R,?>, S extends ElemFactory<R,S>> extends SymbolicElem<R,S> 
 {
@@ -54,8 +55,8 @@ public class SymbolicReduction<R extends Elem<R,?>, S extends ElemFactory<R,S>> 
 	{
 		if( elem instanceof SymbolicElem )
 		{
-			final Elem<?,?> r = ( (SymbolicElem<?,?>) elem ).evalPartialDerivative( withRespectTo , implicitSpace );
-			return( (R)( new SymbolicReduction( r , fac ) ) );
+			final R partialD = (R)( new PartialDerivativeOp( ( (SymbolicElemFactory) fac ).getFac() , withRespectTo ) );
+			return( partialD.mult( elem ) );
 		}
 		return( fac.zero() );
 	}
