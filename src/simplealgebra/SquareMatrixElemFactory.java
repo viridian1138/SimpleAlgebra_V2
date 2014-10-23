@@ -27,7 +27,9 @@ package simplealgebra;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.HashMap;
 
+import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SymbolicElem;
 
 public class SquareMatrixElemFactory<U extends NumDimensions, R extends Elem<R,?>, S extends ElemFactory<R,S>> extends ElemFactory<SquareMatrixElem<U,R,S>, SquareMatrixElemFactory<U,R,S>> {
@@ -117,6 +119,21 @@ public class SquareMatrixElemFactory<U extends NumDimensions, R extends Elem<R,?
 	public boolean isNestedMultCommutative()
 	{
 		return( fac.isMultCommutative() );
+	}
+	
+	
+	@Override
+	public Elem<?,?> evalPartialInverseLeft( SymbolicElem<?,?> elem , ArrayList<Elem<?,?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	{
+		// !!!!!!!!!!!!!!!!!!!!!!!!!!!! TBD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		return( null );
+	}
+	
+	@Override
+	public Elem<?,?> evalPartialInverseRight( SymbolicElem<?,?> elem , ArrayList<Elem<?,?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	{
+		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TBD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		return( null );
 	}
 	
 	

@@ -27,9 +27,13 @@ package simplealgebra.et;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
+import simplealgebra.NotInvertibleException;
+import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
+import simplealgebra.symbolic.SymbolicElem;
 
 /**
  * Element describing a tensor as defined in General Relativity.
@@ -57,6 +61,23 @@ public class EinsteinTensorElemFactory<Z extends Object, R extends Elem<R,?>, S 
 	public EinsteinTensorElem<Z, R, S> zero() {
 		return( new EinsteinTensorElem<Z, R, S>( fac , contravariantIndices , covariantIndices ) );
 	}
+	
+	
+	@Override
+	public Elem<?,?> evalPartialInverseLeft( SymbolicElem<?,?> elem , ArrayList<Elem<?,?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	{
+		// !!!!!!!!!!!!!!!!!!!!!!!!!!!! TBD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		return( null );
+	}
+	
+	@Override
+	public Elem<?,?> evalPartialInverseRight( SymbolicElem<?,?> elem , ArrayList<Elem<?,?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	{
+		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TBD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		return( null );
+	}
+	
+	
 	
 	public S getFac()
 	{

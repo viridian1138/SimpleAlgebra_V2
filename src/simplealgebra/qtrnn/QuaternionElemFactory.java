@@ -26,11 +26,16 @@
 package simplealgebra.qtrnn;
 
 import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
+import simplealgebra.NotInvertibleException;
 import simplealgebra.NumDimensions;
+import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
+import simplealgebra.symbolic.SymbolicElem;
 
 public class QuaternionElemFactory<U extends NumDimensions, R extends Elem<R,?>, S extends ElemFactory<R,S>> extends ElemFactory<QuaternionElem<U,R,S>, QuaternionElemFactory<U,R,S>> {
 
@@ -65,6 +70,21 @@ public class QuaternionElemFactory<U extends NumDimensions, R extends Elem<R,?>,
 	public boolean isNestedMultCommutative()
 	{
 		return( fac.isMultCommutative() );
+	}
+	
+	
+	@Override
+	public Elem<?,?> evalPartialInverseLeft( SymbolicElem<?,?> elem , ArrayList<Elem<?,?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	{
+		// !!!!!!!!!!!!!!!!!!!!!!!!!!!! TBD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		return( null );
+	}
+	
+	@Override
+	public Elem<?,?> evalPartialInverseRight( SymbolicElem<?,?> elem , ArrayList<Elem<?,?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	{
+		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TBD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		return( null );
 	}
 	
 	

@@ -26,8 +26,12 @@
 
 package simplealgebra.symbolic;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
+import simplealgebra.NotInvertibleException;
 
 public class SymbolicElemFactory<R extends Elem<R,?>, S extends ElemFactory<R,S>> extends ElemFactory<SymbolicElem<R,S>, SymbolicElemFactory<R,S>> {
 
@@ -56,6 +60,18 @@ public class SymbolicElemFactory<R extends Elem<R,?>, S extends ElemFactory<R,S>
 	public boolean isNestedMultCommutative()
 	{
 		return( fac.isNestedMultCommutative() );
+	}
+	
+	@Override
+	public Elem<?,?> evalPartialInverseLeft( SymbolicElem<?,?> elem , ArrayList<Elem<?,?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	{
+		return( fac.evalPartialInverseLeft(elem, withRespectTo, implicitSpace) );
+	}
+	
+	@Override
+	public Elem<?,?> evalPartialInverseRight( SymbolicElem<?,?> elem , ArrayList<Elem<?,?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	{
+		return( fac.evalPartialInverseRight(elem, withRespectTo, implicitSpace) );
 	}
 	
 	public S getFac()

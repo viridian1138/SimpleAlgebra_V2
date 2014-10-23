@@ -25,11 +25,13 @@
 package simplealgebra.meas;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import simplealgebra.AbsoluteValue;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
+import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SymbolicAbsoluteValue;
 import simplealgebra.symbolic.SymbolicElem;
 
@@ -87,6 +89,19 @@ public class ValueWithUncertaintyElemFactory<R extends Elem<R,?>, S extends Elem
 	public boolean isNestedMultCommutative()
 	{
 		return( fac.isNestedMultCommutative() );
+	}
+	
+	
+	@Override
+	public Elem<?,?> evalPartialInverseLeft( SymbolicElem<?,?> elem , ArrayList<Elem<?,?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	{
+		return( fac.evalPartialInverseLeft(elem, withRespectTo, implicitSpace) );
+	}
+	
+	@Override
+	public Elem<?,?> evalPartialInverseRight( SymbolicElem<?,?> elem , ArrayList<Elem<?,?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	{
+		return( fac.evalPartialInverseRight(elem, withRespectTo, implicitSpace) );
 	}
 	
 	

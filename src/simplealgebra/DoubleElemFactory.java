@@ -26,7 +26,9 @@
 package simplealgebra;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 
+import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SymbolicAbsoluteValue;
 import simplealgebra.symbolic.SymbolicElem;
 
@@ -76,8 +78,24 @@ public class DoubleElemFactory extends ElemFactory<DoubleElem, DoubleElemFactory
 		return( super.handleSymbolicOptionalOp(id, args) );
 	}
 	
+	
 	public DoubleElemFactory()
 	{
 	}
+	
+	
+	@Override
+	public Elem<?,?> evalPartialInverseLeft( SymbolicElem<?,?> elem , ArrayList<Elem<?,?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	{
+		return( this.simplePartialInverse(elem, withRespectTo, implicitSpace) );
+	}
+	
+	
+	@Override
+	public Elem<?,?> evalPartialInverseRight( SymbolicElem<?,?> elem , ArrayList<Elem<?,?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	{
+		return( this.simplePartialInverse(elem, withRespectTo, implicitSpace) );
+	}
 
+	
 }

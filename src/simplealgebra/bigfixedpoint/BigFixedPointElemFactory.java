@@ -30,10 +30,13 @@ package simplealgebra.bigfixedpoint;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import simplealgebra.AbsoluteValue;
+import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
+import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SymbolicAbsoluteValue;
 import simplealgebra.symbolic.SymbolicElem;
 
@@ -96,6 +99,20 @@ public class BigFixedPointElemFactory<T extends Precision> extends ElemFactory<B
 		}
 		
 		return( super.handleSymbolicOptionalOp(id, args) );
+	}
+	
+	
+	@Override
+	public Elem<?,?> evalPartialInverseLeft( SymbolicElem<?,?> elem , ArrayList<Elem<?,?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	{
+		return( this.simplePartialInverse(elem, withRespectTo, implicitSpace) );
+	}
+	
+	
+	@Override
+	public Elem<?,?> evalPartialInverseRight( SymbolicElem<?,?> elem , ArrayList<Elem<?,?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	{
+		return( this.simplePartialInverse(elem, withRespectTo, implicitSpace) );
 	}
 
 	
