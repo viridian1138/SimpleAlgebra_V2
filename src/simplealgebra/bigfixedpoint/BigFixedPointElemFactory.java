@@ -100,20 +100,6 @@ public class BigFixedPointElemFactory<T extends Precision> extends ElemFactory<B
 		
 		return( super.handleSymbolicOptionalOp(id, args) );
 	}
-	
-	
-	@Override
-	public Elem<?,?> evalPartialInverseLeft( SymbolicElem<?,?> elem , ArrayList<Elem<?,?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
-	{
-		return( this.simplePartialInverse(elem, withRespectTo, implicitSpace) );
-	}
-	
-	
-	@Override
-	public Elem<?,?> evalPartialInverseRight( SymbolicElem<?,?> elem , ArrayList<Elem<?,?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
-	{
-		return( this.simplePartialInverse(elem, withRespectTo, implicitSpace) );
-	}
 
 	
 }

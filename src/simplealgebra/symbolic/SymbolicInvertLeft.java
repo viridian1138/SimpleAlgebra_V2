@@ -59,7 +59,10 @@ public class SymbolicInvertLeft<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 	@Override
 	public R evalPartialDerivative(ArrayList<Elem<?, ?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace )
 			throws NotInvertibleException, MultiplicativeDistributionRequiredException {
-		return( (R)( fac.evalPartialInverseLeft(this, withRespectTo, implicitSpace) ) );
+		final R aL = elem.invertLeft().eval(implicitSpace);
+		final R ap = elem.evalPartialDerivative(withRespectTo, implicitSpace);
+		final R aR = elem.invertRight().eval(implicitSpace);
+		return( aL.mult( ap ).mult( aR ).negate() );
 	}
 
 	@Override

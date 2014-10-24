@@ -108,6 +108,32 @@ public class TestStelem extends TestCase {
 	
 	
 	
+	private class SymbolicConst2L extends SymbolicReduction<SymbolicElem<DoubleElem, DoubleElemFactory>,SymbolicElemFactory<DoubleElem, DoubleElemFactory>>
+	{
+
+		public SymbolicConst2L(SymbolicElem<DoubleElem, DoubleElemFactory> _elem, SymbolicElemFactory<DoubleElem, DoubleElemFactory> _fac) {
+			super(_elem, _fac);
+		}
+		
+		@Override
+		public String writeString() {
+			return( "" + getElem().writeString() );
+		}
+		
+		@Override
+		public boolean symbolicEquals( SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>,SymbolicElemFactory<DoubleElem, DoubleElemFactory>> b )
+		{
+			if( b instanceof SymbolicConst2L )
+			{
+				return( getElem().symbolicEquals( ( (SymbolicConst2L) b ).getElem() ) );
+			}
+			return( false );
+		}
+		
+	}
+	
+	
+	
 	private class CoeffNode
 	{
 		private DoubleElem numer;
@@ -497,37 +523,57 @@ public class TestStelem extends TestCase {
 	public void testStelemSimple() throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
 		
+		final DoubleElem c = new DoubleElem( 2.0 );
+		
+		
 		DoubleElemFactory de = new DoubleElemFactory();
 		
 		SymbolicElemFactory<DoubleElem, DoubleElemFactory> se = new SymbolicElemFactory<DoubleElem, DoubleElemFactory>( de );
 		
 		AStelem as = new AStelem( se );
 		
-		ArrayList<AElem> wrt = new ArrayList<AElem>();
+		final ArrayList<AElem> wrtT = new ArrayList<AElem>();
 		
-		wrt.add( new AElem( de , 0 ) );
+		wrtT.add( new AElem( de , 0 ) );
 		
-		PartialDerivativeOp<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>,AElem> pa0 
-			= new PartialDerivativeOp<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>,AElem>( se , wrt );
+		final ArrayList<AElem> wrtX = new ArrayList<AElem>();
 		
-		PartialDerivativeOp<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>,AElem> pa1 
-			= new PartialDerivativeOp<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>,AElem>( se , wrt );
+		wrtX.add( new AElem( de , 1 ) );
 		
-		SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> m0
-			= pa0.mult( as );
+		PartialDerivativeOp<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>,AElem> pa0T 
+			= new PartialDerivativeOp<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>,AElem>( se , wrtT );
+		
+		PartialDerivativeOp<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>,AElem> pa0X 
+			= new PartialDerivativeOp<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>,AElem>( se , wrtX );
+	
+		
+		SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> m0T
+			= pa0T.mult( as );
+		
+		SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> m0X
+			= pa0X.mult( as );
+		
+		SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> m1T
+			= pa0T.mult( m0T );
+		
+		SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> m1X
+			= pa0X.mult( m0X );
+		
 		
 		SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> m1
-			= pa1.mult( m0 );
+			= m1X.add( m1T.mult( ( new SymbolicConst2L( new SymbolicConst( c , de ) , se ) ).invertLeft() ).negate() );
 		
-		HashMap<AElem,AElem> implicitSpace0 = new HashMap<AElem,AElem>();
 		
-		HashMap implicitSpace1 = implicitSpace0;
+		final HashMap<AElem,AElem> implicitSpace0 = new HashMap<AElem,AElem>();
 		
-		HashMap<Elem<?,?>,Elem<?,?>> implicitSpace2 = (HashMap<Elem<?,?>,Elem<?,?>>) implicitSpace1;
+		final HashMap implicitSpace1 = implicitSpace0;
+		
+		final HashMap<Elem<?,?>,Elem<?,?>> implicitSpace2 = (HashMap<Elem<?,?>,Elem<?,?>>) implicitSpace1;
 		
 		implicitSpace0.put( new AElem( de , 0 ) , new AElem( de , 0 ) );
+		implicitSpace0.put( new AElem( de , 1 ) , new AElem( de , 0 ) );
 		
-		SymbolicElem<DoubleElem,DoubleElemFactory> s0 = m1.eval( implicitSpace2 );
+		final SymbolicElem<DoubleElem,DoubleElemFactory> s0 = m1.eval( implicitSpace2 );
 		
 		String s = s0.writeString();
 		

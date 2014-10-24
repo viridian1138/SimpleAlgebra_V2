@@ -82,20 +82,6 @@ public class DoubleElemFactory extends ElemFactory<DoubleElem, DoubleElemFactory
 	public DoubleElemFactory()
 	{
 	}
-	
-	
-	@Override
-	public Elem<?,?> evalPartialInverseLeft( SymbolicElem<?,?> elem , ArrayList<Elem<?,?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
-	{
-		return( this.simplePartialInverse(elem, withRespectTo, implicitSpace) );
-	}
-	
-	
-	@Override
-	public Elem<?,?> evalPartialInverseRight( SymbolicElem<?,?> elem , ArrayList<Elem<?,?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
-	{
-		return( this.simplePartialInverse(elem, withRespectTo, implicitSpace) );
-	}
 
 	
 }

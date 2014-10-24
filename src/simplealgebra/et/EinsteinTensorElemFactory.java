@@ -63,22 +63,6 @@ public class EinsteinTensorElemFactory<Z extends Object, R extends Elem<R,?>, S 
 	}
 	
 	
-	@Override
-	public Elem<?,?> evalPartialInverseLeft( SymbolicElem<?,?> elem , ArrayList<Elem<?,?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
-	{
-		// !!!!!!!!!!!!!!!!!!!!!!!!!!!! TBD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		return( null );
-	}
-	
-	@Override
-	public Elem<?,?> evalPartialInverseRight( SymbolicElem<?,?> elem , ArrayList<Elem<?,?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
-	{
-		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TBD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		return( null );
-	}
-	
-	
-	
 	public S getFac()
 	{
 		return( fac );

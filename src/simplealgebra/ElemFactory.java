@@ -51,20 +51,5 @@ public abstract class ElemFactory<T extends Elem<T,?>, R extends ElemFactory<T,R
 	public abstract boolean isNestedMultCommutative();
 	
 	
-	protected Elem<?,?> simplePartialInverse( SymbolicElem<?,?> elem , ArrayList<Elem<?,?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
-	{
-		final Elem<?,?> deriv = elem.evalPartialDerivative(withRespectTo, implicitSpace);
-		final SymbolicElem<?,?> term = ( ( (SymbolicElem) elem ).mult( (SymbolicElem) elem ) ).invertLeft().negate();
-		final Elem<?,?> ret = ( (Elem)( term.eval(implicitSpace) ) ).mult( (Elem) deriv );
-		return( ret );
-	}
-	
-	
-	public abstract Elem<?,?> evalPartialInverseLeft( SymbolicElem<?,?> elem , ArrayList<Elem<?,?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException;
-	
-	
-	public abstract Elem<?,?> evalPartialInverseRight( SymbolicElem<?,?> elem , ArrayList<Elem<?,?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException;
-	
-	
 }
 

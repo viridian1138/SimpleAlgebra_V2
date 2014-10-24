@@ -95,20 +95,6 @@ public class ComplexElemFactory<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 	}
 	
 	
-	@Override
-	public Elem<?,?> evalPartialInverseLeft( SymbolicElem<?,?> elem , ArrayList<Elem<?,?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
-	{
-		return( fac.evalPartialInverseLeft(elem, withRespectTo, implicitSpace) );
-	}
-	
-	
-	@Override
-	public Elem<?,?> evalPartialInverseRight( SymbolicElem<?,?> elem , ArrayList<Elem<?,?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
-	{
-		return( fac.evalPartialInverseRight(elem, withRespectTo, implicitSpace) );
-	}
-	
-	
 	public S getFac()
 	{
 		return( fac );
