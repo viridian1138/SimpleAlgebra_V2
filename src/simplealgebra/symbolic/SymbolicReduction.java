@@ -31,10 +31,13 @@ import java.util.HashMap;
 
 import org.kie.internal.runtime.StatefulKnowledgeSession;
 
+import simplealgebra.DoubleElem;
+import simplealgebra.DoubleElemFactory;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.ddx.PartialDerivativeOp;
+
 
 public class SymbolicReduction<R extends Elem<R,?>, S extends ElemFactory<R,S>> extends SymbolicElem<R,S> 
 {
@@ -55,11 +58,41 @@ public class SymbolicReduction<R extends Elem<R,?>, S extends ElemFactory<R,S>> 
 	{
 		if( elem instanceof SymbolicElem )
 		{
-			final R partialD = (R)( new PartialDerivativeOp( ( (SymbolicElemFactory) fac ).getFac() , withRespectTo ) );
-			return( partialD.mult( elem ) );
+			if( isSymbolicElemSimpleConst( elem ) )
+			{
+				return( fac.zero() );
+			}
+			else
+			{
+				final R partialD = (R)( new PartialDerivativeOp( ( (SymbolicElemFactory) fac ).getFac() , withRespectTo ) );
+				return( partialD.mult( elem ) );
+			}
 		}
 		return( fac.zero() );
 	}
+	
+	
+	protected boolean isSymbolicElemSimpleConst( Elem elem )
+	{
+		SymbolicElem e = (SymbolicElem) elem;
+		if( !( e instanceof SymbolicReduction ) )
+		{
+			return( false );
+		}
+		else
+		{
+			Elem r = ( (SymbolicReduction) e ).getElem();
+			if( r instanceof SymbolicElem )
+			{
+				return( isSymbolicElemSimpleConst( r ) );
+			}
+			else
+			{
+				return( true );
+			}
+		}
+	}
+	
 	
 	/**
 	 * @return the elem
@@ -95,6 +128,28 @@ public class SymbolicReduction<R extends Elem<R,?>, S extends ElemFactory<R,S>> 
 		}
 		
 		return( super.handleOptionalOp(id, args) );
+	}
+	
+	
+	@Override
+	public boolean symbolicEquals( SymbolicElem<R,S> b )
+	{
+		if( ( b instanceof SymbolicReduction ) && ( elem instanceof SymbolicElem ) )
+		{
+			return( ( (SymbolicElem) elem ).symbolicEquals( (SymbolicElem)( ( (SymbolicReduction) b ).getElem() ) ) );
+		}
+		return( false );
+	}
+	
+	
+	@Override
+	public boolean equals( Object b )
+	{
+		if( b instanceof SymbolicReduction )
+		{
+			return( this.symbolicEquals( (SymbolicReduction) b ) );
+		}
+		return( false );
 	}
 	
 	

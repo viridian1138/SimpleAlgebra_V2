@@ -4,6 +4,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Random;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
@@ -11,6 +12,7 @@ import simplealgebra.DoubleElem;
 import simplealgebra.DoubleElemFactory;
 import simplealgebra.Elem;
 import simplealgebra.NotInvertibleException;
+import simplealgebra.algo.NewtonRaphsonSingleElem;
 import simplealgebra.ddx.PartialDerivativeOp;
 import simplealgebra.stelem.Nelem;
 import simplealgebra.stelem.Stelem;
@@ -22,7 +24,27 @@ import simplealgebra.symbolic.SymbolicReduction;
 
 
 
-public class TestStelem extends TestCase {
+public class TestStelemA extends TestCase {
+	
+	/**
+	 * 0 = T
+	 * 1 = X
+	 */
+	private static double[][] tempArray = new double[ 3 ][ 3 ];
+	
+	
+	
+	protected static void performIterationUpdate( DoubleElem dbl )
+	{
+		tempArray[ 2 ][ 1 ] += dbl.getVal();
+	}
+	
+	
+	protected static double getUpdateValue()
+	{
+		return( tempArray[ 2 ][ 1 ] );
+	}
+	
 	
 	private class AElem extends SymbolicElem<DoubleElem, DoubleElemFactory>
 	{
@@ -72,6 +94,12 @@ public class TestStelem extends TestCase {
 			return( false );
 		}
 		
+		@Override
+		public int hashCode()
+		{
+			return( col );
+		}
+		
 		/**
 		 * @return the col
 		 */
@@ -91,7 +119,7 @@ public class TestStelem extends TestCase {
 		
 		@Override
 		public String writeString() {
-			return( "" + getElem().getVal() );
+			return( "const( " + getElem().getVal() + " )" );
 		}
 		
 		@Override
@@ -108,24 +136,56 @@ public class TestStelem extends TestCase {
 	
 	
 	
-	private class SymbolicConst2L extends SymbolicReduction<SymbolicElem<DoubleElem, DoubleElemFactory>,SymbolicElemFactory<DoubleElem, DoubleElemFactory>>
+	private class StelemReduction2L extends SymbolicReduction<SymbolicElem<DoubleElem, DoubleElemFactory>,SymbolicElemFactory<DoubleElem, DoubleElemFactory>>
 	{
 
-		public SymbolicConst2L(SymbolicElem<DoubleElem, DoubleElemFactory> _elem, SymbolicElemFactory<DoubleElem, DoubleElemFactory> _fac) {
+		public StelemReduction2L(SymbolicElem<DoubleElem, DoubleElemFactory> _elem, SymbolicElemFactory<DoubleElem, DoubleElemFactory> _fac) {
 			super(_elem, _fac);
 		}
 		
 		@Override
 		public String writeString() {
-			return( "" + getElem().writeString() );
+			return( "reduce2L( " + getElem().writeString() + " )" );
 		}
 		
 		@Override
 		public boolean symbolicEquals( SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>,SymbolicElemFactory<DoubleElem, DoubleElemFactory>> b )
 		{
-			if( b instanceof SymbolicConst2L )
+			if( b instanceof StelemReduction2L )
 			{
-				return( getElem().symbolicEquals( ( (SymbolicConst2L) b ).getElem() ) );
+				return( getElem().symbolicEquals( ( (StelemReduction2L) b ).getElem() ) );
+			}
+			return( false );
+		}
+		
+	}
+	
+	
+	
+	private class StelemReduction3L extends SymbolicReduction<
+		SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
+		SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>
+	{
+
+		public StelemReduction3L(
+				SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> _elem, 
+				SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> _fac) {
+			super(_elem, _fac);
+		}
+		
+		@Override
+		public String writeString() {
+			return( "reduce3L( " + getElem().writeString() + " )" );
+		}
+		
+		@Override
+		public boolean symbolicEquals( SymbolicElem<
+				SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
+				SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>> b )
+		{
+			if( b instanceof StelemReduction3L )
+			{
+				return( getElem().symbolicEquals( ( (StelemReduction3L) b ).getElem() ) );
 			}
 			return( false );
 		}
@@ -161,40 +221,40 @@ public class TestStelem extends TestCase {
 	}
 	
 	
-	private class ANelem extends Nelem<DoubleElem,DoubleElemFactory,AElem>
+	private class BNelem extends Nelem<DoubleElem,DoubleElemFactory,AElem>
 	{
 
-		public ANelem(DoubleElemFactory _fac, HashMap<AElem, BigInteger> _coord) {
+		public BNelem(DoubleElemFactory _fac, HashMap<AElem, BigInteger> _coord) {
 			super(_fac, _coord);
 		}
+		
+		
+		protected final int[] cols = new int[ 2 ];
+		
 
 		@Override
 		public DoubleElem eval(HashMap<Elem<?, ?>, Elem<?, ?>> implicitSpace)
 				throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
-			double sum = 0.0;
-			HashMap ims = implicitSpace;
-			HashMap<AElem,AElem> imp = (HashMap<AElem,AElem>) ims;
-			Iterator<AElem> it = imp.keySet().iterator();
+			cols[ 0 ] = 0;
+			cols[ 1 ] = 0;
+			if( coord.keySet().size() != 2 )
+			{
+				throw( new RuntimeException( "InternalError" ) );
+			}
+			Iterator<AElem> it = coord.keySet().iterator();
 			while( it.hasNext() )
 			{
 				AElem keyCoord = it.next();
-				AElem coordVal = imp.get( keyCoord );
-				double col = coordVal.getCol();
-				BigInteger cv = coord.get( keyCoord );
-				if( cv != null )
-				{
-					col += cv.doubleValue();
-				}
-				double stval = ( col + 1 ) * ( col + 1 ) * ( col + 1 );
-				sum += stval;
+				BigInteger coordVal = coord.get( keyCoord );
+				cols[ keyCoord.getCol() ] = coordVal.intValue() + 1;
 			}
-			return( new DoubleElem( sum ) );
+			return( new DoubleElem( TestStelemA.tempArray[ cols[ 0 ] ][ cols[ 1 ] ] ) );
 		}
 
 		@Override
 		public String writeString() {
-			String s0 = "an";
+			String s0 = "bn";
 			Iterator<AElem> it = coord.keySet().iterator();
 			while( it.hasNext() )
 			{
@@ -213,9 +273,9 @@ public class TestStelem extends TestCase {
 		@Override
 		public boolean symbolicEquals( SymbolicElem<DoubleElem,DoubleElemFactory> b )
 		{
-			if( b instanceof ANelem )
+			if( b instanceof BNelem )
 			{
-				ANelem bn = (ANelem) b;
+				BNelem bn = (BNelem) b;
 				if( coord.keySet().size() != bn.coord.keySet().size() )
 				{
 					return( false );
@@ -243,12 +303,98 @@ public class TestStelem extends TestCase {
 	}
 	
 	
-	private class AStelem extends Stelem<DoubleElem,DoubleElemFactory,AElem>
+	
+	private class CNelem extends Nelem<SymbolicElem<DoubleElem,DoubleElemFactory>,
+		SymbolicElemFactory<DoubleElem,DoubleElemFactory>,AElem>
+	{
+
+		public CNelem(SymbolicElemFactory<DoubleElem,DoubleElemFactory> _fac, HashMap<AElem, BigInteger> _coord) {
+			super(_fac, _coord);
+		}
+
+		@Override
+		public SymbolicElem<DoubleElem,DoubleElemFactory> eval(HashMap<Elem<?, ?>, Elem<?, ?>> implicitSpace)
+				throws NotInvertibleException,
+				MultiplicativeDistributionRequiredException {
+			return( new BNelem( fac.getFac() , coord ) );
+		}
+		
+		
+		@Override
+		public SymbolicElem<DoubleElem,DoubleElemFactory> evalPartialDerivative(ArrayList<Elem<?, ?>> withRespectTo, HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws MultiplicativeDistributionRequiredException, NotInvertibleException {
+			if( withRespectTo.size() > 1 )
+			{
+				return( fac.zero() );
+			}
+			Iterator<Elem<?,?>> it = withRespectTo.iterator();
+			CNelem wrt = (CNelem)( it.next() );
+			final boolean cond = this.symbolicEquals( wrt );
+			return( cond ? fac.identity() : fac.zero() );
+		}
+		
+
+		@Override
+		public String writeString() {
+			String s0 = "cn";
+			Iterator<AElem> it = coord.keySet().iterator();
+			while( it.hasNext() )
+			{
+				AElem key = it.next();
+				BigInteger val = coord.get( key );
+				s0 = s0 + "[";
+				s0 = s0 + key.getCol();
+				s0 = s0 + ",";
+				s0 = s0 + val.intValue();
+				s0 = s0 + "]";
+			}
+			s0 = s0 + "()";
+			return( s0 );
+		}
+		
+		
+		@Override
+		public boolean symbolicEquals( 
+				SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> b )
+		{
+			if( b instanceof CNelem )
+			{
+				CNelem bn = (CNelem) b;
+				if( coord.keySet().size() != bn.coord.keySet().size() )
+				{
+					return( false );
+				}
+				Iterator<AElem> it = coord.keySet().iterator();
+				while( it.hasNext() )
+				{
+					AElem key = it.next();
+					BigInteger ka = coord.get( key );
+					BigInteger kb = bn.coord.get( key );
+					if( ( ka == null ) || ( kb == null ) )
+					{
+						return( false );
+					}
+					if( !( ka.equals( kb ) ) )
+					{
+						return( false );
+					}
+				}
+				return( true );
+			}
+			return( false );
+		}
+		
+	}
+	
+	
+	
+	private class AStelem extends Stelem<SymbolicElem<DoubleElem,DoubleElemFactory>,
+		SymbolicElemFactory<DoubleElem,DoubleElemFactory>,AElem>
 	{
 
 		final DoubleElem h = new DoubleElem( 0.01 );
 		
-		public AStelem(SymbolicElemFactory<DoubleElem, DoubleElemFactory> _fac) {
+		public AStelem(SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>, 
+				SymbolicElemFactory<DoubleElem,DoubleElemFactory>> _fac) {
 			super(_fac);
 		}
 
@@ -265,7 +411,8 @@ public class TestStelem extends TestCase {
 		}
 
 		@Override
-		public SymbolicElem<DoubleElem, DoubleElemFactory> eval(
+		public SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>, 
+			SymbolicElemFactory<DoubleElem,DoubleElemFactory>> eval(
 				HashMap<Elem<?, ?>, Elem<?, ?>> implicitSpace)
 				throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
@@ -306,7 +453,8 @@ public class TestStelem extends TestCase {
 			
 			
 			
-			SymbolicElem<DoubleElem, DoubleElemFactory> ret = fac.zero();
+			SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>, 
+				SymbolicElemFactory<DoubleElem,DoubleElemFactory>> ret = fac.zero();
 			
 			
 			{
@@ -315,10 +463,14 @@ public class TestStelem extends TestCase {
 				{
 					HashMap<AElem, BigInteger> spaceAe = it.next();
 					CoeffNode coeff = spacesA.get( spaceAe );
-					ANelem an0 = new ANelem( fac.getFac() , spaceAe );
-					SymbolicElem<DoubleElem, DoubleElemFactory> an1 = an0.mult( new SymbolicConst( coeff.getNumer() , fac.getFac() ) );
-					SymbolicElem<DoubleElem, DoubleElemFactory> an2 = an1.mult( 
-							( new SymbolicConst( coeff.getDenom() , fac.getFac() ) ).invertLeft() );
+					final CNelem an0 = 
+							new CNelem( fac.getFac() , spaceAe );
+					SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>
+						an1 = an0.mult( 
+								new StelemReduction2L( new SymbolicConst( coeff.getNumer() , fac.getFac().getFac() ) , fac.getFac() ) );
+					SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> 
+						an2 = an1.mult( 
+								( new StelemReduction2L( new SymbolicConst( coeff.getDenom() , fac.getFac().getFac() ) , fac.getFac() ) ).invertLeft() );
 					ret = ret.add( an2 );
 				}
 			}
@@ -520,8 +672,51 @@ public class TestStelem extends TestCase {
 	
 	
 	
+	
+	protected class StelemNewton extends NewtonRaphsonSingleElem<DoubleElem,DoubleElemFactory>
+	{
+
+		public StelemNewton(
+				SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>> _function,
+				ArrayList<Elem<?, ?>> _withRespectTo, 
+				HashMap<Elem<?, ?>, Elem<?, ?>> implicitSpaceFirstLevel)
+				throws NotInvertibleException,
+				MultiplicativeDistributionRequiredException {
+			super(_function, _withRespectTo, implicitSpaceFirstLevel);
+			// System.out.println( "**" );
+			// System.out.println( this.partialEval.writeString() );
+		}
+		
+		protected int intCnt = 0;
+
+		@Override
+		protected boolean iterationsDone() {
+			intCnt++;
+			return( intCnt > 20 );
+		}
+		
+		@Override
+		protected void performIterationUpdate( DoubleElem iterationOffset )
+		{
+			TestStelemA.performIterationUpdate( iterationOffset );
+		}
+		
+	}
+	
+	
+	
+	
 	public void testStelemSimple() throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
+		final Random rand = new Random( 3344 );
+		
+		for( int tcnt = 0 ; tcnt < 3 ; tcnt++ )
+		{
+			for( int xcnt = 0 ; xcnt < 3 ; xcnt++ )
+			{
+				tempArray[ tcnt ][ xcnt ] = rand.nextDouble();
+			}
+		}
 		
 		final DoubleElem c = new DoubleElem( 2.0 );
 		
@@ -530,7 +725,10 @@ public class TestStelem extends TestCase {
 		
 		SymbolicElemFactory<DoubleElem, DoubleElemFactory> se = new SymbolicElemFactory<DoubleElem, DoubleElemFactory>( de );
 		
-		AStelem as = new AStelem( se );
+		SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> se2 =
+				new SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>( se );
+		
+		AStelem as = new AStelem( se2 );
 		
 		final ArrayList<AElem> wrtT = new ArrayList<AElem>();
 		
@@ -540,28 +738,39 @@ public class TestStelem extends TestCase {
 		
 		wrtX.add( new AElem( de , 1 ) );
 		
-		PartialDerivativeOp<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>,AElem> pa0T 
-			= new PartialDerivativeOp<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>,AElem>( se , wrtT );
+		PartialDerivativeOp<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
+			SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,AElem> pa0T 
+			= new PartialDerivativeOp<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
+					SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,AElem>( se2 , wrtT );
 		
-		PartialDerivativeOp<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>,AElem> pa0X 
-			= new PartialDerivativeOp<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>,AElem>( se , wrtX );
+		PartialDerivativeOp<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
+			SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,AElem> pa0X 
+			= new PartialDerivativeOp<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
+					SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,AElem>( se2 , wrtX );
 	
 		
-		SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> m0T
-			= pa0T.mult( as );
+		SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
+			SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>> m0T
+			= pa0T.mult( as ); 
 		
-		SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> m0X
-			= pa0X.mult( as );
+		SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
+			SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>> m0X
+			= pa0X.mult( as ); 
 		
-		SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> m1T
+		SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
+			SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>> m1T
 			= pa0T.mult( m0T );
 		
-		SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> m1X
+		SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
+			SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>> m1X
 			= pa0X.mult( m0X );
 		
 		
-		SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> m1
-			= m1X.add( m1T.mult( ( new SymbolicConst2L( new SymbolicConst( c , de ) , se ) ).invertLeft() ).negate() );
+		SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
+			SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>> m1
+			= m1X.add( m1T.mult( 
+					( new StelemReduction3L( new StelemReduction2L( new SymbolicConst( c.mult( c ) , de ) , se ) , se2 )
+							).invertLeft() ).negate() );
 		
 		
 		final HashMap<AElem,AElem> implicitSpace0 = new HashMap<AElem,AElem>();
@@ -573,17 +782,47 @@ public class TestStelem extends TestCase {
 		implicitSpace0.put( new AElem( de , 0 ) , new AElem( de , 0 ) );
 		implicitSpace0.put( new AElem( de , 1 ) , new AElem( de , 0 ) );
 		
-		final SymbolicElem<DoubleElem,DoubleElemFactory> s0 = m1.eval( implicitSpace2 );
+		final SymbolicElem<
+			SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> s0 = m1.eval( implicitSpace2 );
 		
-		String s = s0.writeString();
+		// String s = s0.writeString();
 		
-		System.out.println( s );
+		// System.out.println( s );
 		
-		DoubleElem dbl = s0.eval( implicitSpace2 );
+		
+		final ArrayList<Elem<?, ?>> wrt3 = new ArrayList<Elem<?, ?>>();
+		{
+			final HashMap<AElem, BigInteger> coord = new HashMap<AElem, BigInteger>();
+			coord.put( new AElem( de , 0 ) , BigInteger.valueOf( 1 ) );
+			coord.put( new AElem( de , 1 ) , BigInteger.valueOf( 0 ) );
+			wrt3.add( new CNelem( se , coord ) );
+		}
+		
+		
+		final double ival = TestStelemA.getUpdateValue();
+		
+		// System.out.println( ival );
+		
+		
+		StelemNewton newton = new StelemNewton( s0 , wrt3 , implicitSpace2 );
+		
+		
+		DoubleElem err = newton.eval( implicitSpace2 );
+		
+		
+		final double val = TestStelemA.getUpdateValue();
+		
 		
 		// Assert.assertEquals( 100.0 , dbl.getVal() , 1E-4 );
 		
-		System.out.println( dbl.getVal() );
+		
+		// System.out.println( val );
+		// System.out.println( err.getVal() );
+		
+		
+		Assert.assertTrue( Math.abs( val - ( -1.450868 ) ) < 0.01 );
+		
+		Assert.assertTrue( Math.abs( err.getVal() ) < 0.01 );
 		
 	}
 	

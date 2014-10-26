@@ -37,35 +37,37 @@ import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
-import simplealgebra.symbolic.SymbolicElem;
+import simplealgebra.symbolic.*;
 
 
 public abstract class NewtonRaphsonSingleElem<R extends Elem<R,?>, S extends ElemFactory<R,S>> {
 	
-	protected SymbolicElem<R,S> function;
+	protected SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>> function;
 	
 	protected R lastValue = null;
 	
-	protected ArrayList<Elem<?,?>> withRespectTo;
-	
 	protected HashMap<Elem<?,?>,Elem<?,?>> implicitSpace = null;
 	
-	protected Elem<?,?> keyElem;
+	protected SymbolicElem<R,S> eval;
+	
+	protected SymbolicElem<R,S> partialEval;
 	
 	
-	public NewtonRaphsonSingleElem( final SymbolicElem<R,S> _function , 
-			final ArrayList<Elem<?,?>> _withRespectTo , final Elem<?,?> _keyElem )
+	public NewtonRaphsonSingleElem( final SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>> _function , 
+			final ArrayList<Elem<?,?>> _withRespectTo , 
+			final HashMap<Elem<?,?>,Elem<?,?>> implicitSpaceFirstLevel )
+					throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
 		function = _function;
-		withRespectTo = _withRespectTo;
-		keyElem = _keyElem;
+		eval = function.eval( implicitSpaceFirstLevel );
+		partialEval = function.evalPartialDerivative(_withRespectTo, implicitSpaceFirstLevel );
 	}
 	
 	
 	public R eval( HashMap<Elem<?,?>,Elem<?,?>> implicitSpaceInitialGuess ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
 		implicitSpace = implicitSpaceInitialGuess;
-		lastValue = function.eval( implicitSpace );
+		lastValue = eval.eval( implicitSpace );
 		while( !( iterationsDone() ) )
 		{
 			performIteration();
@@ -76,31 +78,18 @@ public abstract class NewtonRaphsonSingleElem<R extends Elem<R,?>, S extends Ele
 	
 	protected void performIteration() throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
-		final R derivative = function.evalPartialDerivative(withRespectTo, implicitSpace);
+		final R derivative = partialEval.eval(implicitSpace);
 		final R iterationOffset = lastValue.mult( derivative.invertLeft() ).negate();
 		
-		final HashMap<Elem<?,?>,Elem<?,?>> newImplicitSpace = new HashMap<Elem<?,?>,Elem<?,?>>();
+		performIterationUpdate( iterationOffset );
 		
-		Iterator<Elem<?,?>> it = implicitSpace.keySet().iterator();
-		while( it.hasNext() )
-		{
-			Elem<?,?> kv = it.next();
-			if( kv.equals( keyElem ) )
-			{
-				R valA = (R)( implicitSpace.get( kv ) );
-				valA = valA.add( iterationOffset );
-				newImplicitSpace.put( kv , valA );
-			}
-			else
-			{
-				newImplicitSpace.put( kv , implicitSpace.get( kv ) );
-			}
-		}
-		
-		implicitSpace = newImplicitSpace;
-		
-		lastValue = function.eval( implicitSpace );
+		lastValue = eval.eval( implicitSpace );
 	}
+	
+	
+	
+	protected abstract void performIterationUpdate( R iterationOffset );
+	
 	
 	
 	protected abstract boolean iterationsDone( );

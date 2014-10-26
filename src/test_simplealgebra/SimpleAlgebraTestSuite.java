@@ -67,6 +67,7 @@ public class SimpleAlgebraTestSuite extends TestSuite {
 		s.addTestSuite( TestMetricDeterminant.class );
 		s.addTestSuite( TestDesResSymbolic.class );
 		s.addTestSuite( TestGaugeSymbolic.class );
+		s.addTestSuite( TestStelemA.class );
 		return( s );
 	}
 	
