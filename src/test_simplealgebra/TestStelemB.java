@@ -27,10 +27,18 @@ import simplealgebra.symbolic.SymbolicReduction;
 public class TestStelemB extends TestCase {
 	
 	
+	
+	protected static final DoubleElem C = new DoubleElem( 0.0005 );
+	
+	
+	protected static final DoubleElem HH = new DoubleElem( 0.01 );
+	
+	
+	
 	protected static final int NUM_X_ITER = 25;
 	
 	
-	protected static final int NUM_T_ITER = 25;
+	protected static final int NUM_T_ITER = 50;
 	
 	
 	protected static double[][] iterArray = new double[ NUM_T_ITER ][ NUM_X_ITER ];
@@ -422,10 +430,7 @@ public class TestStelemB extends TestCase {
 	
 	private class AStelem extends Stelem<SymbolicElem<DoubleElem,DoubleElemFactory>,
 		SymbolicElemFactory<DoubleElem,DoubleElemFactory>,AElem>
-	{
-
-		final DoubleElem h = new DoubleElem( 0.01 );
-		
+	{	
 		public AStelem(SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>, 
 				SymbolicElemFactory<DoubleElem,DoubleElemFactory>> _fac) {
 			super(_fac);
@@ -479,7 +484,7 @@ public class TestStelemB extends TestCase {
 					HashMap<HashMap<AElem, BigInteger>,CoeffNode> spacesB = new HashMap<HashMap<AElem, BigInteger>,CoeffNode>();
 					final AElem ae = it.next();
 					final BigInteger numDerivs = partialMap.get( ae );
-					applyDerivativeAction( spacesA , ae , numDerivs.intValue() , h , spacesB );
+					applyDerivativeAction( spacesA , ae , numDerivs.intValue() , HH , spacesB );
 					spacesA = spacesB;
 				}
 			}
@@ -752,13 +757,13 @@ public class TestStelemB extends TestCase {
 		
 		for( int tcnt = 0 ; tcnt < 2 ; tcnt++ )
 		{
-			for( int xcnt = 0 ; xcnt < NUM_X_ITER ; xcnt++ )
-			{
-				iterArray[ tcnt ][ xcnt ] = rand.nextDouble();
-			}
+			// for( int xcnt = 0 ; xcnt < NUM_X_ITER ; xcnt++ )
+			// {
+			//	iterArray[ tcnt ][ xcnt ] = rand.nextDouble();
+			// }
+			iterArray[ tcnt ][ 12 ] = rand.nextDouble();
 		}
 		
-		final DoubleElem c = new DoubleElem( 2.0 );
 		
 		
 		DoubleElemFactory de = new DoubleElemFactory();
@@ -809,7 +814,7 @@ public class TestStelemB extends TestCase {
 		SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
 			SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>> m1
 			= m1X.add( m1T.mult( 
-					( new StelemReduction3L( new StelemReduction2L( new SymbolicConst( c.mult( c ) , de ) , se ) , se2 )
+					( new StelemReduction3L( new StelemReduction2L( new SymbolicConst( C.mult( C ) , de ) , se ) , se2 )
 							).invertLeft() ).negate() );
 		
 		
@@ -855,15 +860,14 @@ public class TestStelemB extends TestCase {
 				fillTempArray( tval , xcnt );
 				
 				
-				System.out.println( "******************" );
+								
 				
 				
-				System.out.println( xcnt );
 				
 				
 				final double ival = TestStelemB.getUpdateValue();
 				
-				System.out.println( ival );
+				
 			
 				
 				DoubleElem err = newton.eval( implicitSpace2 );
@@ -871,9 +875,14 @@ public class TestStelemB extends TestCase {
 		
 				final double val = TestStelemB.getUpdateValue();
 				
-				
-				System.out.println( val );
-				// System.out.println( err.getVal() );
+				if( xcnt == 8 )
+				{
+					System.out.println( "******************" );
+					System.out.println( xcnt );
+					System.out.println( ival );
+					System.out.println( val );
+					// System.out.println( err.getVal() );
+				}
 				
 				
 				Assert.assertTrue( Math.abs( err.getVal() ) < ( 0.01 * Math.abs( val ) + 0.01 ) );
