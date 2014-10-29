@@ -11,8 +11,10 @@ import junit.framework.TestCase;
 import simplealgebra.DoubleElem;
 import simplealgebra.DoubleElemFactory;
 import simplealgebra.Elem;
+import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.algo.NewtonRaphsonSingleElem;
+import simplealgebra.ddx.DirectionalDerivativePartialFactory;
 import simplealgebra.ddx.PartialDerivativeOp;
 import simplealgebra.stelem.Nelem;
 import simplealgebra.stelem.Stelem;
@@ -28,17 +30,22 @@ public class TestStelemB extends TestCase {
 	
 	
 	
-	protected static final DoubleElem C = new DoubleElem( 0.0005 );
+	protected static final DoubleElem C = new DoubleElem( 0.05 );
 	
 	
-	protected static final DoubleElem HH = new DoubleElem( 0.01 );
+	
+	protected static final DoubleElem T_HH = new DoubleElem( 0.0025 );
+	
+	protected static final DoubleElem X_HH = new DoubleElem( 0.01 );
+	
+	protected static final DoubleElem[] HH = { T_HH , X_HH };
 	
 	
 	
 	protected static final int NUM_X_ITER = 25;
 	
 	
-	protected static final int NUM_T_ITER = 50;
+	protected static final int NUM_T_ITER = 400;
 	
 	
 	protected static double[][] iterArray = new double[ NUM_T_ITER ][ NUM_X_ITER ];
@@ -84,6 +91,40 @@ public class TestStelemB extends TestCase {
 			}
 		}
 	}
+	
+	
+	
+	private class DDirec extends DirectionalDerivativePartialFactory<
+		SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>, 
+		SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
+		AElem>
+	{
+		DoubleElemFactory de;
+		SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> se2;
+		
+		public DDirec( 
+				final DoubleElemFactory _de ,
+				final SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> _se2 )
+		{
+			de = _de;
+			se2 = _se2;
+		}
+
+		public PartialDerivativeOp<
+			SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
+			SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
+			AElem> getPartial( BigInteger basisIndex )
+		{
+			final ArrayList<AElem> wrtX = new ArrayList<AElem>();
+			
+			wrtX.add( new AElem( de , 1 + basisIndex.intValue() ) );
+			
+			return( new PartialDerivativeOp<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
+				SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,AElem>( se2 , wrtX ) );
+		}
+
+	};
+	
 	
 	
 	
@@ -484,7 +525,7 @@ public class TestStelemB extends TestCase {
 					HashMap<HashMap<AElem, BigInteger>,CoeffNode> spacesB = new HashMap<HashMap<AElem, BigInteger>,CoeffNode>();
 					final AElem ae = it.next();
 					final BigInteger numDerivs = partialMap.get( ae );
-					applyDerivativeAction( spacesA , ae , numDerivs.intValue() , HH , spacesB );
+					applyDerivativeAction( spacesA , ae , numDerivs.intValue() , HH[ ae.getCol() ] , spacesB );
 					spacesA = spacesB;
 				}
 			}
@@ -525,14 +566,14 @@ public class TestStelemB extends TestCase {
 		
 		
 		protected void applyDerivativeAction( HashMap<HashMap<AElem, BigInteger>,CoeffNode> implicitSpacesIn , 
-				AElem node , final int numDerivatives , DoubleElem h ,
+				AElem node , final int numDerivatives , DoubleElem hh ,
 				HashMap<HashMap<AElem, BigInteger>,CoeffNode> implicitSpacesOut )
 		{
 			if( numDerivatives > 3 )
 			{
 				HashMap<HashMap<AElem, BigInteger>,CoeffNode> implicitSpacesMid = new HashMap<HashMap<AElem, BigInteger>,CoeffNode>();
-				applyDerivativeAction(implicitSpacesIn, node, 3, h, implicitSpacesMid);
-				applyDerivativeAction(implicitSpacesMid, node, numDerivatives-3, h, implicitSpacesOut);
+				applyDerivativeAction(implicitSpacesIn, node, 3, hh, implicitSpacesMid);
+				applyDerivativeAction(implicitSpacesMid, node, numDerivatives-3, hh, implicitSpacesOut);
 			}
 			
 			Iterator<HashMap<AElem, BigInteger>> it = implicitSpacesIn.keySet().iterator();
@@ -575,9 +616,9 @@ public class TestStelemB extends TestCase {
 						}
 						
 						final CoeffNode coeffNodeOutM1 = new CoeffNode(  coeffNodeIn.getNumer().negate() , 
-								coeffNodeIn.getDenom().mult( h ).mult( new DoubleElem( 2.0 ) ) );
+								coeffNodeIn.getDenom().mult( hh ).mult( new DoubleElem( 2.0 ) ) );
 						final CoeffNode coeffNodeOutP1 = new CoeffNode( coeffNodeIn.getNumer() , 
-								coeffNodeIn.getDenom().mult( h ).mult( new DoubleElem( 2.0 ) ) );
+								coeffNodeIn.getDenom().mult( hh ).mult( new DoubleElem( 2.0 ) ) );
 						
 						applyAdd( implicitSpaceOutM1 , coeffNodeOutM1 , implicitSpacesOut );
 						applyAdd( implicitSpaceOutP1 , coeffNodeOutP1 , implicitSpacesOut );
@@ -609,11 +650,11 @@ public class TestStelemB extends TestCase {
 						}
 						
 						final CoeffNode coeffNodeOutM1 = new CoeffNode(  coeffNodeIn.getNumer() , 
-								coeffNodeIn.getDenom().mult( h ).mult( h ) );
+								coeffNodeIn.getDenom().mult( hh ).mult( hh ) );
 						final CoeffNode coeffNodeOut = new CoeffNode(  coeffNodeIn.getNumer().negate().mult( new DoubleElem( 2.0 ) ) , 
-								coeffNodeIn.getDenom().mult( h ).mult( h ) );
+								coeffNodeIn.getDenom().mult( hh ).mult( hh ) );
 						final CoeffNode coeffNodeOutP1 = new CoeffNode( coeffNodeIn.getNumer() , 
-								coeffNodeIn.getDenom().mult( h ).mult( h ) );
+								coeffNodeIn.getDenom().mult( hh ).mult( hh ) );
 						
 						applyAdd( implicitSpaceOutM1 , coeffNodeOutM1 , implicitSpacesOut );
 						applyAdd( implicitSpace , coeffNodeOut , implicitSpacesOut );
@@ -654,13 +695,13 @@ public class TestStelemB extends TestCase {
 					}
 					
 					final CoeffNode coeffNodeOutM1 = new CoeffNode(  coeffNodeIn.getNumer().mult( new DoubleElem( 2.0 ) ) , 
-							coeffNodeIn.getDenom().mult( h ).mult( h ).mult( h ).mult( new DoubleElem( 2.0 ) ) );
+							coeffNodeIn.getDenom().mult( hh ).mult( hh ).mult( hh ).mult( new DoubleElem( 2.0 ) ) );
 					final CoeffNode coeffNodeOutP1 = new CoeffNode( coeffNodeIn.getNumer().negate().mult( new DoubleElem( 2.0 ) ) , 
-							coeffNodeIn.getDenom().mult( h ).mult( h ).mult( h ).mult( new DoubleElem( 2.0 ) ) );
+							coeffNodeIn.getDenom().mult( hh ).mult( hh ).mult( hh ).mult( new DoubleElem( 2.0 ) ) );
 					final CoeffNode coeffNodeOutM2 = new CoeffNode(  coeffNodeIn.getNumer().negate() , 
-							coeffNodeIn.getDenom().mult( h ).mult( h ).mult( h ).mult( new DoubleElem( 2.0 ) ) );
+							coeffNodeIn.getDenom().mult( hh ).mult( hh ).mult( hh ).mult( new DoubleElem( 2.0 ) ) );
 					final CoeffNode coeffNodeOutP2 = new CoeffNode( coeffNodeIn.getNumer() , 
-							coeffNodeIn.getDenom().mult( h ).mult( h ).mult( h ).mult( new DoubleElem( 2.0 ) ) );
+							coeffNodeIn.getDenom().mult( hh ).mult( hh ).mult( hh ).mult( new DoubleElem( 2.0 ) ) );
 					
 					applyAdd( implicitSpaceOutM1 , coeffNodeOutM1 , implicitSpacesOut );
 					applyAdd( implicitSpaceOutP1 , coeffNodeOutP1 , implicitSpacesOut );
@@ -755,13 +796,16 @@ public class TestStelemB extends TestCase {
 	{
 		final Random rand = new Random( 3344 );
 		
+		final double d1 = X_HH.getVal();
+		
+		
 		for( int tcnt = 0 ; tcnt < 2 ; tcnt++ )
 		{
 			// for( int xcnt = 0 ; xcnt < NUM_X_ITER ; xcnt++ )
 			// {
 			//	iterArray[ tcnt ][ xcnt ] = rand.nextDouble();
 			// }
-			iterArray[ tcnt ][ 12 ] = rand.nextDouble();
+			iterArray[ tcnt ][ 12 ] = 10000.0 * ( d1 * d1 );
 		}
 		
 		
@@ -875,13 +919,13 @@ public class TestStelemB extends TestCase {
 		
 				final double val = TestStelemB.getUpdateValue();
 				
-				if( xcnt == 8 )
+				if( xcnt == 12 )
 				{
 					System.out.println( "******************" );
 					System.out.println( xcnt );
 					System.out.println( ival );
 					System.out.println( val );
-					// System.out.println( err.getVal() );
+					System.out.println( "## " + ( err.getVal() ) );
 				}
 				
 				
