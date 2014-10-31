@@ -105,6 +105,38 @@ public class DirectionalDerivative<U extends NumDimensions, R extends Elem<R,?>,
 		return( ret );
 	}
 	
+	
+	@Override
+	public GeometricAlgebraMultivectorElem<U, SymbolicElem<R, S>, SymbolicElemFactory<R, S>> eval(
+			HashMap<Elem<?,?>,Elem<?,?>> implicitSpace )
+			throws NotInvertibleException, MultiplicativeDistributionRequiredException
+		{
+	
+			final GeometricAlgebraMultivectorElemFactory<U, SymbolicElem<R, S>, SymbolicElemFactory<R, S>> 
+				facB = this.getFac().getFac();
+			
+			final SymbolicElemFactory<R, S> facC = facB.getFac();
+			
+			final GeometricAlgebraMultivectorElem<U, SymbolicElem<R, S>, SymbolicElemFactory<R, S>> mul = 
+					new GeometricAlgebraMultivectorElem<U, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>( facC , dim );
+			
+			BigInteger cnt = BigInteger.ZERO;
+			
+			final BigInteger max = dim.getVal();
+			
+			for( cnt = BigInteger.ZERO ; cnt.compareTo(max) < 0 ; cnt = cnt.add( BigInteger.ONE ) )
+			{
+				final HashSet<BigInteger> key = new HashSet<BigInteger>();
+				key.add( cnt );
+				
+				PartialDerivativeOp<R,S,K> val = dfac.getPartial( cnt );
+				
+				mul.setVal(key, val);
+			}
+			
+			return( mul );
+		}
+	
 
 	@Override
 	public String writeString( ) {
