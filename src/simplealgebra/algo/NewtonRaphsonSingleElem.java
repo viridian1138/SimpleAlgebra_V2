@@ -46,7 +46,7 @@ public abstract class NewtonRaphsonSingleElem<R extends Elem<R,?>, S extends Ele
 	
 	protected R lastValue = null;
 	
-	protected HashMap<Elem<?,?>,Elem<?,?>> implicitSpace = null;
+	protected HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace = null;
 	
 	protected SymbolicElem<R,S> eval;
 	
@@ -54,8 +54,8 @@ public abstract class NewtonRaphsonSingleElem<R extends Elem<R,?>, S extends Ele
 	
 	
 	public NewtonRaphsonSingleElem( final SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>> _function , 
-			final ArrayList<Elem<?,?>> _withRespectTo , 
-			final HashMap<Elem<?,?>,Elem<?,?>> implicitSpaceFirstLevel )
+			final ArrayList<? extends Elem<?,?>> _withRespectTo , 
+			final HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpaceFirstLevel )
 					throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
 		function = _function;
@@ -64,7 +64,7 @@ public abstract class NewtonRaphsonSingleElem<R extends Elem<R,?>, S extends Ele
 	}
 	
 	
-	public R eval( HashMap<Elem<?,?>,Elem<?,?>> implicitSpaceInitialGuess ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	public R eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpaceInitialGuess ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
 		implicitSpace = implicitSpaceInitialGuess;
 		lastValue = eval.eval( implicitSpace );

@@ -48,12 +48,12 @@ public class SymbolicRegenCovar<Z extends Object, R extends Elem<R,?>, S extends
 	}
 	
 	@Override
-	public EinsteinTensorElem<Z,R,S> eval( HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
+	public EinsteinTensorElem<Z,R,S> eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
 		return( elem.eval( implicitSpace ).regenCovar( newCovar ) );
 	}
 	
 	@Override
-	public EinsteinTensorElem<Z,R,S> evalPartialDerivative( ArrayList<Elem<?,?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	public EinsteinTensorElem<Z,R,S> evalPartialDerivative( ArrayList<? extends Elem<?,?>> withRespectTo , HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
 		return( elem.evalPartialDerivative( withRespectTo , implicitSpace ).regenCovar( newCovar ) );
 	}

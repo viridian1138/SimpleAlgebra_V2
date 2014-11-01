@@ -1,3 +1,29 @@
+
+
+
+
+
+//$$strtCprt
+/**
+* Simple Algebra 
+* 
+* Copyright (C) 2014 Thornton Green
+* 
+* This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as
+* published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
+* This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty 
+* of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+* You should have received a copy of the GNU General Public License along with this program; if not, 
+* see <http://www.gnu.org/licenses>.
+* Additional permission under GNU GPL version 3 section 7
+*
+*/
+//$$endCprt
+
+
+
+
+
 package test_simplealgebra;
 
 import java.math.BigInteger;
@@ -164,13 +190,13 @@ public class TestStelemC extends TestCase {
 		}
 
 		@Override
-		public DoubleElem eval( HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException,
+		public DoubleElem eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
 			throw( new RuntimeException( "NotSupported" ) );
 		}
 
 		@Override
-		public DoubleElem evalPartialDerivative(ArrayList<Elem<?, ?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace)
+		public DoubleElem evalPartialDerivative(ArrayList<? extends Elem<?, ?>> withRespectTo , HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace)
 				throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
 			throw( new RuntimeException( "NotSupported" ) );
@@ -340,7 +366,7 @@ public class TestStelemC extends TestCase {
 		
 
 		@Override
-		public DoubleElem eval(HashMap<Elem<?, ?>, Elem<?, ?>> implicitSpace)
+		public DoubleElem eval(HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace)
 				throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
 			cols[ 0 ] = 0;
@@ -421,7 +447,7 @@ public class TestStelemC extends TestCase {
 		}
 
 		@Override
-		public SymbolicElem<DoubleElem,DoubleElemFactory> eval(HashMap<Elem<?, ?>, Elem<?, ?>> implicitSpace)
+		public SymbolicElem<DoubleElem,DoubleElemFactory> eval(HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace)
 				throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
 			return( new BNelem( fac.getFac() , coord ) );
@@ -429,12 +455,12 @@ public class TestStelemC extends TestCase {
 		
 		
 		@Override
-		public SymbolicElem<DoubleElem,DoubleElemFactory> evalPartialDerivative(ArrayList<Elem<?, ?>> withRespectTo, HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws MultiplicativeDistributionRequiredException, NotInvertibleException {
+		public SymbolicElem<DoubleElem,DoubleElemFactory> evalPartialDerivative(ArrayList<? extends Elem<?, ?>> withRespectTo, HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws MultiplicativeDistributionRequiredException, NotInvertibleException {
 			if( withRespectTo.size() > 1 )
 			{
 				return( fac.zero() );
 			}
-			Iterator<Elem<?,?>> it = withRespectTo.iterator();
+			Iterator<? extends Elem<?,?>> it = withRespectTo.iterator();
 			CNelem wrt = (CNelem)( it.next() );
 			final boolean cond = this.symbolicEquals( wrt );
 			return( cond ? fac.identity() : fac.zero() );
@@ -518,13 +544,12 @@ public class TestStelemC extends TestCase {
 		@Override
 		public SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>, 
 			SymbolicElemFactory<DoubleElem,DoubleElemFactory>> eval(
-				HashMap<Elem<?, ?>, Elem<?, ?>> implicitSpace)
+				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace)
 				throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
 			
 			
-			HashMap ims = implicitSpace;
-			HashMap<AElem,AElem> imp = (HashMap<AElem,AElem>) ims;
+			HashMap<AElem,AElem> imp = (HashMap<AElem,AElem>) implicitSpace;
 			
 			
 			HashMap<HashMap<AElem, BigInteger>,CoeffNode> spacesA = new HashMap<HashMap<AElem, BigInteger>,CoeffNode>();
@@ -783,8 +808,8 @@ public class TestStelemC extends TestCase {
 
 		public StelemNewton(
 				SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>> _function,
-				ArrayList<Elem<?, ?>> _withRespectTo, 
-				HashMap<Elem<?, ?>, Elem<?, ?>> implicitSpaceFirstLevel)
+				ArrayList<? extends Elem<?, ?>> _withRespectTo, 
+				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpaceFirstLevel)
 				throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
 			super(_function, _withRespectTo, implicitSpaceFirstLevel);
@@ -801,7 +826,7 @@ public class TestStelemC extends TestCase {
 		}
 		
 		@Override
-		public DoubleElem eval( HashMap<Elem<?,?>,Elem<?,?>> implicitSpaceInitialGuess ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+		public DoubleElem eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpaceInitialGuess ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 		{
 			intCnt = 0;
 			return( super.eval(implicitSpaceInitialGuess) );
@@ -1008,9 +1033,7 @@ public class TestStelemC extends TestCase {
 		
 		final HashMap<AElem,AElem> implicitSpace0 = new HashMap<AElem,AElem>();
 		
-		final HashMap implicitSpace1 = implicitSpace0;
-		
-		final HashMap<Elem<?,?>,Elem<?,?>> implicitSpace2 = (HashMap<Elem<?,?>,Elem<?,?>>) implicitSpace1;
+		final HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace2 = implicitSpace0;
 		
 		implicitSpace0.put( new AElem( de , TV ) , new AElem( de , 0 ) );
 		implicitSpace0.put( new AElem( de , XV ) , new AElem( de , 0 ) );

@@ -42,15 +42,15 @@ public abstract class DerivativeElem<R extends Elem<R,?>, S extends ElemFactory<
 		super(_fac);
 	}
 
-	public abstract R evalDerivative( SymbolicElem<R,S> in , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException;
+	public abstract R evalDerivative( SymbolicElem<R,S> in , HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException;
 	
 	@Override
-	public R eval( HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
+	public R eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
 		throw( new MultiplicativeDistributionRequiredException() );
 	}
 	
 	@Override
-	public R evalPartialDerivative( ArrayList<Elem<?,?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	public R evalPartialDerivative( ArrayList<? extends Elem<?,?>> withRespectTo , HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
 		throw( new MultiplicativeDistributionRequiredException() );
 	}

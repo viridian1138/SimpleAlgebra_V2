@@ -47,14 +47,14 @@ public class SymbolicMultRevCoeff<U extends NumDimensions, R extends Elem<R,?>, 
 	}
 	
 	@Override
-	public SquareMatrixElem<U, R, S> eval( HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
+	public SquareMatrixElem<U, R, S> eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
 		ArrayList<SquareMatrixElem<U, R, S>> args = new ArrayList<SquareMatrixElem<U, R, S>>();
 		args.add( elemB.eval( implicitSpace ) );
 		return( elemA.eval( implicitSpace ).handleOptionalOp( SquareMatrixElem.SquareMatrixCmd.MULT_REV_COEFF , args) );
 	}
 	
 	@Override
-	public SquareMatrixElem<U, R, S> evalPartialDerivative(ArrayList<Elem<?, ?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace )
+	public SquareMatrixElem<U, R, S> evalPartialDerivative(ArrayList<? extends Elem<?, ?>> withRespectTo , HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace )
 			throws NotInvertibleException, MultiplicativeDistributionRequiredException {
 		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TBD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		return null;

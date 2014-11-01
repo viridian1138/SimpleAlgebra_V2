@@ -51,12 +51,12 @@ public class SymbolicAdd<R extends Elem<R,?>, S extends ElemFactory<R,S>> extend
 	}
 	
 	@Override
-	public R eval( HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
+	public R eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
 		return( elemA.eval( implicitSpace ).add( elemB.eval( implicitSpace ) ) );
 	}
 	
 	@Override
-	public R evalPartialDerivative( ArrayList<Elem<?,?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	public R evalPartialDerivative( ArrayList<? extends Elem<?,?>> withRespectTo , HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
 		return( elemA.evalPartialDerivative( withRespectTo , implicitSpace ).add( elemB.evalPartialDerivative( withRespectTo , implicitSpace ) ) );
 	}

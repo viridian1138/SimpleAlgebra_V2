@@ -65,13 +65,13 @@ public class TestAddSimplifySymbolic extends TestCase
 		}
 
 		@Override
-		public SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory> eval( HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException,
+		public SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory> eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
 			throw( new RuntimeException( "NotSupported" ) );
 		}
 
 		@Override
-		public SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory> evalPartialDerivative(ArrayList<Elem<?, ?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace)
+		public SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory> evalPartialDerivative(ArrayList<? extends Elem<?, ?>> withRespectTo , HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace)
 				throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
 			throw( new RuntimeException( "NotSupported" ) );

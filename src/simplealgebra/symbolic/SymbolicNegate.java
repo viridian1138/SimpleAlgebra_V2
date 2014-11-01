@@ -51,12 +51,12 @@ public class SymbolicNegate<R extends Elem<R,?>, S extends ElemFactory<R,S>> ext
 	}
 	
 	@Override
-	public R eval( HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
+	public R eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
 		return( elem.eval( implicitSpace ).negate() );
 	}
 	
 	@Override
-	public R evalPartialDerivative( ArrayList<Elem<?,?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	public R evalPartialDerivative( ArrayList<? extends Elem<?,?>> withRespectTo , HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
 		return( elem.evalPartialDerivative( withRespectTo , implicitSpace ).negate() );
 	}

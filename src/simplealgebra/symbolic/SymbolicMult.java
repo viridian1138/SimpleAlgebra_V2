@@ -56,7 +56,7 @@ public class SymbolicMult<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 	}
 	
 	@Override
-	public R eval( HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
+	public R eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
 		if( elemA instanceof DerivativeElem )
 		{
 			return( ( (DerivativeElem<R,S>) elemA ).evalDerivative( elemB , implicitSpace ) );
@@ -86,20 +86,21 @@ public class SymbolicMult<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 	}
 	
 	@Override
-	public R evalPartialDerivative( ArrayList<Elem<?, ?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	public R evalPartialDerivative( ArrayList<? extends Elem<?, ?>> withRespectTo , HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
 		if( elemA instanceof PartialDerivativeOp )
 		{
-			ArrayList<Elem<?, ?>> newWrt = new ArrayList<Elem<?, ?>>();
-			Iterator<Elem<?,?>> it = ((PartialDerivativeOp) elemA).getWithRespectTo().iterator();
+			final ArrayList<? extends Elem<?, ?>> newWrt = new ArrayList<Elem<?, ?>>();
+			final ArrayList neWW = newWrt;
+			Iterator<? extends Elem<?,?>> it = ((PartialDerivativeOp) elemA).getWithRespectTo().iterator();
 			while( it.hasNext() )
 			{
-				newWrt.add( it.next() );
+				neWW.add( it.next() );
 			}
 			it = withRespectTo.iterator();
 			while( it.hasNext() )
 			{
-				newWrt.add( it.next() );
+				neWW.add( it.next() );
 			}
 			return( elemB.evalPartialDerivative(newWrt, implicitSpace) );
 		}

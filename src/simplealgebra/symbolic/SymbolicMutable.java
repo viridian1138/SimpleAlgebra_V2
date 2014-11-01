@@ -58,14 +58,14 @@ public class SymbolicMutable<T extends Elem<T,?>, U extends MutableElem<T,U,?>, 
 	}
 	
 	@Override
-	public U eval( HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
+	public U eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
 		final U evl = elemA.eval( implicitSpace );
 		final U mutr = elemB.mutate( evl );
 		return( mutr );
 	}
 	
 	@Override
-	public U evalPartialDerivative(ArrayList<Elem<?, ?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace )
+	public U evalPartialDerivative(ArrayList<? extends Elem<?, ?>> withRespectTo , HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace )
 			throws NotInvertibleException {
 		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TBD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		return null;

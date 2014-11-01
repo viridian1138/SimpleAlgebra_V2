@@ -49,12 +49,12 @@ public class SymbolicZero<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 	}
 	
 	@Override
-	public R eval( HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) {
+	public R eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) {
 		return( fac.zero() );
 	}
 	
 	@Override
-	public R evalPartialDerivative( ArrayList<Elem<?,?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException
+	public R evalPartialDerivative( ArrayList<? extends Elem<?,?>> withRespectTo , HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException
 	{
 		return( fac.zero() );
 	}

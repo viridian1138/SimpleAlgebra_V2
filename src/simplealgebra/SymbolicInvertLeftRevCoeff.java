@@ -45,13 +45,13 @@ public class SymbolicInvertLeftRevCoeff<U extends NumDimensions, R extends Elem<
 	}
 	
 	@Override
-	public SquareMatrixElem<U, R, S> eval( HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
+	public SquareMatrixElem<U, R, S> eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
 		ArrayList<SquareMatrixElem<U, R, S>> args = new ArrayList<SquareMatrixElem<U, R, S>>();
 		return( elem.eval( implicitSpace ).handleOptionalOp( SquareMatrixElem.SquareMatrixCmd.INVERT_LEFT_REV_COEFF , args) );
 	}
 	
 	@Override
-	public SquareMatrixElem<U, R, S> evalPartialDerivative( ArrayList<Elem<?, ?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace )
+	public SquareMatrixElem<U, R, S> evalPartialDerivative( ArrayList<? extends Elem<?, ?>> withRespectTo , HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace )
 			throws NotInvertibleException, MultiplicativeDistributionRequiredException {
 		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TBD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		return null;

@@ -55,8 +55,8 @@ public class PartialDerivativeOp<R extends Elem<R,?>, S extends ElemFactory<R,S>
 	}
 	
 	@Override
-	public R evalDerivative( SymbolicElem<R,S> in , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
-		return( in.evalPartialDerivative( (ArrayList<Elem<?, ?>>) withRespectTo , implicitSpace ) );
+	public R evalDerivative( SymbolicElem<R,S> in , HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
+		return( in.evalPartialDerivative( withRespectTo , implicitSpace ) );
 	}	
 
 	@Override

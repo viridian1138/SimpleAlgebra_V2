@@ -54,17 +54,17 @@ public abstract class Stelem<R extends Elem<R,?>, S extends ElemFactory<R,S>, K 
 	}
 	
 	@Override
-	public SymbolicElem<R,S> evalPartialDerivative(ArrayList<Elem<?, ?>> withRespectTo, HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws MultiplicativeDistributionRequiredException, NotInvertibleException {
+	public SymbolicElem<R,S> evalPartialDerivative(ArrayList<? extends Elem<?, ?>> withRespectTo, HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws MultiplicativeDistributionRequiredException, NotInvertibleException {
 		Stelem<R,S,K> rm = this.cloneInstance();
 		rm.applyPartialDerivative( (ArrayList<K>) withRespectTo );
 		return( rm.eval( implicitSpace ) );
 	}
 	
 	
-	public Stelem<R,S,K> simplifyPartialDerivative( ArrayList<Elem<?, ?>> withRespectTo ) throws NotInvertibleException
+	public Stelem<R,S,K> simplifyPartialDerivative( ArrayList<K> withRespectTo ) throws NotInvertibleException
 	{
 		Stelem<R,S,K> rm = this.cloneInstance();
-		rm.applyPartialDerivative( (ArrayList<K>) withRespectTo );
+		rm.applyPartialDerivative( withRespectTo );
 		return( rm );
 	}
 	

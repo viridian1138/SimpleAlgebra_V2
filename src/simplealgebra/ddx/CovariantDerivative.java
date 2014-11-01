@@ -79,7 +79,7 @@ public class CovariantDerivative<Z extends Object, U extends NumDimensions, R ex
 	
 	
 	public SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>
-		genTerms( HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException 
+		genTerms( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException 
 	{
 		final SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>
 			deriv = odfac.getOrdinaryDerivative( tensorWithRespectTo , derivativeIndex );
@@ -126,7 +126,7 @@ public class CovariantDerivative<Z extends Object, U extends NumDimensions, R ex
 	@Override
 	public EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>> evalDerivative(
 			SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> in ,
-			HashMap<Elem<?,?>,Elem<?,?>> implicitSpace )
+			HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace )
 			throws NotInvertibleException, MultiplicativeDistributionRequiredException {
 		return( this.genTerms( implicitSpace ).eval( implicitSpace ) );
 	}

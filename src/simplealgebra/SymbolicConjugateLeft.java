@@ -44,7 +44,7 @@ public class SymbolicConjugateLeft<R extends Elem<R,?>, S extends ElemFactory<R,
 
 	
 	@Override
-	public ComplexElem<R, S> eval( HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException,
+	public ComplexElem<R, S> eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException,
 			MultiplicativeDistributionRequiredException {
 		ArrayList<ComplexElem<R,S>> args = new ArrayList<ComplexElem<R,S>>();
 		return( elem.eval( implicitSpace ).handleOptionalOp( ComplexElem.ComplexCmd.CONJUGATE_LEFT , args ) );
@@ -53,7 +53,7 @@ public class SymbolicConjugateLeft<R extends Elem<R,?>, S extends ElemFactory<R,
 	
 	@Override
 	public ComplexElem<R, S> evalPartialDerivative(
-			ArrayList<Elem<?, ?>> withRespectTo , HashMap<Elem<?,?>,Elem<?,?>> implicitSpace ) throws NotInvertibleException,
+			ArrayList<? extends Elem<?, ?>> withRespectTo , HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException,
 			MultiplicativeDistributionRequiredException {
 		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TBD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		return null;

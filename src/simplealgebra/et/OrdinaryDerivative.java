@@ -72,7 +72,7 @@ public class OrdinaryDerivative<Z extends Object, U extends NumDimensions, R ext
 	@Override
 	public EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>> evalDerivative(
 			SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> in ,
-			HashMap<Elem<?,?>,Elem<?,?>> implicitSpace )
+			HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace )
 			throws NotInvertibleException, MultiplicativeDistributionRequiredException {
 		
 		final SymbolicElemFactory<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, 

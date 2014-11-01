@@ -69,7 +69,7 @@ public class DirectionalDerivative<U extends NumDimensions, R extends Elem<R,?>,
 	@Override
 	public GeometricAlgebraMultivectorElem<U, SymbolicElem<R, S>, SymbolicElemFactory<R, S>> evalDerivative(
 			SymbolicElem<GeometricAlgebraMultivectorElem<U, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, GeometricAlgebraMultivectorElemFactory<U, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> in ,
-			HashMap<Elem<?,?>,Elem<?,?>> implicitSpace )
+			HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace )
 			throws NotInvertibleException, MultiplicativeDistributionRequiredException {
 		
 		final SymbolicElemFactory<GeometricAlgebraMultivectorElem<U, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, 
@@ -108,7 +108,7 @@ public class DirectionalDerivative<U extends NumDimensions, R extends Elem<R,?>,
 	
 	@Override
 	public GeometricAlgebraMultivectorElem<U, SymbolicElem<R, S>, SymbolicElemFactory<R, S>> eval(
-			HashMap<Elem<?,?>,Elem<?,?>> implicitSpace )
+			HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace )
 			throws NotInvertibleException, MultiplicativeDistributionRequiredException
 		{
 	
