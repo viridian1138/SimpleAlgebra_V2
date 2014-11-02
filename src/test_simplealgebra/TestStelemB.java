@@ -103,6 +103,7 @@ public class TestStelemB extends TestCase {
 	{
 		return( tempArray[ 2 ][ 1 ] );
 	}
+
 	
 	
 	
@@ -121,6 +122,23 @@ public class TestStelemB extends TestCase {
 					av = iterArray[ tv ][ xv ];
 				}
 				tempArray[ ta + 1 ][ xa + 1 ] = av;
+			}
+		}
+	}
+	
+	
+	
+	private static int[][] spatialAssertArray = new int[ 3 ][ 3 ];
+	
+	
+	
+	protected static void clearSpatialAssertArray( )
+	{
+		for( int ta = -1 ; ta < 2 ; ta++ )
+		{
+			for( int xa = -1 ; xa < 2 ; xa++ )
+			{
+				spatialAssertArray[ ta + 1 ][ xa + 1 ] = 0;
 			}
 		}
 	}
@@ -364,6 +382,7 @@ public class TestStelemB extends TestCase {
 				BigInteger coordVal = coord.get( keyCoord );
 				cols[ keyCoord.getCol() ] = coordVal.intValue() + 1;
 			}
+			( spatialAssertArray[ cols[ 0 ] ][ cols[ 1 ] ] )++;
 			return( new DoubleElem( TestStelemB.tempArray[ cols[ 0 ] ][ cols[ 1 ] ] ) );
 		}
 
@@ -1050,7 +1069,7 @@ public class TestStelemB extends TestCase {
 			for( int xcnt = 0 ; xcnt < NUM_X_ITER ; xcnt++ )
 			{
 				fillTempArray( tval , xcnt );
-				
+				clearSpatialAssertArray();
 				
 								
 				
@@ -1075,6 +1094,17 @@ public class TestStelemB extends TestCase {
 					System.out.println( val );
 					System.out.println( "## " + ( err.getVal() ) );
 				}
+				
+				
+				Assert.assertTrue( spatialAssertArray[ 0 ][ 0 ] == 0 );
+				
+				Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ] > 0 );
+				
+				Assert.assertTrue( spatialAssertArray[ 2 ][ 1 ] > 0 );
+				Assert.assertTrue( spatialAssertArray[ 1 ][ 2 ] > 0 );
+				
+				Assert.assertTrue( spatialAssertArray[ 0 ][ 1 ] > 0 );
+				Assert.assertTrue( spatialAssertArray[ 1 ][ 0 ] > 0 );
 				
 				
 				Assert.assertTrue( Math.abs( err.getVal() ) < ( 0.01 * Math.abs( val ) + 0.01 ) );

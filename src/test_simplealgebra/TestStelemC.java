@@ -145,6 +145,28 @@ public class TestStelemC extends TestCase {
 	
 	
 	
+	
+	private static int[][][] spatialAssertArray = new int[ 3 ][ 3 ][ 3 ];
+	
+	
+	
+	protected static void clearSpatialAssertArray( )
+	{
+		for( int ta = -1 ; ta < 2 ; ta++ )
+		{
+			for( int xa = -1 ; xa < 2 ; xa++ )
+			{
+				for( int ya = -1 ; ya < 2 ; ya++ )
+				{
+					spatialAssertArray[ ta + 1 ][ xa + 1 ][ ya + 1 ] = 0;
+				}
+			}
+		}
+	}
+	
+	
+	
+	
 	private class DDirec extends DirectionalDerivativePartialFactory<
 		SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>, 
 		SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
@@ -383,6 +405,7 @@ public class TestStelemC extends TestCase {
 				BigInteger coordVal = coord.get( keyCoord );
 				cols[ keyCoord.getCol() ] = coordVal.intValue() + 1;
 			}
+			( spatialAssertArray[ cols[ 0 ] ][ cols[ 1 ] ][ cols[ 2 ] ] )++;
 			return( new DoubleElem( TestStelemC.tempArray[ cols[ 0 ] ][ cols[ 1 ] ][ cols[ 2 ] ] ) );
 		}
 
@@ -1076,6 +1099,7 @@ public class TestStelemC extends TestCase {
 				for( int ycnt = 0 ; ycnt < NUM_Y_ITER ; ycnt++ )
 				{
 					fillTempArray( tval , xcnt , ycnt );
+					clearSpatialAssertArray();
 		
 				
 					final double ival = TestStelemC.getUpdateValue();
@@ -1096,6 +1120,19 @@ public class TestStelemC extends TestCase {
 						System.out.println( val );
 						System.out.println( "## " + ( err.getVal() ) );
 					}
+					
+					
+					Assert.assertTrue( spatialAssertArray[ 0 ][ 0 ][ 0 ] == 0 );
+					
+					Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ] > 0 );
+					
+					Assert.assertTrue( spatialAssertArray[ 2 ][ 1 ][ 1 ] > 0 );
+					Assert.assertTrue( spatialAssertArray[ 1 ][ 2 ][ 1 ] > 0 );
+					Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 2 ] > 0 );
+					
+					Assert.assertTrue( spatialAssertArray[ 0 ][ 1 ][ 1 ] > 0 );
+					Assert.assertTrue( spatialAssertArray[ 1 ][ 0 ][ 1 ] > 0 );
+					Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 0 ] > 0 );
 				
 				
 					Assert.assertTrue( Math.abs( err.getVal() ) < ( 0.01 * Math.abs( val ) + 0.01 ) );

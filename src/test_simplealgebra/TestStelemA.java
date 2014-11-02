@@ -72,6 +72,26 @@ public class TestStelemA extends TestCase {
 	}
 	
 	
+	
+	
+	private static int[][] spatialAssertArray = new int[ 3 ][ 3 ];
+	
+	
+	
+	protected static void clearSpatialAssertArray( )
+	{
+		for( int ta = -1 ; ta < 2 ; ta++ )
+		{
+			for( int xa = -1 ; xa < 2 ; xa++ )
+			{
+				spatialAssertArray[ ta + 1 ][ xa + 1 ] = 0;
+			}
+		}
+	}
+	
+	
+	
+	
 	private class AElem extends SymbolicElem<DoubleElem, DoubleElemFactory>
 	{
 		private int col;
@@ -275,6 +295,7 @@ public class TestStelemA extends TestCase {
 				BigInteger coordVal = coord.get( keyCoord );
 				cols[ keyCoord.getCol() ] = coordVal.intValue() + 1;
 			}
+			( spatialAssertArray[ cols[ 0 ] ][ cols[ 1 ] ] )++;
 			return( new DoubleElem( TestStelemA.tempArray[ cols[ 0 ] ][ cols[ 1 ] ] ) );
 		}
 
@@ -820,6 +841,7 @@ public class TestStelemA extends TestCase {
 			coord.put( new AElem( de , 1 ) , BigInteger.valueOf( 0 ) );
 			wrt3.add( new CNelem( se , coord ) );
 		}
+		clearSpatialAssertArray();
 		
 		
 		final double ival = TestStelemA.getUpdateValue();
@@ -841,6 +863,17 @@ public class TestStelemA extends TestCase {
 		
 		// System.out.println( val );
 		// System.out.println( err.getVal() );
+		
+		
+		Assert.assertTrue( spatialAssertArray[ 0 ][ 0 ] == 0 );
+		
+		Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ] > 0 );
+		
+		Assert.assertTrue( spatialAssertArray[ 2 ][ 1 ] > 0 );
+		Assert.assertTrue( spatialAssertArray[ 1 ][ 2 ] > 0 );
+		
+		Assert.assertTrue( spatialAssertArray[ 0 ][ 1 ] > 0 );
+		Assert.assertTrue( spatialAssertArray[ 1 ][ 0 ] > 0 );
 		
 		
 		Assert.assertTrue( Math.abs( val - ( -1.450868 ) ) < 0.01 );
