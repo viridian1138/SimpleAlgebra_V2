@@ -399,6 +399,8 @@ public class TestStelemD extends TestCase {
 		
 		protected final int[] cols = new int[ 4 ];
 		
+		protected final boolean[] assertCols = new boolean[ 4 ];
+		
 
 		@Override
 		public DoubleElem eval(HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace)
@@ -408,18 +410,24 @@ public class TestStelemD extends TestCase {
 			cols[ 1 ] = 0;
 			cols[ 2 ] = 0;
 			cols[ 3 ] = 0;
-			if( coord.keySet().size() != 4 )
-			{
-				throw( new RuntimeException( "InternalError" ) );
-			}
+			assertCols[ 0 ] = false;
+			assertCols[ 1 ] = false;
+			assertCols[ 2 ] = false;
+			assertCols[ 3 ] = false;
+			Assert.assertTrue( coord.keySet().size() == 4 );
 			Iterator<AElem> it = coord.keySet().iterator();
 			while( it.hasNext() )
 			{
 				AElem keyCoord = it.next();
 				BigInteger coordVal = coord.get( keyCoord );
 				cols[ keyCoord.getCol() ] = coordVal.intValue() + 1;
+				assertCols[ keyCoord.getCol() ] = true;
 			}
 			( spatialAssertArray[ cols[ 0 ] ][ cols[ 1 ] ][ cols[ 2 ] ][ cols[ 3 ] ] )++;
+			Assert.assertTrue( assertCols[ 0 ] );
+			Assert.assertTrue( assertCols[ 1 ] );
+			Assert.assertTrue( assertCols[ 2 ] );
+			Assert.assertTrue( assertCols[ 3 ] );
 			return( new DoubleElem( TestStelemD.tempArray[ cols[ 0 ] ][ cols[ 1 ] ][ cols[ 2 ] ][ cols[ 3 ] ] ) );
 		}
 

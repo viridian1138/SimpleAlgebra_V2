@@ -364,6 +364,8 @@ public class TestStelemB extends TestCase {
 		
 		protected final int[] cols = new int[ 2 ];
 		
+		protected final boolean[] assertCols = new boolean[ 2 ];
+		
 
 		@Override
 		public DoubleElem eval(HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace)
@@ -371,18 +373,20 @@ public class TestStelemB extends TestCase {
 				MultiplicativeDistributionRequiredException {
 			cols[ 0 ] = 0;
 			cols[ 1 ] = 0;
-			if( coord.keySet().size() != 2 )
-			{
-				throw( new RuntimeException( "InternalError" ) );
-			}
+			assertCols[ 0 ] = false;
+			assertCols[ 1 ] = false;
+			Assert.assertTrue( coord.keySet().size() == 2 );
 			Iterator<AElem> it = coord.keySet().iterator();
 			while( it.hasNext() )
 			{
 				AElem keyCoord = it.next();
 				BigInteger coordVal = coord.get( keyCoord );
 				cols[ keyCoord.getCol() ] = coordVal.intValue() + 1;
+				assertCols[ keyCoord.getCol() ] = true;
 			}
 			( spatialAssertArray[ cols[ 0 ] ][ cols[ 1 ] ] )++;
+			Assert.assertTrue( assertCols[ 0 ] );
+			Assert.assertTrue( assertCols[ 1 ] );
 			return( new DoubleElem( TestStelemB.tempArray[ cols[ 0 ] ][ cols[ 1 ] ] ) );
 		}
 
