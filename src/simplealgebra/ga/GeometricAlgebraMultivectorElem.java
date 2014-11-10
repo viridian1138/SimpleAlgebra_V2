@@ -39,12 +39,16 @@ import simplealgebra.Mutator;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.NumDimensions;
 import simplealgebra.SquareMatrixElem;
+import simplealgebra.SquareMatrixElemFactory;
 import simplealgebra.et.EinsteinTensorElem;
 import simplealgebra.qtrnn.QuaternionElem;
-
-import simplealgebra.symbolic.*;
-
-import simplealgebra.*;
+import simplealgebra.stime.SpacetimeAlgebraMultivectorElem;
+import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
+import simplealgebra.symbolic.SymbolicAdd;
+import simplealgebra.symbolic.SymbolicElem;
+import simplealgebra.symbolic.SymbolicElemFactory;
+import simplealgebra.symbolic.SymbolicMult;
+import simplealgebra.symbolic.SymbolicNegate;
 
 
 public class GeometricAlgebraMultivectorElem<U extends NumDimensions, R extends Elem<R,?>, S extends ElemFactory<R,S>> 
@@ -730,6 +734,45 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, R extends 
 	
 	
 	public void toQuaternion( QuaternionElem<U, R, ?> out )
+	{
+		R v0 = null;
+		R vl = null;
+		Iterator<HashSet<BigInteger>> it = map.keySet().iterator();
+		while( it.hasNext() )
+		{
+			HashSet<BigInteger> key = it.next();
+			R val = map.get(key);
+			if( !( dim.equals( BigInteger.valueOf( key.size() ) ) ) )
+			{
+				out.setVal(key, val);
+			}
+			else
+			{
+				if( key.size() == 0 )
+				{
+					v0 = val;
+				}
+				vl = val;
+			}
+		}
+		if( vl != null )
+		{
+			vl = vl.negate();
+			HashSet<BigInteger> key = new HashSet<BigInteger>();
+			if( v0 == null )
+			{
+				out.setVal(key, vl);
+			}
+			else
+			{
+				out.setVal(key, v0.add(vl));
+			}
+		}
+	}
+	
+	
+	
+	public void toSpacetimeAlgebra( SpacetimeAlgebraMultivectorElem<U, R, ?> out )
 	{
 		R v0 = null;
 		R vl = null;
