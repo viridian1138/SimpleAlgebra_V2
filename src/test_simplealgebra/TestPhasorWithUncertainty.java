@@ -37,7 +37,7 @@ import simplealgebra.NotInvertibleException;
 import simplealgebra.SquareMatrixElem;
 import simplealgebra.SquareMatrixElemFactory;
 import simplealgebra.ga.GeometricAlgebraMultivectorElem;
-import simplealgebra.ga.GeometricAlgebraMultivectorElemFactory;
+import simplealgebra.ga.*;
 import simplealgebra.meas.ValueWithUncertaintyElem;
 import simplealgebra.meas.ValueWithUncertaintyElemFactory;
 
@@ -110,6 +110,8 @@ public class TestPhasorWithUncertainty extends TestCase {
 					new ComplexElemFactory<ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory>,ValueWithUncertaintyElemFactory<DoubleElem,DoubleElemFactory>>( tl );
 		
 		final TestDimensionTwo td = new TestDimensionTwo();
+		
+		final GeometricAlgebraOrd ord = new GeometricAlgebraOrd();
 		
 		
 		final SquareMatrixElemFactory<TestDimensionTwo,ComplexElem<ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory>,ValueWithUncertaintyElemFactory<DoubleElem,DoubleElemFactory>>,ComplexElemFactory<ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory>,ValueWithUncertaintyElemFactory<DoubleElem,DoubleElemFactory>>> se = 
@@ -184,14 +186,14 @@ public class TestPhasorWithUncertainty extends TestCase {
 		
 		
 		
-		final GeometricAlgebraMultivectorElemFactory<TestDimensionTwo,ComplexElem<ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory>,ValueWithUncertaintyElemFactory<DoubleElem,DoubleElemFactory>>,ComplexElemFactory<ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory>,ValueWithUncertaintyElemFactory<DoubleElem,DoubleElemFactory>>> vl =
-				new GeometricAlgebraMultivectorElemFactory<TestDimensionTwo,ComplexElem<ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory>,ValueWithUncertaintyElemFactory<DoubleElem,DoubleElemFactory>>,ComplexElemFactory<ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory>,ValueWithUncertaintyElemFactory<DoubleElem,DoubleElemFactory>>>( cl , td );
+		final GeometricAlgebraMultivectorElemFactory<TestDimensionTwo,GeometricAlgebraOrd,ComplexElem<ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory>,ValueWithUncertaintyElemFactory<DoubleElem,DoubleElemFactory>>,ComplexElemFactory<ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory>,ValueWithUncertaintyElemFactory<DoubleElem,DoubleElemFactory>>> vl =
+				new GeometricAlgebraMultivectorElemFactory<TestDimensionTwo,GeometricAlgebraOrd,ComplexElem<ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory>,ValueWithUncertaintyElemFactory<DoubleElem,DoubleElemFactory>>,ComplexElemFactory<ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory>,ValueWithUncertaintyElemFactory<DoubleElem,DoubleElemFactory>>>( cl , td , ord );
 		
 		
-		final GeometricAlgebraMultivectorElem<TestDimensionTwo,ComplexElem<ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory>,ValueWithUncertaintyElemFactory<DoubleElem,DoubleElemFactory>>,ComplexElemFactory<ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory>,ValueWithUncertaintyElemFactory<DoubleElem,DoubleElemFactory>>>
+		final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd,ComplexElem<ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory>,ValueWithUncertaintyElemFactory<DoubleElem,DoubleElemFactory>>,ComplexElemFactory<ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory>,ValueWithUncertaintyElemFactory<DoubleElem,DoubleElemFactory>>>
 			inColumnVect = vl.zero();
 		
-		final GeometricAlgebraMultivectorElem<TestDimensionTwo,ComplexElem<ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory>,ValueWithUncertaintyElemFactory<DoubleElem,DoubleElemFactory>>,ComplexElemFactory<ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory>,ValueWithUncertaintyElemFactory<DoubleElem,DoubleElemFactory>>>
+		final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd,ComplexElem<ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory>,ValueWithUncertaintyElemFactory<DoubleElem,DoubleElemFactory>>,ComplexElemFactory<ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory>,ValueWithUncertaintyElemFactory<DoubleElem,DoubleElemFactory>>>
 			outColumnVect = vl.zero();
 		
 		

@@ -37,26 +37,27 @@ import simplealgebra.NumDimensions;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SymbolicElem;
 
-public class GeometricAlgebraMultivectorElemFactory<U extends NumDimensions, R extends Elem<R,?>, S extends ElemFactory<R,S>> extends ElemFactory<GeometricAlgebraMultivectorElem<U,R,S>, GeometricAlgebraMultivectorElemFactory<U,R,S>> {
+public class GeometricAlgebraMultivectorElemFactory<U extends NumDimensions, A extends Ord, R extends Elem<R,?>, S extends ElemFactory<R,S>> extends ElemFactory<GeometricAlgebraMultivectorElem<U,A,R,S>, GeometricAlgebraMultivectorElemFactory<U,A,R,S>> {
 
 	
-	public GeometricAlgebraMultivectorElemFactory( S _fac , U _dim )
+	public GeometricAlgebraMultivectorElemFactory( S _fac , U _dim , A _ord )
 	{
 		fac = _fac;
 		dim = _dim;
+		ord = _ord;
 	}
 	
 	
 	@Override
-	public GeometricAlgebraMultivectorElem<U, R, S> identity() {
-		GeometricAlgebraMultivectorElem<U, R, S> ret = new GeometricAlgebraMultivectorElem<U, R, S>( fac , dim );
+	public GeometricAlgebraMultivectorElem<U,A, R, S> identity() {
+		GeometricAlgebraMultivectorElem<U,A, R, S> ret = new GeometricAlgebraMultivectorElem<U,A, R, S>( fac , dim , ord );
 		ret.setVal( new HashSet<BigInteger>(), fac.identity() );
 		return( ret );
 	}
 
 	@Override
-	public GeometricAlgebraMultivectorElem<U, R, S> zero() {
-		return( new GeometricAlgebraMultivectorElem<U, R, S>( fac , dim ) );
+	public GeometricAlgebraMultivectorElem<U,A, R, S> zero() {
+		return( new GeometricAlgebraMultivectorElem<U,A, R, S>( fac , dim , ord ) );
 	}
 	
 	
@@ -82,8 +83,8 @@ public class GeometricAlgebraMultivectorElemFactory<U extends NumDimensions, R e
 	
 	
 	@Override
-	public SymbolicElem<GeometricAlgebraMultivectorElem<U, R, S>, GeometricAlgebraMultivectorElemFactory<U,R,S>> handleSymbolicOptionalOp( Object id , 
-			ArrayList<SymbolicElem<GeometricAlgebraMultivectorElem<U, R, S>, GeometricAlgebraMultivectorElemFactory<U,R,S>>> args )  throws NotInvertibleException
+	public SymbolicElem<GeometricAlgebraMultivectorElem<U,A, R, S>, GeometricAlgebraMultivectorElemFactory<U,A,R,S>> handleSymbolicOptionalOp( Object id , 
+			ArrayList<SymbolicElem<GeometricAlgebraMultivectorElem<U,A, R, S>, GeometricAlgebraMultivectorElemFactory<U,A,R,S>>> args )  throws NotInvertibleException
 	{
 		if( id instanceof GeometricAlgebraMultivectorElem.GeometricAlgebraMultivectorCmd )
 		{
@@ -91,37 +92,37 @@ public class GeometricAlgebraMultivectorElemFactory<U extends NumDimensions, R e
 			{
 				case DOT:
 				{
-					SymbolicElem<GeometricAlgebraMultivectorElem<U, R, S>, GeometricAlgebraMultivectorElemFactory<U,R,S>> argA
+					SymbolicElem<GeometricAlgebraMultivectorElem<U,A, R, S>, GeometricAlgebraMultivectorElemFactory<U,A,R,S>> argA
 						= args.get( 0 );
-					SymbolicElem<GeometricAlgebraMultivectorElem<U, R, S>, GeometricAlgebraMultivectorElemFactory<U,R,S>> argB
+					SymbolicElem<GeometricAlgebraMultivectorElem<U,A, R, S>, GeometricAlgebraMultivectorElemFactory<U,A,R,S>> argB
 						= args.get( 1 );
-					return( new SymbolicDot<U,R,S>( argA , argB , argA.getFac().getFac() ) );
+					return( new SymbolicDot<U,A,R,S>( argA , argB , argA.getFac().getFac() ) );
 				}
 				// break;
 				
 				case WEDGE:
 				{
-					SymbolicElem<GeometricAlgebraMultivectorElem<U, R, S>, GeometricAlgebraMultivectorElemFactory<U,R,S>> argA
+					SymbolicElem<GeometricAlgebraMultivectorElem<U,A, R, S>, GeometricAlgebraMultivectorElemFactory<U,A,R,S>> argA
 						= args.get( 0 );
-					SymbolicElem<GeometricAlgebraMultivectorElem<U, R, S>, GeometricAlgebraMultivectorElemFactory<U,R,S>> argB
+					SymbolicElem<GeometricAlgebraMultivectorElem<U,A, R, S>, GeometricAlgebraMultivectorElemFactory<U,A,R,S>> argB
 						= args.get( 1 );
-					return( new SymbolicWedge<U,R,S>( argA , argB , argA.getFac().getFac() ) );
+					return( new SymbolicWedge<U,A,R,S>( argA , argB , argA.getFac().getFac() ) );
 				}
 				// break;
 				
 				case REVERSE_LEFT:
 				{
-					SymbolicElem<GeometricAlgebraMultivectorElem<U, R, S>, GeometricAlgebraMultivectorElemFactory<U,R,S>> argA
+					SymbolicElem<GeometricAlgebraMultivectorElem<U,A, R, S>, GeometricAlgebraMultivectorElemFactory<U,A,R,S>> argA
 						= args.get( 0 );
-					return( new SymbolicReverseLeft<U,R,S>( argA , argA.getFac().getFac() ) );
+					return( new SymbolicReverseLeft<U,A,R,S>( argA , argA.getFac().getFac() ) );
 				}
 				// break;
 				
 				case REVERSE_RIGHT:
 				{
-					SymbolicElem<GeometricAlgebraMultivectorElem<U, R, S>, GeometricAlgebraMultivectorElemFactory<U,R,S>> argA
+					SymbolicElem<GeometricAlgebraMultivectorElem<U,A, R, S>, GeometricAlgebraMultivectorElemFactory<U,A,R,S>> argA
 						= args.get( 0 );
-					return( new SymbolicReverseRight<U,R,S>( argA , argA.getFac().getFac() ) );
+					return( new SymbolicReverseRight<U,A,R,S>( argA , argA.getFac().getFac() ) );
 				}
 				// break;
 				
@@ -134,6 +135,7 @@ public class GeometricAlgebraMultivectorElemFactory<U extends NumDimensions, R e
 	
 	private S fac;
 	private U dim;
+	private A ord;
 
 }
 

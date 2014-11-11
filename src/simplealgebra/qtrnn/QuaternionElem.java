@@ -43,7 +43,7 @@ import simplealgebra.SquareMatrixElemFactory;
 import simplealgebra.et.EinsteinTensorElem;
 import simplealgebra.ga.GeometricAlgebraMultivectorElem;
 import simplealgebra.ga.GeometricAlgebraMultivectorElemFactory;
-import simplealgebra.stime.SpacetimeAlgebraMultivectorElem;
+import simplealgebra.ga.GeometricAlgebraOrd;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SymbolicAdd;
 import simplealgebra.symbolic.SymbolicElem;
@@ -526,11 +526,11 @@ public class QuaternionElem<U extends NumDimensions, R extends Elem<R,?>, S exte
 		SquareMatrixElem<NumDimensions,R,S> sqInv = sq.invertLeft();
 		
 		
-		GeometricAlgebraMultivectorElemFactory<NumDimensions, R, S> kfac = 
-				new GeometricAlgebraMultivectorElemFactory<NumDimensions, R, S>(fac, xdim);
+		GeometricAlgebraMultivectorElemFactory<NumDimensions, GeometricAlgebraOrd, R, S> kfac = 
+				new GeometricAlgebraMultivectorElemFactory<NumDimensions, GeometricAlgebraOrd, R, S>(fac, xdim, new GeometricAlgebraOrd() );
 		
-		GeometricAlgebraMultivectorElem<NumDimensions, R, S> ki = kfac.zero();
-		GeometricAlgebraMultivectorElem<NumDimensions, R, S> ko = kfac.zero();
+		GeometricAlgebraMultivectorElem<NumDimensions, GeometricAlgebraOrd, R, S> ki = kfac.zero();
+		GeometricAlgebraMultivectorElem<NumDimensions, GeometricAlgebraOrd, R, S> ko = kfac.zero();
 		
 		if( sindex >= 0 )
 		{
@@ -660,11 +660,11 @@ public class QuaternionElem<U extends NumDimensions, R extends Elem<R,?>, S exte
 		SquareMatrixElem<NumDimensions,R,S> sqInv = sq.handleOptionalOp(SquareMatrixElem.SquareMatrixCmd.INVERT_LEFT_REV_COEFF, null);
 		
 		
-		GeometricAlgebraMultivectorElemFactory<NumDimensions, R, S> kfac = 
-				new GeometricAlgebraMultivectorElemFactory<NumDimensions, R, S>(fac, xdim);
+		GeometricAlgebraMultivectorElemFactory<NumDimensions, GeometricAlgebraOrd, R, S> kfac = 
+				new GeometricAlgebraMultivectorElemFactory<NumDimensions, GeometricAlgebraOrd, R, S>(fac, xdim, new GeometricAlgebraOrd() );
 		
-		GeometricAlgebraMultivectorElem<NumDimensions, R, S> ki = kfac.zero();
-		GeometricAlgebraMultivectorElem<NumDimensions, R, S> ko = kfac.zero();
+		GeometricAlgebraMultivectorElem<NumDimensions, GeometricAlgebraOrd, R, S> ki = kfac.zero();
+		GeometricAlgebraMultivectorElem<NumDimensions, GeometricAlgebraOrd, R, S> ko = kfac.zero();
 		
 		if( sindex >= 0 )
 		{
@@ -728,18 +728,7 @@ public class QuaternionElem<U extends NumDimensions, R extends Elem<R,?>, S exte
 		return( ret );
 	}
 	
-	public void toGeometricAlgebra( GeometricAlgebraMultivectorElem<U, R, ?> out )
-	{
-		Iterator<HashSet<BigInteger>> it = map.keySet().iterator();
-		while( it.hasNext() )
-		{
-			HashSet<BigInteger> key = it.next();
-			R val = map.get(key);
-			out.setVal(key, val);
-		}
-	}
-	
-	public void toSpacetimeAlgebra( SpacetimeAlgebraMultivectorElem<U, R, ?> out )
+	public void toGeometricAlgebra( GeometricAlgebraMultivectorElem<U, ?, R, ?> out )
 	{
 		Iterator<HashSet<BigInteger>> it = map.keySet().iterator();
 		while( it.hasNext() )

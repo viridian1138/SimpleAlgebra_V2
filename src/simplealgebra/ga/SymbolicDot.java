@@ -39,13 +39,13 @@ import simplealgebra.symbolic.DroolsSession;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SymbolicElem;
 
-public class SymbolicDot<U extends NumDimensions, R extends Elem<R,?>, S extends ElemFactory<R,S>> extends 
-	SymbolicElem<GeometricAlgebraMultivectorElem<U,R,S>,GeometricAlgebraMultivectorElemFactory<U,R,S>> 
+public class SymbolicDot<U extends NumDimensions, A extends Ord, R extends Elem<R,?>, S extends ElemFactory<R,S>> extends 
+	SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> 
 {
 
 	public SymbolicDot( 
-			SymbolicElem<GeometricAlgebraMultivectorElem<U,R,S>,GeometricAlgebraMultivectorElemFactory<U,R,S>> _elemA , 
-			SymbolicElem<GeometricAlgebraMultivectorElem<U,R,S>,GeometricAlgebraMultivectorElemFactory<U,R,S>> _elemB , GeometricAlgebraMultivectorElemFactory<U, R, S> _fac) 
+			SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> _elemA , 
+			SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> _elemB , GeometricAlgebraMultivectorElemFactory<U,A, R, S> _fac) 
 	{
 		super( _fac );
 		elemA = _elemA;
@@ -54,8 +54,8 @@ public class SymbolicDot<U extends NumDimensions, R extends Elem<R,?>, S extends
 	
 	
 	public SymbolicDot( 
-			SymbolicElem<GeometricAlgebraMultivectorElem<U,R,S>,GeometricAlgebraMultivectorElemFactory<U,R,S>> _elemA , 
-			SymbolicElem<GeometricAlgebraMultivectorElem<U,R,S>,GeometricAlgebraMultivectorElemFactory<U,R,S>> _elemB , GeometricAlgebraMultivectorElemFactory<U, R, S> _fac ,
+			SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> _elemA , 
+			SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> _elemB , GeometricAlgebraMultivectorElemFactory<U,A, R, S> _fac ,
 			DroolsSession ds ) 
 	{
 		this( _elemA , _elemB , _fac );
@@ -64,16 +64,16 @@ public class SymbolicDot<U extends NumDimensions, R extends Elem<R,?>, S extends
 
 	
 	@Override
-	public GeometricAlgebraMultivectorElem<U, R, S> eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException,
+	public GeometricAlgebraMultivectorElem<U,A, R, S> eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException,
 			MultiplicativeDistributionRequiredException {
-		ArrayList<GeometricAlgebraMultivectorElem<U,R,S>> args = new ArrayList<GeometricAlgebraMultivectorElem<U,R,S>>();
+		ArrayList<GeometricAlgebraMultivectorElem<U,A,R,S>> args = new ArrayList<GeometricAlgebraMultivectorElem<U,A,R,S>>();
 		args.add( elemB.eval( implicitSpace ) );
 		return( elemA.eval( implicitSpace ).handleOptionalOp( GeometricAlgebraMultivectorElem.GeometricAlgebraMultivectorCmd.DOT , args ) );
 	}
 
 	
 	@Override
-	public GeometricAlgebraMultivectorElem<U, R, S> evalPartialDerivative(
+	public GeometricAlgebraMultivectorElem<U,A, R, S> evalPartialDerivative(
 			ArrayList<? extends Elem<?, ?>> withRespectTo , HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException,
 			MultiplicativeDistributionRequiredException {
 		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TBD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -90,14 +90,14 @@ public class SymbolicDot<U extends NumDimensions, R extends Elem<R,?>, S extends
 	/**
 	 * @return the elem
 	 */
-	public SymbolicElem<GeometricAlgebraMultivectorElem<U,R,S>,GeometricAlgebraMultivectorElemFactory<U,R,S>> getElemA() {
+	public SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> getElemA() {
 		return elemA;
 	}
 	
 	/**
 	 * @return the elem
 	 */
-	public SymbolicElem<GeometricAlgebraMultivectorElem<U,R,S>,GeometricAlgebraMultivectorElemFactory<U,R,S>> getElemB() {
+	public SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> getElemB() {
 		return elemB;
 	}
 	
@@ -110,7 +110,7 @@ public class SymbolicDot<U extends NumDimensions, R extends Elem<R,?>, S extends
 	}
 
 	
-	private SymbolicElem<GeometricAlgebraMultivectorElem<U,R,S>,GeometricAlgebraMultivectorElemFactory<U,R,S>> elemA;
-	private SymbolicElem<GeometricAlgebraMultivectorElem<U,R,S>,GeometricAlgebraMultivectorElemFactory<U,R,S>> elemB;
+	private SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> elemA;
+	private SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> elemB;
 }
 

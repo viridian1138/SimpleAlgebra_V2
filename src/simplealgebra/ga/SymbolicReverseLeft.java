@@ -39,13 +39,13 @@ import simplealgebra.symbolic.DroolsSession;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SymbolicElem;
 
-public class SymbolicReverseLeft<U extends NumDimensions, R extends Elem<R,?>, S extends ElemFactory<R,S>> extends 
-	SymbolicElem<GeometricAlgebraMultivectorElem<U,R,S>,GeometricAlgebraMultivectorElemFactory<U,R,S>> 
+public class SymbolicReverseLeft<U extends NumDimensions, A extends Ord, R extends Elem<R,?>, S extends ElemFactory<R,S>> extends 
+	SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> 
 {
 
 	public SymbolicReverseLeft( 
-			SymbolicElem<GeometricAlgebraMultivectorElem<U,R,S>,GeometricAlgebraMultivectorElemFactory<U,R,S>> _elemA , 
-			GeometricAlgebraMultivectorElemFactory<U, R, S> _fac) 
+			SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> _elemA , 
+			GeometricAlgebraMultivectorElemFactory<U,A, R, S> _fac) 
 	{
 		super( _fac );
 		elemA = _elemA;
@@ -53,8 +53,8 @@ public class SymbolicReverseLeft<U extends NumDimensions, R extends Elem<R,?>, S
 	
 	
 	public SymbolicReverseLeft( 
-			SymbolicElem<GeometricAlgebraMultivectorElem<U,R,S>,GeometricAlgebraMultivectorElemFactory<U,R,S>> _elemA , 
-			GeometricAlgebraMultivectorElemFactory<U, R, S> _fac, DroolsSession ds ) 
+			SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> _elemA , 
+			GeometricAlgebraMultivectorElemFactory<U,A, R, S> _fac, DroolsSession ds ) 
 	{
 		this( _elemA , _fac );
 		ds.insert( this );
@@ -62,15 +62,15 @@ public class SymbolicReverseLeft<U extends NumDimensions, R extends Elem<R,?>, S
 
 	
 	@Override
-	public GeometricAlgebraMultivectorElem<U, R, S> eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException,
+	public GeometricAlgebraMultivectorElem<U,A, R, S> eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException,
 			MultiplicativeDistributionRequiredException {
-		ArrayList<GeometricAlgebraMultivectorElem<U,R,S>> args = new ArrayList<GeometricAlgebraMultivectorElem<U,R,S>>();
+		ArrayList<GeometricAlgebraMultivectorElem<U,A,R,S>> args = new ArrayList<GeometricAlgebraMultivectorElem<U,A,R,S>>();
 		return( elemA.eval( implicitSpace ).handleOptionalOp( GeometricAlgebraMultivectorElem.GeometricAlgebraMultivectorCmd.REVERSE_LEFT , args ) );
 	}
 
 	
 	@Override
-	public GeometricAlgebraMultivectorElem<U, R, S> evalPartialDerivative(
+	public GeometricAlgebraMultivectorElem<U,A, R, S> evalPartialDerivative(
 			ArrayList<? extends Elem<?, ?>> withRespectTo , HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException,
 			MultiplicativeDistributionRequiredException {
 		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TBD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -87,7 +87,7 @@ public class SymbolicReverseLeft<U extends NumDimensions, R extends Elem<R,?>, S
 	/**
 	 * @return the elem
 	 */
-	public SymbolicElem<GeometricAlgebraMultivectorElem<U,R,S>,GeometricAlgebraMultivectorElemFactory<U,R,S>> getElemA() {
+	public SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> getElemA() {
 		return elemA;
 	}
 	
@@ -100,6 +100,6 @@ public class SymbolicReverseLeft<U extends NumDimensions, R extends Elem<R,?>, S
 	}
 
 	
-	private SymbolicElem<GeometricAlgebraMultivectorElem<U,R,S>,GeometricAlgebraMultivectorElemFactory<U,R,S>> elemA;
+	private SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> elemA;
 }
 

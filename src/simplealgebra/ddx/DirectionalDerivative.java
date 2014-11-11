@@ -37,6 +37,7 @@ import simplealgebra.NotInvertibleException;
 import simplealgebra.NumDimensions;
 import simplealgebra.ga.GeometricAlgebraMultivectorElem;
 import simplealgebra.ga.GeometricAlgebraMultivectorElemFactory;
+import simplealgebra.ga.Ord;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
@@ -52,37 +53,39 @@ import simplealgebra.symbolic.SymbolicElemFactory;
  * @param <R>
  * @param <S>
  */
-public class DirectionalDerivative<U extends NumDimensions, R extends Elem<R,?>, S extends ElemFactory<R,S>, K extends Elem<?,?>> 
-		extends DerivativeElem<GeometricAlgebraMultivectorElem<U,SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,GeometricAlgebraMultivectorElemFactory<U,SymbolicElem<R,S>,SymbolicElemFactory<R,S>>>
+public class DirectionalDerivative<U extends NumDimensions, A extends Ord, R extends Elem<R,?>, S extends ElemFactory<R,S>, K extends Elem<?,?>> 
+		extends DerivativeElem<GeometricAlgebraMultivectorElem<U,A,SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,GeometricAlgebraMultivectorElemFactory<U,A,SymbolicElem<R,S>,SymbolicElemFactory<R,S>>>
 {
 
-	public DirectionalDerivative( GeometricAlgebraMultivectorElemFactory<U, SymbolicElem<R, S>, 
+	public DirectionalDerivative( GeometricAlgebraMultivectorElemFactory<U,A, SymbolicElem<R, S>, 
 			SymbolicElemFactory<R, S>> _fac , 
 			U _dim ,
+			A _ord ,
 			DirectionalDerivativePartialFactory<R,S,K> _dfac )
 	{
 		super( _fac );
 		dim = _dim;
+		ord = _ord;
 		dfac = _dfac;
 	}
 	
 	@Override
-	public GeometricAlgebraMultivectorElem<U, SymbolicElem<R, S>, SymbolicElemFactory<R, S>> evalDerivative(
-			SymbolicElem<GeometricAlgebraMultivectorElem<U, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, GeometricAlgebraMultivectorElemFactory<U, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> in ,
+	public GeometricAlgebraMultivectorElem<U,A, SymbolicElem<R, S>, SymbolicElemFactory<R, S>> evalDerivative(
+			SymbolicElem<GeometricAlgebraMultivectorElem<U,A, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, GeometricAlgebraMultivectorElemFactory<U,A, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> in ,
 			HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace )
 			throws NotInvertibleException, MultiplicativeDistributionRequiredException {
 		
-		final SymbolicElemFactory<GeometricAlgebraMultivectorElem<U, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, 
-			GeometricAlgebraMultivectorElemFactory<U, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> 
+		final SymbolicElemFactory<GeometricAlgebraMultivectorElem<U,A, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, 
+			GeometricAlgebraMultivectorElemFactory<U,A, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> 
 			facA = in.getFac();
 		
-		final GeometricAlgebraMultivectorElemFactory<U, SymbolicElem<R, S>, SymbolicElemFactory<R, S>> 
+		final GeometricAlgebraMultivectorElemFactory<U,A, SymbolicElem<R, S>, SymbolicElemFactory<R, S>> 
 			facB = facA.getFac();
 		
 		final SymbolicElemFactory<R, S> facC = facB.getFac();
 		
-		final GeometricAlgebraMultivectorElem<U, SymbolicElem<R, S>, SymbolicElemFactory<R, S>> mul = 
-				new GeometricAlgebraMultivectorElem<U, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>( facC , dim );
+		final GeometricAlgebraMultivectorElem<U,A, SymbolicElem<R, S>, SymbolicElemFactory<R, S>> mul = 
+				new GeometricAlgebraMultivectorElem<U,A, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>( facC , dim , ord );
 		
 		BigInteger cnt = BigInteger.ZERO;
 		
@@ -99,7 +102,7 @@ public class DirectionalDerivative<U extends NumDimensions, R extends Elem<R,?>,
 		}
 		
 		
-		final GeometricAlgebraMultivectorElem<U, SymbolicElem<R, S>, SymbolicElemFactory<R, S>> ret =
+		final GeometricAlgebraMultivectorElem<U,A, SymbolicElem<R, S>, SymbolicElemFactory<R, S>> ret =
 				mul.mult( in.eval( implicitSpace ) );
 		
 		return( ret );
@@ -107,18 +110,18 @@ public class DirectionalDerivative<U extends NumDimensions, R extends Elem<R,?>,
 	
 	
 	@Override
-	public GeometricAlgebraMultivectorElem<U, SymbolicElem<R, S>, SymbolicElemFactory<R, S>> eval(
+	public GeometricAlgebraMultivectorElem<U,A, SymbolicElem<R, S>, SymbolicElemFactory<R, S>> eval(
 			HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace )
 			throws NotInvertibleException, MultiplicativeDistributionRequiredException
 		{
 	
-			final GeometricAlgebraMultivectorElemFactory<U, SymbolicElem<R, S>, SymbolicElemFactory<R, S>> 
+			final GeometricAlgebraMultivectorElemFactory<U,A, SymbolicElem<R, S>, SymbolicElemFactory<R, S>> 
 				facB = this.getFac().getFac();
 			
 			final SymbolicElemFactory<R, S> facC = facB.getFac();
 			
-			final GeometricAlgebraMultivectorElem<U, SymbolicElem<R, S>, SymbolicElemFactory<R, S>> mul = 
-					new GeometricAlgebraMultivectorElem<U, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>( facC , dim );
+			final GeometricAlgebraMultivectorElem<U,A, SymbolicElem<R, S>, SymbolicElemFactory<R, S>> mul = 
+					new GeometricAlgebraMultivectorElem<U,A, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>( facC , dim , ord );
 			
 			BigInteger cnt = BigInteger.ZERO;
 			
@@ -144,6 +147,7 @@ public class DirectionalDerivative<U extends NumDimensions, R extends Elem<R,?>,
 	}
 	
 	private U dim;
+	private A ord;
 	private DirectionalDerivativePartialFactory<R,S,K> dfac;
 	
 	

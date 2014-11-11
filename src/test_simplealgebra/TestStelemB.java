@@ -46,7 +46,7 @@ import simplealgebra.algo.NewtonRaphsonSingleElem;
 import simplealgebra.ddx.DirectionalDerivativePartialFactory;
 import simplealgebra.ddx.PartialDerivativeOp;
 import simplealgebra.ga.GeometricAlgebraMultivectorElem;
-import simplealgebra.ga.GeometricAlgebraMultivectorElemFactory;
+import simplealgebra.ga.*;
 import simplealgebra.stelem.Nelem;
 import simplealgebra.stelem.Stelem;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
@@ -855,6 +855,8 @@ public class TestStelemB extends TestCase {
 		
 		final TestDimensionOne tdim = new TestDimensionOne();
 		
+		final GeometricAlgebraOrd ord = new GeometricAlgebraOrd();
+		
 		
 		
 		for( int tcnt = 0 ; tcnt < 2 ; tcnt++ )
@@ -892,25 +894,25 @@ public class TestStelemB extends TestCase {
 		
 		
 		final GeometricAlgebraMultivectorElemFactory<
-			TestDimensionOne, 
+			TestDimensionOne,GeometricAlgebraOrd, 
 			SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>, 
 			SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>
 			ge =
 			new GeometricAlgebraMultivectorElemFactory<
-			TestDimensionOne, 
+			TestDimensionOne,GeometricAlgebraOrd, 
 			SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>, 
-			SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>( se3 , tdim );
+			SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>( se3 , tdim , ord );
 		
 		
 		final GeometricAlgebraMultivectorElem<
-			TestDimensionOne, 
+			TestDimensionOne,GeometricAlgebraOrd, 
 			SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>, 
 			SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>
 				g0 = new GeometricAlgebraMultivectorElem<
-					TestDimensionOne, 
+					TestDimensionOne,GeometricAlgebraOrd, 
 					SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>, 
 					SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>
-					( se3 , tdim );
+					( se3 , tdim , ord );
 		
 		g0.setVal( new HashSet<BigInteger>() , as );
 		
@@ -918,22 +920,22 @@ public class TestStelemB extends TestCase {
 		final DDirec ddirec = new DDirec(de, se2);
 		
 		final DirectionalDerivative<
-			TestDimensionOne, 
+			TestDimensionOne,GeometricAlgebraOrd, 
 			SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>, 
 			SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>, 
 			AElem>
 			del =
 			new DirectionalDerivative<
-			TestDimensionOne, 
+			TestDimensionOne,GeometricAlgebraOrd, 
 			SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>, 
 			SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>, 
 			AElem>( 
 					ge , 
-					tdim ,
+					tdim , ord ,
 					ddirec );
 		
 		final GeometricAlgebraMultivectorElem<
-			TestDimensionOne, 
+			TestDimensionOne,GeometricAlgebraOrd, 
 			SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>, 
 			SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>
 				del0 = del.eval( null );
@@ -960,23 +962,23 @@ public class TestStelemB extends TestCase {
 		//	= pa0X.mult( as ); 
 		
 		final GeometricAlgebraMultivectorElem<
-			TestDimensionOne, 
+			TestDimensionOne,GeometricAlgebraOrd, 
 			SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>, 
 			SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>
 				gxx0 = del0.mult( g0 );
 		
 		final ArrayList<GeometricAlgebraMultivectorElem<
-			TestDimensionOne, 
+			TestDimensionOne,GeometricAlgebraOrd, 
 			SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>, 
 			SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>> args0 
 				= new ArrayList<GeometricAlgebraMultivectorElem<
-					TestDimensionOne, 
+					TestDimensionOne,GeometricAlgebraOrd, 
 					SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>, 
 					SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>>();
 		args0.add( gxx0 );
 		
 		final GeometricAlgebraMultivectorElem<
-			TestDimensionOne, 
+			TestDimensionOne,GeometricAlgebraOrd, 
 			SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>, 
 			SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>
 				gxx1 = del0.handleOptionalOp( GeometricAlgebraMultivectorElem.GeometricAlgebraMultivectorCmd.DOT , args0 );
@@ -1004,21 +1006,21 @@ public class TestStelemB extends TestCase {
 		
 		
 		final GeometricAlgebraMultivectorElem<
-			TestDimensionOne, 
+			TestDimensionOne,GeometricAlgebraOrd, 
 			SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>, 
 			SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>
 				gtt = new GeometricAlgebraMultivectorElem<
-					TestDimensionOne, 
+					TestDimensionOne,GeometricAlgebraOrd, 
 					SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>, 
 					SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>
-					( se3 , tdim );
+					( se3 , tdim , ord );
 		
 		gtt.setVal( new HashSet<BigInteger>() , gtt0 );
 		
 		
 		
 		final GeometricAlgebraMultivectorElem<
-			TestDimensionOne, 
+			TestDimensionOne,GeometricAlgebraOrd, 
 			SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>, 
 			SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>
 				mg1 = gxx1.add( gtt );

@@ -34,7 +34,6 @@ import java.util.Iterator;
 import simplealgebra.et.EinsteinTensorElem;
 import simplealgebra.ga.GeometricAlgebraMultivectorElem;
 import simplealgebra.qtrnn.QuaternionElem;
-import simplealgebra.stime.SpacetimeAlgebraMultivectorElem;
 import simplealgebra.symbolic.SymbolicAdd;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicIdentity;
@@ -1070,7 +1069,7 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	
 	
 	
-	public void columnVectorToGeometricAlgebra( BigInteger column , GeometricAlgebraMultivectorElem<U,R,?> out )
+	public void columnVectorToGeometricAlgebra( BigInteger column , GeometricAlgebraMultivectorElem<U,?,R,?> out )
 	{
 		HashMap<BigInteger,R> atCol = columnMap.get( column );
 		Iterator<BigInteger> it = atCol.keySet().iterator();
@@ -1085,37 +1084,7 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	}
 	
 	
-	public void rowVectorToGeometricAlgebra( BigInteger row , GeometricAlgebraMultivectorElem<U,R,?> out )
-	{
-		HashMap<BigInteger,R> atRow = rowMap.get( row );
-		Iterator<BigInteger> it = atRow.keySet().iterator();
-		while( it.hasNext() )
-		{
-			final BigInteger indx = it.next();
-			final R val = atRow.get( indx );
-			final HashSet<BigInteger> el = new HashSet<BigInteger>();
-			el.add( indx );
-			out.setVal(el, val);
-		}
-	}
-	
-	
-	public void columnVectorToSpacetimeAlgebra( BigInteger column , SpacetimeAlgebraMultivectorElem<U,R,?> out )
-	{
-		HashMap<BigInteger,R> atCol = columnMap.get( column );
-		Iterator<BigInteger> it = atCol.keySet().iterator();
-		while( it.hasNext() )
-		{
-			final BigInteger indx = it.next();
-			final R val = atCol.get( indx );
-			final HashSet<BigInteger> el = new HashSet<BigInteger>();
-			el.add( indx );
-			out.setVal(el, val);
-		}
-	}
-	
-	
-	public void rowVectorToSpacetimeAlgebra( BigInteger row , SpacetimeAlgebraMultivectorElem<U,R,?> out )
+	public void rowVectorToGeometricAlgebra( BigInteger row , GeometricAlgebraMultivectorElem<U,?,R,?> out )
 	{
 		HashMap<BigInteger,R> atRow = rowMap.get( row );
 		Iterator<BigInteger> it = atRow.keySet().iterator();

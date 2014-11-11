@@ -37,7 +37,7 @@ import simplealgebra.NotInvertibleException;
 import simplealgebra.SquareMatrixElem;
 import simplealgebra.SquareMatrixElemFactory;
 import simplealgebra.ga.GeometricAlgebraMultivectorElem;
-import simplealgebra.ga.GeometricAlgebraMultivectorElemFactory;
+import simplealgebra.ga.*;
 
 
 /**
@@ -77,6 +77,8 @@ public class TestPhasorExample extends TestCase {
 		final ComplexElemFactory<DoubleElem,DoubleElemFactory> cl = new ComplexElemFactory<DoubleElem,DoubleElemFactory>( dl );
 		
 		final TestDimensionTwo td = new TestDimensionTwo();
+		
+		final GeometricAlgebraOrd ord = new GeometricAlgebraOrd();
 		
 		
 		final SquareMatrixElemFactory<TestDimensionTwo,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> se = 
@@ -145,14 +147,14 @@ public class TestPhasorExample extends TestCase {
 		
 		
 		
-		final GeometricAlgebraMultivectorElemFactory<TestDimensionTwo,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> vl =
-				new GeometricAlgebraMultivectorElemFactory<TestDimensionTwo,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>( cl , td );
+		final GeometricAlgebraMultivectorElemFactory<TestDimensionTwo,GeometricAlgebraOrd,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> vl =
+				new GeometricAlgebraMultivectorElemFactory<TestDimensionTwo,GeometricAlgebraOrd,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>( cl , td , ord );
 		
 		
-		final GeometricAlgebraMultivectorElem<TestDimensionTwo,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
+		final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 			inColumnVect = vl.zero();
 		
-		final GeometricAlgebraMultivectorElem<TestDimensionTwo,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
+		final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 			outColumnVect = vl.zero();
 		
 		
