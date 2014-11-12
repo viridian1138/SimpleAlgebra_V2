@@ -38,11 +38,11 @@ import simplealgebra.NumDimensions;
 
 
 
-public class SpacetimeAlgebraOrd<U extends NumDimensions> extends Ord<U> {
+public class QuaternionOrd<U extends NumDimensions> extends Ord<U> {
 
 	
 	@Override
-	public boolean calcOrd(HashSet<BigInteger> ka, HashSet<BigInteger> kb, HashSet<BigInteger> el , U dim ) 
+	public boolean calcOrd( HashSet<BigInteger> ka , HashSet<BigInteger> kb , HashSet<BigInteger> el , U dim )
 	{
 		boolean negate = false;
 		
@@ -71,7 +71,6 @@ public class SpacetimeAlgebraOrd<U extends NumDimensions> extends Ord<U> {
 		}
 		
 		
-		
 		boolean chg = true;
 		while( chg )
 		{
@@ -95,12 +94,8 @@ public class SpacetimeAlgebraOrd<U extends NumDimensions> extends Ord<U> {
 						{
 							arr[ cnt ] = null;
 							arr[ cnt + 1 ] = null;
-							final boolean cmpz = a0.equals( BigInteger.ZERO );
-							if( !cmpz )
-							{
-								negate = !negate;
-							}
 							chg = true;
+							negate = !negate;
 						}
 						else
 						{
@@ -127,6 +122,14 @@ public class SpacetimeAlgebraOrd<U extends NumDimensions> extends Ord<U> {
 		}
 		
 		
+		//
+		// Equivalent to ijk = -1.
+		//
+		if( dim.equals( BigInteger.valueOf( el.size() ) ) )
+		{
+			el.clear();
+			negate = !negate;
+		}
 		
 		
 		return( negate );

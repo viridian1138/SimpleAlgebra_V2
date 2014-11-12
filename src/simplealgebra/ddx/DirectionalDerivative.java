@@ -53,7 +53,7 @@ import simplealgebra.symbolic.SymbolicElemFactory;
  * @param <R>
  * @param <S>
  */
-public class DirectionalDerivative<U extends NumDimensions, A extends Ord, R extends Elem<R,?>, S extends ElemFactory<R,S>, K extends Elem<?,?>> 
+public class DirectionalDerivative<U extends NumDimensions, A extends Ord<U>, R extends Elem<R,?>, S extends ElemFactory<R,S>, K extends Elem<?,?>> 
 		extends DerivativeElem<GeometricAlgebraMultivectorElem<U,A,SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,GeometricAlgebraMultivectorElemFactory<U,A,SymbolicElem<R,S>,SymbolicElemFactory<R,S>>>
 {
 

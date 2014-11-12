@@ -38,7 +38,6 @@ import simplealgebra.Mutator;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.SquareMatrixElem;
 import simplealgebra.ga.GeometricAlgebraMultivectorElem;
-import simplealgebra.qtrnn.QuaternionElem;
 
 /**
  * Element describing a tensor as defined in General Relativity.
@@ -410,24 +409,6 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 		}
 	}
 	
-	
-	public void rankOneTensorToQuaternion( QuaternionElem<?,R,?> out )
-	{
-		if( !( getTensorRank().equals( BigInteger.ONE ) ) )
-		{
-			throw( new RuntimeException( "Not a Rank One Tensor." ) );
-		}
-		
-		Iterator<ArrayList<BigInteger>> it = map.keySet().iterator();
-		while( it.hasNext() )
-		{
-			ArrayList<BigInteger> key = it.next();
-			HashSet<BigInteger> okey = new HashSet<BigInteger>();
-			okey.add( key.get( 0 ) );
-			R val = map.get( key );
-			out.setVal(okey, val);
-		}
-	}
 	
 	public void rankOneTensorToRowVector( BigInteger row , SquareMatrixElem<?,R,?> out )
 	{

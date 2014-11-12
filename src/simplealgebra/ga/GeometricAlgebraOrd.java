@@ -34,13 +34,15 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.TreeSet;
 
+import simplealgebra.NumDimensions;
 
 
-public class GeometricAlgebraOrd extends Ord {
+
+public class GeometricAlgebraOrd<U extends NumDimensions> extends Ord<U> {
 
 	
 	@Override
-	public boolean calcOrd(HashSet<BigInteger> ka, HashSet<BigInteger> kb, HashSet<BigInteger> el) 
+	public boolean calcOrd(HashSet<BigInteger> ka, HashSet<BigInteger> kb, HashSet<BigInteger> el , U dim ) 
 	{
 		boolean negate = false;
 		

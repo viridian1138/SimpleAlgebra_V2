@@ -31,10 +31,12 @@ package simplealgebra.ga;
 import java.math.BigInteger;
 import java.util.HashSet;
 
+import simplealgebra.NumDimensions;
 
-public abstract class Ord {
+
+public abstract class Ord<U extends NumDimensions> {
 	
-	public abstract boolean calcOrd( HashSet<BigInteger> ka , HashSet<BigInteger> kb , HashSet<BigInteger> el );
+	public abstract boolean calcOrd( HashSet<BigInteger> ka , HashSet<BigInteger> kb , HashSet<BigInteger> el , U dim );
 
 }
 

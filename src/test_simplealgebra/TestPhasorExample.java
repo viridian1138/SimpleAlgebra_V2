@@ -78,7 +78,7 @@ public class TestPhasorExample extends TestCase {
 		
 		final TestDimensionTwo td = new TestDimensionTwo();
 		
-		final GeometricAlgebraOrd ord = new GeometricAlgebraOrd();
+		final GeometricAlgebraOrd<TestDimensionTwo> ord = new GeometricAlgebraOrd<TestDimensionTwo>();
 		
 		
 		final SquareMatrixElemFactory<TestDimensionTwo,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> se = 
@@ -147,14 +147,14 @@ public class TestPhasorExample extends TestCase {
 		
 		
 		
-		final GeometricAlgebraMultivectorElemFactory<TestDimensionTwo,GeometricAlgebraOrd,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> vl =
-				new GeometricAlgebraMultivectorElemFactory<TestDimensionTwo,GeometricAlgebraOrd,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>( cl , td , ord );
+		final GeometricAlgebraMultivectorElemFactory<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> vl =
+				new GeometricAlgebraMultivectorElemFactory<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>( cl , td , ord );
 		
 		
-		final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
+		final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 			inColumnVect = vl.zero();
 		
-		final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
+		final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 			outColumnVect = vl.zero();
 		
 		

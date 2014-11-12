@@ -39,7 +39,7 @@ import simplealgebra.symbolic.DroolsSession;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SymbolicElem;
 
-public class SymbolicReverseLeft<U extends NumDimensions, A extends Ord, R extends Elem<R,?>, S extends ElemFactory<R,S>> extends 
+public class SymbolicReverseLeft<U extends NumDimensions, A extends Ord<U>, R extends Elem<R,?>, S extends ElemFactory<R,S>> extends 
 	SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> 
 {
 

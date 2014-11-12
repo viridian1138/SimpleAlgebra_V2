@@ -41,7 +41,6 @@ import simplealgebra.NumDimensions;
 import simplealgebra.SquareMatrixElem;
 import simplealgebra.SquareMatrixElemFactory;
 import simplealgebra.et.EinsteinTensorElem;
-import simplealgebra.qtrnn.QuaternionElem;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SymbolicAdd;
 import simplealgebra.symbolic.SymbolicElem;
@@ -50,7 +49,7 @@ import simplealgebra.symbolic.SymbolicMult;
 import simplealgebra.symbolic.SymbolicNegate;
 
 
-public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends Ord, R extends Elem<R,?>, S extends ElemFactory<R,S>> 
+public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends Ord<U>, R extends Elem<R,?>, S extends ElemFactory<R,S>> 
 	extends MutableElem<R, GeometricAlgebraMultivectorElem<U,A,R,S>, GeometricAlgebraMultivectorElemFactory<U,A,R,S>>  {
 
 	public static enum GeometricAlgebraMultivectorCmd {
@@ -115,7 +114,7 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 				R vb = b.map.get( kb );
 				R vmul = va.mult( vb );
 				HashSet<BigInteger> el = new HashSet<BigInteger>();
-				final boolean negate = ord.calcOrd( ka , kb , el );
+				final boolean negate = ord.calcOrd( ka , kb , el , dim );
 				if( negate )
 				{
 					vmul = vmul.negate();
@@ -438,11 +437,11 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 		SquareMatrixElem<NumDimensions,R,S> sqInv = sq.invertLeft();
 		
 		
-		GeometricAlgebraMultivectorElemFactory<NumDimensions, GeometricAlgebraOrd, R, S> kfac = 
-				new GeometricAlgebraMultivectorElemFactory<NumDimensions, GeometricAlgebraOrd, R, S>(fac, xdim, new GeometricAlgebraOrd() );
+		GeometricAlgebraMultivectorElemFactory<NumDimensions, GeometricAlgebraOrd<NumDimensions>, R, S> kfac = 
+				new GeometricAlgebraMultivectorElemFactory<NumDimensions, GeometricAlgebraOrd<NumDimensions>, R, S>(fac, xdim, new GeometricAlgebraOrd<NumDimensions>() );
 		
-		GeometricAlgebraMultivectorElem<NumDimensions, GeometricAlgebraOrd, R, S> ki = kfac.zero();
-		GeometricAlgebraMultivectorElem<NumDimensions, GeometricAlgebraOrd, R, S> ko = kfac.zero();
+		GeometricAlgebraMultivectorElem<NumDimensions, GeometricAlgebraOrd<NumDimensions>, R, S> ki = kfac.zero();
+		GeometricAlgebraMultivectorElem<NumDimensions, GeometricAlgebraOrd<NumDimensions>, R, S> ko = kfac.zero();
 		
 		if( sindex >= 0 )
 		{
@@ -573,11 +572,11 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 		SquareMatrixElem<NumDimensions,R,S> sqInv = sq.handleOptionalOp( SquareMatrixElem.SquareMatrixCmd.INVERT_LEFT_REV_COEFF , null);
 		
 		
-		GeometricAlgebraMultivectorElemFactory<NumDimensions, GeometricAlgebraOrd, R, S> kfac = 
-				new GeometricAlgebraMultivectorElemFactory<NumDimensions, GeometricAlgebraOrd, R, S>(fac, xdim, new GeometricAlgebraOrd() );
+		GeometricAlgebraMultivectorElemFactory<NumDimensions, GeometricAlgebraOrd<NumDimensions>, R, S> kfac = 
+				new GeometricAlgebraMultivectorElemFactory<NumDimensions, GeometricAlgebraOrd<NumDimensions>, R, S>(fac, xdim, new GeometricAlgebraOrd<NumDimensions>() );
 		
-		GeometricAlgebraMultivectorElem<NumDimensions, GeometricAlgebraOrd, R, S> ki = kfac.zero();
-		GeometricAlgebraMultivectorElem<NumDimensions, GeometricAlgebraOrd, R, S> ko = kfac.zero();
+		GeometricAlgebraMultivectorElem<NumDimensions, GeometricAlgebraOrd<NumDimensions>, R, S> ki = kfac.zero();
+		GeometricAlgebraMultivectorElem<NumDimensions, GeometricAlgebraOrd<NumDimensions>, R, S> ko = kfac.zero();
 		
 		if( sindex >= 0 )
 		{
@@ -642,45 +641,6 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 			ret.setVal(el, vali.divideBy(val) );
 		}
 		return( ret );
-	}
-	
-	
-	
-	public void toQuaternion( QuaternionElem<U, R, ?> out )
-	{
-		R v0 = null;
-		R vl = null;
-		Iterator<HashSet<BigInteger>> it = map.keySet().iterator();
-		while( it.hasNext() )
-		{
-			HashSet<BigInteger> key = it.next();
-			R val = map.get(key);
-			if( !( dim.equals( BigInteger.valueOf( key.size() ) ) ) )
-			{
-				out.setVal(key, val);
-			}
-			else
-			{
-				if( key.size() == 0 )
-				{
-					v0 = val;
-				}
-				vl = val;
-			}
-		}
-		if( vl != null )
-		{
-			vl = vl.negate();
-			HashSet<BigInteger> key = new HashSet<BigInteger>();
-			if( v0 == null )
-			{
-				out.setVal(key, vl);
-			}
-			else
-			{
-				out.setVal(key, v0.add(vl));
-			}
-		}
 	}
 	
 	
@@ -761,7 +721,7 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 				R vb = b.map.get( kb );
 				R vmul = va.mult( vb );
 				HashSet<BigInteger> el = new HashSet<BigInteger>();
-				final boolean negate = ord.calcOrd( ka , kb , el );
+				final boolean negate = ord.calcOrd( ka , kb , el , dim );
 				final int maxGrd = Math.max( ka.size() , kb.size() );
 				if( el.size() <= maxGrd )
 				{
@@ -801,7 +761,7 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 				R vb = b.map.get( kb );
 				R vmul = va.mult( vb );
 				HashSet<BigInteger> el = new HashSet<BigInteger>();
-				final boolean negate = ord.calcOrd( ka , kb , el );
+				final boolean negate = ord.calcOrd( ka , kb , el , dim );
 				final int maxGrd = Math.max( ka.size() , kb.size() );
 				if( el.size() > maxGrd )
 				{

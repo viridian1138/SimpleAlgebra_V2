@@ -101,9 +101,9 @@ public class ComplexElem<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 			if( a != null ) sel.setVal(BigInteger.ONE, BigInteger.ONE, a);
 			
 			final SquareMatrixElem<NumDimensions,R,S> seli = sel.invertLeft();
-			final GeometricAlgebraMultivectorElemFactory<NumDimensions,GeometricAlgebraOrd,R,S> gfac =
-					new GeometricAlgebraMultivectorElemFactory<NumDimensions,GeometricAlgebraOrd,R,S>( this.getFac().getFac() , nd , new GeometricAlgebraOrd() );
-			final GeometricAlgebraMultivectorElem<NumDimensions,GeometricAlgebraOrd,R,S> gvc =
+			final GeometricAlgebraMultivectorElemFactory<NumDimensions,GeometricAlgebraOrd<NumDimensions>,R,S> gfac =
+					new GeometricAlgebraMultivectorElemFactory<NumDimensions,GeometricAlgebraOrd<NumDimensions>,R,S>( this.getFac().getFac() , nd , new GeometricAlgebraOrd<NumDimensions>() );
+			final GeometricAlgebraMultivectorElem<NumDimensions,GeometricAlgebraOrd<NumDimensions>,R,S> gvc =
 					gfac.zero();
 			
 			final HashSet<BigInteger> gvcKey0 = new HashSet<BigInteger>();
@@ -112,7 +112,7 @@ public class ComplexElem<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 			gvcKey1.add( BigInteger.ONE );
 			
 			gvc.setVal(gvcKey0, this.getFac().getFac().identity());
-			final GeometricAlgebraMultivectorElem<NumDimensions,GeometricAlgebraOrd,R,S> gvo =
+			final GeometricAlgebraMultivectorElem<NumDimensions,GeometricAlgebraOrd<NumDimensions>,R,S> gvo =
 					gfac.zero();
 			gvc.rowVectorMult(seli, gvo);
 			
@@ -152,9 +152,9 @@ public class ComplexElem<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 			if( a != null ) sel.setVal(BigInteger.ONE, BigInteger.ONE, a);
 			
 			final SquareMatrixElem<NumDimensions,R,S> seli = sel.handleOptionalOp(SquareMatrixElem.SquareMatrixCmd.INVERT_LEFT_REV_COEFF, null);
-			final GeometricAlgebraMultivectorElemFactory<NumDimensions,GeometricAlgebraOrd,R,S> gfac =
-					new GeometricAlgebraMultivectorElemFactory<NumDimensions,GeometricAlgebraOrd,R,S>( this.getFac().getFac() , nd , new GeometricAlgebraOrd() );
-			final GeometricAlgebraMultivectorElem<NumDimensions,GeometricAlgebraOrd,R,S> gvc =
+			final GeometricAlgebraMultivectorElemFactory<NumDimensions,GeometricAlgebraOrd<NumDimensions>,R,S> gfac =
+					new GeometricAlgebraMultivectorElemFactory<NumDimensions,GeometricAlgebraOrd<NumDimensions>,R,S>( this.getFac().getFac() , nd , new GeometricAlgebraOrd<NumDimensions>() );
+			final GeometricAlgebraMultivectorElem<NumDimensions,GeometricAlgebraOrd<NumDimensions>,R,S> gvc =
 					gfac.zero();
 			
 			final HashSet<BigInteger> gvcKey0 = new HashSet<BigInteger>();
@@ -163,7 +163,7 @@ public class ComplexElem<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 			gvcKey1.add( BigInteger.ONE );
 			
 			gvc.setVal(gvcKey0, this.getFac().getFac().identity());
-			final GeometricAlgebraMultivectorElem<NumDimensions,GeometricAlgebraOrd,R,S> gvo =
+			final GeometricAlgebraMultivectorElem<NumDimensions,GeometricAlgebraOrd<NumDimensions>,R,S> gvo =
 					gfac.zero();
 			gvc.rowVectorMult(seli, gvo);
 			
@@ -200,9 +200,9 @@ public class ComplexElem<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 			if( a != null ) sel.setVal(BigInteger.ONE, BigInteger.ONE, a);
 			
 			final SquareMatrixElem<NumDimensions,R,S> seli = sel.invertLeft();
-			final GeometricAlgebraMultivectorElemFactory<NumDimensions,GeometricAlgebraOrd,R,S> gfac =
-					new GeometricAlgebraMultivectorElemFactory<NumDimensions,GeometricAlgebraOrd,R,S>( this.getFac().getFac() , nd , new GeometricAlgebraOrd() );
-			final GeometricAlgebraMultivectorElem<NumDimensions,GeometricAlgebraOrd,R,S> gvc =
+			final GeometricAlgebraMultivectorElemFactory<NumDimensions,GeometricAlgebraOrd<NumDimensions>,R,S> gfac =
+					new GeometricAlgebraMultivectorElemFactory<NumDimensions,GeometricAlgebraOrd<NumDimensions>,R,S>( this.getFac().getFac() , nd , new GeometricAlgebraOrd<NumDimensions>() );
+			final GeometricAlgebraMultivectorElem<NumDimensions,GeometricAlgebraOrd<NumDimensions>,R,S> gvc =
 					gfac.zero();
 			
 			final HashSet<BigInteger> gvcKey0 = new HashSet<BigInteger>();
@@ -211,7 +211,7 @@ public class ComplexElem<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 			gvcKey1.add( BigInteger.ONE );
 			
 			gvc.setVal(gvcKey0, ( a.mult(a) ).add( b.mult(b) ) );
-			final GeometricAlgebraMultivectorElem<NumDimensions,GeometricAlgebraOrd,R,S> gvo =
+			final GeometricAlgebraMultivectorElem<NumDimensions,GeometricAlgebraOrd<NumDimensions>,R,S> gvo =
 					gfac.zero();
 			gvc.rowVectorMult(seli, gvo);
 			
@@ -248,9 +248,9 @@ public class ComplexElem<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 			if( a != null ) sel.setVal(BigInteger.ONE, BigInteger.ONE, a);
 			
 			final SquareMatrixElem<NumDimensions,R,S> seli = sel.handleOptionalOp(SquareMatrixElem.SquareMatrixCmd.INVERT_LEFT_REV_COEFF, null);
-			final GeometricAlgebraMultivectorElemFactory<NumDimensions,GeometricAlgebraOrd,R,S> gfac =
-					new GeometricAlgebraMultivectorElemFactory<NumDimensions,GeometricAlgebraOrd,R,S>( this.getFac().getFac() , nd , new GeometricAlgebraOrd() );
-			final GeometricAlgebraMultivectorElem<NumDimensions,GeometricAlgebraOrd,R,S> gvc =
+			final GeometricAlgebraMultivectorElemFactory<NumDimensions,GeometricAlgebraOrd<NumDimensions>,R,S> gfac =
+					new GeometricAlgebraMultivectorElemFactory<NumDimensions,GeometricAlgebraOrd<NumDimensions>,R,S>( this.getFac().getFac() , nd , new GeometricAlgebraOrd<NumDimensions>() );
+			final GeometricAlgebraMultivectorElem<NumDimensions,GeometricAlgebraOrd<NumDimensions>,R,S> gvc =
 					gfac.zero();
 			
 			final HashSet<BigInteger> gvcKey0 = new HashSet<BigInteger>();
@@ -259,7 +259,7 @@ public class ComplexElem<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 			gvcKey1.add( BigInteger.ONE );
 			
 			gvc.setVal(gvcKey0, ( a.mult(a) ).add( b.mult(b) ) );
-			final GeometricAlgebraMultivectorElem<NumDimensions,GeometricAlgebraOrd,R,S> gvo =
+			final GeometricAlgebraMultivectorElem<NumDimensions,GeometricAlgebraOrd<NumDimensions>,R,S> gvo =
 					gfac.zero();
 			gvc.rowVectorMult(seli, gvo);
 			

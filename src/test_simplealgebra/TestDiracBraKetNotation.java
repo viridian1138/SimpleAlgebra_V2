@@ -103,8 +103,8 @@ public class TestDiracBraKetNotation extends TestCase {
 	 * @return
 	 * @throws NotInvertibleException
 	 */
-	protected GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
-		convertKetToBra4D( GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> in ) throws NotInvertibleException
+	protected GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
+		convertKetToBra4D( GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> in ) throws NotInvertibleException
 	{
 		return( in.mutate( new ConjugateLeftMutator<DoubleElem,DoubleElemFactory>() ) );
 	}
@@ -116,8 +116,8 @@ public class TestDiracBraKetNotation extends TestCase {
 	 * @return
 	 * @throws NotInvertibleException
 	 */
-	protected GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
-		converBraToKet4D( GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> in ) throws NotInvertibleException
+	protected GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
+		converBraToKet4D( GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> in ) throws NotInvertibleException
 	{
 		return( in.mutate( new ConjugateLeftMutator<DoubleElem,DoubleElemFactory>() ) );
 	}
@@ -131,8 +131,8 @@ public class TestDiracBraKetNotation extends TestCase {
 	 * @return
 	 * @throws NotInvertibleException
 	 */
-	protected GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
-		convertKetToBra3D( GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> in ) throws NotInvertibleException
+	protected GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
+		convertKetToBra3D( GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> in ) throws NotInvertibleException
 	{
 		return( in.mutate( new ConjugateLeftMutator<DoubleElem,DoubleElemFactory>() ) );
 	}
@@ -144,8 +144,8 @@ public class TestDiracBraKetNotation extends TestCase {
 	 * @return
 	 * @throws NotInvertibleException
 	 */
-	protected GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
-		converBraToKet3D( GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> in ) throws NotInvertibleException
+	protected GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
+		converBraToKet3D( GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> in ) throws NotInvertibleException
 	{
 		return( in.mutate( new ConjugateLeftMutator<DoubleElem,DoubleElemFactory>() ) );
 	}
@@ -162,7 +162,7 @@ public class TestDiracBraKetNotation extends TestCase {
 		
 		final TestDimensionFour td = new TestDimensionFour();
 		
-		final GeometricAlgebraOrd ord = new GeometricAlgebraOrd();
+		final GeometricAlgebraOrd<TestDimensionFour> ord = new GeometricAlgebraOrd<TestDimensionFour>();
 		
 		final DoubleElemFactory dl = new DoubleElemFactory();
 		
@@ -171,8 +171,8 @@ public class TestDiracBraKetNotation extends TestCase {
 
 		
 		
-		final GeometricAlgebraMultivectorElemFactory<TestDimensionFour,GeometricAlgebraOrd,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> vl =
-				new GeometricAlgebraMultivectorElemFactory<TestDimensionFour,GeometricAlgebraOrd,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>( cl , td , ord );
+		final GeometricAlgebraMultivectorElemFactory<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> vl =
+				new GeometricAlgebraMultivectorElemFactory<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>( cl , td , ord );
 		
 		
 		
@@ -214,11 +214,11 @@ public class TestDiracBraKetNotation extends TestCase {
 		
 		
 		
-		final GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
+		final GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 			ketVectorA = vl.zero();
 		
 		
-		final GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
+		final GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 			ketVectorB = vl.zero();
 		
 		
@@ -236,18 +236,18 @@ public class TestDiracBraKetNotation extends TestCase {
 		
 		
 		
-		final GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
+		final GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 			braVectorA = convertKetToBra4D( ketVectorA );
 		
 
 		
 		// Perform the inner product of the Bra vector and the Ket vector.
 		
-		final ArrayList<GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd, ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> 
-			args = new ArrayList<GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd, ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>();
+		final ArrayList<GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>, ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> 
+			args = new ArrayList<GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>, ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>();
 		args.add( ketVectorB );
 		
-		GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd, ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> resultMvec = braVectorA.handleOptionalOp(GeometricAlgebraMultivectorElem.GeometricAlgebraMultivectorCmd.DOT, args);
+		GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>, ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> resultMvec = braVectorA.handleOptionalOp(GeometricAlgebraMultivectorElem.GeometricAlgebraMultivectorCmd.DOT, args);
 		
 		
 		ComplexElem<DoubleElem,DoubleElemFactory> result = resultMvec.getVal( new HashSet<BigInteger>() );
@@ -280,7 +280,7 @@ public class TestDiracBraKetNotation extends TestCase {
 			
 			final TestDimensionThree td = new TestDimensionThree();
 			
-			final GeometricAlgebraOrd ord = new GeometricAlgebraOrd();
+			final GeometricAlgebraOrd<TestDimensionThree> ord = new GeometricAlgebraOrd<TestDimensionThree>();
 			
 			final DoubleElemFactory dl = new DoubleElemFactory();
 			
@@ -289,8 +289,8 @@ public class TestDiracBraKetNotation extends TestCase {
 
 			
 			
-			final GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> vl =
-					new GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>( cl , td , ord );
+			final GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> vl =
+					new GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>( cl , td , ord );
 			
 			
 			
@@ -326,11 +326,11 @@ public class TestDiracBraKetNotation extends TestCase {
 			
 			
 			
-			final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
+			final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 				ketVectorA = vl.zero();
 			
 			
-			final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
+			final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 				ketVectorB = vl.zero();
 			
 			
@@ -346,18 +346,18 @@ public class TestDiracBraKetNotation extends TestCase {
 			
 			
 			
-			final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
+			final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 				braVectorA = convertKetToBra3D( ketVectorA );
 			
 
 			
 			// Perform the inner product of the Bra vector and the Ket vector.
 			
-			final ArrayList<GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd, ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> 
-				args = new ArrayList<GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd, ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>();
+			final ArrayList<GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>, ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> 
+				args = new ArrayList<GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>, ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>();
 			args.add( ketVectorB );
 			
-			GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd, ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> resultMvec = braVectorA.handleOptionalOp(GeometricAlgebraMultivectorElem.GeometricAlgebraMultivectorCmd.DOT, args);
+			GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>, ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> resultMvec = braVectorA.handleOptionalOp(GeometricAlgebraMultivectorElem.GeometricAlgebraMultivectorCmd.DOT, args);
 			
 			
 			ComplexElem<DoubleElem,DoubleElemFactory> result = resultMvec.getVal( new HashSet<BigInteger>() );

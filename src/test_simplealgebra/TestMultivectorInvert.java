@@ -44,7 +44,7 @@ public class TestMultivectorInvert extends TestCase {
 	
 	
 	
-	private void validateIsUnit( GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd,DoubleElem,DoubleElemFactory> shouldBeIdent )
+	private void validateIsUnit( GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> shouldBeIdent )
 	{
 		final int max = 1 << 5;
 		
@@ -113,14 +113,14 @@ public class TestMultivectorInvert extends TestCase {
 		
 		final TestDimensionFive td = new TestDimensionFive();
 		
-		final GeometricAlgebraOrd ord = new GeometricAlgebraOrd();
+		final GeometricAlgebraOrd<TestDimensionFive> ord = new GeometricAlgebraOrd<TestDimensionFive>();
 		
 		final DoubleElemFactory dl = new DoubleElemFactory();
 		
-		final GeometricAlgebraMultivectorElemFactory<TestDimensionFive,GeometricAlgebraOrd,DoubleElem,DoubleElemFactory> se = 
-				new GeometricAlgebraMultivectorElemFactory<TestDimensionFive,GeometricAlgebraOrd,DoubleElem,DoubleElemFactory>(dl, td, ord );
+		final GeometricAlgebraMultivectorElemFactory<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> se = 
+				new GeometricAlgebraMultivectorElemFactory<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory>(dl, td, ord );
 		
-		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd,DoubleElem,DoubleElemFactory> mv = se.zero();
+		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> mv = se.zero();
 		
 		final int max = 1 << 5;
 		
@@ -142,11 +142,11 @@ public class TestMultivectorInvert extends TestCase {
 			mv.setVal(key, new DoubleElem( 2.0 * ( rand.nextDouble() ) - 1.0 ) );
 		}
 		
-		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd,DoubleElem,DoubleElemFactory> inv = mv.invertLeft();
+		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> inv = mv.invertLeft();
 		
-		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd,DoubleElem,DoubleElemFactory> shouldBeIdentA = mv.mult( inv );
+		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> shouldBeIdentA = mv.mult( inv );
 		
-		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd,DoubleElem,DoubleElemFactory> shouldBeIdentB = inv.mult( mv );
+		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> shouldBeIdentB = inv.mult( mv );
 		
 		
 		validateIsUnit( shouldBeIdentA );
@@ -185,14 +185,14 @@ public class TestMultivectorInvert extends TestCase {
 		
 		final TestDimensionFive td = new TestDimensionFive();
 		
-		final GeometricAlgebraOrd ord = new GeometricAlgebraOrd();
+		final GeometricAlgebraOrd<TestDimensionFive> ord = new GeometricAlgebraOrd<TestDimensionFive>();
 		
 		final DoubleElemFactory dl = new DoubleElemFactory();
 		
-		final GeometricAlgebraMultivectorElemFactory<TestDimensionFive,GeometricAlgebraOrd,DoubleElem,DoubleElemFactory> se = 
-				new GeometricAlgebraMultivectorElemFactory<TestDimensionFive,GeometricAlgebraOrd,DoubleElem,DoubleElemFactory>(dl, td, ord );
+		final GeometricAlgebraMultivectorElemFactory<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> se = 
+				new GeometricAlgebraMultivectorElemFactory<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory>(dl, td, ord );
 		
-		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd,DoubleElem,DoubleElemFactory> mv = se.zero();
+		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> mv = se.zero();
 		
 		final int max = 1 << 5;
 		
@@ -214,11 +214,11 @@ public class TestMultivectorInvert extends TestCase {
 			mv.setVal(key, new DoubleElem( 2.0 * ( rand.nextDouble() ) - 1.0 ) );
 		}
 		
-		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd,DoubleElem,DoubleElemFactory> inv = mv.invertRight();
+		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> inv = mv.invertRight();
 		
-		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd,DoubleElem,DoubleElemFactory> shouldBeIdentA = mv.mult( inv );
+		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> shouldBeIdentA = mv.mult( inv );
 		
-		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd,DoubleElem,DoubleElemFactory> shouldBeIdentB = inv.mult( mv );
+		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> shouldBeIdentB = inv.mult( mv );
 		
 		
 		validateIsUnit( shouldBeIdentA );
@@ -267,14 +267,14 @@ public class TestMultivectorInvert extends TestCase {
 		
 		final TestDimensionFive td = new TestDimensionFive();
 		
-		final GeometricAlgebraOrd ord = new GeometricAlgebraOrd();
+		final GeometricAlgebraOrd<TestDimensionFive> ord = new GeometricAlgebraOrd<TestDimensionFive>();
 		
 		final DoubleElemFactory dl = new DoubleElemFactory();
 		
-		final GeometricAlgebraMultivectorElemFactory<TestDimensionFive,GeometricAlgebraOrd,DoubleElem,DoubleElemFactory> se = 
-				new GeometricAlgebraMultivectorElemFactory<TestDimensionFive,GeometricAlgebraOrd,DoubleElem,DoubleElemFactory>(dl, td, ord);
+		final GeometricAlgebraMultivectorElemFactory<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> se = 
+				new GeometricAlgebraMultivectorElemFactory<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory>(dl, td, ord);
 		
-		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd,DoubleElem,DoubleElemFactory> mv = se.zero();
+		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> mv = se.zero();
 		
 		HashSet<BigInteger> keyA = new HashSet<BigInteger>();
 		
@@ -292,11 +292,11 @@ public class TestMultivectorInvert extends TestCase {
 		
 		
 		
-		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd,DoubleElem,DoubleElemFactory> inv = mv.invertLeft();
+		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> inv = mv.invertLeft();
 		
-		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd,DoubleElem,DoubleElemFactory> shouldBeIdentA = mv.mult( inv );
+		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> shouldBeIdentA = mv.mult( inv );
 		
-		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd,DoubleElem,DoubleElemFactory> shouldBeIdentB = inv.mult( mv );
+		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> shouldBeIdentB = inv.mult( mv );
 		
 		
 		validateIsUnit( shouldBeIdentA );
@@ -314,14 +314,14 @@ public class TestMultivectorInvert extends TestCase {
 		
 		final TestDimensionFive td = new TestDimensionFive();
 		
-		final GeometricAlgebraOrd ord = new GeometricAlgebraOrd();
+		final GeometricAlgebraOrd<TestDimensionFive> ord = new GeometricAlgebraOrd<TestDimensionFive>();
 		
 		final DoubleElemFactory dl = new DoubleElemFactory();
 		
-		final GeometricAlgebraMultivectorElemFactory<TestDimensionFive,GeometricAlgebraOrd,DoubleElem,DoubleElemFactory> se = 
-				new GeometricAlgebraMultivectorElemFactory<TestDimensionFive,GeometricAlgebraOrd,DoubleElem,DoubleElemFactory>(dl, td, ord);
+		final GeometricAlgebraMultivectorElemFactory<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> se = 
+				new GeometricAlgebraMultivectorElemFactory<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory>(dl, td, ord);
 		
-		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd,DoubleElem,DoubleElemFactory> mv = se.zero();
+		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> mv = se.zero();
 		
 		HashSet<BigInteger> keyA = new HashSet<BigInteger>();
 		
@@ -341,11 +341,11 @@ public class TestMultivectorInvert extends TestCase {
 		
 		
 		
-		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd,DoubleElem,DoubleElemFactory> inv = mv.invertLeft();
+		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> inv = mv.invertLeft();
 		
-		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd,DoubleElem,DoubleElemFactory> shouldBeIdentA = mv.mult( inv );
+		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> shouldBeIdentA = mv.mult( inv );
 		
-		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd,DoubleElem,DoubleElemFactory> shouldBeIdentB = inv.mult( mv );
+		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> shouldBeIdentB = inv.mult( mv );
 		
 		
 		validateIsUnit( shouldBeIdentA );
@@ -362,14 +362,14 @@ public class TestMultivectorInvert extends TestCase {
 		
 		final TestDimensionFive td = new TestDimensionFive();
 		
-		final GeometricAlgebraOrd ord = new GeometricAlgebraOrd();
+		final GeometricAlgebraOrd<TestDimensionFive> ord = new GeometricAlgebraOrd<TestDimensionFive>();
 		
 		final DoubleElemFactory dl = new DoubleElemFactory();
 		
-		final GeometricAlgebraMultivectorElemFactory<TestDimensionFive,GeometricAlgebraOrd,DoubleElem,DoubleElemFactory> se = 
-				new GeometricAlgebraMultivectorElemFactory<TestDimensionFive,GeometricAlgebraOrd,DoubleElem,DoubleElemFactory>(dl, td, ord);
+		final GeometricAlgebraMultivectorElemFactory<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> se = 
+				new GeometricAlgebraMultivectorElemFactory<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory>(dl, td, ord);
 		
-		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd,DoubleElem,DoubleElemFactory> mv = se.zero();
+		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> mv = se.zero();
 		
 		HashSet<BigInteger> keyA = new HashSet<BigInteger>();
 		
@@ -391,11 +391,11 @@ public class TestMultivectorInvert extends TestCase {
 		
 		
 		
-		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd,DoubleElem,DoubleElemFactory> inv = mv.invertLeft();
+		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> inv = mv.invertLeft();
 		
-		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd,DoubleElem,DoubleElemFactory> shouldBeIdentA = mv.mult( inv );
+		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> shouldBeIdentA = mv.mult( inv );
 		
-		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd,DoubleElem,DoubleElemFactory> shouldBeIdentB = inv.mult( mv );
+		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> shouldBeIdentB = inv.mult( mv );
 		
 		
 		validateIsUnit( shouldBeIdentA );
@@ -412,14 +412,14 @@ public class TestMultivectorInvert extends TestCase {
 		
 		final TestDimensionFive td = new TestDimensionFive();
 		
-		final GeometricAlgebraOrd ord = new GeometricAlgebraOrd();
+		final GeometricAlgebraOrd<TestDimensionFive> ord = new GeometricAlgebraOrd<TestDimensionFive>();
 		
 		final DoubleElemFactory dl = new DoubleElemFactory();
 		
-		final GeometricAlgebraMultivectorElemFactory<TestDimensionFive,GeometricAlgebraOrd,DoubleElem,DoubleElemFactory> se = 
-				new GeometricAlgebraMultivectorElemFactory<TestDimensionFive,GeometricAlgebraOrd,DoubleElem,DoubleElemFactory>(dl, td, ord);
+		final GeometricAlgebraMultivectorElemFactory<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> se = 
+				new GeometricAlgebraMultivectorElemFactory<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory>(dl, td, ord);
 		
-		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd,DoubleElem,DoubleElemFactory> mv = se.zero();
+		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> mv = se.zero();
 		
 		HashSet<BigInteger> keyA = new HashSet<BigInteger>();
 		
@@ -443,11 +443,11 @@ public class TestMultivectorInvert extends TestCase {
 		
 		
 		
-		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd,DoubleElem,DoubleElemFactory> inv = mv.invertLeft();
+		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> inv = mv.invertLeft();
 		
-		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd,DoubleElem,DoubleElemFactory> shouldBeIdentA = mv.mult( inv );
+		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> shouldBeIdentA = mv.mult( inv );
 		
-		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd,DoubleElem,DoubleElemFactory> shouldBeIdentB = inv.mult( mv );
+		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> shouldBeIdentB = inv.mult( mv );
 		
 		
 		validateIsUnit( shouldBeIdentA );
@@ -464,14 +464,14 @@ public class TestMultivectorInvert extends TestCase {
 		
 		final TestDimensionFive td = new TestDimensionFive();
 		
-		final GeometricAlgebraOrd ord = new GeometricAlgebraOrd();
+		final GeometricAlgebraOrd<TestDimensionFive> ord = new GeometricAlgebraOrd<TestDimensionFive>();
 		
 		final DoubleElemFactory dl = new DoubleElemFactory();
 		
-		final GeometricAlgebraMultivectorElemFactory<TestDimensionFive,GeometricAlgebraOrd,DoubleElem,DoubleElemFactory> se = 
-				new GeometricAlgebraMultivectorElemFactory<TestDimensionFive,GeometricAlgebraOrd,DoubleElem,DoubleElemFactory>(dl, td, ord);
+		final GeometricAlgebraMultivectorElemFactory<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> se = 
+				new GeometricAlgebraMultivectorElemFactory<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory>(dl, td, ord);
 		
-		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd,DoubleElem,DoubleElemFactory> mv = se.zero();
+		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> mv = se.zero();
 		
 		HashSet<BigInteger> keyA = new HashSet<BigInteger>();
 		
@@ -486,11 +486,11 @@ public class TestMultivectorInvert extends TestCase {
 		
 		
 		
-		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd,DoubleElem,DoubleElemFactory> inv = mv.invertLeft();
+		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> inv = mv.invertLeft();
 		
-		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd,DoubleElem,DoubleElemFactory> shouldBeIdentA = mv.mult( inv );
+		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> shouldBeIdentA = mv.mult( inv );
 		
-		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd,DoubleElem,DoubleElemFactory> shouldBeIdentB = inv.mult( mv );
+		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> shouldBeIdentB = inv.mult( mv );
 		
 		
 		validateIsUnit( shouldBeIdentA );

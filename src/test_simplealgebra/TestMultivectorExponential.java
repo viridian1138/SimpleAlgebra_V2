@@ -148,8 +148,8 @@ public class TestMultivectorExponential extends TestCase {
 		
 		final TestDimensionFive td = new TestDimensionFive();
 		
-		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd,DoubleElem,DoubleElemFactory> el
-			= new GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd,DoubleElem,DoubleElemFactory>( fac , td , new GeometricAlgebraOrd() );
+		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> el
+			= new GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory>( fac , td , new GeometricAlgebraOrd<TestDimensionFive>() );
 		
 		final double s = 20.0 * ( rand.nextDouble() - 0.5 );
 		
@@ -166,7 +166,7 @@ public class TestMultivectorExponential extends TestCase {
 			el.setVal( h , new DoubleElem( v[ cnt ] ) );
 		}
 		
-		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd,DoubleElem,DoubleElemFactory> exp = el.exp( 25 );
+		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> exp = el.exp( 25 );
 		
 		
 		final double expS = Math.exp( s );
@@ -217,8 +217,8 @@ public class TestMultivectorExponential extends TestCase {
 		
 		final TestDimensionFive td = new TestDimensionFive();
 		
-		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd,DoubleElem,DoubleElemFactory> el
-			= new GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd,DoubleElem,DoubleElemFactory>( fac , td , new GeometricAlgebraOrd() );
+		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> el
+			= new GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory>( fac , td , new GeometricAlgebraOrd<TestDimensionFive>() );
 		
 		final double s = 20.0 * ( rand.nextDouble() - 0.5 );
 		
@@ -242,7 +242,7 @@ public class TestMultivectorExponential extends TestCase {
 			el.setVal( h , new DoubleElem( v[ cnt ] ) );
 		}
 		
-		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd,DoubleElem,DoubleElemFactory> exp = el.exp( 25 );
+		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> exp = el.exp( 25 );
 		
 		
 		final double expS = Math.exp( s );
