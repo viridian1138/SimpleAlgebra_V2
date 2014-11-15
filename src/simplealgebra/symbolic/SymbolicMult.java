@@ -80,6 +80,13 @@ public class SymbolicMult<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 				return( ( ia.mult( elemB ) ).add( ib.mult( elemB ) ).eval( implicitSpace ) );
 			}
 			
+			if( elemA instanceof SymbolicMult )
+			{
+				final SymbolicElem<R,S> ia = ((SymbolicMult) elemA).getElemA();
+				final SymbolicElem<R,S> ib = ((SymbolicMult) elemA).getElemB();
+				return( ( ia.mult( ib.mult( elemB ) ) ).eval( implicitSpace ) );
+			}
+			
 			throw( ex );
 		}
 		return( ea.mult( elemB.eval( implicitSpace ) ) );

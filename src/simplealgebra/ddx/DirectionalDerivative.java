@@ -96,7 +96,7 @@ public class DirectionalDerivative<U extends NumDimensions, A extends Ord<U>, R 
 			final HashSet<BigInteger> key = new HashSet<BigInteger>();
 			key.add( cnt );
 			
-			PartialDerivativeOp<R,S,K> val = dfac.getPartial( cnt );
+			SymbolicElem<R,S> val = dfac.getPartial( cnt );
 			
 			mul.setVal(key, val);
 		}
@@ -132,7 +132,7 @@ public class DirectionalDerivative<U extends NumDimensions, A extends Ord<U>, R 
 				final HashSet<BigInteger> key = new HashSet<BigInteger>();
 				key.add( cnt );
 				
-				PartialDerivativeOp<R,S,K> val = dfac.getPartial( cnt );
+				SymbolicElem<R,S> val = dfac.getPartial( cnt );
 				
 				mul.setVal(key, val);
 			}

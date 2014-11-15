@@ -30,6 +30,7 @@ import java.math.BigInteger;
 
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
+import simplealgebra.symbolic.SymbolicElem;
 
 /**
  * Factory for mapping a directional derivative into its set of constituent partial derivatives.
@@ -43,7 +44,7 @@ import simplealgebra.ElemFactory;
 public abstract class DirectionalDerivativePartialFactory<R extends Elem<R,?>, S extends ElemFactory<R,S>, K extends Elem<?,?>>
 {
 
-	public abstract PartialDerivativeOp<R,S,K> getPartial( BigInteger basisIndex );
+	public abstract SymbolicElem<R,S> getPartial( BigInteger basisIndex );
 
 }
 

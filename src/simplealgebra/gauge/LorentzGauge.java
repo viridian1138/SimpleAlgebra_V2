@@ -68,14 +68,14 @@ public class LorentzGauge<R extends Elem<R,?>, S extends ElemFactory<R,S>, K ext
 		SymbolicElem<R,S> ret = fac.zero();
 		
 		{
-			final PartialDerivativeOp<R,S,K> d = deriv.getPartial( BigInteger.ZERO );
+			final SymbolicElem<R,S> d = deriv.getPartial( BigInteger.ZERO );
 			final SymbolicElem<R,S> v = vect.getVectorPotential( BigInteger.ZERO );
 			ret = ret.add( ( d.mult( v ) ).mult( cSq.getAlteredCSquared( false ).negate() ) );
 		}
 		
 		for( BigInteger cnti = BigInteger.ONE ; cnti.compareTo(numElem) < 0 ; cnti = cnti.add( BigInteger.ONE ) )
 		{
-			final PartialDerivativeOp<R,S,K> d = deriv.getPartial( cnti );
+			final SymbolicElem<R,S> d = deriv.getPartial( cnti );
 			final SymbolicElem<R,S> v = vect.getVectorPotential( cnti );
 			ret = ret.add( d.mult( v ) );
 		}

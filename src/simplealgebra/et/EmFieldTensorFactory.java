@@ -87,8 +87,8 @@ public class EmFieldTensorFactory<Z extends Object, R extends Elem<R,?>, S exten
 					ArrayList<BigInteger> el = new ArrayList<BigInteger>();
 					el.add( cnti );
 					el.add( cntj );
-					final PartialDerivativeOp<R,S,K> di = deriv.getPartial( cnti );
-					final PartialDerivativeOp<R,S,K> dj = deriv.getPartial( cntj );
+					final SymbolicElem<R,S> di = deriv.getPartial( cnti );
+					final SymbolicElem<R,S> dj = deriv.getPartial( cntj );
 					final SymbolicElem<R,S> vi = vect.getVectorPotential( cnti );
 					final SymbolicElem<R,S> vj = vect.getVectorPotential( cntj );
 					SymbolicElem<R,S> elem = ( di.mult( vj ) ).add( ( dj.mult( vi ) ).negate() );

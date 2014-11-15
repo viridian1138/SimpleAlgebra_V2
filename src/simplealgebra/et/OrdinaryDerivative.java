@@ -102,7 +102,7 @@ public class OrdinaryDerivative<Z extends Object, U extends NumDimensions, R ext
 			final ArrayList<BigInteger> key = new ArrayList<BigInteger>();
 			key.add( cnt );
 			
-			PartialDerivativeOp<R,S,K> val = dfac.getPartial( cnt );
+			SymbolicElem<R,S> val = dfac.getPartial( cnt );
 			
 			mul.setVal(key, val);
 		}
