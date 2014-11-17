@@ -412,13 +412,43 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	
 	private SquareMatrixElem<U, R, S> iinvertLeft() throws NotInvertibleException
 	{
+		// for( int cntx = 0 ; cntx < 16 ; cntx++ ) // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		// {
+		//	System.out.print( " [ " );
+		//	for( int cnty = 0 ; cnty < 16 ; cnty++ )
+		//	{
+		//		System.out.print( " " );
+		//		DoubleElem d = (DoubleElem)( this.get( BigInteger.valueOf( cntx ) , BigInteger.valueOf( cnty ) ) );
+		//		System.out.print( d.getVal() );
+		//	}
+		//	System.out.print( " ] " );
+		// }
+		// System.out.println( "" );
+		
 		SquareMatrixElem<U,R,S> ret = getFac().identity();
 		
 		final BigInteger max = dim.getVal();
 		BigInteger cnt = BigInteger.ZERO;
 		while( cnt.compareTo( max ) < 0 )
 		{
+			// System.out.println( ">>>> " + cnt ); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			
 			final R mv = setUpRowLeft( cnt , ret );
+			
+			// for( int cntx = 0 ; cntx < 16 ; cntx++ ) // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			// {
+			//	System.out.print( " [ " );
+			//	for( int cnty = 0 ; cnty < 16 ; cnty++ )
+			//	{
+			//		System.out.print( " " );
+			//		DoubleElem d = (DoubleElem)( this.get( BigInteger.valueOf( cntx ) , BigInteger.valueOf( cnty ) ) );
+			//		System.out.print( d.getVal() );
+			//	}
+			//	System.out.print( " ] " );
+			// }
+			// System.out.println( "" );
+			
+			// System.out.println( "** " + ( (DoubleElem) mv ).getVal() );
 			
 			multiplyThroughRowLeft( cnt , mv );
 			ret.multiplyThroughRowLeft( cnt , mv);
@@ -791,6 +821,8 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 					cnt = cnt.add( BigInteger.ONE );
 				}
 			}
+			// this.setVal(rowi, rowi, fac.identity()); // !!!!!!!!!!!!!!!!!!!!!
+			// return( fac.identity() );
 			throw( new NotInvertibleException() );
 		}
 	}

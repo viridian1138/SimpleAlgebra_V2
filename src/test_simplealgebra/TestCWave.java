@@ -35,7 +35,7 @@ import simplealgebra.bigfixedpoint.Precision;
 
 /**
  * 
- * Simple Runge-Kutta-like evaluator test for the equation <math display="inline">
+ * Simple Euler-Method-like evaluator test for the equation <math display="inline">
  * <mrow>
  *  <mfrac>
  *    <mrow>

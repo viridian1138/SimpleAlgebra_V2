@@ -39,12 +39,20 @@ public class BigFixedPointElem<T extends Precision> extends Elem<BigFixedPointEl
 	
 	public BigFixedPointElem( BigInteger _val , T _prec )
 	{
+		if( _val.equals( BigInteger.ZERO ) )
+		{
+			throw( new RuntimeException( "NaN" ) );
+		}
 		val = _val;
 		prec = _prec;
 	}
 	
 	public BigFixedPointElem( double vl , T _prec ) 
 	{
+		if( Double.isNaN( vl ) || Double.isInfinite( vl ) )
+		{
+			throw( new RuntimeException( "NaN" ) );
+		}
 		prec = _prec;
 		final BigDecimal bd = new BigDecimal( vl * prec.getVal().doubleValue() );
 		final BigInteger _val = bd.toBigInteger();
@@ -86,6 +94,10 @@ public class BigFixedPointElem<T extends Precision> extends Elem<BigFixedPointEl
 
 	@Override
 	public BigFixedPointElem<T> divideBy(int vali) {
+		if( vali == 0 )
+		{
+			throw( new RuntimeException( "NaN" ) );
+		}
 		return( new BigFixedPointElem<T>( val.divide( BigInteger.valueOf( vali ) ) , prec ) );
 	}
 

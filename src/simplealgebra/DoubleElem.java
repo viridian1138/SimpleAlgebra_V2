@@ -46,27 +46,34 @@ public class DoubleElem extends Elem<DoubleElem, DoubleElemFactory> {
 
 	@Override
 	public DoubleElem invertLeft() throws NotInvertibleException {
-		final DoubleElem de = new DoubleElem( 1.0 / d );
-		if( Double.isNaN( de.getVal() ) )
+		final double dv = 1.0 / d;
+		if( Double.isNaN( dv ) || Double.isInfinite( dv ) )
 		{
 			throw( new NotInvertibleException() );
 		}
+		final DoubleElem de = new DoubleElem( dv );
 		return( de );
 	}
 	
 	@Override
 	public DoubleElem invertRight() throws NotInvertibleException {
-		final DoubleElem de = new DoubleElem( 1.0 / d );
-		if( Double.isNaN( de.getVal() ) )
+		final double dv = 1.0 / d;
+		if( Double.isNaN( dv ) || Double.isInfinite( dv ) )
 		{
 			throw( new NotInvertibleException() );
 		}
+		final DoubleElem de = new DoubleElem( dv );
 		return( de );
 	}
 
 	@Override
 	public DoubleElem divideBy(int val) {
-		return( new DoubleElem( d / val ) );
+		if( val == 0 )
+		{
+			throw( new RuntimeException( "NaN" ) );
+		}
+		final DoubleElem de = new DoubleElem( d / val );
+		return( de );
 	}
 
 	@Override
@@ -97,6 +104,10 @@ public class DoubleElem extends Elem<DoubleElem, DoubleElemFactory> {
 	
 	public DoubleElem( double _d )
 	{
+		if( Double.isNaN( _d ) || Double.isInfinite( _d ) )
+		{
+			throw( new RuntimeException( "NaN" ) );
+		}
 		d = _d;
 	}
 	

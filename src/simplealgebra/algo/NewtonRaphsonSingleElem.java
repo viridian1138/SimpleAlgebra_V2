@@ -78,12 +78,18 @@ public abstract class NewtonRaphsonSingleElem<R extends Elem<R,?>, S extends Ele
 	
 	protected void performIteration() throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
-		final R derivative = partialEval.eval(implicitSpace);
+		final R derivative = evalPartialDerivative();
 		final R iterationOffset = lastValue.mult( derivative.invertLeft() ).negate();
 		
 		performIterationUpdate( iterationOffset );
 		
 		lastValue = eval.eval( implicitSpace );
+	}
+	
+	
+	protected R evalPartialDerivative() throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	{
+		return( partialEval.eval( implicitSpace ) );
 	}
 	
 	
