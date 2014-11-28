@@ -587,6 +587,13 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 		}
 		return( ret );
 	}
+	
+	
+	
+	public Iterator<ArrayList<BigInteger>> getKeyIterator()
+	{
+		return( map.keySet().iterator() );
+	}
 
 
 	

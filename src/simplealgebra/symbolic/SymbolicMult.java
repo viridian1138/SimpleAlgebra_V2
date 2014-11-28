@@ -137,6 +137,13 @@ public class SymbolicMult<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 					return( ( ia.mult( elemB ) ).add( ib.mult( elemB ) ).evalPartialDerivative( withRespectTo , implicitSpace ) );
 				}
 				
+				if( elemA instanceof SymbolicMult )
+				{
+					final SymbolicElem<R,S> ia = ((SymbolicMult<R,S>) elemA).getElemA();
+					final SymbolicElem<R,S> ib = ((SymbolicMult<R,S>) elemA).getElemB();
+					return( ( ia.mult( ib.mult( elemB ) ) ).evalPartialDerivative( withRespectTo , implicitSpace ) );
+				}
+				
 				throw( ex );
 			}
 			lt = ea.mult( elemB.eval(implicitSpace) );
@@ -160,6 +167,13 @@ public class SymbolicMult<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 					final SymbolicElem<R,S> ia = ((SymbolicAdd<R,S>) elemA).getElemA();
 					final SymbolicElem<R,S> ib = ((SymbolicAdd<R,S>) elemA).getElemB();
 					return( ( ia.mult( elemB ) ).add( ib.mult( elemB ) ).evalPartialDerivative( withRespectTo , implicitSpace ) );
+				}
+				
+				if( elemA instanceof SymbolicMult )
+				{
+					final SymbolicElem<R,S> ia = ((SymbolicMult<R,S>) elemA).getElemA();
+					final SymbolicElem<R,S> ib = ((SymbolicMult<R,S>) elemA).getElemB();
+					return( ( ia.mult( ib.mult( elemB ) ) ).evalPartialDerivative( withRespectTo , implicitSpace ) );
 				}
 				
 				throw( ex );
