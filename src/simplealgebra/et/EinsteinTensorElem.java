@@ -359,14 +359,72 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	
 	@Override
 	public EinsteinTensorElem<Z, R, S> invertLeft() throws NotInvertibleException {
-		return( null ); // !!!!!!!!!!!!!!!!!!!!!!!!!! TBD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		R sum = fac.zero();
+		Iterator<ArrayList<BigInteger>> it = map.keySet().iterator();
+		while( it.hasNext() )
+		{
+			final ArrayList<BigInteger> key = it.next();
+			final R val = map.get( key );
+			sum = sum.add( val );
+		}
+		final R inv = sum.invertLeft();
+		final EinsteinTensorElem<Z, R, S> ret = new EinsteinTensorElem<Z, R, S>( fac , covariantIndices , contravariantIndices );
+		it = map.keySet().iterator();
+		while( it.hasNext() )
+		{
+			final ArrayList<BigInteger> key = it.next();
+			final R val = map.get( key );
+			final ArrayList<BigInteger> key2 = new ArrayList<BigInteger>();
+			for( int cnt = 0 ; cnt < covariantIndices.size() + contravariantIndices.size() ; cnt++ )
+			{
+				if( cnt < contravariantIndices.size() )
+				{
+					key2.add( key.get( cnt + covariantIndices.size() ) );
+				}
+				else
+				{
+					key2.add( key.get( cnt - contravariantIndices.size() ) );
+				}
+			}
+			ret.setVal( key2 , inv.mult( val ) );
+		}
+		return( ret );
 	}
 	
 	
 	
 	@Override
 	public EinsteinTensorElem<Z, R, S> invertRight() throws NotInvertibleException {
-		return( null ); // !!!!!!!!!!!!!!!!!!!!!!!!!! TBD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		R sum = fac.zero();
+		Iterator<ArrayList<BigInteger>> it = map.keySet().iterator();
+		while( it.hasNext() )
+		{
+			final ArrayList<BigInteger> key = it.next();
+			final R val = map.get( key );
+			sum = sum.add( val );
+		}
+		final R inv = sum.invertRight();
+		final EinsteinTensorElem<Z, R, S> ret = new EinsteinTensorElem<Z, R, S>( fac , covariantIndices , contravariantIndices );
+		it = map.keySet().iterator();
+		while( it.hasNext() )
+		{
+			final ArrayList<BigInteger> key = it.next();
+			final R val = map.get( key );
+			final ArrayList<BigInteger> key2 = new ArrayList<BigInteger>();
+			for( int cnt = 0 ; cnt < covariantIndices.size() + contravariantIndices.size() ; cnt++ )
+			{
+				if( cnt < contravariantIndices.size() )
+				{
+					key2.add( key.get( cnt + covariantIndices.size() ) );
+				}
+				else
+				{
+					key2.add( key.get( cnt - contravariantIndices.size() ) );
+				}
+			}
+			ret.setVal( key2 , val.mult( inv ) );
+		}
+		return( ret );
 	}
 	
 
