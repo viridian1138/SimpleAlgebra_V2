@@ -43,20 +43,42 @@ import simplealgebra.symbolic.SymbolicElemFactory;
 
 
 /**
- * Implements a ordinary derivative operator for a Einstein Tensor.
+ * Implements a factory for the tensor <math display="inline">
+ * <mrow>
+ *  <msub>
+ *          <mo>&PartialD;</mo>
+ *        <mi>v</mi>
+ *  </msub>
+ * </mrow>
+ * </math> where <math display="inline">
+ * <mrow>
+ *  <mi>v</mi>
+ * </mrow>
+ * </math> is a tensor index.  This produces a rank-one tensor
+ * with a set of partial derivative operators.  The name of the
+ * particular index to be used is passed into the class as a
+ * parameter.
  * 
  * @author thorngreen
  *
- * @param <Z>
- * @param <U>
- * @param <R>
- * @param <S>
- * @param <K>
+ * @param <Z> Type defining the terms for the contravariant and covariant indices.
+ * @param <U> The number of dimensions for the index.
+ * @param <R> The enclosed type of the tensor.
+ * @param <S> The factory for the enclosed type of the tensor.
+ * @param <K> The type of the element against which to take partial derivatives.
  */
 public class OrdinaryDerivative<Z extends Object, U extends NumDimensions, R extends Elem<R,?>, S extends ElemFactory<R,S>, K extends Elem<?,?>> 
 		extends DerivativeElem<EinsteinTensorElem<Z,SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,EinsteinTensorElemFactory<Z,SymbolicElem<R,S>,SymbolicElemFactory<R,S>>>
 {
 
+	/**
+	 * Constructs the tensor factory.
+	 * 
+	 * @param _fac The factory for the enclosed type.
+	 * @param _index The index for the rank-one tensor.
+	 * @param _dim The number of dimensions for the index.
+	 * @param _dfac Factory for generating the partial derivatives of a directional derivative.
+	 */
 	public OrdinaryDerivative( EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, 
 			SymbolicElemFactory<R, S>> _fac , 
 			Z _index ,
@@ -120,8 +142,19 @@ public class OrdinaryDerivative<Z extends Object, U extends NumDimensions, R ext
 		return( "ordinaryDerivativeTensor" );
 	}
 	
+	/**
+	 * The tensor index for the ordinary derivative.
+	 */
 	private Z index;
+	
+	/**
+	 * The number of dimensions for the index.
+	 */
 	private U dim;
+	
+	/**
+	 * Factory for generating the partial derivatives of a directional derivative.
+	 */
 	private DirectionalDerivativePartialFactory<R,S,K> dfac;
 	
 	

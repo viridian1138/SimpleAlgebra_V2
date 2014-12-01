@@ -35,13 +35,35 @@ import simplealgebra.NotInvertibleException;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SymbolicElem;
 
+/**
+ * Element representing a derivative.
+ * 
+ * @author thorngreen
+ *
+ * @param <R> The enclosed type of the derivative.
+ * @param <S> Factory for the enclosed type of the derivative.
+ */
 public abstract class DerivativeElem<R extends Elem<R,?>, S extends ElemFactory<R,S>> extends SymbolicElem<R,S>
 {
 	
+	/**
+	 * Constructs the derivative.
+	 * 
+	 * @param _fac Factory for the enclosed type of the derivative.
+	 */
 	public DerivativeElem(S _fac) {
 		super(_fac);
 	}
 
+	/**
+	 * Evaluates the derivative on an expression.
+	 * 
+	 * @param in The expression to which to apply the derivative.
+	 * @param implicitSpace Implicit parameter space against which to perform the evaluation.
+	 * @return The result of evaluating the derivative.
+	 * @throws NotInvertibleException
+	 * @throws MultiplicativeDistributionRequiredException
+	 */
 	public abstract R evalDerivative( SymbolicElem<R,S> in , HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException;
 	
 	@Override

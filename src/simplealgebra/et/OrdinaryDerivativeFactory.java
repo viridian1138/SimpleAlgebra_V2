@@ -37,18 +37,39 @@ import simplealgebra.symbolic.SymbolicElemFactory;
 
 
 /**
- * Factory for ordinary derivative operators for a Einstein Tensor.
+ * Implements a factory for the tensor <math display="inline">
+ * <mrow>
+ *  <msub>
+ *          <mo>&PartialD;</mo>
+ *        <mi>v</mi>
+ *  </msub>
+ * </mrow>
+ * </math> where <math display="inline">
+ * <mrow>
+ *  <mi>v</mi>
+ * </mrow>
+ * </math> is a tensor index.  This produces a rank-one tensor
+ * with a set of partial derivative operators.  The name of the
+ * particular index to be used is passed into the class as a
+ * parameter.
  * 
  * @author thorngreen
  *
- * @param <Z>
- * @param <U>
- * @param <R>
- * @param <S>
- * @param <K>
+ * @param <Z> Type defining the terms for the contravariant and covariant indices.
+ * @param <U> The number of dimensions for the index.
+ * @param <R> The enclosed type of the tensor.
+ * @param <S> The factory for the enclosed type of the tensor.
+ * @param <K> The type of the element against which to take partial derivatives.
  */
 public class OrdinaryDerivativeFactory<Z extends Object, U extends NumDimensions, R extends Elem<R,?>, S extends ElemFactory<R,S>, K extends Elem<?,?>> {
 	
+	/**
+	 * Constructs the tensor factory.
+	 * 
+	 * @param _fac The factory for the enclosed type.
+	 * @param _dim The number of dimensions for the index.
+	 * @param _dfac Factory for generating the partial derivatives of a directional derivative.
+	 */
 	public OrdinaryDerivativeFactory( EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, 
 			SymbolicElemFactory<R, S>> _fac , 
 			U _dim ,
@@ -59,6 +80,13 @@ public class OrdinaryDerivativeFactory<Z extends Object, U extends NumDimensions
 		dfac = _dfac;
 	}
 	
+	/**
+	 * Applies the ordinary derivative to an expression.
+	 * 
+	 * @param term The expression to which to apply the derivative.
+	 * @param derivativeIndex The tensor index of the ordinary derivative.
+	 * @return The result of applying the derivative.
+	 */
 	public SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> 
 		getOrdinaryDerivative( SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> term , Z derivativeIndex )
 {
@@ -70,9 +98,21 @@ public class OrdinaryDerivativeFactory<Z extends Object, U extends NumDimensions
 		return( ret );
 }
 	
+	
+	/**
+	 * The tensor index for the ordinary derivative.
+	 */
 	private EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, 
 		SymbolicElemFactory<R, S>> fac;
+	
+	/**
+	 * The number of dimensions for the index.
+	 */
 	private U dim;
+	
+	/**
+	 * Factory for generating the partial derivatives of a directional derivative.
+	 */
 	private DirectionalDerivativePartialFactory<R,S,K> dfac;
 
 }
