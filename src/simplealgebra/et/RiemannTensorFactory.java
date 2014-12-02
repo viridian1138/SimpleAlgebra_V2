@@ -35,24 +35,125 @@ import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 
 /**
- * Factory for Riemann tensors.
+ * Factory for generating Riemann tensors, where a Riemann tensor is defined by <math display="inline">
+ * <mrow>
+ *  <msubsup>
+ *          <mi>R</mi>
+ *      <mrow>
+ *        <mi>&sigma;</mi>
+ *        <mi>&mu;</mi>
+ *        <mi>&nu;</mi>
+ *      </mrow>
+ *        <mi>&rho;</mi>
+ *  </msubsup>
+ *  <mo>=</mo>
+ *  <msub>
+ *          <mo>&PartialD;</mo>
+ *        <mi>&mu;</mi>
+ *  </msub>
+ *  <msubsup>
+ *          <mi>&Gamma;</mi>
+ *      <mrow>
+ *        <mi>&nu;</mi>
+ *        <mi>&sigma;</mi>
+ *      </mrow>
+ *        <mi>&rho;</mi>
+ *  </msubsup>
+ *  <mo>-</mo>
+ *  <msub>
+ *          <mo>&PartialD;</mo>
+ *        <mi>&upsilon;</mi>
+ *  </msub>
+ *  <msubsup>
+ *          <mi>&Gamma;</mi>
+ *      <mrow>
+ *        <mi>&mu;</mi>
+ *        <mi>&sigma;</mi>
+ *      </mrow>
+ *        <mi>&rho;</mi>
+ *  </msubsup>
+ *  <mo>+</mo>
+ *  <msubsup>
+ *          <mi>&Gamma;</mi>
+ *      <mrow>
+ *        <mi>&mu;</mi>
+ *        <mi>&lambda;</mi>
+ *      </mrow>
+ *        <mi>&rho;</mi>
+ *  </msubsup>
+ *  <msubsup>
+ *          <mi>&Gamma;</mi>
+ *      <mrow>
+ *        <mi>&nu;</mi>
+ *        <mi>&sigma;</mi>
+ *      </mrow>
+ *        <mi>&lambda;</mi>
+ *  </msubsup>
+ *  <mo>-</mo>
+ *  <msubsup>
+ *          <mi>&Gamma;</mi>
+ *      <mrow>
+ *        <mi>&nu;</mi>
+ *        <mi>&lambda;</mi>
+ *      </mrow>
+ *        <mi>&rho;</mi>
+ *  </msubsup>
+ *  <msubsup>
+ *          <mi>&Gamma;</mi>
+ *      <mrow>
+ *        <mi>&mu;</mi>
+ *        <mi>&sigma;</mi>
+ *      </mrow>
+ *        <mi>&lambda;</mi>
+ *  </msubsup>
+ * </mrow>
+ * </math> where the <math display="inline">
+ * <mrow>
+ *  <msub>
+ *          <mo>&PartialD;</mo>
+ *        <mi>v</mi>
+ *  </msub>
+ * </mrow>
+ * </math> terms are ordinary derivatives and the <math display="inline">
+ * <mrow>
+ *  <mi>&Gamma;</mi>
+ * </mrow>
+ * </math> terms are affine connections. See http://en.wikipedia.org/wiki/Einstein%E2%80%93Hilbert_action
  * 
  * @author thorngreen
  *
- * @param <Z>
- * @param <U>
- * @param <R>
- * @param <S>
- * @param <K>
+ * @param <Z> Type defining the terms for the contravariant and covariant indices.
+ * @param <U> The number of dimensions for the index.
+ * @param <R> The enclosed type of the tensor.
+ * @param <S> The factory for the enclosed type of the tensor.
+ * @param <K> The type of the element against which to take partial derivatives.
  */
 public class RiemannTensorFactory<Z extends Object, U extends NumDimensions, R extends Elem<R,?>, S extends ElemFactory<R,S>, K extends Elem<?,?>> {
 	
+	/**
+	 * A factory for generating temporary lambda indices in the Riemann tensor.
+	 */
 	TemporaryIndexFactory<Z> temp;
+	
+	/**
+	 * A factory for generating ordinary derivatives.
+	 */
 	OrdinaryDerivativeFactory<Z,U,R,S,K> deriv;
+	
+	/**
+	 * A factory for generating affine connections.
+	 */
 	AffineConnectionFactory<Z,U,R,S,K> affine;
 	
 	
 	
+	/**
+	 * Constructs a factory for generating Riemann tensors.
+	 * 
+	 * @param _metric A factory for generating metric tensors.
+	 * @param _temp A factory for generating temporary lambda indices in the Riemann tensor.
+	 * @param _deriv A factory for generating ordinary derivatives.
+	 */
 	public RiemannTensorFactory( MetricTensorFactory<Z,R,S> _metric , 
 			TemporaryIndexFactory<Z> _temp , OrdinaryDerivativeFactory<Z,U,R,S,K> _deriv )
 	{
@@ -62,25 +163,34 @@ public class RiemannTensorFactory<Z extends Object, U extends NumDimensions, R e
 	}
 	
 	
+	/**
+	 * Returns an expression for the Riemann tensor.
+	 * 
+	 * @param sigma The sigma index.
+	 * @param u The u index.
+	 * @param v The v index.
+	 * @param rho The rho index.
+	 * @return An expression for the Riemann tensor.
+	 */
 	public SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> 
-		getRiemannTensor( Z sigma , Z u , Z v , Z p )
+		getRiemannTensor( Z sigma , Z u , Z v , Z rho )
 	{
 		final Z lambda = temp.getTemp();
 		
 		final SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>
-			affineUd = affine.getAffineConnection(u, sigma, p);
+			affineUd = affine.getAffineConnection(v, sigma, rho);
 		
 		final SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>
-			affineVd = affine.getAffineConnection(v, sigma, p);
+			affineVd = affine.getAffineConnection(u, sigma, rho);
 		
 		final SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>
-			pAA = affine.getAffineConnection(u, lambda, p);
+			pAA = affine.getAffineConnection(u, lambda, rho);
 		
 		final SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>
 			pAB = affine.getAffineConnection(v, sigma, lambda);
 		
 		final SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>
-			pBA = affine.getAffineConnection(v, lambda , p);
+			pBA = affine.getAffineConnection(v, lambda , rho);
 		
 		final SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>
 			pBB = affine.getAffineConnection(u , sigma, lambda);
@@ -93,7 +203,7 @@ public class RiemannTensorFactory<Z extends Object, U extends NumDimensions, R e
 		
 		
 		final SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>
-			ret = dU.add( dV ).add( pAA.mult( pAB ) ).add( pBA.mult( pBB ) );
+			ret = dU.add( dV.negate() ).add( pAA.mult( pAB ) ).add( pBA.mult( pBB ).negate() );
 		
 		
 		return( ret );

@@ -37,13 +37,19 @@ import simplealgebra.symbolic.SymbolicElem;
  * 
  * @author thorngreen
  *
- * @param <R>
- * @param <S>
- * @param <K>
+ * @param <R> The enclosed type of the derivative.
+ * @param <S> Factory for the enclosed type of the derivative.
+ * @param <K> The type of the element against which to take partial derivatives.
  */
 public abstract class DirectionalDerivativePartialFactory<R extends Elem<R,?>, S extends ElemFactory<R,S>, K extends Elem<?,?>>
 {
 
+	/**
+	 * Returns the partial derivative for a particular index value.
+	 * 
+	 * @param basisIndex The input index value.
+	 * @return A partial derivative expression corresponding to the index.
+	 */
 	public abstract SymbolicElem<R,S> getPartial( BigInteger basisIndex );
 
 }

@@ -652,6 +652,25 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	{
 		return( map.keySet().iterator() );
 	}
+	
+	
+	
+	@Override
+	public void validate() throws RuntimeException
+	{
+		final int TST_SZ = contravariantIndices.size() + covariantIndices.size();
+		final Iterator<ArrayList<BigInteger>> it = map.keySet().iterator();
+		while( it.hasNext() )
+		{
+			final ArrayList<BigInteger> key = it.next();
+			if( key.size() != TST_SZ )
+			{
+				throw( new RuntimeException( "Mismatch" ) );
+			}
+			final R val = map.get( key );
+			val.validate();
+		}
+	}
 
 
 	
