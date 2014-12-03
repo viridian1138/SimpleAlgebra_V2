@@ -34,7 +34,7 @@ import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.NumDimensions;
-import simplealgebra.et.AffineConnectionFactory;
+import simplealgebra.et.ConnectionCoefficientFactory;
 import simplealgebra.et.EinsteinTensorElem;
 import simplealgebra.et.EinsteinTensorElemFactory;
 import simplealgebra.et.MetricTensorFactory;
@@ -87,7 +87,7 @@ public class CovariantDerivative<Z extends Object, U extends NumDimensions, R ex
 		SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>
 			sum = deriv;
 		
-		AffineConnectionFactory<Z,U,R,S,K> afac = new AffineConnectionFactory<Z,U,R,S,K>( metric , 
+		ConnectionCoefficientFactory<Z,U,R,S,K> afac = new ConnectionCoefficientFactory<Z,U,R,S,K>( metric , 
 				temp , odfac );
 		
 		final ArrayList<Z> iCovar = tensorWithRespectTo.eval( implicitSpace ).getCovariantIndices();
@@ -99,7 +99,7 @@ public class CovariantDerivative<Z extends Object, U extends NumDimensions, R ex
 			Z index = it.next();
 			Z r = temp.getTemp();
 			SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>
-				conn = afac.getAffineConnection( derivativeIndex , index , r );
+				conn = afac.getConnectionCoefficient( derivativeIndex , index , r );
 			
 			ArrayList<Z> reCovar = new ArrayList<Z>( iCovar.size() );
 			Iterator<Z> it2 = ((ArrayList<Z>)(iCovar.clone())).iterator();

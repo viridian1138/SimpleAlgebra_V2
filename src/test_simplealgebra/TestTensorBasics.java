@@ -70,6 +70,14 @@ public class TestTensorBasics extends TestCase {
 	
 	
 	
+	final static ArrayList<BigInteger> scalar( )
+	{
+		final ArrayList<BigInteger> ret = new ArrayList<BigInteger>();
+		return( ret );
+	}
+	
+	
+	
 	final static ArrayList<BigInteger> vect0( )
 	{
 		final ArrayList<BigInteger> ret = new ArrayList<BigInteger>();
@@ -387,6 +395,7 @@ public class TestTensorBasics extends TestCase {
 				etA.mult( etB );
 		
 		
+		
 		etC.validate();
 		
 		
@@ -398,11 +407,114 @@ public class TestTensorBasics extends TestCase {
 		{
 			kcnt++;
 			ArrayList<BigInteger> key = itA.next();
-			System.out.println( key.size() );
 			Assert.assertTrue( key.size() == 1 );
 			final int ind0 = key.get( 0 ).intValue();
 			DoubleElem elem = etC.getVal( key );
 			final double expectedAnswer = tstArr[ ind0 ] * tstArr[ ind0 ];
+			Assert.assertTrue( Math.abs( elem.getVal() - expectedAnswer ) < 0.001 );
+		}
+		
+		Assert.assertTrue( kcnt == 4 );
+		
+		
+		
+	}
+	
+	
+	
+	
+	/**
+	 * Test method for tensor multiplication.
+	 */
+	public void testTensorMultD() throws NotInvertibleException
+	{
+		
+		final DoubleElemFactory de = new DoubleElemFactory();
+		
+		
+		final EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory> etfA =
+				new EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>( de, indicesEmpty() , indicesU() );
+		
+		
+		final EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> etA =
+				new EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>( de , indicesEmpty() , indicesU() );
+		
+		
+		
+		final EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory> etfB =
+				new EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>( de, indicesEmpty() , indicesEmpty() );
+		
+		
+		final EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> etB =
+				new EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>( de , indicesEmpty() , indicesEmpty() );
+		
+		
+		
+		etA.validate();
+		
+		
+		etB.validate();
+		
+		
+		
+		
+		etA.setVal( vect0() , new DoubleElem( 3.0 ) );
+		
+		
+		
+		
+		etA.setVal( vect1() , new DoubleElem( 5.0 ) );
+		
+		
+		
+		etA.setVal( vect2() , new DoubleElem( 7.0 ) );
+		
+		
+		
+		etA.setVal( vect3() , new DoubleElem( 13.0 ) );
+		
+		
+		
+		etB.setVal( scalar() , new DoubleElem( 5.0 ) );
+		
+		
+		
+		
+		
+		etA.validate();
+		
+		
+		etB.validate();
+		
+		
+		
+		
+		Assert.assertTrue( Math.abs( etA.getVal( vect1() ).getVal() - 5.0 ) < 0.001 );
+		
+		
+		
+		
+		final EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> etC =
+				etA.mult( etB );
+		
+		
+		
+		
+		etC.validate();
+		
+		
+		final int[] tstArr = { 3 , 5 , 7 , 13 };
+		
+		int kcnt = 0;
+		Iterator<ArrayList<BigInteger>> itA = etC.getKeyIterator();
+		while( itA.hasNext() )
+		{
+			kcnt++;
+			ArrayList<BigInteger> key = itA.next();
+			Assert.assertTrue( key.size() == 1 );
+			final int ind0 = key.get( 0 ).intValue();
+			DoubleElem elem = etC.getVal( key );
+			final double expectedAnswer = tstArr[ ind0 ] * 5.0;
 			Assert.assertTrue( Math.abs( elem.getVal() - expectedAnswer ) < 0.001 );
 		}
 		

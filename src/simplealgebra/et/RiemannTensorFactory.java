@@ -118,7 +118,7 @@ import simplealgebra.symbolic.SymbolicElemFactory;
  * <mrow>
  *  <mi>&Gamma;</mi>
  * </mrow>
- * </math> terms are affine connections. See http://en.wikipedia.org/wiki/Einstein%E2%80%93Hilbert_action
+ * </math> terms are connection coefficients. See http://en.wikipedia.org/wiki/Einstein%E2%80%93Hilbert_action
  * 
  * @author thorngreen
  *
@@ -141,9 +141,9 @@ public class RiemannTensorFactory<Z extends Object, U extends NumDimensions, R e
 	OrdinaryDerivativeFactory<Z,U,R,S,K> deriv;
 	
 	/**
-	 * A factory for generating affine connections.
+	 * A factory for generating connection coefficients.
 	 */
-	AffineConnectionFactory<Z,U,R,S,K> affine;
+	ConnectionCoefficientFactory<Z,U,R,S,K> affine;
 	
 	
 	
@@ -159,7 +159,7 @@ public class RiemannTensorFactory<Z extends Object, U extends NumDimensions, R e
 	{
 		temp = _temp;
 		deriv = _deriv;
-		affine = new AffineConnectionFactory<Z,U,R,S,K>( _metric , _temp , _deriv );
+		affine = new ConnectionCoefficientFactory<Z,U,R,S,K>( _metric , _temp , _deriv );
 	}
 	
 	
@@ -178,22 +178,22 @@ public class RiemannTensorFactory<Z extends Object, U extends NumDimensions, R e
 		final Z lambda = temp.getTemp();
 		
 		final SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>
-			affineUd = affine.getAffineConnection(v, sigma, rho);
+			affineUd = affine.getConnectionCoefficient(v, sigma, rho);
 		
 		final SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>
-			affineVd = affine.getAffineConnection(u, sigma, rho);
+			affineVd = affine.getConnectionCoefficient(u, sigma, rho);
 		
 		final SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>
-			pAA = affine.getAffineConnection(u, lambda, rho);
+			pAA = affine.getConnectionCoefficient(u, lambda, rho);
 		
 		final SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>
-			pAB = affine.getAffineConnection(v, sigma, lambda);
+			pAB = affine.getConnectionCoefficient(v, sigma, lambda);
 		
 		final SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>
-			pBA = affine.getAffineConnection(v, lambda , rho);
+			pBA = affine.getConnectionCoefficient(v, lambda , rho);
 		
 		final SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>
-			pBB = affine.getAffineConnection(u , sigma, lambda);
+			pBB = affine.getConnectionCoefficient(u , sigma, lambda);
 		
 		final SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>
 			dU = deriv.getOrdinaryDerivative( affineUd , u );

@@ -35,24 +35,142 @@ import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 
 /**
- * Factory for affine connections (also known as Christoffel symbol and/or "Gamma symbol").
+ * Factory for the Connection Coefficient (also known as Christoffel symbol and/or "Gamma symbol").  This is defined as:
+ * 
+ * 
+ * <math display="inline">
+ * <mrow>
+ *  <msubsup>
+ *          <mi>&Gamma;</mi>
+ *      <mrow>
+ *        <mi>j</mi>
+ *        <mi>k</mi>
+ *      </mrow>
+ *        <mi>l</mi>
+ *  </msubsup>
+ *  <mo>=</mo>
+ *  <mfrac>
+ *    <mrow>
+ *      <mn>1</mn>
+ *    </mrow>
+ *    <mrow>
+ *      <mn>2</mn>
+ *    </mrow>
+ *  </mfrac>
+ *  <msup>
+ *          <mi>g</mi>
+ *      <mrow>
+ *        <mi>l</mi>
+ *        <mi>r</mi>
+ *      </mrow>
+ *  </msup>
+ * <mo>(</mo>
+ * <mrow>
+ *  <msub>
+ *          <mo>&PartialD;</mo>
+ *        <mi>k</mi>
+ *  </msub>
+ *  <msub>
+ *          <mi>g</mi>
+ *      <mrow>
+ *        <mi>r</mi>
+ *        <mi>j</mi>
+ *      </mrow>
+ *  </msub>
+ *  <mo>+</mo>
+ *  <msub>
+ *          <mo>&PartialD;</mo>
+ *        <mi>j</mi>
+ *  </msub>
+ *  <msub>
+ *          <mi>g</mi>
+ *      <mrow>
+ *        <mi>r</mi>
+ *        <mi>k</mi>
+ *      </mrow>
+ *  </msub>
+ *  <mo>-</mo>
+ *  <msub>
+ *          <mo>&PartialD;</mo>
+ *        <mi>r</mi>
+ *  </msub>
+ *  <msub>
+ *          <mi>g</mi>
+ *      <mrow>
+ *        <mi>j</mi>
+ *        <mi>k</mi>
+ *      </mrow>
+ *  </msub>
+ * </mrow>
+ * <mo>)</mo>  
+ * </mrow>
+ * </math> where the <math display="inline">
+ * <mrow>
+ *  <msub>
+ *          <mo>&PartialD;</mo>
+ *        <mi>v</mi>
+ *  </msub>
+ * </mrow>
+ * </math> terms are ordinary derivatives, the <math display="inline">
+ * <mrow>
+ *  <msub>
+ *          <mi>g</mi>
+ *      <mrow>
+ *        <mi>i</mi>
+ *        <mi>j</mi>
+ *      </mrow>
+ *  </msub>
+ * </mrow>
+ * </math> terms refer to the metric tensor, and the <math display="inline">
+ * <mrow>
+ *  <msup>
+ *          <mi>g</mi>
+ *      <mrow>
+ *        <mi>i</mi>
+ *        <mi>j</mi>
+ *      </mrow>
+ *  </msup>
+ * </mrow>
+ * </math> terms refer to the inverse of the metric tensor.
+ * 
+ * 
+ * See http://en.wikipedia.org/wiki/Levi-Civita_connection
+ * 
  * 
  * @author thorngreen
  *
- * @param <Z>
- * @param <U>
- * @param <R>
- * @param <S>
- * @param <K>
+ * @param <Z> Type defining the terms for the contravariant and covariant indices.
+ * @param <U> The number of dimensions for the index.
+ * @param <R> The enclosed type of the tensor.
+ * @param <S> The factory for the enclosed type of the tensor.
+ * @param <K> The type of the element against which to take partial derivatives.
  */
-public class AffineConnectionFactory<Z extends Object, U extends NumDimensions, R extends Elem<R,?>, S extends ElemFactory<R,S>, K extends Elem<?,?>> {
+public class ConnectionCoefficientFactory<Z extends Object, U extends NumDimensions, R extends Elem<R,?>, S extends ElemFactory<R,S>, K extends Elem<?,?>> {
 	
+	/**
+	 * A factory for generating metric tensors.
+	 */
 	MetricTensorFactory<Z,R,S> metric;
+	
+	/**
+	 * A factory for generating temporary indices in the connection coefficient.
+	 */
 	TemporaryIndexFactory<Z> temp;
+	
+	/**
+	 * A factory for generating ordinary derivatives.
+	 */
 	OrdinaryDerivativeFactory<Z,U,R,S,K> deriv;
 	
 	
-	public AffineConnectionFactory( MetricTensorFactory<Z,R,S> _metric , 
+	/**
+	 * Constructs the connection coefficient factory.
+	 * 
+	 * @param _metric A factory for generating metric tensors.
+	 * @param _temp A factory for generating temporary indices in the connection coefficient.
+	 * @param _deriv A factory for generating ordinary derivatives.
+	 */
+	public ConnectionCoefficientFactory( MetricTensorFactory<Z,R,S> _metric , 
 			TemporaryIndexFactory<Z> _temp , OrdinaryDerivativeFactory<Z,U,R,S,K> _deriv )
 	{
 		metric = _metric;
@@ -61,8 +179,16 @@ public class AffineConnectionFactory<Z extends Object, U extends NumDimensions, 
 	}
 	
 	
+	/**
+	 * Returns an expression for the connection coefficient.
+	 * 
+	 * @param covar1 The first covariant index of the connection coefficient.
+	 * @param covar2 The second covariant index of the connection coefficient.
+	 * @param contravar1 The cobtravariant index of the connection coefficient.
+	 * @return An expression for the connection coefficient.
+	 */
 	public SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> 
-		getAffineConnection( Z covar1 , Z covar2 , Z contravar1 )
+		getConnectionCoefficient( Z covar1 , Z covar2 , Z contravar1 )
 	{
 		final Z p = temp.getTemp();
 		
@@ -98,8 +224,11 @@ public class AffineConnectionFactory<Z extends Object, U extends NumDimensions, 
 		final SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> oi3 = outerTerm.mult( inner3 );
 		
 		
-		final SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> ret =
+		final SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> retA =
 				oi1.add( oi2 ).add( oi3.negate() );
+		
+		final SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> ret =
+				outerTerm.mult( retA );
 		
 		
 		return( ret );

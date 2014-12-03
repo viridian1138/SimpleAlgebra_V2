@@ -57,6 +57,17 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	
 	@Override
 	public EinsteinTensorElem<Z, R, S> add(EinsteinTensorElem<Z, R, S> b) {
+		
+		if( ( map.keySet().size() == 0 ) && ( covariantIndices.size() == 0 ) && ( contravariantIndices.size() == 0 ) )
+		{
+			return( b );
+		}
+		
+		if( ( b.map.keySet().size() == 0 ) && ( b.covariantIndices.size() == 0 ) && ( b.contravariantIndices.size() == 0 ) )
+		{
+			return( this );
+		}
+		
 		EinsteinTensorElem<Z,R,S> ret = new EinsteinTensorElem<Z,R,S>(fac, covariantIndices , contravariantIndices);
 		Iterator<ArrayList<BigInteger>> it = map.keySet().iterator();
 		while( it.hasNext() )
@@ -115,6 +126,15 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 				{
 					matchIndicesA.add( ocnt );
 					matchIndicesB.add( indB );
+					if( indB >= b_contravariantIndices.size() )
+					{
+						// Does Nothing.
+					}
+					else
+					{
+						new_contravariantIndices.add( tstA );
+						nonMatchIndices.add( ocnt );
+					}
 				}
 				ocnt++;
 			}
@@ -136,6 +156,15 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 				{
 					matchIndicesA.add( ocnt );
 					matchIndicesB.add( indB );
+					if( indB >= b_contravariantIndices.size() )
+					{
+						new_covariantIndices.add( tstA );
+						nonMatchIndices.add( ocnt );
+					}
+					else
+					{
+						// Does Nothing.
+					}
 				}
 				ocnt++;
 			}
