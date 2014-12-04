@@ -229,22 +229,26 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 			ArrayList<BigInteger> key = it.next();
 			final R val = map.get(key);
 			ArrayList<BigInteger> matchMapKey = buildSummationIndex( key , matchIndicesA );
-			Iterator<ArrayList<BigInteger>> ita = matchMap.get(matchMapKey).iterator();
-			while( ita.hasNext() )
+			final ArrayList<ArrayList<BigInteger>> mmatch = matchMap.get(matchMapKey);
+			if( mmatch != null )
 			{
-				ArrayList<BigInteger> bkey = ita.next();
-				final R bval = b.map.get( bkey );
-				final R muval = val.mult( bval );
-				final ArrayList<BigInteger> combinedAB = buildCombinedAB( key , bkey );
-				final ArrayList<BigInteger> placeMapKey = buildSummationIndex( combinedAB , nonMatchIndices );
-				final R nval = ret.map.get( placeMapKey );
-				if( nval != null )
+				Iterator<ArrayList<BigInteger>> ita = mmatch.iterator();
+				while( ita.hasNext() )
 				{
-					ret.map.put(placeMapKey, nval.add( muval ) );
-				}
-				else
-				{
-					ret.map.put(placeMapKey, muval );
+					ArrayList<BigInteger> bkey = ita.next();
+					final R bval = b.map.get( bkey );
+					final R muval = val.mult( bval );
+					final ArrayList<BigInteger> combinedAB = buildCombinedAB( key , bkey );
+					final ArrayList<BigInteger> placeMapKey = buildSummationIndex( combinedAB , nonMatchIndices );
+					final R nval = ret.map.get( placeMapKey );
+					if( nval != null )
+					{
+						ret.map.put(placeMapKey, nval.add( muval ) );
+					}
+					else
+					{
+						ret.map.put(placeMapKey, muval );
+					}
 				}
 			}
 		}

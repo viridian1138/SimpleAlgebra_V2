@@ -27,6 +27,7 @@ package test_simplealgebra;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 import java.util.Random;
 
 import junit.framework.Assert;
@@ -34,9 +35,11 @@ import junit.framework.TestCase;
 import simplealgebra.DoubleElem;
 import simplealgebra.DoubleElemFactory;
 import simplealgebra.Elem;
+import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
+import simplealgebra.NumDimensions;
 import simplealgebra.ddx.DirectionalDerivativePartialFactory;
-import simplealgebra.ddx.PartialDerivativeOp;
+import simplealgebra.ddx.*;
 import simplealgebra.et.EinsteinTensorElem;
 import simplealgebra.et.EinsteinTensorElemFactory;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
@@ -44,6 +47,8 @@ import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicReduction;
 import simplealgebra.et.*;
+import simplealgebra.symbolic.*;
+
 
 
 
@@ -147,6 +152,147 @@ public class TestOrdinaryDerivative extends TestCase {
 	}
 	
 	
+	private class BElem extends SymbolicElem<EinsteinTensorElem<String,SymbolicElem<DoubleElem, DoubleElemFactory>,SymbolicElemFactory<DoubleElem, DoubleElemFactory>>,EinsteinTensorElemFactory<String,SymbolicElem<DoubleElem, DoubleElemFactory>,SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>
+	{
+
+		
+		public BElem(EinsteinTensorElemFactory<String,SymbolicElem<DoubleElem, DoubleElemFactory>,SymbolicElemFactory<DoubleElem, DoubleElemFactory>> _fac) {
+			super(_fac);
+		}
+
+		@Override
+		public EinsteinTensorElem<String,SymbolicElem<DoubleElem, DoubleElemFactory>,SymbolicElemFactory<DoubleElem, DoubleElemFactory>> eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException,
+				MultiplicativeDistributionRequiredException {
+			
+			
+			final ArrayList<String> contravariantIndices = new ArrayList<String>();
+			
+			final ArrayList<String> covariantIndices = new ArrayList<String>();
+			
+			covariantIndices.add( "v" );
+			
+			
+			final EinsteinTensorElem<String,SymbolicElem<DoubleElem, DoubleElemFactory>,SymbolicElemFactory<DoubleElem, DoubleElemFactory>>
+				elem = new EinsteinTensorElem<String,SymbolicElem<DoubleElem, DoubleElemFactory>,SymbolicElemFactory<DoubleElem, DoubleElemFactory>>(fac.getFac(), contravariantIndices, covariantIndices);
+			
+			for( int cnt = 0 ; cnt < 4 ; cnt++ )
+			{
+				CElem ce = new CElem( new DoubleElemFactory() , cnt );
+				final ArrayList<BigInteger> key = new ArrayList<BigInteger>();
+				key.add( BigInteger.valueOf( cnt ) );
+				elem.setVal( key , ce );
+			}
+			
+			return( elem );
+		}
+
+		@Override
+		public EinsteinTensorElem<String,SymbolicElem<DoubleElem, DoubleElemFactory>,SymbolicElemFactory<DoubleElem, DoubleElemFactory>> evalPartialDerivative(ArrayList<? extends Elem<?, ?>> withRespectTo , HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace)
+				throws NotInvertibleException,
+				MultiplicativeDistributionRequiredException {
+			throw( new RuntimeException( "NotSupported" ) );
+		}
+
+		@Override
+		public String writeString() {
+			return( "b()" );
+		}
+		
+		@Override
+		public boolean symbolicEquals( SymbolicElem<EinsteinTensorElem<String,SymbolicElem<DoubleElem, DoubleElemFactory>,SymbolicElemFactory<DoubleElem, DoubleElemFactory>>,EinsteinTensorElemFactory<String,SymbolicElem<DoubleElem, DoubleElemFactory>,SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> b )
+		{
+			if( b instanceof BElem )
+			{
+				return( true );
+			}
+			return( false );
+		}
+		
+		@Override
+		public boolean equals( Object b )
+		{
+			if( b instanceof BElem )
+			{
+				return( true );
+			}
+			return( false );
+		}
+		
+		@Override
+		public int hashCode()
+		{
+			return( 5 );
+		}
+		
+	}
+	
+	
+	
+	
+	private class CElem extends SymbolicElem<DoubleElem,DoubleElemFactory>
+	{
+		private int col;
+
+		
+		public CElem(DoubleElemFactory _fac, int _col) {
+			super(_fac);
+			col = _col;
+		}
+
+		@Override
+		public DoubleElem eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException,
+				MultiplicativeDistributionRequiredException {
+			throw( new RuntimeException( "NotSupported" ) );
+		}
+
+		@Override
+		public DoubleElem evalPartialDerivative(ArrayList<? extends Elem<?, ?>> withRespectTo , HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace)
+				throws NotInvertibleException,
+				MultiplicativeDistributionRequiredException {
+			throw( new RuntimeException( "NotSupported" ) );
+		}
+
+		@Override
+		public String writeString() {
+			return( "c" + col + "()" );
+		}
+		
+		@Override
+		public boolean symbolicEquals( SymbolicElem<DoubleElem,DoubleElemFactory> b )
+		{
+			if( b instanceof CElem )
+			{
+				return( col == ( (CElem) b ).col );
+			}
+			return( false );
+		}
+		
+		@Override
+		public boolean equals( Object b )
+		{
+			if( b instanceof CElem )
+			{
+				return( col == ( (CElem) b ).col );
+			}
+			return( false );
+		}
+		
+		@Override
+		public int hashCode()
+		{
+			return( col );
+		}
+		
+		/**
+		 * @return the col
+		 */
+		public int getCol() {
+			return col;
+		}
+		
+	}
+	
+	
 	
 	private class SymbolicConst extends SymbolicReduction<DoubleElem,DoubleElemFactory>
 	{
@@ -176,139 +322,125 @@ public class TestOrdinaryDerivative extends TestCase {
 	
 	
 	
-	private class StelemReduction2L extends SymbolicReduction<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>
+	
+	
+	private class DDirec extends DirectionalDerivativePartialFactory<DoubleElem,DoubleElemFactory,AElem>
 	{
-
-		public StelemReduction2L( SymbolicElem<DoubleElem,DoubleElemFactory> _elem, 
-				SymbolicElemFactory<DoubleElem,DoubleElemFactory> _fac) {
-			super(_elem, _fac);
-		}
+		EinsteinTensorElemFactory<String,DoubleElem, DoubleElemFactory> de;
+		DoubleElemFactory se2;
 		
-		@Override
-		public String writeString() {
-			return( "reduce2L( " + getElem().writeString() + " )" );
-		}
-		
-		@Override
-		public boolean symbolicEquals( SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> b )
+		public DDirec( 
+				final EinsteinTensorElemFactory<String,DoubleElem, DoubleElemFactory> _de ,
+				final DoubleElemFactory _se2 )
 		{
-			if( b instanceof StelemReduction2L )
-			{
-				return( getElem().symbolicEquals( ( (StelemReduction2L) b ).getElem() ) );
-			}
-			return( false );
+			de = _de;
+			se2 = _se2;
 		}
-		
-	}
 
-
-
-	private class StelemReduction3L extends SymbolicReduction<
-		SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
-		SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>
-	{
-
-		public StelemReduction3L(
-				SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> _elem, 
-				SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> _fac) {
-			super(_elem, _fac);
-		}
-		
 		@Override
-		public String writeString() {
-			return( "reduce3L( " + getElem().writeString() + " )" );
-		}
-		
-		@Override
-		public boolean symbolicEquals( SymbolicElem<
-				SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
-				SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>> b )
-		{
-			if( b instanceof StelemReduction3L )
-			{
-				return( getElem().symbolicEquals( ( (StelemReduction3L) b ).getElem() ) );
-			}
-			return( false );
-		}
-		
-	}
-	
-	
-	
-	
-	
-	private class DDirec extends DirectionalDerivativePartialFactory<
-	SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
-	SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
-	AElem>
-{
-	EinsteinTensorElemFactory<String,DoubleElem, DoubleElemFactory> de;
-	SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> se2;
-	
-	public DDirec( 
-			final EinsteinTensorElemFactory<String,DoubleElem, DoubleElemFactory> _de ,
-			final SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> _se2 )
-	{
-		de = _de;
-		se2 = _se2;
-	}
-
-	public SymbolicElem<
-		SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
-		SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>> 
-			getPartial( BigInteger basisIndex )
-	{
-		final ArrayList<AElem> wrtX = new ArrayList<AElem>();
-		
-		wrtX.add( new AElem( de , basisIndex.intValue() ) );
-		
-		SymbolicElem<
-		SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
-		SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>
-			ret =
-					new PartialDerivativeOp<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
-					SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,AElem>( se2 , wrtX );
-		
-		if( basisIndex.equals( BigInteger.ZERO ) )
-		{
-			try
-			{
-				final DoubleElemFactory de2 = new DoubleElemFactory();
-				final SymbolicElemFactory<DoubleElem,DoubleElemFactory> seA = new SymbolicElemFactory<DoubleElem,DoubleElemFactory>( de2 );
-				final SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> se2A = new SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>( seA );
-				final DoubleElem cinv = C.invertLeft();
-				final SymbolicElem<
-				SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
-				SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>
-					cmul = ( new StelemReduction3L( new StelemReduction2L( new SymbolicConst( 
-							cinv , de2 ) , seA ) , se2A )
-							);
-				ret = cmul.mult( ret );
-			}
-			catch( NotInvertibleException ex )
-			{
-				Assert.assertNull( ex );
-			}
-		}
+		public SymbolicElem<DoubleElem, DoubleElemFactory> getPartial(
+				BigInteger basisIndex) {
+			final ArrayList<AElem> wrtX = new ArrayList<AElem>();
 			
+			wrtX.add( new AElem( de , basisIndex.intValue() ) );
+			
+			SymbolicElem<DoubleElem,DoubleElemFactory>
+			ret =
+					new PartialDerivativeOp<DoubleElem,DoubleElemFactory,AElem>( se2 , wrtX );
+			return( ret );
+		}
 		
-		return( ret );
 	}
-
-};
+	
+	
 	
 	
 	/**
 	 * Test method for {@link simplealgebra.OrdinaryDerivative}.
 	 */
-	public void testOrdinaryDerivative() throws NotInvertibleException
+	public void testOrdinaryDerivative() throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
 		
-		// private DDirec dd = new DDirec(); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		final DoubleElemFactory de = new DoubleElemFactory();
+		
+		
+		final ArrayList<String> contravariantIndices = new ArrayList<String>();
+		
+		final ArrayList<String> covariantIndices = new ArrayList<String>();
+		
+		covariantIndices.add( "v" );
+		
+		
+		final TestDimensionFour tdim = new TestDimensionFour();
+		
+		
+		final SymbolicElemFactory<DoubleElem,DoubleElemFactory> se2 =
+				new SymbolicElemFactory<DoubleElem,DoubleElemFactory>( de );
+		
+		
+		final EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory> de2 =
+				new EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>(de, contravariantIndices, covariantIndices);
+		
+		
+		final EinsteinTensorElemFactory<String, SymbolicElem<DoubleElem,DoubleElemFactory>, SymbolicElemFactory<DoubleElem,DoubleElemFactory>> se2s =
+				new EinsteinTensorElemFactory<String, SymbolicElem<DoubleElem,DoubleElemFactory>, SymbolicElemFactory<DoubleElem,DoubleElemFactory>>(se2, contravariantIndices, covariantIndices);
+		
+		
+		final DDirec dd = new DDirec( de2 , de );
+		
+		
+		final OrdinaryDerivativeFactory<String, TestDimensionFour, DoubleElem, DoubleElemFactory, AElem> ofac =
+				new OrdinaryDerivativeFactory<String, TestDimensionFour, DoubleElem, DoubleElemFactory, AElem>(se2s, tdim, dd);
 		
 		
 		
-		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		
+		
+		SymbolicElem<EinsteinTensorElem<String, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, EinsteinTensorElemFactory<String, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> elem
+			= new BElem(se2s);
+		
+		
+		final SymbolicElem<EinsteinTensorElem<String, SymbolicElem<DoubleElem, DoubleElemFactory>, 
+			SymbolicElemFactory<DoubleElem, DoubleElemFactory>>,
+			EinsteinTensorElemFactory<String, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>
+			odir = ofac.getOrdinaryDerivative( elem , "u" );
+		
+		
+		final HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace
+				= (HashMap<? extends Elem<?,?>,? extends Elem<?,?>>)( new HashMap() );
+		
+		EinsteinTensorElem<String,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> ev 
+			= odir.eval( implicitSpace );
+		
+		
+		ev.validate();
+		
+		
+		int kcnt = 0;
+		Iterator<ArrayList<BigInteger>> itA = ev.getKeyIterator();
+		while( itA.hasNext() )
+		{
+			kcnt++;
+			ArrayList<BigInteger> key = itA.next();
+			Assert.assertTrue( key.size() == 2 );
+			final int ind0 = key.get( 0 ).intValue();
+			final int ind1 = key.get( 1 ).intValue();
+			SymbolicElem<DoubleElem,DoubleElemFactory> el = ev.getVal( key );
+			SymbolicMult<DoubleElem,DoubleElemFactory> sm =
+					(SymbolicMult<DoubleElem,DoubleElemFactory>) el;
+			PartialDerivativeOp<DoubleElem,DoubleElemFactory,AElem> po =
+					(PartialDerivativeOp<DoubleElem,DoubleElemFactory,AElem>)( sm.getElemA() );
+			CElem p1 = (CElem)( sm.getElemB() );
+			final ArrayList<AElem> ell = po.getWithRespectTo();
+			Assert.assertTrue( ell.size() == 1 );
+			AElem wrt = ell.get( 0 );
+			Assert.assertTrue( ind0 == wrt.getCol() );
+			Assert.assertTrue( ind1 == p1.getCol() );
+		}
+		
+		Assert.assertTrue( kcnt == 16 );
+		
+		
 	}
 	
 	

@@ -70,6 +70,7 @@ public class SimpleAlgebraTestSuite extends TestSuite {
 		s.addTestSuite( TestGaugeSymbolic.class );
 		s.addTestSuite( TestStelemA.class );
 		s.addTestSuite( TestTensorBasics.class );
+		s.addTestSuite( TestOrdinaryDerivative.class );
 		return( s );
 	}
 	
