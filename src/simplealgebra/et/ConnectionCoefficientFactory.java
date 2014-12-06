@@ -195,6 +195,8 @@ public class ConnectionCoefficientFactory<Z extends Object, U extends NumDimensi
 		final SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> outerTerm = 
 				metric.getMetricTensor( false , contravar1 , p ).divideBy( 2 );
 		
+		
+		
 		final SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> innerBeforeDeriv1 =
 				metric.getMetricTensor( true , p , covar1 );
 		
@@ -219,16 +221,40 @@ public class ConnectionCoefficientFactory<Z extends Object, U extends NumDimensi
 		
 		final SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> oi1 = outerTerm.mult( inner1 );
 		
+		try {
+			System.out.println( "oi1" );
+			oi1.eval( null ).printIndices();
+			}
+			catch( Throwable ex )
+			{
+				ex.printStackTrace( System.out );
+			}
+		
 		final SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> oi2 = outerTerm.mult( inner2 );
+		
+		try {
+			System.out.println( "oi2" );
+			oi2.eval( null ).printIndices();
+			}
+			catch( Throwable ex )
+			{
+				ex.printStackTrace( System.out );
+			}
 		
 		final SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> oi3 = outerTerm.mult( inner3 );
 		
+		try {
+			System.out.println( "oi3" );
+			oi3.eval( null ).printIndices();
+			}
+			catch( Throwable ex )
+			{
+				ex.printStackTrace( System.out );
+			}
 		
-		final SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> retA =
-				oi1.add( oi2 ).add( oi3.negate() );
 		
 		final SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> ret =
-				outerTerm.mult( retA );
+				oi1.add( oi2 ).add( oi3.negate() );
 		
 		
 		return( ret );

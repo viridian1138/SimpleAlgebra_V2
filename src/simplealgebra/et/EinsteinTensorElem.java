@@ -68,7 +68,7 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 			return( this );
 		}
 		
-		EinsteinTensorElem<Z,R,S> ret = new EinsteinTensorElem<Z,R,S>(fac, covariantIndices , contravariantIndices);
+		EinsteinTensorElem<Z,R,S> ret = new EinsteinTensorElem<Z,R,S>(fac, contravariantIndices, covariantIndices);
 		Iterator<ArrayList<BigInteger>> it = map.keySet().iterator();
 		while( it.hasNext() )
 		{
@@ -364,7 +364,7 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 
 	@Override
 	public EinsteinTensorElem<Z, R, S> negate() {
-		EinsteinTensorElem<Z,R,S> ret = new EinsteinTensorElem<Z,R,S>(fac, covariantIndices , contravariantIndices);
+		EinsteinTensorElem<Z,R,S> ret = new EinsteinTensorElem<Z,R,S>(fac, contravariantIndices, covariantIndices);
 		Iterator<ArrayList<BigInteger>> it = map.keySet().iterator();
 		while( it.hasNext() )
 		{
@@ -378,7 +378,7 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	
 	@Override
 	public EinsteinTensorElem<Z, R, S> mutate( Mutator<R> mutr ) throws NotInvertibleException {
-		EinsteinTensorElem<Z,R,S> ret = new EinsteinTensorElem<Z,R,S>(fac, covariantIndices , contravariantIndices);
+		EinsteinTensorElem<Z,R,S> ret = new EinsteinTensorElem<Z,R,S>(fac, contravariantIndices, covariantIndices);
 		Iterator<ArrayList<BigInteger>> it = map.keySet().iterator();
 		while( it.hasNext() )
 		{
@@ -464,7 +464,7 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 
 	@Override
 	public EinsteinTensorElem<Z, R, S> divideBy(int val) {
-		EinsteinTensorElem<Z,R,S> ret = new EinsteinTensorElem<Z,R,S>(fac, covariantIndices , contravariantIndices);
+		EinsteinTensorElem<Z,R,S> ret = new EinsteinTensorElem<Z,R,S>(fac, contravariantIndices, covariantIndices );
 		Iterator<ArrayList<BigInteger>> it = map.keySet().iterator();
 		while( it.hasNext() )
 		{
@@ -629,7 +629,7 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	
 	@Override
 	public EinsteinTensorElemFactory<Z, R, S> getFac() {
-		return( new EinsteinTensorElemFactory<Z,R,S>( fac , covariantIndices , contravariantIndices ) );
+		return( new EinsteinTensorElemFactory<Z,R,S>( fac , contravariantIndices , covariantIndices ) );
 	}
 	
 	
@@ -704,6 +704,28 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 			val.validate();
 		}
 	}
+	
+	
+	
+	
+	public void printIndices()
+	{
+		System.out.println( "^>>>>>>>>>>>" );
+		Iterator<Z> its = contravariantIndices.iterator();
+		while( its.hasNext() )
+		{
+			System.out.println( its.next() );
+		}
+		System.out.println( "v<<<<<<<<<<<" );
+		its = covariantIndices.iterator();
+		while( its.hasNext() )
+		{
+			System.out.println( its.next() );
+		}
+		System.out.println( "]]]]]]]]]]]" );
+	}
+	
+	
 
 
 	

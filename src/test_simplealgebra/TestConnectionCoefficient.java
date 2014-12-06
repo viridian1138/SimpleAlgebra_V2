@@ -419,6 +419,8 @@ public class TestConnectionCoefficient extends TestCase {
 				= new EinsteinTensorElemFactory<String, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>(seA, contravariantIndices, covariantIndices);
 			
 			
+			
+			
 			EinsteinTensorElem<String, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>> g0 =
 						new EinsteinTensorElem<String, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>( 
 									seA , contravariantIndices , covariantIndices );
@@ -537,8 +539,8 @@ public class TestConnectionCoefficient extends TestCase {
 		{
 			kcnt++;
 			ArrayList<BigInteger> key = itA.next();
-			System.out.println( key.size() );
 			Assert.assertTrue( key.size() == 3 );
+			// Eval Value Here
 			/* final int ind0 = key.get( 0 ).intValue();
 			final int ind1 = key.get( 1 ).intValue();
 			SymbolicElem<DoubleElem,DoubleElemFactory> el = ev.getVal( key );
@@ -554,7 +556,6 @@ public class TestConnectionCoefficient extends TestCase {
 			Assert.assertTrue( ind1 == p1.getCol() ); */
 		}
 		
-		System.out.println( kcnt );
 		Assert.assertTrue( kcnt == 64 );
 		
 		

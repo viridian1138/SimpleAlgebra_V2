@@ -59,7 +59,7 @@ public class EinsteinTensorElemFactory<Z extends Object, R extends Elem<R,?>, S 
 
 	@Override
 	public EinsteinTensorElem<Z, R, S> zero() {
-		return( new EinsteinTensorElem<Z, R, S>( fac , contravariantIndices , covariantIndices ) );
+		return( new EinsteinTensorElem<Z, R, S>( fac , new ArrayList<Z>() , new ArrayList<Z>() ) );
 	}
 	
 	

@@ -71,6 +71,7 @@ public class SimpleAlgebraTestSuite extends TestSuite {
 		s.addTestSuite( TestStelemA.class );
 		s.addTestSuite( TestTensorBasics.class );
 		s.addTestSuite( TestOrdinaryDerivative.class );
+		s.addTestSuite( TestConnectionCoefficient.class );
 		return( s );
 	}
 	
