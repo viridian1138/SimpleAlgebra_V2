@@ -526,6 +526,214 @@ public class TestTensorBasics extends TestCase {
 	
 	
 	
+	/**
+	 * Test method for tensor multiplication.
+	 */
+	public void testTensorMultE() throws NotInvertibleException
+	{
+		
+		final DoubleElemFactory de = new DoubleElemFactory();
+		
+		
+		final EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory> etfA =
+				new EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>( de, indicesEmpty() , indicesU() );
+		
+		
+		final EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> etA =
+				new EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>( de , indicesEmpty() , indicesU() );
+		
+		
+		
+		final EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory> etfB =
+				new EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>( de, indicesEmpty() , indicesU() );
+		
+		
+		final EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> etB =
+				new EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>( de , indicesEmpty() , indicesU() );
+		
+		
+		
+		etA.validate();
+		
+		
+		etB.validate();
+		
+		
+		
+		
+		etA.setVal( vect0() , new DoubleElem( 3.0 ) );
+		
+		
+		
+		
+		
+		etA.setVal( vect1() , new DoubleElem( 5.0 ) );
+		
+		
+		
+		
+		etA.setVal( vect2() , new DoubleElem( 7.0 ) );
+		
+		
+		
+		
+		etA.setVal( vect3() , new DoubleElem( 13.0 ) );
+		
+		
+		
+		
+		
+		
+		
+		etA.validate();
+		
+		
+		etB.validate();
+		
+		
+		
+		
+		Assert.assertTrue( Math.abs( etA.getVal( vect1() ).getVal() - 5.0 ) < 0.001 );
+		
+		
+		
+		
+		final EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> etC =
+				etA.mult( etB );
+		
+		
+		
+		etC.validate();
+		
+		
+		final int[] tstArr = { 3 , 5 , 7 , 13 };
+		
+		int kcnt = 0;
+		Iterator<ArrayList<BigInteger>> itA = etC.getKeyIterator();
+		while( itA.hasNext() )
+		{
+			kcnt++;
+			ArrayList<BigInteger> key = itA.next();
+			Assert.assertTrue( key.size() == 1 );
+			final int ind0 = key.get( 0 ).intValue();
+			DoubleElem elem = etC.getVal( key );
+			final double expectedAnswer = tstArr[ ind0 ] * tstArr[ ind0 ];
+			Assert.assertTrue( Math.abs( elem.getVal() - expectedAnswer ) < 0.001 );
+		}
+		
+		Assert.assertTrue( kcnt == 0 );
+		
+		
+		
+	}
+	
+	
+	
+	
+	
+	/**
+	 * Test method for tensor multiplication.
+	 */
+	public void testTensorMultF() throws NotInvertibleException
+	{
+		
+		final DoubleElemFactory de = new DoubleElemFactory();
+		
+		
+		final EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory> etfA =
+				new EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>( de, indicesEmpty() , indicesU() );
+		
+		
+		final EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> etA =
+				new EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>( de , indicesEmpty() , indicesU() );
+		
+		
+		
+		final EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory> etfB =
+				new EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>( de, indicesEmpty() , indicesU() );
+		
+		
+		final EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> etB =
+				new EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>( de , indicesEmpty() , indicesU() );
+		
+		
+		
+		etA.validate();
+		
+		
+		etB.validate();
+		
+		
+		
+		
+		etB.setVal( vect0() , new DoubleElem( 3.0 ) );
+		
+		
+		
+		
+		
+		etB.setVal( vect1() , new DoubleElem( 5.0 ) );
+		
+		
+		
+		
+		etB.setVal( vect2() , new DoubleElem( 7.0 ) );
+		
+		
+		
+		
+		etB.setVal( vect3() , new DoubleElem( 13.0 ) );
+		
+		
+		
+		
+		
+		
+		
+		etA.validate();
+		
+		
+		etB.validate();
+		
+		
+		
+		
+		// Assert.assertTrue( Math.abs( etA.getVal( vect1() ).getVal() - 5.0 ) < 0.001 );
+		
+		
+		
+		
+		final EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> etC =
+				etA.mult( etB );
+		
+		
+		
+		etC.validate();
+		
+		
+		final int[] tstArr = { 3 , 5 , 7 , 13 };
+		
+		int kcnt = 0;
+		Iterator<ArrayList<BigInteger>> itA = etC.getKeyIterator();
+		while( itA.hasNext() )
+		{
+			kcnt++;
+			ArrayList<BigInteger> key = itA.next();
+			Assert.assertTrue( key.size() == 1 );
+			final int ind0 = key.get( 0 ).intValue();
+			DoubleElem elem = etC.getVal( key );
+			final double expectedAnswer = tstArr[ ind0 ] * tstArr[ ind0 ];
+			Assert.assertTrue( Math.abs( elem.getVal() - expectedAnswer ) < 0.001 );
+		}
+		
+		Assert.assertTrue( kcnt == 0 );
+		
+		
+		
+	}
+	
+	
+	
 	
 }
 
