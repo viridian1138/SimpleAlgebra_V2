@@ -450,7 +450,7 @@ public class TestConnectionCoefficient extends TestCase {
 	/**
 	 * Test method for {@link simplealgebra.OrdinaryDerivative}.
 	 */
-	public void testOrdinaryDerivative() throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	public void testConnectionCoefficient() throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
 		
 		final DoubleElemFactory de = new DoubleElemFactory();
@@ -516,7 +516,7 @@ public class TestConnectionCoefficient extends TestCase {
 		ev.validate();
 		
 		
-		System.out.println( "=======" );
+		/* System.out.println( "=======" );
 		Iterator<String> its = ev.getContravariantIndices().iterator();
 		while( its.hasNext() )
 		{
@@ -530,7 +530,7 @@ public class TestConnectionCoefficient extends TestCase {
 		}
 		
 		
-		System.out.println( ">>>>>>>>>>" );
+		System.out.println( ">>>>>>>>>>" ); */
 		
 		
 		int kcnt = 0;

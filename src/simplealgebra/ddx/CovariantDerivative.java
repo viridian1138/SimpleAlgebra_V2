@@ -64,6 +64,7 @@ public class CovariantDerivative<Z extends Object, U extends NumDimensions, R ex
 	public CovariantDerivative( EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, 
 				SymbolicElemFactory<R, S>> _fac , 
 		SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> _tensorWithRespectTo,
+			Z _derivativeIndex,
 			TemporaryIndexFactory<Z> _temp,
 			MetricTensorFactory<Z,R,S> _metric,
 			U _dim ,
@@ -71,6 +72,7 @@ public class CovariantDerivative<Z extends Object, U extends NumDimensions, R ex
 	{
 		super( _fac );
 		tensorWithRespectTo = _tensorWithRespectTo;
+		derivativeIndex = _derivativeIndex;
 		temp = _temp;
 		metric = _metric;
 		odfac = new OrdinaryDerivativeFactory<Z,U,R,S,K>( _fac , _dim , _dfac  );
@@ -86,6 +88,7 @@ public class CovariantDerivative<Z extends Object, U extends NumDimensions, R ex
 		
 		SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>
 			sum = deriv;
+		
 		
 		ConnectionCoefficientFactory<Z,U,R,S,K> afac = new ConnectionCoefficientFactory<Z,U,R,S,K>( metric , 
 				temp , odfac );

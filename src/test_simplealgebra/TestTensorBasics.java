@@ -27,6 +27,7 @@ package test_simplealgebra;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Random;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
@@ -70,6 +71,26 @@ public class TestTensorBasics extends TestCase {
 	
 	
 	
+	final static ArrayList<String> indicesUV()
+	{
+		final ArrayList<String> ret = new ArrayList<String>();
+		ret.add( "u" );
+		ret.add( "v" );
+		return( ret );
+	}
+	
+	
+	
+	final static ArrayList<String> indicesVU()
+	{
+		final ArrayList<String> ret = new ArrayList<String>();
+		ret.add( "v" );
+		ret.add( "u" );
+		return( ret );
+	}
+	
+	
+	
 	final static ArrayList<BigInteger> scalar( )
 	{
 		final ArrayList<BigInteger> ret = new ArrayList<BigInteger>();
@@ -108,6 +129,27 @@ public class TestTensorBasics extends TestCase {
 		ret.add( BigInteger.valueOf( 3 ) );
 		return( ret );
 	}
+	
+	
+	
+	
+	final static ArrayList<BigInteger> matUV( int u , int v )
+	{
+		final ArrayList<BigInteger> ret = new ArrayList<BigInteger>();
+		ret.add( BigInteger.valueOf( u ) );
+		ret.add( BigInteger.valueOf( v ) );
+		return( ret );
+	}
+	
+	
+	final static ArrayList<BigInteger> matVU( int u , int v )
+	{
+		final ArrayList<BigInteger> ret = new ArrayList<BigInteger>();
+		ret.add( BigInteger.valueOf( v ) );
+		ret.add( BigInteger.valueOf( u ) );
+		return( ret );
+	}
+	
 	
 	
 	
@@ -727,6 +769,198 @@ public class TestTensorBasics extends TestCase {
 		}
 		
 		Assert.assertTrue( kcnt == 0 );
+		
+		
+		
+	}
+	
+	
+	
+	
+	/**
+	 * Test method for tensor multiplication.
+	 */
+	public void testTensorAddA() throws NotInvertibleException
+	{
+		
+		final DoubleElemFactory de = new DoubleElemFactory();
+		
+		
+		final EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory> etfA =
+				new EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>( de, indicesEmpty() , indicesUV() );
+		
+		
+		final EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> etA =
+				new EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>( de , indicesEmpty() , indicesUV() );
+		
+		
+		
+		final EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory> etfB =
+				new EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>( de, indicesEmpty() , indicesVU() );
+		
+		
+		final EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> etB =
+				new EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>( de , indicesEmpty() , indicesVU() );
+		
+		
+		
+		etA.validate();
+		
+		
+		etB.validate();
+		
+		
+		
+		final Random rnd = new Random( 9876 );
+		
+		
+		for( int u = 0 ; u < 4 ; u++ )
+		{
+			for( int v = 0 ; v < 4 ; v++ )
+			{
+				etA.setVal( matUV( u , v ) , new DoubleElem( rnd.nextDouble() ) );
+				etB.setVal( matVU( u , v ) , new DoubleElem( rnd.nextDouble() ) );
+			}
+		}
+		
+		
+		
+		
+		etA.validate();
+		
+		
+		etB.validate();
+		
+		
+		
+		
+		final EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> etC =
+				etA.add( etB );
+		
+		
+		
+		etC.validate();
+		
+		
+		int kcnt = 0;
+		Iterator<ArrayList<BigInteger>> itA = etC.getKeyIterator();
+		while( itA.hasNext() )
+		{
+			kcnt++;
+			ArrayList<BigInteger> key = itA.next();
+			Assert.assertTrue( key.size() == 2 );
+		}
+		
+		Assert.assertTrue( kcnt == 16 );
+		
+		
+		
+		for( int u = 0 ; u < 4 ; u++ )
+		{
+			for( int v = 0 ; v < 4 ; v++ )
+			{
+				DoubleElem da = etA.getVal( matUV( u , v ) );
+				DoubleElem db = etB.getVal( matVU( u , v ) );
+				DoubleElem dc = etC.getVal( matUV( u , v ) );
+				Assert.assertTrue( Math.abs( ( da.getVal() + db.getVal() ) - dc.getVal() ) < 0.001 );
+			}
+		}
+		
+		
+		
+	}
+	
+	
+	
+	
+	/**
+	 * Test method for tensor multiplication.
+	 */
+	public void testTensorAddB() throws NotInvertibleException
+	{
+		
+		final DoubleElemFactory de = new DoubleElemFactory();
+		
+		
+		final EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory> etfA =
+				new EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>( de, indicesEmpty() , indicesUV() );
+		
+		
+		final EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> etA =
+				new EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>( de , indicesEmpty() , indicesUV() );
+		
+		
+		
+		final EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory> etfB =
+				new EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>( de, indicesEmpty() , indicesUV() );
+		
+		
+		final EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> etB =
+				new EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>( de , indicesEmpty() , indicesUV() );
+		
+		
+		
+		etA.validate();
+		
+		
+		etB.validate();
+		
+		
+		
+		final Random rnd = new Random( 9876 );
+		
+		
+		for( int u = 0 ; u < 4 ; u++ )
+		{
+			for( int v = 0 ; v < 4 ; v++ )
+			{
+				etA.setVal( matUV( u , v ) , new DoubleElem( rnd.nextDouble() ) );
+				etB.setVal( matUV( u , v ) , new DoubleElem( rnd.nextDouble() ) );
+			}
+		}
+		
+		
+		
+		
+		etA.validate();
+		
+		
+		etB.validate();
+		
+		
+		
+		
+		final EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> etC =
+				etA.add( etB );
+		
+		
+		
+		etC.validate();
+		
+		
+		int kcnt = 0;
+		Iterator<ArrayList<BigInteger>> itA = etC.getKeyIterator();
+		while( itA.hasNext() )
+		{
+			kcnt++;
+			ArrayList<BigInteger> key = itA.next();
+			Assert.assertTrue( key.size() == 2 );
+		}
+		
+		Assert.assertTrue( kcnt == 16 );
+		
+		
+		
+		for( int u = 0 ; u < 4 ; u++ )
+		{
+			for( int v = 0 ; v < 4 ; v++ )
+			{
+				DoubleElem da = etA.getVal( matUV( u , v ) );
+				DoubleElem db = etB.getVal( matUV( u , v ) );
+				DoubleElem dc = etC.getVal( matUV( u , v ) );
+				Assert.assertTrue( Math.abs( ( da.getVal() + db.getVal() ) - dc.getVal() ) < 0.001 );
+			}
+		}
 		
 		
 		
