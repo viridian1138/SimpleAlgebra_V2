@@ -163,7 +163,7 @@ public class TestTensorBasics extends TestCase {
 		
 		
 		final EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory> etfA =
-				new EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>( de, indicesEmpty() , indicesU() );
+				new EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>( de );
 		
 		
 		final EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> etA =
@@ -172,7 +172,7 @@ public class TestTensorBasics extends TestCase {
 		
 		
 		final EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory> etfB =
-				new EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>( de, indicesU() , indicesEmpty() );
+				new EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>( de );
 		
 		
 		final EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> etB =
@@ -267,7 +267,7 @@ public class TestTensorBasics extends TestCase {
 		
 		
 		final EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory> etfA =
-				new EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>( de, indicesEmpty() , indicesU() );
+				new EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>( de );
 		
 		
 		final EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> etA =
@@ -276,7 +276,7 @@ public class TestTensorBasics extends TestCase {
 		
 		
 		final EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory> etfB =
-				new EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>( de, indicesEmpty() , indicesV() );
+				new EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>( de );
 		
 		
 		final EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> etB =
@@ -371,7 +371,7 @@ public class TestTensorBasics extends TestCase {
 		
 		
 		final EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory> etfA =
-				new EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>( de, indicesEmpty() , indicesU() );
+				new EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>( de );
 		
 		
 		final EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> etA =
@@ -380,7 +380,7 @@ public class TestTensorBasics extends TestCase {
 		
 		
 		final EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory> etfB =
-				new EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>( de, indicesEmpty() , indicesU() );
+				new EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>( de );
 		
 		
 		final EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> etB =
@@ -475,7 +475,7 @@ public class TestTensorBasics extends TestCase {
 		
 		
 		final EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory> etfA =
-				new EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>( de, indicesEmpty() , indicesU() );
+				new EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>( de );
 		
 		
 		final EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> etA =
@@ -484,7 +484,7 @@ public class TestTensorBasics extends TestCase {
 		
 		
 		final EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory> etfB =
-				new EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>( de, indicesEmpty() , indicesEmpty() );
+				new EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>( de );
 		
 		
 		final EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> etB =
@@ -578,7 +578,7 @@ public class TestTensorBasics extends TestCase {
 		
 		
 		final EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory> etfA =
-				new EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>( de, indicesEmpty() , indicesU() );
+				new EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>( de );
 		
 		
 		final EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> etA =
@@ -587,7 +587,7 @@ public class TestTensorBasics extends TestCase {
 		
 		
 		final EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory> etfB =
-				new EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>( de, indicesEmpty() , indicesU() );
+				new EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>( de );
 		
 		
 		final EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> etB =
@@ -683,7 +683,7 @@ public class TestTensorBasics extends TestCase {
 		
 		
 		final EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory> etfA =
-				new EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>( de, indicesEmpty() , indicesU() );
+				new EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>( de );
 		
 		
 		final EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> etA =
@@ -692,7 +692,7 @@ public class TestTensorBasics extends TestCase {
 		
 		
 		final EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory> etfB =
-				new EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>( de, indicesEmpty() , indicesU() );
+				new EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>( de );
 		
 		
 		final EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> etB =
@@ -787,7 +787,7 @@ public class TestTensorBasics extends TestCase {
 		
 		
 		final EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory> etfA =
-				new EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>( de, indicesEmpty() , indicesUV() );
+				new EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>( de );
 		
 		
 		final EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> etA =
@@ -796,7 +796,7 @@ public class TestTensorBasics extends TestCase {
 		
 		
 		final EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory> etfB =
-				new EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>( de, indicesEmpty() , indicesVU() );
+				new EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>( de );
 		
 		
 		final EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> etB =
@@ -883,7 +883,7 @@ public class TestTensorBasics extends TestCase {
 		
 		
 		final EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory> etfA =
-				new EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>( de, indicesEmpty() , indicesUV() );
+				new EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>( de );
 		
 		
 		final EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> etA =
@@ -892,7 +892,7 @@ public class TestTensorBasics extends TestCase {
 		
 		
 		final EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory> etfB =
-				new EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>( de, indicesEmpty() , indicesUV() );
+				new EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>( de );
 		
 		
 		final EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> etB =

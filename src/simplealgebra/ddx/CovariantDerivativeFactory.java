@@ -47,21 +47,83 @@ import simplealgebra.symbolic.SymbolicElemFactory;
 
 
 /**
- * Implements a covariant derivative operator as used in General Relativity.
+ * Factory for generating Covariant Derivatives, where a covariant derivative is defined by <math display="inline">
+ * <mrow>
+ *  <msub>
+ *          <mo>&nabla;</mo>
+ *        <mi>&nu;</mi>
+ *  </msub>
+ *  <msup>
+ *          <mi>V</mi>
+ *        <mi>&mu;</mi>
+ *  </msup>
+ *  <mo>=</mo>
+ *  <msub>
+ *          <mo>&PartialD;</mo>
+ *        <mi>&nu;</mi>
+ *  </msub>
+ *  <msup>
+ *          <mi>V</mi>
+ *        <mi>&mu;</mi>
+ *  </msup>
+ *  <mo>+</mo>
+ *  <msubsup>
+ *          <mi>&Gamma;</mi>
+ *      <mrow>
+ *        <mi>&alpha;</mi>
+ *        <mi>&nu;</mi>
+ *      </mrow>
+ *        <mi>&mu;</mi>
+ *  </msubsup>
+ *  <msup>
+ *        <mrow>
+ *          
+ *              <mi>V</mi>
+ *          
+ *        </mrow>
+ *      <mrow>
+ *        <mi>&alpha;</mi>
+ *      </mrow>
+ *  </msup>
+ * </mrow>
+ * </math> where the <math display="inline">
+ * <mrow>
+ *  <msub>
+ *          <mo>&PartialD;</mo>
+ *        <mi>v</mi>
+ *  </msub>
+ * </mrow>
+ * </math> term is the ordinary derivative and the <math display="inline">
+ * <mrow>
+ *  <mi>&Gamma;</mi>
+ * </mrow>
+ * </math> term is the connection coefficient.
+ * 
  * 
  * @author thorngreen
  *
- * @param <Z>
- * @param <U>
- * @param <R>
- * @param <S>
- * @param <K>
+ * @param <Z> Type defining the terms for the contravariant and covariant indices.
+ * @param <U> The number of dimensions for the index.
+ * @param <R> The enclosed type of the tensor.
+ * @param <S> The factory for the enclosed type of the tensor.
+ * @param <K> The type of the element against which to take partial derivatives.
  */
-public class CovariantDerivative<Z extends Object, U extends NumDimensions, R extends Elem<R,?>, S extends ElemFactory<R,S>, K extends Elem<?,?>> 
+public class CovariantDerivativeFactory<Z extends Object, U extends NumDimensions, R extends Elem<R,?>, S extends ElemFactory<R,S>, K extends Elem<?,?>> 
 		extends DerivativeElem<EinsteinTensorElem<Z,SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,EinsteinTensorElemFactory<Z,SymbolicElem<R,S>,SymbolicElemFactory<R,S>>>
 {
 
-	public CovariantDerivative( EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, 
+	/**
+	 * Constructs the tensor factory.
+	 * 
+	 * @param _fac The factory for the enclosed type.
+	 * @param _tensorWithRespectTo The expression to which to apply the derivative.
+	 * @param _derivativeIndex The tensor index of the covariant derivative.
+	 * @param _temp A factory for generating temporary indices in the connection coefficient.
+	 * @param _metric A factory for generating metric tensors.
+	 * @param _dim The number of dimensions for the index.
+	 * @param _dfac Factory for generating the partial derivatives of a directional derivative.
+	 */
+	public CovariantDerivativeFactory( EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, 
 				SymbolicElemFactory<R, S>> _fac , 
 		SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> _tensorWithRespectTo,
 			Z _derivativeIndex,
@@ -80,6 +142,14 @@ public class CovariantDerivative<Z extends Object, U extends NumDimensions, R ex
 	
 	
 	
+	/**
+	 * Applies the covariant derivative to an expression.
+	 * 
+	 * @param implicitSpace Implicit parameter space against which to perform the evaluation.
+	 * @return The result of applying the derivative.
+	 * @throws NotInvertibleException
+	 * @throws MultiplicativeDistributionRequiredException
+	 */
 	public SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>
 		genTerms( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException 
 	{
@@ -141,11 +211,29 @@ public class CovariantDerivative<Z extends Object, U extends NumDimensions, R ex
 	}
 	
 	
-	
+	/**
+	 * The expression to which to apply the derivative.
+	 */
 	private SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> tensorWithRespectTo;
+	
+	/**
+	 * The tensor index of the covariant derivative.
+	 */
 	private Z derivativeIndex;
+	
+	/**
+	 * A factory for generating temporary indices in the connection coefficient.
+	 */
 	private TemporaryIndexFactory<Z> temp;
+	
+	/**
+	 * A factory for generating metric tensors.
+	 */
 	private MetricTensorFactory<Z,R,S> metric;
+	
+	/**
+	 * A factory for generating ordinary derivatives.
+	 */
 	private OrdinaryDerivativeFactory<Z,U,R,S,K> odfac;
 	
 	

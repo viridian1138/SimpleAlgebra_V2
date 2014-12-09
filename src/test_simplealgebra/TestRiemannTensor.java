@@ -56,7 +56,7 @@ import simplealgebra.ddx.*;
 
 
 
-public class TestCovariantDerivative extends TestCase {
+public class TestRiemannTensor extends TestCase {
 	
 	
 	
@@ -153,7 +153,7 @@ public class TestCovariantDerivative extends TestCase {
 			
 			final ArrayList<String> covariantIndices = new ArrayList<String>();
 			
-			contravariantIndices.add( "u" );
+			covariantIndices.add( "v" );
 			
 			
 			final EinsteinTensorElem<String,SymbolicElem<DoubleElem, DoubleElemFactory>,SymbolicElemFactory<DoubleElem, DoubleElemFactory>>
@@ -499,9 +499,9 @@ public class TestCovariantDerivative extends TestCase {
 		
 		
 		
-		final CovariantDerivativeFactory<String, TestDimensionFour, DoubleElem, DoubleElemFactory, AElem> cofac =
-			new CovariantDerivativeFactory<String, TestDimensionFour, DoubleElem, DoubleElemFactory, AElem>(se2s, elem, 
-					"v", new TestTemporaryIndexFactory(), tmt, tdim, dd);
+		final RiemannTensorFactory<String, TestDimensionFour, DoubleElem, DoubleElemFactory, AElem> cofac =
+			new RiemannTensorFactory<String, TestDimensionFour, DoubleElem, DoubleElemFactory, AElem>(tmt, 
+					new TestTemporaryIndexFactory(), ofacI);
 		
 		
 		
@@ -514,7 +514,7 @@ public class TestCovariantDerivative extends TestCase {
 		final SymbolicElem<EinsteinTensorElem<String, SymbolicElem<DoubleElem, DoubleElemFactory>, 
 			SymbolicElemFactory<DoubleElem, DoubleElemFactory>>,
 			EinsteinTensorElemFactory<String, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>
-			odir = cofac.genTerms( implicitSpace );
+			odir = cofac.getRiemannTensor("sigma", "u", "v", "rho");
 		
 		
 		EinsteinTensorElem<String,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> ev 
@@ -526,14 +526,13 @@ public class TestCovariantDerivative extends TestCase {
 		
 		
 		
-		
 		int kcnt = 0;
 		Iterator<ArrayList<BigInteger>> itA = ev.getKeyIterator();
 		while( itA.hasNext() )
 		{
 			kcnt++;
 			ArrayList<BigInteger> key = itA.next();
-			Assert.assertTrue( key.size() == 2 );
+			Assert.assertTrue( key.size() == 4 );
 			// Eval Value Here
 			/* final int ind0 = key.get( 0 ).intValue();
 			final int ind1 = key.get( 1 ).intValue();
@@ -550,7 +549,7 @@ public class TestCovariantDerivative extends TestCase {
 			Assert.assertTrue( ind1 == p1.getCol() ); */
 		}
 		
-		Assert.assertTrue( kcnt == 16 );
+		Assert.assertTrue( kcnt == 256 );
 		
 		
 	}

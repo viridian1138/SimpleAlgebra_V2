@@ -704,7 +704,7 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	
 	@Override
 	public EinsteinTensorElemFactory<Z, R, S> getFac() {
-		return( new EinsteinTensorElemFactory<Z,R,S>( fac , contravariantIndices , covariantIndices ) );
+		return( new EinsteinTensorElemFactory<Z,R,S>( fac ) );
 	}
 	
 	

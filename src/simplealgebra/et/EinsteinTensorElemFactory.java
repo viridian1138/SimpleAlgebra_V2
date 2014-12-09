@@ -41,12 +41,9 @@ import simplealgebra.symbolic.SymbolicElem;
 public class EinsteinTensorElemFactory<Z extends Object, R extends Elem<R,?>, S extends ElemFactory<R,S>> extends ElemFactory<EinsteinTensorElem<Z,R,S>, EinsteinTensorElemFactory<Z,R,S>> {
 
 	
-	public EinsteinTensorElemFactory( S _fac , ArrayList<Z> _contravariantIndices ,
-			ArrayList<Z> _covariantIndices )
+	public EinsteinTensorElemFactory( S _fac )
 	{
 		fac = _fac;
-		contravariantIndices = _contravariantIndices;
-		covariantIndices = _covariantIndices;
 	}
 	
 	
@@ -84,8 +81,6 @@ public class EinsteinTensorElemFactory<Z extends Object, R extends Elem<R,?>, S 
 	
 	
 	private S fac;
-	private ArrayList<Z> contravariantIndices;
-	private ArrayList<Z> covariantIndices;
 
 }
 

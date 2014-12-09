@@ -169,7 +169,7 @@ public class TestOrdinaryDerivative extends TestCase {
 			
 			final ArrayList<String> covariantIndices = new ArrayList<String>();
 			
-			covariantIndices.add( "v" );
+			contravariantIndices.add( "u" );
 			
 			
 			final EinsteinTensorElem<String,SymbolicElem<DoubleElem, DoubleElemFactory>,SymbolicElemFactory<DoubleElem, DoubleElemFactory>>
@@ -368,7 +368,7 @@ public class TestOrdinaryDerivative extends TestCase {
 		
 		final ArrayList<String> covariantIndices = new ArrayList<String>();
 		
-		covariantIndices.add( "v" );
+		contravariantIndices.add( "v" );
 		
 		
 		final TestDimensionFour tdim = new TestDimensionFour();
@@ -379,11 +379,11 @@ public class TestOrdinaryDerivative extends TestCase {
 		
 		
 		final EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory> de2 =
-				new EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>(de, contravariantIndices, covariantIndices);
+				new EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>(de);
 		
 		
 		final EinsteinTensorElemFactory<String, SymbolicElem<DoubleElem,DoubleElemFactory>, SymbolicElemFactory<DoubleElem,DoubleElemFactory>> se2s =
-				new EinsteinTensorElemFactory<String, SymbolicElem<DoubleElem,DoubleElemFactory>, SymbolicElemFactory<DoubleElem,DoubleElemFactory>>(se2, contravariantIndices, covariantIndices);
+				new EinsteinTensorElemFactory<String, SymbolicElem<DoubleElem,DoubleElemFactory>, SymbolicElemFactory<DoubleElem,DoubleElemFactory>>(se2);
 		
 		
 		final DDirec dd = new DDirec( de2 , de );
@@ -400,10 +400,11 @@ public class TestOrdinaryDerivative extends TestCase {
 			= new BElem(se2s);
 		
 		
+		
 		final SymbolicElem<EinsteinTensorElem<String, SymbolicElem<DoubleElem, DoubleElemFactory>, 
 			SymbolicElemFactory<DoubleElem, DoubleElemFactory>>,
 			EinsteinTensorElemFactory<String, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>
-			odir = ofac.getOrdinaryDerivative( elem , "u" );
+			odir = ofac.getOrdinaryDerivative( elem , "v" );
 		
 		
 		final HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace
@@ -414,6 +415,8 @@ public class TestOrdinaryDerivative extends TestCase {
 		
 		
 		ev.validate();
+		
+		
 		
 		
 		

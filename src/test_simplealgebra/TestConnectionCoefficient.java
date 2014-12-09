@@ -416,7 +416,7 @@ public class TestConnectionCoefficient extends TestCase {
 			
 			
 			EinsteinTensorElemFactory<String, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>> ge
-				= new EinsteinTensorElemFactory<String, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>(seA, contravariantIndices, covariantIndices);
+				= new EinsteinTensorElemFactory<String, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>(seA);
 			
 			
 			
@@ -471,11 +471,11 @@ public class TestConnectionCoefficient extends TestCase {
 		
 		
 		final EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory> de2 =
-				new EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>(de, contravariantIndices, covariantIndices);
+				new EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>(de);
 		
 		
 		final EinsteinTensorElemFactory<String, SymbolicElem<DoubleElem,DoubleElemFactory>, SymbolicElemFactory<DoubleElem,DoubleElemFactory>> se2s =
-				new EinsteinTensorElemFactory<String, SymbolicElem<DoubleElem,DoubleElemFactory>, SymbolicElemFactory<DoubleElem,DoubleElemFactory>>(se2, contravariantIndices, covariantIndices);
+				new EinsteinTensorElemFactory<String, SymbolicElem<DoubleElem,DoubleElemFactory>, SymbolicElemFactory<DoubleElem,DoubleElemFactory>>(se2);
 		
 		
 		final DDirec dd = new DDirec( de2 , de );
