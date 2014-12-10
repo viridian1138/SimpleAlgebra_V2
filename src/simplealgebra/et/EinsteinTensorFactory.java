@@ -80,17 +80,20 @@ import simplealgebra.symbolic.SymbolicElemFactory;
  * 
  * @author thorngreen
  *
- * @param <Z>
- * @param <U>
- * @param <R>
- * @param <S>
- * @param <K>
+ * @param <Z> Type defining the terms for the contravariant and covariant indices.
+ * @param <U> The number of dimensions for the index.
+ * @param <R> The enclosed type of the tensor.
+ * @param <S> The factory for the enclosed type of the tensor.
+ * @param <K> The type of the element against which to take partial derivatives.
  */
 public class EinsteinTensorFactory<Z extends Object, U extends NumDimensions, R extends Elem<R,?>, S extends ElemFactory<R,S>, K extends Elem<?,?>> {
 	
 	EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>> fac;
+	
 	MetricTensorFactory<Z,R,S> metric;
+	
 	RicciTensorFactory<Z,U,R,S,K> ricci;
+	
 	RicciScalarFactory<Z,U,R,S,K> ricciS;
 	
 	
@@ -106,6 +109,13 @@ public class EinsteinTensorFactory<Z extends Object, U extends NumDimensions, R 
 	}
 	
 	
+	/**
+	 * Returns an expression for the Einstein tensor.
+	 * 
+	 * @param u The u index.
+	 * @param v The v index.
+	 * @return An expression for the Einstein tensor.
+	 */
 	public SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> 
 		getEinsteinTensor( Z u , Z v )
 	{

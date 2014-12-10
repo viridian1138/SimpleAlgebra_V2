@@ -54,24 +54,52 @@ import simplealgebra.symbolic.SymbolicElemFactory;
  *     </mrow>
  * </msub>
  * </mrow>
- * </math>.
+ * </math> where the <math display="inline">
+ * <mrow>
+ *  <msub>
+ *          <mi>R</mi>
+ *      <mrow>
+ *        <mi>u</mi>
+ *        <mi>v</mi>
+ *      </mrow>
+ *  </msub>
+ * </mrow>
+ * </math> term is the Ricci tensor.
  * 
  * @author thorngreen
  *
- * @param <Z>
- * @param <U>
- * @param <R>
- * @param <S>
- * @param <K>
+ * @param <Z> Type defining the terms for the contravariant and covariant indices.
+ * @param <U> The number of dimensions for the index.
+ * @param <R> The enclosed type of the tensor.
+ * @param <S> The factory for the enclosed type of the tensor.
+ * @param <K> The type of the element against which to take partial derivatives.
  */
 public class RicciScalarFactory<Z extends Object, U extends NumDimensions, R extends Elem<R,?>, S extends ElemFactory<R,S>, K extends Elem<?,?>> {
 	
+	/**
+	 * A factory for generating metric tensors.
+	 */
 	MetricTensorFactory<Z,R,S> metric;
+	
+	/**
+	 * A factory for generating temporary u, v indices in the Ricci scalar.
+	 */
 	TemporaryIndexFactory<Z> temp;
+	
+	/**
+	 * A factory for generating Ricci tensors.
+	 */
 	RicciTensorFactory<Z,U,R,S,K> ricci;
 	
 	
-	
+	/**
+	 * Constructs a factory for generating Ricci scalars.
+	 * 
+	 * @param _fac The factory for the enclosed type.
+	 * @param _metric A factory for generating metric tensors.
+	 * @param _temp A factory for generating temporary u, v indices in the Ricci scalar.
+	 * @param _deriv A factory for generating ordinary derivatives.
+	 */
 	public RicciScalarFactory( EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, 
 			SymbolicElemFactory<R, S>> _fac , MetricTensorFactory<Z,R,S> _metric , 
 			TemporaryIndexFactory<Z> _temp , OrdinaryDerivativeFactory<Z,U,R,S,K> _deriv )
@@ -82,6 +110,11 @@ public class RicciScalarFactory<Z extends Object, U extends NumDimensions, R ext
 	}
 	
 	
+	/**
+	 * Returns an expression for the Ricci scalar.
+	 * 
+	 * @return An expression for the Ricci scalar.
+	 */
 	public SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> 
 		getRicciScalar( )
 	{
