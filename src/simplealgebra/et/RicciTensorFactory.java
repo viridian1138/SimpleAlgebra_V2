@@ -37,24 +37,76 @@ import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 
 /**
- * Factory for Ricci tensors.
+ * Factory for generating Ricci tensors, where a Ricci tensor is defined by <math display="inline">
+ * <mrow>
+ *  <msub>
+ *          <mi>R</mi>
+ *      <mrow>
+ *        <mi>&alpha;</mi>
+ *        <mi>&beta;</mi>
+ *      </mrow>
+ *  </msub>
+ *  <mo>=</mo>
+ *  <msubsup>
+ *          <mi>R</mi>
+ *      <mrow>
+ *        <mi>&alpha;</mi>
+ *        <mi>&upsilon;</mi>
+ *        <mi>&beta;</mi>
+ *      </mrow>
+ *        <mi>&mu;</mi>
+ *  </msubsup>
+ * </mrow>
+ * </math> where the <math display="inline">
+ * <mrow>
+ *  <msubsup>
+ *          <mi>R</mi>
+ *      <mrow>
+ *        <mi>&alpha;</mi>
+ *        <mi>&upsilon;</mi>
+ *        <mi>&beta;</mi>
+ *      </mrow>
+ *        <mi>&mu;</mi>
+ *  </msubsup>
+ * </mrow>
+ * </math> term is the Riemann tensor.
+ * 
  * 
  * @author thorngreen
  *
- * @param <Z>
- * @param <U>
- * @param <R>
- * @param <S>
- * @param <K>
+ * @param <Z> Type defining the terms for the contravariant and covariant indices.
+ * @param <U> The number of dimensions for the index.
+ * @param <R> The enclosed type of the tensor.
+ * @param <S> The factory for the enclosed type of the tensor.
+ * @param <K> The type of the element against which to take partial derivatives.
  */
 public class RicciTensorFactory<Z extends Object, U extends NumDimensions, R extends Elem<R,?>, S extends ElemFactory<R,S>, K extends Elem<?,?>> {
 	
+	/**
+	 * The factory for the enclosed type.
+	 */
 	EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>> fac;
+	
+	/**
+	 * A factory for generating temporary lambda indices in the Ricci tensor.
+	 */
 	TemporaryIndexFactory<Z> temp;
+	
+	/**
+	 * A factory for generating Riemann tensors.
+	 */
 	RiemannTensorFactory<Z,U,R,S,K> riemann;
 	
 	
 	
+	/**
+	 * Constructs a factory for generating Ricci tensors.
+	 * 
+	 * @param _fac The factory for the enclosed type.
+	 * @param _metric A factory for generating metric tensors.
+	 * @param _temp A factory for generating temporary lambda indices in the Ricci tensor.
+	 * @param _deriv A factory for generating ordinary derivatives.
+	 */
 	public RicciTensorFactory( EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, 
 			SymbolicElemFactory<R, S>> _fac , MetricTensorFactory<Z,R,S> _metric , 
 			TemporaryIndexFactory<Z> _temp , OrdinaryDerivativeFactory<Z,U,R,S,K> _deriv )
@@ -65,6 +117,13 @@ public class RicciTensorFactory<Z extends Object, U extends NumDimensions, R ext
 	}
 	
 	
+	/**
+	 * Returns an expression for the Ricci tensor.
+	 * 
+	 * @param alpha The alpha index.
+	 * @param beta The beta index.
+	 * @return An expression for the Ricci tensor.
+	 */
 	public SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> 
 		getRicciTensor( Z alpha , Z beta )
 	{

@@ -74,6 +74,7 @@ public class SimpleAlgebraTestSuite extends TestSuite {
 		s.addTestSuite( TestConnectionCoefficient.class );
 		s.addTestSuite( TestCovariantDerivative.class );
 		s.addTestSuite( TestRiemannTensor.class );
+		s.addTestSuite( TestRicciTensor.class );
 		return( s );
 	}
 	
