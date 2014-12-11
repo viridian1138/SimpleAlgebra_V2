@@ -76,6 +76,7 @@ public class SimpleAlgebraTestSuite extends TestSuite {
 		s.addTestSuite( TestRiemannTensor.class );
 		s.addTestSuite( TestRicciTensor.class );
 		s.addTestSuite( TestRicciScalar.class );
+		s.addTestSuite( TestEinsteinTensor.class );
 		return( s );
 	}
 	

@@ -449,9 +449,9 @@ public class TestRicciScalar extends TestCase {
 	
 	
 	/**
-	 * Test method for {@link simplealgebra.OrdinaryDerivative}.
+	 * Test method for Ricci scalars.
 	 */
-	public void testCovariantDerivative() throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	public void testRicciScalar() throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
 		
 		final DoubleElemFactory de = new DoubleElemFactory();

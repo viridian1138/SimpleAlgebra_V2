@@ -449,9 +449,9 @@ public class TestRiemannTensor extends TestCase {
 	
 	
 	/**
-	 * Test method for {@link simplealgebra.OrdinaryDerivative}.
+	 * Test method for Riemann tensors.
 	 */
-	public void testCovariantDerivative() throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	public void testRiemannTensor() throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
 		
 		final DoubleElemFactory de = new DoubleElemFactory();

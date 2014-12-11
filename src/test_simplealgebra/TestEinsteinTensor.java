@@ -38,41 +38,25 @@ import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.NumDimensions;
-import simplealgebra.ddx.DirectionalDerivativePartialFactory;
 import simplealgebra.ddx.*;
 import simplealgebra.et.EinsteinTensorElem;
 import simplealgebra.et.EinsteinTensorElemFactory;
+import simplealgebra.et.MetricTensorFactory;
+import simplealgebra.et.TemporaryIndexFactory;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicReduction;
 import simplealgebra.et.*;
 import simplealgebra.symbolic.*;
+import simplealgebra.ddx.*;
 
 
 
 
-/**
- * Implements a factory for the tensor <math display="inline">
- * <mrow>
- *  <msub>
- *          <mo>&PartialD;</mo>
- *        <mi>v</mi>
- *  </msub>
- * </mrow>
- * </math> where <math display="inline">
- * <mrow>
- *  <mi>v</mi>
- * </mrow>
- * </math> is a tensor index.  This produces a rank-one tensor
- * with a set of partial derivative operators.  The name of the
- * particular index to be used is passed into the class as a
- * parameter.
- * 
- * @author thorngreen
- * 
- */
-public class TestOrdinaryDerivative extends TestCase {
+
+
+public class TestEinsteinTensor extends TestCase {
 	
 	
 	
@@ -169,7 +153,7 @@ public class TestOrdinaryDerivative extends TestCase {
 			
 			final ArrayList<String> covariantIndices = new ArrayList<String>();
 			
-			contravariantIndices.add( "u" );
+			covariantIndices.add( "v" );
 			
 			
 			final EinsteinTensorElem<String,SymbolicElem<DoubleElem, DoubleElemFactory>,SymbolicElemFactory<DoubleElem, DoubleElemFactory>>
@@ -229,7 +213,7 @@ public class TestOrdinaryDerivative extends TestCase {
 	
 	
 	
-	private class CElem extends SymbolicElem<DoubleElem,DoubleElemFactory>
+	private static class CElem extends SymbolicElem<DoubleElem,DoubleElemFactory>
 	{
 		private int col;
 
@@ -322,6 +306,19 @@ public class TestOrdinaryDerivative extends TestCase {
 	
 	
 	
+	protected static class TestTemporaryIndexFactory extends TemporaryIndexFactory<String>
+	{
+		protected static int tempIndex = 0;
+
+		@Override
+		public String getTemp() {
+			String ret = "temp" + tempIndex;
+			tempIndex++;
+			return( ret );
+		}
+		
+	}
+	
 	
 	
 	private class DDirec extends DirectionalDerivativePartialFactory<DoubleElem,DoubleElemFactory,AElem>
@@ -354,11 +351,107 @@ public class TestOrdinaryDerivative extends TestCase {
 	
 	
 	
+	protected static class SEvalElem extends SymbolicElem<EinsteinTensorElem<String, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, EinsteinTensorElemFactory<String, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>
+	{
+		
+		protected EinsteinTensorElem<String, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>
+			dval = null;
+
+		public SEvalElem(
+				EinsteinTensorElemFactory<String, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>> _fac,
+				EinsteinTensorElem<String, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>> _dval ) {
+			super(_fac);
+			dval = _dval;
+		}
+
+		@Override
+		public EinsteinTensorElem<String, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>> eval(
+				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace)
+				throws NotInvertibleException,
+				MultiplicativeDistributionRequiredException {
+			return( dval );
+		}
+
+		@Override
+		public EinsteinTensorElem<String, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>> evalPartialDerivative(
+				ArrayList<? extends Elem<?, ?>> withRespectTo,
+				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace)
+				throws NotInvertibleException,
+				MultiplicativeDistributionRequiredException {
+			throw( new RuntimeException( "NotSupported" ) );
+		}
+
+		@Override
+		public String writeString() {
+			String ret = "";
+			Iterator<ArrayList<BigInteger>> it = dval.getKeyIterator();
+			while( it.hasNext() )
+			{
+				final ArrayList<BigInteger> key = it.next();
+				ret = ret + "\n" + "** " + ( dval.getVal( key ).writeString() );
+			}
+			return( ret );
+		}
+		
+	}
+	
+	
+	
+	
+	protected static class TestMetricTensorFactory extends MetricTensorFactory<String, DoubleElem, DoubleElemFactory>
+	{
+
+		@Override
+		public SymbolicElem<EinsteinTensorElem<String, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, EinsteinTensorElemFactory<String, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> getMetricTensor(
+				boolean icovariantIndices, String index0, String index1) {
+			
+			final DoubleElemFactory de = new DoubleElemFactory();
+			
+			final ArrayList<String> contravariantIndices = new ArrayList<String>();
+			final ArrayList<String> covariantIndices = new ArrayList<String>();
+			if( icovariantIndices ) covariantIndices.add( index0 ); else contravariantIndices.add( index0 );
+			if( icovariantIndices ) covariantIndices.add( index1 ); else contravariantIndices.add( index1 );
+			
+			
+			final SymbolicElemFactory<DoubleElem,DoubleElemFactory> seA = new SymbolicElemFactory<DoubleElem,DoubleElemFactory>( de );
+			
+			
+			EinsteinTensorElemFactory<String, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>> ge
+				= new EinsteinTensorElemFactory<String, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>(seA);
+			
+			
+			
+			
+			EinsteinTensorElem<String, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>> g0 =
+						new EinsteinTensorElem<String, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>( 
+									seA , contravariantIndices , covariantIndices );
+			
+			
+			final SEvalElem seval = new SEvalElem( ge , g0 );
+			
+			
+			for( int acnt = 0 ; acnt < 16 ; acnt++ )
+			{
+				final ArrayList<BigInteger> ab = new ArrayList<BigInteger>();
+				ab.add( BigInteger.valueOf( acnt / 4 ) );
+				ab.add( BigInteger.valueOf( acnt % 4 ) );
+				final CElem as = new CElem( de , acnt );
+				g0.setVal( ab , as );
+			}
+			
+			
+			return( seval );
+		}
+		
+	}
+	
+	
+	
 	
 	/**
-	 * Test method for tensor ordinary derivatives.
+	 * Test method for Einstein tensors.
 	 */
-	public void testOrdinaryDerivative() throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	public void testEinsteinTensor() throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
 		
 		final DoubleElemFactory de = new DoubleElemFactory();
@@ -368,7 +461,7 @@ public class TestOrdinaryDerivative extends TestCase {
 		
 		final ArrayList<String> covariantIndices = new ArrayList<String>();
 		
-		contravariantIndices.add( "v" );
+		covariantIndices.add( "v" );
 		
 		
 		final TestDimensionFour tdim = new TestDimensionFour();
@@ -389,34 +482,52 @@ public class TestOrdinaryDerivative extends TestCase {
 		final DDirec dd = new DDirec( de2 , de );
 		
 		
-		final OrdinaryDerivativeFactory<String, TestDimensionFour, DoubleElem, DoubleElemFactory, AElem> ofac =
+		final OrdinaryDerivativeFactory<String, TestDimensionFour, DoubleElem, DoubleElemFactory, AElem> ofacI =
 				new OrdinaryDerivativeFactory<String, TestDimensionFour, DoubleElem, DoubleElemFactory, AElem>(se2s, tdim, dd);
 		
 		
 		
+		MetricTensorFactory<String, DoubleElem, DoubleElemFactory> tmt = new TestMetricTensorFactory();
 		
+		
+		
+
 		
 		SymbolicElem<EinsteinTensorElem<String, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, EinsteinTensorElemFactory<String, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> elem
 			= new BElem(se2s);
 		
 		
 		
-		final SymbolicElem<EinsteinTensorElem<String, SymbolicElem<DoubleElem, DoubleElemFactory>, 
-			SymbolicElemFactory<DoubleElem, DoubleElemFactory>>,
-			EinsteinTensorElemFactory<String, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>
-			odir = ofac.getOrdinaryDerivative( elem , "v" );
+		
+		final EinsteinTensorFactory<String, TestDimensionFour, DoubleElem, DoubleElemFactory, AElem> cofac =
+			new EinsteinTensorFactory<String, TestDimensionFour, DoubleElem, DoubleElemFactory, AElem>(se2s, tmt, new TestTemporaryIndexFactory(), ofacI);
+		
+		
 		
 		
 		final HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace
 				= (HashMap<? extends Elem<?,?>,? extends Elem<?,?>>)( new HashMap() );
 		
+		
+		
+		final SymbolicElem<EinsteinTensorElem<String, SymbolicElem<DoubleElem, DoubleElemFactory>, 
+			SymbolicElemFactory<DoubleElem, DoubleElemFactory>>,
+			EinsteinTensorElemFactory<String, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>
+			odir = cofac.getEinsteinTensor("alpha", "beta");
+		
+		
 		EinsteinTensorElem<String,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> ev 
 			= odir.eval( implicitSpace );
+		
 		
 		
 		ev.validate();
 		
 		
+		Assert.assertTrue( ev.getContravariantIndices().size() == 0 );
+		Assert.assertTrue( ev.getCovariantIndices().size() == 2 );
+		Assert.assertTrue( ev.getCovariantIndices().get( 0 ).equals( "alpha" ) );
+		Assert.assertTrue( ev.getCovariantIndices().get( 1 ).equals( "beta" ) );
 		
 		
 		
@@ -427,7 +538,8 @@ public class TestOrdinaryDerivative extends TestCase {
 			kcnt++;
 			ArrayList<BigInteger> key = itA.next();
 			Assert.assertTrue( key.size() == 2 );
-			final int ind0 = key.get( 0 ).intValue();
+			// Eval Value Here
+			/* final int ind0 = key.get( 0 ).intValue();
 			final int ind1 = key.get( 1 ).intValue();
 			SymbolicElem<DoubleElem,DoubleElemFactory> el = ev.getVal( key );
 			SymbolicMult<DoubleElem,DoubleElemFactory> sm =
@@ -439,7 +551,7 @@ public class TestOrdinaryDerivative extends TestCase {
 			Assert.assertTrue( ell.size() == 1 );
 			AElem wrt = ell.get( 0 );
 			Assert.assertTrue( ind0 == wrt.getCol() );
-			Assert.assertTrue( ind1 == p1.getCol() );
+			Assert.assertTrue( ind1 == p1.getCol() ); */
 		}
 		
 		Assert.assertTrue( kcnt == 16 );
