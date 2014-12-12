@@ -77,6 +77,7 @@ public class SimpleAlgebraTestSuite extends TestSuite {
 		s.addTestSuite( TestRicciTensor.class );
 		s.addTestSuite( TestRicciScalar.class );
 		s.addTestSuite( TestEinsteinTensor.class );
+		s.addTestSuite( TestEinsteinTensor_5D.class );
 		return( s );
 	}
 	

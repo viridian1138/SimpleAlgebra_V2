@@ -56,14 +56,17 @@ import simplealgebra.ddx.*;
 
 
 /**
- * Test class for Einstein Tensors.
+ * Test class for Einstein tensors in 5-D as used in Kaluza-Klein theory.
  * 
- * See http://en.wikipedia.org/wiki/Einstein_tensor
+ * See http://en.wikipedia.org/wiki/Kaluza%E2%80%93Klein_theory
+ * 
+ * The related problem of how to make one of the dimensions compactified
+ * is solved outside of the scope of this test.
  * 
  * @author thorngreen
  *
  */
-public class TestEinsteinTensor extends TestCase {
+public class TestEinsteinTensor_5D extends TestCase {
 	
 	
 	
@@ -166,7 +169,7 @@ public class TestEinsteinTensor extends TestCase {
 			final EinsteinTensorElem<String,SymbolicElem<DoubleElem, DoubleElemFactory>,SymbolicElemFactory<DoubleElem, DoubleElemFactory>>
 				elem = new EinsteinTensorElem<String,SymbolicElem<DoubleElem, DoubleElemFactory>,SymbolicElemFactory<DoubleElem, DoubleElemFactory>>(fac.getFac(), contravariantIndices, covariantIndices);
 			
-			for( int cnt = 0 ; cnt < 4 ; cnt++ )
+			for( int cnt = 0 ; cnt < 5 ; cnt++ )
 			{
 				CElem ce = new CElem( new DoubleElemFactory() , cnt );
 				final ArrayList<BigInteger> key = new ArrayList<BigInteger>();
@@ -437,11 +440,11 @@ public class TestEinsteinTensor extends TestCase {
 			final SEvalElem seval = new SEvalElem( ge , g0 );
 			
 			
-			for( int acnt = 0 ; acnt < 16 ; acnt++ )
+			for( int acnt = 0 ; acnt < 25 ; acnt++ )
 			{
 				final ArrayList<BigInteger> ab = new ArrayList<BigInteger>();
-				ab.add( BigInteger.valueOf( acnt / 4 ) );
-				ab.add( BigInteger.valueOf( acnt % 4 ) );
+				ab.add( BigInteger.valueOf( acnt / 5 ) );
+				ab.add( BigInteger.valueOf( acnt % 5 ) );
 				final CElem as = new CElem( de , acnt );
 				g0.setVal( ab , as );
 			}
@@ -456,11 +459,15 @@ public class TestEinsteinTensor extends TestCase {
 	
 	
 	/**
-	 * Test method for Einstein tensors.
+	 * Test method for Einstein tensors in 5-D as used in Kaluza-Klein theory.
 	 * 
-	 * See http://en.wikipedia.org/wiki/Einstein_tensor
+	 * See http://en.wikipedia.org/wiki/Kaluza%E2%80%93Klein_theory
+	 * 
+	 * The related problem of how to make one of the dimensions compactified
+     * is solved outside of the scope of this test.
+	 * 
 	 */
-	public void testEinsteinTensor() throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	public void testEinsteinTensorKaluzaKlein() throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
 		
 		final DoubleElemFactory de = new DoubleElemFactory();
@@ -473,7 +480,7 @@ public class TestEinsteinTensor extends TestCase {
 		covariantIndices.add( "v" );
 		
 		
-		final TestDimensionFour tdim = new TestDimensionFour();
+		final TestDimensionFive tdim = new TestDimensionFive();
 		
 		
 		final SymbolicElemFactory<DoubleElem,DoubleElemFactory> se2 =
@@ -491,8 +498,8 @@ public class TestEinsteinTensor extends TestCase {
 		final DDirec dd = new DDirec( de2 , de );
 		
 		
-		final OrdinaryDerivativeFactory<String, TestDimensionFour, DoubleElem, DoubleElemFactory, AElem> ofacI =
-				new OrdinaryDerivativeFactory<String, TestDimensionFour, DoubleElem, DoubleElemFactory, AElem>(se2s, tdim, dd);
+		final OrdinaryDerivativeFactory<String, TestDimensionFive, DoubleElem, DoubleElemFactory, AElem> ofacI =
+				new OrdinaryDerivativeFactory<String, TestDimensionFive, DoubleElem, DoubleElemFactory, AElem>(se2s, tdim, dd);
 		
 		
 		
@@ -508,8 +515,8 @@ public class TestEinsteinTensor extends TestCase {
 		
 		
 		
-		final EinsteinTensorFactory<String, TestDimensionFour, DoubleElem, DoubleElemFactory, AElem> cofac =
-			new EinsteinTensorFactory<String, TestDimensionFour, DoubleElem, DoubleElemFactory, AElem>(se2s, tmt, new TestTemporaryIndexFactory(), ofacI);
+		final EinsteinTensorFactory<String, TestDimensionFive, DoubleElem, DoubleElemFactory, AElem> cofac =
+			new EinsteinTensorFactory<String, TestDimensionFive, DoubleElem, DoubleElemFactory, AElem>(se2s, tmt, new TestTemporaryIndexFactory(), ofacI);
 		
 		
 		
@@ -563,7 +570,7 @@ public class TestEinsteinTensor extends TestCase {
 			Assert.assertTrue( ind1 == p1.getCol() ); */
 		}
 		
-		Assert.assertTrue( kcnt == 16 );
+		Assert.assertTrue( kcnt == 25 );
 		
 		
 	}
