@@ -39,14 +39,25 @@ import simplealgebra.symbolic.SymbolicElemFactory;
  * 
  * @author thorngreen
  *
- * @param <Z>
- * @param <R>
- * @param <S>
+ * @param <Z> Type defining the terms for the contravariant and covariant indices.
+ * @param <R> The enclosed type of the tensor.
+ * @param <S> The factory for the enclosed type of the tensor.
  */
 public abstract class MetricTensorFactory<Z extends Object, R extends Elem<R,?>, S extends ElemFactory<R,S>> {
 	
+	/**
+	 * Returns a metric tensor.
+	 * 
+	 * @param covariantIndices
+	 * @param index0 The first index of the metric tensor to be created.
+	 * @param index1 The second index of the metric tensor to be created.
+	 * @return The metric tensor.
+	 */
 	public abstract SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> 
 		getMetricTensor( boolean covariantIndices , Z index0 , Z index1 );
+	
+	
+		
 
 }
 

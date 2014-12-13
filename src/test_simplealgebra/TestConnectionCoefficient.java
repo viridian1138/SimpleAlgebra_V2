@@ -397,13 +397,14 @@ public class TestConnectionCoefficient extends TestCase {
 	
 	
 	
-	protected static class TestMetricTensorFactory extends MetricTensorFactory<String, DoubleElem, DoubleElemFactory>
+	protected static class TestMetricTensorFactory extends MetricTensorInvertingFactory<String, TestDimensionFour, DoubleElem, DoubleElemFactory>
 	{
 
 		@Override
 		public SymbolicElem<EinsteinTensorElem<String, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, EinsteinTensorElemFactory<String, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> getMetricTensor(
 				boolean icovariantIndices, String index0, String index1) {
 			
+			final TestDimensionFour td = new TestDimensionFour();
 			final DoubleElemFactory de = new DoubleElemFactory();
 			
 			final ArrayList<String> contravariantIndices = new ArrayList<String>();
@@ -426,8 +427,6 @@ public class TestConnectionCoefficient extends TestCase {
 									seA , contravariantIndices , covariantIndices );
 			
 			
-			final SEvalElem seval = new SEvalElem( ge , g0 );
-			
 			
 			for( int acnt = 0 ; acnt < 16 ; acnt++ )
 			{
@@ -437,6 +436,15 @@ public class TestConnectionCoefficient extends TestCase {
 				final CElem as = new CElem( de , acnt );
 				g0.setVal( ab , as );
 			}
+			
+			
+			if( !icovariantIndices )
+			{
+				g0 = genMatrixInverseLeft( td , seA , g0 );
+			}
+			
+			
+			final SEvalElem seval = new SEvalElem( ge , g0 );
 			
 			
 			return( seval );

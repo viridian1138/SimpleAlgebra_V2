@@ -479,22 +479,25 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 					
 					if( mult instanceof SymbolicElem )
 					{
-						SymbolicAdd el = (SymbolicAdd)( this.getVal(destRow, srcRow) );
-						SymbolicElem elA = el.getElemA();
-						SymbolicNegate elB = (SymbolicNegate)( el.getElemB() );
-						SymbolicMult elbm = (SymbolicMult)( elB.getElem() );
-						if( ! ( elbm.getElemB() instanceof SymbolicIdentity ) )
+						if( /* this.getVal(destRow, srcRow) instanceof SymbolicAdd */ true )
 						{
-							throw( new RuntimeException( "Fail." ) );
-						}
+							SymbolicAdd el = (SymbolicAdd)( this.getVal(destRow, srcRow) );
+							SymbolicElem elA = el.getElemA();
+							SymbolicNegate elB = (SymbolicNegate)( el.getElemB() );
+							SymbolicMult elbm = (SymbolicMult)( elB.getElem() );
+							if( ! ( elbm.getElemB() instanceof SymbolicIdentity ) )
+							{
+								throw( new RuntimeException( "Fail." ) );
+							}
 						
-						if( elbm.getElemA() == elA )
-						{
-							this.setVal(destRow, srcRow, fac.zero() );
-						}
-						else
-						{
-							throw( new RuntimeException( "Fail." ) );
+							if( elbm.getElemA() == elA )
+							{
+								this.setVal(destRow, srcRow, fac.zero() );
+							}
+							else
+							{
+								throw( new RuntimeException( "Fail." ) );
+							}
 						}
 					}
 					
@@ -549,22 +552,25 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 					
 					if( mult instanceof SymbolicElem )
 					{
-						SymbolicAdd el = (SymbolicAdd)( this.getVal(destRow, srcRow) );
-						SymbolicElem elA = el.getElemA();
-						SymbolicNegate elB = (SymbolicNegate)( el.getElemB() );
-						SymbolicMult elbm = (SymbolicMult)( elB.getElem() );
-						if( ! ( elbm.getElemA() instanceof SymbolicIdentity ) )
+						if( /* this.getVal(destRow, srcRow) instanceof SymbolicAdd */ true )
 						{
-							throw( new RuntimeException( "Fail." ) );
-						}
+							SymbolicAdd el = (SymbolicAdd)( this.getVal(destRow, srcRow) );
+							SymbolicElem elA = el.getElemA();
+							SymbolicNegate elB = (SymbolicNegate)( el.getElemB() );
+							SymbolicMult elbm = (SymbolicMult)( elB.getElem() );
+							if( ! ( elbm.getElemA() instanceof SymbolicIdentity ) )
+							{
+								throw( new RuntimeException( "Fail." ) );
+							}
 						
-						if( elbm.getElemB() == elA )
-						{
-							this.setVal(destRow, srcRow, fac.zero() );
-						}
-						else
-						{
-							throw( new RuntimeException( "Fail." ) );
+							if( elbm.getElemB() == elA )
+							{
+								this.setVal(destRow, srcRow, fac.zero() );
+							}
+							else
+							{
+								throw( new RuntimeException( "Fail." ) );
+							}
 						}
 					}
 					

@@ -34,6 +34,8 @@ import java.util.ArrayList;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
+import simplealgebra.NumDimensions;
+import simplealgebra.SquareMatrixElem;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 
@@ -73,15 +75,23 @@ public class SimpleCurveMetricTensorFactory<Z extends Object, R extends Elem<R,?
 	
 	
 	public EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>> 
-		getMetricTensor( boolean covariantIndic , Z index0 , Z index1 , BigInteger numElem ) throws NotInvertibleException
+		getMetricTensor( boolean covariantIndic , Z index0 , Z index1 , final BigInteger numElem ) throws NotInvertibleException
 		{
 		
 			ArrayList<Z> contravariantIndices = new ArrayList<Z>();
 			ArrayList<Z> covariantIndices = new ArrayList<Z>();
 			
 			
-			covariantIndices.add( index0 );
-			covariantIndices.add( index1 );
+			if( covariantIndic )
+			{
+				covariantIndices.add( index0 );
+				covariantIndices.add( index1 );
+			}
+			else
+			{
+				contravariantIndices.add( index0 );
+				contravariantIndices.add( index1 );
+			}
 			
 		
 			EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>> tel =
@@ -102,6 +112,42 @@ public class SimpleCurveMetricTensorFactory<Z extends Object, R extends Elem<R,?
 				el.add( cnt );
 				el.add( cnt );
 				tel.setVal( el , fac.identity() );
+			}
+			
+			
+			if( /* !covariantIndic */ false ) // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			{
+				final NumDimensions nd = new NumDimensions()
+				{
+
+					@Override
+					public BigInteger getVal() {
+						return( numElem );
+					}
+					
+				};
+				
+				final SquareMatrixElem<NumDimensions,SymbolicElem<R, S>,SymbolicElemFactory<R, S>> tmp = 
+						new SquareMatrixElem<NumDimensions,SymbolicElem<R, S>,SymbolicElemFactory<R, S>>( fac , nd );
+				
+				tel.rankTwoTensorToSquareMatrix( tmp );
+				
+				try
+				{
+					final SquareMatrixElem<NumDimensions,SymbolicElem<R, S>,SymbolicElemFactory<R, S>> inv = tmp.invertLeft();
+					
+					final EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>> retA =
+							new EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>(fac , contravariantIndices , covariantIndices );
+					
+					inv.toRankTwoTensor( retA );
+					
+					tel = retA;
+				}
+				catch( NotInvertibleException ex )
+				{
+					throw( new RuntimeException( "Invert Failed" ) );
+				}
+				
 			}
 			
 			return( tel );
