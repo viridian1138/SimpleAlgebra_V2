@@ -81,6 +81,11 @@ public class SymbolicZero<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 	{
 		return( b instanceof SymbolicZero );
 	}
+	
+	public static boolean isSymbolicZero( SymbolicElem in )
+	{
+		return( in instanceof SymbolicZero );
+	}
 
 }
 
