@@ -57,6 +57,21 @@ public class SymbolicIdentity<R extends Elem<R,?>, S extends ElemFactory<R,S>> e
 	{
 		return( fac.zero() );
 	}
+	
+	@Override
+	public SymbolicElem<R, S> mult(SymbolicElem<R, S> b) {
+		return( b );
+	}
+	
+	@Override
+	public SymbolicElem<R, S> invertLeft() throws NotInvertibleException {
+		return( this );
+	}
+	
+	@Override
+	public SymbolicElem<R, S> invertRight() throws NotInvertibleException {
+		return( this );
+	}
 
 	@Override
 	public String writeString( ) {

@@ -86,6 +86,26 @@ public class SymbolicZero<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 	{
 		return( in instanceof SymbolicZero );
 	}
+	
+	@Override
+	public SymbolicElem<R, S> add(SymbolicElem<R, S> b) {
+		return( b );
+	}
+
+	@Override
+	public SymbolicElem<R, S> mult(SymbolicElem<R, S> b) {
+		return( this );
+	}
+
+	@Override
+	public SymbolicElem<R, S> negate() {
+		return( this );
+	}
+
+	@Override
+	public SymbolicElem<R, S> divideBy(int val) {
+		return( this );
+	}
 
 }
 

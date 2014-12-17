@@ -115,7 +115,7 @@ public class SimpleCurveMetricTensorFactory<Z extends Object, R extends Elem<R,?
 			}
 			
 			
-			if( /* !covariantIndic */ false ) // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			if( !covariantIndic ) 
 			{
 				final NumDimensions nd = new NumDimensions()
 				{
