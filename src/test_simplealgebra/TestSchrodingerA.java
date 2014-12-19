@@ -60,7 +60,7 @@ import simplealgebra.ddx.*;
 
 
 
-public class TestSchroA extends TestCase {
+public class TestSchrodingerA extends TestCase {
 	
 	
 	private static final DoubleElem DOUBLE_ZERO = new DoubleElem( 0.0 );
@@ -468,8 +468,8 @@ public class TestSchroA extends TestCase {
 			Assert.assertTrue( assertCols[ 1 ] );
 			Assert.assertTrue( assertCols[ 2 ] );
 			Assert.assertTrue( assertCols[ 3 ] );
-			final DoubleElem re = new DoubleElem( TestSchroA.tempArrayRe[ cols[ 0 ] ][ cols[ 1 ] ][ cols[ 2 ] ][ cols[ 3 ] ] );
-			final DoubleElem im = new DoubleElem( TestSchroA.tempArrayIm[ cols[ 0 ] ][ cols[ 1 ] ][ cols[ 2 ] ][ cols[ 3 ] ] );
+			final DoubleElem re = new DoubleElem( TestSchrodingerA.tempArrayRe[ cols[ 0 ] ][ cols[ 1 ] ][ cols[ 2 ] ][ cols[ 3 ] ] );
+			final DoubleElem im = new DoubleElem( TestSchrodingerA.tempArrayIm[ cols[ 0 ] ][ cols[ 1 ] ][ cols[ 2 ] ][ cols[ 3 ] ] );
 			return( new ComplexElem<DoubleElem,DoubleElemFactory>( re , im ) );
 		}
 
@@ -923,7 +923,7 @@ public class TestSchroA extends TestCase {
 		@Override
 		protected void performIterationUpdate( ComplexElem<DoubleElem, DoubleElemFactory> iterationOffset )
 		{
-			TestSchroA.performIterationUpdate( iterationOffset );
+			TestSchrodingerA.performIterationUpdate( iterationOffset );
 		}
 		
 	}
@@ -1196,8 +1196,8 @@ public class TestSchroA extends TestCase {
 						clearSpatialAssertArray();
 		
 				
-						final double ivalRe = TestSchroA.getUpdateValueRe();
-						final double ivalIm = TestSchroA.getUpdateValueIm();
+						final double ivalRe = TestSchrodingerA.getUpdateValueRe();
+						final double ivalIm = TestSchrodingerA.getUpdateValueIm();
 				
 				
 			
@@ -1205,8 +1205,8 @@ public class TestSchroA extends TestCase {
 						ComplexElem<DoubleElem, DoubleElemFactory> err = newton.eval( implicitSpace2 );
 		
 		
-						final double valRe = TestSchroA.getUpdateValueRe();
-						final double valIm = TestSchroA.getUpdateValueIm();
+						final double valRe = TestSchrodingerA.getUpdateValueRe();
+						final double valIm = TestSchrodingerA.getUpdateValueIm();
 						
 						final double errRe = err.getRe().getVal();
 						final double errIm = err.getIm().getVal();
