@@ -54,6 +54,12 @@ public class SymbolicZero<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 	}
 	
 	@Override
+	protected boolean isSymbolicZero()
+	{
+		return( true );
+	}
+	
+	@Override
 	public R evalPartialDerivative( ArrayList<? extends Elem<?,?>> withRespectTo , HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException
 	{
 		return( fac.zero() );

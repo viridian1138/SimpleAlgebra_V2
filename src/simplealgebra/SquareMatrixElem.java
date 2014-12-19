@@ -286,16 +286,16 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 			{
 				if( !( this.getVal(cnt, cnt) instanceof SymbolicIdentity ) )
 				{
-					SymbolicMult ae = (SymbolicMult)( this.getVal(cnt, cnt) );
-					SymbolicInvertRight sr = (SymbolicInvertRight)( ae.getElemB() );
-					if( sr.getElem() == ae.getElemA() )
-					{
+//					SymbolicMult ae = (SymbolicMult)( this.getVal(cnt, cnt) );
+//					SymbolicInvertRight sr = (SymbolicInvertRight)( ae.getElemB() );
+//					if( sr.getElem() == ae.getElemA() )
+//					{
 						this.setVal(cnt, cnt, fac.identity() );
-					}
-					else
-					{
-						throw( new RuntimeException( "Fail." ) );
-					}
+//					}
+//					else
+//					{
+//						throw( new RuntimeException( "Fail." ) );
+//					}
 				}
 			}
 			
@@ -392,16 +392,16 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 			{
 				if( !( this.getVal(cnt, cnt) instanceof SymbolicIdentity ) )
 				{
-					SymbolicMult ae = (SymbolicMult)( this.getVal(cnt, cnt) );
-					SymbolicInvertLeft sl = (SymbolicInvertLeft)( ae.getElemA() );
-					if( sl.getElem() == ae.getElemB() )
-					{
+//					SymbolicMult ae = (SymbolicMult)( this.getVal(cnt, cnt) );
+//					SymbolicInvertLeft sl = (SymbolicInvertLeft)( ae.getElemA() );
+//					if( sl.getElem() == ae.getElemB() )
+//					{
 						this.setVal(cnt, cnt, fac.identity() );
-					}
-					else
-					{
-						throw( new RuntimeException( "Fail." ) );
-					}
+//					}
+//					else
+//					{
+//						throw( new RuntimeException( "Fail." ) );
+//					}
 				}
 			}
 			
@@ -527,16 +527,16 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 			{
 				if( !( this.getVal(cnt, cnt) instanceof SymbolicIdentity ) )
 				{
-					SymbolicMult ae = (SymbolicMult)( this.getVal(cnt, cnt) );
-					SymbolicInvertLeft sl = (SymbolicInvertLeft)( ae.getElemA() );
-					if( sl.getElem() == ae.getElemB() )
-					{
+//					SymbolicMult ae = (SymbolicMult)( this.getVal(cnt, cnt) );
+//					SymbolicInvertLeft sl = (SymbolicInvertLeft)( ae.getElemA() );
+//					if( sl.getElem() == ae.getElemB() )
+//					{
 						this.setVal(cnt, cnt, fac.identity() );
-					}
-					else
-					{
-						throw( new RuntimeException( "Fail." ) );
-					}
+//					}
+//					else
+//					{
+//						throw( new RuntimeException( "Fail." ) );
+//					}
 				}
 			}
 			
@@ -631,16 +631,16 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 			{
 				if( !( this.getVal(cnt, cnt) instanceof SymbolicIdentity ) )
 				{
-					SymbolicMult ae = (SymbolicMult)( this.getVal(cnt, cnt) );
-					SymbolicInvertRight sr = (SymbolicInvertRight)( ae.getElemB() );
-					if( ae.getElemA() == sr.getElem() )
-					{
+	//				SymbolicMult ae = (SymbolicMult)( this.getVal(cnt, cnt) );
+	//				SymbolicInvertRight sr = (SymbolicInvertRight)( ae.getElemB() );
+	//				if( ae.getElemA() == sr.getElem() )
+	//				{
 						this.setVal(cnt, cnt, fac.identity() );
-					}
-					else
-					{
-						throw( new RuntimeException( "Fail." ) );
-					}
+	//				}
+	//				else
+	//				{
+	//					throw( new RuntimeException( "Fail." ) );
+	//				}
 				}
 			}
 			

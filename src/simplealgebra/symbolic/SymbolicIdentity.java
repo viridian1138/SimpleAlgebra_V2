@@ -72,6 +72,12 @@ public class SymbolicIdentity<R extends Elem<R,?>, S extends ElemFactory<R,S>> e
 	public SymbolicElem<R, S> invertRight() throws NotInvertibleException {
 		return( this );
 	}
+	
+	@Override
+	protected boolean isSymbolicIdentity()
+	{
+		return( true );
+	}
 
 	@Override
 	public String writeString( ) {

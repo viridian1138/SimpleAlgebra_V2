@@ -58,12 +58,12 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 	
 	@Override
 	public SymbolicElem<R, S> add(SymbolicElem<R, S> b) {
-		return( new SymbolicAdd<R,S>( this , b , fac ) );
+		return( b.isSymbolicZero() ? this : new SymbolicAdd<R,S>( this , b , fac ) );
 	}
 
 	@Override
 	public SymbolicElem<R, S> mult(SymbolicElem<R, S> b) {
-		return( new SymbolicMult<R,S>( this , b , fac ) );
+		return( b.isSymbolicZero() ? b : b.isSymbolicIdentity() ? this : new SymbolicMult<R,S>( this , b , fac ) );
 	}
 
 	@Override
@@ -89,6 +89,16 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 	@Override
 	public SymbolicElemFactory<R, S> getFac() {
 		return( new SymbolicElemFactory<R,S>( fac ) );
+	}
+	
+	protected boolean isSymbolicZero()
+	{
+		return( false );
+	}
+	
+	protected boolean isSymbolicIdentity()
+	{
+		return( false );
 	}
 	
 	@Override
