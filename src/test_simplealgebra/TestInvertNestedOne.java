@@ -37,7 +37,7 @@ import simplealgebra.SquareMatrixElem;
 import simplealgebra.SquareMatrixElemFactory;
 
 /**
- * Tests inverses for a Matrix Algebra M_1(M_1(R)).  For more information see:
+ * Tests inverses for a Matrix Algebra M_1(M_1(R)).  Also called block matrices.  For more information see:
  * 
  * http://en.wikipedia.org/wiki/Matrix_ring
  * 

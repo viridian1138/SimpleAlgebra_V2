@@ -49,7 +49,7 @@ import simplealgebra.symbolic.SymbolicZero;
  * @author thorngreen
  * 
  */
-public class TestInvertSymmetric extends TestCase {
+public class TestInvertMatrixBasic extends TestCase {
 	
 	
 	
@@ -342,6 +342,137 @@ public class TestInvertSymmetric extends TestCase {
 	
 	
 	
+	/**
+	 * Test method for the inverse of a simple upper triangular matrix
+	 */
+	public void testInvertUpperTriangularLeft() throws NotInvertibleException
+	{
+		final TestDimensionFour td = new TestDimensionFour();
+		
+		final DoubleElemFactory de = new DoubleElemFactory();
+		
+		
+		final Random rand = new Random( 5555 );
+		
+		
+		SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory> mat
+			= new SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory>(de, td);
+		
+		
+		for( int row = 0 ; row < 4 ; row++ )
+		{
+			for( int col = 0 ; col < 4 ; col++ )
+			{
+				if( ( row + ( 3 - col ) ) < 4 )
+				{
+					mat.setVal(BigInteger.valueOf(row), BigInteger.valueOf(col), new DoubleElem( rand.nextDouble() ) );
+				}
+			}
+		}
+		
+		
+		SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory> matI
+			= mat.invertLeft();
+		
+		Assert.assertTrue( matI != null );
+		
+		
+		SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory> matI2
+			= matI.mult( mat );
+		
+		
+		Assert.assertTrue( matI2 != null );
+		
+		
+		for( int row = 0 ; row < 4 ; row++ )
+		{
+			for( int col = 0 ; col < 4 ; col++ )
+			{
+				DoubleElem el = matI2.getVal( BigInteger.valueOf(row) , 
+						BigInteger.valueOf(col) );
+				if( row == col )
+				{
+					Assert.assertTrue( Math.abs( 1.0 - el.getVal() ) < 0.0001 );
+				}
+				else
+				{
+					Assert.assertTrue( Math.abs( 0.0 - el.getVal() ) < 0.0001 );
+				}
+			}
+		}
+		
+		
+	}
+	
+	
+	
+	
+	
+	/**
+	 * Test method for the inverse of a simple lower triangular matrix
+	 */
+	public void testInvertLowerTriangularLeft() throws NotInvertibleException
+	{
+		final TestDimensionFour td = new TestDimensionFour();
+		
+		final DoubleElemFactory de = new DoubleElemFactory();
+		
+		
+		final Random rand = new Random( 5555 );
+		
+		
+		SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory> mat
+			= new SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory>(de, td);
+		
+		
+		for( int row = 0 ; row < 4 ; row++ )
+		{
+			for( int col = 0 ; col < 4 ; col++ )
+			{
+				if( ( ( 3 - row ) + col ) < 4 )
+				{
+					mat.setVal(BigInteger.valueOf(row), BigInteger.valueOf(col), new DoubleElem( rand.nextDouble() ) );
+				}
+			}
+		}
+		
+		
+		SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory> matI
+			= mat.invertLeft();
+		
+		Assert.assertTrue( matI != null );
+		
+		
+		SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory> matI2
+			= matI.mult( mat );
+		
+		
+		Assert.assertTrue( matI2 != null );
+		
+		
+		for( int row = 0 ; row < 4 ; row++ )
+		{
+			for( int col = 0 ; col < 4 ; col++ )
+			{
+				DoubleElem el = matI2.getVal( BigInteger.valueOf(row) , 
+						BigInteger.valueOf(col) );
+				if( row == col )
+				{
+					Assert.assertTrue( Math.abs( 1.0 - el.getVal() ) < 0.0001 );
+				}
+				else
+				{
+					Assert.assertTrue( Math.abs( 0.0 - el.getVal() ) < 0.0001 );
+				}
+			}
+		}
+		
+		
+	}
+	
+	
+	
+	
 	
 	/**
 	 * Test method for the inverse of a simple identity symbolic matrix
@@ -620,6 +751,139 @@ public class TestInvertSymmetric extends TestCase {
 							Assert.assertTrue( Math.abs( 0.0 - el.getVal() ) < 0.0001 );
 						}
 					}
+				}
+			}
+		}
+		
+		
+	}
+	
+	
+	
+	
+	
+	
+	/**
+	 * Test method for the inverse of a simple upper triangular matrix
+	 */
+	public void testInvertUpperTriangularRight() throws NotInvertibleException
+	{
+		final TestDimensionFour td = new TestDimensionFour();
+		
+		final DoubleElemFactory de = new DoubleElemFactory();
+		
+		
+		final Random rand = new Random( 5555 );
+		
+		
+		SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory> mat
+			= new SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory>(de, td);
+		
+		
+		for( int row = 0 ; row < 4 ; row++ )
+		{
+			for( int col = 0 ; col < 4 ; col++ )
+			{
+				if( ( row + ( 3 - col ) ) < 4 )
+				{
+					mat.setVal(BigInteger.valueOf(row), BigInteger.valueOf(col), new DoubleElem( rand.nextDouble() ) );
+				}
+			}
+		}
+		
+		
+		SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory> matI
+			= mat.invertRight();
+		
+		Assert.assertTrue( matI != null );
+		
+		
+		SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory> matI2
+			= mat.mult( matI );
+		
+		
+		Assert.assertTrue( matI2 != null );
+		
+		
+		for( int row = 0 ; row < 4 ; row++ )
+		{
+			for( int col = 0 ; col < 4 ; col++ )
+			{
+				DoubleElem el = matI2.getVal( BigInteger.valueOf(row) , 
+						BigInteger.valueOf(col) );
+				if( row == col )
+				{
+					Assert.assertTrue( Math.abs( 1.0 - el.getVal() ) < 0.0001 );
+				}
+				else
+				{
+					Assert.assertTrue( Math.abs( 0.0 - el.getVal() ) < 0.0001 );
+				}
+			}
+		}
+		
+		
+	}
+	
+	
+	
+	
+	
+	/**
+	 * Test method for the inverse of a simple lower triangular matrix
+	 */
+	public void testInvertLowerTriangularRight() throws NotInvertibleException
+	{
+		final TestDimensionFour td = new TestDimensionFour();
+		
+		final DoubleElemFactory de = new DoubleElemFactory();
+		
+		
+		final Random rand = new Random( 5555 );
+		
+		
+		SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory> mat
+			= new SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory>(de, td);
+		
+		
+		for( int row = 0 ; row < 4 ; row++ )
+		{
+			for( int col = 0 ; col < 4 ; col++ )
+			{
+				if( ( ( 3 - row ) + col ) < 4 )
+				{
+					mat.setVal(BigInteger.valueOf(row), BigInteger.valueOf(col), new DoubleElem( rand.nextDouble() ) );
+				}
+			}
+		}
+		
+		
+		SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory> matI
+			= mat.invertRight();
+		
+		Assert.assertTrue( matI != null );
+		
+		
+		SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory> matI2
+			= mat.mult( matI );
+		
+		
+		Assert.assertTrue( matI2 != null );
+		
+		
+		for( int row = 0 ; row < 4 ; row++ )
+		{
+			for( int col = 0 ; col < 4 ; col++ )
+			{
+				DoubleElem el = matI2.getVal( BigInteger.valueOf(row) , 
+						BigInteger.valueOf(col) );
+				if( row == col )
+				{
+					Assert.assertTrue( Math.abs( 1.0 - el.getVal() ) < 0.0001 );
+				}
+				else
+				{
+					Assert.assertTrue( Math.abs( 0.0 - el.getVal() ) < 0.0001 );
 				}
 			}
 		}
