@@ -48,6 +48,8 @@ import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicMult;
 import simplealgebra.symbolic.SymbolicNegate;
 
+import java.io.*;
+
 
 public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends Ord<U>, R extends Elem<R,?>, S extends ElemFactory<R,S>> 
 	extends MutableElem<R, GeometricAlgebraMultivectorElem<U,A,R,S>, GeometricAlgebraMultivectorElemFactory<U,A,R,S>>  {
@@ -190,7 +192,7 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 		}
 
 		@Override
-		public String writeString() {
+		public void writeString( PrintStream ps ) {
 			throw( new RuntimeException( "NotSupported" ) );
 		}
 		
@@ -237,7 +239,7 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 		}
 
 		@Override
-		public String writeString() {
+		public void writeString( PrintStream ps ) {
 			throw( new RuntimeException( "NotSupported" ) );
 		}
 		

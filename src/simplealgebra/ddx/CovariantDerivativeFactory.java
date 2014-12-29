@@ -42,8 +42,11 @@ import simplealgebra.et.OrdinaryDerivativeFactory;
 import simplealgebra.et.SymbolicRegenCovar;
 import simplealgebra.et.TemporaryIndexFactory;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
+import simplealgebra.symbolic.PrecedenceComparator;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
+
+import java.io.*;
 
 
 /**
@@ -206,8 +209,28 @@ public class CovariantDerivativeFactory<Z extends Object, U extends NumDimension
 	
 
 	@Override
-	public String writeString( ) {
-		return( "covariantDerivative" );
+	public void writeString( PrintStream ps ) {
+		ps.print( "covariantDerivative[ " + derivativeIndex + " ]" );
+	}
+	
+	
+	@Override
+	public void writeMathML(
+			PrecedenceComparator<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> pc,
+			PrintStream ps) {
+		
+		ps.print( "<msub><mo>&nabla;</mo>" );
+		ps.print( "<mi>" + derivativeIndex + "</mi></msub>" );
+		if( pc.parenNeeded( this ,  tensorWithRespectTo , true ) )
+		{
+			ps.print( "<mfenced><mrow>" );
+		}
+		tensorWithRespectTo.writeMathML(pc, ps);
+		if( pc.parenNeeded( this ,  tensorWithRespectTo , true ) )
+		{
+			ps.print( "</mrow></mfenced>" );
+		}
+		ps.print( "</mrow>" );
 	}
 	
 	
@@ -235,8 +258,7 @@ public class CovariantDerivativeFactory<Z extends Object, U extends NumDimension
 	 * A factory for generating ordinary derivatives.
 	 */
 	private OrdinaryDerivativeFactory<Z,U,R,S,K> odfac;
-	
-	
+
 
 }
 

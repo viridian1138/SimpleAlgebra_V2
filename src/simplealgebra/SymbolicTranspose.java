@@ -26,6 +26,7 @@
 
 package simplealgebra;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -61,8 +62,10 @@ public class SymbolicTranspose<U extends NumDimensions, R extends Elem<R,?>, S e
 
 	
 	@Override
-	public String writeString( ) {
-		return( "transpose( " + ( elem.writeString() ) + " )" );
+	public void writeString( PrintStream ps ) {
+		ps.print( "transpose( " );
+		elem.writeString( ps );
+		ps.print( " )" );
 	}
 	
 	

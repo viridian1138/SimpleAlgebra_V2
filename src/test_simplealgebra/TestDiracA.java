@@ -26,6 +26,7 @@
 
 package test_simplealgebra;
 
+import java.io.PrintStream;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -485,8 +486,8 @@ private class AElem extends SymbolicElem<GeometricAlgebraMultivectorElem<TestDim
 	}
 
 	@Override
-	public String writeString() {
-		return( "a" + col + "()" );
+	public void writeString( PrintStream ps ) {
+		ps.print( "a" + col + "()" );
 	}
 	
 	@Override
@@ -533,8 +534,8 @@ private class SymbolicConst extends SymbolicReduction<DoubleElem,DoubleElemFacto
 	}
 	
 	@Override
-	public String writeString() {
-		return( " " + ( this.getElem().getVal() ) );
+	public void writeString( PrintStream ps ) {
+		ps.print( " " + ( this.getElem().getVal() ) );
 	}
 	
 	@Override
@@ -561,8 +562,10 @@ private class StelemReduction2L extends SymbolicReduction<SymbolicElem<DoubleEle
 	}
 	
 	@Override
-	public String writeString() {
-		return( "reduce2L( " + getElem().writeString() + " )" );
+	public void writeString( PrintStream ps ) {
+		ps.print( "reduce2L( " );
+		getElem().writeString( ps );
+		ps.print( " )" );
 	}
 	
 	@Override
@@ -591,8 +594,10 @@ private class StelemReduction3L extends SymbolicReduction<
 	}
 	
 	@Override
-	public String writeString() {
-		return( "reduce3L( " + getElem().writeString() + " )" );
+	public void writeString( PrintStream ps ) {
+		ps.print( "reduce3L( " );
+		getElem().writeString( ps );
+		ps.print( " )" );
 	}
 	
 	@Override
@@ -705,7 +710,7 @@ private class CoeffNode
 		}
 
 		@Override
-		public String writeString() {
+		public void writeString( PrintStream ps ) {
 			String s0 = "bn";
 			Iterator<AElem> it = coord.keySet().iterator();
 			while( it.hasNext() )
@@ -726,7 +731,7 @@ private class CoeffNode
 				s0 = s0 + b + ",";
 			}
 			s0 = s0 + "}()";
-			return( s0 );
+			ps.print( s0 );
 		}
 		
 		@Override
@@ -798,7 +803,7 @@ private class CNelem extends Nelem<SymbolicElem<DoubleElem,DoubleElemFactory>,
 	
 
 	@Override
-	public String writeString() {
+	public void writeString( PrintStream ps ) {
 		String s0 = "cn";
 		Iterator<AElem> it = coord.keySet().iterator();
 		while( it.hasNext() )
@@ -812,7 +817,7 @@ private class CNelem extends Nelem<SymbolicElem<DoubleElem,DoubleElemFactory>,
 			s0 = s0 + "]";
 		}
 		s0 = s0 + "()";
-		return( s0 );
+		ps.print( s0 );
 	}
 	
 	
@@ -979,7 +984,7 @@ public SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFacto
 }
 
 @Override
-public String writeString() {
+public void writeString( PrintStream ps ) {
 	throw( new RuntimeException( "NotSupported" ) );
 }
 
@@ -1339,15 +1344,14 @@ protected class VEvalElem extends SymbolicElem<GeometricAlgebraMultivectorElem<T
 	}
 
 	@Override
-	public String writeString() {
-		String ret = "";
+	public void writeString( PrintStream ps ) {
 		Iterator<HashSet<BigInteger>> it = dval.getKeyIterator();
 		while( it.hasNext() )
 		{
 			final HashSet<BigInteger> key = it.next();
-			ret = ret + "\n" + "** " + ( dval.get( key ).writeString() );
+			ps.print( "\n" + "** " );
+			( dval.get( key ) ).writeString( ps );
 		}
-		return( ret );
 	}
 	
 }
@@ -1422,7 +1426,7 @@ public SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeA
 }
 
 @Override
-public String writeString() {
+public void writeString( PrintStream ps ) {
 	throw( new RuntimeException( "Not Supported" ) );
 }
 
@@ -1504,7 +1508,7 @@ return( new VEvalElem2( fac.getFac() , sefac.getFac() , vefac , retA ) );
 }
 
 @Override
-public String writeString() {
+public void writeString( PrintStream ps ) {
 throw( new RuntimeException( "Not Supported" ) );
 }
 

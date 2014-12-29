@@ -24,6 +24,7 @@
 
 package simplealgebra.symbolic;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -62,8 +63,53 @@ public class SymbolicAdd<R extends Elem<R,?>, S extends ElemFactory<R,S>> extend
 	}
 
 	@Override
-	public String writeString( ) {
-		return( "add( " + ( elemA.writeString() ) + " , " + ( elemB.writeString() ) + " )" );
+	public void writeString( PrintStream ps ) {
+		ps.print( "add( " );
+		elemA.writeString( ps );
+		ps.print( " , " );
+		elemB.writeString( ps );
+		ps.print( " )" );
+	}
+	
+	
+	@Override
+	public void writeMathML( PrecedenceComparator<R,S> pc , PrintStream ps )
+	{
+		if( pc.parenNeeded( this ,  elemA , false ) )
+		{
+			ps.print( "<mfenced><mrow>" );
+		}
+		else
+		{
+			ps.print( "<mrow>" );
+		}
+		elemA.writeMathML(pc, ps);
+		if( pc.parenNeeded( this ,  elemA , false ) )
+		{
+			ps.print( "</mrow></mfenced>" );
+		}
+		else
+		{
+			ps.print( "</mrow>" );
+		}
+		ps.print( "<mo>+</mo>" );
+		if( pc.parenNeeded( this ,  elemB , true ) )
+		{
+			ps.print( "<mfenced><mrow>" );
+		}
+		else
+		{
+			ps.print( "<mrow>" );
+		}
+		elemB.writeMathML(pc, ps);
+		if( pc.parenNeeded( this ,  elemB , true ) )
+		{
+			ps.print( "</mrow></mfenced>" );
+		}
+		else
+		{
+			ps.print( "</mrow>" );
+		}
 	}
 	
 	

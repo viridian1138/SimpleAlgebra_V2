@@ -26,6 +26,7 @@
 
 package simplealgebra.ga;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -82,8 +83,12 @@ public class SymbolicDot<U extends NumDimensions, A extends Ord<U>, R extends El
 
 	
 	@Override
-	public String writeString( ) {
-		return( "dot( " + ( elemA.writeString() ) + " , " + ( elemB.writeString() ) + " )" );
+	public void writeString( PrintStream ps ) {
+		ps.print( "dot( " );
+		elemA.writeString( ps );
+		ps.print( " , " );
+		elemB.writeString( ps );
+		ps.print( " )" );
 	}
 	
 	

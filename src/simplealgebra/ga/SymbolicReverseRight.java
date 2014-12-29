@@ -26,6 +26,7 @@
 
 package simplealgebra.ga;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -79,8 +80,10 @@ public class SymbolicReverseRight<U extends NumDimensions, A extends Ord<U>, R e
 
 	
 	@Override
-	public String writeString( ) {
-		return( "reverseRight( " + ( elemA.writeString() ) + " )" );
+	public void writeString( PrintStream ps ) {
+		ps.print( "reverseRight( " );
+		elemA.writeString( ps );
+		ps.print( " )" );
 	}
 	
 	

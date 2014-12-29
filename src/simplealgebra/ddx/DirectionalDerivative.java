@@ -26,8 +26,8 @@
 
 package simplealgebra.ddx;
 
+import java.io.PrintStream;
 import java.math.BigInteger;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
@@ -39,13 +39,18 @@ import simplealgebra.ga.GeometricAlgebraMultivectorElem;
 import simplealgebra.ga.GeometricAlgebraMultivectorElemFactory;
 import simplealgebra.ga.Ord;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
+import simplealgebra.symbolic.PrecedenceComparator;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 
+import java.io.*;
 
 /**
- * Implements a directional derivative operator (also known as the "del operator" as in "del cross E") for a 
- * Geometric Algebra multivector.
+ * Implements a directional derivative operator (usually represented as <math display="inline">
+ * <mrow>
+ *  <mo>&nabla;</mo>
+ * </mrow>
+ * </math>) for a Geometric Algebra multivector.
  * 
  * @author thorngreen
  *
@@ -142,15 +147,20 @@ public class DirectionalDerivative<U extends NumDimensions, A extends Ord<U>, R 
 	
 
 	@Override
-	public String writeString( ) {
-		return( "directionalDerivative" );
+	public void writeString( PrintStream ps ) {
+		ps.print( "directionalDerivative" );
+	}
+	
+	@Override
+	public void writeMathML(
+			PrecedenceComparator<GeometricAlgebraMultivectorElem<U, A, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, GeometricAlgebraMultivectorElemFactory<U, A, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> pc,
+			PrintStream ps) {
+		ps.print( "<mo>&nabla;</mo>" );
 	}
 	
 	private U dim;
 	private A ord;
 	private DirectionalDerivativePartialFactory<R,S,K> dfac;
-	
-	
 
 }
 

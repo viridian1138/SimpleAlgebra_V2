@@ -53,6 +53,7 @@ import simplealgebra.symbolic.SymbolicInvertRight;
 import simplealgebra.symbolic.SymbolicMult;
 import simplealgebra.symbolic.SymbolicNegate;
 
+import java.io.*;
 
 
 public class TestInvertLeftSymbolic extends TestCase 
@@ -112,8 +113,8 @@ public class TestInvertLeftSymbolic extends TestCase
 		}
 		
 		@Override
-		public String writeString( ) {
-			return( "a( " + row + " , " + col + " )" );
+		public void writeString( PrintStream ps ) {
+			ps.print( "a( " + row + " , " + col + " )" );
 		}
 		
 	}

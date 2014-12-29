@@ -37,6 +37,9 @@ import simplealgebra.MutableElem;
 import simplealgebra.Mutator;
 import simplealgebra.NotInvertibleException;
 
+import java.io.*;
+
+
 public class SymbolicMutable<T extends Elem<T,?>, U extends MutableElem<T,U,?>, R extends ElemFactory<U,R> > extends SymbolicElem<U,R> 
 {
 	
@@ -72,8 +75,11 @@ public class SymbolicMutable<T extends Elem<T,?>, U extends MutableElem<T,U,?>, 
 	}
 
 	@Override
-	public String writeString( ) {
-		return( elemB.writeString() + "( " + elemA.writeString() + " )" );
+	public void writeString( PrintStream ps ) {
+		ps.print( elemB.writeString( ) );
+		ps.print( "( " );
+		elemA.writeString( ps );
+		ps.print( " )" );
 	}
 	
 	

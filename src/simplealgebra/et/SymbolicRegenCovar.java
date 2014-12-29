@@ -24,6 +24,7 @@
 
 package simplealgebra.et;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -59,8 +60,8 @@ public class SymbolicRegenCovar<Z extends Object, R extends Elem<R,?>, S extends
 	}
 
 	@Override
-	public String writeString( ) {
-		return( "symbolicRegenCovar" );
+	public void writeString( PrintStream ps ) {
+		ps.print( "symbolicRegenCovar" );
 	}
 	
 	@Override

@@ -33,6 +33,9 @@ import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
 
+import java.io.*;
+
+
 public class SymbolicDivideBy<R extends Elem<R,?>, S extends ElemFactory<R,S>> extends SymbolicElem<R,S> 
 {
 
@@ -60,9 +63,23 @@ public class SymbolicDivideBy<R extends Elem<R,?>, S extends ElemFactory<R,S>> e
 		return( elem.evalPartialDerivative( withRespectTo , implicitSpace ).divideBy( ival ) );
 	}
 
+	
 	@Override
-	public String writeString( ) {
-		return( "divideBy( " + ( elem.writeString() ) + " , " + ( ival ) + " )" );
+	public void writeString( PrintStream ps ) {
+		ps.print( "divideBy( " );
+		elem.writeString( ps );
+		ps.print( " , " + ( ival ) + " )" );
+	}
+	
+	
+	@Override
+	public void writeMathML( PrecedenceComparator<R,S> pc , PrintStream ps )
+	{
+		ps.print( "<mfrac><mrow>" );
+		elem.writeMathML(pc, ps);
+		ps.print( "</mrow><mrow><mn>" + ( ival ) );
+		ps.print( "</mn></mrow>" );
+		ps.print( "</mfrac>" );
 	}
 	
 	

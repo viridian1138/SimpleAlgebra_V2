@@ -27,6 +27,7 @@
 
 package simplealgebra.symbolic;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -66,8 +67,20 @@ public class SymbolicInvertRight<R extends Elem<R,?>, S extends ElemFactory<R,S>
 	}
 
 	@Override
-	public String writeString( ) {
-		return( "invertRight( " + ( elem.writeString() ) + " )" );
+	public void writeString( PrintStream ps ) {
+		ps.print( "invertRight( " );
+		elem.writeString( ps );
+		ps.print( " )" );
+	}
+	
+	@Override
+	public void writeMathML( PrecedenceComparator<R,S> pc , PrintStream ps )
+	{
+		ps.print( "<msup>" );
+		ps.print( "<mfenced><mrow>" );
+		elem.writeMathML(pc, ps);
+		ps.print( "</mrow></mfenced>" );
+		ps.print( "<mi>-1R</mi></msup>" );
 	}
 	
 	/**

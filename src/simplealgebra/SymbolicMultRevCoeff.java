@@ -24,6 +24,7 @@
 
 package simplealgebra;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -61,8 +62,12 @@ public class SymbolicMultRevCoeff<U extends NumDimensions, R extends Elem<R,?>, 
 	}
 
 	@Override
-	public String writeString( ) {
-		return( "multRevCoeff( " + ( elemA.writeString() ) + " , " + ( elemB.writeString() ) + " )" );
+	public void writeString( PrintStream ps ) {
+		ps.print( "multRevCoeff( " );
+		elemA.writeString( ps );
+		ps.print( " , " );
+		elemB.writeString( ps );
+		ps.print( " )" );
 	}
 	
 	

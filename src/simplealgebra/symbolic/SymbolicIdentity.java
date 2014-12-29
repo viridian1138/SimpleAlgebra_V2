@@ -26,6 +26,7 @@
 
 package simplealgebra.symbolic;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -80,8 +81,13 @@ public class SymbolicIdentity<R extends Elem<R,?>, S extends ElemFactory<R,S>> e
 	}
 
 	@Override
-	public String writeString( ) {
-		return( "IDENTITY" );
+	public void writeString( PrintStream ps ) {
+		ps.println( "IDENTITY" );
+	}
+	
+	@Override
+	public void writeMathML( PrecedenceComparator<R,S> pc , PrintStream ps ) {
+		ps.print( "<mn>IDENTITY</mn>" );
 	}
 	
 	public boolean symbolicEquals( SymbolicElem<R, S> b )

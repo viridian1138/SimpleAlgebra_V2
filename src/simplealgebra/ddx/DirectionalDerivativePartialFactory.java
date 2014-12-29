@@ -33,7 +33,11 @@ import simplealgebra.ElemFactory;
 import simplealgebra.symbolic.SymbolicElem;
 
 /**
- * Factory for mapping a directional derivative into its set of constituent partial derivatives.
+ * Factory for mapping a directional derivative (usually represented as <math display="inline">
+ * <mrow>
+ *  <mo>&nabla;</mo>
+ * </mrow>
+ * </math>) into its set of constituent partial derivatives.
  * 
  * @author thorngreen
  *

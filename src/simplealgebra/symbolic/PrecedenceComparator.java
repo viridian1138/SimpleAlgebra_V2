@@ -4,6 +4,7 @@
 
 
 
+
 //$$strtCprt
 /**
 * Simple Algebra 
@@ -28,29 +29,31 @@
 package simplealgebra.symbolic;
 
 
-public class LoggingConfiguration {
-	
-	public static boolean LOGGING_ON = false;
-	
-	public void performLogging( Object obj )
-	{
-		System.out.println( "Logging:" );
-		System.out.println( obj );
-		
-		if( obj instanceof SymbolicElem )
-		{
-			((SymbolicElem) obj).writeString( System.out );
-		}
-		
-		if( obj instanceof Reng )
-		{
-			((Reng) obj).getStrt().writeString( System.out );
-			System.out.println( "-->" );
-			((Reng) obj).getEnd().writeString( System.out );
-		}
-		
-		System.out.println( "------------" );
-	}
+import simplealgebra.Elem;
+import simplealgebra.ElemFactory;
 
+
+/**
+ * A description of how to assign precedence for converting to infix notation.
+ * 
+ * @author thorngreen
+ *
+ * @param <R> The enclosed elem type.
+ * @param <S> The factory for the enclosed elem type.
+ */
+public abstract class PrecedenceComparator<R extends Elem<R,?>, S extends ElemFactory<R,S>> extends Object {
+	
+	
+	/**
+	 * Returns true iff. a parenthesis is required to convert to infix.
+	 * @param a The parent node in the elem tree.
+	 * @param b The child node in the elem tree.
+	 * @param after Whether the child is written after the parent in infix notation.
+	 * @return Whether infix notation requires a parenthesis for the child.
+	 */
+	public abstract boolean parenNeeded( SymbolicElem<R,S> a , SymbolicElem<R,S> b , boolean after );
+
+	
 }
+
 

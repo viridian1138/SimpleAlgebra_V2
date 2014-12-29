@@ -26,6 +26,7 @@
 
 package simplealgebra.et;
 
+import java.io.PrintStream;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -138,8 +139,8 @@ public class OrdinaryDerivative<Z extends Object, U extends NumDimensions, R ext
 	
 
 	@Override
-	public String writeString( ) {
-		return( "ordinaryDerivativeTensor" );
+	public void writeString( PrintStream ps ) {
+		ps.print( "ordinaryDerivativeTensor" );
 	}
 	
 	/**

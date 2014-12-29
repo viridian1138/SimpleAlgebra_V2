@@ -32,6 +32,9 @@ import java.util.HashMap;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SymbolicElem;
 
+import java.io.*;
+
+
 public class SymbolicConjugateLeft<R extends Elem<R,?>, S extends ElemFactory<R,S>> extends 
 	SymbolicElem<ComplexElem<R,S>,ComplexElemFactory<R,S>> 
 {
@@ -61,8 +64,10 @@ public class SymbolicConjugateLeft<R extends Elem<R,?>, S extends ElemFactory<R,
 
 	
 	@Override
-	public String writeString( ) {
-		return( "conjugateLeft( " + ( elem.writeString() ) + " )" );
+	public void writeString( PrintStream ps ) {
+		ps.print( "conjugateLeft( " );
+		elem.writeString( ps );
+		ps.print( " )" );
 	}
 	
 	

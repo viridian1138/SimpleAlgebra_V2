@@ -35,6 +35,8 @@ import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
 
+import java.io.*;
+
 public class SymbolicNegate<R extends Elem<R,?>, S extends ElemFactory<R,S>> extends SymbolicElem<R,S> 
 {
 
@@ -62,8 +64,26 @@ public class SymbolicNegate<R extends Elem<R,?>, S extends ElemFactory<R,S>> ext
 	}
 
 	@Override
-	public String writeString( ) {
-		return( "negate( " + ( elem.writeString() ) + " )" );
+	public void writeString( PrintStream ps ) {
+		ps.print( "negate( " );
+		elem.writeString( ps );
+		ps.print( " )" );
+	}
+	
+	@Override
+	public void writeMathML( PrecedenceComparator<R,S> pc , PrintStream ps )
+	{
+		ps.print( "<mo>-</mo><mrow>" );
+		if( pc.parenNeeded( this ,  elem , true ) )
+		{
+			ps.print( "<mfenced><mrow>" );
+		}
+		elem.writeMathML(pc, ps);
+		if( pc.parenNeeded( this ,  elem , true ) )
+		{
+			ps.print( "</mrow></mfenced>" );
+		}
+		ps.print( "</mrow>" );
 	}
 	
 	/**

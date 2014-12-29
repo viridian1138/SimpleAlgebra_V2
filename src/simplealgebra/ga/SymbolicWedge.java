@@ -26,6 +26,7 @@
 
 package simplealgebra.ga;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -82,8 +83,12 @@ public class SymbolicWedge<U extends NumDimensions, A extends Ord<U>, R extends 
 
 	
 	@Override
-	public String writeString( ) {
-		return( "wedge( " + ( elemA.writeString() ) + " , " + ( elemB.writeString() ) + " )" );
+	public void writeString( PrintStream ps ) {
+		ps.print( "wedge( " );
+		elemA.writeString( ps );
+		ps.print( " , " );
+		elemB.writeString( ps );
+		ps.print( " )" );
 	}
 	
 	

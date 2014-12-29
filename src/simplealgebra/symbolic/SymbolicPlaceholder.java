@@ -26,6 +26,7 @@
 
 package simplealgebra.symbolic;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -56,8 +57,10 @@ public class SymbolicPlaceholder<R extends Elem<R,?>, S extends ElemFactory<R,S>
 	}
 
 	@Override
-	public String writeString( ) {
-		return( "placeholder( " + ( elem.writeString() ) + " )" );
+	public void writeString( PrintStream ps ) {
+		ps.print( "placeholder( " );
+		elem.writeString( ps );
+		ps.print( " )" );
 	}
 	
 	/**

@@ -56,6 +56,7 @@ import simplealgebra.symbolic.SymbolicZero;
 
 import simplealgebra.et.*;
 import simplealgebra.*;
+import java.io.*;
 
 
 
@@ -96,8 +97,8 @@ public class TestMetricDeterminant extends TestCase
 		}
 		
 		@Override
-		public String writeString( ) {
-			return( "cSquared( )" );
+		public void writeString( PrintStream ps ) {
+			ps.print( "cSquared( )" );
 		}
 		
 	}
@@ -137,8 +138,8 @@ public class TestMetricDeterminant extends TestCase
 		}
 		
 		@Override
-		public String writeString( ) {
-			return( "T_2Ux( )" );
+		public void writeString( PrintStream ps ) {
+			ps.print( "T_2Ux( )" );
 		}
 		
 	}

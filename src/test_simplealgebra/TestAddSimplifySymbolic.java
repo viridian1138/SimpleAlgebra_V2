@@ -49,6 +49,7 @@ import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicOps;
 import simplealgebra.symbolic.SymbolicZero;
 
+import java.io.*;
 
 
 
@@ -89,8 +90,8 @@ public class TestAddSimplifySymbolic extends TestCase
 		}
 		
 		@Override
-		public String writeString( ) {
-			return( "a( )" );
+		public void writeString( PrintStream ps ) {
+			ps.print( "a( )" );
 		}
 		
 	}

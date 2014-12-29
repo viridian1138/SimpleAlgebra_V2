@@ -31,6 +31,7 @@
 package test_simplealgebra;
 
 
+import java.io.PrintStream;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -112,8 +113,8 @@ public class TestInvertRightSymbolic extends TestCase
 		}
 		
 		@Override
-		public String writeString( ) {
-			return( "a( " + row + " , " + col + " )" );
+		public void writeString( PrintStream ps ) {
+			ps.print( "a( " + row + " , " + col + " )" );
 		}
 		
 	}

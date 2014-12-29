@@ -26,6 +26,7 @@
 
 package simplealgebra;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -61,8 +62,10 @@ public class SymbolicConjugateRight<R extends Elem<R,?>, S extends ElemFactory<R
 
 	
 	@Override
-	public String writeString( ) {
-		return( "conjugateRight( " + ( elem.writeString() ) + " )" );
+	public void writeString( PrintStream ps ) {
+		ps.print( "conjugateRight( " );
+		elem.writeString( ps );
+		ps.print( " )" );
 	}
 	
 	

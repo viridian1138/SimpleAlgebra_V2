@@ -26,6 +26,7 @@
 
 package simplealgebra.symbolic;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -65,8 +66,18 @@ public class SymbolicSqrt<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 	}
 
 	@Override
-	public String writeString( ) {
-		return( "sqrt( " + ( elem.writeString() ) + " )" );
+	public void writeString( PrintStream ps ) {
+		ps.print( "sqrt( " );
+		elem.writeString( ps );
+		ps.print( " )" );
+	}
+	
+	@Override
+	public void writeMathML( PrecedenceComparator<R,S> pc , PrintStream ps )
+	{
+		ps.print( "<msqrt><mrow>" );
+		elem.writeMathML(pc, ps);
+		ps.print( "</mrow></msqrt>" );
 	}
 	
 	/**

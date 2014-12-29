@@ -24,6 +24,7 @@
 
 package simplealgebra;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -58,8 +59,10 @@ public class SymbolicInvertRightRevCoeff<U extends NumDimensions, R extends Elem
 	}
 
 	@Override
-	public String writeString( ) {
-		return( "invertRightRevCoeff( " + ( elem.writeString() ) + " )" );
+	public void writeString( PrintStream ps ) {
+		ps.print( "invertRightRevCoeff( " );
+		elem.writeString( ps );
+		ps.print( " )" );
 	}
 	
 	

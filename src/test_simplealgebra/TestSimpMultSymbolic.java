@@ -31,6 +31,7 @@
 package test_simplealgebra;
 
 
+import java.io.PrintStream;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -92,8 +93,8 @@ public class TestSimpMultSymbolic extends TestCase
 		}
 		
 		@Override
-		public String writeString( ) {
-			return( "a( )" );
+		public void writeString( PrintStream ps ) {
+			ps.print( "a( )" );
 		}
 		
 	}
@@ -133,8 +134,8 @@ public class TestSimpMultSymbolic extends TestCase
 		}
 		
 		@Override
-		public String writeString( ) {
-			return( "b( )" );
+		public void writeString( PrintStream ps ) {
+			ps.print( "b()" );
 		}
 		
 	}

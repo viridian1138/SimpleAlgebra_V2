@@ -52,11 +52,14 @@ import simplealgebra.et.EmFieldTensorFactory;
 import simplealgebra.et.SimpleCurveMetricTensorFactory;
 import simplealgebra.et.VectorPotentialFactory;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
+import simplealgebra.symbolic.PrecedenceComparator;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicOps;
 import simplealgebra.symbolic.SymbolicSqrt;
 import simplealgebra.symbolic.SymbolicZero;
+
+import java.io.*;
 
 
 
@@ -97,8 +100,14 @@ public class TestDesResSymbolic extends TestCase
 		}
 		
 		@Override
-		public String writeString( ) {
-			return( "cSquared( )" );
+		public void writeString( PrintStream ps ) {
+			ps.print( "cSquared( )" );
+		}
+		
+		@Override
+		public void writeMathML( PrecedenceComparator<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> pc , PrintStream ps )
+		{
+			ps.print( "<msup><mi>c</mi><mn>2</mn></msup>" );
 		}
 		
 	}
@@ -138,8 +147,14 @@ public class TestDesResSymbolic extends TestCase
 		}
 		
 		@Override
-		public String writeString( ) {
-			return( "T_2Ux( )" );
+		public void writeString( PrintStream ps ) {
+			ps.print( "T_2Ux( )" );
+		}
+		
+		@Override
+		public void writeMathML( PrecedenceComparator<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> pc , PrintStream ps )
+		{
+			ps.print( "<mi>T_2Ux</mi>" );
 		}
 		
 	}
@@ -179,8 +194,14 @@ public class TestDesResSymbolic extends TestCase
 		}
 		
 		@Override
-		public String writeString( ) {
-			return( "A0( )" );
+		public void writeString( PrintStream ps ) {
+			ps.print( "A0( )" );
+		}
+		
+		@Override
+		public void writeMathML( PrecedenceComparator<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> pc , PrintStream ps )
+		{
+			ps.print( "<msub><mi>A</mi><mn>0</mn></msub>" );
 		}
 		
 	}
@@ -219,8 +240,14 @@ public class TestDesResSymbolic extends TestCase
 		}
 		
 		@Override
-		public String writeString( ) {
-			return( "A1( )" );
+		public void writeString( PrintStream ps ) {
+			ps.print( "A1( )" );
+		}
+		
+		@Override
+		public void writeMathML( PrecedenceComparator<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> pc , PrintStream ps )
+		{
+			ps.print( "<msub><mi>A</mi><mn>1</mn></msub>" );
 		}
 		
 	}
@@ -261,8 +288,14 @@ public class TestDesResSymbolic extends TestCase
 		}
 		
 		@Override
-		public String writeString( ) {
-			return( "A2( )" );
+		public void writeString( PrintStream ps ) {
+			ps.print( "A2( )" );
+		}
+		
+		@Override
+		public void writeMathML( PrecedenceComparator<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> pc , PrintStream ps )
+		{
+			ps.print( "<msub><mi>A</mi><mn>2</mn></msub>" );
 		}
 		
 	}
@@ -306,8 +339,14 @@ public class TestDesResSymbolic extends TestCase
 		}
 		
 		@Override
-		public String writeString( ) {
-			return( "A3( )" );
+		public void writeString( PrintStream ps ) {
+			ps.print( "A3( )" );
+		}
+		
+		@Override
+		public void writeMathML( PrecedenceComparator<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> pc , PrintStream ps )
+		{
+			ps.print( "<msub><mi>A</mi><mn>3</mn></msub>" );
 		}
 		
 	}
@@ -388,8 +427,14 @@ public class TestDesResSymbolic extends TestCase
 		}
 		
 		@Override
-		public String writeString( ) {
-			return( "X0( )" );
+		public void writeString( PrintStream ps ) {
+			ps.print( "X0( )" );
+		}
+		
+		@Override
+		public void writeMathML( PrecedenceComparator<DoubleElem,DoubleElemFactory> pc , PrintStream ps )
+		{
+			ps.print( "<msub><mi>x</mi><mn>0</mn></msub>" );
 		}
 		
 	}
@@ -430,8 +475,14 @@ public class TestDesResSymbolic extends TestCase
 		}
 		
 		@Override
-		public String writeString( ) {
-			return( "X1( )" );
+		public void writeString( PrintStream ps ) {
+			ps.print( "X1( )" );
+		}
+		
+		@Override
+		public void writeMathML( PrecedenceComparator<DoubleElem,DoubleElemFactory> pc , PrintStream ps )
+		{
+			ps.print( "<msub><mi>x</mi><mn>1</mn></msub>" );
 		}
 		
 	}
@@ -472,8 +523,14 @@ public class TestDesResSymbolic extends TestCase
 		}
 		
 		@Override
-		public String writeString( ) {
-			return( "X2( )" );
+		public void writeString( PrintStream ps ) {
+			ps.print( "X2( )" );
+		}
+		
+		@Override
+		public void writeMathML( PrecedenceComparator<DoubleElem,DoubleElemFactory> pc , PrintStream ps )
+		{
+			ps.print( "<msub><mi>x</mi><mn>2</mn></msub>" );
 		}
 		
 	}
@@ -514,8 +571,14 @@ public class TestDesResSymbolic extends TestCase
 		}
 		
 		@Override
-		public String writeString( ) {
-			return( "X3( )" );
+		public void writeString( PrintStream ps ) {
+			ps.print( "X3( )" );
+		}
+		
+		@Override
+		public void writeMathML( PrecedenceComparator<DoubleElem,DoubleElemFactory> pc , PrintStream ps )
+		{
+			ps.print( "<msub><mi>x</mi><mn>3</mn></msub>" );
 		}
 		
 	}
@@ -569,6 +632,36 @@ public class TestDesResSymbolic extends TestCase
 			tmp.add( new X3_Elem( new DoubleElemFactory() ) );
 			return( new PartialDerivativeOp<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>, 
 					SymbolicElem<DoubleElem, DoubleElemFactory>>( fac , tmp ) );
+		}
+		
+	}
+	
+	
+	
+	
+	private class PrecCompare extends PrecedenceComparator<ComplexElem<DoubleElem, DoubleElemFactory>,ComplexElemFactory<DoubleElem, DoubleElemFactory>>
+	{
+
+		public PrecCompare()
+		{
+		}
+		
+		@Override
+		public boolean parenNeeded(
+				SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> a,
+				SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> b,
+				boolean after) {
+			
+			if( ( b instanceof A0_Elem ) || ( b instanceof A1_Elem ) 
+					|| ( b instanceof A2_Elem ) || ( b instanceof A3_Elem )
+					|| ( b instanceof CSquaredElem ) )
+			{
+				return( false );
+			}
+			
+			// TODO Auto-generated method stub
+			
+			return( true );
 		}
 		
 	}
@@ -700,7 +793,7 @@ public class TestDesResSymbolic extends TestCase
 			{
 
 				@Override
-				public String writeString() {
+				public String writeString( ) {
 					// TODO Auto-generated method stub
 					return( "mutate mult." );
 				}
@@ -722,6 +815,8 @@ public class TestDesResSymbolic extends TestCase
 		Assert.assertTrue( fmutate != null );
 		
 		
+		final PrecCompare comp = new PrecCompare();
+		
 		
 		// System.out.println( "***" );
 		int i;
@@ -739,13 +834,15 @@ public class TestDesResSymbolic extends TestCase
 				final SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>
 					valI = fmutate.getVal( el );
 				Assert.assertTrue( valI != null );
-		//		System.out.println( valI.writeString() );
+		//		valI.writeMathMLWrapped( comp , System.out );
 				final SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 					valA = valI.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY2 , null);
-		//		System.out.println( valA.writeString() );
+		//		valA.writeMathMLWrapped( comp , System.out );
 				final SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 					val = valA.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
-		//		System.out.println( val.writeString() );
+//				System.out.print( "<P>" );
+//				val.writeMathMLWrapped( comp , System.out );
+//				System.out.println( "" );
 				
 				if( ii.equals( jj ) )
 				{

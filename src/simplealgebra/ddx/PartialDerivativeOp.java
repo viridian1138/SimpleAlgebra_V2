@@ -26,6 +26,7 @@
 
 package simplealgebra.ddx;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -34,6 +35,7 @@ import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
+import simplealgebra.symbolic.PrecedenceComparator;
 import simplealgebra.symbolic.SymbolicElem;
 
 /**
@@ -60,23 +62,57 @@ public class PartialDerivativeOp<R extends Elem<R,?>, S extends ElemFactory<R,S>
 	}	
 
 	@Override
-	public String writeString( ) {
-		String ret = "partialDerivative( ";
+	public void writeString( PrintStream ps ) {
+		ps.print( "partialDerivative( " );
 		Iterator<K> it = withRespectTo.iterator();
 		while( it.hasNext() )
 		{
 			K nxt = it.next();
 			if( nxt instanceof SymbolicElem )
 			{
-				ret = ret + ( (SymbolicElem) nxt ).writeString() + " ";
+				( (SymbolicElem) nxt ).writeString( ps );
+				ps.print( " " );
 			}
 			else
 			{
-				ret = ret + nxt + " ";
+				ps.print( nxt );
 			}
 		}
-		ret = ret + " )";
-		return( ret );
+		ps.print( " )" );
+	}
+	
+	@Override
+	public void writeMathML( PrecedenceComparator<R,S> pc , PrintStream ps )
+	{
+		final int sz = withRespectTo.size();
+		if( sz > 1 )
+		{
+			ps.print( "<mfrac><mrow><msup><mo>&part;</mo><mn>" );
+			ps.print( "" + sz );
+			ps.print( "</mn></msup></mrow><mrow>" );
+		}
+		else
+		{
+			ps.print( "<mfrac><mrow><mo>&part;</mo></mrow><mrow>" );
+		}
+		Iterator<K> it = withRespectTo.iterator();
+		while( it.hasNext() )
+		{
+			K nxt = it.next();
+			if( nxt instanceof SymbolicElem )
+			{
+				ps.print( "<mrow><mo>&part;</mo>" );
+				( (SymbolicElem) nxt ).writeMathML( pc , ps );
+				ps.print( "</mrow>" );
+			}
+			else
+			{
+				ps.print( "<mrow><mo>&part;</mo><mi>" );
+				ps.print( nxt );
+				ps.print( "</mi></mrow>" );
+			}
+		}
+		ps.print( "</mrow></mfrac>" );
 	}
 	
 	@Override

@@ -24,6 +24,7 @@
 
 package test_simplealgebra;
 
+import java.io.PrintStream;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -97,8 +98,8 @@ public class TestRiemannTensor extends TestCase {
 		}
 
 		@Override
-		public String writeString() {
-			return( "a" + col + "()" );
+		public void writeString( PrintStream ps ) {
+			ps.print( "a" + col + "()" );
 		}
 		
 		@Override
@@ -179,8 +180,8 @@ public class TestRiemannTensor extends TestCase {
 		}
 
 		@Override
-		public String writeString() {
-			return( "b()" );
+		public void writeString( PrintStream ps ) {
+			ps.print( "b()" );
 		}
 		
 		@Override
@@ -238,8 +239,8 @@ public class TestRiemannTensor extends TestCase {
 		}
 
 		@Override
-		public String writeString() {
-			return( "c" + col + "()" );
+		public void writeString( PrintStream ps ) {
+			ps.print( "c" + col + "()" );
 		}
 		
 		@Override
@@ -287,8 +288,8 @@ public class TestRiemannTensor extends TestCase {
 		}
 		
 		@Override
-		public String writeString() {
-			return( " " + ( this.getElem().getVal() ) );
+		public void writeString( PrintStream ps ) {
+			ps.print( " " + ( this.getElem().getVal() ) );
 		}
 		
 		@Override
@@ -383,15 +384,14 @@ public class TestRiemannTensor extends TestCase {
 		}
 
 		@Override
-		public String writeString() {
-			String ret = "";
+		public void writeString( PrintStream ps ) {
 			Iterator<ArrayList<BigInteger>> it = dval.getKeyIterator();
 			while( it.hasNext() )
 			{
 				final ArrayList<BigInteger> key = it.next();
-				ret = ret + "\n" + "** " + ( dval.getVal( key ).writeString() );
+				ps.print( "\n" + "** " ); 
+				( dval.getVal( key ) ).writeString( ps );
 			}
-			return( ret );
 		}
 		
 	}

@@ -53,6 +53,7 @@ import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicOps;
 
+import java.io.*;
 
 
 public class TestGaugeSymbolic extends TestCase 
@@ -92,8 +93,8 @@ public class TestGaugeSymbolic extends TestCase
 		}
 		
 		@Override
-		public String writeString( ) {
-			return( "cSquared( )" );
+		public void writeString( PrintStream ps ) {
+			ps.print( "cSquared( )" );
 		}
 		
 	}
@@ -133,8 +134,8 @@ public class TestGaugeSymbolic extends TestCase
 		}
 		
 		@Override
-		public String writeString( ) {
-			return( "T_2Ux( )" );
+		public void writeString( PrintStream ps ) {
+			ps.print( "T_2Ux( )" );
 		}
 		
 	}
@@ -174,8 +175,8 @@ public class TestGaugeSymbolic extends TestCase
 		}
 		
 		@Override
-		public String writeString( ) {
-			return( "Phi( )" );
+		public void writeString( PrintStream ps ) {
+			ps.print( "Phi( )" );
 		}
 		
 	}
@@ -214,8 +215,8 @@ public class TestGaugeSymbolic extends TestCase
 		}
 		
 		@Override
-		public String writeString( ) {
-			return( "A1( )" );
+		public void writeString( PrintStream ps ) {
+			ps.print( "A1( )" );
 		}
 		
 	}
@@ -256,8 +257,8 @@ public class TestGaugeSymbolic extends TestCase
 		}
 		
 		@Override
-		public String writeString( ) {
-			return( "A2( )" );
+		public void writeString( PrintStream ps ) {
+			ps.print( "A2( )" );
 		}
 		
 	}
@@ -301,8 +302,8 @@ public class TestGaugeSymbolic extends TestCase
 		}
 		
 		@Override
-		public String writeString( ) {
-			return( "A3( )" );
+		public void writeString( PrintStream ps ) {
+			ps.print( "A3( )" );
 		}
 		
 	}
@@ -383,8 +384,8 @@ public class TestGaugeSymbolic extends TestCase
 		}
 		
 		@Override
-		public String writeString( ) {
-			return( "T( )" );
+		public void writeString( PrintStream ps ) {
+			ps.print( "T( )" );
 		}
 		
 	}
@@ -425,8 +426,8 @@ public class TestGaugeSymbolic extends TestCase
 		}
 		
 		@Override
-		public String writeString( ) {
-			return( "X1( )" );
+		public void writeString( PrintStream ps ) {
+			ps.print( "X1( )" );
 		}
 		
 	}
@@ -467,8 +468,8 @@ public class TestGaugeSymbolic extends TestCase
 		}
 		
 		@Override
-		public String writeString( ) {
-			return( "X2( )" );
+		public void writeString( PrintStream ps ) {
+			ps.print( "X2( )" );
 		}
 		
 	}
@@ -509,8 +510,8 @@ public class TestGaugeSymbolic extends TestCase
 		}
 		
 		@Override
-		public String writeString( ) {
-			return( "X3( )" );
+		public void writeString( PrintStream ps ) {
+			ps.print( "X3( )" );
 		}
 		
 	}

@@ -38,6 +38,8 @@ import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.ddx.PartialDerivativeOp;
 
+import java.io.*;
+
 
 public class SymbolicReduction<R extends Elem<R,?>, S extends ElemFactory<R,S>> extends SymbolicElem<R,S> 
 {
@@ -165,14 +167,13 @@ public class SymbolicReduction<R extends Elem<R,?>, S extends ElemFactory<R,S>> 
 	
 	
 	@Override
-	public String writeString( ) {
-		String s = "reduction(";
+	public void writeString( PrintStream ps ) {
+		ps.print( "reduction( " );
 		if( elem instanceof SymbolicElem )
 		{
-			s = s + ( (SymbolicElem) elem ).writeString();
+			( (SymbolicElem) elem ).writeString( ps );
 		}
-		s = s + ")";
-		return( s );
+		ps.print( " )" );
 	}
 
 

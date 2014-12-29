@@ -26,6 +26,7 @@
 
 package test_simplealgebra;
 
+import java.io.PrintStream;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -116,8 +117,8 @@ public class TestStelemA extends TestCase {
 		}
 
 		@Override
-		public String writeString() {
-			return( "a" + col + "()" );
+		public void writeString( PrintStream ps ) {
+			ps.print( "a" + col + "()" );
 		}
 		
 		@Override
@@ -164,8 +165,8 @@ public class TestStelemA extends TestCase {
 		}
 		
 		@Override
-		public String writeString() {
-			return( "const( " + getElem().getVal() + " )" );
+		public void writeString( PrintStream ps ) {
+			ps.print( "const( " + getElem().getVal() + " )" );
 		}
 		
 		@Override
@@ -190,8 +191,10 @@ public class TestStelemA extends TestCase {
 		}
 		
 		@Override
-		public String writeString() {
-			return( "reduce2L( " + getElem().writeString() + " )" );
+		public void writeString( PrintStream ps ) {
+			ps.print( "reduce2L( " );
+			getElem().writeString( ps );
+			ps.print( " )" );
 		}
 		
 		@Override
@@ -220,8 +223,10 @@ public class TestStelemA extends TestCase {
 		}
 		
 		@Override
-		public String writeString() {
-			return( "reduce3L( " + getElem().writeString() + " )" );
+		public void writeString( PrintStream ps ) {
+			ps.print( "reduce3L( " );
+			getElem().writeString( ps );
+			ps.print( " )" );
 		}
 		
 		@Override
@@ -304,7 +309,7 @@ public class TestStelemA extends TestCase {
 		}
 
 		@Override
-		public String writeString() {
+		public void writeString( PrintStream ps ) {
 			String s0 = "bn";
 			Iterator<AElem> it = coord.keySet().iterator();
 			while( it.hasNext() )
@@ -318,7 +323,7 @@ public class TestStelemA extends TestCase {
 				s0 = s0 + "]";
 			}
 			s0 = s0 + "()";
-			return( s0 );
+			ps.print( s0 );
 		}
 		
 		@Override
@@ -385,7 +390,7 @@ public class TestStelemA extends TestCase {
 		
 
 		@Override
-		public String writeString() {
+		public void writeString( PrintStream ps ) {
 			String s0 = "cn";
 			Iterator<AElem> it = coord.keySet().iterator();
 			while( it.hasNext() )
@@ -399,7 +404,7 @@ public class TestStelemA extends TestCase {
 				s0 = s0 + "]";
 			}
 			s0 = s0 + "()";
-			return( s0 );
+			ps.print( s0 );
 		}
 		
 		
@@ -530,7 +535,7 @@ public class TestStelemA extends TestCase {
 		}
 
 		@Override
-		public String writeString() {
+		public void writeString( PrintStream ps ) {
 			throw( new RuntimeException( "NotSupported" ) );
 		}
 		

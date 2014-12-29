@@ -24,6 +24,7 @@
 
 package simplealgebra.et;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -62,8 +63,8 @@ public class SymbolicIndexReduction<Z extends Object, R extends Elem<R,?>, S ext
 	}
 
 	@Override
-	public String writeString( ) {
-		return( "symbolicIndexReduction" );
+	public void writeString( PrintStream ps ) {
+		ps.print( "symbolicIndexReduction" );
 	}
 	
 	@Override

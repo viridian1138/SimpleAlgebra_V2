@@ -27,6 +27,7 @@
 
 package simplealgebra.symbolic;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -67,8 +68,13 @@ public class SymbolicZero<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 	
 
 	@Override
-	public String writeString( ) {
-		return( "ZERO" );
+	public void writeString( PrintStream ps ) {
+		ps.println( "ZERO" );
+	}
+	
+	@Override
+	public void writeMathML( PrecedenceComparator<R,S> pc , PrintStream ps ) {
+		ps.print( "<mn>ZERO</mn>" );
 	}
 	
 	@Override

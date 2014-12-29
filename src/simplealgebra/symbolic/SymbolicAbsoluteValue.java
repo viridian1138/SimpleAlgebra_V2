@@ -26,6 +26,7 @@
 
 package simplealgebra.symbolic;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -65,8 +66,18 @@ public class SymbolicAbsoluteValue<R extends Elem<R,?>, S extends ElemFactory<R,
 	}
 
 	@Override
-	public String writeString( ) {
-		return( "abs( " + ( elem.writeString() ) + " )" );
+	public void writeString( PrintStream ps ) {
+		ps.print( "abs( " );
+		elem.writeString( ps );
+		ps.print( " )" );
+	}
+	
+	@Override
+	public void writeMathML( PrecedenceComparator<R,S> pc , PrintStream ps )
+	{
+		ps.print( "<mrow><mo>|</mo><mrow>" );
+		elem.writeMathML(pc, ps);
+		ps.print( "</mrow><mo>|</mo></mrow>" );
 	}
 	
 	/**

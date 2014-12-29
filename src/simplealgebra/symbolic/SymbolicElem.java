@@ -40,14 +40,37 @@ import org.kie.internal.runtime.StatefulKnowledgeSession;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
+import java.io.*;
 
+/**
+ * A symbolic elem.
+ * 
+ * @author thorngreen
+ *
+ * @param <R> The enclosed type.
+ * @param <S> The factory for the enclosed type.
+ */
 public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,S>> extends Elem<SymbolicElem<R,S>, SymbolicElemFactory<R,S>> {
 
 	abstract public R eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException;
 	
 	abstract public R evalPartialDerivative( ArrayList<? extends Elem<?,?>> withRespectTo , HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException;
 	
-	abstract public String writeString( );
+	/**
+	 * Writes a string representation of the elem to a print stream.
+	 * @param ps The print stream to which to write the elem.
+	 */
+	abstract public void writeString( PrintStream ps );
+	
+	/**
+	 * Writes MathML ( http://www.w3.org/Math/ ) presentation tags describing the elem to a print stream.
+	 * @param pc A description of how to assign precedence for converting to infix notation.
+	 * @param ps The print stream to which to write the tags.
+	 */
+	public void writeMathML( PrecedenceComparator<R,S> pc , PrintStream ps )
+	{
+		throw( new RuntimeException( "NotSupported" ) );
+	}
 	
 	
 	public SymbolicElem( S _fac )
@@ -99,6 +122,37 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 	protected boolean isSymbolicIdentity()
 	{
 		return( false );
+	}
+	
+	/**
+	 * Writes MathML ( http://www.w3.org/Math/ ) presentation tags describing the elem, wrapped in the top-level math tag, to a print stream.
+	 * @param pc A description of how to assign precedence for converting to infix notation.
+	 * @param ps The print stream to which to write the tags.
+	 */
+	public void writeMathMLWrapped( PrecedenceComparator<R,S> pc , PrintStream ps )
+	{
+		ps.print( "<math display=\"inline\">" );
+		writeMathML( pc , ps );
+		ps.print( "</math>" );
+	}
+	
+	/**
+	 * Writes a self-contained HTML file containing MathML ( http://www.w3.org/Math/ ) presentation tags describing the elem.
+	 * @param pc A description of how to assign precedence for converting to infix notation.
+	 * @param ps The print stream to which to write the tags.
+	 */
+	public void writeHtmlFile( PrecedenceComparator<R,S> pc , PrintStream ps )
+	{
+		ps.println( "<html>" );
+		ps.println( "<head>" );
+		ps.println( "<title>Title</title>" );
+		ps.println( "</head>" );
+		ps.println( "<body>" );
+		ps.print( "<P>" );
+		writeMathMLWrapped( pc , ps );
+		ps.println( "" );
+		ps.println( "</body>" );
+		ps.println( "</html>" );
 	}
 	
 	@Override
