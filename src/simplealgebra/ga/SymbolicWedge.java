@@ -38,6 +38,7 @@ import simplealgebra.NotInvertibleException;
 import simplealgebra.NumDimensions;
 import simplealgebra.symbolic.DroolsSession;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
+import simplealgebra.symbolic.PrecedenceComparator;
 import simplealgebra.symbolic.SymbolicElem;
 
 public class SymbolicWedge<U extends NumDimensions, A extends Ord<U>, R extends Elem<R,?>, S extends ElemFactory<R,S>> extends 
@@ -89,6 +90,49 @@ public class SymbolicWedge<U extends NumDimensions, A extends Ord<U>, R extends 
 		ps.print( " , " );
 		elemB.writeString( ps );
 		ps.print( " )" );
+	}
+	
+	
+	@Override
+	public void writeMathML(
+			PrecedenceComparator<GeometricAlgebraMultivectorElem<U, A, R, S>, GeometricAlgebraMultivectorElemFactory<U, A, R, S>> pc,
+			PrintStream ps) 
+	{
+		if( pc.parenNeeded( this ,  elemA , false ) )
+		{
+			ps.print( "<mfenced><mrow>" );
+		}
+		else
+		{
+			ps.print( "<mrow>" );
+		}
+		elemA.writeMathML(pc, ps);
+		if( pc.parenNeeded( this ,  elemA , false ) )
+		{
+			ps.print( "</mrow></mfenced>" );
+		}
+		else
+		{
+			ps.print( "</mrow>" );
+		}
+		ps.print( "<mo>&and;</mo>" );
+		if( pc.parenNeeded( this ,  elemB , true ) )
+		{
+			ps.print( "<mfenced><mrow>" );
+		}
+		else
+		{
+			ps.print( "<mrow>" );
+		}
+		elemB.writeMathML(pc, ps);
+		if( pc.parenNeeded( this ,  elemB , true ) )
+		{
+			ps.print( "</mrow></mfenced>" );
+		}
+		else
+		{
+			ps.print( "</mrow>" );
+		}
 	}
 	
 	

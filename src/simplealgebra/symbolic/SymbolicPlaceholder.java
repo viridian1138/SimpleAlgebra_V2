@@ -63,6 +63,12 @@ public class SymbolicPlaceholder<R extends Elem<R,?>, S extends ElemFactory<R,S>
 		ps.print( " )" );
 	}
 	
+	@Override
+	public void writeMathML( PrecedenceComparator<R,S> pc , PrintStream ps )
+	{
+		elem.writeMathML(pc, ps);
+	}
+	
 	/**
 	 * @return the elem
 	 */

@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
+import simplealgebra.symbolic.PrecedenceComparator;
 import simplealgebra.symbolic.SymbolicElem;
 
 public class SymbolicTranspose<U extends NumDimensions, R extends Elem<R,?>, S extends ElemFactory<R,S>> extends 
@@ -69,6 +70,33 @@ public class SymbolicTranspose<U extends NumDimensions, R extends Elem<R,?>, S e
 	}
 	
 	
+	@Override
+	public void writeMathML(
+			PrecedenceComparator<SquareMatrixElem<U, R, S>, SquareMatrixElemFactory<U, R, S>> pc,
+			PrintStream ps) 
+	{
+		ps.print( "<msup>" );
+		if( pc.parenNeeded( this ,  elem , false ) )
+		{
+			ps.print( "<mfenced><mrow>" );
+		}
+		else
+		{
+			ps.print( "<mrow>" );
+		}
+		elem.writeMathML(pc, ps);
+		if( pc.parenNeeded( this ,  elem , false ) )
+		{
+			ps.print( "</mrow></mfenced>" );
+		}
+		else
+		{
+			ps.print( "</mrow>" );
+		}
+		ps.print( "<mo>T</mo></msup>" );
+	}
+	
+	
 	/**
 	 * @return the elem
 	 */
@@ -78,5 +106,7 @@ public class SymbolicTranspose<U extends NumDimensions, R extends Elem<R,?>, S e
 
 	
 	private SymbolicElem<SquareMatrixElem<U,R,S>,SquareMatrixElemFactory<U,R,S>> elem;
+
+	
 }
 

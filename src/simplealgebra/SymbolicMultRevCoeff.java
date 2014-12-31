@@ -71,6 +71,49 @@ public class SymbolicMultRevCoeff<U extends NumDimensions, R extends Elem<R,?>, 
 	}
 	
 	
+	@Override
+	public void writeMathML(
+			PrecedenceComparator<SquareMatrixElem<U, R, S>, SquareMatrixElemFactory<U, R, S>> pc,
+			PrintStream ps) {
+		if( pc.parenNeeded( this ,  elemA , false ) )
+		{
+			ps.print( "<mfenced><mrow>" );
+		}
+		else
+		{
+			ps.print( "<mrow>" );
+		}
+		elemA.writeMathML(pc, ps);
+		if( pc.parenNeeded( this ,  elemA , false ) )
+		{
+			ps.print( "</mrow></mfenced>" );
+		}
+		else
+		{
+			ps.print( "</mrow>" );
+		}
+		ps.print( "<mo>*R</mo>" );
+		if( pc.parenNeeded( this ,  elemB , true ) )
+		{
+			ps.print( "<mfenced><mrow>" );
+		}
+		else
+		{
+			ps.print( "<mrow>" );
+		}
+		elemB.writeMathML(pc, ps);
+		if( pc.parenNeeded( this ,  elemB , true ) )
+		{
+			ps.print( "</mrow></mfenced>" );
+		}
+		else
+		{
+			ps.print( "</mrow>" );
+		}
+		
+	}
+	
+	
 	/**
 	 * @return the elemA
 	 */

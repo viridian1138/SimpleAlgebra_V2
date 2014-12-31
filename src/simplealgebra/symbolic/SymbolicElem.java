@@ -69,7 +69,7 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 	 */
 	public void writeMathML( PrecedenceComparator<R,S> pc , PrintStream ps )
 	{
-		throw( new RuntimeException( "NotSupported" ) );
+		pc.handleUnimplementedElem( this , ps );
 	}
 	
 	

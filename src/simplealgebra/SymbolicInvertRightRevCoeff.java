@@ -65,6 +65,31 @@ public class SymbolicInvertRightRevCoeff<U extends NumDimensions, R extends Elem
 		ps.print( " )" );
 	}
 	
+	@Override
+	public void writeMathML(
+			PrecedenceComparator<SquareMatrixElem<U, R, S>, SquareMatrixElemFactory<U, R, S>> pc,
+			PrintStream ps) {
+		ps.print( "<msup>" );
+		if( pc.parenNeeded( this ,  elem , false ) )
+		{
+			ps.print( "<mfenced><mrow>" );
+		}
+		else
+		{
+			ps.print( "<mrow>" );
+		}
+		elem.writeMathML(pc, ps);
+		if( pc.parenNeeded( this ,  elem , false ) )
+		{
+			ps.print( "</mrow></mfenced>" );
+		}
+		else
+		{
+			ps.print( "</mrow>" );
+		}
+		ps.print( "<mi>-1RR</mi></msup>" );
+	}
+	
 	
 	/**
 	 * @return the elemA

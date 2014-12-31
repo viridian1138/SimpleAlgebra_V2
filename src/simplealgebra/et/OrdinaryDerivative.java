@@ -39,6 +39,7 @@ import simplealgebra.ddx.DerivativeElem;
 import simplealgebra.ddx.DirectionalDerivativePartialFactory;
 import simplealgebra.ddx.PartialDerivativeOp;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
+import simplealgebra.symbolic.PrecedenceComparator;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 
@@ -143,6 +144,15 @@ public class OrdinaryDerivative<Z extends Object, U extends NumDimensions, R ext
 		ps.print( "ordinaryDerivativeTensor" );
 	}
 	
+	@Override
+	public void writeMathML(
+			PrecedenceComparator<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> pc,
+			PrintStream ps) 
+	{		
+		ps.print( "<msub><mo>&PartialD;</mo>" );
+		ps.print( "<mi>" + index + "</mi></msub>" );
+	}
+	
 	/**
 	 * The tensor index for the ordinary derivative.
 	 */
@@ -157,7 +167,6 @@ public class OrdinaryDerivative<Z extends Object, U extends NumDimensions, R ext
 	 * Factory for generating the partial derivatives of a directional derivative.
 	 */
 	private DirectionalDerivativePartialFactory<R,S,K> dfac;
-	
 	
 
 }

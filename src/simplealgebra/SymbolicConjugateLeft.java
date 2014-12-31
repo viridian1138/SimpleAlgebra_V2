@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
+import simplealgebra.symbolic.PrecedenceComparator;
 import simplealgebra.symbolic.SymbolicElem;
 
 import java.io.*;
@@ -71,6 +72,32 @@ public class SymbolicConjugateLeft<R extends Elem<R,?>, S extends ElemFactory<R,
 	}
 	
 	
+	@Override
+	public void writeMathML(
+			PrecedenceComparator<ComplexElem<R, S>, ComplexElemFactory<R, S>> pc,
+			PrintStream ps) {
+		ps.print( "<msup>" );
+		if( pc.parenNeeded( this ,  elem , false ) )
+		{
+			ps.print( "<mfenced><mrow>" );
+		}
+		else
+		{
+			ps.print( "<mrow>" );
+		}
+		elem.writeMathML(pc, ps);
+		if( pc.parenNeeded( this ,  elem , false ) )
+		{
+			ps.print( "</mrow></mfenced>" );
+		}
+		else
+		{
+			ps.print( "</mrow>" );
+		}
+		ps.print( "<mo>*L</mo></msup>" );
+	}
+	
+	
 	/**
 	 * @return the elem
 	 */
@@ -80,5 +107,6 @@ public class SymbolicConjugateLeft<R extends Elem<R,?>, S extends ElemFactory<R,
 
 	
 	private SymbolicElem<ComplexElem<R,S>,ComplexElemFactory<R,S>> elem;
+
 }
 

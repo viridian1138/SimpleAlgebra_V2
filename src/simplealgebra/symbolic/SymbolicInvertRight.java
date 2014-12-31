@@ -77,9 +77,23 @@ public class SymbolicInvertRight<R extends Elem<R,?>, S extends ElemFactory<R,S>
 	public void writeMathML( PrecedenceComparator<R,S> pc , PrintStream ps )
 	{
 		ps.print( "<msup>" );
-		ps.print( "<mfenced><mrow>" );
+		if( pc.parenNeeded( this ,  elem , false ) )
+		{
+			ps.print( "<mfenced><mrow>" );
+		}
+		else
+		{
+			ps.print( "<mrow>" );
+		}
 		elem.writeMathML(pc, ps);
-		ps.print( "</mrow></mfenced>" );
+		if( pc.parenNeeded( this ,  elem , false ) )
+		{
+			ps.print( "</mrow></mfenced>" );
+		}
+		else
+		{
+			ps.print( "</mrow>" );
+		}
 		ps.print( "<mi>-1R</mi></msup>" );
 	}
 	

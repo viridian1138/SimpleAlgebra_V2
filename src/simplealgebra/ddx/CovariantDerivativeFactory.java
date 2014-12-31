@@ -225,12 +225,19 @@ public class CovariantDerivativeFactory<Z extends Object, U extends NumDimension
 		{
 			ps.print( "<mfenced><mrow>" );
 		}
+		else
+		{
+			ps.print( "<mrow>" );
+		}
 		tensorWithRespectTo.writeMathML(pc, ps);
 		if( pc.parenNeeded( this ,  tensorWithRespectTo , true ) )
 		{
 			ps.print( "</mrow></mfenced>" );
 		}
-		ps.print( "</mrow>" );
+		else
+		{
+			ps.print( "</mrow>" );
+		}
 	}
 	
 	

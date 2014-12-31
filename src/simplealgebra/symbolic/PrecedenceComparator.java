@@ -29,6 +29,8 @@
 package simplealgebra.symbolic;
 
 
+import java.io.PrintStream;
+
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 
@@ -53,6 +55,16 @@ public abstract class PrecedenceComparator<R extends Elem<R,?>, S extends ElemFa
 	 */
 	public abstract boolean parenNeeded( SymbolicElem<R,S> a , SymbolicElem<R,S> b , boolean after );
 
+	/**
+	 * Handles MathML ( http://www.w3.org/Math/ ) presentations that are not supported.
+	 * 
+	 * @param a The unsupported element.
+	 */
+	public void handleUnimplementedElem( SymbolicElem<R,S> a , PrintStream ps )
+	{
+		System.out.println( "Not Supported : " + ( a.getClass().getName() ) );
+		throw( new RuntimeException( "NotSupported" ) );
+	}
 	
 }
 
