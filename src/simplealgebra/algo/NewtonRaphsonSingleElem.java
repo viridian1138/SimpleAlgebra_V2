@@ -40,19 +40,99 @@ import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.*;
 
 
+/**
+ * Newton-Raphson evaluator for a single element, using the formula <math display="inline">
+ * <mrow>
+ *  <msub>
+ *          <mi>x</mi>
+ *      <mrow>
+ *        <mi>n</mi>
+ *        <mo>+</mo>
+ *        <mn>1</mn>
+ *      </mrow>
+ *  </msub>
+ *  <mo>=</mo>
+ *  <msub>
+ *          <mi>x</mi>
+ *        <mi>n</mi>
+ *  </msub>
+ *  <mo>+</mo>
+ *  <mfrac>
+ *    <mrow>
+ *      <mo>f</mo>
+ *      <mfenced open="(" close=")" separators=",">
+ *        <mrow>
+ *          <msub>
+ *                  <mi>x</mi>
+ *                <mi>n</mi>
+ *          </msub>
+ *        </mrow>
+ *      </mfenced>
+ *    </mrow>
+ *    <mrow>
+ *      <msup>
+ *              <mo>f</mo>
+ *            <mo>'</mo>
+ *      </msup>
+ *      <mfenced open="(" close=")" separators=",">
+ *        <mrow>
+ *          <msub>
+ *                  <mi>x</mi>
+ *                <mi>n</mi>
+ *          </msub>
+ *        </mrow>
+ *      </mfenced>
+ *    </mrow>
+ *  </mfrac>
+ * </mrow>
+ * </math>
+ *
+ * 
+ * <P>See http://en.wikipedia.org/wiki/Newton's_method
+ * 
+ * 
+ * @author thorngreen
+ *
+ * @param <R> The enclosed type for the evaluation.
+ * @param <S> The factory for the enclosed type for the evaluation.
+ */
 public abstract class NewtonRaphsonSingleElem<R extends Elem<R,?>, S extends ElemFactory<R,S>> {
 	
+	/**
+	 * The function over which to evaluate Netwon-Raphson.
+	 */
 	protected SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>> function;
 	
+	/**
+	 * The last iteration value calculated.
+	 */
 	protected R lastValue = null;
 	
+	/**
+	 * The implicit space over which to evaluate the function.
+	 */
 	protected HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace = null;
 	
+	/**
+	 * The evaluation of the function for use in the Newton-Raphson method.
+	 */
 	protected SymbolicElem<R,S> eval;
 	
+	/**
+	 * The evaluation of the partial derivative of the function for use in the Newton-Raphson method.
+	 */
 	protected SymbolicElem<R,S> partialEval;
 	
 	
+	/**
+	 * Constructs the evaluator.
+	 * 
+	 * @param _function The function over which to evaluate Netwon-Raphson.
+	 * @param _withRespectTo The variable over which to evaluate the derivative of the function.
+	 * @param implicitSpaceFirstLevel The initial implicit space over which to take the function and its derivative.
+	 * @throws NotInvertibleException
+	 * @throws MultiplicativeDistributionRequiredException
+	 */
 	public NewtonRaphsonSingleElem( final SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>> _function , 
 			final ArrayList<? extends Elem<?,?>> _withRespectTo , 
 			final HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpaceFirstLevel )
@@ -64,6 +144,14 @@ public abstract class NewtonRaphsonSingleElem<R extends Elem<R,?>, S extends Ele
 	}
 	
 	
+	/**
+	 * Runs Newton-Raphson.
+	 * 
+	 * @param implicitSpaceInitialGuess The implicit space for the initial guess.
+	 * @return An iterated result.
+	 * @throws NotInvertibleException
+	 * @throws MultiplicativeDistributionRequiredException
+	 */
 	public R eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpaceInitialGuess ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
 		implicitSpace = implicitSpaceInitialGuess;
@@ -75,7 +163,12 @@ public abstract class NewtonRaphsonSingleElem<R extends Elem<R,?>, S extends Ele
 		return( lastValue );
 	}
 	
-	
+	/**
+	 * Performs a Netwon-Raphson iteration.
+	 * 
+	 * @throws NotInvertibleException
+	 * @throws MultiplicativeDistributionRequiredException
+	 */
 	protected void performIteration() throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
 		final R derivative = evalPartialDerivative();
@@ -86,18 +179,32 @@ public abstract class NewtonRaphsonSingleElem<R extends Elem<R,?>, S extends Ele
 		lastValue = eval.eval( implicitSpace );
 	}
 	
-	
+	/**
+	 * Evaluates the derivative for a Netwon-Raphson iteration.
+	 * 
+	 * @return The calculated derivative.
+	 * @throws NotInvertibleException
+	 * @throws MultiplicativeDistributionRequiredException
+	 */
 	protected R evalPartialDerivative() throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
 		return( partialEval.eval( implicitSpace ) );
 	}
 	
 	
-	
+	/**
+	 * Updates function parameters based on the iteration.
+	 * 
+	 * @param iterationOffset The amount to which the iteration has estimated the function parameter should change.
+	 */
 	protected abstract void performIterationUpdate( R iterationOffset );
 	
 	
-	
+	/**
+	 * Returns whether the iterations have completed.
+	 * 
+	 * @return True iff. the iterations are to complete.
+	 */
 	protected abstract boolean iterationsDone( );
 
 }

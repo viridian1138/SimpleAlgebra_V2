@@ -46,19 +46,46 @@ import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 
 
+/**
+ * Remaps a multivector of functions to multivariate Newton-Raphson.
+ * 
+ * @author thorngreen
+ *
+ * @param <U> The number of dimensions for the multivector.
+ * @param <A> The Ord for the multivector.
+ * @param <R> The nested type.
+ * @param <S> The factory for the nested type.
+ */
 public abstract class NewtonRaphsonMultiElemRemap<U extends NumDimensions, A extends Ord<U>, R extends Elem<R,?>, S extends ElemFactory<R,S>> {
 	
 	
-	
+	/**
+	 * The dimensionality for Newton-Raphson.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	protected static class Adim extends NumDimensions
 	{
+		/**
+		 * The number of dimensions.
+		 */
 		BigInteger dim;
 		
+		/**
+		 * Constructs the dimension.
+		 * 
+		 * @param _dim The number of dimensions.
+		 */
 		public Adim( BigInteger _dim )
 		{
 			dim = _dim;
 		}
 
+		/**
+		 * Gets the number of dimensions.
+		 * @return The number of dimensions.
+		 */
 		@Override
 		public BigInteger getVal() {
 			return( dim );
@@ -68,37 +95,70 @@ public abstract class NewtonRaphsonMultiElemRemap<U extends NumDimensions, A ext
 	
 	
 	
-	
+	/**
+	 * Mapping from multivector function indices to Newton-Raphson function indices.
+	 */
 	protected HashMap<HashSet<BigInteger>,BigInteger> inMapFun = new HashMap<HashSet<BigInteger>,BigInteger>();
 	
 	
+	/**
+	 * Mapping from Newton-Raphson function indices to multivector function indices.
+	 */
 	protected HashMap<HashSet<BigInteger>,HashSet<BigInteger>> outMapFun = new HashMap<HashSet<BigInteger>,HashSet<BigInteger>>();
 	
 	
+	/**
+	 * Mapping from Newton-Raphson offset indices to multivector offset indices.
+	 */
 	protected HashMap<HashSet<BigInteger>,HashSet<BigInteger>> outMapOffset = new HashMap<HashSet<BigInteger>,HashSet<BigInteger>>();
 	
 	
+	/**
+	 * Multivariate Newton-Raphson.
+	 */
 	protected NewtonRaphsonMultiElem<Adim,R,S> newton;
 	
 	
 	
+	/**
+	 * Number of dimensions for input multivector.
+	 */
 	protected U idim;
 	
+	/**
+	 * Ord for input multivector.
+	 */
 	protected A iord;
 	
+	/**
+	 * Number of dimensions for Newton-Raphson.
+	 */
 	protected Adim odim;
 	
+	/**
+	 * Factory for enclosed type.
+	 */
 	protected S fac;
 	
 	
 	
-	
+	/**
+	 * Constructs the remap.
+	 * 
+	 * @param _functions Input multivector of functions.
+	 * @param _withRespectTosI Set of variables to take derivatives with respect to.
+	 * @param implicitSpaceFirstLevel Implicit space for the initial eval.
+	 * @param _sfac Factory for enclosed type.
+	 * @param _dim The number of dimensions in the multivector.
+	 * @param _ord The input Ord.
+	 * @throws NotInvertibleException
+	 * @throws MultiplicativeDistributionRequiredException
+	 */
 	public NewtonRaphsonMultiElemRemap( final GeometricAlgebraMultivectorElem<U,A,SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,
 			SymbolicElemFactory<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>> _functions , 
 			final HashMap<HashSet<BigInteger>,ArrayList<? extends Elem<?,?>>> _withRespectTosI , 
 			final HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpaceFirstLevel ,
 			final SymbolicElemFactory<SymbolicElem<R,S>,SymbolicElemFactory<R,S>> _sfac ,
-			
 			final U _dim , final A _ord )
 					throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
@@ -176,7 +236,14 @@ public abstract class NewtonRaphsonMultiElemRemap<U extends NumDimensions, A ext
 	}
 	
 	
-	
+	/**
+	 * Runs Newton-Raphson.
+	 * 
+	 * @param implicitSpaceInitialGuess The implicit space for the initial guess.
+	 * @return An iterated result.
+	 * @throws NotInvertibleException
+	 * @throws MultiplicativeDistributionRequiredException
+	 */
 	public GeometricAlgebraMultivectorElem<U,A,R,S> eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpaceInitialGuess ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
 		GeometricAlgebraMultivectorElem<Adim,GeometricAlgebraOrd<Adim>,R,S> sv = newton.eval(implicitSpaceInitialGuess);
@@ -194,7 +261,18 @@ public abstract class NewtonRaphsonMultiElemRemap<U extends NumDimensions, A ext
 	}
 	
 	
-	
+	/**
+	 * Constructs a multivariate Newton-Raphson.
+	 * 
+	 * @param _functions Input vector of functions.
+	 * @param _withRespectTos Set of variables to take derivatives with respect to.
+	 * @param implicitSpaceFirstLevel Implicit space for the initial eval.
+	 * @param _sfac The enclosed factory.
+	 * @param _dim The number of dimensions over which to evaluate.
+	 * @return An instance of multivariate Newton-Raphson.
+	 * @throws NotInvertibleException
+	 * @throws MultiplicativeDistributionRequiredException
+	 */
 	protected abstract NewtonRaphsonMultiElem<Adim,R,S> genNewton( final GeometricAlgebraMultivectorElem<Adim,GeometricAlgebraOrd<Adim>,SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,
 			SymbolicElemFactory<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>> _functions , 
 			final ArrayList<ArrayList<? extends Elem<?,?>>> _withRespectTos , 
@@ -203,7 +281,11 @@ public abstract class NewtonRaphsonMultiElemRemap<U extends NumDimensions, A ext
 
 	
 	
-	
+	/**
+	 * Updates function parameters based on the internal Newton-Raphson iteration results.
+	 * 
+	 * @param iterationOffset The amount to which the iteration has estimated the function parameter should change.
+	 */
 	protected void performIterationUpdateInternal( GeometricAlgebraMultivectorElem<Adim,GeometricAlgebraOrd<Adim>,R,S> iterationOffset )
 	{
 		GeometricAlgebraMultivectorElem<U,A,R,S> ret =
@@ -220,12 +302,20 @@ public abstract class NewtonRaphsonMultiElemRemap<U extends NumDimensions, A ext
 	}
 	
 	
-	
+	/**
+	 * Updates function parameters for multivector iteration results.
+	 * 
+	 * @param iterationOffset The amount to which the iteration has estimated the function parameter should change.
+	 */
 	protected abstract void performIterationUpdate( GeometricAlgebraMultivectorElem<U,A,R,S> iterationOffset );
 	
 	
 	
-	
+	/**
+	 * Returns whether the iterations have completed.
+	 * 
+	 * @return True iff. the iterations are to complete.
+	 */
 	protected abstract boolean iterationsDone( );
 
 	

@@ -57,7 +57,7 @@ import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicOps;
 import simplealgebra.symbolic.SymbolicSqrt;
-import simplealgebra.symbolic.SymbolicZero;
+import simplealgebra.symbolic.*;
 
 import java.io.*;
 
@@ -655,6 +655,11 @@ public class TestDesResSymbolic extends TestCase
 			if( ( b instanceof A0_Elem ) || ( b instanceof A1_Elem ) 
 					|| ( b instanceof A2_Elem ) || ( b instanceof A3_Elem )
 					|| ( b instanceof CSquaredElem ) )
+			{
+				return( false );
+			}
+			
+			if( ( a instanceof SymbolicAdd ) && ( b instanceof SymbolicMult ) )
 			{
 				return( false );
 			}
