@@ -32,10 +32,26 @@ package simplealgebra.bigfixedpoint;
 
 import java.math.BigInteger;
 
+/**
+ * The precision of a BigFixedPointElem.
+ * 
+ * @author thorngreen
+ *
+ */
 public abstract class Precision {
 	
+	/**
+	 * Returns the BigInteger for the unit value.
+	 * 
+	 * @return The BigInteger for the unit value.
+	 */
 	public abstract BigInteger getVal();
 	
+	/**
+	 * Returns the BigInteger for the square of the unit value.
+	 * 
+	 * @return The BigInteger for the square of the unit value.
+	 */
 	public abstract BigInteger getValSquared();
 
 }

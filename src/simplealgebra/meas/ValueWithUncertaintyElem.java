@@ -32,12 +32,12 @@ import simplealgebra.Mutator;
 import simplealgebra.NotInvertibleException;
 
 /**
- * Represents a value with measurement uncertainty.
+ * Elem for a value with an uncertainty (e.g. a measurement error).
  * 
  * @author thorngreen
  *
- * @param <R>
- * @param <S>
+ * @param <R> The enclosed type.
+ * @param <S> The factory for the enclosed type.
  */
 public class ValueWithUncertaintyElem<R extends Elem<R,?>, S extends ElemFactory<R,S>> 
 	extends MutableElem<R,ValueWithUncertaintyElem<R,S>,ValueWithUncertaintyElemFactory<R,S>>
@@ -50,6 +50,12 @@ public class ValueWithUncertaintyElem<R extends Elem<R,?>, S extends ElemFactory
 	}
 	
 	
+	/**
+	 * Returns the absolute value of the input.
+	 * 
+	 * @param in The input.
+	 * @return The absolute value.
+	 */
 	private R abs( R in )
 	{
 		try
@@ -130,6 +136,12 @@ public class ValueWithUncertaintyElem<R extends Elem<R,?>, S extends ElemFactory
 	}
 
 	
+	/**
+	 * Constructs the elem.
+	 * 
+	 * @param _value The value.
+	 * @param _uncertainty The uncertainty of the value.
+	 */
 	public ValueWithUncertaintyElem( R _value , R _uncertainty )
 	{
 		value = _value;
@@ -139,14 +151,18 @@ public class ValueWithUncertaintyElem<R extends Elem<R,?>, S extends ElemFactory
 	
 
 	/**
-	 * @return the value
+	 * Gets the value.
+	 * 
+	 * @return The value.
 	 */
 	public R getValue() {
 		return value;
 	}
 
 	/**
-	 * @return the uncertainty
+	 * Gets the uncertainty of the value.
+	 * 
+	 * @return The uncertainty of the value.
 	 */
 	public R getUncertainty() {
 		return uncertainty;
@@ -154,7 +170,14 @@ public class ValueWithUncertaintyElem<R extends Elem<R,?>, S extends ElemFactory
 
 
 
+	/**
+	 * The value.
+	 */
 	private R value;
+	
+	/**
+	 * The uncertainty of the value.
+	 */
 	private R uncertainty;
 
 }

@@ -25,20 +25,30 @@
 package simplealgebra.meas;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import simplealgebra.AbsoluteValue;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
-import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SymbolicAbsoluteValue;
 import simplealgebra.symbolic.SymbolicElem;
 
+/**
+ * Factory for a ValueWithUncertaintyElem.
+ * 
+ * @author thorngreen
+ *
+ * @param <R> The enclosed type.
+ * @param <S> The factory for the enclosed type.
+ */
 public class ValueWithUncertaintyElemFactory<R extends Elem<R,?>, S extends ElemFactory<R,S>> extends ElemFactory<ValueWithUncertaintyElem<R,S>, ValueWithUncertaintyElemFactory<R,S>> {
 
 	
-	
+	/**
+	 * Constructs the factory.
+	 * 
+	 * @param _fac The factory for the enclosed type.
+	 */
 	public ValueWithUncertaintyElemFactory( S _fac )
 	{
 		fac = _fac;
@@ -92,13 +102,20 @@ public class ValueWithUncertaintyElemFactory<R extends Elem<R,?>, S extends Elem
 	}
 	
 	
-	
+	/**
+	 * Gets the factory for the enclosed type.
+	 * 
+	 * @return The factory for the enclosed type.
+	 */
 	public S getFac()
 	{
 		return( fac );
 	}
 	
 	
+	/**
+	 * The factory for the enclosed type.
+	 */
 	private S fac;
 
 }

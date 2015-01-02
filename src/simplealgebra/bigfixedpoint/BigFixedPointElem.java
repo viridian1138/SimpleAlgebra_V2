@@ -35,8 +35,21 @@ import simplealgebra.AbsoluteValue;
 import simplealgebra.Elem;
 import simplealgebra.NotInvertibleException;
 
+/**
+ * A fixed-point elem.
+ * 
+ * @author thorngreen
+ *
+ * @param <T> The precision of the elem.
+ */
 public class BigFixedPointElem<T extends Precision> extends Elem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> {
 	
+	/**
+	 * Constructs the elem.
+	 * 
+	 * @param _val The fixed-point value of the elem.
+	 * @param _prec The precision of the elem.
+	 */
 	public BigFixedPointElem( BigInteger _val , T _prec )
 	{
 		if( _val.equals( BigInteger.ZERO ) )
@@ -47,6 +60,12 @@ public class BigFixedPointElem<T extends Precision> extends Elem<BigFixedPointEl
 		prec = _prec;
 	}
 	
+	/**
+	 * Constructs the elem.
+	 * 
+	 * @param vl The double-precision value of the elem.
+	 * @param _prec The precision of the elem.
+	 */
 	public BigFixedPointElem( double vl , T _prec ) 
 	{
 		if( Double.isNaN( vl ) || Double.isInfinite( vl ) )
@@ -124,13 +143,26 @@ public class BigFixedPointElem<T extends Precision> extends Elem<BigFixedPointEl
 		return( super.handleOptionalOp(id, args) );
 	}
 	
+	
+	/**
+	 * Returns the double-precision equivalent of the elem.
+	 * 
+	 * @return The double-precision equivalent of the elem.
+	 */
 	public double toDouble( )
 	{
 		return( ( val.doubleValue() ) / ( prec.getVal().doubleValue() ) );
 	}
 
 	
+	/**
+	 * The value of the elem.
+	 */
 	BigInteger val;
+	
+	/**
+	 * The precision of the elem.
+	 */
 	T prec;
 	
 

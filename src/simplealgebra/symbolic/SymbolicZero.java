@@ -35,14 +35,33 @@ import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
 
+/**
+ * A symbolic elem for the zero value.
+ * 
+ * @author thorngreen
+ *
+ * @param <R> The enclosed type.
+ * @param <S> The factory for the enclosed type.
+ */
 public class SymbolicZero<R extends Elem<R,?>, S extends ElemFactory<R,S>> extends SymbolicElem<R,S> 
 {
 
+	/**
+	 * Constructs the elem.
+	 * 
+	 * @param _fac The factory for the enclosed type.
+	 */
 	public SymbolicZero( S _fac )
 	{
 		super( _fac );
 	}
 	
+	/**
+	 * Constructs the elem for use in a Drools session.
+	 * 
+	 * @param _fac The factory for the enclosed type.
+	 * @param ds The Drools session.
+	 */
 	public SymbolicZero( S _fac , DroolsSession ds )
 	{
 		this( _fac );
@@ -89,11 +108,23 @@ public class SymbolicZero<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 		throw( new NotInvertibleException() );
 	}
 	
+	/**
+	 * Returns true iff. the parameter equals this element.
+	 * 
+	 * @param The parameter to check.
+	 * @return True iff. the parameter equals this element.
+	 */
 	public boolean symbolicEquals( SymbolicElem<R, S> b )
 	{
 		return( b instanceof SymbolicZero );
 	}
 	
+	/**
+	 * Returns true iff. the parameter is an instance of SymbolicZero.
+	 * 
+	 * @param in The parameter to check.
+	 * @return True iff. the parameter is an instance of SymbolicZero.
+	 */
 	public static boolean isSymbolicZero( SymbolicElem in )
 	{
 		return( in instanceof SymbolicZero );

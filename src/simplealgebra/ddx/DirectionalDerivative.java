@@ -43,8 +43,6 @@ import simplealgebra.symbolic.PrecedenceComparator;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 
-import java.io.*;
-
 /**
  * Implements a directional derivative operator (usually represented as <math display="inline">
  * <mrow>
@@ -54,14 +52,24 @@ import java.io.*;
  * 
  * @author thorngreen
  *
- * @param <U>
- * @param <R>
- * @param <S>
+ * @param <U> The number of dimensions over which to express the directional derivative.
+ * @param <A> The ord of the directional derivative vector.
+ * @param <R> The enclosed type.
+ * @param <S> The factory for the enclosed type.
+ * @param <K> The type of the element against which to take partial derivatives.
  */
 public class DirectionalDerivative<U extends NumDimensions, A extends Ord<U>, R extends Elem<R,?>, S extends ElemFactory<R,S>, K extends Elem<?,?>> 
 		extends DerivativeElem<GeometricAlgebraMultivectorElem<U,A,SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,GeometricAlgebraMultivectorElemFactory<U,A,SymbolicElem<R,S>,SymbolicElemFactory<R,S>>>
 {
 
+	/**
+	 * Constructs the directional derivative.
+	 * 
+	 * @param _fac Factory for the enclosed type.
+	 * @param _dim The number of dimensions over which to express the directional derivative.
+	 * @param _ord The ord of the directional derivative vector.
+	 * @param _dfac Factory for generating the partial derivatives of the directional derivative.
+	 */
 	public DirectionalDerivative( GeometricAlgebraMultivectorElemFactory<U,A, SymbolicElem<R, S>, 
 			SymbolicElemFactory<R, S>> _fac , 
 			U _dim ,
@@ -158,8 +166,19 @@ public class DirectionalDerivative<U extends NumDimensions, A extends Ord<U>, R 
 		ps.print( "<mo>&nabla;</mo>" );
 	}
 	
+	/**
+	 * The number of dimensions over which to express the directional derivative.
+	 */
 	private U dim;
+	
+	/**
+	 * The ord of the directional derivative vector.
+	 */
 	private A ord;
+	
+	/**
+	 * Factory for generating the partial derivatives of the directional derivative.
+	 */
 	private DirectionalDerivativePartialFactory<R,S,K> dfac;
 
 }

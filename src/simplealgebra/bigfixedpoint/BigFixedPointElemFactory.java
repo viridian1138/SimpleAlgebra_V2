@@ -30,24 +30,36 @@ package simplealgebra.bigfixedpoint;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import simplealgebra.AbsoluteValue;
-import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
-import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SymbolicAbsoluteValue;
 import simplealgebra.symbolic.SymbolicElem;
 
+/**
+ * Factory for a BigFixedPointElem.
+ * 
+ * @author thorngreen
+ *
+ * @param <T> The precision of the BigFixedPointElem.
+ */
 public class BigFixedPointElemFactory<T extends Precision> extends ElemFactory<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> {
 	
+	/**
+	 * Constructs the factory.
+	 * 
+	 * @param _prec The precision of the BigFixedPointElem.
+	 */
 	public BigFixedPointElemFactory( T _prec )
 	{
 		prec = _prec;
 	}
 
 	
+	/**
+	 * The precision of the BigFixedPointElem.
+	 */
 	private T prec;
 
 

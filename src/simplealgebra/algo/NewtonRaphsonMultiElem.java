@@ -47,24 +47,111 @@ import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 
 
+/**
+ * Evaluator for multivariate Newton-Raphson, using the formula <math display="inline">
+ * <mrow>
+ *  <msub>
+ *          <mi>J</mi>
+ *        <mi>F</mi>
+ *  </msub>
+ *  <mfenced open="(" close=")" separators=",">
+ *    <mrow>
+ *      <msub>
+ *              <mi>x</mi>
+ *            <mi>n</mi>
+ *      </msub>
+ *    </mrow>
+ *  </mfenced>
+ *  <mfenced open="(" close=")" separators=",">
+ *    <mrow>
+ *      <msub>
+ *              <mi>x</mi>
+ *          <mrow>
+ *            <mi>n</mi>
+ *            <mo>+</mo>
+ *            <mn>1</mn>
+ *          </mrow>
+ *      </msub>
+ *      <mo>-</mo>
+ *      <msub>
+ *              <mi>x</mi>
+ *            <mi>n</mi>
+ *      </msub>
+ *    </mrow>
+ *  </mfenced>
+ *  <mo>=</mo>
+ *  <mo>-</mo>
+ *  <mi>F</mi>
+ *  <mfenced open="(" close=")" separators=",">
+ *    <mrow>
+ *      <msub>
+ *              <mi>x</mi>
+ *            <mi>n</mi>
+ *      </msub>
+ *    </mrow>
+ *  </mfenced>
+ * </mrow>
+ * </math>
+ *
+ * 
+ * <P>See http://en.wikipedia.org/wiki/Newton's_method
+ * 
+ * 
+ * @author thorngreen
+ *
+ * @param <U> The number of dimensions.
+ * @param <R> The enclosed type for the evaluation.
+ * @param <S> The factory for the enclosed type for the evaluation.
+ */
 public abstract class NewtonRaphsonMultiElem<U extends NumDimensions, R extends Elem<R,?>, S extends ElemFactory<R,S>> {
 	
+	/**
+	 * The functions over which to evaluate Netwon-Raphson.
+	 */
 	protected GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,
 			SymbolicElemFactory<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>> functions;
 	
+	/**
+	 * The last iteration values calculated.
+	 */
 	protected GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,R,S> lastValues = null;
 	
+	/**
+	 * The implicit space over which to evaluate the functions.
+	 */
 	protected HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace = null;
 	
+	/**
+	 * The evaluations of the functions for use in the Newton-Raphson method.
+	 */
 	protected GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,SymbolicElem<R,S>,SymbolicElemFactory<R,S>> evals;
 	
+	/**
+	 * The evaluation of the Jacobian for use in the Newton-Raphson method.
+	 */
 	protected SquareMatrixElem<U,SymbolicElem<R,S>,SymbolicElemFactory<R,S>> partialEvalJacobian;
 	
+	/**
+	 * The number of dimensions over which to evaluate Newton-Raphson.
+	 */
 	protected U dim;
 	
+	/**
+	 * The factory for the enclosed type.
+	 */
 	protected SymbolicElemFactory<R,S> sfac;
 	
-	
+	/**
+	 * Constructs the evaluator.
+	 * 
+	 * @param _functions The functions over which to evaluate Netwon-Raphson.
+	 * @param _withRespectTos The set of variables over which to take derivatives.
+	 * @param implicitSpaceFirstLevel The initial implicit space over which to take the functions and their derivatives.
+	 * @param _sfac The factory for the enclosed type.
+	 * @param _dim The number of dimensions over which to evaluate Newton-Raphson.
+	 * @throws NotInvertibleException
+	 * @throws MultiplicativeDistributionRequiredException
+	 */
 	public NewtonRaphsonMultiElem( final GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,
 			SymbolicElemFactory<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>> _functions , 
 			final ArrayList<ArrayList<? extends Elem<?,?>>> _withRespectTos , 
@@ -105,6 +192,14 @@ public abstract class NewtonRaphsonMultiElem<U extends NumDimensions, R extends 
 	}
 	
 	
+	/**
+	 * Runs Newton-Raphson.
+	 * 
+	 * @param implicitSpaceInitialGuess The implicit space for the initial guess.
+	 * @return An iterated result.
+	 * @throws NotInvertibleException
+	 * @throws MultiplicativeDistributionRequiredException
+	 */
 	public GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,R,S> eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpaceInitialGuess ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
 		implicitSpace = implicitSpaceInitialGuess;
@@ -117,6 +212,12 @@ public abstract class NewtonRaphsonMultiElem<U extends NumDimensions, R extends 
 	}
 	
 	
+	/**
+	 * Performs a Netwon-Raphson iteration.
+	 * 
+	 * @throws NotInvertibleException
+	 * @throws MultiplicativeDistributionRequiredException
+	 */
 	protected void performIteration() throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
 		final SquareMatrixElem<U,R,S> derivativeJacobian = evalPartialDerivativeJacobian();
@@ -134,6 +235,13 @@ public abstract class NewtonRaphsonMultiElem<U extends NumDimensions, R extends 
 	}
 	
 	
+	/**
+	 * Evaluates result values for a single Netwon-Raphson iteration.
+	 * 
+	 * @return The result values for a single Newton-Raphson iteration.
+	 * @throws NotInvertibleException
+	 * @throws MultiplicativeDistributionRequiredException
+	 */
 	protected GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,R,S> evalValues( ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
 		GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,R,S> ret = new GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,R,S>(
@@ -150,6 +258,13 @@ public abstract class NewtonRaphsonMultiElem<U extends NumDimensions, R extends 
 	}
 	
 	
+	/**
+	 * Evaluates the Jacobian for a single Newton-Raphson iteration.
+	 * 
+	 * @return The Jacobian for a single Newton-Raphson iteration.
+	 * @throws NotInvertibleException
+	 * @throws MultiplicativeDistributionRequiredException
+	 */
 	protected SquareMatrixElem<U,R,S> evalPartialDerivativeJacobian() throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
 		final SquareMatrixElem<U,R,S> evalJacobian = new SquareMatrixElem<U,R,S>( sfac.getFac() , dim );
@@ -176,11 +291,19 @@ public abstract class NewtonRaphsonMultiElem<U extends NumDimensions, R extends 
 	}
 	
 	
-	
+	/**
+	 * Updates function parameters based on the iteration.
+	 * 
+	 * @param iterationOffset The amount to which the iteration has estimated the function parameter should change.
+	 */
 	protected abstract void performIterationUpdate( GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,R,S> iterationOffset );
 	
 	
-	
+	/**
+	 * Returns whether the iterations have completed.
+	 * 
+	 * @return True iff. the iterations are to complete.
+	 */
 	protected abstract boolean iterationsDone( );
 
 }

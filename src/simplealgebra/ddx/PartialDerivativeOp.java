@@ -39,17 +39,35 @@ import simplealgebra.symbolic.PrecedenceComparator;
 import simplealgebra.symbolic.SymbolicElem;
 
 /**
- * Implements a partial derivative as used in Calculus.
+ * Implements a partial derivative <math display="inline">
+ * <mrow>
+ *  <mfrac>
+ *    <mrow>
+ *      <mo>&PartialD;</mo>
+ *    </mrow>
+ *    <mrow>
+ *      <mo>&PartialD;</mo>
+ *      <mi>x</mi>
+ *    </mrow>
+ *  </mfrac>
+ * </mrow>
+ * </math> as used in Calculus.
  * 
  * @author thorngreen
  *
- * @param <R>
- * @param <S>
- * @param <K>
+ * @param <R> The enclosed type.
+ * @param <S> The factory for the enclosed type.
+ * @param <K> The type of the element against which to take partial derivatives.
  */
 public class PartialDerivativeOp<R extends Elem<R,?>, S extends ElemFactory<R,S>, K extends Elem<?,?>> extends DerivativeElem<R,S>
 {
 
+	/**
+	 * Constructs the partial derivative.
+	 * 
+	 * @param _fac The factory for the enclosed type.
+	 * @param _withRespectTo The variable(s) over which to take the partial derivative.
+	 */
 	public PartialDerivativeOp( S _fac , ArrayList<K> _withRespectTo )
 	{
 		super( _fac );
@@ -151,12 +169,17 @@ public class PartialDerivativeOp<R extends Elem<R,?>, S extends ElemFactory<R,S>
 	}
 	
 	/**
-	 * @return the withRespectTo
+	 * Gets the variable(s) over which to take the partial derivative.
+	 * 
+	 * @return The variable(s) over which to take the partial derivative.
 	 */
 	public ArrayList<K> getWithRespectTo() {
 		return withRespectTo;
 	}
 	
+	/**
+	 * The variable(s) over which to take the partial derivative.
+	 */
 	private ArrayList<K> withRespectTo;
 
 }
