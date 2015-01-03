@@ -36,9 +36,23 @@ import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
 
+/**
+ * A symbolic elem that serves as a placeholder for another symbolic elem of the same type.
+ * 
+ * @author thorngreen
+ *
+ * @param <R> The enclosed type.
+ * @param <S> The factory for the enclosed type.
+ */
 public class SymbolicPlaceholder<R extends Elem<R,?>, S extends ElemFactory<R,S>> extends SymbolicElem<R,S> 
 {
 
+	/**
+	 * Constructs the placeholder.
+	 * 
+	 * @param _elem The enclosed elem.
+	 * @param _fac The enclosed factory.
+	 */
 	public SymbolicPlaceholder( SymbolicElem<R,S> _elem , S _fac )
 	{
 		super( _fac );
@@ -70,7 +84,9 @@ public class SymbolicPlaceholder<R extends Elem<R,?>, S extends ElemFactory<R,S>
 	}
 	
 	/**
-	 * @return the elem
+	 * Gets the enclosed elem.
+	 * 
+	 * @return The enclosed elem.
 	 */
 	public SymbolicElem<R, S> getElem() {
 		return elem;
@@ -78,8 +94,9 @@ public class SymbolicPlaceholder<R extends Elem<R,?>, S extends ElemFactory<R,S>
 	
 	
 	/**
+	 * Sets the enclosed elem.
 	 * 
-	 * @param _elem
+	 * @param _elem The enclosed elem.
 	 */
 	public void setElem( SymbolicElem<R, S> _elem ) {
 		elem  = _elem;
@@ -126,6 +143,9 @@ public class SymbolicPlaceholder<R extends Elem<R,?>, S extends ElemFactory<R,S>
 	}
 
 
+	/**
+	 * The enclosed elem.
+	 */
 	private SymbolicElem<R,S> elem;
 
 }

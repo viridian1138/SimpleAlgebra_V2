@@ -41,9 +41,23 @@ import simplealgebra.ddx.PartialDerivativeOp;
 import java.io.*;
 
 
+/**
+ * A symbolic elem that reduces to a value.
+ * 
+ * @author thorngreen
+ *
+ * @param <R> The enclosed type.
+ * @param <S> The factory for the enclosed type.
+ */
 public class SymbolicReduction<R extends Elem<R,?>, S extends ElemFactory<R,S>> extends SymbolicElem<R,S> 
 {
 
+	/**
+	 * Constructs the reduction.
+	 * 
+	 * @param _elem The enclosed elem.
+	 * @param _fac The enclosed factory.
+	 */
 	public SymbolicReduction( R _elem , S _fac )
 	{
 		super( _fac );
@@ -74,6 +88,12 @@ public class SymbolicReduction<R extends Elem<R,?>, S extends ElemFactory<R,S>> 
 	}
 	
 	
+	/**
+	 * Returns true iff. the parameter is a simple constant.
+	 * 
+	 * @param elem The parameter to test.
+	 * @return True iff. the parameter is a simple constant.
+	 */
 	protected boolean isSymbolicElemSimpleConst( Elem elem )
 	{
 		SymbolicElem e = (SymbolicElem) elem;
@@ -97,7 +117,9 @@ public class SymbolicReduction<R extends Elem<R,?>, S extends ElemFactory<R,S>> 
 	
 	
 	/**
-	 * @return the elem
+	 * Gets the enclosed elem.
+	 * 
+	 * @return The enclosed elem.
 	 */
 	public R getElem() {
 		return elem;
@@ -105,8 +127,9 @@ public class SymbolicReduction<R extends Elem<R,?>, S extends ElemFactory<R,S>> 
 	
 	
 	/**
+	 * Sets the enclosed elem.
 	 * 
-	 * @param _elem
+	 * @param _elem The enclosed elem.
 	 */
 	public void setElem( R _elem ) {
 		elem  = _elem;
@@ -177,6 +200,9 @@ public class SymbolicReduction<R extends Elem<R,?>, S extends ElemFactory<R,S>> 
 	}
 
 
+	/**
+	 * The enclosed elem.
+	 */
 	private R elem;
 
 }

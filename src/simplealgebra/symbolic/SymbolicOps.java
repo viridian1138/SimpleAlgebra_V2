@@ -30,8 +30,22 @@
 
 package simplealgebra.symbolic;
 
+/**
+ * Enum for symbolic operations.
+ * 
+ * @author thorngreen
+ *
+ */
 public enum SymbolicOps {
+	
+	/**
+	 * Simplifies a symbolic elem.
+	 */
 	DISTRIBUTE_SIMPLIFY,
+	
+	/**
+	 * Performs a simpler, faster simplification on a symbolic elem.
+	 */
 	DISTRIBUTE_SIMPLIFY2
 }
 

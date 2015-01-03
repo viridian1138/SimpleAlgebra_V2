@@ -40,9 +40,24 @@ import simplealgebra.NotInvertibleException;
 import simplealgebra.ddx.DerivativeElem;
 import simplealgebra.ddx.PartialDerivativeOp;
 
+/**
+ * Symbolic elem for a multiplication.
+ * 
+ * @author thorngreen
+ *
+ * @param <R> The enclosed type.
+ * @param <S> The factory for the enclosed type.
+ */
 public class SymbolicMult<R extends Elem<R,?>, S extends ElemFactory<R,S>> extends SymbolicElem<R,S> 
 {
 
+	/**
+	 * Constructs the multiplication.
+	 * 
+	 * @param _elemA The left argument of the multiplication.
+	 * @param _elemB The right argument of the multiplication.
+	 * @param _fac The enclosed factory.
+	 */
 	public SymbolicMult( SymbolicElem<R,S> _elemA , SymbolicElem<R,S> _elemB , S _fac )
 	{
 		super( _fac );
@@ -50,6 +65,14 @@ public class SymbolicMult<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 		elemB = _elemB;
 	}
 	
+	/**
+	 * Constructs the multiplication for use in a Drools session.
+	 * 
+	 * @param _elemA The left argument of the multiplication.
+	 * @param _elemB The right argument of the multiplication.
+	 * @param _fac The enclosed factory.
+	 * @param ds The Drools session.
+	 */
 	public SymbolicMult( SymbolicElem<R,S> _elemA , SymbolicElem<R,S> _elemB , S _fac , DroolsSession ds )
 	{
 		this( _elemA , _elemB , _fac );
@@ -236,14 +259,18 @@ public class SymbolicMult<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 	}
 	
 	/**
-	 * @return the elemA
+	 * Gets the left argument of the multiplication.
+	 * 
+	 * @return The left argument of the multiplication.
 	 */
 	public SymbolicElem<R, S> getElemA() {
 		return elemA;
 	}
 
 	/**
-	 * @return the elemB
+	 * Gets the right argument of the multiplication.
+	 * 
+	 * @return The right argument of the multiplication.
 	 */
 	public SymbolicElem<R, S> getElemB() {
 		return elemB;
@@ -304,6 +331,15 @@ public class SymbolicMult<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 	
 	
 	
+	/**
+	 * In a case where an elem and its multiplicative inverse appear adjacent to each other
+	 * in a multiplicative expression, replace the adjacent expressions with the identity.
+	 * 
+	 * @param elA The expression to replace.
+	 * @param elB The multiplicative inverse of elA, which should also be replaced.
+	 * @param ds The Drools session over which to simplify.
+	 * @return The simplified version of the expression.
+	 */
 	public SymbolicMult<R, S> handleMultSimplify( final SymbolicElem<R,S> elA , final SymbolicElem<R,S> elB , final DroolsSession ds )
 	{
 		final HashSet<Integer> hset = new HashSet<Integer>();
@@ -330,7 +366,16 @@ public class SymbolicMult<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 	}
 	
 	
-	
+	/**
+	 * In a case where an elem and its multiplicative inverse appear adjacent to each other
+	 * in a multiplicative expression, performs term replacement once adjacent terms have
+	 * been identified.
+	 * 
+	 * @param index The current index in the multiplication tree, passed by reference.
+	 * @param hset Set of numerically ordered subexpressions that are to be replaced by the identity.
+	 * @param session The Drools session over which to simplify.
+	 * @return The simplified version of the expression.
+	 */
 	private SymbolicMult<R,S> handleMultRewrite( final int[] index , final HashSet<Integer> hset ,
 			final DroolsSession session )
 	{
@@ -371,6 +416,11 @@ public class SymbolicMult<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 	
 	
 	
+	/**
+	 * Assembles a tree of multiplications into a single array multiplication.
+	 * 
+	 * @param ind The arguments of the output array multiplication.
+	 */
 	private void handleMultInsert( final ArrayList<SymbolicElem<R,S>> ind )
 	{
 		
@@ -394,8 +444,15 @@ public class SymbolicMult<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 		
 	}
 	
-
+	
+	/**
+	 * The left argument of the multiplication.
+	 */
 	private SymbolicElem<R,S> elemA;
+	
+	/**
+	 * The right argument of the multiplication.
+	 */
 	private SymbolicElem<R,S> elemB;
 	
 

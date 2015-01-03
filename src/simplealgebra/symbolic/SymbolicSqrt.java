@@ -37,15 +37,36 @@ import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.Sqrt;
 
+/**
+ * A symbolic elem for a square root.
+ * 
+ * @author thorngreen
+ *
+ * @param <R> The enclosed type.
+ * @param <S> The factory for the enclosed type.
+ */
 public class SymbolicSqrt<R extends Elem<R,?>, S extends ElemFactory<R,S>> extends SymbolicElem<R,S> 
 {
 
+	/**
+	 * Constructs the elem.
+	 * 
+	 * @param _elem The enclosed elem.
+	 * @param _fac The factory for the enclosed type.
+	 */
 	public SymbolicSqrt( SymbolicElem<R,S> _elem , S _fac )
 	{
 		super( _fac );
 		elem = _elem;
 	}
 	
+	/**
+	 * Constructs the elem for use in a Drools session.
+	 * 
+	 * @param _elem The enclosed elem.
+	 * @param _fac The factory for the enclosed type.
+	 * @param ds The Drools session.
+	 */
 	public SymbolicSqrt( SymbolicElem<R,S> _elem , S _fac , DroolsSession ds )
 	{
 		this( _elem , _fac );
@@ -81,7 +102,9 @@ public class SymbolicSqrt<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 	}
 	
 	/**
-	 * @return the elem
+	 * Gets the enclosed elem.
+	 * 
+	 * @return The enclosed elem.
 	 */
 	public SymbolicElem<R, S> getElem() {
 		return elem;
@@ -107,6 +130,9 @@ public class SymbolicSqrt<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 	}
 
 
+	/**
+	 * The enclosed elem.
+	 */
 	private SymbolicElem<R,S> elem;
 
 }

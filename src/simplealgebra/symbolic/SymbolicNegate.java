@@ -37,15 +37,36 @@ import simplealgebra.NotInvertibleException;
 
 import java.io.*;
 
+/**
+ * A symbolic elem for negation.
+ * 
+ * @author thorngreen
+ *
+ * @param <R> The enclosed type.
+ * @param <S> The factory for the enclosed type.
+ */
 public class SymbolicNegate<R extends Elem<R,?>, S extends ElemFactory<R,S>> extends SymbolicElem<R,S> 
 {
 
+	/**
+	 * Constructs the negation.
+	 * 
+	 * @param _elem The enclosed elem.
+	 * @param _fac The enclosed factory.
+	 */
 	public SymbolicNegate( SymbolicElem<R,S> _elem , S _fac )
 	{
 		super( _fac );
 		elem = _elem;
 	}
 	
+	/**
+	 * Constructs the negation for use in a Drools session.
+	 * 
+	 * @param _elem The enclosed elem.
+	 * @param _fac The enclosed factory.
+	 * @param ds The Drools session.
+	 */
 	public SymbolicNegate( SymbolicElem<R,S> _elem , S _fac , DroolsSession ds )
 	{
 		this( _elem , _fac );
@@ -87,7 +108,9 @@ public class SymbolicNegate<R extends Elem<R,?>, S extends ElemFactory<R,S>> ext
 	}
 	
 	/**
-	 * @return the elem
+	 * Gets the enclosed elem.
+	 * 
+	 * @return The enclosed elem.
 	 */
 	public SymbolicElem<R, S> getElem() {
 		return elem;
@@ -122,6 +145,9 @@ public class SymbolicNegate<R extends Elem<R,?>, S extends ElemFactory<R,S>> ext
 	}
 
 
+	/**
+	 * The enclosed elem.
+	 */
 	private SymbolicElem<R,S> elem;
 
 }
