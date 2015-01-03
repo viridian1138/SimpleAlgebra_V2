@@ -26,15 +26,24 @@
 
 package simplealgebra.symbolic;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
-import simplealgebra.NotInvertibleException;
 
+/**
+ * Factory for symbolic elems.
+ * 
+ * @author thorngreen
+ *
+ * @param <R> The enclosed type.
+ * @param <S> The factory for the enclosed type.
+ */
 public class SymbolicElemFactory<R extends Elem<R,?>, S extends ElemFactory<R,S>> extends ElemFactory<SymbolicElem<R,S>, SymbolicElemFactory<R,S>> {
 
+	/**
+	 * Constructs the elem.
+	 * 
+	 * @param _fac The factory for the enclosed type.
+	 */
 	public SymbolicElemFactory( S _fac )
 	{
 		fac = _fac;
@@ -62,12 +71,19 @@ public class SymbolicElemFactory<R extends Elem<R,?>, S extends ElemFactory<R,S>
 		return( fac.isNestedMultCommutative() );
 	}
 	
-	
+	/**
+	 * Gets the factory for the enclosed type.
+	 * 
+	 * @return The factory for the enclosed type.
+	 */
 	public S getFac()
 	{
 		return( fac );
 	}
 	
+	/**
+	 * The factory for the enclosed type.
+	 */
 	private S fac;
 
 }

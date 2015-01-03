@@ -61,7 +61,7 @@ public class SymbolicNegate<R extends Elem<R,?>, S extends ElemFactory<R,S>> ext
 	}
 	
 	/**
-	 * Constructs the negation for use in a Drools session.
+	 * Constructs the negation for use in a Drools ( http://drools.org ) session.
 	 * 
 	 * @param _elem The enclosed elem.
 	 * @param _fac The enclosed factory.

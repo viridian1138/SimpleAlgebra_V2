@@ -34,14 +34,33 @@ import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
 
+/**
+ * A symbolic elem for the identity.
+ * 
+ * @author thorngreen
+ *
+ * @param <R> The enclosed type.
+ * @param <S> The factory for the enclosed type.
+ */
 public class SymbolicIdentity<R extends Elem<R,?>, S extends ElemFactory<R,S>> extends SymbolicElem<R,S> 
 {
 
+	/**
+	 * Constructs the elem.
+	 * 
+	 * @param _fac The factory for the enclosed type.
+	 */
 	public SymbolicIdentity( S _fac )
 	{
 		super( _fac );
 	}
 	
+	/**
+	 * Constructs the elem for use in a Drools ( http://drools.org ) session.
+	 * 
+	 * @param _fac The factory for the enclosed type.
+	 * @param ds The Drools session.
+	 */
 	public SymbolicIdentity( S _fac , DroolsSession ds )
 	{
 		this( _fac );
@@ -90,6 +109,12 @@ public class SymbolicIdentity<R extends Elem<R,?>, S extends ElemFactory<R,S>> e
 		ps.print( "<mn>IDENTITY</mn>" );
 	}
 	
+	/**
+	 * Returns true iff. the parameter is equal to the identity.
+	 * 
+	 * @param b The input parameter to test.
+	 * @return True iff. the parameter is equal to the identity.
+	 */
 	public boolean symbolicEquals( SymbolicElem<R, S> b )
 	{
 		return( b instanceof SymbolicIdentity );

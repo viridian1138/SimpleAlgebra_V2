@@ -26,6 +26,7 @@
 
 package simplealgebra.symbolic;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -40,7 +41,6 @@ import org.kie.internal.runtime.StatefulKnowledgeSession;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
-import java.io.*;
 
 /**
  * A symbolic elem.
@@ -52,8 +52,25 @@ import java.io.*;
  */
 public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,S>> extends Elem<SymbolicElem<R,S>, SymbolicElemFactory<R,S>> {
 
+	/**
+	 * Evaluates the symbolic expression.
+	 * 
+	 * @param implicitSpace The implicit space over which to evaluate the expression.
+	 * @return The result of the evaluation.
+	 * @throws NotInvertibleException
+	 * @throws MultiplicativeDistributionRequiredException
+	 */
 	abstract public R eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException;
 	
+	/**
+	 * Evaluates the partial derivative of the symbolic expression.
+	 * 
+	 * @param withRespectTo The variable over which to evaluate the derivative.
+	 * @param implicitSpace The implicit space over which to evaluate the expression.
+	 * @return The result of the evaluation.
+	 * @throws NotInvertibleException
+	 * @throws MultiplicativeDistributionRequiredException
+	 */
 	abstract public R evalPartialDerivative( ArrayList<? extends Elem<?,?>> withRespectTo , HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException;
 	
 	/**
@@ -72,7 +89,11 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 		pc.handleUnimplementedElem( this , ps );
 	}
 	
-	
+	/**
+	 * Constructs the elem.
+	 * 
+	 * @param _fac The factory for the enclosed type.
+	 */
 	public SymbolicElem( S _fac )
 	{
 		fac = _fac;
@@ -114,11 +135,21 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 		return( new SymbolicElemFactory<R,S>( fac ) );
 	}
 	
+	/**
+	 * Returns true iff. the elem is a symbolic zero.
+	 * 
+	 * @return True iff. the elem is a symbolic zero.
+	 */
 	protected boolean isSymbolicZero()
 	{
 		return( false );
 	}
 	
+	/**
+	 * Returns true iff. the elem is a symbolic identity.
+	 * 
+	 * @return True iff. the elem is a symbolic identity.
+	 */
 	protected boolean isSymbolicIdentity()
 	{
 		return( false );
@@ -220,6 +251,12 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 	}
 	
 	
+	/**
+	 * Returns whether this expression is equal to the one in the parameter, simplifying both sides first.
+	 * 
+	 * @param b The expression to be compared.
+	 * @return True if the expressions are found to be equal, false otherwise.
+	 */
 	public boolean extSymbolicEquals( SymbolicElem<R, S> b ) throws NotInvertibleException
 	{
 		SymbolicElem<R, S> aa = this.distSimp();
@@ -233,29 +270,53 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 	}
 	
 	
+	/**
+	 * Returns whether this expression is equal to the one in the parameter.
+	 * 
+	 * @param b The expression to be compared.
+	 * @return True if the expressions are found to be equal, false otherwise.
+	 */
 	public boolean symbolicEquals( SymbolicElem<R, S> b )
 	{
 		throw( new RuntimeException( "Not Supported " + this ) );
 	}
 	
 	
+	/**
+	 * Simplifies the symbolic expression.
+	 * 
+	 * @return The simplified expression.
+	 * @throws NotInvertibleException
+	 */
 	protected SymbolicElem<R,S> distSimp( ) throws NotInvertibleException
 	{
 		return( this.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null) );
 	}
 	
 	
+	/**
+	 * Inserts this elem into a Drools ( http://drools.org ) session.
+	 * 
+	 * @param session The session in which to insert the elem.
+	 */
 	public void performInserts( StatefulKnowledgeSession session )
 	{
 		session.insert( this );
 	}
 	
 	
+	/**
+	 * The factory for the enclosed type.
+	 */
 	protected S fac;
 	
 	
 	
-	
+	/**
+	 * Returns Drools ( http://drools.org ) knowledge base for algebraic simplification.
+	 * 
+	 * @return Drools ( http://drools.org ) knowledge base for algebraic simplification.
+	 */
 	public static KnowledgeBase getDistributeSimplifyKnowledgeBase()
 	{
 		if( distributeSimplifyKnowledgeBase == null )
@@ -283,6 +344,11 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 	}
 	
 	
+	/**
+	 * Returns Drools ( http://drools.org ) knowledge base for algebraic simplification.
+	 * 
+	 * @return Drools ( http://drools.org ) knowledge base for algebraic simplification.
+	 */
 	public static KnowledgeBase getDistributeSimplify2KnowledgeBase()
 	{
 		if( distributeSimplify2KnowledgeBase == null )
@@ -310,7 +376,14 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 	}
 	
 	
+	/**
+	 * Drools ( http://drools.org ) knowledge base for algebraic simplification.
+	 */
 	private static KnowledgeBase distributeSimplifyKnowledgeBase = null;
+	
+	/**
+	 * Drools ( http://drools.org ) knowledge base for algebraic simplification.
+	 */
 	private static KnowledgeBase distributeSimplify2KnowledgeBase = null;
 	
 	

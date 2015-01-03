@@ -61,7 +61,7 @@ public class SymbolicSqrt<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 	}
 	
 	/**
-	 * Constructs the elem for use in a Drools session.
+	 * Constructs the elem for use in a Drools ( http://drools.org ) session.
 	 * 
 	 * @param _elem The enclosed elem.
 	 * @param _fac The factory for the enclosed type.
