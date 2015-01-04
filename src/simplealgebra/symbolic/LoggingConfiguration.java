@@ -28,10 +28,24 @@
 package simplealgebra.symbolic;
 
 
+/**
+ * Configuration for logging in a Drools ( http://drools.org ) session.
+ * 
+ * @author thorngreen
+ *
+ */
 public class LoggingConfiguration {
 	
+	/**
+	 * Configuration setting for turning logging on/off.
+	 */
 	public static boolean LOGGING_ON = false;
 	
+	/**
+	 * Called by the Drools session to log an object.
+	 * 
+	 * @param obj The object to be logged.
+	 */
 	public void performLogging( Object obj )
 	{
 		System.out.println( "Logging:" );

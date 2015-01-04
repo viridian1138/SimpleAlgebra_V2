@@ -33,6 +33,13 @@ package simplealgebra.symbolic;
 
 
 
+/**
+ * An exception indicating that a derivative operator needs to be multiplied by its argument in
+ * the symbolic expression.
+ * 
+ * @author thorngreen
+ *
+ */
 public class MultiplicativeDistributionRequiredException extends Exception {
 
 }

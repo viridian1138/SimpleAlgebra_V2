@@ -37,15 +37,36 @@ import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
 
+/**
+ * Symbolic elem. for calculating the absolute value.
+ * 
+ * @author thorngreen
+ *
+ * @param <R> The enclosed type
+ * @param <S> The factory for the enclosed type
+ */
 public class SymbolicAbsoluteValue<R extends Elem<R,?>, S extends ElemFactory<R,S>> extends SymbolicElem<R,S> 
 {
 
+	/**
+	 * Constructs the elem.
+	 * 
+	 * @param _elem The enclosed elem.
+	 * @param _fac The factory for the enclosed elem.
+	 */
 	public SymbolicAbsoluteValue( SymbolicElem<R,S> _elem , S _fac )
 	{
 		super( _fac );
 		elem = _elem;
 	}
 	
+	/**
+	 * Constructs the elem for use in a Drools ( http://drools.org ) session.
+	 * 
+	 * @param _elem The enclosed elem.
+	 * @param _fac The factory for the enclosed elem.
+	 * @param ds The Drools session.
+	 */
 	public SymbolicAbsoluteValue( SymbolicElem<R,S> _elem , S _fac , DroolsSession ds )
 	{
 		this( _elem , _fac );
@@ -61,8 +82,10 @@ public class SymbolicAbsoluteValue<R extends Elem<R,?>, S extends ElemFactory<R,
 	@Override
 	public R evalPartialDerivative( ArrayList<? extends Elem<?,?>> withRespectTo , HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
-		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TBD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		return null;
+		final R absV = this.eval( implicitSpace );
+		final R v = elem.eval( implicitSpace );
+		final R dv = elem.evalPartialDerivative( withRespectTo , implicitSpace );
+		return( v.mult( absV.invertLeft() ).mult( dv ) );
 	}
 
 	@Override
@@ -81,7 +104,9 @@ public class SymbolicAbsoluteValue<R extends Elem<R,?>, S extends ElemFactory<R,
 	}
 	
 	/**
-	 * @return the elem
+	 * Gets the enclosed elem.
+	 * 
+	 * @return The enclosed elem.
 	 */
 	public SymbolicElem<R, S> getElem() {
 		return elem;
@@ -107,6 +132,9 @@ public class SymbolicAbsoluteValue<R extends Elem<R,?>, S extends ElemFactory<R,
 	}
 
 
+	/**
+	 * The enclosed elem.
+	 */
 	private SymbolicElem<R,S> elem;
 
 }

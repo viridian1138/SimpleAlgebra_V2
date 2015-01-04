@@ -24,6 +24,7 @@
 
 package simplealgebra.symbolic;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -33,12 +34,25 @@ import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
 
-import java.io.*;
 
-
+/**
+ * A symbolic elem for division by a constant.
+ * 
+ * @author thorngreen
+ *
+ * @param <R> The enclosed type.
+ * @param <S> The factory for the enclosed type.
+ */
 public class SymbolicDivideBy<R extends Elem<R,?>, S extends ElemFactory<R,S>> extends SymbolicElem<R,S> 
 {
 
+	/**
+	 * Constructs the elem.
+	 * 
+	 * @param _elem The enclosed elem.
+	 * @param _fac The factory for the enclosed elem.
+	 * @param _ival The value to divide by.
+	 */
 	public SymbolicDivideBy( SymbolicElem<R,S> _elem , S _fac , int _ival )
 	{
 		super( _fac );
@@ -46,6 +60,14 @@ public class SymbolicDivideBy<R extends Elem<R,?>, S extends ElemFactory<R,S>> e
 		ival = _ival;
 	}
 	
+	/**
+	 * Constructs the elem for use in a Drools ( http://drools.org ) session.
+	 * 
+	 * @param _elem The enclosed elem.
+	 * @param _fac The factory for the enclosed elem.
+	 * @param _ival The value to divide by.
+	 * @param ds The Drools session.
+	 */
 	public SymbolicDivideBy( SymbolicElem<R,S> _elem , S _fac , int _ival , DroolsSession ds )
 	{
 		this( _elem , _fac , _ival );
@@ -85,14 +107,18 @@ public class SymbolicDivideBy<R extends Elem<R,?>, S extends ElemFactory<R,S>> e
 	
 	
 	/**
-	 * @return the ival
+	 * Gets the value to divide by.
+	 * 
+	 * @return The value to divide by.
 	 */
 	public int getIval() {
 		return ival;
 	}
 
 	/**
-	 * @return the elem
+	 * Gets the enclosed elem.
+	 * 
+	 * @return The enclosed elem.
 	 */
 	public SymbolicElem<R, S> getElem() {
 		return elem;
@@ -105,7 +131,14 @@ public class SymbolicDivideBy<R extends Elem<R,?>, S extends ElemFactory<R,S>> e
 		super.performInserts( session );
 	}
 	
+	/**
+	 * The value to divide by.
+	 */
 	private int ival;
+	
+	/**
+	 * The enclosed elem.
+	 */
 	private SymbolicElem<R,S> elem;
 
 }

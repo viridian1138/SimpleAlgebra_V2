@@ -154,7 +154,7 @@ public class TestDesResSymbolic extends TestCase
 		@Override
 		public void writeMathML( PrecedenceComparator<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> pc , PrintStream ps )
 		{
-			ps.print( "<mi>T_2Ux</mi>" );
+			ps.print( "<mn>2</mn><mo>&InvisibleTimes;</mo><mi>U</mi><mfenced><mi>x</mi></mfenced>" );
 		}
 		
 	}
@@ -654,7 +654,10 @@ public class TestDesResSymbolic extends TestCase
 			
 			if( ( b instanceof A0_Elem ) || ( b instanceof A1_Elem ) 
 					|| ( b instanceof A2_Elem ) || ( b instanceof A3_Elem )
-					|| ( b instanceof CSquaredElem ) )
+					|| ( b instanceof CSquaredElem ) || ( a instanceof SymbolicSqrt ) 
+					|| ( b instanceof SymbolicSqrt ) || ( a instanceof PartialDerivativeOp )
+					|| ( b instanceof PartialDerivativeOp ) || ( a instanceof T_2UxElem )
+					|| ( b instanceof T_2UxElem ) )
 			{
 				return( false );
 			}
@@ -845,9 +848,9 @@ public class TestDesResSymbolic extends TestCase
 		//		valA.writeMathMLWrapped( comp , System.out );
 				final SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 					val = valA.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
-//				System.out.print( "<P>" );
-//				val.writeMathMLWrapped( comp , System.out );
-//				System.out.println( "" );
+				System.out.print( "<P>" );
+				val.writeMathMLWrapped( comp , System.out );
+				System.out.println( "" );
 				
 				if( ii.equals( jj ) )
 				{

@@ -38,6 +38,8 @@ import java.util.HashSet;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
+import simplealgebra.ComplexElem;
+import simplealgebra.ComplexElemFactory;
 import simplealgebra.DoubleElem;
 import simplealgebra.DoubleElemFactory;
 import simplealgebra.Elem;
@@ -46,6 +48,7 @@ import simplealgebra.NotInvertibleException;
 import simplealgebra.SquareMatrixElem;
 import simplealgebra.SquareMatrixElemFactory;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
+import simplealgebra.symbolic.PrecedenceComparator;
 import simplealgebra.symbolic.SymbolicAdd;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
@@ -140,6 +143,12 @@ public class TestMetricDeterminant extends TestCase
 		@Override
 		public void writeString( PrintStream ps ) {
 			ps.print( "T_2Ux( )" );
+		}
+		
+		@Override
+		public void writeMathML( PrecedenceComparator<DoubleElem,DoubleElemFactory> pc , PrintStream ps )
+		{
+			ps.print( "<mn>2</mn><mo>&InvisibleTimes;</mo><mi>U</mi><mfenced><mi>x</mi></mfenced>" );
 		}
 		
 	}

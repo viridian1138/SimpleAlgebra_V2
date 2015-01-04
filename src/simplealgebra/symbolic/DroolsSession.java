@@ -28,25 +28,46 @@ import org.kie.internal.runtime.StatefulKnowledgeSession;
 
 
 
+/**
+ * A rule session container for a Drools ( http://drools.org ) session.
+ * 
+ * @author thorngreen
+ *
+ */
 public class DroolsSession {
 	
+	/**
+	 * Constructs the session.
+	 * 
+	 * @param _elem The Drools stateful knowledge session.
+	 */
 	public DroolsSession( StatefulKnowledgeSession _elem )
 	{
 		elem = _elem;
 	}
 	
 	/**
-	 * @return the elem
+	 * Gets the Drools stateful knowledge sesison.
+	 * 
+	 * @return The Drools stateful knowledge session.
 	 */
 	public StatefulKnowledgeSession getElem() {
 		return elem;
 	}
 	
+	/**
+	 * Inserts an object into the knowledge session.
+	 * 
+	 * @param obj The object to insert.
+	 */
 	public void insert( Object obj )
 	{
 		elem.insert( obj );
 	}
 	
+	/**
+	 * The Drools stateful knowledge session.
+	 */
 	private StatefulKnowledgeSession elem;
 
 }
