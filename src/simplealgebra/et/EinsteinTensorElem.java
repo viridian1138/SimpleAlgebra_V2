@@ -72,6 +72,31 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 		if( ( covariantIndices.size() != ib.covariantIndices.size() ) 
 				|| ( contravariantIndices.size() != ib.contravariantIndices.size() ) )
 		{
+			System.out.println( "***" );
+			Iterator<Z> it = contravariantIndices.iterator();
+			while( it.hasNext() )
+			{
+				System.out.println( it.next() );
+			}
+			System.out.println( "---" );
+			it = covariantIndices.iterator();
+			while( it.hasNext() )
+			{
+				System.out.println( it.next() );
+			}
+			System.out.println( "---" );
+			it = ib.contravariantIndices.iterator();
+			while( it.hasNext() )
+			{
+				System.out.println( it.next() );
+			}
+			System.out.println( "---" );
+			it = ib.covariantIndices.iterator();
+			while( it.hasNext() )
+			{
+				System.out.println( it.next() );
+			}
+			System.out.println( "***" );
 			throw( new RuntimeException( "Mismatch" ) );
 		}
 		
