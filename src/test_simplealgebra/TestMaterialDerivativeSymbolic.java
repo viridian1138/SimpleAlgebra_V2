@@ -69,6 +69,16 @@ public class TestMaterialDerivativeSymbolic extends TestCase
 {
 
 	
+	
+	private static SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>
+		createSymbolicZero( ComplexElemFactory<DoubleElem,DoubleElemFactory> _fac )
+	{
+		return( new SymbolicZero<ComplexElem<DoubleElem, DoubleElemFactory>,ComplexElemFactory<DoubleElem, DoubleElemFactory>>( _fac ) );
+	}
+	
+	
+	
+	
 	private class CSquaredElem extends SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 	{
 
@@ -568,23 +578,27 @@ public class TestMaterialDerivativeSymbolic extends TestCase
 			
 			if( basisIndex.equals( BigInteger.ZERO ) )
 			{
-				return( new A0_Elem( this.getFac().getFac().getFac().getFac() ) );
+				return( new A0_Elem( this.getFac().getFac().getFac().getFac() )
+						/* createSymbolicZero( this.getFac().getFac().getFac().getFac() ) */ );
 			}
 			
 			
 			if( basisIndex.equals( BigInteger.ONE ) )
 			{
-				return( new A1_Elem( this.getFac().getFac().getFac().getFac() ) );
+				return( new A1_Elem( this.getFac().getFac().getFac().getFac() ) 
+						/* createSymbolicZero( this.getFac().getFac().getFac().getFac() ) */ );
 			}
 			
 			
 			if( basisIndex.equals( BigInteger.valueOf( 2 ) ) )
 			{
-				return( new A2_Elem( this.getFac().getFac().getFac().getFac() ) );
+				return( new A2_Elem( this.getFac().getFac().getFac().getFac() )
+						/* createSymbolicZero( this.getFac().getFac().getFac().getFac() ) */ );
 			}
 			
 			
-			return( new A3_Elem( this.getFac().getFac().getFac().getFac() ) );
+			return( new A3_Elem( this.getFac().getFac().getFac().getFac() ) 
+						/* createSymbolicZero( this.getFac().getFac().getFac().getFac() ) */ );
 		}
 
 		@Override
@@ -1108,23 +1122,27 @@ public class TestMaterialDerivativeSymbolic extends TestCase
 			
 			if( basisIndex.equals( BigInteger.ZERO ) )
 			{
-				return( new V0_Elem( fac ) );
+				return( new V0_Elem( fac ) 
+						/* createSymbolicZero( fac ) */ );
 			}
 			
 			
 			if( basisIndex.equals( BigInteger.ONE ) )
 			{
-				return( new V1_Elem( fac ) );
+				return( new V1_Elem( fac )
+						/* createSymbolicZero( fac ) */ );
 			}
 			
 			
 			if( basisIndex.equals( BigInteger.valueOf( 2 ) ) )
 			{
-				return( new V2_Elem( fac ) );
+				return( new V2_Elem( fac )
+						/* createSymbolicZero( fac ) */ );
 			}
 			
 			
-			return( new V3_Elem( fac ) );
+			return( new V3_Elem( fac ) 
+						/* createSymbolicZero( fac ) */ );
 		}
 		
 	}
@@ -1291,17 +1309,17 @@ public class TestMaterialDerivativeSymbolic extends TestCase
 			final SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>
 				valI = mfTen.getVal( el );
 			Assert.assertTrue( valI != null );
-//			valI.writeMathMLWrapped( comp , System.out );
+			System.out.print( "<P>" );
+			valI.writeMathMLWrapped( comp , System.out );
 	//		final SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 	//			valA = valI.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY2 , null);
 	//		valA.writeMathMLWrapped( comp , System.out );
 	//		final SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 	//			val = valA.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
-	//		System.out.print( "<P>" );
 	//		val.writeMathMLWrapped( comp , System.out );
-//			System.out.println( "" );
+			System.out.println( "" );
 				
-			Assert.assertTrue( !( valI instanceof SymbolicZero ) );
+//			Assert.assertTrue( !( valI instanceof SymbolicZero ) );
 				
 			// System.out.println( "" + i + " " + j + " " + ( val.writeString() ) );
 		}

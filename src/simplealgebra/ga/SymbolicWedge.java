@@ -41,10 +41,34 @@ import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.PrecedenceComparator;
 import simplealgebra.symbolic.SymbolicElem;
 
+
+/**
+ * Symbolic elem for the Geometric Algebra wedge product <math display="inline">
+ * <mrow>
+ *   <mi>A</mi>
+ *   <mo>&and;</mo>
+ *   <mi>B</mi>
+ * </mrow>
+ * </math> over multivectors.
+ * 
+ * @author thorngreen
+ *
+ * @param <U> The number of dimensions for the multivector.
+ * @param <A> The Ord for the multivector.
+ * @param <R> The enclosed type.
+ * @param <S> The factory for the enclosed type.
+ */
 public class SymbolicWedge<U extends NumDimensions, A extends Ord<U>, R extends Elem<R,?>, S extends ElemFactory<R,S>> extends 
 	SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> 
 {
 
+	/**
+	 * Constructs the wedge product.
+	 * 
+	 * @param _elemA The left argument of the wedge product.
+	 * @param _elemB The right argument of the wedge product.
+	 * @param _fac The factory for the enclosed type.
+	 */
 	public SymbolicWedge( 
 			SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> _elemA , 
 			SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> _elemB , GeometricAlgebraMultivectorElemFactory<U,A, R, S> _fac) 
@@ -55,6 +79,14 @@ public class SymbolicWedge<U extends NumDimensions, A extends Ord<U>, R extends 
 	}
 	
 	
+	/**
+	 * Constructs the wedge product for use in a Drools ( http://drools.org ) session.
+	 * 
+	 * @param _elemA The left argument of the wedge product.
+	 * @param _elemB The right argument of the wedge product.
+	 * @param _fac The factory for the enclosed type.
+	 * @param ds The Drools session.
+	 */
 	public SymbolicWedge( 
 			SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> _elemA , 
 			SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> _elemB , GeometricAlgebraMultivectorElemFactory<U,A, R, S> _fac ,
@@ -137,14 +169,18 @@ public class SymbolicWedge<U extends NumDimensions, A extends Ord<U>, R extends 
 	
 	
 	/**
-	 * @return the elem
+	 * Returns the left argument of the wedge product.
+	 * 
+	 * @return The left argument of the wedge prodict.
 	 */
 	public SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> getElemA() {
 		return elemA;
 	}
 	
 	/**
-	 * @return the elem
+	 * Returns the right argument of the wedge product.
+	 * 
+	 * @return The right argument of the wedge product.
 	 */
 	public SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> getElemB() {
 		return elemB;
@@ -160,7 +196,15 @@ public class SymbolicWedge<U extends NumDimensions, A extends Ord<U>, R extends 
 	}
 
 	
+	/**
+	 * The left argument of the wedge product.
+	 */
 	private SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> elemA;
+	
+	/**
+	 * The right argument of the wedge product.
+	 */
 	private SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> elemB;
+	
 }
 

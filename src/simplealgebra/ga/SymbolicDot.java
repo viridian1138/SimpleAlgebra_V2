@@ -41,10 +41,34 @@ import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.PrecedenceComparator;
 import simplealgebra.symbolic.SymbolicElem;
 
+
+/**
+ * Symbolic elem for the Geometric Algebra dot product <math display="inline">
+ * <mrow>
+ *   <mi>A</mi>
+ *   <mo>&CenterDot;</mo>
+ *   <mi>B</mi>
+ * </mrow>
+ * </math> over multivectors.
+ * 
+ * @author thorngreen
+ *
+ * @param <U> The number of dimensions for the multivector.
+ * @param <A> The Ord for the multivector.
+ * @param <R> The enclosed type.
+ * @param <S> The factory for the enclosed type.
+ */
 public class SymbolicDot<U extends NumDimensions, A extends Ord<U>, R extends Elem<R,?>, S extends ElemFactory<R,S>> extends 
 	SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> 
 {
 
+	/**
+	 * Constructs the dot product.
+	 * 
+	 * @param _elemA The left argument of the dot product.
+	 * @param _elemB The right argument of the dot product.
+	 * @param _fac The factory for the enclosed type.
+	 */
 	public SymbolicDot( 
 			SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> _elemA , 
 			SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> _elemB , GeometricAlgebraMultivectorElemFactory<U,A, R, S> _fac) 
@@ -55,6 +79,14 @@ public class SymbolicDot<U extends NumDimensions, A extends Ord<U>, R extends El
 	}
 	
 	
+	/**
+	 * Constructs the dot product for use in a Drools ( http://drools.org ) session.
+	 * 
+	 * @param _elemA The left argument of the dot product.
+	 * @param _elemB The right argument of the dot product.
+	 * @param _fac The factory for the enclosed type.
+	 * @param ds The Drools session.
+	 */
 	public SymbolicDot( 
 			SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> _elemA , 
 			SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> _elemB , GeometricAlgebraMultivectorElemFactory<U,A, R, S> _fac ,
@@ -138,14 +170,18 @@ public class SymbolicDot<U extends NumDimensions, A extends Ord<U>, R extends El
 	
 	
 	/**
-	 * @return the elem
+	 * Returns the left argument of the dot product.
+	 * 
+	 * @return The left argument of the dot prodict.
 	 */
 	public SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> getElemA() {
 		return elemA;
 	}
 	
 	/**
-	 * @return the elem
+	 * Returns the right argument of the dot product.
+	 * 
+	 * @return The right argument of the dot product.
 	 */
 	public SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> getElemB() {
 		return elemB;
@@ -159,8 +195,14 @@ public class SymbolicDot<U extends NumDimensions, A extends Ord<U>, R extends El
 		super.performInserts( session );
 	}
 
-	
+	/**
+	 * The left argument of the dot product.
+	 */
 	private SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> elemA;
+	
+	/**
+	 * The right argument of the dot product.
+	 */
 	private SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> elemB;
 	
 }

@@ -44,7 +44,47 @@ import simplealgebra.symbolic.SymbolicElemFactory;
 
 
 /**
- * !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+ * Factory for generating Material Derivatives, where a material derivative is defined by <math display="inline">
+ * <mrow>
+ *  <mfrac>
+ *    <mrow>
+ *      <mo>D</mo>
+ *      <mi>y</mi>
+ *    </mrow>
+ *    <mrow>
+ *      <mo>D</mo>
+ *      <mi>t</mi>
+ *    </mrow>
+ *  </mfrac>
+ *  <mo>=</mo>
+ *  <mfrac>
+ *    <mrow>
+ *      <mo>&PartialD;</mo>
+ *      <mi>y</mi>
+ *    </mrow>
+ *    <mrow>
+ *      <mo>&PartialD;</mo>
+ *      <mi>t</mi>
+ *    </mrow>
+ *  </mfrac>
+ *  <mo>+</mo>
+ *  <mi>u</mi>
+ *  <mo>&CenterDot;</mo>
+ *  <mo>&nabla;</mo>
+ *  <mi>y</mi>
+ * </mrow>
+ * </math>
+ *
+ * <P>where <math display="inline">
+ * <mrow>
+ *  <mo>&nabla;</mo>
+ *  <mi>y</mi>
+ * </mrow>
+ * </math> is the covariant derivative.
+ * 
+ * 
+ * 
+ * <P>See http://en.wikipedia.org/wiki/material_derivative
  * 
  * 
  * @author thorngreen
