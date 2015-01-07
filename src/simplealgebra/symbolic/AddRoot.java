@@ -29,8 +29,23 @@ import simplealgebra.ElemFactory;
 
 
 
+/**
+ * Node for building in Drools ( http://drools.org ) the transitive closure
+ * of all additions in the same addition tree.
+ * 
+ * @author thorngreen
+ *
+ * @param <R> The enclosed type.
+ * @param <S> The factory for the enclosed type.
+ */
 public class AddRoot<R extends Elem<R,?>, S extends ElemFactory<R,S>> {
 	
+	/**
+	 * Constructs the node in the transitive closure.
+	 * 
+	 * @param _elemA One end of the relation in the transitive closure.
+	 * @param _elemB The other end of the relation in the transitive closure.
+	 */
 	public AddRoot( SymbolicElem<R, S> _elemA , SymbolicAdd<R, S> _elemB )
 	{
 		elemA = _elemA;
@@ -38,19 +53,30 @@ public class AddRoot<R extends Elem<R,?>, S extends ElemFactory<R,S>> {
 	}
 	
 	/**
-	 * @return the elemA
+	 * Gets one end of the relation in the transitive closure.
+	 * 
+	 * @return One end of the relation in the transitive closure.
 	 */
 	public SymbolicElem<R, S> getElemA() {
 		return elemA;
 	}
 	/**
-	 * @return the elemB
+	 * Gets the other end of the relation in the transitive closure.
+	 * 
+	 * @return The other end of the relation in the transitive closure.
 	 */
 	public SymbolicAdd<R, S> getElemB() {
 		return elemB;
 	}
 	
+	/**
+	 * One end of the relation in the transitive closure.
+	 */
 	private SymbolicElem<R,S> elemA;
+	
+	/**
+	 * The other end of the relation in the transitive closure.
+	 */
 	private SymbolicAdd<R,S> elemB;
 
 }

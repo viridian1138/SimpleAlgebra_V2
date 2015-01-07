@@ -35,9 +35,24 @@ import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
 
+/**
+ * Symbolic elem. for performing addition.
+ * 
+ * @author thorngreen
+ *
+ * @param <R> The enclosed type.
+ * @param <S> The factory for the enclosed type.
+ */
 public class SymbolicAdd<R extends Elem<R,?>, S extends ElemFactory<R,S>> extends SymbolicElem<R,S> 
 {
 
+	/**
+	 * Constructs the elem.
+	 * 
+	 * @param _elemA The left argument of the addition.
+	 * @param _elemB The right argument of the addition.
+	 * @param _fac The factory for the enclosed type.
+	 */
 	public SymbolicAdd( SymbolicElem<R,S> _elemA , SymbolicElem<R,S> _elemB , S _fac )
 	{
 		super( _fac );
@@ -45,6 +60,14 @@ public class SymbolicAdd<R extends Elem<R,?>, S extends ElemFactory<R,S>> extend
 		elemB = _elemB;
 	}
 	
+	/**
+	 * Constructs the elem for use in a Drools ( http://drools.org ) session.
+	 * 
+	 * @param _elemA The left argument of the addition.
+	 * @param _elemB The right argument of the addition.
+	 * @param _fac The factory for the enclosed type.
+	 * @param ds The Drools session.
+	 */
 	public SymbolicAdd( SymbolicElem<R,S> _elemA , SymbolicElem<R,S> _elemB , S _fac , DroolsSession ds )
 	{
 		this( _elemA , _elemB , _fac );
@@ -114,14 +137,18 @@ public class SymbolicAdd<R extends Elem<R,?>, S extends ElemFactory<R,S>> extend
 	
 	
 	/**
-	 * @return the elemA
+	 * Returns the left argument of the addition.
+	 * 
+	 * @return The left argument of the addition.
 	 */
 	public SymbolicElem<R, S> getElemA() {
 		return elemA;
 	}
 
 	/**
-	 * @return the elemB
+	 * Returns the right argument of the addition.
+	 * 
+	 * @return The right argument of the addition.
 	 */
 	public SymbolicElem<R, S> getElemB() {
 		return elemB;
@@ -167,12 +194,20 @@ public class SymbolicAdd<R extends Elem<R,?>, S extends ElemFactory<R,S>> extend
 	
 	
 	
-	public SymbolicAdd<R, S> handleAddSimplify( SymbolicElem<R, S> elA , SymbolicElem<R, S> elB , DroolsSession ds )
+	/**
+	 * Simplifies the elem, where two elems in the underlying negation true are known to be negations of each other.
+	 * 
+	 * @param elA An elem in the addition tree under this elem.
+	 * @param elB An elem in the addition tree under this elem which is the negation of elA.
+	 * @param ds The Drools ( http://drools.org ) session in which to simplify the addition.
+	 * @return The simplified expression, with elA and elB replaced by zero.
+	 */
+	public SymbolicElem<R, S> handleAddSimplify( SymbolicElem<R, S> elA , SymbolicElem<R, S> elB , DroolsSession ds )
 	{
 		HashSet<SymbolicElem<R, S>> elS = new HashSet<SymbolicElem<R, S>>();
 		elS.add( elA );
 		elS.add( elB );
-		SymbolicAdd<R, S> ret = this.handleAddSimplify( elS , ds );
+		SymbolicElem<R, S> ret = this.handleAddSimplify( elS , ds );
 		if( !( elS.isEmpty() ) )
 		{
 			throw( new RuntimeException( "Internal Error." ) );
@@ -181,8 +216,14 @@ public class SymbolicAdd<R extends Elem<R,?>, S extends ElemFactory<R,S>> extend
 	}
 	
 	
-	
-	public SymbolicAdd<R, S> handleAddSimplify( HashSet<SymbolicElem<R, S>> elS , DroolsSession ds )
+	/**
+	 * Simplifies the addition of a set of elems.
+	 * 
+	 * @param elS The set of elems that are to be replaced by zero.
+	 * @param ds The Drools ( http://drools.org ) session in which to simplify the addition.
+	 * @return The simplified expression.
+	 */
+	public SymbolicElem<R, S> handleAddSimplify( HashSet<SymbolicElem<R, S>> elS , DroolsSession ds )
 	{
 		SymbolicElem<R,S> elA = elemA;
 		SymbolicElem<R,S> elB = elemB;
@@ -214,7 +255,7 @@ public class SymbolicAdd<R extends Elem<R,?>, S extends ElemFactory<R,S>> extend
 			}
 		}
 		
-		SymbolicAdd<R, S> ret = new SymbolicAdd( elA , elB , fac );
+		SymbolicElem<R, S> ret = elA.add( elB );
 		// System.out.println( "Insert: " + ret );
 		ds.insert( ret );
 		return( ret );
@@ -222,7 +263,14 @@ public class SymbolicAdd<R extends Elem<R,?>, S extends ElemFactory<R,S>> extend
 	
 	
 
+	/**
+	 * The left argument of the addition.
+	 */
 	private SymbolicElem<R,S> elemA;
+	
+	/**
+	 * The right argument of the addition.
+	 */
 	private SymbolicElem<R,S> elemB;
 
 }

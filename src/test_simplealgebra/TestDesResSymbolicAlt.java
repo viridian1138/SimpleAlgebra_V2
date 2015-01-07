@@ -48,7 +48,7 @@ import simplealgebra.SquareMatrixElem;
 import simplealgebra.ddx.DirectionalDerivativePartialFactory;
 import simplealgebra.ddx.PartialDerivativeOp;
 import simplealgebra.et.EinsteinTensorElem;
-import simplealgebra.et.EmFieldTensorFactory;
+import simplealgebra.et.EmFieldTensorFactoryAlt;
 import simplealgebra.et.SimpleCurveMetricTensorFactory;
 import simplealgebra.et.VectorPotentialFactory;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
@@ -63,7 +63,7 @@ import java.io.*;
 
 
 
-public class TestDesResSymbolic extends TestCase 
+public class TestDesResSymbolicAlt extends TestCase 
 {
 
 	
@@ -677,7 +677,7 @@ public class TestDesResSymbolic extends TestCase
 	
 	
 	
-	public void testDesResSymbolic() throws NotInvertibleException
+	public void TestDesResSymbolicAlt() throws NotInvertibleException
 	{
 		final TestDimensionFour td = new TestDimensionFour();
 		
@@ -783,8 +783,8 @@ public class TestDesResSymbolic extends TestCase
 		DirecFac direcFac = new DirecFac( ce );
 		
 		
-		EmFieldTensorFactory<Object, ComplexElem<DoubleElem,DoubleElemFactory>, ComplexElemFactory<DoubleElem,DoubleElemFactory>, SymbolicElem<DoubleElem,DoubleElemFactory>>
-			emFldFac = new EmFieldTensorFactory<Object, ComplexElem<DoubleElem,DoubleElemFactory>, ComplexElemFactory<DoubleElem,DoubleElemFactory>, 
+		EmFieldTensorFactoryAlt<Object, ComplexElem<DoubleElem,DoubleElemFactory>, ComplexElemFactory<DoubleElem,DoubleElemFactory>, SymbolicElem<DoubleElem,DoubleElemFactory>>
+			emFldFac = new EmFieldTensorFactoryAlt<Object, ComplexElem<DoubleElem,DoubleElemFactory>, ComplexElemFactory<DoubleElem,DoubleElemFactory>, 
 			SymbolicElem<DoubleElem,DoubleElemFactory>>(ye, direcFac, vectFac);
 		
 		
@@ -848,13 +848,13 @@ public class TestDesResSymbolic extends TestCase
 		//		valA.writeMathMLWrapped( comp , System.out );
 				final SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 					val = valA.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
-//				System.out.print( "<P>" );
-//				val.writeMathMLWrapped( comp , System.out );
-//				System.out.println( "" );
+				System.out.print( "<P>" );
+				val.writeMathMLWrapped( comp , System.out );
+				System.out.println( "" );
 				
 				if( ii.equals( jj ) )
 				{
-					Assert.assertTrue( val instanceof SymbolicZero );
+					Assert.assertTrue( !( val instanceof SymbolicZero ) );
 				}
 				
 				// System.out.println( "" + i + " " + j + " " + ( val.writeString() ) );

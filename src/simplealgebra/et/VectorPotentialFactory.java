@@ -37,12 +37,18 @@ import simplealgebra.symbolic.SymbolicElem;
  * 
  * @author thorngreen
  *
- * @param <R>
- * @param <S>
+ * @param <R> The enclosed type.
+ * @param <S> The factory for the enclosed type.
  */
 public abstract class VectorPotentialFactory<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 {
 
+	/**
+	 * Returns an element of the vector potential.
+	 * 
+	 * @param basisIndex The index of the element.
+	 * @return The element of the vector potential.
+	 */
 	public abstract SymbolicElem<R,S> getVectorPotential( BigInteger basisIndex );
 
 }

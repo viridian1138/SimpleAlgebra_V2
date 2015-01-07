@@ -39,52 +39,9 @@ import simplealgebra.symbolic.SymbolicElemFactory;
 
 
 /**
- * Factory for the Em field defined by <math display="inline">
- * <mrow>
- *  <msub>
- *          <mi>F</mi>
- *      <mrow>
- *        <mi>&alpha;</mi>
- *        <mi>&beta;</mi>
- *      </mrow>
- *  </msub>
- *  <mo>=</mo>
- *  <msub>
- *          <mo>&PartialD;</mo>
- *        <mi>&alpha;</mi>
- *  </msub>
- *  <msub>
- *          <mi>A</mi>
- *        <mi>&beta;</mi>
- *  </msub>
- *  <mo>-</mo>
- *  <msub>
- *          <mo>&PartialD;</mo>
- *        <mi>&beta;</mi>
- *  </msub>
- *  <msub>
- *          <mi>A</mi>
- *        <mi>&alpha;</mi>
- *  </msub>
- * </mrow>
- * </math> where <math display="inline">
- * <mrow>
- *  <msub>
- *          <mi>A</mi>
- *        <mi>&alpha;</mi>
- *  </msub>
- * </mrow>
- * </math> is the vector potential and <math display="inline">
- * <mrow>
- *  <msub>
- *          <mo>&PartialD;</mo>
- *        <mi>&alpha;</mi>
- *  </msub>
- * </mrow>
- * </math> is the ordinary derivative.
+ * Alternate form of the Em field tensor.
  * 
- * 
- * <P> See http://en.wikipedia.org/wiki/Maxwell%27s_equations_in_curved_spacetime
+ * See http://en.wikipedia.org/wiki/Maxwell%27s_equations_in_curved_spacetime
  * 
  * @author thorngreen
  *
@@ -92,7 +49,7 @@ import simplealgebra.symbolic.SymbolicElemFactory;
  * @param <R> The enclosed type.
  * @param <S> The factory for the enclosed type.
  */
-public class EmFieldTensorFactory<Z extends Object, R extends Elem<R,?>, S extends ElemFactory<R,S>, K extends Elem<?,?>> {
+public class EmFieldTensorFactoryAlt<Z extends Object, R extends Elem<R,?>, S extends ElemFactory<R,S>, K extends Elem<?,?>> {
 	
 	/**
 	 * Factory for symbolic elems.
@@ -116,7 +73,7 @@ public class EmFieldTensorFactory<Z extends Object, R extends Elem<R,?>, S exten
 	 * @param _deriv Factory for the partial derivatives of a directional derivative.
 	 * @param _vect Factory for the terms of the vector potential.
 	 */
-	public EmFieldTensorFactory( SymbolicElemFactory<R, S> _fac , 
+	public EmFieldTensorFactoryAlt( SymbolicElemFactory<R, S> _fac , 
 			DirectionalDerivativePartialFactory<R, S, K> _deriv,
 			VectorPotentialFactory<R, S> _vect )
 	{
@@ -161,7 +118,7 @@ public class EmFieldTensorFactory<Z extends Object, R extends Elem<R,?>, S exten
 					final SymbolicElem<R,S> dj = deriv.getPartial( cntj );
 					final SymbolicElem<R,S> vi = vect.getVectorPotential( cnti );
 					final SymbolicElem<R,S> vj = vect.getVectorPotential( cntj );
-					SymbolicElem<R,S> elem = ( di.mult( vj ) ).add( ( dj.mult( vi ) ).negate() );
+					SymbolicElem<R,S> elem = ( di.mult( vj ) ).add( dj.mult( vi ) );
 					tel.setVal( el , elem );
 				}
 			}
