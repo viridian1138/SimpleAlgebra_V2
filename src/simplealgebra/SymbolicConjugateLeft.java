@@ -35,11 +35,24 @@ import simplealgebra.symbolic.SymbolicElem;
 
 import java.io.*;
 
-
+/**
+ * Symbolic elem for the left-side conjugate of a complex number.
+ * 
+ * @author thorngreen
+ *
+ * @param <R> The enclosed type.
+ * @param <S> The factory for the enclosed type.
+ */
 public class SymbolicConjugateLeft<R extends Elem<R,?>, S extends ElemFactory<R,S>> extends 
 	SymbolicElem<ComplexElem<R,S>,ComplexElemFactory<R,S>> 
 {
 
+	/**
+	 * Constructs the elem.
+	 * 
+	 * @param _elem The nested elem.
+	 * @param _fac The factory for the nested elem.
+	 */
 	public SymbolicConjugateLeft( SymbolicElem<ComplexElem<R,S>,ComplexElemFactory<R,S>> _elem , ComplexElemFactory<R, S> _fac) 
 	{
 		super( _fac );
@@ -99,13 +112,17 @@ public class SymbolicConjugateLeft<R extends Elem<R,?>, S extends ElemFactory<R,
 	
 	
 	/**
-	 * @return the elem
+	 * Returns the nested elem.
+	 * 
+	 * @return The nested elem.
 	 */
 	public SymbolicElem<ComplexElem<R,S>,ComplexElemFactory<R,S>> getElem() {
 		return elem;
 	}
 
-	
+	/**
+	 * The nested elem.
+	 */
 	private SymbolicElem<ComplexElem<R,S>,ComplexElemFactory<R,S>> elem;
 
 }

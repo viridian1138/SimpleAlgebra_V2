@@ -28,8 +28,20 @@ package simplealgebra;
 
 import java.math.BigInteger;
 
+/**
+ * The number of dimensions in an elem.
+ * 
+ * @author thorngreen
+ *
+ */
 public abstract class NumDimensions {
 
+	/**
+	 * Gets the number of dimensions in an elem.  Note that many of the dimensions may be sparse, so
+	 * it is fair to contemplate a number of dimensions larger than what can be allocated in memory.
+	 * 
+	 * @return The number of dimensions in the elem.
+	 */
 	public abstract BigInteger getVal();
 	
 }

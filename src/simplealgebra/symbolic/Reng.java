@@ -28,9 +28,22 @@ import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 
 
-
+/**
+ * Rule engine node.  Used to represent a symbolic refactoring in Drools ( http://drools.org ).
+ * 
+ * @author thorngreen
+ *
+ * @param <R> The enclosed type.
+ * @param <S> The factory for the enclosed type.
+ */
 public class Reng<R extends Elem<R,?>, S extends ElemFactory<R,S>> {
 	
+	/**
+	 * Constructs the node.
+	 * 
+	 * @param _strt The starting point of the refactoring.
+	 * @param _end The result of the refactoring.
+	 */
 	public Reng( SymbolicElem<R, S> _strt , SymbolicElem<R, S> _end )
 	{
 		strt = _strt;
@@ -38,19 +51,31 @@ public class Reng<R extends Elem<R,?>, S extends ElemFactory<R,S>> {
 	}
 	
 	/**
-	 * @return the strt
+	 * Gets the starting point of the refactoring.
+	 * 
+	 * @return The starting point of the refactoring.
 	 */
 	public SymbolicElem<R, S> getStrt() {
 		return strt;
 	}
+	
 	/**
-	 * @return the end
+	 * Gets the result of the refactoring.
+	 * 
+	 * @return The result of the refactoring.
 	 */
 	public SymbolicElem<R, S> getEnd() {
 		return end;
 	}
 	
+	/**
+	 * The starting point of the refactoring.
+	 */
 	private SymbolicElem<R,S> strt;
+	
+	/**
+	 * The result of the refactoring.
+	 */
 	private SymbolicElem<R,S> end;
 
 }

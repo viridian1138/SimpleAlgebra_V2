@@ -34,10 +34,25 @@ import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.PrecedenceComparator;
 import simplealgebra.symbolic.SymbolicElem;
 
+/**
+ * Symbolic elem to transpose a square matrix.
+ * 
+ * @author thorngreen
+ *
+ * @param <U> The number of dimensions in the matrix.
+ * @param <R> The enclosed type.
+ * @param <S> The factory for the enclosed type.
+ */
 public class SymbolicTranspose<U extends NumDimensions, R extends Elem<R,?>, S extends ElemFactory<R,S>> extends 
 	SymbolicElem<SquareMatrixElem<U,R,S>,SquareMatrixElemFactory<U,R,S>> 
 {
 
+	/**
+	 * Constructs the transpose.
+	 * 
+	 * @param _elem The nested elem.
+	 * @param _fac The factory for the nested elem.
+	 */
 	public SymbolicTranspose( SymbolicElem<SquareMatrixElem<U,R,S>,SquareMatrixElemFactory<U,R,S>> _elem , SquareMatrixElemFactory<U, R, S> _fac) 
 	{
 		super( _fac );
@@ -98,13 +113,18 @@ public class SymbolicTranspose<U extends NumDimensions, R extends Elem<R,?>, S e
 	
 	
 	/**
-	 * @return the elem
+	 * Returns the nested elem.
+	 * 
+	 * @return The nested elem.
 	 */
 	public SymbolicElem<SquareMatrixElem<U,R,S>,SquareMatrixElemFactory<U,R,S>> getElem() {
 		return elem;
 	}
 
 	
+	/**
+	 * The nested elem.
+	 */
 	private SymbolicElem<SquareMatrixElem<U,R,S>,SquareMatrixElemFactory<U,R,S>> elem;
 
 	
