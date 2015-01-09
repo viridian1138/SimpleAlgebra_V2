@@ -37,8 +37,25 @@ import simplealgebra.NotInvertibleException;
 import simplealgebra.symbolic.SymbolicElem;
 
 
+/**
+ * Factory for returning the components of a gauge.
+ * 
+ * See http://en.wikipedia.org/wiki/Gauge_fixing
+ * 
+ * @author thorngreen
+ *
+ * @param <R> The enclosed type.
+ * @param <S> The factory for the enclosed type.
+ */
 public abstract class Gauge<R extends Elem<R,?>, S extends ElemFactory<R,S>> {
 
+	/**
+	 * Returns a component of the gauge.
+	 * 
+	 * @param numElem The number of dimensions for the gauge.
+	 * @return The component of the gauge.
+	 * @throws NotInvertibleException
+	 */
 	public abstract SymbolicElem<R, S> getGauge( BigInteger numElem ) throws NotInvertibleException;
 	
 }

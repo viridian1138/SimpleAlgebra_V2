@@ -37,7 +37,6 @@ import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.ddx.DirectionalDerivativePartialFactory;
-import simplealgebra.ddx.PartialDerivativeOp;
 import simplealgebra.et.AlteredCSquared;
 import simplealgebra.et.VectorPotentialFactory;
 import simplealgebra.symbolic.SymbolicElem;
@@ -45,14 +44,62 @@ import simplealgebra.symbolic.SymbolicElemFactory;
 
 
 
-public class LorentzGauge<R extends Elem<R,?>, S extends ElemFactory<R,S>, K extends Elem<?,?>> extends Gauge<R, S> {
+/**
+ * Factory for returning the components of the Lorenz gauge
+ * defined by <math display="inline">
+ * <mrow>
+ *  <msub>
+ *          <mo>&PartialD;</mo>
+ *        <mi>u</mi>
+ *  </msub>
+ *  <msup>
+ *          <mi>A</mi>
+ *        <mi>u</mi>
+ *  </msup>
+ *  <mo>=</mo>
+ *  <mn>0</mn>
+ * </mrow>
+ * </math>
+ * 
+ * <P> See http://en.wikipedia.org/wiki/Lorenz_gauge_condition
+ * 
+ * @author thorngreen
+ *
+ * @param <R> The enclosed type.
+ * @param <S> The factory for the enclosed type.
+ * @param <K> The type against which to take derivatives.
+ */
+public class LorenzGauge<R extends Elem<R,?>, S extends ElemFactory<R,S>, K extends Elem<?,?>> extends Gauge<R, S> {
 	
+	/**
+	 * The factory for the enclosed type.
+	 */
 	SymbolicElemFactory<R, S> fac;
+	
+	/**
+	 * Node representing C-squared.
+	 */
 	AlteredCSquared<R, S> cSq;
+	
+	/**
+	 * The directional derivative.
+	 */
 	DirectionalDerivativePartialFactory<R, S, K> deriv;
+	
+	/**
+	 * The vector potential.
+	 */
 	VectorPotentialFactory<R, S> vect;
 	
-	public LorentzGauge( SymbolicElemFactory<R, S> _fac , AlteredCSquared<R, S> _cSq ,
+	/**
+	 * Constructs the node.
+	 * 
+	 * @param _fac The factory for the enclosed type.
+	 * @param _cSq Node representing C-squared.
+	 * @param _deriv The directional derivative.
+	 * @param _vect The vector potential.
+	 */
+	public LorenzGauge( SymbolicElemFactory<R, S> _fac , AlteredCSquared<R, S> _cSq ,
 			DirectionalDerivativePartialFactory<R, S, K> _deriv,
 			VectorPotentialFactory<R, S> _vect )
 	{

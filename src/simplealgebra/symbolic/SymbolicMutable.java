@@ -39,14 +39,37 @@ import simplealgebra.NotInvertibleException;
 
 import java.io.*;
 
-
+/**
+ * A symbolic elem. "A" that takes in another elem. "B" and mutates each enclosed
+ * elem. "C" existing inside "B" by some mutator function.
+ * 
+ * @author thorngreen
+ *
+ * @param <T> The enclosed type inside the enclosed mutable elem.
+ * @param <U> The enclosed mutable elem.
+ * @param <R> The factory for the enclosed mutable elem.
+ */
 public class SymbolicMutable<T extends Elem<T,?>, U extends MutableElem<T,U,?>, R extends ElemFactory<U,R> > extends SymbolicElem<U,R> 
 {
 	
+	/**
+	 * The enclosed elem.
+	 */
 	private SymbolicElem<U,R> elemA;
+	
+	/**
+	 * The mutator for the enclosed elem.
+	 */
 	private Mutator<U> elemB;
 
 	
+	/**
+	 * Constructs the elem.
+	 * 
+	 * @param _elemA The enclosed elem.
+	 * @param _elemB The mutator for the enclosed elem.
+	 * @param _fac The factory for the enclosed elem.
+	 */
 	public SymbolicMutable( SymbolicElem<U,R> _elemA , Mutator<U> _elemB , R _fac )
 	{
 		super( _fac );
@@ -54,6 +77,14 @@ public class SymbolicMutable<T extends Elem<T,?>, U extends MutableElem<T,U,?>, 
 		elemB = _elemB;
 	}
 	
+	/**
+	 * Constructs the elem. for use in a Drools ( http://drools.org ) session.
+	 * 
+	 * @param _elemA The enclosed elem.
+	 * @param _elemB The mutator for the enclosed elem.
+	 * @param _fac The factory for the enclosed elem.
+	 * @param ds The Drools session.
+	 */
 	public SymbolicMutable( SymbolicElem<U,R> _elemA , Mutator<U> _elemB , R _fac , DroolsSession ds )
 	{
 		this( _elemA , _elemB , _fac );
@@ -85,14 +116,18 @@ public class SymbolicMutable<T extends Elem<T,?>, U extends MutableElem<T,U,?>, 
 	
 	
 	/**
-	 * @return the elemA
+	 * Returns the enclosed elem.
+	 * 
+	 * @return The enclosed elem.
 	 */
 	public SymbolicElem<U, R> getElemA() {
 		return elemA;
 	}
 
 	/**
-	 * @return the elemB
+	 * Returns the mutator for the enclosed elem.
+	 * 
+	 * @return The mutator for the enclosed elem.
 	 */
 	public Mutator<U> getElemB() {
 		return elemB;

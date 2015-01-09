@@ -38,7 +38,11 @@ import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
 
 /**
- * Symbolic elem. for calculating the absolute value.
+ * Symbolic elem. for calculating the absolute value <math display="inline">
+ * <mrow><mo>|</mo><mrow>
+ *   <mi>A</mi>
+ * </mrow><mo>|</mo></mrow>
+ * </math>.
  * 
  * @author thorngreen
  *

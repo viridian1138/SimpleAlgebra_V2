@@ -29,7 +29,9 @@ package simplealgebra.symbolic;
 
 
 /**
- * Configuration for logging in a Drools ( http://drools.org ) session.
+ * Configuration for logging in a Drools ( http://drools.org ) session.  This configuration
+ * and its related rule can be added to a Drools in a fashion similar to adding a cross-cutting
+ * concern to an aspect-oriented system.
  * 
  * @author thorngreen
  *

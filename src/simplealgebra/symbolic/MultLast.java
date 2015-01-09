@@ -28,9 +28,24 @@ import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 
 
-
+/**
+ * Node for transitively determining in Drools ( http://drools.org ) the
+ * last node in a tree of multiplications under a root multiplication.
+ * 
+ * @author thorngreen
+ *
+ * @param <R> The enclosed type.
+ * @param <S> The factory for the enclosed type.
+ */
 public class MultLast<R extends Elem<R,?>, S extends ElemFactory<R,S>> {
 	
+	
+	/**
+	 * Constructs the node.
+	 * 
+	 * @param _root The root of the multiplication tree.
+	 * @param _last The last node in the multiplication tree.
+	 */
 	public MultLast( SymbolicMult<R, S> _root , SymbolicElem<R, S> _last )
 	{
 		root = _root;
@@ -40,13 +55,18 @@ public class MultLast<R extends Elem<R,?>, S extends ElemFactory<R,S>> {
 	
 	
 	/**
-	 * @return the root
+	 * Returns the root of the multiplication tree.
+	 * 
+	 * @return The root of the multiplication tree.
 	 */
 	public SymbolicMult<R, S> getRoot() {
 		return root;
 	}
+	
 	/**
-	 * @return the first
+	 * Returns the last node in the multiplication tree.
+	 * 
+	 * @return The last node in the multiplication tree.
 	 */
 	public SymbolicElem<R, S> getLast() {
 		return last;
@@ -54,7 +74,14 @@ public class MultLast<R extends Elem<R,?>, S extends ElemFactory<R,S>> {
 
 
 
+	/**
+	 * The root of the multiplication tree.
+	 */
 	private SymbolicMult<R,S> root;
+	
+	/**
+	 * The last node of the multiplication tree.
+	 */
 	private SymbolicElem<R,S> last;
 
 }

@@ -47,7 +47,7 @@ import simplealgebra.ddx.DirectionalDerivativePartialFactory;
 import simplealgebra.ddx.PartialDerivativeOp;
 import simplealgebra.et.PotentialAlteredCSquared;
 import simplealgebra.et.VectorPotentialFactory;
-import simplealgebra.gauge.LorentzGauge;
+import simplealgebra.gauge.LorenzGauge;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.PrecedenceComparator;
 import simplealgebra.symbolic.SymbolicElem;
@@ -615,8 +615,8 @@ public class TestGaugeSymbolic extends TestCase
 		
 		
 		
-		LorentzGauge<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>,SymbolicElem<DoubleElem,DoubleElemFactory>> lor = 
-				new LorentzGauge<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>,SymbolicElem<DoubleElem,DoubleElemFactory>>( 
+		LorenzGauge<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>,SymbolicElem<DoubleElem,DoubleElemFactory>> lor = 
+				new LorenzGauge<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>,SymbolicElem<DoubleElem,DoubleElemFactory>>( 
 						ye , cSq , direcFac, vectFac );
 		
 		

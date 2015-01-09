@@ -340,7 +340,7 @@ public class SymbolicMult<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 	 * @param ds The Drools session over which to simplify.
 	 * @return The simplified version of the expression.
 	 */
-	public SymbolicMult<R, S> handleMultSimplify( final SymbolicElem<R,S> elA , final SymbolicElem<R,S> elB , final DroolsSession ds )
+	public SymbolicElem<R, S> handleMultSimplify( final SymbolicElem<R,S> elA , final SymbolicElem<R,S> elB , final DroolsSession ds )
 	{
 		final HashSet<Integer> hset = new HashSet<Integer>();
 		
@@ -376,7 +376,7 @@ public class SymbolicMult<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 	 * @param session The Drools session over which to simplify.
 	 * @return The simplified version of the expression.
 	 */
-	private SymbolicMult<R,S> handleMultRewrite( final int[] index , final HashSet<Integer> hset ,
+	private SymbolicElem<R,S> handleMultRewrite( final int[] index , final HashSet<Integer> hset ,
 			final DroolsSession session )
 	{
 		SymbolicElem<R,S> elA = null;
@@ -409,7 +409,7 @@ public class SymbolicMult<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 			return( this );
 		}
 		
-		SymbolicMult<R,S> ret = new SymbolicMult<R,S>( elA , elB , fac );
+		SymbolicElem<R,S> ret = elA.mult( elB );
 		session.insert( ret );
 		return( ret );
 	}
