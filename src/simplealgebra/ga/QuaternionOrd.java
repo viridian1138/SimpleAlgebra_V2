@@ -38,6 +38,13 @@ import simplealgebra.NumDimensions;
 
 
 
+/**
+ * Defines multiplication rules for a quaternion algebra.
+ * 
+ * @author thorngreen
+ *
+ * @param <U> The number of dimensions in the algebra.
+ */
 public class QuaternionOrd<U extends NumDimensions> extends Ord<U> {
 
 	

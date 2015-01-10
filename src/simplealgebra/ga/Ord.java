@@ -34,9 +34,26 @@ import java.util.HashSet;
 import simplealgebra.NumDimensions;
 
 
+/**
+ * A node for defining multiplication rules for an algebra similar to Geometric Algebra.
+ * 
+ * @author thorngreen
+ *
+ * @param <U> The number of dimensions in the algebra.
+ */
 public abstract class Ord<U extends NumDimensions> {
 	
+	/**
+	 * Defines multiplication rules for an algebra similar to Geometric Algebra.
+	 * 
+	 * @param ka The basis vector for the term on the left-side of the product.
+	 * @param kb The basis vector for the term on the right-side of the product.
+	 * @param el The basis vector for the result of the product.  This is modified by the method.
+	 * @param dim The number of dimensions in the algebra.
+	 * @return True iff. the result of the product is to be negated.
+	 */
 	public abstract boolean calcOrd( HashSet<BigInteger> ka , HashSet<BigInteger> kb , HashSet<BigInteger> el , U dim );
 
+	
 }
 

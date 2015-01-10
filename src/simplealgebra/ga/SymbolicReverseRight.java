@@ -41,10 +41,35 @@ import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.PrecedenceComparator;
 import simplealgebra.symbolic.SymbolicElem;
 
+
+/**
+ * Symbolic elem. for the Geometric Algebra right-reverse <math display="inline">
+ * <mrow>
+ *   <msup>
+ *   <mrow>
+ *   <mi>A</mi>
+ *   </mrow>
+ *   <mo>&dagger;R</mo></msup>
+ * </mrow>
+ * </math> over multivectors.
+ * 
+ * @author thorngreen
+ *
+ * @param <U> The number of dimensions.
+ * @param <A> The ord of the algebra.
+ * @param <R> The enclosed type.
+ * @param <S> The factory for the enclosed type.
+ */
 public class SymbolicReverseRight<U extends NumDimensions, A extends Ord<U>, R extends Elem<R,?>, S extends ElemFactory<R,S>> extends 
 	SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> 
 {
 
+	/**
+	 * Constructs the elem.
+	 * 
+	 * @param _elemA The enclosed elem.
+	 * @param _fac The factory for the enclosed elem.
+	 */
 	public SymbolicReverseRight( 
 			SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> _elemA , 
 			GeometricAlgebraMultivectorElemFactory<U,A, R, S> _fac) 
@@ -54,6 +79,13 @@ public class SymbolicReverseRight<U extends NumDimensions, A extends Ord<U>, R e
 	}
 	
 	
+	/**
+	 * Constructs the elem. for use in a Drools ( http://drools.org ) session.
+	 * 
+	 * @param _elemA The enclosed elem.
+	 * @param _fac The factory for the enclosed elem.
+	 * @param ds The Drools session.
+	 */
 	public SymbolicReverseRight( 
 			SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> _elemA , 
 			GeometricAlgebraMultivectorElemFactory<U,A, R, S> _fac , DroolsSession ds ) 
@@ -116,7 +148,9 @@ public class SymbolicReverseRight<U extends NumDimensions, A extends Ord<U>, R e
 	
 	
 	/**
-	 * @return the elem
+	 * Gets the enclosed elem.
+	 * 
+	 * @return The enclosed elem.
 	 */
 	public SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> getElemA() {
 		return elemA;
@@ -131,6 +165,9 @@ public class SymbolicReverseRight<U extends NumDimensions, A extends Ord<U>, R e
 	}
 
 	
+	/**
+	 * The enclosed elem.
+	 */
 	private SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> elemA;
 }
 

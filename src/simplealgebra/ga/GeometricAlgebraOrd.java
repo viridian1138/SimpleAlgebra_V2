@@ -38,6 +38,13 @@ import simplealgebra.NumDimensions;
 
 
 
+/**
+ * Defines multiplication rules for Geometric Algebra.
+ * 
+ * @author thorngreen
+ *
+ * @param <U> The number of dimensions in the algebra.
+ */
 public class GeometricAlgebraOrd<U extends NumDimensions> extends Ord<U> {
 
 	

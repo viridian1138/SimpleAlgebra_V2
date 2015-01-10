@@ -37,7 +37,13 @@ import java.util.TreeSet;
 import simplealgebra.NumDimensions;
 
 
-
+/**
+ * Defines multiplication rules for Spacetime Algebra.
+ * 
+ * @author thorngreen
+ *
+ * @param <U> The number of dimensions in the algebra.
+ */
 public class SpacetimeAlgebraOrd<U extends NumDimensions> extends Ord<U> {
 
 	

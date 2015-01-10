@@ -28,11 +28,29 @@ package simplealgebra;
 
 
 
-
+/**
+ * A function that mutates an elem. into another elem. of the same type.
+ * 
+ * @author thorngreen
+ *
+ * @param <T> The type of the argument and return.
+ */
 public interface Mutator<T extends Elem<T,?>> {
 
+	/**
+	 * Returns the mutated input.
+	 * 
+	 * @param in The input.
+	 * @return The mutated input.
+	 * @throws NotInvertibleException
+	 */
 	public T mutate( T in ) throws NotInvertibleException;
 	
+	/**
+	 * Returns a string representation of the elem.
+	 * 
+	 * @return A string representation of the elem.
+	 */
 	public String writeString();
 	
 }
