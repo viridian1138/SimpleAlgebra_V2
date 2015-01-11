@@ -34,10 +34,34 @@ import simplealgebra.NotInvertibleException;
 import simplealgebra.symbolic.*;
 
 
+/**
+ * Symbolic elem for the multiplication of two matrices where the multiplication
+ * of the enclosed elems of the matrices is performed in reverse-order.  Expressed as: <math display="inline">
+ * <mrow>
+ *   <mi>A</mi>
+ *   <mo>*R</mo>
+ *   <mi>B</mi>
+ * </mrow>
+ * </math>.  Note that the multiplication of the enclosed elems may not be commutative.
+ * 
+ * 
+ * @author thorngreen
+ *
+ * @param <U> The number of dimensions in the matrix.
+ * @param <R> The enclosed type.
+ * @param <S> The factory for the enclosed type.
+ */
 public class SymbolicMultRevCoeff<U extends NumDimensions, R extends Elem<R,?>, S extends ElemFactory<R,S>> extends 
 	SymbolicElem<SquareMatrixElem<U,R,S>,SquareMatrixElemFactory<U,R,S>> 
 {
 
+	/**
+	 * Constructs the elem.
+	 * 
+	 * @param _elemA The left-side argument of the multiplication.
+	 * @param _elemB The right-side argument of the multiplication.
+	 * @param _fac The factory for the enclosed type.
+	 */
 	public SymbolicMultRevCoeff( SymbolicElem<SquareMatrixElem<U,R,S>,SquareMatrixElemFactory<U,R,S>> _elemA , 
 			SymbolicElem<SquareMatrixElem<U,R,S>,SquareMatrixElemFactory<U,R,S>> _elemB ,
 			SquareMatrixElemFactory<U, R, S> _fac )
@@ -115,21 +139,32 @@ public class SymbolicMultRevCoeff<U extends NumDimensions, R extends Elem<R,?>, 
 	
 	
 	/**
-	 * @return the elemA
+	 * Gets the left-side argument of the multiplication.
+	 * 
+	 * @return The left-side argument of the multiplication.
 	 */
 	public SymbolicElem<SquareMatrixElem<U,R,S>,SquareMatrixElemFactory<U,R,S>> getElemA() {
 		return elemA;
 	}
 
 	/**
-	 * @return the elemB
+	 * Gets the right-side argument of the multiplication.
+	 * 
+	 * @return The right-side argument of the multiplication.
 	 */
 	public SymbolicElem<SquareMatrixElem<U,R,S>,SquareMatrixElemFactory<U,R,S>> getElemB() {
 		return elemB;
 	}
 	
 
+	/**
+	 * The left-side argument of the multiplication.
+	 */
 	private SymbolicElem<SquareMatrixElem<U,R,S>,SquareMatrixElemFactory<U,R,S>> elemA;
+	
+	/**
+	 * The right-side argument of the multiplication.
+	 */
 	private SymbolicElem<SquareMatrixElem<U,R,S>,SquareMatrixElemFactory<U,R,S>> elemB;
 
 }

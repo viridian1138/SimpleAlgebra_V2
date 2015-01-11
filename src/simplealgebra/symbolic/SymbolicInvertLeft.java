@@ -38,7 +38,22 @@ import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
 
 /**
- * Symbolic elem for a left inverse.
+ * Symbolic elem for the left-side inverse of an elem.  That is to say, one that satisfies: <math display="inline">
+ * <mrow>
+ *  <msup>
+ *          <mi>A</mi>
+ *        <mo>-1L</mo>
+ *  </msup>
+ *  <mi>A</mi>
+ *  <mo>=</mo>
+ *  <mi>I</mi>
+ * </mrow>
+ * </math>
+ * where <math display="inline">
+ * <mrow>
+ *  <mi>I</mi>
+ * </mrow>
+ * </math> is the identity.
  * 
  * @author thorngreen
  *

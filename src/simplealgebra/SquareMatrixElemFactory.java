@@ -27,14 +27,28 @@ package simplealgebra;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.HashMap;
 
-import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SymbolicElem;
 
+
+/**
+ * Factory for square matrix elems.
+ * 
+ * @author thorngreen
+ *
+ * @param <U> The number of dimensions in the square matrix.
+ * @param <R> The enclosed type.
+ * @param <S> The factory for the enclosed type.
+ */
 public class SquareMatrixElemFactory<U extends NumDimensions, R extends Elem<R,?>, S extends ElemFactory<R,S>> extends ElemFactory<SquareMatrixElem<U,R,S>, SquareMatrixElemFactory<U,R,S>> {
 
 	
+	/**
+	 * Constructs the factory.
+	 * 
+	 * @param _fac The factory for the enclosed type.
+	 * @param _dim The number of dimensions.
+	 */
 	public SquareMatrixElemFactory( S _fac , U _dim )
 	{
 		fac = _fac;
@@ -122,13 +136,25 @@ public class SquareMatrixElemFactory<U extends NumDimensions, R extends Elem<R,?
 	}
 	
 	
+	/**
+	 * Returns the factory for the enclosed type.
+	 * 
+	 * @return The factory for the enclosed type.
+	 */
 	public S getFac()
 	{
 		return( fac );
 	}
 	
 	
+	/**
+	 * The factory for the enclosed type.
+	 */
 	private S fac;
+	
+	/**
+	 * The number of dimensions in the square matrix.
+	 */
 	private U dim;
 
 }

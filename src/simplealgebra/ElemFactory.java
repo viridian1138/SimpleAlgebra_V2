@@ -25,22 +25,51 @@
 package simplealgebra;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
-import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SymbolicElem;
 
+/**
+ * Factory for elems.
+ * 
+ * @author thorngreen
+ *
+ * @param <T>
+ * @param <R>
+ */
 public abstract class ElemFactory<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 
+	/**
+	 * Returns an instance of the identity elem.
+	 * 
+	 * @return An instance of the identity elem.
+	 */
 	public abstract T identity();
 	
+	/**
+	 * Returns an instance of the zero elem.
+	 * 
+	 * @return An instance of the zero elem.
+	 */
 	public abstract T zero();
 	
+	/**
+	 * Returns an instance of the negation of the identity elem.
+	 * 
+	 * @return An instance of the negation of the identity elem.
+	 */
 	public T negativeIdentity()
 	{
 		return( identity().negate() );
 	}
 	
+	/**
+	 * Handles optional operations that are not supported by all elems.
+	 * 
+	 * @param id The id for the command describing the operation.
+	 * @param args The arguments for the operation.
+	 * @return The result of the operation.
+	 * @throws NotInvertibleException
+	 */
 	public SymbolicElem<T, R> handleSymbolicOptionalOp( Object id , ArrayList<SymbolicElem<T, R>> args ) throws NotInvertibleException
 	{
 		throw( new RuntimeException( "Operation Not Supported" ) );
@@ -48,6 +77,13 @@ public abstract class ElemFactory<T extends Elem<T,?>, R extends ElemFactory<T,R
 	
 	public abstract boolean isMultCommutative();
 	
+	/**
+	 * Returns whether the multiplication of the enclosed type if commutative, or true
+	 * if there is no enclosed type.
+	 * 
+	 * @return Whether the multiplication of the enclosed type if commutative, or true
+	 * if there is no enclosed type.
+	 */
 	public abstract boolean isNestedMultCommutative();
 	
 	

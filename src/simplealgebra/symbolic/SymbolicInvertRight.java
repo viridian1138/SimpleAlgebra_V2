@@ -38,7 +38,22 @@ import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
 
 /**
- * Symbolic elem for a right inverse.
+ * Symbolic elem for the right-side inverse of an elem.  That is to say, one that satisfies: <math display="inline">
+ * <mrow>
+ *  <mi>A</mi>
+ *  <msup>
+ *          <mi>A</mi>
+ *        <mo>-1R</mo>
+ *  </msup>
+ *  <mo>=</mo>
+ *  <mi>I</mi>
+ * </mrow>
+ * </math> 
+ * where <math display="inline">
+ * <mrow>
+ *  <mi>I</mi>
+ * </mrow>
+ * </math> is the identity.
  * 
  * @author thorngreen
  *

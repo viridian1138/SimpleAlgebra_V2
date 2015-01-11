@@ -47,8 +47,22 @@ public class ComplexElem<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 	extends MutableElem<R,ComplexElem<R,S>,ComplexElemFactory<R,S>>
 	{
 	
+	/**
+	 * Defines enumerated commands for complex numbers.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	public static enum ComplexCmd {
+		
+		/**
+		 * Enumerated command for the left-side conjugate of a complex number.
+		 */
 		CONJUGATE_LEFT,
+		
+		/**
+		 * Enumerated command for the right-side conjugate of a complex number.
+		 */
 		CONJUGATE_RIGHT
 	};
 
@@ -178,6 +192,12 @@ public class ComplexElem<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 		}
 	}
 	
+	/**
+	 * Returns the left-side conjugate of the elem.
+	 * 
+	 * @return The left-side conjugate of the elem.
+	 * @throws NotInvertibleException
+	 */
 	private ComplexElem<R, S> conjugateLeft() throws NotInvertibleException { 
 		if( re.getFac().isMultCommutative() )
 		{
@@ -226,6 +246,12 @@ public class ComplexElem<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 		}
 	}
 	
+	/**
+	 * Returns the right-side conjugate of the elem.
+	 * 
+	 * @return The right-side conjugate of the elem.
+	 * @throws NotInvertibleException
+	 */
 	private ComplexElem<R, S> conjugateRight() throws NotInvertibleException { 
 		if( re.getFac().isMultCommutative() )
 		{
@@ -311,6 +337,12 @@ public class ComplexElem<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 	}
 
 	
+	/**
+	 * Constructs the elem.
+	 * 
+	 * @param _re The real component of the elem.
+	 * @param _im The imaginary component of the elem.
+	 */
 	public ComplexElem( R _re , R _im )
 	{
 		re = _re;
@@ -320,22 +352,32 @@ public class ComplexElem<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 	
 
 	/**
-	 * @return the re
+	 * Gets the real component of the elem.
+	 * 
+	 * @return The real component of the elem.
 	 */
 	public R getRe() {
 		return re;
 	}
 
 	/**
-	 * @return the im
+	 * Gets the imaginary component of the elem.
+	 * 
+	 * @return The imaginary component of the elem.
 	 */
 	public R getIm() {
 		return im;
 	}
 
 
-
+	/**
+	 * The real component of the elem.
+	 */
 	private R re;
+	
+	/**
+	 * The imaginary component of the elem.
+	 */
 	private R im;
 
 }
