@@ -35,7 +35,59 @@ import simplealgebra.symbolic.PrecedenceComparator;
 import simplealgebra.symbolic.SymbolicElem;
 
 /**
- * Symbolic elem for the right-side conjugate of a complex number.
+ * Symbolic elem for the right-side conjugate of a complex number defined as satisfying: <math display="inline">
+ * <mrow>
+ *  <mfenced open="(" close=")" separators=",">
+ *    <mrow>
+ *      <mi>a</mi>
+ *      <mo>+</mo>
+ *      <mi>i</mi>
+ *      <mi>b</mi>
+ *    </mrow>
+ *  </mfenced>
+ *  <msup>
+ *        <mrow>
+ *          <mfenced open="(" close=")" separators=",">
+ *            <mrow>
+ *              <mi>a</mi>
+ *              <mo>+</mo>
+ *              <mi>i</mi>
+ *              <mi>b</mi>
+ *            </mrow>
+ *          </mfenced>
+ *        </mrow>
+ *      <mrow>
+ *        <mo>*</mo>
+ *        <mo>R</mo>
+ *      </mrow>
+ *  </msup>
+ *  <mo>=</mo>
+ *  <msup>
+ *          <mi>a</mi>
+ *        <mn>2</mn>
+ *  </msup>
+ *  <mo>+</mo>
+ *  <msup>
+ *          <mi>b</mi>
+ *        <mn>2</mn>
+ *  </msup>
+ * </mrow>
+ * </math>
+ *
+ * <P> Note that in SimpleAlgebra this is not necessarily <math display="inline">
+ * <mrow>
+ *  <mi>a</mi>
+ *  <mo>-</mo>
+ *  <mi>i</mi>
+ *  <mi>b</mi>
+ * </mrow>
+ * </math> because the product <math display="inline">
+ * <mrow>
+ *  <mi>a</mi>
+ *  <mi>b</mi>
+ * </mrow>
+ * </math> does not necessarily commute.
+ * 
  * 
  * @author thorngreen
  *

@@ -27,8 +27,24 @@
 
 package simplealgebra;
 
+/**
+ * In interface implemented by elems that support mutation.
+ * 
+ * @author thorngreen
+ *
+ * @param <R> The mutable type.
+ * @param <S> The elem. type.
+ * @param <T> The type for the enclosed elem.
+ */
 public interface Mutable<R extends Mutable<R,?,?>, S extends Elem<S,?>, T extends Elem<T,?>> {
 	
+	/**
+	 * Mutates the elem.
+	 * 
+	 * @param in The mutator function.
+	 * @return The mutated elem.
+	 * @throws NotInvertibleException
+	 */
 	public S mutate( Mutator<T> in ) throws NotInvertibleException;
 
 }

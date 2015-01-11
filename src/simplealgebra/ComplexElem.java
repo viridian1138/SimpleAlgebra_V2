@@ -33,6 +33,11 @@ import simplealgebra.ga.GeometricAlgebraOrd;
 /**
  * Complex number for representing e.g. phasors in electrical circuit theory.
  * 
+ * See http://en.wikipedia.org/wiki/Complex_number
+ * 
+ * See http://en.wikipedia.org/wiki/Phasor
+ * 
+ * 
  * @author thorngreen
  *
  * @param <R>

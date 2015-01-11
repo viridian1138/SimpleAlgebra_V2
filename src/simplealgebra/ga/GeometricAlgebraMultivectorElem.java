@@ -54,11 +54,34 @@ import java.io.*;
 public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends Ord<U>, R extends Elem<R,?>, S extends ElemFactory<R,S>> 
 	extends MutableElem<R, GeometricAlgebraMultivectorElem<U,A,R,S>, GeometricAlgebraMultivectorElemFactory<U,A,R,S>>  {
 
+	/**
+	 * Defines enumerated commands for Geometric Algebra.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	public static enum GeometricAlgebraMultivectorCmd {
+		
+		/**
+		 * An enumerated command for a dot product.
+		 */
 		DOT,
+		
+		/**
+		 * An enumerated command for a wedge product.
+		 */
 		WEDGE,
+		
+		/**
+		 * An enumerated command for right-side reversion.
+		 */
 		REVERSE_LEFT,
+		
+		/**
+		 * An enumerated command for left-side reversion.
+		 */
 		REVERSE_RIGHT
+		
 	};
 	
 	public GeometricAlgebraMultivectorElem( S _fac , U _dim , A _ord )

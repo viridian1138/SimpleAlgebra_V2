@@ -26,8 +26,22 @@
 
 package simplealgebra;
 
+
+/**
+ * Mutator for right-side multiplication.
+ * 
+ * @author thorngreen
+ *
+ * @param <T> The mutation type.
+ */
 public class MultRightMutator<T extends Elem<T,?>> implements Mutator<T> {
 	
+	/**
+	 * Constructs the mutator.
+	 * 
+	 * @param _elem The elem. by which to multiply.
+	 * @param _name The name of the mutation.
+	 */
 	public MultRightMutator( T _elem , String _name )
 	{
 		elem = _elem;
@@ -44,7 +58,14 @@ public class MultRightMutator<T extends Elem<T,?>> implements Mutator<T> {
 		return( "multRight[ " + name + " ]" );
 	}
 
+	/**
+	 * The elem. by which to multiply.
+	 */
 	private T elem;
+	
+	/**
+	 * The name of the mutation.
+	 */
 	private String name;
 	
 }

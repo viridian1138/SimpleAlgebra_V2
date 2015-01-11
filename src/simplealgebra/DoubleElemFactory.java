@@ -26,12 +26,17 @@
 package simplealgebra;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
-import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SymbolicAbsoluteValue;
 import simplealgebra.symbolic.SymbolicElem;
 
+
+/**
+ * Factory for double elems.
+ * 
+ * @author thorngreen
+ *
+ */
 public class DoubleElemFactory extends ElemFactory<DoubleElem, DoubleElemFactory> {
 
 	@Override
@@ -79,6 +84,9 @@ public class DoubleElemFactory extends ElemFactory<DoubleElem, DoubleElemFactory
 	}
 	
 	
+	/**
+	 * Constructs the factory.
+	 */
 	public DoubleElemFactory()
 	{
 	}

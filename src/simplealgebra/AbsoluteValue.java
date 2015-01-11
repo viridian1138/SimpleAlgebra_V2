@@ -27,8 +27,19 @@
 
 package simplealgebra;
 
+/**
+ * Defines an enumerated command for calculating the absolute value.
+ * 
+ * @author thorngreen
+ *
+ */
 public enum AbsoluteValue {
+	
+	/**
+	 * An enumerated command for calculating the absolute value.
+	 */
 	ABSOLUTE_VALUE
+	
 }
 
 

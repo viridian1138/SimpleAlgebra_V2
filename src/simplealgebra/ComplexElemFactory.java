@@ -25,15 +25,26 @@
 package simplealgebra;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 
-import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SymbolicElem;
 
+
+/**
+ * Factory for complex number elems.
+ * 
+ * @author thorngreen
+ *
+ * @param <R> The enclosed type.
+ * @param <S> The factory for the enclosed type.
+ */
 public class ComplexElemFactory<R extends Elem<R,?>, S extends ElemFactory<R,S>> extends ElemFactory<ComplexElem<R,S>, ComplexElemFactory<R,S>> {
 
 	
-	
+	/**
+	 * Constructs the factory.
+	 * 
+	 * @param _fac The factory for the enclosed type.
+	 */
 	public ComplexElemFactory( S _fac )
 	{
 		fac = _fac;
@@ -95,12 +106,20 @@ public class ComplexElemFactory<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 	}
 	
 	
+	/**
+	 * Gets the factory for enclosed type.
+	 * 
+	 * @return The factory for the enclosed type.
+	 */
 	public S getFac()
 	{
 		return( fac );
 	}
 	
 	
+	/**
+	 * The factory for the enclosed type.
+	 */
 	private S fac;
 
 }

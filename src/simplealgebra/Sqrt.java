@@ -27,8 +27,19 @@
 
 package simplealgebra;
 
+/**
+ * Defines an enumerated command for a square root.
+ * 
+ * @author thorngreen
+ *
+ */
 public enum Sqrt {
+	
+	/**
+	 * An enumerated command for a square root.
+	 */
 	SQRT
+	
 }
 
 

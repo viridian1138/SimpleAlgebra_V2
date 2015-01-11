@@ -27,12 +27,26 @@
 package simplealgebra;
 
 
-
+/**
+ * An elem. for which the enclosed elems can be mutated by a Mutator instance.
+ * 
+ * @author thorngreen
+ *
+ * @param <T> The enclosed type.
+ * @param <U> The elem. type.
+ * @param <R> The factory for the elem. type.
+ */
 public abstract class MutableElem<T extends Elem<T,?>, U extends MutableElem<T,U,?>, R extends ElemFactory<U,R> > 
 	extends Elem<U,R> implements Mutable<U,U,T> 
 {
 
 	
+	/**
+	 * Returns a mutator for the elem. type given a mutator for the enclosed type.
+	 * 
+	 * @param elem The mutator for the enclosed type.
+	 * @return A mutator for the elem. type.
+	 */
 	public Mutator<U> createElemMutator( final Mutator<T> elem )
 	{
 		final Mutator<U> ret = new Mutator<U>()

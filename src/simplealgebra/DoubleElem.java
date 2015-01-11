@@ -27,6 +27,12 @@ package simplealgebra;
 
 import java.util.ArrayList;
 
+/**
+ * An elem for doubles.
+ * 
+ * @author thorngreen
+ *
+ */
 public class DoubleElem extends Elem<DoubleElem, DoubleElemFactory> {
 
 	@Override
@@ -101,7 +107,11 @@ public class DoubleElem extends Elem<DoubleElem, DoubleElemFactory> {
 	
 	
 	
-	
+	/**
+	 * Constructs the elem.
+	 * 
+	 * @param _d The double value.
+	 */
 	public DoubleElem( double _d )
 	{
 		if( Double.isNaN( _d ) || Double.isInfinite( _d ) )
@@ -113,14 +123,20 @@ public class DoubleElem extends Elem<DoubleElem, DoubleElemFactory> {
 	
 	
 	
-	
+	/**
+	 * Gets the double value.
+	 * 
+	 * @return The double value.
+	 */
 	public double getVal()
 	{
 		return( d );
 	}
 	
 
-	
+	/**
+	 * The double value.
+	 */
 	private double d;
 	
 

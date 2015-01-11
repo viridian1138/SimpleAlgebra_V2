@@ -25,6 +25,16 @@
 
 package simplealgebra;
 
+
+/**
+ * An exception indicating that an operation failed due to an inability to
+ * invert an elem.  Examples of reasons why an elem. can't be inverted are
+ * division by zero, attempts to invert matrices that are not invertible,
+ * and attempts to invert idempotent multivectors.
+ * 
+ * @author thorngreen
+ *
+ */
 public class NotInvertibleException extends Exception {
 
 }
