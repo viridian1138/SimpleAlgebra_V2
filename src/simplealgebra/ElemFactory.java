@@ -33,20 +33,52 @@ import simplealgebra.symbolic.SymbolicElem;
  * 
  * @author thorngreen
  *
- * @param <T>
- * @param <R>
+ * @param <T> The elem type.
+ * @param <R> The factory for the elem type.
  */
 public abstract class ElemFactory<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 
 	/**
-	 * Returns an instance of the identity elem.
+	 * Returns an instance of the identity elem satisfying <math display="inline">
+     * <mrow>
+     *  <mi>A</mi>
+     *  <mi>I</mi>
+     *  <mo>=</mo>
+     *  <mi>I</mi>
+     *  <mi>A</mi>
+     *  <mo>=</mo>
+     *  <mi>A</mi>
+     * </mrow>
+     * </math>
 	 * 
 	 * @return An instance of the identity elem.
 	 */
 	public abstract T identity();
 	
 	/**
-	 * Returns an instance of the zero elem.
+	 * Returns an instance of the zero elem satisfying <math display="inline">
+     * <mrow>
+     *  <mi>A</mi>
+     *  <mi>Z</mi>
+     *  <mo>=</mo>
+     *  <mi>Z</mi>
+     *  <mi>A</mi>
+     *  <mo>=</mo>
+     *  <mi>Z</mi>
+     * </mrow>
+     * </math>  and   <math display="inline">
+     * <mrow>
+     *  <mi>A</mi>
+     *  <mo>+</mo>
+     *  <mi>Z</mi>
+     *  <mo>=</mo>
+     *  <mi>Z</mi>
+     *  <mo>+</mo>
+     *  <mi>A</mi>
+     *  <mo>=</mo>
+     *  <mi>A</mi>
+     * </mrow>
+     * </math>
 	 * 
 	 * @return An instance of the zero elem.
 	 */
@@ -75,6 +107,11 @@ public abstract class ElemFactory<T extends Elem<T,?>, R extends ElemFactory<T,R
 		throw( new RuntimeException( "Operation Not Supported" ) );
 	}
 	
+	/**
+	 * Returns whether the multiplication of the elem type is commutative.
+	 * 
+	 * @return Whether the multiplication of the elem type is commutative.
+	 */
 	public abstract boolean isMultCommutative();
 	
 	/**

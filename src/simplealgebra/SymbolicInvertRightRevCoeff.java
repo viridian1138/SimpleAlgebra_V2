@@ -34,6 +34,7 @@ import simplealgebra.NotInvertibleException;
 import simplealgebra.symbolic.*;
 
 
+
 public class SymbolicInvertRightRevCoeff<U extends NumDimensions, R extends Elem<R,?>, S extends ElemFactory<R,S>> extends 
 	SymbolicElem<SquareMatrixElem<U,R,S>,SquareMatrixElemFactory<U,R,S>> 
 {
