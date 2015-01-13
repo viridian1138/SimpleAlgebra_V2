@@ -37,15 +37,39 @@ import simplealgebra.symbolic.DroolsSession;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SymbolicElem;
 
+
+/**
+ * An elem defining a term that is evaluated over a discretized space such as the discretized
+ * space in the Euler Method.
+ * 
+ * @author thorngreen
+ *
+ * @param <R> The enclosed type.
+ * @param <S> The factory for the enclosed type.
+ * @param <K> The type of the implicit space terms that are to be mapped into discretized coordinates.
+ */
 public abstract class Nelem<R extends Elem<R,?>, S extends ElemFactory<R,S>, K extends Elem<?,?>> extends SymbolicElem<R,S> 
 {
 
+	/**
+	 * Constructs the elem.
+	 * 
+	 * @param _fac The factory for the enclosed type.
+	 * @param _coord Map taking implicit space terms to discrete ordinates of type BigInteger.
+	 */
 	public Nelem( S _fac , HashMap<K,BigInteger> _coord )
 	{
 		super( _fac );
 		coord = _coord;
 	}
 	
+	/**
+	 * Constructs the elem. for use in a Drools ( http://drools.org ) session.
+	 * 
+	 * @param _fac The factory for the enclosed type.
+	 * @param _coord Map taking implicit space terms to discrete ordinates of type BigInteger.
+	 * @param ds The Drools session.
+	 */
 	public Nelem( S _fac , HashMap<K,BigInteger> _coord , DroolsSession ds )
 	{
 		this( _fac , _coord );
@@ -58,6 +82,9 @@ public abstract class Nelem<R extends Elem<R,?>, S extends ElemFactory<R,S>, K e
 	}
 
 	
+	/**
+	 * Map taking implicit space terms to discrete ordinates of type BigInteger.
+	 */
 	protected HashMap<K,BigInteger> coord = new HashMap<K,BigInteger>();
 
 }

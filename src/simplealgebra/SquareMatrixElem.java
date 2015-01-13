@@ -33,16 +33,20 @@ import java.util.Iterator;
 
 import simplealgebra.et.EinsteinTensorElem;
 import simplealgebra.ga.GeometricAlgebraMultivectorElem;
-import simplealgebra.symbolic.SymbolicAdd;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicIdentity;
-import simplealgebra.symbolic.SymbolicInvertLeft;
-import simplealgebra.symbolic.SymbolicInvertRight;
-import simplealgebra.symbolic.SymbolicMult;
-import simplealgebra.symbolic.SymbolicNegate;
 import simplealgebra.symbolic.SymbolicZero;
 
 
+/**
+ * An elem for a sparse square matrix.
+ * 
+ * @author thorngreen
+ *
+ * @param <U> The number of dimensions in the matrix.
+ * @param <R> The enclosed type.
+ * @param <S> The factory for the enclosed type.
+ */
 public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S extends ElemFactory<R,S>> extends 
 	MutableElem<R,SquareMatrixElem<U,R,S>, SquareMatrixElemFactory<U,R,S>> {
 	
@@ -824,6 +828,12 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	}
 	
 	
+	/**
+	 * Left-multiplies all values in a column by a parameter.
+	 * 
+	 * @param col The column.
+	 * @param mv The value by which to multiply.
+	 */
 	private void multiplyThroughColumnLeft( BigInteger col , R mv )
 	{
 		HashMap<BigInteger,R> subMap = columnMap.get( col );
@@ -844,6 +854,12 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	}
 	
 	
+	/**
+	 * Left-multiplies all values in a row by a parameter.
+	 * 
+	 * @param row The row.
+	 * @param mv The value by which to multiply.
+	 */
 	private void multiplyThroughRowLeft( BigInteger row , R mv )
 	{
 		HashMap<BigInteger,R> subMap = rowMap.get( row );
@@ -864,6 +880,12 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	}
 	
 	
+	/**
+	 * Right-multiplies all values in a column by a parameter.
+	 * 
+	 * @param col The column.
+	 * @param mv The value by which to multiply.
+	 */
 	private void multiplyThroughColumnRight( BigInteger col , R mv )
 	{
 		HashMap<BigInteger,R> subMap = columnMap.get( col );
@@ -884,6 +906,12 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	}
 	
 	
+	/**
+	 * Right-multiplies all values in a row by a parameter.
+	 * 
+	 * @param row The row.
+	 * @param mv The value by which to multiply.
+	 */
 	private void multiplyThroughRowRight( BigInteger row , R mv )
 	{
 		HashMap<BigInteger,R> subMap = rowMap.get( row );
@@ -904,6 +932,15 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	}
 	
 	
+	/**
+	 * If necessary, replaces the i-th column with a column that can be used as the left-side i-th pivot.  Then returns the left-inverse of 
+	 * the value at [i,i].
+	 * 
+	 * @param coli The i-th column.
+	 * @param ret The matrix on which to perform identical operations to build the inverse.
+	 * @return The left-inverse of the value at [i,i].
+	 * @throws NotInvertibleException
+	 */
 	private R setUpColumnLeft( final BigInteger coli , final SquareMatrixElem<U,R,S> ret ) throws NotInvertibleException
 	{
 		try
@@ -934,6 +971,15 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	}
 	
 	
+	/**
+	 * If necessary, replaces the i-th row with a row that can be used as the left-side i-th pivot.  Then returns the left-inverse of 
+	 * the value at [i,i].
+	 * 
+	 * @param rowi The i-th row.
+	 * @param ret The matrix on which to perform identical operations to build the inverse.
+	 * @return The left-inverse of the value at [i,i].
+	 * @throws NotInvertibleException
+	 */
 	private R setUpRowLeft( final BigInteger rowi , final SquareMatrixElem<U,R,S> ret ) throws NotInvertibleException
 	{
 		try
@@ -959,12 +1005,19 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 					cnt = cnt.add( BigInteger.ONE );
 				}
 			}
-			// this.setVal(rowi, rowi, fac.identity()); // !!!!!!!!!!!!!!!!!!!!!
-			// return( fac.identity() );
 			throw( new NotInvertibleException() );
 		}
 	}
 	
+	/**
+	 * If necessary, replaces the i-th column with a column that can be used as the right-side i-th pivot.  Then returns the right-inverse of 
+	 * the value at [i,i].
+	 * 
+	 * @param coli The i-th column.
+	 * @param ret The matrix on which to perform identical operations to build the inverse.
+	 * @return The right-inverse of the value at [i,i].
+	 * @throws NotInvertibleException
+	 */
 	private R setUpColumnRight( final BigInteger coli , final SquareMatrixElem<U,R,S> ret ) throws NotInvertibleException
 	{
 		try
@@ -995,6 +1048,15 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	}
 	
 	
+	/**
+	 * If necessary, replaces the i-th row with a row that can be used as the right-side i-th pivot.  Then returns the right-inverse of 
+	 * the value at [i,i].
+	 * 
+	 * @param rowi The i-th row.
+	 * @param ret The matrix on which to perform identical operations to build the inverse.
+	 * @return The right-inverse of the value at [i,i].
+	 * @throws NotInvertibleException
+	 */
 	private R setUpRowRight( final BigInteger rowi , final SquareMatrixElem<U,R,S> ret ) throws NotInvertibleException
 	{
 		try
@@ -1025,6 +1087,12 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	}
 	
 	
+	/**
+	 * Exchanges two columns in the matrix.
+	 * 
+	 * @param cola The first column to exchange.
+	 * @param colb The second column to exchange.
+	 */
 	private void exchangeColumns( final BigInteger cola , final BigInteger colb )
 	{
 		HashMap<BigInteger,R> subA = columnMap.get( cola );
@@ -1041,6 +1109,12 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	}
 	
 	
+	/**
+	 * Exchanges two rows in the matrix.
+	 * 
+	 * @param rowa The first row to exchange.
+	 * @param rowb The second row to exchange.
+	 */
 	private void exchangeRows( final BigInteger rowa , final BigInteger rowb )
 	{
 		HashMap<BigInteger,R> subA = rowMap.get( rowa );
@@ -1057,6 +1131,12 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	}
 	
 	
+	/**
+	 * Copies all values from a row map into a particular column.
+	 * 
+	 * @param col The column.
+	 * @param rmap The row map.
+	 */
 	private void setAllColumnValues( final BigInteger col , HashMap<BigInteger,R> rmap )
 	{
 		if( rmap != null )
@@ -1071,6 +1151,12 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	}
 	
 	
+	/**
+	 * Copies all values from a column map into a particular row.
+	 * 
+	 * @param row The row.
+	 * @param cmap The column map.
+	 */
 	private void setAllRowValues( final BigInteger row , HashMap<BigInteger,R> cmap )
 	{
 		if( cmap != null )
@@ -1085,6 +1171,12 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	}
 	
 	
+	/**
+	 * Removes all values for a column from the sparse collection.
+	 * 
+	 * @param col The column.
+	 * @param rmap The row map at the column.
+	 */
 	private void eraseAllColumnValues( final BigInteger col , HashMap<BigInteger,R> rmap )
 	{
 		if( rmap != null )
@@ -1099,6 +1191,12 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	}
 	
 	
+	/**
+	 * Removes all values for a row from the sparse collection.
+	 * 
+	 * @param row The row.
+	 * @param cmap The column map at the row.
+	 */
 	private void eraseAllRowValues( final BigInteger row , HashMap<BigInteger,R> cmap )
 	{
 		if( cmap != null )
@@ -1113,6 +1211,12 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	}
 	
 	
+	/**
+	 * Removes a value from the sparse collection.
+	 * 
+	 * @param row The matrix row.
+	 * @param col The matrix column.
+	 */
 	private void eraseVal( final BigInteger row , final BigInteger col )
 	{
 		HashMap<BigInteger,R> subMap = rowMap.get( row );
@@ -1140,6 +1244,11 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	}
 	
 	
+	/**
+	 * Returns a clone of the matrix.
+	 * 
+	 * @return The clone of the matrix.
+	 */
 	private SquareMatrixElem<U, R, S> icopy()
 	{
 		SquareMatrixElem<U,R,S> ret = new SquareMatrixElem<U,R,S>(fac,dim);
@@ -1159,6 +1268,7 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 		return( ret );
 	}
 
+	
 	@Override
 	public SquareMatrixElem<U, R, S> divideBy(int val) {
 		SquareMatrixElem<U,R,S> ret = new SquareMatrixElem<U,R,S>(fac,dim);
@@ -1184,6 +1294,13 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	}
 	
 	
+	/**
+	 * Gets a value in the matrix.  Null is possible.
+	 * 
+	 * @param row The matrix row.
+	 * @param col The matrix column.
+	 * @return The value.
+	 */
 	public R get( BigInteger row , BigInteger col )
 	{
 		HashMap<BigInteger,R> subMap = rowMap.get( row );
@@ -1199,6 +1316,13 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	}
 	
 	
+	/**
+	 * Gets a value in the matrix.  Null is not possible.
+	 * 
+	 * @param row The matrix row.
+	 * @param col The matrix column.
+	 * @return The value.
+	 */
 	public R getVal( BigInteger row , BigInteger col )
 	{
 		HashMap<BigInteger,R> subMap = rowMap.get( row );
@@ -1214,6 +1338,13 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	}
 	
 	
+	/**
+	 * Sets a value in the matrix.
+	 * 
+	 * @param row The matrix row.
+	 * @param col The matrix column.
+	 * @param val The value to set.
+	 */
 	public void setVal( BigInteger row , BigInteger col , R val )
 	{
 		HashMap<BigInteger,R> subMap = rowMap.get( row );
@@ -1237,7 +1368,12 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	}
 	
 	
-	
+	/**
+	 * Copies a column vector into a Geometric Algebra multivector.
+	 * 
+	 * @param row The column from which to copy the elements.
+	 * @param out The multivector into which the matrix elements are copied.
+	 */
 	public void columnVectorToGeometricAlgebra( BigInteger column , GeometricAlgebraMultivectorElem<U,?,R,?> out )
 	{
 		HashMap<BigInteger,R> atCol = columnMap.get( column );
@@ -1253,6 +1389,12 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	}
 	
 	
+	/**
+	 * Copies a row vector into a Geometric Algebra multivector.
+	 * 
+	 * @param row The row from which to copy the elements.
+	 * @param out The multivector into which the matrix elements are copied.
+	 */
 	public void rowVectorToGeometricAlgebra( BigInteger row , GeometricAlgebraMultivectorElem<U,?,R,?> out )
 	{
 		HashMap<BigInteger,R> atRow = rowMap.get( row );
@@ -1268,6 +1410,12 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	}
 	
 	
+	/**
+	 * Copies a column vector into a tensor of rank one.
+	 * 
+	 * @param row The column from which to copy the elements.
+	 * @param out The tensor into which the matrix elements are copied.
+	 */
 	public void columnVectorToRankOneTensor( BigInteger column , EinsteinTensorElem<?,R,?> out )
 	{
 		if( !( out.getTensorRank().equals( BigInteger.ONE ) ) )
@@ -1288,6 +1436,12 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	}
 	
 	
+	/**
+	 * Copies a row vector into a tensor of rank one.
+	 * 
+	 * @param row The row from which to copy the elements.
+	 * @param out The tensor into which the matrix elements are copied.
+	 */
 	public void rowVectorToRankOneTensor( BigInteger row , EinsteinTensorElem<?,R,?> out )
 	{
 		if( !( out.getTensorRank().equals( BigInteger.ONE ) ) )
@@ -1308,6 +1462,11 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	}
 	
 	
+	/**
+	 * Copies the matrix elements to tensor of rank two.
+	 * 
+	 * @param out The tensor into which the matrix elements are copied.
+	 */
 	public void toRankTwoTensor( EinsteinTensorElem<?,R,?> out )
 	{
 		if( !( out.getTensorRank().equals( BigInteger.valueOf( 2 ) ) ) )
@@ -1336,6 +1495,7 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	
 	
 	/**
+	 * Returns the determinant of the matrix.
 	 * 
 	 * This should only be used when R is commutative.
 	 * 
@@ -1343,7 +1503,7 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	 * 
 	 * http://stackoverflow.com/questions/16602350/calculating-matrix-determinant
 	 * 
-	 * @return
+	 * @return The determinant of the matrix.
 	 */
 	public R determinant( )
     {
@@ -1382,6 +1542,12 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	
 	
 	
+	/**
+	 * Calculates a sub-matrix removing the index j1 for the purpose of generating the determinant.
+	 * 
+	 * @param j1 The index to be removed.
+	 * @return The sub-matrix.
+	 */
 	private SquareMatrixElem<NumDimensions,R,S> genDeterminantSubMatrix( BigInteger j1 )
 	{
 		
@@ -1523,12 +1689,24 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	}
 	
 	
-	
+	/**
+	 * The column mapping for the matrix elements.
+	 */
 	private final HashMap<BigInteger,HashMap<BigInteger,R>> columnMap = new HashMap<BigInteger,HashMap<BigInteger,R>>();
 	
+	/**
+	 * The row mapping for the matrix elements.
+	 */
 	private final HashMap<BigInteger,HashMap<BigInteger,R>> rowMap = new HashMap<BigInteger,HashMap<BigInteger,R>>();
 	
+	/**
+	 * The factory for the enclosed type.
+	 */
 	private S fac;
+	
+	/**
+	 * The number of dimensions in the matrix.
+	 */
 	private U dim;
 	
 

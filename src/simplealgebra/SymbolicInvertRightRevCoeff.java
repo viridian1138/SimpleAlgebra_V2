@@ -34,11 +34,26 @@ import simplealgebra.NotInvertibleException;
 import simplealgebra.symbolic.*;
 
 
-
+/**
+ * Symbolic elem for the right-side inverse of a square matrix where the
+ * enclosed elements in the matrix are multiplied in reverse-order.
+ * 
+ * @author thorngreen
+ *
+ * @param <U> The number of dimensions in the matrix.
+ * @param <R> The enclosed type.
+ * @param <S> The factory for the enclosed type.
+ */
 public class SymbolicInvertRightRevCoeff<U extends NumDimensions, R extends Elem<R,?>, S extends ElemFactory<R,S>> extends 
 	SymbolicElem<SquareMatrixElem<U,R,S>,SquareMatrixElemFactory<U,R,S>> 
 {
 
+	/**
+	 * Constructs the elem.
+	 * 
+	 * @param _elem The enclosed elem.
+	 * @param _fac The factory for the enclosed type.
+	 */
 	public SymbolicInvertRightRevCoeff( SymbolicElem<SquareMatrixElem<U,R,S>,SquareMatrixElemFactory<U,R,S>> _elem , 
 			SquareMatrixElemFactory<U, R, S> _fac )
 	{
@@ -93,13 +108,18 @@ public class SymbolicInvertRightRevCoeff<U extends NumDimensions, R extends Elem
 	
 	
 	/**
-	 * @return the elemA
+	 * Returns the enclosed elem.
+	 * 
+	 * @return The enclosed elem.
 	 */
 	public SymbolicElem<SquareMatrixElem<U,R,S>,SquareMatrixElemFactory<U,R,S>> getElem() {
 		return elem;
 	}
 	
 
+	/**
+	 * The enclosed elem.
+	 */
 	private SymbolicElem<SquareMatrixElem<U,R,S>,SquareMatrixElemFactory<U,R,S>> elem;
 
 }

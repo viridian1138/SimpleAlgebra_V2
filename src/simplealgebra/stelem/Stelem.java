@@ -39,14 +39,36 @@ import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 
+
+/**
+ * An elem defining a partial derivative that is evaluated over a discretized space such as the discretized
+ * space in the Euler Method.
+ * 
+ * @author thorngreen
+ *
+ * @param <R> The enclosed type.
+ * @param <S> The factory for the enclosed type.
+ * @param <K> The type of the implicit space terms that are to be mapped into discretized coordinates.
+ */
 public abstract class Stelem<R extends Elem<R,?>, S extends ElemFactory<R,S>, K extends Elem<?,?>> extends SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>> 
 {
 
+	/**
+	 * Constructs the elem.
+	 * 
+	 * @param _fac The factory for the enclosed type.
+	 */
 	public Stelem( SymbolicElemFactory<R,S> _fac )
 	{
 		super( _fac );
 	}
 	
+	/**
+	 * Constructs the elem for use in a Drools ( http://drools.org ) session.
+	 * 
+	 * @param _fac The factory for the enclosed type.
+	 * @param ds The Drools session.
+	 */
 	public Stelem( SymbolicElemFactory<R,S> _fac , DroolsSession ds )
 	{
 		this( _fac );
@@ -61,6 +83,13 @@ public abstract class Stelem<R extends Elem<R,?>, S extends ElemFactory<R,S>, K 
 	}
 	
 	
+	/**
+	 * Returns the result of adding the partial derivatives in the parameter.
+	 * 
+	 * @param withRespectTo The partial derivatives to be added.
+	 * @return An instance of the Stelem with the partial derivatives added.
+	 * @throws NotInvertibleException
+	 */
 	public Stelem<R,S,K> simplifyPartialDerivative( ArrayList<K> withRespectTo ) throws NotInvertibleException
 	{
 		Stelem<R,S,K> rm = this.cloneInstance();
@@ -69,9 +98,20 @@ public abstract class Stelem<R extends Elem<R,?>, S extends ElemFactory<R,S>, K 
 	}
 	
 	
+	/**
+	 * Clones the elem.
+	 * 
+	 * @return The clone of the elem.
+	 */
 	public abstract Stelem<R,S,K> cloneInstance();
 	
 	
+	/**
+	 * Applies a set of partial derivatives to the partialMap member.
+	 * 
+	 * @param withRespectTo The set of partial derivatives to apply.
+	 * @throws NotInvertibleException
+	 */
 	protected void applyPartialDerivative(ArrayList<K> withRespectTo)
 			throws NotInvertibleException {
 		final Iterator<K> it = withRespectTo.iterator();
@@ -92,6 +132,9 @@ public abstract class Stelem<R extends Elem<R,?>, S extends ElemFactory<R,S>, K 
 	}
 
 	
+	/**
+	 * A map storing the number of partial derivatives for each implicit space term.
+	 */
 	protected HashMap<K,BigInteger> partialMap = new HashMap<K,BigInteger>();
 
 }
