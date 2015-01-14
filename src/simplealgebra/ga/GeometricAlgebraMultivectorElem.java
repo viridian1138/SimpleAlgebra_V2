@@ -25,12 +25,12 @@
 
 package simplealgebra.ga;
 
+import java.io.PrintStream;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
-import java.util.TreeSet;
 
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
@@ -48,14 +48,23 @@ import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicMult;
 import simplealgebra.symbolic.SymbolicNegate;
 
-import java.io.*;
 
-
+/**
+ * A sparse representation of an elem similar to a Geometric Algebra multivector.  The precise
+ * elem that is produced depends on the Ord.
+ * 
+ * @author thorngreen
+ *
+ * @param <U> The number of dimensions in the multivector.
+ * @param <A> The Ord of the multivector.
+ * @param <R> The enclosed type.
+ * @param <S> The factory for the enclosed type.
+ */
 public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends Ord<U>, R extends Elem<R,?>, S extends ElemFactory<R,S>> 
 	extends MutableElem<R, GeometricAlgebraMultivectorElem<U,A,R,S>, GeometricAlgebraMultivectorElemFactory<U,A,R,S>>  {
 
 	/**
-	 * Defines enumerated commands for Geometric Algebra.
+	 * Defines enumerated commands for Geometric Algebra multivectors.
 	 * 
 	 * @author thorngreen
 	 *
@@ -84,6 +93,13 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 		
 	};
 	
+	/**
+	 * Constructs the elem.
+	 * 
+	 * @param _fac The factory for the enclosed type.
+	 * @param _dim The number of dimensions for the multivector.
+	 * @param _ord The Ord of the multivector.
+	 */
 	public GeometricAlgebraMultivectorElem( S _fac , U _dim , A _ord )
 	{
 		fac = _fac;
@@ -188,13 +204,34 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 	}
 	
 	
-	
+	/**
+	 * Represents the left-side term in one symbolic multiplication
+	 * in a multivector multiplication so that the multiplication
+	 * can be inverted.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	private class AElem extends SymbolicElem<R, S>
 	{
+		
+		/**
+		 * The basis vector for the original elem.
+		 */
 		private HashSet<BigInteger> indx;
+		
+		/**
+		 * The column for the original elem in the square matrix.
+		 */
 		private int col;
 
-		
+		/**
+		 * Constructs the elem.
+		 * 
+		 * @param _fac The factory for the enclosed type.
+		 * @param _indx The basis vector for the original elem.
+		 * @param _col The column for the original elem in the square matrix.
+		 */
 		public AElem(S _fac, HashSet<BigInteger> _indx, int _col) {
 			super(_fac);
 			indx = _indx;
@@ -220,14 +257,18 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 		}
 		
 		/**
-		 * @return the indx
+		 * Returns the basis vector for the original elem.
+		 * 
+		 * @return The basis vector for the original elem.
 		 */
 		public HashSet<BigInteger> getIndx() {
 			return indx;
 		}
 		
 		/**
-		 * @return the col
+		 * Returns the column for the original elem in the square matrix.
+		 * 
+		 * @return The column for the original elem in the square matrix.
 		 */
 		public int getCol() {
 			return col;
@@ -236,12 +277,33 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 	}
 	
 	
+	/**
+	 * Represents the right-side term in one symbolic multiplication
+	 * in a multivector multiplication so that the multiplication
+	 * can be inverted.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	private class BElem extends SymbolicElem<R, S>
 	{
+		/**
+		 * The basis vector for the original elem.
+		 */
 		private HashSet<BigInteger> indx;
+		
+		/**
+		 * The column for the original elem in the square matrix.
+		 */
 		private int col;
 
-		
+		/**
+		 * Constructs the elem.
+		 * 
+		 * @param _fac The factory for the enclosed type.
+		 * @param _indx The basis vector for the original elem.
+		 * @param _col The column for the original elem in the square matrix.
+		 */
 		public BElem(S _fac, HashSet<BigInteger> _indx, int _col) {
 			super(_fac);
 			indx = _indx;
@@ -267,14 +329,18 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 		}
 		
 		/**
-		 * @return the indx
+		 * Returns the basis vector for the original elem.
+		 * 
+		 * @return The basis vector for the original elem.
 		 */
 		public HashSet<BigInteger> getIndx() {
 			return indx;
 		}
 		
 		/**
-		 * @return the col
+		 * Returns the column for the original elem in the square matrix.
+		 * 
+		 * @return The column for the original elem in the square matrix.
 		 */
 		public int getCol() {
 			return col;
@@ -283,6 +349,14 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 	}
 
 	
+	/**
+	 * Maps a symbolic left-multiplication from one basis vector
+	 * into a set of matrix coefficients so that the matrix can be inverted.
+	 * 
+	 * @param in The symbolic expression for the basis vector.
+	 * @param row The matrix row corresponding to the basis vector.
+	 * @param out The square matrix into which the coefficients are added.
+	 */
 	private void handleInvertElemLeft( SymbolicElem<R,S> in , 
 			BigInteger row , SquareMatrixElem<NumDimensions,R,S> out )
 	{
@@ -333,7 +407,14 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 	}
 	
 	
-	
+	/**
+	 * Maps a symbolic right-multiplication from one basis vector
+	 * into a set of matrix coefficients so that the matrix can be inverted.
+	 * 
+	 * @param in The symbolic expression for the basis vector.
+	 * @param row The matrix row corresponding to the basis vector.
+	 * @param out The square matrix into which the coefficients are added.
+	 */
 	private void handleInvertElemRight( SymbolicElem<R,S> in , 
 			BigInteger row , SquareMatrixElem<NumDimensions,R,S> out )
 	{
@@ -669,6 +750,12 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 	}
 	
 	
+	/**
+	 * Returns a graded part of the multivector.
+	 * 
+	 * @param grade The index of the graded part.
+	 * @return The graded part.
+	 */
 	public GeometricAlgebraMultivectorElem<U,A, R, S> getGradedPart( BigInteger grade )
 	{
 		GeometricAlgebraMultivectorElem<U,A, R, S> ret = new GeometricAlgebraMultivectorElem<U,A, R, S>( fac , dim , ord );
@@ -685,6 +772,12 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 	}
 	
 	
+	/**
+	 * Copies the vector part of a multivector to a row vector in a square matrix.
+	 * 
+	 * @param row The row into which to copy the multivector.
+	 * @param out The square matrix into which the vector part is to be copied.
+	 */
 	public void vectorPartToRowVector( BigInteger row , SquareMatrixElem<U, R, ?> out )
 	{
 		GeometricAlgebraMultivectorElem<U,A, R, S> grd = getGradedPart( BigInteger.ONE );
@@ -698,6 +791,12 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 	}
 	
 	
+	/**
+	 * Copies the vector part of the multivector to a column vector in a square matrix.
+	 * 
+	 * @param column The column into which to copy the multivector.
+	 * @param out The square matrix into which the vector part is to be copied.
+	 */
 	public void vectorPartToColumnVector( BigInteger column , SquareMatrixElem<U, R, ?> out )
 	{
 		GeometricAlgebraMultivectorElem<U,A, R, S> grd = getGradedPart( BigInteger.ONE );
@@ -711,6 +810,11 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 	}
 	
 	
+	/**
+	 * Copies the vector part of the multivector to a tensor of rank one.
+	 * 
+	 * @param out The tensor into which the vector part is to be copied.
+	 */
 	public void vectorPartToRankOneTensor( EinsteinTensorElem<?,R,?> out )
 	{
 		if( !( out.getTensorRank().equals( BigInteger.ONE ) ) )
@@ -731,6 +835,12 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 	}
 	
 	
+	/**
+	 * Returns the dot product of the multivector with the parameter.
+	 * 
+	 * @param b The right-side argument of the dot product.
+	 * @return The result of the dot product.
+	 */
 	private GeometricAlgebraMultivectorElem<U,A, R, S> dot(GeometricAlgebraMultivectorElem<U,A, R, S> b) {
 		GeometricAlgebraMultivectorElem<U,A,R,S> ret = new GeometricAlgebraMultivectorElem<U,A,R,S>(fac,dim,ord);
 		
@@ -771,6 +881,12 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 	}
 	
 	
+	/**
+	 * Returns the wedge product of the multivector with the parameter.
+	 * 
+	 * @param b The right-side argument of the wedge product.
+	 * @return The result of the wedge product.
+	 */
 	private GeometricAlgebraMultivectorElem<U,A, R, S> wedge(GeometricAlgebraMultivectorElem<U,A, R, S> b) {
 		GeometricAlgebraMultivectorElem<U,A,R,S> ret = new GeometricAlgebraMultivectorElem<U,A,R,S>(fac,dim,ord);
 		
@@ -812,6 +928,13 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 	
 	
 	
+	/**
+	 * Returns whether to negate a basis element for reversion given the size of the basis vector
+	 * (for commutative nested elems only).
+	 * 
+	 * @param sz The size of the basis vector.
+	 * @return  True iff. the basis element should be negated.
+	 */
 	private boolean negateFromSize( final int sz )
 	{
 		final int acnt = sz * ( sz - 1 ) / 2;
@@ -821,6 +944,11 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 	
 	
 	
+	/**
+	 * Returns the left-side reversion of the multivector.
+	 * 
+	 * @return The left-side reversion of the multivector.
+	 */
 	private GeometricAlgebraMultivectorElem<U,A, R, S> reverseLeft()
 	{
 		if( fac.isMultCommutative() )
@@ -847,6 +975,11 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 	
 	
 	
+	/**
+	 * Returns the right-side reversion of the multivector.
+	 * 
+	 * @return The right-side reversion of the multivector.
+	 */
 	private GeometricAlgebraMultivectorElem<U,A, R, S> reverseRight()
 	{
 		if( fac.isMultCommutative() )
@@ -872,7 +1005,12 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 	
 	
 	
-	
+	/**
+	 * Copies the result of multiplying a square matrix by a row vector on the left.
+	 * 
+	 * @param in The square matrix to be multiplied.
+	 * @param rowVectorOut The multivector into which the result of the multiplication is copied.
+	 */
 	public void rowVectorMult( SquareMatrixElem<U, R, ?> in , 
 			GeometricAlgebraMultivectorElem<U,A, R, S> rowVectorOut )
 	{
@@ -904,7 +1042,12 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 		}
 	}
 	
-	
+	/**
+	 * Copies the result of multiplying a square matrix by a column vector on the left.
+	 * 
+	 * @param in The square matrix to be multiplied.
+	 * @param colVectorOut The multivector into which the result of the multiplication is copied.
+	 */
 	public void colVectorMultLeftDefault( SquareMatrixElem<U, R, ?> in , 
 			GeometricAlgebraMultivectorElem<U,A, R, S> colVectorOut )
 	{
@@ -937,7 +1080,12 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 	}
 	
 	
-	
+	/**
+	 * Copies the result of multiplying a square matrix by a column vector on the right.
+	 * 
+	 * @param in The input square matrix.
+	 * @param colVectorOut The multivector into which the result of the multiplication is copied.
+	 */
 	public void colVectorMultRight( SquareMatrixElem<U, R, ?> in , 
 			GeometricAlgebraMultivectorElem<U,A, R, S> colVectorOut )
 	{
@@ -1016,24 +1164,45 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 		return( new GeometricAlgebraMultivectorElemFactory<U,A,R,S>( fac , dim , ord ) );
 	}
 	
-	
+	/**
+	 * Gets the value at a basis vector.  Null is possible.
+	 * 
+	 * @param el The basis vector.
+	 * @return The value.
+	 */
 	public R get( HashSet<BigInteger> el )
 	{
 		return( map.get( el ) );
 	}
 	
-	
+	/**
+	 * Gets the value at a basis vector.  Null is not possible.
+	 * 
+	 * @param el The basis vector.
+	 * @return The value.
+	 */
 	public R getVal( HashSet<BigInteger> el )
 	{
 		R val = map.get( el );
 		return( val != null ? val : fac.zero() );
 	}
 	
+	/**
+	 * Sets a basis for the elem.
+	 * 
+	 * @param el The basis vector.
+	 * @param val The value to be set.
+	 */
 	public void setVal( HashSet<BigInteger> el , R val )
 	{
 		map.put(el, val);
 	}
 	
+	/**
+	 * Returns the iterator to the basis vectors of the enclosed elems.
+	 * 
+	 * @return The iterator to the basis vectors of the enclosed elems.
+	 */
 	public Iterator<HashSet<BigInteger>> getKeyIterator()
 	{
 		return( map.keySet().iterator() );
@@ -1041,11 +1210,26 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 	
 	
 	
+	/**
+	 * The map of basis vectors to enclosed elems.
+	 */
 	private final HashMap<HashSet<BigInteger>,R> map = new HashMap<HashSet<BigInteger>,R>();
 	
 	
+	
+	/**
+	 * The factory for the enclosed type.
+	 */
 	private S fac;
+	
+	/**
+	 * The number of dimensions in the multivector.
+	 */
 	private U dim;
+	
+	/**
+	 * The Ord of the multivector.
+	 */
 	private A ord;
 	
 

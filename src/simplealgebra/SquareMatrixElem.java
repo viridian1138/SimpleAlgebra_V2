@@ -50,14 +50,42 @@ import simplealgebra.symbolic.SymbolicZero;
 public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S extends ElemFactory<R,S>> extends 
 	MutableElem<R,SquareMatrixElem<U,R,S>, SquareMatrixElemFactory<U,R,S>> {
 	
+	/**
+	 * Defines enumerated commands for square matrices.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	public static enum SquareMatrixCmd {
+		
+		/**
+		 * Enumerated command to left-invert for reversed nested elems.
+		 */
 		INVERT_LEFT_REV_COEFF,
+		
+		/**
+		 * Enumerated command to right-invert for reversed nested elems.
+		 */
 		INVERT_RIGHT_REV_COEFF,
+		
+		/**
+		 * Enumerated command for multiplication by the parameter with reversed nested elems.
+		 */
 		MULT_REV_COEFF,
+		
+		/**
+		 * Enumerated command for the transpose of the square matrix.
+		 */
 		TRANSPOSE
 	};
 
 	
+	/**
+	 * Constructs the elem.
+	 * 
+	 * @param _fac The factory for the nested elem.
+	 * @param _dim The number of dimensions.
+	 */
 	public SquareMatrixElem( S _fac , U _dim )
 	{
 		fac = _fac;
@@ -160,6 +188,12 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	}
 	
 	
+	/**
+	 * Returns a multiplication by the parameter with reversed nested elems.
+	 * 
+	 * @param b The input parameter.
+	 * @return The result of the multiplication.
+	 */
 	private SquareMatrixElem<U, R, S> multRevCoeff(SquareMatrixElem<U, R, S> b) {
 		SquareMatrixElem<U,R,S> ret = new SquareMatrixElem<U,R,S>(fac,dim);
 		
@@ -253,6 +287,12 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	}
 	
 	
+	/**
+	 * Returns a right-side inverse of reversed nested elems.
+	 * 
+	 * @return A right-side inverse of reversed nested elems.
+	 * @throws NotInvertibleException
+	 */
 	private SquareMatrixElem<U, R, S> invertRightRevCoeff() throws NotInvertibleException {
 		SquareMatrixElem<U,R,S> copy = icopy();
 		return( copy.iinvertRightRevCoeff() );
@@ -266,13 +306,24 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	}
 	
 	
+	/**
+	 * Returns a left-side inverse of reversed nested elems.
+	 * 
+	 * @return A left-side inverse of reversed nested elems.
+	 * @throws NotInvertibleException
+	 */
 	private SquareMatrixElem<U, R, S> invertLeftRevCoeff() throws NotInvertibleException {
 		SquareMatrixElem<U,R,S> copy = icopy();
 		return( copy.iinvertLeftRevCoeff() );
 	}
 	
 	
-	
+	/**
+	 * Returns a right-side inverse.  Leaves the "this" matrix reduced to the identity.
+	 * 
+	 * @return A right-side inverse.
+	 * @throws NotInvertibleException
+	 */
 	private SquareMatrixElem<U, R, S> iinvertRight() throws NotInvertibleException
 	{
 		SquareMatrixElem<U,R,S> ret = getFac().identity();
@@ -378,7 +429,12 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	}
 	
 	
-	
+	/**
+	 * Returns a right-side inverse of reversed nested elems.  Leaves the "this" matrix reduced to the identity.
+	 * 
+	 * @return A right-side inverse of reversed nested elems.
+	 * @throws NotInvertibleException
+	 */
 	private SquareMatrixElem<U, R, S> iinvertRightRevCoeff() throws NotInvertibleException
 	{
 		SquareMatrixElem<U,R,S> ret = getFac().identity();
@@ -483,7 +539,12 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	}
 	
 	
-	
+	/**
+	 * Returns a left-side inverse.  Leaves the "this" matrix reduced to the identity.
+	 * 
+	 * @return A left-side inverse.
+	 * @throws NotInvertibleException
+	 */
 	private SquareMatrixElem<U, R, S> iinvertLeft() throws NotInvertibleException
 	{
 		// for( int cntx = 0 ; cntx < 16 ; cntx++ ) // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -618,6 +679,12 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	}
 	
 	
+	/**
+	 * Returns a left-side inverse of reversed nested elems.  Leaves the "this" matrix reduced to the identity.
+	 * 
+	 * @return A left-side inverse of reversed nested elems.
+	 * @throws NotInvertibleException
+	 */
 	private SquareMatrixElem<U, R, S> iinvertLeftRevCoeff() throws NotInvertibleException
 	{
 		SquareMatrixElem<U,R,S> ret = getFac().identity();
@@ -722,6 +789,13 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	}
 	
 	
+	/**
+	 * Subtracts from destCol the mult parameter times the srcCol.
+	 * 
+	 * @param srcCol The source column.
+	 * @param destCol The destination column.
+	 * @param mult The multiplier parameter.
+	 */
 	private void columnSubtractLeft( BigInteger srcCol , BigInteger destCol , R mult )
 	{
 		HashMap<BigInteger,R> subMapSrc = columnMap.get( srcCol );
@@ -748,6 +822,13 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	}
 	
 	
+	/**
+	 * Subtracts from destRow the mult parameter times the srcRow.
+	 * 
+	 * @param srcRow The source row.
+	 * @param destRow The destination row.
+	 * @param mult The multiplier parameter.
+	 */
 	private void rowSubtractLeft( BigInteger srcRow , BigInteger destRow , R mult )
 	{
 		HashMap<BigInteger,R> subMapSrc = rowMap.get( srcRow );
@@ -774,7 +855,13 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	}
 	
 	
-	
+	/**
+	 * Subtracts from destCol the srcCol * mult.
+	 * 
+	 * @param srcCol The source column.
+	 * @param destCol The destination column.
+	 * @param mult The multiplier parameter.
+	 */
 	private void columnSubtractRight( BigInteger srcCol , BigInteger destCol , R mult )
 	{
 		HashMap<BigInteger,R> subMapSrc = columnMap.get( srcCol );
@@ -801,7 +888,13 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	}
 	
 	
-	
+	/**
+	 * Subtracts from destRow the srcRow times mult.
+	 * 
+	 * @param srcRow The source row.
+	 * @param destRow The destination row.
+	 * @param mult The multiplier parameter.
+	 */
 	private void rowSubtractRight( BigInteger srcRow , BigInteger destRow , R mult )
 	{
 		HashMap<BigInteger,R> subMapSrc = rowMap.get( srcRow );
