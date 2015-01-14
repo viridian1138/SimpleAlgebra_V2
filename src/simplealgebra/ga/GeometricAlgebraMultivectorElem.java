@@ -929,17 +929,27 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 	
 	
 	/**
-	 * Returns whether to negate a basis element for reversion given the size of the basis vector
-	 * (for commutative nested elems only).
+	 * Returns the desired result from multiplying the multivector by its reversion.
 	 * 
-	 * @param sz The size of the basis vector.
-	 * @return  True iff. the basis element should be negated.
+	 * @return The desired result from multiplying the multivector by its reversion.
 	 */
-	private boolean negateFromSize( final int sz )
+	private GeometricAlgebraMultivectorElem<U,A,R,S> calcReversionMultResult()
 	{
-		final int acnt = sz * ( sz - 1 ) / 2;
+		R retA = this.getFac().getFac().zero();
 		
-		return( ( acnt % 2 ) == 1 );
+		final Iterator<HashSet<BigInteger>> it = getKeyIterator();
+		
+		while( it.hasNext() )
+		{
+			R nxt = getVal( it.next() );
+			retA = retA.add( nxt.mult( nxt ) );
+		}
+		
+		GeometricAlgebraMultivectorElem<U,A,R,S> ret = getFac().zero();
+		
+		ret.setVal( new HashSet<BigInteger>() , retA );
+		
+		return( ret );
 	}
 	
 	
@@ -948,30 +958,16 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 	 * Returns the left-side reversion of the multivector.
 	 * 
 	 * @return The left-side reversion of the multivector.
+	 * @throws NotInvertibleException 
 	 */
-	private GeometricAlgebraMultivectorElem<U,A, R, S> reverseLeft()
+	private GeometricAlgebraMultivectorElem<U,A, R, S> reverseLeft() throws NotInvertibleException 
 	{
-		if( fac.isMultCommutative() )
-		{
-			GeometricAlgebraMultivectorElem<U,A,R,S> ret = new GeometricAlgebraMultivectorElem<U,A,R,S>(fac,dim, ord);
-			Iterator<HashSet<BigInteger>> it = map.keySet().iterator();
-			while( it.hasNext() )
-			{
-				final HashSet<BigInteger> el = it.next();
-				final R vali = map.get( el );
-				final boolean neg = negateFromSize( el.size() );
-				final R valo = neg ? vali.negate() : vali;
-				ret.setVal(el, valo );
-			}
-			return( ret );
-		}
-		else
-		{
-			// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TBD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-			return( null );
-		}
+		final GeometricAlgebraMultivectorElem<U,A,R,S> ra = invertLeft();
+		
+		final GeometricAlgebraMultivectorElem<U,A,R,S> rb = calcReversionMultResult();
+		
+		return( rb.mult( ra ) );
 	}
-	
 	
 	
 	
@@ -979,28 +975,15 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 	 * Returns the right-side reversion of the multivector.
 	 * 
 	 * @return The right-side reversion of the multivector.
+	 * @throws NotInvertibleException 
 	 */
-	private GeometricAlgebraMultivectorElem<U,A, R, S> reverseRight()
+	private GeometricAlgebraMultivectorElem<U,A, R, S> reverseRight() throws NotInvertibleException 
 	{
-		if( fac.isMultCommutative() )
-		{
-			GeometricAlgebraMultivectorElem<U,A,R,S> ret = new GeometricAlgebraMultivectorElem<U,A,R,S>(fac,dim, ord);
-			Iterator<HashSet<BigInteger>> it = map.keySet().iterator();
-			while( it.hasNext() )
-			{
-				final HashSet<BigInteger> el = it.next();
-				final R vali = map.get( el );
-				final boolean neg = negateFromSize( el.size() );
-				final R valo = neg ? vali.negate() : vali;
-				ret.setVal(el, valo );
-			}
-			return( ret );
-		}
-		else
-		{
-			// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TBD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-			return( null );
-		}
+		final GeometricAlgebraMultivectorElem<U,A,R,S> ra = invertRight();
+		
+		final GeometricAlgebraMultivectorElem<U,A,R,S> rb = calcReversionMultResult();
+		
+		return( ra.mult( rb ) );
 	}
 	
 	
