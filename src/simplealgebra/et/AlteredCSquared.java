@@ -35,8 +35,27 @@ import simplealgebra.NotInvertibleException;
 import simplealgebra.symbolic.SymbolicElem;
 
 
+/**
+ * Factory for the square of the speed of light added to some other potential term.
+ * 
+ * 
+ * http://physics.stackexchange.com/questions/33950/what-is-the-equation-of-the-gravitational-potential-in-general-relativity
+ * 
+ * 
+ * @author thorngreen
+ *
+ * @param <R> The enclosed type.
+ * @param <S> The factory for the enclosed type.
+ */
 public abstract class AlteredCSquared<R extends Elem<R,?>, S extends ElemFactory<R,S>> {
 
+	/**
+	 * Returns the altered square of the speed of light.
+	 * 
+	 * @param covariantIndic Indicates whether to generate the term with covariant or contravariant indices.
+	 * @return Returns the altered square of the speed of light.
+	 * @throws NotInvertibleException
+	 */
 	public abstract SymbolicElem<R, S> getAlteredCSquared( boolean covariantIndic ) throws NotInvertibleException;
 	
 }

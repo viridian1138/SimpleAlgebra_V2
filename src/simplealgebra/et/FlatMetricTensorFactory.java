@@ -39,19 +39,32 @@ import simplealgebra.symbolic.SymbolicElemFactory;
 
 
 /**
- * Factory for generating metric tensors as defined in General Relativity.
+ * Factory for generating flat (zero curvature) metric tensors as defined in General Relativity.
  * 
  * @author thorngreen
  *
- * @param <Z>
- * @param <R>
- * @param <S>
+ * @param <Z> The type of the tensor indices.
+ * @param <R> The enclosed type.
+ * @param <S> The factory for the enclosed type.
  */
 public class FlatMetricTensorFactory<Z extends Object, R extends Elem<R,?>, S extends ElemFactory<R,S>> {
 	
+	/**
+	 * Factory for symbolic elems.
+	 */
 	SymbolicElemFactory<R, S> fac;
+	
+	/**
+	 * The speed of light squared.
+	 */
 	SymbolicElem<R, S> cSquared;
 	
+	/**
+	 * Constructs the factory.
+	 * 
+	 * @param _fac Factory for symbolic elems.
+	 * @param _cSquared The speed of light squared.
+	 */
 	public FlatMetricTensorFactory( SymbolicElemFactory<R, S> _fac , SymbolicElem<R, S> _cSquared )
 	{
 		fac = _fac;
@@ -59,6 +72,16 @@ public class FlatMetricTensorFactory<Z extends Object, R extends Elem<R,?>, S ex
 	}
 	
 	
+	/**
+	 * Returns an instance of the metric tensor.
+	 * 
+	 * @param covariantIndic Whether the metric tensor is to have covariant indices or contravariant indices.
+	 * @param index0 First index for the tensor of rank two.
+	 * @param index1 Second index for the tensor of rank two.
+	 * @param numElem The number of dimensions in the tensor.
+	 * @return An instance of the metric tensor.
+	 * @throws NotInvertibleException
+	 */
 	public EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>> 
 		getMetricTensor( boolean covariantIndic , Z index0 , Z index1 , BigInteger numElem ) throws NotInvertibleException 
 		{

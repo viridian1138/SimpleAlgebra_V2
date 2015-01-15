@@ -37,16 +37,39 @@ import simplealgebra.NotInvertibleException;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 
+/**
+ * Factory for generating the speed of light squared plus a potential term as
+ * described in:
+ * http://physics.stackexchange.com/questions/33950/what-is-the-equation-of-the-gravitational-potential-in-general-relativity
+ * 
+ * 
+ * @author thorngreen
+ *
+ * @param <R> The enclosed type.
+ * @param <S> The factory for the enclosed type.
+ */
 public class PotentialAlteredCSquared<R extends Elem<R,?>, S extends ElemFactory<R,S>> extends AlteredCSquared<R, S> {
 	
+	/**
+	 * Factory for symbolic elems.
+	 */
 	SymbolicElemFactory<R, S> fac;
+	
+	/**
+	 * The speed of light squared.
+	 */
 	SymbolicElem<R, S> cSquared;
+	
+	/**
+	 *  2 * U( x ) where U( x ) is the grav. potential along x.
+	 */
 	SymbolicElem<R, S> t_2Ux;
 	
 	/**
+	 * Constructs the factory.
 	 * 
-	 * @param _fac
-	 * @param _cSquared
+	 * @param _fac Factory for symbolic elems.
+	 * @param _cSquared The speed of light squared.
 	 * @param _t_2Ux -- 2 * U( x ) where U( x ) is the grav. potential along x.
 	 * 
 	 *  http://physics.stackexchange.com/questions/33950/what-is-the-equation-of-the-gravitational-potential-in-general-relativity

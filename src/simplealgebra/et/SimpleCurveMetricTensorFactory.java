@@ -41,24 +41,40 @@ import simplealgebra.symbolic.SymbolicElemFactory;
 
 
 /**
- * Factory for generating metric tensors as defined in General Relativity.
+ * Factory for generating simple metric tensors as defined in General Relativity.
+ * 
+ * 
+ * http://physics.stackexchange.com/questions/33950/what-is-the-equation-of-the-gravitational-potential-in-general-relativity
+ * 
  * 
  * @author thorngreen
  *
- * @param <Z>
- * @param <R>
- * @param <S>
+ * @param <Z> The type of the tensor indices.
+ * @param <R> The enclosed type.
+ * @param <S> The factory for the enclosed type.
  */
 public class SimpleCurveMetricTensorFactory<Z extends Object, R extends Elem<R,?>, S extends ElemFactory<R,S>> {
 	
+	/**
+	 * Factory for symbolic elems.
+	 */
 	SymbolicElemFactory<R, S> fac;
+	
+	/**
+	 * The square of the speed of light.
+	 */
 	SymbolicElem<R, S> cSquared;
+	
+	/**
+	 *  2 * U( x ) where U( x ) is the grav. potential along x.
+	 */
 	SymbolicElem<R, S> t_2Ux;
 	
 	/**
+	 * Constructs the factory.
 	 * 
-	 * @param _fac
-	 * @param _cSquared
+	 * @param _fac Factory for symbolic elems.
+	 * @param _cSquared The square of the speed of light.
 	 * @param _t_2Ux -- 2 * U( x ) where U( x ) is the grav. potential along x.
 	 * 
 	 *  http://physics.stackexchange.com/questions/33950/what-is-the-equation-of-the-gravitational-potential-in-general-relativity
@@ -74,6 +90,16 @@ public class SimpleCurveMetricTensorFactory<Z extends Object, R extends Elem<R,?
 	}
 	
 	
+	/**
+	 * Returns an instance of the metric tensor.
+	 * 
+	 * @param covariantIndic Whether the metric tensor is to have covariant indices or contravariant indices.
+	 * @param index0 First index for the tensor of rank two.
+	 * @param index1 Second index for the tensor of rank two.
+	 * @param numElem The number of dimensions in the tensor.
+	 * @return An instance of the metric tensor.
+	 * @throws NotInvertibleException
+	 */
 	public EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>> 
 		getMetricTensor( boolean covariantIndic , Z index0 , Z index1 , final BigInteger numElem ) throws NotInvertibleException
 		{

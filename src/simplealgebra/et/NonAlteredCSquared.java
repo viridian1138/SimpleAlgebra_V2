@@ -37,15 +37,32 @@ import simplealgebra.NotInvertibleException;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 
+
+/**
+ * Factory for an ordinary square of the speed of light.
+ * 
+ * @author thorngreen
+ *
+ * @param <R> The enclosed type.
+ * @param <S> The factory for the enclosed type.
+ */
 public class NonAlteredCSquared<R extends Elem<R,?>, S extends ElemFactory<R,S>> extends AlteredCSquared<R, S> {
 	
+	/**
+	 * Factory for symbolic elems.
+	 */
 	SymbolicElemFactory<R, S> fac;
+	
+	/**
+	 * The square of the speed of light.
+	 */
 	SymbolicElem<R, S> cSquared;
 	
 	/**
+	 * Constructs the factory.
 	 * 
-	 * @param _fac
-	 * @param _cSquared
+	 * @param _fac Factory for symbolic elems.
+	 * @param _cSquared The square of the speed of light.
 	 *  
 	 */
 	public NonAlteredCSquared( SymbolicElemFactory<R, S> _fac , SymbolicElem<R, S> _cSquared )

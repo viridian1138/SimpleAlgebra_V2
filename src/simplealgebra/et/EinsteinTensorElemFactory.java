@@ -27,13 +27,9 @@ package simplealgebra.et;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
-import java.util.HashMap;
 
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
-import simplealgebra.NotInvertibleException;
-import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
-import simplealgebra.symbolic.SymbolicElem;
 
 /**
  * Element describing a tensor as defined in General Relativity.

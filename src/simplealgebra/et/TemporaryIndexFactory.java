@@ -30,8 +30,20 @@ package simplealgebra.et;
 
 
 
+/**
+ * A factory for generating temporary indices for use in tensor products.
+ * 
+ * @author thorngreen
+ *
+ * @param <Z> The type of the temporary indices.
+ */
 public abstract class TemporaryIndexFactory<Z extends Object> {
 	
+	/**
+	 * Generates a new temporary index.
+	 * 
+	 * @return The new temporary index.
+	 */
 	public abstract Z getTemp();
 
 }

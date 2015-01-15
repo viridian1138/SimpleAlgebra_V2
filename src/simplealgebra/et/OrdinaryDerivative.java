@@ -37,7 +37,6 @@ import simplealgebra.NotInvertibleException;
 import simplealgebra.NumDimensions;
 import simplealgebra.ddx.DerivativeElem;
 import simplealgebra.ddx.DirectionalDerivativePartialFactory;
-import simplealgebra.ddx.PartialDerivativeOp;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.PrecedenceComparator;
 import simplealgebra.symbolic.SymbolicElem;
