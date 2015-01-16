@@ -39,6 +39,7 @@ import simplealgebra.NotInvertibleException;
 import simplealgebra.SquareMatrixElem;
 import simplealgebra.ga.GeometricAlgebraMultivectorElem;
 
+
 /**
  * Element describing a tensor as defined in General Relativity.
  */
@@ -576,12 +577,22 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	}
 	
 	
+	/**
+	 * Returns the rank of the tensor.
+	 * 
+	 * @return The rank of the tensor.
+	 */
 	public BigInteger getTensorRank()
 	{
 		return( BigInteger.valueOf( contravariantIndices.size() + covariantIndices.size() ) );
 	}
 	
 	
+	/**
+	 * Copies the enclosed elems. in a tensor of rank one to a Geometric Algebra multivector.
+	 * 
+	 * @param out The multivector into which to copy the elems.
+	 */
 	public void rankOneTensorToGeometricAlgebra( GeometricAlgebraMultivectorElem<?,?,R,?> out )
 	{
 		if( !( getTensorRank().equals( BigInteger.ONE ) ) )
@@ -601,6 +612,12 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	}
 	
 	
+	/**
+	 * Copies the enclosed elems. in a tensor of rank one to a row vector of a square matrix.
+	 * 
+	 * @param row The row in which to copy the elems.
+	 * @param out The square matrix into which to copy the elems.
+	 */
 	public void rankOneTensorToRowVector( BigInteger row , SquareMatrixElem<?,R,?> out )
 	{
 		if( !( getTensorRank().equals( BigInteger.ONE ) ) )
@@ -619,6 +636,12 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	}
 	
 	
+	/**
+	 * Copies the enclosed elems. in a tensor of rank one to a column vector of a square matrix.
+	 * 
+	 * @param column The column in which to copy the elems.
+	 * @param out The square matrix into which to copy the elems.
+	 */
 	public void rankOneTensorToColumnVector( BigInteger column , SquareMatrixElem<?,R,?> out )
 	{
 		if( !( getTensorRank().equals( BigInteger.ONE ) ) )
@@ -637,6 +660,11 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	}
 	
 	
+	/**
+	 * Copies the enclosed elems. in a tensor of rank two to a square matrix.
+	 * 
+	 * @param out The square matrix into which to copy the elems.
+	 */
 	public void rankTwoTensorToSquareMatrix( SquareMatrixElem<?,R,?> out )
 	{
 		if( !( getTensorRank().equals( BigInteger.valueOf( 2 ) ) ) )
@@ -656,6 +684,7 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	}
 	
 	
+	// !!!!!!!!!!!!!!!!!!!!!!! write docs. !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	public EinsteinTensorElem<Z, R, S> indexReduction( HashSet<Z> contravariantReduce , HashSet<Z> covariantReduce )
 	{
 		final ArrayList<Z> contravar = new ArrayList<Z>();
@@ -733,18 +762,37 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	}
 	
 	
+	/**
+	 * Gets the value at a basis vector.  Null is possible.
+	 * 
+	 * @param el The basis vector.
+	 * @return The value.
+	 */
 	private R get( ArrayList<BigInteger> el )
 	{
 		return( map.get( el ) );
 	}
 	
 	
+	/**
+	 * Gets the value at a basis vector.  Null is not possible.
+	 * 
+	 * @param el The basis vector.
+	 * @return The value.
+	 */
 	public R getVal( ArrayList<BigInteger> el )
 	{
 		R val = map.get( el );
 		return( val != null ? val : fac.zero() );
 	}
 	
+	
+	/**
+	 * Sets a basis for the elem.
+	 * 
+	 * @param el The basis vector.
+	 * @param val The value to be set.
+	 */
 	public void setVal( ArrayList<BigInteger> el , R val )
 	{
 		map.put(el, val);
@@ -752,7 +800,9 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	
 	
 	/**
-	 * @return the contravariantIndices
+	 * Returns the list of contravariant indices for the tensor.
+	 * 
+	 * @return The list of contravariant indices for the tensor.
 	 */
 	public ArrayList<Z> getContravariantIndices() {
 		return contravariantIndices;
@@ -760,13 +810,22 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 
 
 	/**
-	 * @return the covariantIndices
+	 * Returns the list of covariant indices for the tensor.
+	 * 
+	 * @return The list of covariant indices for the tensor.
 	 */
 	public ArrayList<Z> getCovariantIndices() {
 		return covariantIndices;
 	}
 	
 	
+	
+	/**
+	 * Returns a tensor with the same elements, but with the covariant indices renamed to a new set of index names.
+	 * 
+	 * @param newCovar The new set of index names.
+	 * @return The renamed tensor.
+	 */
 	public EinsteinTensorElem<Z, R, S> regenCovar( ArrayList<Z> newCovar )
 	{
 		EinsteinTensorElem<Z, R, S> ret = new EinsteinTensorElem<Z,R,S>( fac , contravariantIndices , newCovar );
@@ -781,6 +840,11 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	
 	
 	
+	/**
+	 * Returns the iterator of index keys for iterating through the set of sparse elements in the tensor.
+	 * 
+	 * @return The iterator of index keys for iterating through the set of sparse elements in the tensor.
+	 */
 	public Iterator<ArrayList<BigInteger>> getKeyIterator()
 	{
 		return( map.keySet().iterator() );
@@ -823,7 +887,9 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	
 	
 	
-	
+	/**
+	 * Debug method for printing the indices in the tensor.
+	 */
 	public void printIndices()
 	{
 		System.out.println( "^>>>>>>>>>>>" );
@@ -847,11 +913,24 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	
 	
 	
+	/**
+	 * Sparse map of elements in the tensor.
+	 */
 	private final HashMap<ArrayList<BigInteger>,R> map = new HashMap<ArrayList<BigInteger>,R>();
 	
-	
+	/**
+	 * The factory for the enclosed type.
+	 */
 	private S fac;
+	
+	/**
+	 * The contravariant indices of the tensor.
+	 */
 	private ArrayList<Z> contravariantIndices;
+	
+	/**
+	 * The covariant indices of the tensor.
+	 */
 	private ArrayList<Z> covariantIndices;
 	
 

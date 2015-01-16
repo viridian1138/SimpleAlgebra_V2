@@ -31,12 +31,24 @@ import java.util.ArrayList;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 
+
 /**
- * Element describing a tensor as defined in General Relativity.
+ * A factory for tensor elems.
+ * 
+ * @author thorngreen
+ *
+ * @param <Z> The type of the tensor indices.
+ * @param <R> The enclosed type.
+ * @param <S> The factory for the enclosed type.
  */
 public class EinsteinTensorElemFactory<Z extends Object, R extends Elem<R,?>, S extends ElemFactory<R,S>> extends ElemFactory<EinsteinTensorElem<Z,R,S>, EinsteinTensorElemFactory<Z,R,S>> {
 
 	
+	/**
+	 * Constructs the factory.
+	 * 
+	 * @param _fac The factory for the enclosed type.
+	 */
 	public EinsteinTensorElemFactory( S _fac )
 	{
 		fac = _fac;
@@ -56,6 +68,11 @@ public class EinsteinTensorElemFactory<Z extends Object, R extends Elem<R,?>, S 
 	}
 	
 	
+	/**
+	 * Returns the factory for the enclosed type.
+	 * 
+	 * @return The factory for the enclosed type.
+	 */
 	public S getFac()
 	{
 		return( fac );
@@ -76,6 +93,9 @@ public class EinsteinTensorElemFactory<Z extends Object, R extends Elem<R,?>, S 
 	}
 	
 	
+	/**
+	 * The factory for the enclosed type.
+	 */
 	private S fac;
 
 }

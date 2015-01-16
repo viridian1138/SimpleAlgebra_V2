@@ -37,9 +37,26 @@ import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SymbolicElem;
 
 
+/**
+ * Symbolic elem. for returning a tensor with the same elements as the argument, but with
+ * the covariant indices renamed to a new set of index names.
+ * 
+ * @author thorngreen
+ *
+ * @param <Z> The type of the tensor indices.
+ * @param <R> The enclosed type.
+ * @param <S> The factory for the enclosed type.
+ */
 public class SymbolicRegenCovar<Z extends Object, R extends Elem<R,?>, S extends ElemFactory<R,S>> extends SymbolicElem<EinsteinTensorElem<Z,R,S>,EinsteinTensorElemFactory<Z,R,S>> 
 {
 
+	/**
+	 * Constructs the elem.
+	 * 
+	 * @param _elem The argument.
+	 * @param _fac The factory for the enclosed type.
+	 * @param _newCovar The new list of names for the covariant indices.
+	 */
 	public SymbolicRegenCovar( SymbolicElem<EinsteinTensorElem<Z,R,S>,EinsteinTensorElemFactory<Z,R,S>> _elem , 
 			EinsteinTensorElemFactory<Z,R,S> _fac , ArrayList<Z> _newCovar )
 	{
@@ -71,7 +88,14 @@ public class SymbolicRegenCovar<Z extends Object, R extends Elem<R,?>, S extends
 		super.performInserts( session );
 	}
 	
+	/**
+	 * The new list of names for the covariant indices.
+	 */
 	private ArrayList<Z> newCovar;
+	
+	/**
+	 * The argument to be renamed.
+	 */
 	private SymbolicElem<EinsteinTensorElem<Z,R,S>,EinsteinTensorElemFactory<Z,R,S>> elem;
 
 }
