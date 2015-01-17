@@ -40,13 +40,31 @@ import simplealgebra.SquareMatrixElem;
 import simplealgebra.ga.GeometricAlgebraMultivectorElem;
 
 
+
 /**
- * Element describing a tensor as defined in General Relativity.
+ * Elem. for a tensor in Einstein Notation as described in General Relativity.
+ * 
+ * 
+ * See http://en.wikipedia.org/wiki/Einstein_Notation
+ * 
+ * 
+ * @author thorngreen
+ *
+ * @param <Z> The type for the tensor indices.
+ * @param <R> The enclosed type.
+ * @param <S> The factory for the enclosed type.
  */
 public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends ElemFactory<R,S>> 
 	extends MutableElem<R, EinsteinTensorElem<Z,R,S>, EinsteinTensorElemFactory<Z,R,S>>  {
 
 	
+	/**
+	 * Constructs the elem.
+	 * 
+	 * @param _fac The factory for the nested type.
+	 * @param _contravariantIndices The list of contravariant indices.
+	 * @param _covariantIndices The list of covariant indices.
+	 */
 	public EinsteinTensorElem( S _fac , ArrayList<Z> _contravariantIndices ,
 			ArrayList<Z> _covariantIndices )
 	{
@@ -143,7 +161,14 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	
 	
 	
-	
+	/**
+	 * In instances where the parameter ib has the same set of indices as the tensor
+	 * but in a different order, returns a copy the parameter where the ordering of the
+	 * indices has been remapped to match.
+	 * 
+	 * @param ib The parameter to remap.
+	 * @return The remapped version of the parameter.
+	 */
 	protected EinsteinTensorElem<Z, R, S> additionRemap(EinsteinTensorElem<Z, R, S> ib)
 	{
 		final ArrayList<Integer> am = new ArrayList<Integer>();
@@ -200,7 +225,17 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	
 	
 	/**
+	 * Builds index mapping for a tensor multiplication.
+	 * 
 	 * This implementation assumes that repeated tensor indices happen exactly twice, and on opposite sides of the multiplication.
+	 * 
+	 * @param b_contravariantIndices Contravariant indices of the multiplication argument.
+	 * @param b_covariantIndices Covariant indices of the multiplication argument.
+	 * @param new_contravariantIndices Contravariant indices of the multiplication result.
+	 * @param new_covariantIndices Covariant indices of the multiplication result.
+	 * @param matchIndicesA List of left-side match indices for the combined key.
+	 * @param matchIndicesB List of right-side match indices for the combined key.
+	 * @param nonMatchIndices Indices that aren't removed from the multiplication result due to a need to match.
 	 */
 	protected void processIndexMatching( ArrayList<Z> b_contravariantIndices , ArrayList<Z> b_covariantIndices ,
 			ArrayList<Z> new_contravariantIndices , ArrayList<Z> new_covariantIndices , 
@@ -359,6 +394,13 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	
 	
 	
+	/**
+	 * Populates a map of enclosed elems keyed by unique keys for matches.
+	 * 
+	 * @param b The tensor from which to generate the map.
+	 * @param matchIndices The list of indices in combinedCovariantContravariant that need to match part of the other argument of the multiplication.
+	 * @return The map indexed by match keys.
+	 */
 	protected HashMap<ArrayList<BigInteger>,ArrayList<ArrayList<BigInteger>>> buildSummationIndexMap( EinsteinTensorElem<Z, R, S> b , ArrayList<Integer> matchIndices )
 	{
 		HashMap<ArrayList<BigInteger>,ArrayList<ArrayList<BigInteger>>> matchMap = new HashMap<ArrayList<BigInteger>,ArrayList<ArrayList<BigInteger>>>();
@@ -375,6 +417,13 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	
 	
 	
+	/**
+	 * Populates one node in a map of enclosed elems keyed by unique keys for matches.
+	 * 
+	 * @param combinedCovariantContravariant Combined covariant/contravariant indices.
+	 * @param matchIndices The list of indices in combinedCovariantContravariant that need to match part of the other argument of the multiplication.
+	 * @param matchMap The map to be populated with the new node.
+	 */
 	protected void buildSummationIndexMap( ArrayList<BigInteger> combinedCovariantContravariant , ArrayList<Integer> matchIndices , 
 			HashMap<ArrayList<BigInteger>,ArrayList<ArrayList<BigInteger>>> matchMap )
 	{
@@ -389,6 +438,14 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	}
 	
 	
+	
+	/**
+	 * Builds a unique key for matches.
+	 * 
+	 * @param combinedIndices Combined covariant/contravariant indices.
+	 * @param matchIndices The list of indices in combinedIndices that need to match part of the other argument of the multiplication.
+	 * @return Returns the unique key for matches.
+	 */
 	protected ArrayList<BigInteger> buildSummationIndex( ArrayList<BigInteger> combinedIndices , ArrayList<Integer> matchIndices )
 	{
 		ArrayList<BigInteger> ret = new ArrayList<BigInteger>();
@@ -403,6 +460,13 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	}
 	
 	
+	/**
+	 * Builds a single combined index list containing the contents of both the contravariant indices and covariant indices.
+	 * 
+	 * @param contravariantIndices Input contravariant indices.
+	 * @param covariantIndices Input covariant indices.
+	 * @return The concatenation of the two index lists.
+	 */
 	protected ArrayList<Z> buildCombinedContravariantCovariantIn( ArrayList<Z> contravariantIndices , ArrayList<Z> covariantIndices )
 	{
 		ArrayList<Z> ret = new ArrayList<Z>();
@@ -423,6 +487,13 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	}
 	
 	
+	/**
+	 * Builds a single combined index list containing the contents of both the contravariant indices and covariant indices.
+	 * 
+	 * @param contravariantIndices Input contravariant indices.
+	 * @param covariantIndices Input covariant indices.
+	 * @return The concatenation of the two index lists.
+	 */
 	protected ArrayList<BigInteger> buildCombinedContravariantCovariantVl( ArrayList<BigInteger> contravariantIndices , ArrayList<BigInteger> covariantIndices )
 	{
 		ArrayList<BigInteger> ret = new ArrayList<BigInteger>();
@@ -443,6 +514,13 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	}
 	
 	
+	/**
+	 * Builds a single combined key from keys obtained from enclosed elems from either side of the multiplication.
+	 * 
+	 * @param akey Key from a nested elem from the left-side of the multiplication.
+	 * @param bkey Key from a nested elem from the right-side of the multiplication.
+	 * @return The concatenation of the two keys.
+	 */
 	protected ArrayList<BigInteger> buildCombinedAB( ArrayList<BigInteger> akey , ArrayList<BigInteger> bkey )
 	{
 		ArrayList<BigInteger> ret = new ArrayList<BigInteger>();
@@ -684,7 +762,13 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	}
 	
 	
-	// !!!!!!!!!!!!!!!!!!!!!!! write docs. !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	/**
+	 * Returns a copy of the tensor with a set of indices removed.
+	 * 
+	 * @param contravariantReduce The contravariant indices to be removed.
+	 * @param covariantReduce The covariant indices to be removed.
+	 * @return A copy of the tensor with the indices removed.
+	 */
 	public EinsteinTensorElem<Z, R, S> indexReduction( HashSet<Z> contravariantReduce , HashSet<Z> covariantReduce )
 	{
 		final ArrayList<Z> contravar = new ArrayList<Z>();

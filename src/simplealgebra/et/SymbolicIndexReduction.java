@@ -38,9 +38,26 @@ import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SymbolicElem;
 
 
+/**
+ * Symbolic elem for returning a copy of a tensor with a set of indices removed.
+ * 
+ * @author thorngreen
+ *
+ * @param <Z> The type of the tensor indices.
+ * @param <R> The enclosed type.
+ * @param <S> The factory for the enclosed type.
+ */
 public class SymbolicIndexReduction<Z extends Object, R extends Elem<R,?>, S extends ElemFactory<R,S>> extends SymbolicElem<EinsteinTensorElem<Z,R,S>,EinsteinTensorElemFactory<Z,R,S>> 
 {
 
+	/**
+	 * Constructs the elem.
+	 * 
+	 * @param _elem The nested elem.
+	 * @param _fac The factory for the enclosed type.
+	 * @param _contravariantReduce The set of contravariant indices to be removed.
+	 * @param _covariantReduce The set of covariant indices to be removed.
+	 */
 	public SymbolicIndexReduction( SymbolicElem<EinsteinTensorElem<Z,R,S>,EinsteinTensorElemFactory<Z,R,S>> _elem , 
 			EinsteinTensorElemFactory<Z,R,S> _fac ,
 			HashSet<Z> _contravariantReduce , HashSet<Z> _covariantReduce )
@@ -50,6 +67,7 @@ public class SymbolicIndexReduction<Z extends Object, R extends Elem<R,?>, S ext
 		contravariantReduce = _contravariantReduce;
 		covariantReduce = _covariantReduce;
 	}
+	
 	
 	@Override
 	public EinsteinTensorElem<Z,R,S> eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
@@ -74,8 +92,19 @@ public class SymbolicIndexReduction<Z extends Object, R extends Elem<R,?>, S ext
 		super.performInserts( session );
 	}
 	
+	/**
+	 * The contravariant indices to be removed.
+	 */
 	private HashSet<Z> contravariantReduce;
+	
+	/**
+	 * The covariant indices to be removed.
+	 */
 	private HashSet<Z> covariantReduce;
+	
+	/**
+	 * The nested elem.
+	 */
 	private SymbolicElem<EinsteinTensorElem<Z,R,S>,EinsteinTensorElemFactory<Z,R,S>> elem;
 
 }
