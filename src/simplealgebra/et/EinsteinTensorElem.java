@@ -906,6 +906,7 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	
 	/**
 	 * Returns a tensor with the same elements, but with the covariant indices renamed to a new set of index names.
+	 * This is used, for instance, when the same term is used in a formula with a different index from its original definition.
 	 * 
 	 * @param newCovar The new set of index names.
 	 * @return The renamed tensor.
@@ -913,6 +914,27 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	public EinsteinTensorElem<Z, R, S> regenCovar( ArrayList<Z> newCovar )
 	{
 		EinsteinTensorElem<Z, R, S> ret = new EinsteinTensorElem<Z,R,S>( fac , contravariantIndices , newCovar );
+		Iterator<ArrayList<BigInteger>> it = map.keySet().iterator();
+		while( it.hasNext() )
+		{
+			ArrayList<BigInteger> key = it.next();
+			ret.map.put(key, map.get( key ) );
+		}
+		return( ret );
+	}
+	
+	
+	
+	/**
+	 * Returns a tensor with the same elements, but with the contravariant indices renamed to a new set of index names.
+	 * This is used, for instance, when the same term is used in a formula with a different index from its original definition.
+	 * 
+	 * @param newContravar The new set of index names.
+	 * @return The renamed tensor.
+	 */
+	public EinsteinTensorElem<Z, R, S> regenContravar( ArrayList<Z> newContravar )
+	{
+		EinsteinTensorElem<Z, R, S> ret = new EinsteinTensorElem<Z,R,S>( fac , newContravar , covariantIndices );
 		Iterator<ArrayList<BigInteger>> it = map.keySet().iterator();
 		while( it.hasNext() )
 		{

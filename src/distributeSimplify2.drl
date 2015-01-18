@@ -22,6 +22,7 @@ package simplealgebra.symbolic
 
 
 
+import simplealgebra.ddx.PartialDerivativeOp;
 import simplealgebra.ga.SymbolicReverseLeft;
 import simplealgebra.ga.SymbolicReverseRight;
 import simplealgebra.ga.SymbolicDot;
@@ -708,6 +709,33 @@ end
 
 
 
+
+
+rule "Partial Derivative Of Constant --> Zero"
+      when
+          pd : PartialDerivativeOp( )
+          red : SymbolicReduction( )
+          mult : SymbolicMult( elemA == pd , elemB == red )
+          ds: DroolsSession()
+          eval( red.partialDerivativeReducesToZero( pd.getWithRespectTo() ) )
+      then
+         insert( new Reng( mult , new SymbolicZero( mult.getFac().getFac() , ds ) ) );
+end
+
+
+
+
+
+
+
+rule "DivideBy OF Zero --> Zero"
+      when
+          a : SymbolicZero( )
+          b : SymbolicDivideBy( elem == a )
+          ds : DroolsSession()
+      then
+          insert( new Reng( b , new SymbolicZero( b.getFac().getFac() , ds ) ) );
+end
 
 
 

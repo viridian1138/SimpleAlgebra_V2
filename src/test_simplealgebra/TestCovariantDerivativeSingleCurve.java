@@ -32,6 +32,8 @@ import java.util.Iterator;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
+import simplealgebra.ComplexElem;
+import simplealgebra.ComplexElemFactory;
 import simplealgebra.DoubleElem;
 import simplealgebra.DoubleElemFactory;
 import simplealgebra.Elem;
@@ -60,14 +62,8 @@ import simplealgebra.symbolic.SymbolicSqrt;
 
 
 
-/**
- * Test verifying that the covariant derivative over a flat plane is
- * the equivalent of an ordinary derivative.
- * 
- * @author thorngreen
- *
- */
-public class TestCovariantDerivativeFlat extends TestCase {
+
+public class TestCovariantDerivativeSingleCurve extends TestCase {
 	
 	
 	
@@ -109,6 +105,12 @@ public class TestCovariantDerivativeFlat extends TestCase {
 		@Override
 		public void writeString( PrintStream ps ) {
 			ps.print( "a" + col + "()" );
+		}
+		
+		@Override
+		public void writeMathML( PrecedenceComparator<EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>,EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>> pc , PrintStream ps )
+		{
+			ps.print( "<msub><mi>x</mi><mn>" + col + "</mn></msub>" );
 		}
 		
 		@Override
@@ -253,6 +255,12 @@ public class TestCovariantDerivativeFlat extends TestCase {
 		}
 		
 		@Override
+		public void writeMathML( PrecedenceComparator<DoubleElem,DoubleElemFactory> pc , PrintStream ps )
+		{
+			ps.print( "<msub><mi>C</mi><mn>" + col + "</mn></msub>" );
+		}
+		
+		@Override
 		public boolean symbolicEquals( SymbolicElem<DoubleElem,DoubleElemFactory> b )
 		{
 			if( b instanceof CElem )
@@ -299,6 +307,12 @@ public class TestCovariantDerivativeFlat extends TestCase {
 		@Override
 		public void writeString( PrintStream ps ) {
 			ps.print( " " + ( this.getElem().getVal() ) );
+		}
+		
+		@Override
+		public void writeMathML( PrecedenceComparator<DoubleElem,DoubleElemFactory> pc , PrintStream ps )
+		{
+			ps.print( "<mn>" + ( this.getElem().getVal() ) + "</mn>" );
 		}
 		
 		@Override
@@ -445,8 +459,8 @@ public class TestCovariantDerivativeFlat extends TestCase {
 				final ArrayList<BigInteger> ab = new ArrayList<BigInteger>();
 				ab.add( BigInteger.valueOf( acnt ) );
 				ab.add( BigInteger.valueOf( acnt ) );
-				SymbolicElem<DoubleElem,DoubleElemFactory> as = new SymbolicConst( acnt == 0 ? C : new DoubleElem( 1.0 ) , de );
-						// acnt == 0 ? new CElem( de , -2 ) : new SymbolicConst( new DoubleElem( 1.0 ) , de );
+				SymbolicElem<DoubleElem,DoubleElemFactory> as = // new SymbolicConst( acnt == 0 ? C : new DoubleElem( 1.0 ) , de );
+						acnt == 0 ? new CElem( de , -2 ) : new SymbolicConst( new DoubleElem( 1.0 ) , de );
 						// new CElem( de , -acnt );
 				g0.setVal( ab , as );
 			}
@@ -591,31 +605,13 @@ public class TestCovariantDerivativeFlat extends TestCase {
 			kcnt++;
 			ArrayList<BigInteger> key = itA.next();
 			Assert.assertTrue( key.size() == 2 );
-			final BigInteger k0 = key.get( 0 );
-			final BigInteger k1 = key.get( 1 );
-	//		System.out.print( key.get( 0 ) );
-	//		System.out.print( " " );
-	//		System.out.print( key.get( 1 ) );
 			final SymbolicElem<DoubleElem,DoubleElemFactory> el =
 					ev.getVal( key );
 			final SymbolicElem<DoubleElem,DoubleElemFactory>
 				el2 = el.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY2 , null);
-	//		System.out.print( " " );
-	//		el2.writeString( System.out );
-	//		System.out.println( "" );
-			Assert.assertTrue( el2 instanceof SymbolicMult );
-			final SymbolicMult el2a = (SymbolicMult) el2;
-			Assert.assertTrue( el2a.getElemA() instanceof PartialDerivativeOp );
-			final PartialDerivativeOp el2aa = (PartialDerivativeOp)( el2a.getElemA() );
-			Assert.assertTrue( el2a.getElemB() instanceof CElem );
-			final CElem el2ab = (CElem)( el2a.getElemB() );
-			Assert.assertTrue( k1.equals( BigInteger.valueOf( el2ab.getCol() ) ) );
-			final ArrayList<Elem<?,?>> wrt = el2aa.getWithRespectTo();
-			Assert.assertTrue( wrt.size() == 1 );
-			final Elem<?,?> wrta = wrt.get( 0 );
-			Assert.assertTrue( wrta instanceof AElem );
-			final AElem wrtaa = (AElem)( wrta );
-			Assert.assertTrue( k0.equals( BigInteger.valueOf( wrtaa.getCol() ) ) );
+			System.out.print( "<P>" );
+			el2.writeMathMLWrapped( new PrecCompare() , System.out );
+			System.out.println( "" );
 		}
 		
 		Assert.assertTrue( kcnt == 16 );

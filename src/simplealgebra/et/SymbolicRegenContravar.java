@@ -39,7 +39,7 @@ import simplealgebra.symbolic.SymbolicElem;
 
 /**
  * Symbolic elem. for returning a tensor with the same elements as the argument, but with
- * the covariant indices renamed to a new set of index names.
+ * the contravariant indices renamed to a new set of index names.
  * This is used, for instance, when the same term is used in a formula with a different index from its original definition.
  * 
  * @author thorngreen
@@ -48,7 +48,7 @@ import simplealgebra.symbolic.SymbolicElem;
  * @param <R> The enclosed type.
  * @param <S> The factory for the enclosed type.
  */
-public class SymbolicRegenCovar<Z extends Object, R extends Elem<R,?>, S extends ElemFactory<R,S>> extends SymbolicElem<EinsteinTensorElem<Z,R,S>,EinsteinTensorElemFactory<Z,R,S>> 
+public class SymbolicRegenContravar<Z extends Object, R extends Elem<R,?>, S extends ElemFactory<R,S>> extends SymbolicElem<EinsteinTensorElem<Z,R,S>,EinsteinTensorElemFactory<Z,R,S>> 
 {
 
 	/**
@@ -56,30 +56,30 @@ public class SymbolicRegenCovar<Z extends Object, R extends Elem<R,?>, S extends
 	 * 
 	 * @param _elem The argument.
 	 * @param _fac The factory for the enclosed type.
-	 * @param _newCovar The new list of names for the covariant indices.
+	 * @param _newContravar The new list of names for the contravariant indices.
 	 */
-	public SymbolicRegenCovar( SymbolicElem<EinsteinTensorElem<Z,R,S>,EinsteinTensorElemFactory<Z,R,S>> _elem , 
-			EinsteinTensorElemFactory<Z,R,S> _fac , ArrayList<Z> _newCovar )
+	public SymbolicRegenContravar( SymbolicElem<EinsteinTensorElem<Z,R,S>,EinsteinTensorElemFactory<Z,R,S>> _elem , 
+			EinsteinTensorElemFactory<Z,R,S> _fac , ArrayList<Z> _newContravar )
 	{
 		super( _fac );
 		elem = _elem;
-		newCovar = _newCovar;
+		newContravar = _newContravar;
 	}
 	
 	@Override
 	public EinsteinTensorElem<Z,R,S> eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
-		return( elem.eval( implicitSpace ).regenCovar( newCovar ) );
+		return( elem.eval( implicitSpace ).regenContravar( newContravar ) );
 	}
 	
 	@Override
 	public EinsteinTensorElem<Z,R,S> evalPartialDerivative( ArrayList<? extends Elem<?,?>> withRespectTo , HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
-		return( elem.evalPartialDerivative( withRespectTo , implicitSpace ).regenCovar( newCovar ) );
+		return( elem.evalPartialDerivative( withRespectTo , implicitSpace ).regenContravar( newContravar ) );
 	}
 
 	@Override
 	public void writeString( PrintStream ps ) {
-		ps.print( "symbolicRegenCovar" );
+		ps.print( "symbolicRegenContravar" );
 	}
 	
 	@Override
@@ -90,9 +90,9 @@ public class SymbolicRegenCovar<Z extends Object, R extends Elem<R,?>, S extends
 	}
 	
 	/**
-	 * The new list of names for the covariant indices.
+	 * The new list of names for the contravariant indices.
 	 */
-	private ArrayList<Z> newCovar;
+	private ArrayList<Z> newContravar;
 	
 	/**
 	 * The argument to be renamed.

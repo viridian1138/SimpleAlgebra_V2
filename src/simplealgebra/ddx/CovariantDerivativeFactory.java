@@ -26,6 +26,7 @@
 
 package simplealgebra.ddx;
 
+import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -39,14 +40,12 @@ import simplealgebra.et.EinsteinTensorElem;
 import simplealgebra.et.EinsteinTensorElemFactory;
 import simplealgebra.et.MetricTensorFactory;
 import simplealgebra.et.OrdinaryDerivativeFactory;
-import simplealgebra.et.SymbolicRegenCovar;
+import simplealgebra.et.SymbolicRegenContravar;
 import simplealgebra.et.TemporaryIndexFactory;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.PrecedenceComparator;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
-
-import java.io.*;
 
 
 /**
@@ -101,6 +100,10 @@ import java.io.*;
  *  <mi>&Gamma;</mi>
  * </mrow>
  * </math> term is the connection coefficient.
+ * 
+ * 
+ * <P>
+ * <P>See http://en.wikipedia.org/wiki/Covariant_derivative
  * 
  * 
  * @author thorngreen
@@ -166,36 +169,40 @@ public class CovariantDerivativeFactory<Z extends Object, U extends NumDimension
 		ConnectionCoefficientFactory<Z,U,R,S,K> afac = new ConnectionCoefficientFactory<Z,U,R,S,K>( metric , 
 				temp , odfac );
 		
-		final ArrayList<Z> iCovar = tensorWithRespectTo.eval( implicitSpace ).getCovariantIndices();
+		final ArrayList<Z> iContravar = tensorWithRespectTo.eval( implicitSpace ).getContravariantIndices();
 		
-		Iterator<Z> it = iCovar.iterator();
+		Iterator<Z> it = iContravar.iterator();
 		
 		while( it.hasNext() )
 		{
 			Z index = it.next();
 			Z r = temp.getTemp();
 			SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>
-				conn = afac.getConnectionCoefficient( derivativeIndex , index , r );
+				conn = afac.getConnectionCoefficient( r , derivativeIndex , index );
 			
-			ArrayList<Z> reCovar = new ArrayList<Z>( iCovar.size() );
-			Iterator<Z> it2 = ((ArrayList<Z>)(iCovar.clone())).iterator();
+			
+			ArrayList<Z> reContravar = new ArrayList<Z>( iContravar.size() );
+			Iterator<Z> it2 = ((ArrayList<Z>)(iContravar.clone())).iterator();
 			while( it2.hasNext() )
 			{
 				Z nxt = it2.next();
-				reCovar.add( nxt != index ? nxt : r );
+				reContravar.add( nxt != index ? nxt : r );
 			}
 			
-			SymbolicRegenCovar<Z,SymbolicElem<R,S>,SymbolicElemFactory<R,S>> src = 
-					new SymbolicRegenCovar<Z,SymbolicElem<R,S>,SymbolicElemFactory<R,S>>( tensorWithRespectTo , fac, reCovar );
+			
+			SymbolicRegenContravar<Z,SymbolicElem<R,S>,SymbolicElemFactory<R,S>> src = 
+					new SymbolicRegenContravar<Z,SymbolicElem<R,S>,SymbolicElemFactory<R,S>>( tensorWithRespectTo , fac, reContravar );
+			
 			
 			SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>
 				sconn = conn.mult( src );
 			
+			
 			sum = sum.add( sconn );
 		}
 		
-		return( sum );
 		
+		return( sum );
 	}
 	
 	

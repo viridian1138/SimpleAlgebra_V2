@@ -89,6 +89,29 @@ public class SymbolicReduction<R extends Elem<R,?>, S extends ElemFactory<R,S>> 
 	
 	
 	/**
+	 * Returns true if the partial derivative of the elem reduces to zero.
+	 * 
+	 * @param withRespectTo The term with which to take the partial derivative with respect to.
+	 * @return true if the partial derivative of the elem reduces to zero.
+	 */
+	public boolean partialDerivativeReducesToZero( ArrayList<Elem<?,?>> withRespectTo )
+	{
+		if( elem instanceof SymbolicElem )
+		{
+			if( isSymbolicElemSimpleConst( elem ) )
+			{
+				return( true );
+			}
+			else
+			{
+				return( false );
+			}
+		}
+		return( true );
+	}
+	
+	
+	/**
 	 * Returns true iff. the parameter is a simple constant.
 	 * 
 	 * @param elem The parameter to test.
