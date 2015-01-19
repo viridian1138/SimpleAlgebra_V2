@@ -743,6 +743,37 @@ end
 
 
 
+rule "Partial Derivative Of Zero --> Zero"
+      when
+          pd : PartialDerivativeOp( )
+          cn : SymbolicZero( )
+          mult : SymbolicMult( elemA == pd , elemB == cn )
+          ds: DroolsSession()
+      then
+         insert( new Reng( mult , cn ) );
+end
+
+
+
+
+
+
+rule "Partial Derivative Of Identity --> Zero"
+      when
+          pd : PartialDerivativeOp( )
+          cn : SymbolicIdentity( )
+          mult : SymbolicMult( elemA == pd , elemB == cn )
+          ds: DroolsSession()
+      then
+         insert( new Reng( mult , new SymbolicZero( mult.getFac().getFac() , ds ) ) );
+end
+
+
+
+
+
+
+
 
 
 
