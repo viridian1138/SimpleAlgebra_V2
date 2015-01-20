@@ -322,6 +322,12 @@ public class TestConnectionCoefficient extends TestCase {
 	
 	
 	
+	/**
+	 * Defines a directional derivative for the test.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	private class DDirec extends DirectionalDerivativePartialFactory<DoubleElem,DoubleElemFactory,AElem>
 	{
 		EinsteinTensorElemFactory<String,DoubleElem, DoubleElemFactory> de;

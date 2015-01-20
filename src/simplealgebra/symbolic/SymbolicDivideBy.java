@@ -131,6 +131,16 @@ public class SymbolicDivideBy<R extends Elem<R,?>, S extends ElemFactory<R,S>> e
 		super.performInserts( session );
 	}
 	
+	@Override
+	public void validate() throws RuntimeException
+	{
+		super.validate();
+		if( ival == 0 )
+		{
+			throw( new RuntimeException( "Invalid" ) );
+		}
+	}
+	
 	/**
 	 * The value to divide by.
 	 */

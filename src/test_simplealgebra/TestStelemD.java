@@ -181,6 +181,12 @@ public class TestStelemD extends TestCase {
 	
 	
 	
+	/**
+	 * Defines a directional derivative for the test.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	private class DDirec extends DirectionalDerivativePartialFactory<
 		SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>, 
 		SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
@@ -197,6 +203,7 @@ public class TestStelemD extends TestCase {
 			se2 = _se2;
 		}
 
+		@Override
 		public PartialDerivativeOp<
 			SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
 			SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,

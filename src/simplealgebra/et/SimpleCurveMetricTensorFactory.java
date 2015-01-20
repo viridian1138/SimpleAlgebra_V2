@@ -176,6 +176,17 @@ public class SimpleCurveMetricTensorFactory<Z extends Object, R extends Elem<R,?
 				
 			}
 			
+			
+	//		{
+	//			ArrayList<BigInteger> el = new ArrayList<BigInteger>();
+	//			el.add( BigInteger.ZERO );
+	//			el.add( BigInteger.ZERO );
+	//			SymbolicElem<R,S> els = tel.getVal( el );
+	//			els.writeString( System.out );
+	//			System.out.println( "" );
+	//		}
+			
+			
 			return( tel );
 		}
 

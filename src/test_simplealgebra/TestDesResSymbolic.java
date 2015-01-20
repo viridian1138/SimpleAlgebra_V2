@@ -586,7 +586,12 @@ public class TestDesResSymbolic extends TestCase
 	
 	
 	
-	
+	/**
+	 * Defines a directional derivative for the test.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	private class DirecFac extends DirectionalDerivativePartialFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>, SymbolicElem<DoubleElem,DoubleElemFactory>>
 	{
 

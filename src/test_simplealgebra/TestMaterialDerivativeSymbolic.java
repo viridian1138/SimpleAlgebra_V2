@@ -615,7 +615,7 @@ public class TestMaterialDerivativeSymbolic extends TestCase
 			final ArrayList<Object> contravariantIndices = new ArrayList<Object>();
 			final ArrayList<Object> covariantIndices = new ArrayList<Object>();
 		
-			covariantIndices.add( index );
+			contravariantIndices.add( index );
 		
 			final EinsteinTensorElem<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> mul = 
 					new EinsteinTensorElem<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>( facC , 
@@ -1053,6 +1053,12 @@ public class TestMaterialDerivativeSymbolic extends TestCase
 	
 	
 	
+	/**
+	 * Defines a directional derivative for the test.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	private class DirecFac extends DirectionalDerivativePartialFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>, SymbolicElem<DoubleElem,DoubleElemFactory>>
 	{
 
@@ -1309,8 +1315,11 @@ public class TestMaterialDerivativeSymbolic extends TestCase
 			final SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>
 				valI = mfTen.getVal( el );
 			Assert.assertTrue( valI != null );
+			final SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>
+				valI2 = valI.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY2 , null);
 			System.out.print( "<P>" );
-			valI.writeMathMLWrapped( comp , System.out );
+			valI2.writeMathMLWrapped( comp , System.out );
+			Assert.assertTrue( valI2 != null );
 	//		final SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 	//			valA = valI.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY2 , null);
 	//		valA.writeMathMLWrapped( comp , System.out );

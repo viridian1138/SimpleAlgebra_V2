@@ -355,7 +355,13 @@ private boolean calcEq( EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> 
 }
 	
 
-	
+
+/**
+ * Defines a directional derivative for the test.
+ * 
+ * @author thorngreen
+ *
+ */
 private class DDirec extends DirectionalDerivativePartialFactory<
 	SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
 	SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
@@ -372,6 +378,7 @@ private class DDirec extends DirectionalDerivativePartialFactory<
 		se2 = _se2;
 	}
 
+	@Override
 	public SymbolicElem<
 		SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
 		SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>> 
