@@ -63,7 +63,7 @@ public class SymbolicTranspose<U extends NumDimensions, R extends Elem<R,?>, S e
 	@Override
 	public SquareMatrixElem<U, R, S> eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException,
 			MultiplicativeDistributionRequiredException {
-		ArrayList<SquareMatrixElem<U,R,S>> args = new ArrayList<SquareMatrixElem<U,R,S>>();
+		final ArrayList<SquareMatrixElem<U,R,S>> args = new ArrayList<SquareMatrixElem<U,R,S>>();
 		return( elem.eval( implicitSpace ).handleOptionalOp( SquareMatrixElem.SquareMatrixCmd.TRANSPOSE , args ) );
 	}
 
