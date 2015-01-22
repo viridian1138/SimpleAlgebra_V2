@@ -546,7 +546,7 @@ public class TestCovariantDerivativeFlat extends TestCase {
 		
 		
 		final OrdinaryDerivativeFactory<String, TestDimensionFour, DoubleElem, DoubleElemFactory, AElem> ofacI =
-				new OrdinaryDerivativeFactory<String, TestDimensionFour, DoubleElem, DoubleElemFactory, AElem>(se2s, tdim, dd);
+				new OrdinaryDerivativeFactory<String, TestDimensionFour, DoubleElem, DoubleElemFactory, AElem>(se2s, tdim, dd, null);
 		
 		
 		
@@ -564,7 +564,7 @@ public class TestCovariantDerivativeFlat extends TestCase {
 		
 		final CovariantDerivativeFactory<String, TestDimensionFour, DoubleElem, DoubleElemFactory, AElem> cofac =
 			new CovariantDerivativeFactory<String, TestDimensionFour, DoubleElem, DoubleElemFactory, AElem>(se2s, elem, 
-					"v", new TestTemporaryIndexFactory(), tmt, tdim, dd);
+					"v", new TestTemporaryIndexFactory(), tmt, tdim, dd, null);
 		
 		
 		

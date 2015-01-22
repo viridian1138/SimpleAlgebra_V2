@@ -1750,7 +1750,7 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 			new OrdinaryDerivativeFactory<String,TestDimensionFour,
 				SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
 				SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
-				AElem>( ge , tdim , ddirec );
+				AElem>( ge , tdim , ddirec , null );
 		
 		
 		

@@ -514,7 +514,7 @@ public class TestEinsteinTensor_5D extends TestCase {
 		
 		
 		final OrdinaryDerivativeFactory<String, TestDimensionFive, DoubleElem, DoubleElemFactory, AElem> ofacI =
-				new OrdinaryDerivativeFactory<String, TestDimensionFive, DoubleElem, DoubleElemFactory, AElem>(se2s, tdim, dd);
+				new OrdinaryDerivativeFactory<String, TestDimensionFive, DoubleElem, DoubleElemFactory, AElem>(se2s, tdim, dd, null);
 		
 		
 		

@@ -33,6 +33,7 @@ import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.NumDimensions;
+import simplealgebra.et.DerivativeRemap;
 import simplealgebra.et.EinsteinTensorElem;
 import simplealgebra.et.EinsteinTensorElemFactory;
 import simplealgebra.et.MetricTensorFactory;
@@ -110,6 +111,7 @@ public class MaterialDerivativeFactory<Z extends Object, U extends NumDimensions
 	 * @param _dfac Factory for generating the partial derivatives of a directional derivative.
 	 * @param _flfac Factory for generating the components of the flow vector.
 	 * @param _derivT The "t derivative" scalar operator in the material derivative.
+	 * @param _remap Parameter describing how to remap the covariant part of the derivative.  Leave as null if no remapping is desired.
 	 */
 	public MaterialDerivativeFactory( EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, 
 				SymbolicElemFactory<R, S>> _fac , 
@@ -119,7 +121,8 @@ public class MaterialDerivativeFactory<Z extends Object, U extends NumDimensions
 			U _dim ,
 			DirectionalDerivativePartialFactory<R,S,K> _dfac,
 			FlowVectorFactory<R,S,K> _flfac,
-			SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> _derivT )
+			SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> _derivT,
+			DerivativeRemap<Z,R,S> _remap )
 	{
 		super( _fac );
 		tensorWithRespectTo = _tensorWithRespectTo;
@@ -127,7 +130,7 @@ public class MaterialDerivativeFactory<Z extends Object, U extends NumDimensions
 		dim = _dim;
 		flfac = _flfac;
 		derivT = _derivT;
-		cofac = new CovariantDerivativeFactory<Z,U,R,S,K>( _fac , _tensorWithRespectTo, derivativeIndex, _temp, _metric, _dim , _dfac  );
+		cofac = new CovariantDerivativeFactory<Z,U,R,S,K>( _fac , _tensorWithRespectTo, derivativeIndex, _temp, _metric, _dim , _dfac , _remap  );
 	}
 	
 	

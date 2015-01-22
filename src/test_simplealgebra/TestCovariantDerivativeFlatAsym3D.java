@@ -536,7 +536,7 @@ public class TestCovariantDerivativeFlatAsym3D extends TestCase {
 		
 		
 		final OrdinaryDerivativeFactory<String, TestDimensionThree, DoubleElem, DoubleElemFactory, AElem> ofacI =
-				new OrdinaryDerivativeFactory<String, TestDimensionThree, DoubleElem, DoubleElemFactory, AElem>(se2s, tdim, dd);
+				new OrdinaryDerivativeFactory<String, TestDimensionThree, DoubleElem, DoubleElemFactory, AElem>(se2s, tdim, dd, null);
 		
 		
 		
@@ -554,7 +554,7 @@ public class TestCovariantDerivativeFlatAsym3D extends TestCase {
 		
 		final CovariantDerivativeFactory<String, TestDimensionThree, DoubleElem, DoubleElemFactory, AElem> cofac =
 			new CovariantDerivativeFactory<String, TestDimensionThree, DoubleElem, DoubleElemFactory, AElem>(se2s, elem, 
-					"v", new TestTemporaryIndexFactory(), tmt, tdim, dd);
+					"v", new TestTemporaryIndexFactory(), tmt, tdim, dd, null);
 		
 		
 		

@@ -107,7 +107,7 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 
 	@Override
 	public SymbolicElem<R, S> mult(SymbolicElem<R, S> b) {
-		return( b.isSymbolicZero() ? b : b.isSymbolicIdentity() ? this : new SymbolicMult<R,S>( this , b , fac ) );
+		return( b.isSymbolicZero() ? b : /* b.isSymbolicIdentity() ? this : !!!!!!!!!!!!!!!!!!!!!!!!!!! derivatives */ new SymbolicMult<R,S>( this , b , fac ) );
 	}
 
 	@Override

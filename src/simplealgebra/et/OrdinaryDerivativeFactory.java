@@ -69,15 +69,18 @@ public class OrdinaryDerivativeFactory<Z extends Object, U extends NumDimensions
 	 * @param _fac The factory for the enclosed type.
 	 * @param _dim The number of dimensions for the index.
 	 * @param _dfac Factory for generating the partial derivatives of a directional derivative.
+	 * @param _remap Parameter describing how to remap the derivative.  Leave as null if no remapping is desired.
 	 */
 	public OrdinaryDerivativeFactory( EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, 
 			SymbolicElemFactory<R, S>> _fac , 
 			U _dim ,
-			DirectionalDerivativePartialFactory<R,S,K> _dfac )
+			DirectionalDerivativePartialFactory<R,S,K> _dfac ,
+			DerivativeRemap<Z,R,S> _remap )
 	{
 		fac = _fac;
 		dim = _dim;
 		dfac = _dfac;
+		remap = _remap;
 	}
 	
 	/**
@@ -93,7 +96,10 @@ public class OrdinaryDerivativeFactory<Z extends Object, U extends NumDimensions
 		final OrdinaryDerivative<Z,U,R,S,K> ord = new OrdinaryDerivative<Z,U,R,S,K>( fac , derivativeIndex , dim , dfac );
 		
 		final SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>
-			ret = ord.mult( term );
+			retA = ord.mult( term );
+		
+		final SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>
+			ret = remap == null ? retA : remap.remap( retA );
 		
 		return( ret );
 }
@@ -114,6 +120,11 @@ public class OrdinaryDerivativeFactory<Z extends Object, U extends NumDimensions
 	 * Factory for generating the partial derivatives of a directional derivative.
 	 */
 	private DirectionalDerivativePartialFactory<R,S,K> dfac;
+	
+	/**
+	 * Function for remapping the derivative after it is calculated.  Leave as null if no remap is desired.
+	 */
+	private DerivativeRemap<Z,R,S> remap;
 
 }
 

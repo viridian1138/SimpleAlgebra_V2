@@ -35,6 +35,7 @@ import java.io.PrintStream;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
@@ -48,11 +49,14 @@ import simplealgebra.ddx.DirectionalDerivativePartialFactory;
 import simplealgebra.ddx.FlowVectorFactory;
 import simplealgebra.ddx.MaterialDerivativeFactory;
 import simplealgebra.ddx.PartialDerivativeOp;
+import simplealgebra.et.DerivativeRemap;
 import simplealgebra.et.EinsteinTensorElem;
 import simplealgebra.et.EinsteinTensorElemFactory;
 import simplealgebra.et.MetricTensorInvertingFactory;
 import simplealgebra.et.SimpleCurveMetricTensorFactory;
+import simplealgebra.et.SymbolicTensorResym;
 import simplealgebra.et.TemporaryIndexFactory;
+import simplealgebra.et.SymbolicTensorResym.ResymType;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.PrecedenceComparator;
 import simplealgebra.symbolic.SymbolicAdd;
@@ -65,7 +69,7 @@ import simplealgebra.symbolic.SymbolicZero;
 
 
 
-public class TestMaterialDerivativeSymbolic extends TestCase 
+public class TestMaterialDerivativeFlatAsym3D extends TestCase 
 {
 
 	
@@ -318,53 +322,6 @@ public class TestMaterialDerivativeSymbolic extends TestCase
 	
 	
 	
-	private class A3_Elem extends SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
-	{
-
-		
-		public A3_Elem(ComplexElemFactory<DoubleElem,DoubleElemFactory> _fac ) {
-			super(_fac);
-		}
-
-		@Override
-		public ComplexElem<DoubleElem,DoubleElemFactory> eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException,
-				MultiplicativeDistributionRequiredException {
-			throw( new RuntimeException( "NotSupported" ) );
-		}
-
-		@Override
-		public ComplexElem<DoubleElem,DoubleElemFactory> evalPartialDerivative(ArrayList<? extends Elem<?, ?>> withRespectTo , HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace)
-				throws NotInvertibleException,
-				MultiplicativeDistributionRequiredException {
-			throw( new RuntimeException( "NotSupported" ) );
-		}
-		
-		@Override
-		public boolean symbolicEquals( SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> b )
-		{
-			if( b instanceof A3_Elem )
-			{
-				return( true );
-			}
-			
-			return( false );
-		}
-		
-		@Override
-		public void writeString( PrintStream ps ) {
-			ps.print( "A3( )" );
-		}
-		
-		@Override
-		public void writeMathML( PrecedenceComparator<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> pc , PrintStream ps )
-		{
-			ps.print( "<msub><mi>A</mi><mn>3</mn></msub>" );
-		}
-		
-	}
-	
-	
-	
 	
 	
 	
@@ -512,54 +469,6 @@ public class TestMaterialDerivativeSymbolic extends TestCase
 	
 	
 	
-	private class V3_Elem extends SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
-	{
-
-		
-		public V3_Elem(ComplexElemFactory<DoubleElem,DoubleElemFactory> _fac ) {
-			super(_fac);
-		}
-
-		@Override
-		public ComplexElem<DoubleElem,DoubleElemFactory> eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException,
-				MultiplicativeDistributionRequiredException {
-			throw( new RuntimeException( "NotSupported" ) );
-		}
-
-		@Override
-		public ComplexElem<DoubleElem,DoubleElemFactory> evalPartialDerivative(ArrayList<? extends Elem<?, ?>> withRespectTo , HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace)
-				throws NotInvertibleException,
-				MultiplicativeDistributionRequiredException {
-			throw( new RuntimeException( "NotSupported" ) );
-		}
-		
-		@Override
-		public boolean symbolicEquals( SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> b )
-		{
-			if( b instanceof V3_Elem )
-			{
-				return( true );
-			}
-			
-			return( false );
-		}
-		
-		@Override
-		public void writeString( PrintStream ps ) {
-			ps.print( "V3( )" );
-		}
-		
-		@Override
-		public void writeMathML( PrecedenceComparator<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> pc , PrintStream ps )
-		{
-			ps.print( "<msub><mi>v</mi><mn>3</mn></msub>" );
-		}
-		
-	}
-	
-	
-	
-	
 	
 	private class VectFac extends SymbolicElem<EinsteinTensorElem<Object,SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>,EinsteinTensorElemFactory<Object,SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>>
 	{
@@ -590,15 +499,10 @@ public class TestMaterialDerivativeSymbolic extends TestCase
 			}
 			
 			
-			if( basisIndex.equals( BigInteger.valueOf( 2 ) ) )
-			{
-				return( new A2_Elem( this.getFac().getFac().getFac().getFac() )
-						/* createSymbolicZero( this.getFac().getFac().getFac().getFac() ) */ );
-			}
 			
+			return( new A2_Elem( this.getFac().getFac().getFac().getFac() )
+					/* createSymbolicZero( this.getFac().getFac().getFac().getFac() ) */ );
 			
-			return( new A3_Elem( this.getFac().getFac().getFac().getFac() ) 
-						/* createSymbolicZero( this.getFac().getFac().getFac().getFac() ) */ );
 		}
 
 		@Override
@@ -607,7 +511,7 @@ public class TestMaterialDerivativeSymbolic extends TestCase
 				throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
 			
-			final TestDimensionFour td = new TestDimensionFour();
+			final TestDimensionThree td = new TestDimensionThree();
 			
 			final SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> facC = 
 					this.getFac().getFac().getFac();
@@ -821,53 +725,6 @@ public class TestMaterialDerivativeSymbolic extends TestCase
 	
 	
 	
-	private class X3_Elem extends SymbolicElem<DoubleElem,DoubleElemFactory>
-	{
-
-		
-		public X3_Elem(DoubleElemFactory _fac ) {
-			super(_fac);
-		}
-
-		@Override
-		public DoubleElem eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException,
-				MultiplicativeDistributionRequiredException {
-			throw( new RuntimeException( "NotSupported" ) );
-		}
-
-		@Override
-		public DoubleElem evalPartialDerivative(ArrayList<? extends Elem<?, ?>> withRespectTo, HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace)
-				throws NotInvertibleException,
-				MultiplicativeDistributionRequiredException {
-			throw( new RuntimeException( "NotSupported" ) );
-		}
-		
-		@Override
-		public boolean symbolicEquals( SymbolicElem<DoubleElem,DoubleElemFactory> b )
-		{
-			if( b instanceof X3_Elem )
-			{
-				return( true );
-			}
-			
-			return( false );
-		}
-		
-		@Override
-		public void writeString( PrintStream ps ) {
-			ps.print( "X3( )" );
-		}
-		
-		@Override
-		public void writeMathML( PrecedenceComparator<DoubleElem,DoubleElemFactory> pc , PrintStream ps )
-		{
-			ps.print( "<msub><mi>x</mi><mn>3</mn></msub>" );
-		}
-		
-	}
-	
-	
-	
 	
 	private class DerivTElem extends SymbolicElem<EinsteinTensorElem<Object,SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>,EinsteinTensorElemFactory<Object,SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>>
 	{
@@ -937,20 +794,17 @@ public class TestMaterialDerivativeSymbolic extends TestCase
 	
 	
 	
-	protected static class SimpleMetric extends SymbolicElem<EinsteinTensorElem<Object,SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>,EinsteinTensorElemFactory<Object,SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>>
+	protected static class SEvalElem extends SymbolicElem<EinsteinTensorElem<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>,EinsteinTensorElemFactory<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>>
 	{
+		
+		protected EinsteinTensorElem<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>
+			dval = null;
 
-		public SimpleMetric(
+		public SEvalElem(
 				EinsteinTensorElemFactory<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> _fac,
-				boolean _icovariantIndices, Object _index0, Object _index1,
-				SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> _cSquared,
-				SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> _t_2Ux ) {
+				EinsteinTensorElem<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> _dval ) {
 			super(_fac);
-			icovariantIndices = _icovariantIndices;
-			index0 = _index0;
-			index1 = _index1;
-			cSquared = _cSquared;
-			t_2Ux = _t_2Ux;
+			dval = _dval;
 		}
 
 		@Override
@@ -958,24 +812,7 @@ public class TestMaterialDerivativeSymbolic extends TestCase
 				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace)
 				throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
-			
-			final TestDimensionFour td = new TestDimensionFour();
-			
-			
-			SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>
-				se = this.getFac().getFac().getFac();
-			
-			
-			SimpleCurveMetricTensorFactory<Object, ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> cnf =
-						new SimpleCurveMetricTensorFactory<Object, ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>(
-								se, cSquared, t_2Ux);
-			
-			
-			
-			EinsteinTensorElem<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> ret =
-					cnf.getMetricTensor(icovariantIndices, index0, index1, td.getVal() );
-			
-			return( ret );
+			return( dval );
 		}
 
 		@Override
@@ -984,70 +821,85 @@ public class TestMaterialDerivativeSymbolic extends TestCase
 				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace)
 				throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
-			
-			final EinsteinTensorElem<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>
-			v = this.eval( implicitSpace );
-		
-			final PartialDerivativeOp<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>,SymbolicElem<DoubleElem,DoubleElemFactory>> op = 
-					new PartialDerivativeOp<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>,SymbolicElem<DoubleElem,DoubleElemFactory>>(
-							this.getFac().getFac().getFac().getFac(), (ArrayList<SymbolicElem<DoubleElem, DoubleElemFactory>>) withRespectTo );
-		
-			final ArrayList<Object> indices = new ArrayList<Object>();
-		
-			final EinsteinTensorElem<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>
-				el = new EinsteinTensorElem<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>(
-						this.getFac().getFac().getFac(), indices, indices);
-		
-			el.setVal( new ArrayList<BigInteger>() , op );
-		
-			return( el.mult( v ) );
+			throw( new RuntimeException( "NotSupported" ) );
 		}
 
 		@Override
-		public void writeString(PrintStream ps) {
-			throw( new RuntimeException( "NotSupported" ) );
+		public void writeString( PrintStream ps ) {
+			Iterator<ArrayList<BigInteger>> it = dval.getKeyIterator();
+			while( it.hasNext() )
+			{
+				final ArrayList<BigInteger> key = it.next();
+				ps.print( "\n" + "** " );
+				( dval.getVal( key ) ).writeString( ps );
+			}
 		}
-		
-		
-		private boolean icovariantIndices;
-		
-		private Object index0;
-		
-		private Object index1;
-		
-		private SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> cSquared;
-		
-		private SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> t_2Ux;
 		
 	}
 	
 	
 	
-	protected static class TestMetricTensorFactory extends MetricTensorInvertingFactory<Object, TestDimensionFour, ComplexElem<DoubleElem,DoubleElemFactory>, ComplexElemFactory<DoubleElem,DoubleElemFactory> >
+	
+	protected static class TestMetricTensorFactory extends MetricTensorInvertingFactory<Object, TestDimensionThree, ComplexElem<DoubleElem,DoubleElemFactory>, ComplexElemFactory<DoubleElem,DoubleElemFactory> >
 	{
-		
-		public TestMetricTensorFactory( EinsteinTensorElemFactory<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> _fac ,
-				SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> _cSquared,
-				SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> _t_2Ux )
-		{
-			fac = _fac;
-			cSquared = _cSquared;
-			t_2Ux = _t_2Ux;
-		}
+	
 
 		@Override
 		public SymbolicElem<EinsteinTensorElem<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>, EinsteinTensorElemFactory<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>> getMetricTensor(
-				boolean covariantIndices, Object index0, Object index1 ) {
+				boolean icovariantIndices, Object index0, Object index1 ) {
 			
-			return( new SimpleMetric( fac , covariantIndices , index0 , index1 , cSquared , t_2Ux ) );
+			final TestDimensionThree td = new TestDimensionThree();
+			final DoubleElemFactory de = new DoubleElemFactory();
+			
+			final ArrayList<Object> contravariantIndices = new ArrayList<Object>();
+			final ArrayList<Object> covariantIndices = new ArrayList<Object>();
+			if( icovariantIndices ) covariantIndices.add( index0 ); else contravariantIndices.add( index0 );
+			if( icovariantIndices ) covariantIndices.add( index1 ); else contravariantIndices.add( index1 );
+			
+			
+			final ComplexElemFactory<DoubleElem,DoubleElemFactory> ce = new ComplexElemFactory<DoubleElem,DoubleElemFactory>( de );
+			
+			
+			final SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> seA = 
+					new SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>( ce );
+			
+			
+			final EinsteinTensorElemFactory<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> ge
+				= new EinsteinTensorElemFactory<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>( seA );
+			
+			
+			
+			
+			EinsteinTensorElem<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> g0 =
+						new EinsteinTensorElem<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>( 
+									seA , contravariantIndices , covariantIndices );
+			
+			
+			
+			for( int acnt = 0 ; acnt < 3 ; acnt++ )
+			{
+				
+				final ArrayList<BigInteger> ab = new ArrayList<BigInteger>();
+				ab.add( BigInteger.valueOf( acnt ) );
+				ab.add( BigInteger.valueOf( acnt ) );
+				SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> as = 
+						seA.identity();
+				g0.setVal( ab , as );
+			}
+			
+
+			if( !icovariantIndices )
+			{
+				g0 = genMatrixInverseLeft( td , seA , g0 );
+			}
+			
+			
+			final SEvalElem seval = new SEvalElem( ge , g0 );
+			
+			
+			return( seval );
 		}
-		
-		private EinsteinTensorElemFactory<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> fac;
-		
-		private SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> cSquared;
-		
-		private SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> t_2Ux;
-		
+				
 		
 	}
 	
@@ -1091,19 +943,12 @@ public class TestMaterialDerivativeSymbolic extends TestCase
 			}
 			
 			
-			if( basisIndex.equals( BigInteger.valueOf( 2 ) ) )
-			{
-				ArrayList<SymbolicElem<DoubleElem, DoubleElemFactory>> tmp = new ArrayList<SymbolicElem<DoubleElem, DoubleElemFactory>>();
-				tmp.add( new X2_Elem( new DoubleElemFactory() ) );
-				return( new PartialDerivativeOp<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>, 
-						SymbolicElem<DoubleElem, DoubleElemFactory>>( fac , tmp ) );
-			}
-			
-			
+
 			ArrayList<SymbolicElem<DoubleElem, DoubleElemFactory>> tmp = new ArrayList<SymbolicElem<DoubleElem, DoubleElemFactory>>();
-			tmp.add( new X3_Elem( new DoubleElemFactory() ) );
+			tmp.add( new X2_Elem( new DoubleElemFactory() ) );
 			return( new PartialDerivativeOp<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>, 
 					SymbolicElem<DoubleElem, DoubleElemFactory>>( fac , tmp ) );
+			
 		}
 		
 	}
@@ -1140,15 +985,11 @@ public class TestMaterialDerivativeSymbolic extends TestCase
 			}
 			
 			
-			if( basisIndex.equals( BigInteger.valueOf( 2 ) ) )
-			{
-				return( new V2_Elem( fac )
-						/* createSymbolicZero( fac ) */ );
-			}
+			
+			return( new V2_Elem( fac )
+					/* createSymbolicZero( fac ) */ );
 			
 			
-			return( new V3_Elem( fac ) 
-						/* createSymbolicZero( fac ) */ );
 		}
 		
 	}
@@ -1170,7 +1011,7 @@ public class TestMaterialDerivativeSymbolic extends TestCase
 				boolean after) {
 			
 			if( ( b instanceof A0_Elem ) || ( b instanceof A1_Elem ) 
-					|| ( b instanceof A2_Elem ) || ( b instanceof A3_Elem )
+					|| ( b instanceof A2_Elem ) 
 					|| ( b instanceof CSquaredElem ) || ( a instanceof SymbolicSqrt ) 
 					|| ( b instanceof SymbolicSqrt ) || ( a instanceof PartialDerivativeOp )
 					|| ( b instanceof PartialDerivativeOp ) || ( a instanceof T_2UxElem )
@@ -1193,6 +1034,39 @@ public class TestMaterialDerivativeSymbolic extends TestCase
 	
 	
 	
+	
+	protected class SymRemap extends DerivativeRemap<Object,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
+	{
+
+		@Override
+		public SymbolicElem<EinsteinTensorElem<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>, EinsteinTensorElemFactory<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>> remap(
+				SymbolicElem<EinsteinTensorElem<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>, EinsteinTensorElemFactory<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>> remap) 
+		{
+			final TestDimensionThree td = new TestDimensionThree();
+			final DoubleElemFactory de = new DoubleElemFactory();
+			
+			final ComplexElemFactory<DoubleElem,DoubleElemFactory> ce = new ComplexElemFactory<DoubleElem,DoubleElemFactory>( de );
+			
+			final SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> seA = 
+					new SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>( ce );
+			
+			final EinsteinTensorElemFactory<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> ge
+				= new EinsteinTensorElemFactory<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>( seA );
+		
+		
+			
+			SymbolicTensorResym<Object,TestDimensionThree,SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>> el =
+					new SymbolicTensorResym<Object,TestDimensionThree,SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>
+						( remap , ge , SymbolicTensorResym.ResymType.RESYM_ANTISYMMETRIC , td );
+			
+			return( el );
+		}
+		
+	}
+	
+	
+	
+	
 	protected static class TestTemporaryIndexFactory extends TemporaryIndexFactory<Object>
 	{
 		protected static int tempIndex = 0;
@@ -1209,9 +1083,9 @@ public class TestMaterialDerivativeSymbolic extends TestCase
 	
 	
 	
-	public void testMaterialDerivativeSymbolic() throws NotInvertibleException
+	public void testMaterialDerivativeFlatAsym3D() throws NotInvertibleException
 	{
-		final TestDimensionFour td = new TestDimensionFour();
+		final TestDimensionThree td = new TestDimensionThree();
 		
 		final DoubleElemFactory dl = new DoubleElemFactory();
 		
@@ -1258,14 +1132,17 @@ public class TestMaterialDerivativeSymbolic extends TestCase
 		
 		final DerivTElem derivT = new DerivTElem( etfac );
 		
-		final TestMetricTensorFactory scfac = new TestMetricTensorFactory( etfac, cSquared , t_2Ux );
+		final TestMetricTensorFactory scfac = new TestMetricTensorFactory( );
 		
 		final HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace = (HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>>)( new HashMap() );
 		
 		
-		final MaterialDerivativeFactory<Object, TestDimensionFour, ComplexElem<DoubleElem,DoubleElemFactory>, 
+		final SymRemap remap = new SymRemap();
+		
+		
+		final MaterialDerivativeFactory<Object, TestDimensionThree, ComplexElem<DoubleElem,DoubleElemFactory>, 
 				ComplexElemFactory<DoubleElem,DoubleElemFactory>, SymbolicElem<DoubleElem,DoubleElemFactory>>
-			mf = new MaterialDerivativeFactory<Object, TestDimensionFour, ComplexElem<DoubleElem,DoubleElemFactory>, 
+			mf = new MaterialDerivativeFactory<Object, TestDimensionThree, ComplexElem<DoubleElem,DoubleElemFactory>, 
 					ComplexElemFactory<DoubleElem,DoubleElemFactory>, SymbolicElem<DoubleElem,DoubleElemFactory>>
 				( etfac , 
 							vectFac ,
@@ -1275,7 +1152,7 @@ public class TestMaterialDerivativeSymbolic extends TestCase
 							direcFac,
 							flowFac,
 							derivT,
-							null ); 
+							/* remap */ null ); 
 		
 		
 		
@@ -1307,7 +1184,7 @@ public class TestMaterialDerivativeSymbolic extends TestCase
 		
 		// System.out.println( "***" );
 		int i;
-		for( i = 0 ; i < 4 ; i++ )
+		for( i = 0 ; i < 3 ; i++ )
 		{
 			BigInteger ii = BigInteger.valueOf( i );
 			ArrayList<BigInteger> el = new ArrayList<BigInteger>();
@@ -1319,7 +1196,7 @@ public class TestMaterialDerivativeSymbolic extends TestCase
 			final SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>
 				valI2 = valI.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY2 , null);
 			System.out.print( "<P>" );
-			valI2.writeMathMLWrapped( comp , System.out );
+			valI.writeMathMLWrapped( comp , System.out ); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			Assert.assertTrue( valI2 != null );
 	//		final SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 	//			valA = valI.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY2 , null);

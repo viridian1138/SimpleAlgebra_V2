@@ -36,6 +36,7 @@ import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.NumDimensions;
 import simplealgebra.et.ConnectionCoefficientFactory;
+import simplealgebra.et.DerivativeRemap;
 import simplealgebra.et.EinsteinTensorElem;
 import simplealgebra.et.EinsteinTensorElemFactory;
 import simplealgebra.et.MetricTensorFactory;
@@ -128,6 +129,7 @@ public class CovariantDerivativeFactory<Z extends Object, U extends NumDimension
 	 * @param _metric A factory for generating metric tensors.
 	 * @param _dim The number of dimensions for the index.
 	 * @param _dfac Factory for generating the partial derivatives of a directional derivative.
+	 * @param _remap Parameter describing how to remap the derivative.  Leave as null if no remapping is desired.
 	 */
 	public CovariantDerivativeFactory( EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, 
 				SymbolicElemFactory<R, S>> _fac , 
@@ -136,14 +138,16 @@ public class CovariantDerivativeFactory<Z extends Object, U extends NumDimension
 			TemporaryIndexFactory<Z> _temp,
 			MetricTensorFactory<Z,R,S> _metric,
 			U _dim ,
-			DirectionalDerivativePartialFactory<R,S,K> _dfac )
+			DirectionalDerivativePartialFactory<R,S,K> _dfac ,
+			DerivativeRemap<Z,R,S> _remap )
 	{
 		super( _fac );
 		tensorWithRespectTo = _tensorWithRespectTo;
 		derivativeIndex = _derivativeIndex;
 		temp = _temp;
 		metric = _metric;
-		odfac = new OrdinaryDerivativeFactory<Z,U,R,S,K>( _fac , _dim , _dfac  );
+		remap = _remap;
+		odfac = new OrdinaryDerivativeFactory<Z,U,R,S,K>( _fac , _dim , _dfac , null );
 	}
 	
 	
@@ -178,7 +182,7 @@ public class CovariantDerivativeFactory<Z extends Object, U extends NumDimension
 			Z index = it.next();
 			Z r = temp.getTemp();
 			SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>
-				conn = afac.getConnectionCoefficient( r , derivativeIndex , index );
+				conn = /* sum.getFac().zero(); */ afac.getConnectionCoefficient( r , derivativeIndex , index ); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			
 			
 			ArrayList<Z> reContravar = new ArrayList<Z>( iContravar.size() );
@@ -202,7 +206,11 @@ public class CovariantDerivativeFactory<Z extends Object, U extends NumDimension
 		}
 		
 		
-		return( sum );
+		SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>
+			ret = remap == null ? sum : remap.remap( sum );
+		
+		
+		return( ret );
 	}
 	
 	
@@ -272,6 +280,11 @@ public class CovariantDerivativeFactory<Z extends Object, U extends NumDimension
 	 * A factory for generating ordinary derivatives.
 	 */
 	private OrdinaryDerivativeFactory<Z,U,R,S,K> odfac;
+	
+	/**
+	 * Function for remapping the derivative after it is calculated.  Leave as null if no remap is desired.
+	 */
+	private DerivativeRemap<Z,R,S> remap;
 
 
 }
