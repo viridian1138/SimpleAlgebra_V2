@@ -41,6 +41,13 @@ import java.util.ArrayList;
  * In several other important cases it is important to apply some sort of fraction.
  * <P>
  * <P>
+ * When a derivative operator is "multiplied" by a term "X" the operation is interpreted as applying the
+ * derivative to "X".  In such a case some typical axioms of rings do not apply.  For instance, in a typical
+ * ring Y * I reduces to Y where I is the identity.  However, if Y is a partial derivative operator then
+ * Y * I should be the application of the derivative to the constant I which should be zero.  Hence, the "I"
+ * shouldn't be reduced from Y * I in this case. 
+ * <P>
+ * <P>
  * For noncommutative products, separate right-side and left-side inverses are defined.  The right-side
  * inverse doesn't necessarily equal the left-side inverse.
  * <P>

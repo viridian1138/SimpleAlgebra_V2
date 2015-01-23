@@ -182,7 +182,7 @@ public class CovariantDerivativeFactory<Z extends Object, U extends NumDimension
 			Z index = it.next();
 			Z r = temp.getTemp();
 			SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>
-				conn = /* sum.getFac().zero(); */ afac.getConnectionCoefficient( r , derivativeIndex , index ); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+				conn = afac.getConnectionCoefficient( r , derivativeIndex , index );
 			
 			
 			ArrayList<Z> reContravar = new ArrayList<Z>( iContravar.size() );

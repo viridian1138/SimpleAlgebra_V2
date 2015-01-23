@@ -213,6 +213,17 @@ public class SymbolicReduction<R extends Elem<R,?>, S extends ElemFactory<R,S>> 
 	
 	
 	@Override
+	public boolean exposesDerivatives()
+	{
+		if( elem instanceof SymbolicElem )
+		{
+			( (SymbolicElem) elem ).exposesDerivatives( );
+		}
+		return( false );
+	}
+	
+	
+	@Override
 	public void writeString( PrintStream ps ) {
 		ps.print( "reduction( " );
 		if( elem instanceof SymbolicElem )

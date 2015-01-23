@@ -47,6 +47,13 @@ public interface Mutator<T extends Elem<T,?>> {
 	public T mutate( T in ) throws NotInvertibleException;
 	
 	/**
+	 * Returns true if the elem exposes derivatives to elems by which it is multiplied.
+	 * 
+	 * @return True if the elem exposes derivatives to elems by which it is multiplied.
+	 */
+	public boolean exposesDerivatives();
+	
+	/**
 	 * Returns a string representation of the elem.
 	 * 
 	 * @return A string representation of the elem.

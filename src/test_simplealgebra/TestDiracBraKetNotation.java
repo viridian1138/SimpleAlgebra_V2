@@ -68,6 +68,12 @@ public class TestDiracBraKetNotation extends TestCase {
 			final ArrayList<ComplexElem<R, S>> args = new ArrayList<ComplexElem<R, S>>();
 			return( in.handleOptionalOp(ComplexElem.ComplexCmd.CONJUGATE_LEFT, args) );
 		}
+		
+		@Override
+		public boolean exposesDerivatives()
+		{
+			return( false );
+		}
 
 		@Override
 		public String writeString() {
@@ -87,6 +93,12 @@ public class TestDiracBraKetNotation extends TestCase {
 	public ComplexElem<R, S> mutate(ComplexElem<R, S> in) throws NotInvertibleException {
 		final ArrayList<ComplexElem<R, S>> args = new ArrayList<ComplexElem<R, S>>();
 		return( in.handleOptionalOp(ComplexElem.ComplexCmd.CONJUGATE_RIGHT, args) );
+	}
+	
+	@Override
+	public boolean exposesDerivatives()
+	{
+		return( false );
 	}
 
 	@Override

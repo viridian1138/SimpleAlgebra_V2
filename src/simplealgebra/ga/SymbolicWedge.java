@@ -113,6 +113,13 @@ public class SymbolicWedge<U extends NumDimensions, A extends Ord<U>, R extends 
 		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TBD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		return null;
 	}
+	
+	
+	@Override
+	public boolean exposesDerivatives()
+	{
+		return( elemB.exposesDerivatives() );
+	}
 
 	
 	@Override

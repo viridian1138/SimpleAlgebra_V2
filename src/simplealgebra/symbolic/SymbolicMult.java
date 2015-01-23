@@ -209,6 +209,12 @@ public class SymbolicMult<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 	}
 	
 	@Override
+	public boolean exposesDerivatives()
+	{
+		return( elemB.exposesDerivatives() );
+	}
+	
+	@Override
 	public void writeString( PrintStream ps ) {
 		ps.print( "mult( " );
 		elemA.writeString( ps );

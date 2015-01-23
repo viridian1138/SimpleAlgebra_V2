@@ -232,12 +232,7 @@ public class ConnectionCoefficientFactory<Z extends Object, U extends NumDimensi
 		final SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> ret =
 				oi1.add( oi2 ).add( oi3.negate() );
 		
-//		System.out.println( "--------------" ); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//		oi1.writeString( System.out );
-//		System.out.println( "--------------" );
-//		oi2.writeString( System.out );
-//		System.out.println( "--------------" );
-//		oi3.writeString( System.out );
+		
 		
 		return( ret );
 	}

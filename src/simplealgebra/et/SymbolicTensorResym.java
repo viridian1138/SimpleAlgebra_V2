@@ -108,6 +108,12 @@ public class SymbolicTensorResym<Z extends Object, U extends NumDimensions, R ex
 	{
 		throw( new RuntimeException( "Not Supported" ) );
 	}
+	
+	@Override
+	public boolean exposesDerivatives()
+	{
+		return( elem.exposesDerivatives() );
+	}
 
 	@Override
 	public void writeString( PrintStream ps ) {

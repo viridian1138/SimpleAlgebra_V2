@@ -73,6 +73,12 @@ public class SymbolicInvertLeftRevCoeff<U extends NumDimensions, R extends Elem<
 		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TBD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		return null;
 	}
+	
+	@Override
+	public boolean exposesDerivatives()
+	{
+		return( elem.exposesDerivatives() );
+	}
 
 	@Override
 	public void writeString( PrintStream ps ) {

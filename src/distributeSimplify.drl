@@ -444,6 +444,7 @@ rule "Mult Ident B"
           ez : SymbolicIdentity( )
           nez : SymbolicElem( )
           mult1 : SymbolicMult( elemA == nez , elemB == ez )
+          eval( !( nez.exposesDerivatives() ) )
           not( Reng( strt == mult1 ) )
       then
           insert( new Reng( mult1 , nez ) );

@@ -126,7 +126,12 @@ public class SymbolicConjugateRight<R extends Elem<R,?>, S extends ElemFactory<R
 		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TBD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		return null;
 	}
-
+	
+	@Override
+	public boolean exposesDerivatives()
+	{
+		return( elem.exposesDerivatives() );
+	}
 	
 	@Override
 	public void writeString( PrintStream ps ) {

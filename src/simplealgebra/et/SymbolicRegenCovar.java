@@ -83,6 +83,12 @@ public class SymbolicRegenCovar<Z extends Object, R extends Elem<R,?>, S extends
 	}
 	
 	@Override
+	public boolean exposesDerivatives()
+	{
+		return( elem.exposesDerivatives() );
+	}
+	
+	@Override
 	public void performInserts( StatefulKnowledgeSession session )
 	{
 		elem.performInserts( session );

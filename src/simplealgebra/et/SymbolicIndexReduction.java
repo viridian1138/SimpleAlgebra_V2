@@ -79,6 +79,12 @@ public class SymbolicIndexReduction<Z extends Object, R extends Elem<R,?>, S ext
 	{
 		return( elem.evalPartialDerivative( withRespectTo , implicitSpace ).indexReduction( contravariantReduce , covariantReduce ) );
 	}
+	
+	@Override
+	public boolean exposesDerivatives()
+	{
+		return( elem.exposesDerivatives() );
+	}
 
 	@Override
 	public void writeString( PrintStream ps ) {

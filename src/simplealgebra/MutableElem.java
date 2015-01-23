@@ -56,6 +56,12 @@ public abstract class MutableElem<T extends Elem<T,?>, U extends MutableElem<T,U
 			public U mutate(U in) throws NotInvertibleException {
 				return( in.mutate( elem ) );
 			}
+			
+			@Override
+			public boolean exposesDerivatives()
+			{
+				return( elem.exposesDerivatives() );
+			}
 
 			@Override
 			public String writeString() {

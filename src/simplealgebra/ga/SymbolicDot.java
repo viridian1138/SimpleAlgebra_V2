@@ -113,7 +113,13 @@ public class SymbolicDot<U extends NumDimensions, A extends Ord<U>, R extends El
 		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TBD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		return null;
 	}
-
+	
+	
+	@Override
+	public boolean exposesDerivatives()
+	{
+		return( elemB.exposesDerivatives() );
+	}
 	
 	@Override
 	public void writeString( PrintStream ps ) {

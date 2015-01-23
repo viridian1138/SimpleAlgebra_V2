@@ -75,6 +75,13 @@ public class SymbolicTranspose<U extends NumDimensions, R extends Elem<R,?>, S e
 		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TBD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		return null;
 	}
+	
+	
+	@Override
+	public boolean exposesDerivatives()
+	{
+		return( elem.exposesDerivatives() );
+	}
 
 	
 	@Override

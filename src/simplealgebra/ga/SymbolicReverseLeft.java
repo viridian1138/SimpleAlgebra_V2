@@ -110,6 +110,13 @@ public class SymbolicReverseLeft<U extends NumDimensions, A extends Ord<U>, R ex
 		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TBD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		return null;
 	}
+	
+	
+	@Override
+	public boolean exposesDerivatives()
+	{
+		return( elemA.exposesDerivatives() );
+	}
 
 	
 	@Override

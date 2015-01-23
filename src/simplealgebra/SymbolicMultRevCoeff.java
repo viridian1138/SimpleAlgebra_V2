@@ -84,6 +84,12 @@ public class SymbolicMultRevCoeff<U extends NumDimensions, R extends Elem<R,?>, 
 		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TBD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		return null;
 	}
+	
+	@Override
+	public boolean exposesDerivatives()
+	{
+		return( elemB.exposesDerivatives() );
+	}
 
 	@Override
 	public void writeString( PrintStream ps ) {

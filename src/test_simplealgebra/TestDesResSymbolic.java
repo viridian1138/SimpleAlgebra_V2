@@ -51,12 +51,6 @@ import simplealgebra.et.EinsteinTensorElem;
 import simplealgebra.et.EmFieldTensorFactory;
 import simplealgebra.et.SimpleCurveMetricTensorFactory;
 import simplealgebra.et.VectorPotentialFactory;
-import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
-import simplealgebra.symbolic.PrecedenceComparator;
-import simplealgebra.symbolic.SymbolicElem;
-import simplealgebra.symbolic.SymbolicElemFactory;
-import simplealgebra.symbolic.SymbolicOps;
-import simplealgebra.symbolic.SymbolicSqrt;
 import simplealgebra.symbolic.*;
 
 import java.io.*;
@@ -809,6 +803,12 @@ public class TestDesResSymbolic extends TestCase
 				public String writeString( ) {
 					// TODO Auto-generated method stub
 					return( "mutate mult." );
+				}
+				
+				@Override
+				public boolean exposesDerivatives()
+				{
+					return( false );
 				}
 
 				@Override

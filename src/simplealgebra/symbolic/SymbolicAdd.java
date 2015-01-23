@@ -84,6 +84,12 @@ public class SymbolicAdd<R extends Elem<R,?>, S extends ElemFactory<R,S>> extend
 	{
 		return( elemA.evalPartialDerivative( withRespectTo , implicitSpace ).add( elemB.evalPartialDerivative( withRespectTo , implicitSpace ) ) );
 	}
+	
+	@Override
+	public boolean exposesDerivatives()
+	{
+		return( ( elemB.exposesDerivatives() ) || ( elemA.exposesDerivatives() ) );
+	}
 
 	@Override
 	public void writeString( PrintStream ps ) {

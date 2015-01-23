@@ -84,6 +84,13 @@ public class SymbolicDivideBy<R extends Elem<R,?>, S extends ElemFactory<R,S>> e
 	{
 		return( elem.evalPartialDerivative( withRespectTo , implicitSpace ).divideBy( ival ) );
 	}
+	
+	
+	@Override
+	public boolean exposesDerivatives()
+	{
+		return( elem.exposesDerivatives() );
+	}
 
 	
 	@Override

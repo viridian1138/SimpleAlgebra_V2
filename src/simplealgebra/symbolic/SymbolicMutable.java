@@ -104,6 +104,12 @@ public class SymbolicMutable<T extends Elem<T,?>, U extends MutableElem<T,U,?>, 
 		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TBD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		return null;
 	}
+	
+	@Override
+	public boolean exposesDerivatives()
+	{
+		return( ( elemA.exposesDerivatives() ) || ( elemB.exposesDerivatives() ) );
+	}
 
 	@Override
 	public void writeString( PrintStream ps ) {

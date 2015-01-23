@@ -76,7 +76,14 @@ public abstract class DerivativeElem<R extends Elem<R,?>, S extends ElemFactory<
 	{
 		throw( new MultiplicativeDistributionRequiredException() );
 	}
+	
+	@Override
+	public boolean exposesDerivatives()
+	{
+		return( true );
+	}
 
+	
 }
 
 

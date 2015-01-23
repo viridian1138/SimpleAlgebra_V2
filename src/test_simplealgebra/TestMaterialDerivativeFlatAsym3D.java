@@ -44,6 +44,7 @@ import simplealgebra.ComplexElemFactory;
 import simplealgebra.DoubleElem;
 import simplealgebra.DoubleElemFactory;
 import simplealgebra.Elem;
+import simplealgebra.Mutator;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.ddx.DirectionalDerivativePartialFactory;
 import simplealgebra.ddx.FlowVectorFactory;
@@ -1035,7 +1036,7 @@ public class TestMaterialDerivativeFlatAsym3D extends TestCase
 	
 	
 	
-	protected class SymRemap extends DerivativeRemap<Object,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
+	protected static class SymRemap extends DerivativeRemap<Object,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 	{
 
 		@Override
@@ -1063,6 +1064,32 @@ public class TestMaterialDerivativeFlatAsym3D extends TestCase
 		}
 		
 	}
+	
+	
+	
+	protected static class Sym2Mutator implements Mutator<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>
+	{
+
+		@Override
+		public SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> mutate(
+				SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> in)
+				throws NotInvertibleException {
+			
+			return( in.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY2 , null ) );
+		}
+
+		@Override
+		public boolean exposesDerivatives() {
+			return( true ); // Maybe it does, anyway.
+		}
+
+		@Override
+		public String writeString() {
+			return( "Sym2" );
+		}
+		
+	}
+	
 	
 	
 	
@@ -1152,7 +1179,7 @@ public class TestMaterialDerivativeFlatAsym3D extends TestCase
 							direcFac,
 							flowFac,
 							derivT,
-							/* remap */ null ); 
+							remap ); 
 		
 		
 		
@@ -1193,11 +1220,11 @@ public class TestMaterialDerivativeFlatAsym3D extends TestCase
 			final SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>
 				valI = mfTen.getVal( el );
 			Assert.assertTrue( valI != null );
-			final SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>
-				valI2 = valI.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY2 , null);
+			// final SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>
+			//	valI2 = valI.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY2 , null);
 			System.out.print( "<P>" );
-			valI.writeMathMLWrapped( comp , System.out ); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-			Assert.assertTrue( valI2 != null );
+			valI.writeMathMLWrapped( comp , System.out ); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	// 		Assert.assertTrue( valI2 != null ); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	//		final SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 	//			valA = valI.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY2 , null);
 	//		valA.writeMathMLWrapped( comp , System.out );

@@ -119,6 +119,12 @@ public class FlowVectorTensor<Z extends Object, U extends NumDimensions, R exten
 			MultiplicativeDistributionRequiredException {
 		throw( new RuntimeException( "NotSupported" ) );
 	}
+	
+	@Override
+	public boolean exposesDerivatives()
+	{
+		return( dfac.exposesDerivatives() );
+	}
 
 	@Override
 	public void writeString(PrintStream ps) {

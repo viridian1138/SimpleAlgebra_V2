@@ -101,6 +101,12 @@ public class SymbolicInvertLeft<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 		final R aR = elem.invertRight().eval(implicitSpace);
 		return( aL.mult( ap ).mult( aR ).negate() );
 	}
+	
+	@Override
+	public boolean exposesDerivatives()
+	{
+		return( elem.exposesDerivatives() );
+	}
 
 	@Override
 	public void writeString( PrintStream ps ) {

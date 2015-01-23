@@ -52,6 +52,12 @@ public class MultLeftMutator<T extends Elem<T,?>> implements Mutator<T> {
 	public T mutate(T in) {
 		return( elem.mult( in ) );
 	}
+	
+	@Override
+	public boolean exposesDerivatives()
+	{
+		return( false );
+	}
 
 	@Override
 	public String writeString() {

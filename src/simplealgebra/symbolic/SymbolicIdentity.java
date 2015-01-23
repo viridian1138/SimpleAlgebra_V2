@@ -94,6 +94,12 @@ public class SymbolicIdentity<R extends Elem<R,?>, S extends ElemFactory<R,S>> e
 	}
 	
 	@Override
+	public boolean exposesDerivatives()
+	{
+		return( false );
+	}
+	
+	@Override
 	protected boolean isSymbolicIdentity()
 	{
 		return( true );

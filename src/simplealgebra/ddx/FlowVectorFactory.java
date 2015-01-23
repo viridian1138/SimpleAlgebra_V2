@@ -51,6 +51,18 @@ public abstract class FlowVectorFactory<R extends Elem<R,?>, S extends ElemFacto
 	 * @return A partial derivative expression corresponding to the index.
 	 */
 	public abstract SymbolicElem<R,S> getComponent( BigInteger basisIndex );
+	
+	
+	/**
+	 * Returns true if the elem exposes derivatives to elems by which it is multiplied.
+	 * 
+	 * @return True if the elem exposes derivatives to elems by which it is multiplied.
+	 */
+	public boolean exposesDerivatives()
+	{
+		return( false );
+	}
 
+	
 }
 

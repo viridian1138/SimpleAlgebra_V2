@@ -107,7 +107,7 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 
 	@Override
 	public SymbolicElem<R, S> mult(SymbolicElem<R, S> b) {
-		return( b.isSymbolicZero() ? b : /* b.isSymbolicIdentity() ? this : !!!!!!!!!!!!!!!!!!!!!!!!!!! derivatives */ new SymbolicMult<R,S>( this , b , fac ) );
+		return( b.isSymbolicZero() ? b : new SymbolicMult<R,S>( this , b , fac ) );
 	}
 
 	@Override
@@ -154,6 +154,18 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 	{
 		return( false );
 	}
+	
+	
+	/**
+	 * Returns true if the elem exposes derivatives to elems by which it is multiplied.
+	 * 
+	 * @return True if the elem exposes derivatives to elems by which it is multiplied.
+	 */
+	public boolean exposesDerivatives()
+	{
+		return( false );
+	}
+	
 	
 	/**
 	 * Writes MathML ( http://www.w3.org/Math/ ) presentation tags describing the elem, wrapped in the top-level math tag, to a print stream.

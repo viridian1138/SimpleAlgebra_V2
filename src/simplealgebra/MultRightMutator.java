@@ -26,6 +26,8 @@
 
 package simplealgebra;
 
+import simplealgebra.symbolic.SymbolicElem;
+
 
 /**
  * Mutator for right-side multiplication.
@@ -51,6 +53,16 @@ public class MultRightMutator<T extends Elem<T,?>> implements Mutator<T> {
 	@Override
 	public T mutate(T in) {
 		return( in.mult( elem ) );
+	}
+	
+	@Override
+	public boolean exposesDerivatives()
+	{
+		if( elem instanceof SymbolicElem )
+		{
+			return( ( (SymbolicElem) elem ).exposesDerivatives() );
+		}
+		return( false );
 	}
 
 	@Override

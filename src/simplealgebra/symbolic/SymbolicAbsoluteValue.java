@@ -91,6 +91,12 @@ public class SymbolicAbsoluteValue<R extends Elem<R,?>, S extends ElemFactory<R,
 		final R dv = elem.evalPartialDerivative( withRespectTo , implicitSpace );
 		return( v.mult( absV.invertLeft() ).mult( dv ) );
 	}
+	
+	@Override
+	public boolean exposesDerivatives()
+	{
+		return( elem.exposesDerivatives() );
+	}
 
 	@Override
 	public void writeString( PrintStream ps ) {

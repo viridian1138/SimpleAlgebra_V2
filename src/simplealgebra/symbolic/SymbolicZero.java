@@ -85,6 +85,13 @@ public class SymbolicZero<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 		return( fac.zero() );
 	}
 	
+	
+	@Override
+	public boolean exposesDerivatives()
+	{
+		return( false );
+	}
+	
 
 	@Override
 	public void writeString( PrintStream ps ) {
