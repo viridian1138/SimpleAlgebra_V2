@@ -140,7 +140,7 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 	 * 
 	 * @return True iff. the elem is a symbolic zero.
 	 */
-	protected boolean isSymbolicZero()
+	public boolean isSymbolicZero()
 	{
 		return( false );
 	}
@@ -150,7 +150,7 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 	 * 
 	 * @return True iff. the elem is a symbolic identity.
 	 */
-	protected boolean isSymbolicIdentity()
+	public boolean isSymbolicIdentity()
 	{
 		return( false );
 	}

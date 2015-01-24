@@ -74,7 +74,7 @@ public class SymbolicZero<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 	}
 	
 	@Override
-	protected boolean isSymbolicZero()
+	public boolean isSymbolicZero()
 	{
 		return( true );
 	}

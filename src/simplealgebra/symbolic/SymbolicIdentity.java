@@ -100,7 +100,7 @@ public class SymbolicIdentity<R extends Elem<R,?>, S extends ElemFactory<R,S>> e
 	}
 	
 	@Override
-	protected boolean isSymbolicIdentity()
+	public boolean isSymbolicIdentity()
 	{
 		return( true );
 	}

@@ -37,6 +37,7 @@ import simplealgebra.NotInvertibleException;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.PrecedenceComparator;
 import simplealgebra.symbolic.SymbolicElem;
+import simplealgebra.symbolic.SymbolicMult;
 
 /**
  * Implements a partial derivative <math display="inline">
@@ -72,6 +73,11 @@ public class PartialDerivativeOp<R extends Elem<R,?>, S extends ElemFactory<R,S>
 	{
 		super( _fac );
 		withRespectTo = _withRespectTo;
+	}
+	
+	@Override
+	public SymbolicElem<R, S> mult(SymbolicElem<R, S> b) {
+		return( ( b.isSymbolicZero() || b.isSymbolicIdentity() ) ? this.getFac().zero() : super.mult( b ) );
 	}
 	
 	@Override
