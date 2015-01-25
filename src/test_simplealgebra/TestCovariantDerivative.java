@@ -330,6 +330,9 @@ public class TestCovariantDerivative extends TestCase {
 	 */
 	private class DDirec extends DirectionalDerivativePartialFactory<DoubleElem,DoubleElemFactory,AElem>
 	{
+		/**
+		 * Factory for the enclosed type.
+		 */
 		EinsteinTensorElemFactory<String,DoubleElem, DoubleElemFactory> de;
 		DoubleElemFactory se2;
 		

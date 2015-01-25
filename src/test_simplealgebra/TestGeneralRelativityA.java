@@ -367,6 +367,9 @@ private class DDirec extends DirectionalDerivativePartialFactory<
 	SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
 	AElem>
 {
+	/**
+	 * Factory for the enclosed type.
+	 */
 	EinsteinTensorElemFactory<String,DoubleElem, DoubleElemFactory> de;
 	SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> se2;
 	

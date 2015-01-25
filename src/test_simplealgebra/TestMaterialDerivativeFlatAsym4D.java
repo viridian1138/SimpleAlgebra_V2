@@ -684,11 +684,20 @@ public class TestMaterialDerivativeFlatAsym4D extends TestCase
 	
 	
 	
-	
+	/**
+	 * Node representing the 0-th ordinate of the coordinate space.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	private class X0_Elem extends SymbolicElem<DoubleElem,DoubleElemFactory>
 	{
 
-		
+		/**
+		 * Constructs the elem.
+		 * 
+		 * @param _fac The factory for the enclosed type.
+		 */
 		public X0_Elem(DoubleElemFactory _fac ) {
 			super(_fac);
 		}
@@ -732,11 +741,20 @@ public class TestMaterialDerivativeFlatAsym4D extends TestCase
 	
 	
 	
-	
+	/**
+	 * Node representing the 1st ordinate of the coordinate space.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	private class X1_Elem extends SymbolicElem<DoubleElem,DoubleElemFactory>
 	{
 
-		
+		/**
+		 * Constructs the elem.
+		 * 
+		 * @param _fac The factory for the enclosed type.
+		 */
 		public X1_Elem(DoubleElemFactory _fac ) {
 			super(_fac);
 		}
@@ -780,11 +798,20 @@ public class TestMaterialDerivativeFlatAsym4D extends TestCase
 	
 	
 	
-	
+	/**
+	 * Node representing the 2nd ordinate of the coordinate space.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	private class X2_Elem extends SymbolicElem<DoubleElem,DoubleElemFactory>
 	{
 
-		
+		/**
+		 * Constructs the elem.
+		 * 
+		 * @param _fac The factory for the enclosed type.
+		 */
 		public X2_Elem(DoubleElemFactory _fac ) {
 			super(_fac);
 		}
@@ -828,11 +855,20 @@ public class TestMaterialDerivativeFlatAsym4D extends TestCase
 	
 	
 	
-	
+	/**
+	 * Node representing the 3rd ordinate of the coordinate space.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	private class X3_Elem extends SymbolicElem<DoubleElem,DoubleElemFactory>
 	{
 
-		
+		/**
+		 * Constructs the elem.
+		 * 
+		 * @param _fac The factory for the enclosed type.
+		 */
 		public X3_Elem(DoubleElemFactory _fac ) {
 			super(_fac);
 		}
@@ -1066,6 +1102,9 @@ public class TestMaterialDerivativeFlatAsym4D extends TestCase
 	private class DirecFac extends DirectionalDerivativePartialFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>, SymbolicElem<DoubleElem,DoubleElemFactory>>
 	{
 
+		/**
+		 * Factory for the enclosed type.
+		 */
 		ComplexElemFactory<DoubleElem,DoubleElemFactory> fac;
 		
 		public DirecFac( ComplexElemFactory<DoubleElem,DoubleElemFactory> _fac )

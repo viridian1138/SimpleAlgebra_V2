@@ -55,6 +55,7 @@ import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicReduction;
 import simplealgebra.ddx.*;
+import simplealgebra.et.EinsteinTensorElemFactory;
 import simplealgebra.ga.*;
 
 
@@ -410,6 +411,10 @@ private class DDirec extends DirectionalDerivativePartialFactory<
 	SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
 	AElem>
 {
+
+	/**
+	 * Factory for the enclosed type.
+	 */
 	GeometricAlgebraMultivectorElemFactory<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem, DoubleElemFactory> de;
 	SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> se2;
 	

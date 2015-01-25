@@ -55,6 +55,7 @@ import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicReduction;
 import simplealgebra.ga.*;
 import simplealgebra.ddx.*;
+import simplealgebra.et.EinsteinTensorElemFactory;
 
 
 
@@ -192,6 +193,9 @@ public class TestStelemD extends TestCase {
 		SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
 		AElem>
 	{
+		/**
+		 * Factory for the enclosed type.
+		 */
 		DoubleElemFactory de;
 		SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> se2;
 		
