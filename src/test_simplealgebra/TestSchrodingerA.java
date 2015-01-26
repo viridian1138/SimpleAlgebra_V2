@@ -263,12 +263,25 @@ public class TestSchrodingerA extends TestCase {
 	
 	
 	
-	
+	/**
+	 * Node representing an ordinate of the coordinate space.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	private class AElem extends SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 	{
+		/**
+		 * The number of the ordinate.
+		 */
 		private int col;
 
-		
+		/**
+		 * Constructs the node.
+		 * 
+		 * @param _fac The factory for the enclosed type.
+		 * @param _col The number of the ordinate.
+		 */
 		public AElem(ComplexElemFactory<DoubleElem,DoubleElemFactory> _fac, int _col) {
 			super(_fac);
 			col = _col;
@@ -319,7 +332,9 @@ public class TestSchrodingerA extends TestCase {
 		}
 		
 		/**
-		 * @return the col
+		 * Returns the number of the ordinate.
+		 * 
+		 * @return The number of the ordinate.
 		 */
 		public int getCol() {
 			return col;

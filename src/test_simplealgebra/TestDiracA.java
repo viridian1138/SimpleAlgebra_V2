@@ -473,12 +473,25 @@ private class DDirec extends DirectionalDerivativePartialFactory<
 
 
 
-
+/**
+ * Node representing an ordinate of the coordinate space.
+ * 
+ * @author thorngreen
+ *
+ */
 private class AElem extends SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>,GeometricAlgebraMultivectorElemFactory<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>>
 {
+	/**
+	 * The number of the ordinate.
+	 */
 	private int col;
 
-	
+	/**
+	 * Constructs the node.
+	 * 
+	 * @param _fac The factory for the enclosed type.
+	 * @param _col The number of the ordinate.
+	 */
 	public AElem(GeometricAlgebraMultivectorElemFactory<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> _fac, int _col) {
 		super(_fac);
 		col = _col;
@@ -529,7 +542,9 @@ private class AElem extends SymbolicElem<GeometricAlgebraMultivectorElem<TestDim
 	}
 	
 	/**
-	 * @return the col
+	 * Returns the number of the ordinate.
+	 * 
+	 * @return The number of the ordinate.
 	 */
 	public int getCol() {
 		return col;

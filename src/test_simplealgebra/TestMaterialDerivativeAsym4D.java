@@ -375,11 +375,20 @@ public class TestMaterialDerivativeAsym4D extends TestCase
 	
 	
 	
-	
+	/**
+	 * Node representing the 0-th ordinate of the flow velocity.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	private class V0_Elem extends SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 	{
 
-		
+		/**
+		 * Constructs the elem.
+		 * 
+		 * @param _fac The factory for the enclosed type.
+		 */
 		public V0_Elem(ComplexElemFactory<DoubleElem,DoubleElemFactory> _fac ) {
 			super(_fac);
 		}
@@ -423,11 +432,20 @@ public class TestMaterialDerivativeAsym4D extends TestCase
 	
 	
 	
-	
+	/**
+	 * Node representing the 1st ordinate of the flow velocity.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	private class V1_Elem extends SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 	{
 
-		
+		/**
+		 * Constructs the elem.
+		 * 
+		 * @param _fac The factory for the enclosed type.
+		 */
 		public V1_Elem(ComplexElemFactory<DoubleElem,DoubleElemFactory> _fac ) {
 			super(_fac);
 		}
@@ -471,11 +489,20 @@ public class TestMaterialDerivativeAsym4D extends TestCase
 	
 	
 	
-	
+	/**
+	 * Node representing the 2nd ordinate of the flow velocity.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	private class V2_Elem extends SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 	{
 
-		
+		/**
+		 * Constructs the elem.
+		 * 
+		 * @param _fac The factory for the enclosed type.
+		 */
 		public V2_Elem(ComplexElemFactory<DoubleElem,DoubleElemFactory> _fac ) {
 			super(_fac);
 		}
@@ -519,11 +546,20 @@ public class TestMaterialDerivativeAsym4D extends TestCase
 	
 	
 	
-	
+	/**
+	 * Node representing the 3rd ordinate of the flow velocity.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	private class V3_Elem extends SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 	{
 
-		
+		/**
+		 * Constructs the elem.
+		 * 
+		 * @param _fac The factory for the enclosed type.
+		 */
 		public V3_Elem(ComplexElemFactory<DoubleElem,DoubleElemFactory> _fac ) {
 			super(_fac);
 		}
