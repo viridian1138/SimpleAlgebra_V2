@@ -86,7 +86,7 @@ public class TestEinsteinTensor extends TestCase {
 	 * @author thorngreen
 	 *
 	 */
-	private class AElem extends SymbolicElem<EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>,EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>>
+	private class Ordinate extends SymbolicElem<EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>,EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>>
 	{
 		/**
 		 * The number of the ordinate.
@@ -99,7 +99,7 @@ public class TestEinsteinTensor extends TestCase {
 		 * @param _fac The factory for the enclosed type.
 		 * @param _col The number of the ordinate.
 		 */
-		public AElem(EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory> _fac, int _col) {
+		public Ordinate(EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory> _fac, int _col) {
 			super(_fac);
 			col = _col;
 		}
@@ -125,9 +125,9 @@ public class TestEinsteinTensor extends TestCase {
 		@Override
 		public boolean symbolicEquals( SymbolicElem<EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>,EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>> b )
 		{
-			if( b instanceof AElem )
+			if( b instanceof Ordinate )
 			{
-				return( col == ( (AElem) b ).col );
+				return( col == ( (Ordinate) b ).col );
 			}
 			return( false );
 		}
@@ -135,9 +135,9 @@ public class TestEinsteinTensor extends TestCase {
 		@Override
 		public boolean equals( Object b )
 		{
-			if( b instanceof AElem )
+			if( b instanceof Ordinate )
 			{
-				return( col == ( (AElem) b ).col );
+				return( col == ( (Ordinate) b ).col );
 			}
 			return( false );
 		}
@@ -301,10 +301,21 @@ public class TestEinsteinTensor extends TestCase {
 	}
 	
 	
-	
+	/**
+	 * A symbolic elem representing a constant value.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	private class SymbolicConst extends SymbolicReduction<DoubleElem,DoubleElemFactory>
 	{
 
+		/**
+		 * Constructs the elem.
+		 * 
+		 * @param _elem The constant to be represented.
+		 * @param _fac The factory for the constant.
+		 */
 		public SymbolicConst(DoubleElem _elem, DoubleElemFactory _fac) {
 			super(_elem, _fac);
 		}
@@ -351,7 +362,7 @@ public class TestEinsteinTensor extends TestCase {
 	 * @author thorngreen
 	 *
 	 */
-	private class DDirec extends DirectionalDerivativePartialFactory<DoubleElem,DoubleElemFactory,AElem>
+	private class DDirec extends DirectionalDerivativePartialFactory<DoubleElem,DoubleElemFactory,Ordinate>
 	{
 		/**
 		 * Factory for the enclosed type.
@@ -370,13 +381,13 @@ public class TestEinsteinTensor extends TestCase {
 		@Override
 		public SymbolicElem<DoubleElem, DoubleElemFactory> getPartial(
 				BigInteger basisIndex) {
-			final ArrayList<AElem> wrtX = new ArrayList<AElem>();
+			final ArrayList<Ordinate> wrtX = new ArrayList<Ordinate>();
 			
-			wrtX.add( new AElem( de , basisIndex.intValue() ) );
+			wrtX.add( new Ordinate( de , basisIndex.intValue() ) );
 			
 			SymbolicElem<DoubleElem,DoubleElemFactory>
 			ret =
-					new PartialDerivativeOp<DoubleElem,DoubleElemFactory,AElem>( se2 , wrtX );
+					new PartialDerivativeOp<DoubleElem,DoubleElemFactory,Ordinate>( se2 , wrtX );
 			return( ret );
 		}
 		
@@ -524,8 +535,8 @@ public class TestEinsteinTensor extends TestCase {
 		final DDirec dd = new DDirec( de2 , de );
 		
 		
-		final OrdinaryDerivativeFactory<String, TestDimensionFour, DoubleElem, DoubleElemFactory, AElem> ofacI =
-				new OrdinaryDerivativeFactory<String, TestDimensionFour, DoubleElem, DoubleElemFactory, AElem>(se2s, tdim, dd, null);
+		final OrdinaryDerivativeFactory<String, TestDimensionFour, DoubleElem, DoubleElemFactory, Ordinate> ofacI =
+				new OrdinaryDerivativeFactory<String, TestDimensionFour, DoubleElem, DoubleElemFactory, Ordinate>(se2s, tdim, dd, null);
 		
 		
 		
@@ -541,8 +552,8 @@ public class TestEinsteinTensor extends TestCase {
 		
 		
 		
-		final EinsteinTensorFactory<String, TestDimensionFour, DoubleElem, DoubleElemFactory, AElem> cofac =
-			new EinsteinTensorFactory<String, TestDimensionFour, DoubleElem, DoubleElemFactory, AElem>(se2s, tmt, new TestTemporaryIndexFactory(), ofacI);
+		final EinsteinTensorFactory<String, TestDimensionFour, DoubleElem, DoubleElemFactory, Ordinate> cofac =
+			new EinsteinTensorFactory<String, TestDimensionFour, DoubleElem, DoubleElemFactory, Ordinate>(se2s, tmt, new TestTemporaryIndexFactory(), ofacI);
 		
 		
 		

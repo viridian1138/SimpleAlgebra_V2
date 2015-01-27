@@ -155,7 +155,7 @@ public class TestStelemB extends TestCase {
 	private class DDirec extends DirectionalDerivativePartialFactory<
 		SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>, 
 		SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
-		AElem>
+		Ordinate>
 	{
 		/**
 		 * Factory for the enclosed type.
@@ -175,14 +175,14 @@ public class TestStelemB extends TestCase {
 		public PartialDerivativeOp<
 			SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
 			SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
-			AElem> getPartial( BigInteger basisIndex )
+			Ordinate> getPartial( BigInteger basisIndex )
 		{
-			final ArrayList<AElem> wrtX = new ArrayList<AElem>();
+			final ArrayList<Ordinate> wrtX = new ArrayList<Ordinate>();
 			
-			wrtX.add( new AElem( de , 1 + basisIndex.intValue() ) );
+			wrtX.add( new Ordinate( de , 1 + basisIndex.intValue() ) );
 			
 			return( new PartialDerivativeOp<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
-				SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,AElem>( se2 , wrtX ) );
+				SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,Ordinate>( se2 , wrtX ) );
 		}
 
 	};
@@ -195,7 +195,7 @@ public class TestStelemB extends TestCase {
 	 * @author thorngreen
 	 *
 	 */
-	private class AElem extends SymbolicElem<DoubleElem, DoubleElemFactory>
+	private class Ordinate extends SymbolicElem<DoubleElem, DoubleElemFactory>
 	{
 		/**
 		 * The number of the ordinate.
@@ -208,7 +208,7 @@ public class TestStelemB extends TestCase {
 		 * @param _fac The factory for the enclosed type.
 		 * @param _col The number of the ordinate.
 		 */
-		public AElem(DoubleElemFactory _fac, int _col) {
+		public Ordinate(DoubleElemFactory _fac, int _col) {
 			super(_fac);
 			col = _col;
 		}
@@ -234,9 +234,9 @@ public class TestStelemB extends TestCase {
 		@Override
 		public boolean symbolicEquals( SymbolicElem<DoubleElem,DoubleElemFactory> b )
 		{
-			if( b instanceof AElem )
+			if( b instanceof Ordinate )
 			{
-				return( col == ( (AElem) b ).col );
+				return( col == ( (Ordinate) b ).col );
 			}
 			return( false );
 		}
@@ -244,9 +244,9 @@ public class TestStelemB extends TestCase {
 		@Override
 		public boolean equals( Object b )
 		{
-			if( b instanceof AElem )
+			if( b instanceof Ordinate )
 			{
-				return( col == ( (AElem) b ).col );
+				return( col == ( (Ordinate) b ).col );
 			}
 			return( false );
 		}
@@ -269,9 +269,21 @@ public class TestStelemB extends TestCase {
 	}
 	
 	
+	/**
+	 * A symbolic elem representing a constant value.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	private class SymbolicConst extends SymbolicReduction<DoubleElem, DoubleElemFactory>
 	{
 
+		/**
+		 * Constructs the elem.
+		 * 
+		 * @param _elem The constant to be represented.
+		 * @param _fac The factory for the constant.
+		 */
 		public SymbolicConst(DoubleElem _elem, DoubleElemFactory _fac) {
 			super(_elem, _fac);
 		}
@@ -384,10 +396,10 @@ public class TestStelemB extends TestCase {
 	}
 	
 	
-	private class BNelem extends Nelem<DoubleElem,DoubleElemFactory,AElem>
+	private class BNelem extends Nelem<DoubleElem,DoubleElemFactory,Ordinate>
 	{
 
-		public BNelem(DoubleElemFactory _fac, HashMap<AElem, BigInteger> _coord) {
+		public BNelem(DoubleElemFactory _fac, HashMap<Ordinate, BigInteger> _coord) {
 			super(_fac, _coord);
 		}
 		
@@ -406,10 +418,10 @@ public class TestStelemB extends TestCase {
 			assertCols[ 0 ] = false;
 			assertCols[ 1 ] = false;
 			Assert.assertTrue( coord.keySet().size() == 2 );
-			Iterator<AElem> it = coord.keySet().iterator();
+			Iterator<Ordinate> it = coord.keySet().iterator();
 			while( it.hasNext() )
 			{
-				AElem keyCoord = it.next();
+				Ordinate keyCoord = it.next();
 				BigInteger coordVal = coord.get( keyCoord );
 				cols[ keyCoord.getCol() ] = coordVal.intValue() + 1;
 				assertCols[ keyCoord.getCol() ] = true;
@@ -423,10 +435,10 @@ public class TestStelemB extends TestCase {
 		@Override
 		public void writeString( PrintStream ps ) {
 			String s0 = "bn";
-			Iterator<AElem> it = coord.keySet().iterator();
+			Iterator<Ordinate> it = coord.keySet().iterator();
 			while( it.hasNext() )
 			{
-				AElem key = it.next();
+				Ordinate key = it.next();
 				BigInteger val = coord.get( key );
 				s0 = s0 + "[";
 				s0 = s0 + key.getCol();
@@ -448,10 +460,10 @@ public class TestStelemB extends TestCase {
 				{
 					return( false );
 				}
-				Iterator<AElem> it = coord.keySet().iterator();
+				Iterator<Ordinate> it = coord.keySet().iterator();
 				while( it.hasNext() )
 				{
-					AElem key = it.next();
+					Ordinate key = it.next();
 					BigInteger ka = coord.get( key );
 					BigInteger kb = bn.coord.get( key );
 					if( ( ka == null ) || ( kb == null ) )
@@ -473,10 +485,10 @@ public class TestStelemB extends TestCase {
 	
 	
 	private class CNelem extends Nelem<SymbolicElem<DoubleElem,DoubleElemFactory>,
-		SymbolicElemFactory<DoubleElem,DoubleElemFactory>,AElem>
+		SymbolicElemFactory<DoubleElem,DoubleElemFactory>,Ordinate>
 	{
 
-		public CNelem(SymbolicElemFactory<DoubleElem,DoubleElemFactory> _fac, HashMap<AElem, BigInteger> _coord) {
+		public CNelem(SymbolicElemFactory<DoubleElem,DoubleElemFactory> _fac, HashMap<Ordinate, BigInteger> _coord) {
 			super(_fac, _coord);
 		}
 
@@ -504,10 +516,10 @@ public class TestStelemB extends TestCase {
 		@Override
 		public void writeString( PrintStream ps ) {
 			String s0 = "cn";
-			Iterator<AElem> it = coord.keySet().iterator();
+			Iterator<Ordinate> it = coord.keySet().iterator();
 			while( it.hasNext() )
 			{
-				AElem key = it.next();
+				Ordinate key = it.next();
 				BigInteger val = coord.get( key );
 				s0 = s0 + "[";
 				s0 = s0 + key.getCol();
@@ -531,10 +543,10 @@ public class TestStelemB extends TestCase {
 				{
 					return( false );
 				}
-				Iterator<AElem> it = coord.keySet().iterator();
+				Iterator<Ordinate> it = coord.keySet().iterator();
 				while( it.hasNext() )
 				{
-					AElem key = it.next();
+					Ordinate key = it.next();
 					BigInteger ka = coord.get( key );
 					BigInteger kb = bn.coord.get( key );
 					if( ( ka == null ) || ( kb == null ) )
@@ -556,7 +568,7 @@ public class TestStelemB extends TestCase {
 	
 	
 	private class AStelem extends Stelem<SymbolicElem<DoubleElem,DoubleElemFactory>,
-		SymbolicElemFactory<DoubleElem,DoubleElemFactory>,AElem>
+		SymbolicElemFactory<DoubleElem,DoubleElemFactory>,Ordinate>
 	{	
 		public AStelem(SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>, 
 				SymbolicElemFactory<DoubleElem,DoubleElemFactory>> _fac) {
@@ -566,10 +578,10 @@ public class TestStelemB extends TestCase {
 		@Override
 		public AStelem cloneInstance() {
 			AStelem cl = new AStelem( fac );
-			Iterator<AElem> it = partialMap.keySet().iterator();
+			Iterator<Ordinate> it = partialMap.keySet().iterator();
 			while( it.hasNext() )
 			{
-				AElem key = it.next();
+				Ordinate key = it.next();
 				cl.partialMap.put(key, partialMap.get(key) );
 			}
 			return( cl );
@@ -583,19 +595,19 @@ public class TestStelemB extends TestCase {
 				MultiplicativeDistributionRequiredException {
 			
 			
-			HashMap<AElem,AElem> imp = (HashMap<AElem,AElem>) implicitSpace;
+			HashMap<Ordinate,Ordinate> imp = (HashMap<Ordinate,Ordinate>) implicitSpace;
 			
 			
-			HashMap<HashMap<AElem, BigInteger>,CoeffNode> spacesA = new HashMap<HashMap<AElem, BigInteger>,CoeffNode>();
+			HashMap<HashMap<Ordinate, BigInteger>,CoeffNode> spacesA = new HashMap<HashMap<Ordinate, BigInteger>,CoeffNode>();
 			
 			
 			{
 				CoeffNode cf = new CoeffNode( new DoubleElem( 1.0 ) , new DoubleElem( 1.0 ) );
-				HashMap<AElem, BigInteger> key = new HashMap<AElem, BigInteger>();
-				Iterator<AElem> it = imp.keySet().iterator();
+				HashMap<Ordinate, BigInteger> key = new HashMap<Ordinate, BigInteger>();
+				Iterator<Ordinate> it = imp.keySet().iterator();
 				while( it.hasNext() )
 				{
-					AElem ae = it.next();
+					Ordinate ae = it.next();
 					BigInteger valA = BigInteger.valueOf( imp.get( ae ).getCol() );
 					key.put( ae , valA );
 				}
@@ -604,11 +616,11 @@ public class TestStelemB extends TestCase {
 			
 			
 			{
-				Iterator<AElem> it = partialMap.keySet().iterator();
+				Iterator<Ordinate> it = partialMap.keySet().iterator();
 				while( it.hasNext() )
 				{
-					HashMap<HashMap<AElem, BigInteger>,CoeffNode> spacesB = new HashMap<HashMap<AElem, BigInteger>,CoeffNode>();
-					final AElem ae = it.next();
+					HashMap<HashMap<Ordinate, BigInteger>,CoeffNode> spacesB = new HashMap<HashMap<Ordinate, BigInteger>,CoeffNode>();
+					final Ordinate ae = it.next();
 					final BigInteger numDerivs = partialMap.get( ae );
 					applyDerivativeAction( spacesA , ae , numDerivs.intValue() , HH[ ae.getCol() ] , spacesB );
 					spacesA = spacesB;
@@ -622,10 +634,10 @@ public class TestStelemB extends TestCase {
 			
 			
 			{
-				Iterator<HashMap<AElem, BigInteger>> it = spacesA.keySet().iterator();
+				Iterator<HashMap<Ordinate, BigInteger>> it = spacesA.keySet().iterator();
 				while( it.hasNext() )
 				{
-					HashMap<AElem, BigInteger> spaceAe = it.next();
+					HashMap<Ordinate, BigInteger> spaceAe = it.next();
 					CoeffNode coeff = spacesA.get( spaceAe );
 					final CNelem an0 = 
 							new CNelem( fac.getFac() , spaceAe );
@@ -650,21 +662,21 @@ public class TestStelemB extends TestCase {
 		
 		
 		
-		protected void applyDerivativeAction( HashMap<HashMap<AElem, BigInteger>,CoeffNode> implicitSpacesIn , 
-				AElem node , final int numDerivatives , DoubleElem hh ,
-				HashMap<HashMap<AElem, BigInteger>,CoeffNode> implicitSpacesOut )
+		protected void applyDerivativeAction( HashMap<HashMap<Ordinate, BigInteger>,CoeffNode> implicitSpacesIn , 
+				Ordinate node , final int numDerivatives , DoubleElem hh ,
+				HashMap<HashMap<Ordinate, BigInteger>,CoeffNode> implicitSpacesOut )
 		{
 			if( numDerivatives > 3 )
 			{
-				HashMap<HashMap<AElem, BigInteger>,CoeffNode> implicitSpacesMid = new HashMap<HashMap<AElem, BigInteger>,CoeffNode>();
+				HashMap<HashMap<Ordinate, BigInteger>,CoeffNode> implicitSpacesMid = new HashMap<HashMap<Ordinate, BigInteger>,CoeffNode>();
 				applyDerivativeAction(implicitSpacesIn, node, 3, hh, implicitSpacesMid);
 				applyDerivativeAction(implicitSpacesMid, node, numDerivatives-3, hh, implicitSpacesOut);
 			}
 			
-			Iterator<HashMap<AElem, BigInteger>> it = implicitSpacesIn.keySet().iterator();
+			Iterator<HashMap<Ordinate, BigInteger>> it = implicitSpacesIn.keySet().iterator();
 			while( it.hasNext() )
 			{
-				final HashMap<AElem, BigInteger> implicitSpace = it.next();
+				final HashMap<Ordinate, BigInteger> implicitSpace = it.next();
 				final CoeffNode coeffNodeIn = implicitSpacesIn.get( implicitSpace );
 				
 				switch( numDerivatives )
@@ -678,13 +690,13 @@ public class TestStelemB extends TestCase {
 				
 				case 1:
 					{
-						final HashMap<AElem, BigInteger> implicitSpaceOutM1 = new HashMap<AElem, BigInteger>();
-						final HashMap<AElem, BigInteger> implicitSpaceOutP1 = new HashMap<AElem, BigInteger>();
+						final HashMap<Ordinate, BigInteger> implicitSpaceOutM1 = new HashMap<Ordinate, BigInteger>();
+						final HashMap<Ordinate, BigInteger> implicitSpaceOutP1 = new HashMap<Ordinate, BigInteger>();
 						
-						Iterator<AElem> itA = implicitSpace.keySet().iterator();
+						Iterator<Ordinate> itA = implicitSpace.keySet().iterator();
 						while( itA.hasNext() )
 						{
-							AElem ae = itA.next();
+							Ordinate ae = itA.next();
 							final BigInteger valAe = implicitSpace.get( ae );
 							if( node.symbolicEquals( ae ) )
 							{
@@ -712,13 +724,13 @@ public class TestStelemB extends TestCase {
 					
 				case 2:
 					{
-						final HashMap<AElem, BigInteger> implicitSpaceOutM1 = new HashMap<AElem, BigInteger>();
-						final HashMap<AElem, BigInteger> implicitSpaceOutP1 = new HashMap<AElem, BigInteger>();
+						final HashMap<Ordinate, BigInteger> implicitSpaceOutM1 = new HashMap<Ordinate, BigInteger>();
+						final HashMap<Ordinate, BigInteger> implicitSpaceOutP1 = new HashMap<Ordinate, BigInteger>();
 						
-						Iterator<AElem> itA = implicitSpace.keySet().iterator();
+						Iterator<Ordinate> itA = implicitSpace.keySet().iterator();
 						while( itA.hasNext() )
 						{
-							AElem ae = itA.next();
+							Ordinate ae = itA.next();
 							final BigInteger valAe = implicitSpace.get( ae );
 							if( node.symbolicEquals( ae ) )
 							{
@@ -749,15 +761,15 @@ public class TestStelemB extends TestCase {
 					
 				case 3:
 				{
-					final HashMap<AElem, BigInteger> implicitSpaceOutM1 = new HashMap<AElem, BigInteger>();
-					final HashMap<AElem, BigInteger> implicitSpaceOutP1 = new HashMap<AElem, BigInteger>();
-					final HashMap<AElem, BigInteger> implicitSpaceOutM2 = new HashMap<AElem, BigInteger>();
-					final HashMap<AElem, BigInteger> implicitSpaceOutP2 = new HashMap<AElem, BigInteger>();
+					final HashMap<Ordinate, BigInteger> implicitSpaceOutM1 = new HashMap<Ordinate, BigInteger>();
+					final HashMap<Ordinate, BigInteger> implicitSpaceOutP1 = new HashMap<Ordinate, BigInteger>();
+					final HashMap<Ordinate, BigInteger> implicitSpaceOutM2 = new HashMap<Ordinate, BigInteger>();
+					final HashMap<Ordinate, BigInteger> implicitSpaceOutP2 = new HashMap<Ordinate, BigInteger>();
 					
-					Iterator<AElem> itA = implicitSpace.keySet().iterator();
+					Iterator<Ordinate> itA = implicitSpace.keySet().iterator();
 					while( itA.hasNext() )
 					{
-						AElem ae = itA.next();
+						Ordinate ae = itA.next();
 						final BigInteger valAe = implicitSpace.get( ae );
 						if( node.symbolicEquals( ae ) )
 						{
@@ -801,8 +813,8 @@ public class TestStelemB extends TestCase {
 		
 		
 		protected void applyAdd( 
-				HashMap<AElem, BigInteger> implicitSpace , CoeffNode node ,
-				HashMap<HashMap<AElem, BigInteger>,CoeffNode> implicitSpacesOut )
+				HashMap<Ordinate, BigInteger> implicitSpace , CoeffNode node ,
+				HashMap<HashMap<Ordinate, BigInteger>,CoeffNode> implicitSpacesOut )
 		{
 			CoeffNode prev = implicitSpacesOut.get( implicitSpace );
 			
@@ -914,9 +926,9 @@ public class TestStelemB extends TestCase {
 		
 		final AStelem as = new AStelem( se2 );
 		
-		final ArrayList<AElem> wrtT = new ArrayList<AElem>();
+		final ArrayList<Ordinate> wrtT = new ArrayList<Ordinate>();
 		
-		wrtT.add( new AElem( de , 0 ) );
+		wrtT.add( new Ordinate( de , 0 ) );
 		
 		// final ArrayList<AElem> wrtX = new ArrayList<AElem>();
 		
@@ -953,13 +965,13 @@ public class TestStelemB extends TestCase {
 			TestDimensionOne,GeometricAlgebraOrd<TestDimensionOne>, 
 			SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>, 
 			SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>, 
-			AElem>
+			Ordinate>
 			del =
 			new DirectionalDerivative<
 			TestDimensionOne,GeometricAlgebraOrd<TestDimensionOne>, 
 			SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>, 
 			SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>, 
-			AElem>( 
+			Ordinate>( 
 					ge , 
 					tdim , ord ,
 					ddirec );
@@ -973,9 +985,9 @@ public class TestStelemB extends TestCase {
 		
 		
 		final PartialDerivativeOp<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
-			SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,AElem> pa0T 
+			SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,Ordinate> pa0T 
 			= new PartialDerivativeOp<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
-					SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,AElem>( se2 , wrtT );
+					SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,Ordinate>( se2 , wrtT );
 		
 		// final PartialDerivativeOp<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
 		//	SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,AElem> pa0X 
@@ -1067,12 +1079,12 @@ public class TestStelemB extends TestCase {
 		
 		
 		
-		final HashMap<AElem,AElem> implicitSpace0 = new HashMap<AElem,AElem>();
+		final HashMap<Ordinate,Ordinate> implicitSpace0 = new HashMap<Ordinate,Ordinate>();
 		
 		final HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace2 = implicitSpace0;
 		
-		implicitSpace0.put( new AElem( de , 0 ) , new AElem( de , 0 ) );
-		implicitSpace0.put( new AElem( de , 1 ) , new AElem( de , 0 ) );
+		implicitSpace0.put( new Ordinate( de , 0 ) , new Ordinate( de , 0 ) );
+		implicitSpace0.put( new Ordinate( de , 1 ) , new Ordinate( de , 0 ) );
 		
 		final SymbolicElem<
 			SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> s0 = m1.eval( implicitSpace2 );
@@ -1084,9 +1096,9 @@ public class TestStelemB extends TestCase {
 		
 		final ArrayList<Elem<?, ?>> wrt3 = new ArrayList<Elem<?, ?>>();
 		{
-			final HashMap<AElem, BigInteger> coord = new HashMap<AElem, BigInteger>();
-			coord.put( new AElem( de , 0 ) , BigInteger.valueOf( 1 ) );
-			coord.put( new AElem( de , 1 ) , BigInteger.valueOf( 0 ) );
+			final HashMap<Ordinate, BigInteger> coord = new HashMap<Ordinate, BigInteger>();
+			coord.put( new Ordinate( de , 0 ) , BigInteger.valueOf( 1 ) );
+			coord.put( new Ordinate( de , 1 ) , BigInteger.valueOf( 0 ) );
 			wrt3.add( new CNelem( se , coord ) );
 		}
 		

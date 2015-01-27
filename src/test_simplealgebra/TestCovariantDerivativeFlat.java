@@ -88,7 +88,7 @@ public class TestCovariantDerivativeFlat extends TestCase {
 	 * @author thorngreen
 	 *
 	 */
-	private class AElem extends SymbolicElem<EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>,EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>>
+	private class Ordinate extends SymbolicElem<EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>,EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>>
 	{
 		/**
 		 * The number of the ordinate.
@@ -101,7 +101,7 @@ public class TestCovariantDerivativeFlat extends TestCase {
 		 * @param _fac The factory for the enclosed type.
 		 * @param _col The number of the ordinate.
 		 */
-		public AElem(EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory> _fac, int _col) {
+		public Ordinate(EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory> _fac, int _col) {
 			super(_fac);
 			col = _col;
 		}
@@ -127,9 +127,9 @@ public class TestCovariantDerivativeFlat extends TestCase {
 		@Override
 		public boolean symbolicEquals( SymbolicElem<EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>,EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>> b )
 		{
-			if( b instanceof AElem )
+			if( b instanceof Ordinate )
 			{
-				return( col == ( (AElem) b ).col );
+				return( col == ( (Ordinate) b ).col );
 			}
 			return( false );
 		}
@@ -137,9 +137,9 @@ public class TestCovariantDerivativeFlat extends TestCase {
 		@Override
 		public boolean equals( Object b )
 		{
-			if( b instanceof AElem )
+			if( b instanceof Ordinate )
 			{
-				return( col == ( (AElem) b ).col );
+				return( col == ( (Ordinate) b ).col );
 			}
 			return( false );
 		}
@@ -303,10 +303,21 @@ public class TestCovariantDerivativeFlat extends TestCase {
 	}
 	
 	
-	
+	/**
+	 * A symbolic elem representing a constant value.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	private static class SymbolicConst extends SymbolicReduction<DoubleElem,DoubleElemFactory>
 	{
 
+		/**
+		 * Constructs the elem.
+		 * 
+		 * @param _elem The constant to be represented.
+		 * @param _fac The factory for the constant.
+		 */
 		public SymbolicConst(DoubleElem _elem, DoubleElemFactory _fac) {
 			super(_elem, _fac);
 		}
@@ -353,7 +364,7 @@ public class TestCovariantDerivativeFlat extends TestCase {
 	 * @author thorngreen
 	 *
 	 */
-	private class DDirec extends DirectionalDerivativePartialFactory<DoubleElem,DoubleElemFactory,AElem>
+	private class DDirec extends DirectionalDerivativePartialFactory<DoubleElem,DoubleElemFactory,Ordinate>
 	{
 		/**
 		 * Factory for the enclosed type.
@@ -372,13 +383,13 @@ public class TestCovariantDerivativeFlat extends TestCase {
 		@Override
 		public SymbolicElem<DoubleElem, DoubleElemFactory> getPartial(
 				BigInteger basisIndex) {
-			final ArrayList<AElem> wrtX = new ArrayList<AElem>();
+			final ArrayList<Ordinate> wrtX = new ArrayList<Ordinate>();
 			
-			wrtX.add( new AElem( de , basisIndex.intValue() ) );
+			wrtX.add( new Ordinate( de , basisIndex.intValue() ) );
 			
 			SymbolicElem<DoubleElem,DoubleElemFactory>
 			ret =
-					new PartialDerivativeOp<DoubleElem,DoubleElemFactory,AElem>( se2 , wrtX );
+					new PartialDerivativeOp<DoubleElem,DoubleElemFactory,Ordinate>( se2 , wrtX );
 			return( ret );
 		}
 		
@@ -563,8 +574,8 @@ public class TestCovariantDerivativeFlat extends TestCase {
 		final DDirec dd = new DDirec( de2 , de );
 		
 		
-		final OrdinaryDerivativeFactory<String, TestDimensionFour, DoubleElem, DoubleElemFactory, AElem> ofacI =
-				new OrdinaryDerivativeFactory<String, TestDimensionFour, DoubleElem, DoubleElemFactory, AElem>(se2s, tdim, dd, null);
+		final OrdinaryDerivativeFactory<String, TestDimensionFour, DoubleElem, DoubleElemFactory, Ordinate> ofacI =
+				new OrdinaryDerivativeFactory<String, TestDimensionFour, DoubleElem, DoubleElemFactory, Ordinate>(se2s, tdim, dd, null);
 		
 		
 		
@@ -580,8 +591,8 @@ public class TestCovariantDerivativeFlat extends TestCase {
 		
 		
 		
-		final CovariantDerivativeFactory<String, TestDimensionFour, DoubleElem, DoubleElemFactory, AElem> cofac =
-			new CovariantDerivativeFactory<String, TestDimensionFour, DoubleElem, DoubleElemFactory, AElem>(se2s, elem, 
+		final CovariantDerivativeFactory<String, TestDimensionFour, DoubleElem, DoubleElemFactory, Ordinate> cofac =
+			new CovariantDerivativeFactory<String, TestDimensionFour, DoubleElem, DoubleElemFactory, Ordinate>(se2s, elem, 
 					"v", new TestTemporaryIndexFactory(), tmt, tdim, dd, null);
 		
 		
@@ -637,8 +648,8 @@ public class TestCovariantDerivativeFlat extends TestCase {
 			final ArrayList<Elem<?,?>> wrt = el2aa.getWithRespectTo();
 			Assert.assertTrue( wrt.size() == 1 );
 			final Elem<?,?> wrta = wrt.get( 0 );
-			Assert.assertTrue( wrta instanceof AElem );
-			final AElem wrtaa = (AElem)( wrta );
+			Assert.assertTrue( wrta instanceof Ordinate );
+			final Ordinate wrtaa = (Ordinate)( wrta );
 			Assert.assertTrue( k0.equals( BigInteger.valueOf( wrtaa.getCol() ) ) );
 		}
 		

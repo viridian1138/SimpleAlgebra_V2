@@ -229,7 +229,7 @@ public class TestSchrodingerA extends TestCase {
 	private class DDirec extends DirectionalDerivativePartialFactory<
 		SymbolicElem<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>, 
 		SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>,
-		AElem>
+		Ordinate>
 	{
 		/**
 		 * Factory for the enclosed type.
@@ -249,14 +249,14 @@ public class TestSchrodingerA extends TestCase {
 		public PartialDerivativeOp<
 			SymbolicElem<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>,
 			SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>,
-			AElem> getPartial( BigInteger basisIndex )
+			Ordinate> getPartial( BigInteger basisIndex )
 		{
-			final ArrayList<AElem> wrtX = new ArrayList<AElem>();
+			final ArrayList<Ordinate> wrtX = new ArrayList<Ordinate>();
 			
-			wrtX.add( new AElem( de , 1 + basisIndex.intValue() ) );
+			wrtX.add( new Ordinate( de , 1 + basisIndex.intValue() ) );
 			
 			return( new PartialDerivativeOp<SymbolicElem<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>,
-				SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>,AElem>( se2 , wrtX ) );
+				SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>,Ordinate>( se2 , wrtX ) );
 		}
 
 	};
@@ -269,7 +269,7 @@ public class TestSchrodingerA extends TestCase {
 	 * @author thorngreen
 	 *
 	 */
-	private class AElem extends SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
+	private class Ordinate extends SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 	{
 		/**
 		 * The number of the ordinate.
@@ -282,7 +282,7 @@ public class TestSchrodingerA extends TestCase {
 		 * @param _fac The factory for the enclosed type.
 		 * @param _col The number of the ordinate.
 		 */
-		public AElem(ComplexElemFactory<DoubleElem,DoubleElemFactory> _fac, int _col) {
+		public Ordinate(ComplexElemFactory<DoubleElem,DoubleElemFactory> _fac, int _col) {
 			super(_fac);
 			col = _col;
 		}
@@ -308,9 +308,9 @@ public class TestSchrodingerA extends TestCase {
 		@Override
 		public boolean symbolicEquals( SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> b )
 		{
-			if( b instanceof AElem )
+			if( b instanceof Ordinate )
 			{
-				return( col == ( (AElem) b ).col );
+				return( col == ( (Ordinate) b ).col );
 			}
 			return( false );
 		}
@@ -318,9 +318,9 @@ public class TestSchrodingerA extends TestCase {
 		@Override
 		public boolean equals( Object b )
 		{
-			if( b instanceof AElem )
+			if( b instanceof Ordinate )
 			{
-				return( col == ( (AElem) b ).col );
+				return( col == ( (Ordinate) b ).col );
 			}
 			return( false );
 		}
@@ -343,9 +343,21 @@ public class TestSchrodingerA extends TestCase {
 	}
 	
 	
+	/**
+	 * A symbolic elem representing a constant value.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	private class SymbolicConst extends SymbolicReduction<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 	{
 
+		/**
+		 * Constructs the elem.
+		 * 
+		 * @param _elem The constant to be represented.
+		 * @param _fac The factory for the constant.
+		 */
 		public SymbolicConst(ComplexElem<DoubleElem,DoubleElemFactory> _elem, ComplexElemFactory<DoubleElem,DoubleElemFactory> _fac) {
 			super(_elem, _fac);
 		}
@@ -460,10 +472,10 @@ public class TestSchrodingerA extends TestCase {
 	}
 	
 	
-	private class BNelem extends Nelem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>,AElem>
+	private class BNelem extends Nelem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>,Ordinate>
 	{
 
-		public BNelem(ComplexElemFactory<DoubleElem,DoubleElemFactory> _fac, HashMap<AElem, BigInteger> _coord) {
+		public BNelem(ComplexElemFactory<DoubleElem,DoubleElemFactory> _fac, HashMap<Ordinate, BigInteger> _coord) {
 			super(_fac, _coord);
 		}
 		
@@ -486,10 +498,10 @@ public class TestSchrodingerA extends TestCase {
 			assertCols[ 2 ] = false;
 			assertCols[ 3 ] = false;
 			Assert.assertTrue( coord.keySet().size() == 4 );
-			Iterator<AElem> it = coord.keySet().iterator();
+			Iterator<Ordinate> it = coord.keySet().iterator();
 			while( it.hasNext() )
 			{
-				AElem keyCoord = it.next();
+				Ordinate keyCoord = it.next();
 				BigInteger coordVal = coord.get( keyCoord );
 				cols[ keyCoord.getCol() ] = coordVal.intValue() + 1;
 				assertCols[ keyCoord.getCol() ] = true;
@@ -507,10 +519,10 @@ public class TestSchrodingerA extends TestCase {
 		@Override
 		public void writeString( PrintStream ps ) {
 			String s0 = "bn";
-			Iterator<AElem> it = coord.keySet().iterator();
+			Iterator<Ordinate> it = coord.keySet().iterator();
 			while( it.hasNext() )
 			{
-				AElem key = it.next();
+				Ordinate key = it.next();
 				BigInteger val = coord.get( key );
 				s0 = s0 + "[";
 				s0 = s0 + key.getCol();
@@ -532,10 +544,10 @@ public class TestSchrodingerA extends TestCase {
 				{
 					return( false );
 				}
-				Iterator<AElem> it = coord.keySet().iterator();
+				Iterator<Ordinate> it = coord.keySet().iterator();
 				while( it.hasNext() )
 				{
-					AElem key = it.next();
+					Ordinate key = it.next();
 					BigInteger ka = coord.get( key );
 					BigInteger kb = bn.coord.get( key );
 					if( ( ka == null ) || ( kb == null ) )
@@ -557,10 +569,10 @@ public class TestSchrodingerA extends TestCase {
 	
 	
 	private class CNelem extends Nelem<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,
-		SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,AElem>
+		SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,Ordinate>
 	{
 
-		public CNelem(SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> _fac, HashMap<AElem, BigInteger> _coord) {
+		public CNelem(SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> _fac, HashMap<Ordinate, BigInteger> _coord) {
 			super(_fac, _coord);
 		}
 
@@ -588,10 +600,10 @@ public class TestSchrodingerA extends TestCase {
 		@Override
 		public void writeString( PrintStream ps ) {
 			String s0 = "cn";
-			Iterator<AElem> it = coord.keySet().iterator();
+			Iterator<Ordinate> it = coord.keySet().iterator();
 			while( it.hasNext() )
 			{
-				AElem key = it.next();
+				Ordinate key = it.next();
 				BigInteger val = coord.get( key );
 				s0 = s0 + "[";
 				s0 = s0 + key.getCol();
@@ -615,10 +627,10 @@ public class TestSchrodingerA extends TestCase {
 				{
 					return( false );
 				}
-				Iterator<AElem> it = coord.keySet().iterator();
+				Iterator<Ordinate> it = coord.keySet().iterator();
 				while( it.hasNext() )
 				{
-					AElem key = it.next();
+					Ordinate key = it.next();
 					BigInteger ka = coord.get( key );
 					BigInteger kb = bn.coord.get( key );
 					if( ( ka == null ) || ( kb == null ) )
@@ -640,7 +652,7 @@ public class TestSchrodingerA extends TestCase {
 	
 	
 	private class AStelem extends Stelem<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,
-		SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,AElem>
+		SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,Ordinate>
 	{	
 		public AStelem(SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>, 
 				SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>> _fac) {
@@ -650,10 +662,10 @@ public class TestSchrodingerA extends TestCase {
 		@Override
 		public AStelem cloneInstance() {
 			AStelem cl = new AStelem( fac );
-			Iterator<AElem> it = partialMap.keySet().iterator();
+			Iterator<Ordinate> it = partialMap.keySet().iterator();
 			while( it.hasNext() )
 			{
-				AElem key = it.next();
+				Ordinate key = it.next();
 				cl.partialMap.put(key, partialMap.get(key) );
 			}
 			return( cl );
@@ -667,19 +679,19 @@ public class TestSchrodingerA extends TestCase {
 				MultiplicativeDistributionRequiredException {
 			
 			
-			HashMap<AElem,AElem> imp = (HashMap<AElem,AElem>) implicitSpace;
+			HashMap<Ordinate,Ordinate> imp = (HashMap<Ordinate,Ordinate>) implicitSpace;
 			
 			
-			HashMap<HashMap<AElem, BigInteger>,CoeffNode> spacesA = new HashMap<HashMap<AElem, BigInteger>,CoeffNode>();
+			HashMap<HashMap<Ordinate, BigInteger>,CoeffNode> spacesA = new HashMap<HashMap<Ordinate, BigInteger>,CoeffNode>();
 			
 			
 			{
 				CoeffNode cf = new CoeffNode( genFromConst( 1.0 ) , genFromConst( 1.0 ) );
-				HashMap<AElem, BigInteger> key = new HashMap<AElem, BigInteger>();
-				Iterator<AElem> it = imp.keySet().iterator();
+				HashMap<Ordinate, BigInteger> key = new HashMap<Ordinate, BigInteger>();
+				Iterator<Ordinate> it = imp.keySet().iterator();
 				while( it.hasNext() )
 				{
-					AElem ae = it.next();
+					Ordinate ae = it.next();
 					BigInteger valA = BigInteger.valueOf( imp.get( ae ).getCol() );
 					key.put( ae , valA );
 				}
@@ -688,11 +700,11 @@ public class TestSchrodingerA extends TestCase {
 			
 			
 			{
-				Iterator<AElem> it = partialMap.keySet().iterator();
+				Iterator<Ordinate> it = partialMap.keySet().iterator();
 				while( it.hasNext() )
 				{
-					HashMap<HashMap<AElem, BigInteger>,CoeffNode> spacesB = new HashMap<HashMap<AElem, BigInteger>,CoeffNode>();
-					final AElem ae = it.next();
+					HashMap<HashMap<Ordinate, BigInteger>,CoeffNode> spacesB = new HashMap<HashMap<Ordinate, BigInteger>,CoeffNode>();
+					final Ordinate ae = it.next();
 					final BigInteger numDerivs = partialMap.get( ae );
 					applyDerivativeAction( spacesA , ae , numDerivs.intValue() , (ComplexElem<DoubleElem,DoubleElemFactory>)(HH[ ae.getCol() ]) , spacesB );
 					spacesA = spacesB;
@@ -706,10 +718,10 @@ public class TestSchrodingerA extends TestCase {
 			
 			
 			{
-				Iterator<HashMap<AElem, BigInteger>> it = spacesA.keySet().iterator();
+				Iterator<HashMap<Ordinate, BigInteger>> it = spacesA.keySet().iterator();
 				while( it.hasNext() )
 				{
-					HashMap<AElem, BigInteger> spaceAe = it.next();
+					HashMap<Ordinate, BigInteger> spaceAe = it.next();
 					CoeffNode coeff = spacesA.get( spaceAe );
 					final CNelem an0 = 
 							new CNelem( fac.getFac() , spaceAe );
@@ -734,21 +746,21 @@ public class TestSchrodingerA extends TestCase {
 		
 		
 		
-		protected void applyDerivativeAction( HashMap<HashMap<AElem, BigInteger>,CoeffNode> implicitSpacesIn , 
-				AElem node , final int numDerivatives , ComplexElem<DoubleElem,DoubleElemFactory> hh ,
-				HashMap<HashMap<AElem, BigInteger>,CoeffNode> implicitSpacesOut )
+		protected void applyDerivativeAction( HashMap<HashMap<Ordinate, BigInteger>,CoeffNode> implicitSpacesIn , 
+				Ordinate node , final int numDerivatives , ComplexElem<DoubleElem,DoubleElemFactory> hh ,
+				HashMap<HashMap<Ordinate, BigInteger>,CoeffNode> implicitSpacesOut )
 		{
 			if( numDerivatives > 3 )
 			{
-				HashMap<HashMap<AElem, BigInteger>,CoeffNode> implicitSpacesMid = new HashMap<HashMap<AElem, BigInteger>,CoeffNode>();
+				HashMap<HashMap<Ordinate, BigInteger>,CoeffNode> implicitSpacesMid = new HashMap<HashMap<Ordinate, BigInteger>,CoeffNode>();
 				applyDerivativeAction(implicitSpacesIn, node, 3, hh, implicitSpacesMid);
 				applyDerivativeAction(implicitSpacesMid, node, numDerivatives-3, hh, implicitSpacesOut);
 			}
 			
-			Iterator<HashMap<AElem, BigInteger>> it = implicitSpacesIn.keySet().iterator();
+			Iterator<HashMap<Ordinate, BigInteger>> it = implicitSpacesIn.keySet().iterator();
 			while( it.hasNext() )
 			{
-				final HashMap<AElem, BigInteger> implicitSpace = it.next();
+				final HashMap<Ordinate, BigInteger> implicitSpace = it.next();
 				final CoeffNode coeffNodeIn = implicitSpacesIn.get( implicitSpace );
 				
 				switch( numDerivatives )
@@ -762,13 +774,13 @@ public class TestSchrodingerA extends TestCase {
 				
 				case 1:
 					{
-						final HashMap<AElem, BigInteger> implicitSpaceOutM1 = new HashMap<AElem, BigInteger>();
-						final HashMap<AElem, BigInteger> implicitSpaceOutP1 = new HashMap<AElem, BigInteger>();
+						final HashMap<Ordinate, BigInteger> implicitSpaceOutM1 = new HashMap<Ordinate, BigInteger>();
+						final HashMap<Ordinate, BigInteger> implicitSpaceOutP1 = new HashMap<Ordinate, BigInteger>();
 						
-						Iterator<AElem> itA = implicitSpace.keySet().iterator();
+						Iterator<Ordinate> itA = implicitSpace.keySet().iterator();
 						while( itA.hasNext() )
 						{
-							AElem ae = itA.next();
+							Ordinate ae = itA.next();
 							final BigInteger valAe = implicitSpace.get( ae );
 							if( node.symbolicEquals( ae ) )
 							{
@@ -796,13 +808,13 @@ public class TestSchrodingerA extends TestCase {
 					
 				case 2:
 					{
-						final HashMap<AElem, BigInteger> implicitSpaceOutM1 = new HashMap<AElem, BigInteger>();
-						final HashMap<AElem, BigInteger> implicitSpaceOutP1 = new HashMap<AElem, BigInteger>();
+						final HashMap<Ordinate, BigInteger> implicitSpaceOutM1 = new HashMap<Ordinate, BigInteger>();
+						final HashMap<Ordinate, BigInteger> implicitSpaceOutP1 = new HashMap<Ordinate, BigInteger>();
 						
-						Iterator<AElem> itA = implicitSpace.keySet().iterator();
+						Iterator<Ordinate> itA = implicitSpace.keySet().iterator();
 						while( itA.hasNext() )
 						{
-							AElem ae = itA.next();
+							Ordinate ae = itA.next();
 							final BigInteger valAe = implicitSpace.get( ae );
 							if( node.symbolicEquals( ae ) )
 							{
@@ -833,15 +845,15 @@ public class TestSchrodingerA extends TestCase {
 					
 				case 3:
 				{
-					final HashMap<AElem, BigInteger> implicitSpaceOutM1 = new HashMap<AElem, BigInteger>();
-					final HashMap<AElem, BigInteger> implicitSpaceOutP1 = new HashMap<AElem, BigInteger>();
-					final HashMap<AElem, BigInteger> implicitSpaceOutM2 = new HashMap<AElem, BigInteger>();
-					final HashMap<AElem, BigInteger> implicitSpaceOutP2 = new HashMap<AElem, BigInteger>();
+					final HashMap<Ordinate, BigInteger> implicitSpaceOutM1 = new HashMap<Ordinate, BigInteger>();
+					final HashMap<Ordinate, BigInteger> implicitSpaceOutP1 = new HashMap<Ordinate, BigInteger>();
+					final HashMap<Ordinate, BigInteger> implicitSpaceOutM2 = new HashMap<Ordinate, BigInteger>();
+					final HashMap<Ordinate, BigInteger> implicitSpaceOutP2 = new HashMap<Ordinate, BigInteger>();
 					
-					Iterator<AElem> itA = implicitSpace.keySet().iterator();
+					Iterator<Ordinate> itA = implicitSpace.keySet().iterator();
 					while( itA.hasNext() )
 					{
-						AElem ae = itA.next();
+						Ordinate ae = itA.next();
 						final BigInteger valAe = implicitSpace.get( ae );
 						if( node.symbolicEquals( ae ) )
 						{
@@ -885,8 +897,8 @@ public class TestSchrodingerA extends TestCase {
 		
 		
 		protected void applyAdd( 
-				HashMap<AElem, BigInteger> implicitSpace , CoeffNode node ,
-				HashMap<HashMap<AElem, BigInteger>,CoeffNode> implicitSpacesOut )
+				HashMap<Ordinate, BigInteger> implicitSpace , CoeffNode node ,
+				HashMap<HashMap<Ordinate, BigInteger>,CoeffNode> implicitSpacesOut )
 		{
 			CoeffNode prev = implicitSpacesOut.get( implicitSpace );
 			
@@ -1001,9 +1013,9 @@ public class TestSchrodingerA extends TestCase {
 		
 		final AStelem as = new AStelem( se2 );
 		
-		final ArrayList<AElem> wrtT = new ArrayList<AElem>();
+		final ArrayList<Ordinate> wrtT = new ArrayList<Ordinate>();
 		
-		wrtT.add( new AElem( de2 , TV ) );
+		wrtT.add( new Ordinate( de2 , TV ) );
 		
 		// final ArrayList<AElem> wrtX = new ArrayList<AElem>();
 		
@@ -1040,13 +1052,13 @@ public class TestSchrodingerA extends TestCase {
 			TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>, 
 			SymbolicElem<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>, 
 			SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>, 
-			AElem>
+			Ordinate>
 			del =
 			new DirectionalDerivative<
 			TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>, 
 			SymbolicElem<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>, 
 			SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>, 
-			AElem>( 
+			Ordinate>( 
 					ge , 
 					tdim , ord ,
 					ddirec );
@@ -1060,9 +1072,9 @@ public class TestSchrodingerA extends TestCase {
 		
 		
 		final PartialDerivativeOp<SymbolicElem<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>,
-			SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>,AElem> pa0T 
+			SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>,Ordinate> pa0T 
 			= new PartialDerivativeOp<SymbolicElem<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>,
-					SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>,AElem>( se2 , wrtT );
+					SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>,Ordinate>( se2 , wrtT );
 		
 		// final PartialDerivativeOp<SymbolicElem<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>,
 		//	SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>,AElem> pa0X 
@@ -1171,14 +1183,14 @@ public class TestSchrodingerA extends TestCase {
 		
 		
 		
-		final HashMap<AElem,AElem> implicitSpace0 = new HashMap<AElem,AElem>();
+		final HashMap<Ordinate,Ordinate> implicitSpace0 = new HashMap<Ordinate,Ordinate>();
 		
 		final HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace2 = implicitSpace0;
 		
-		implicitSpace0.put( new AElem( de2 , TV ) , new AElem( de2 , 0 ) );
-		implicitSpace0.put( new AElem( de2 , XV ) , new AElem( de2 , 0 ) );
-		implicitSpace0.put( new AElem( de2 , YV ) , new AElem( de2 , 0 ) );
-		implicitSpace0.put( new AElem( de2 , ZV ) , new AElem( de2 , 0 ) );
+		implicitSpace0.put( new Ordinate( de2 , TV ) , new Ordinate( de2 , 0 ) );
+		implicitSpace0.put( new Ordinate( de2 , XV ) , new Ordinate( de2 , 0 ) );
+		implicitSpace0.put( new Ordinate( de2 , YV ) , new Ordinate( de2 , 0 ) );
+		implicitSpace0.put( new Ordinate( de2 , ZV ) , new Ordinate( de2 , 0 ) );
 		
 		final SymbolicElem<
 			SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>> s0 = m1.eval( implicitSpace2 );
@@ -1190,11 +1202,11 @@ public class TestSchrodingerA extends TestCase {
 		
 		final ArrayList<Elem<?, ?>> wrt3 = new ArrayList<Elem<?, ?>>();
 		{
-			final HashMap<AElem, BigInteger> coord = new HashMap<AElem, BigInteger>();
-			coord.put( new AElem( de2 , TV ) , BigInteger.valueOf( 1 ) );
-			coord.put( new AElem( de2 , XV ) , BigInteger.valueOf( 0 ) );
-			coord.put( new AElem( de2 , YV ) , BigInteger.valueOf( 0 ) );
-			coord.put( new AElem( de2 , ZV ) , BigInteger.valueOf( 0 ) );
+			final HashMap<Ordinate, BigInteger> coord = new HashMap<Ordinate, BigInteger>();
+			coord.put( new Ordinate( de2 , TV ) , BigInteger.valueOf( 1 ) );
+			coord.put( new Ordinate( de2 , XV ) , BigInteger.valueOf( 0 ) );
+			coord.put( new Ordinate( de2 , YV ) , BigInteger.valueOf( 0 ) );
+			coord.put( new Ordinate( de2 , ZV ) , BigInteger.valueOf( 0 ) );
 			wrt3.add( new CNelem( se , coord ) );
 		}
 		
