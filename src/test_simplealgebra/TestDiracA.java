@@ -413,11 +413,21 @@ private class DDirec extends DirectionalDerivativePartialFactory<
 {
 
 	/**
-	 * Factory for the enclosed type.
+	 * Factory for building the value of the derivative of an ordinate.
 	 */
 	GeometricAlgebraMultivectorElemFactory<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem, DoubleElemFactory> de;
+	
+	/**
+	 * Factory for the enclosed type.
+	 */
 	SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> se2;
 	
+	/**
+	 * Constructs the directional derivative factory.
+	 * 
+	 * @param _de Factory for building the value of the derivative of an ordinate.
+	 * @param _se2 Factory for the enclosed type.
+	 */
 	public DDirec( 
 			final GeometricAlgebraMultivectorElemFactory<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem, DoubleElemFactory> _de ,
 			final SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> _se2 )

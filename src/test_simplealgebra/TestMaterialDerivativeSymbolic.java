@@ -1135,10 +1135,15 @@ public class TestMaterialDerivativeSymbolic extends TestCase
 	{
 
 		/**
-		 * Factory for the enclosed type.
+		 * The factory for the enclosed type.
 		 */
 		ComplexElemFactory<DoubleElem,DoubleElemFactory> fac;
 		
+		/**
+		 * Constructs the directional derivative factory.
+		 * 
+		 * @param _fac The factory for the enclosed type.
+		 */
 		public DirecFac( ComplexElemFactory<DoubleElem,DoubleElemFactory> _fac )
 		{
 			fac = _fac;

@@ -368,11 +368,21 @@ public class TestEinsteinTensor_5D extends TestCase {
 	private class DDirec extends DirectionalDerivativePartialFactory<DoubleElem,DoubleElemFactory,Ordinate>
 	{
 		/**
-		 * Factory for the enclosed type.
+		 * Factory for building the value of the derivative of an ordinate.
 		 */
 		EinsteinTensorElemFactory<String,DoubleElem, DoubleElemFactory> de;
+		
+		/**
+		 * Factory for the enclosed type.
+		 */
 		DoubleElemFactory se2;
 		
+		/**
+		 * Constructs the directional derivative factory.
+		 * 
+		 * @param _de Factory for building the value of the derivative of an ordinate.
+		 * @param _se2 Factory for the enclosed type.
+		 */
 		public DDirec( 
 				final EinsteinTensorElemFactory<String,DoubleElem, DoubleElemFactory> _de ,
 				final DoubleElemFactory _se2 )

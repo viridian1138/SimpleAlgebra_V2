@@ -232,11 +232,21 @@ public class TestSchrodingerA extends TestCase {
 		Ordinate>
 	{
 		/**
-		 * Factory for the enclosed type.
+		 * Factory for building the value of the derivative of an ordinate.
 		 */
 		ComplexElemFactory<DoubleElem, DoubleElemFactory> de;
+		
+		/**
+		 * Factory for the enclosed type.
+		 */
 		SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>> se2;
 		
+		/**
+		 * Constructs the directional derivative factory.
+		 * 
+		 * @param _de Factory for building the value of the derivative of an ordinate.
+		 * @param _se2 Factory for the enclosed type.
+		 */
 		public DDirec( 
 				final ComplexElemFactory<DoubleElem, DoubleElemFactory> _de ,
 				final SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>> _se2 )
