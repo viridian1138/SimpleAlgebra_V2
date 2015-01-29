@@ -53,14 +53,30 @@ import java.io.*;
 
 
 
+/**
+ * Verifies that the expression ( a + a ) + ( -a + -a ) simplifies to zero.
+ * 
+ * @author thorngreen
+ *
+ */
 public class TestAddSimplifySymbolic extends TestCase 
 {
 
 	
+	/**
+	 * Node representing the variable to be tested in the expression.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	private class AElem extends SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
 	{
 
-		
+		/**
+		 * Constructs the node.
+		 * 
+		 * @param _fac The factory for the enclosed type.
+		 */
 		public AElem(SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory> _fac ) {
 			super(_fac);
 		}
@@ -97,6 +113,11 @@ public class TestAddSimplifySymbolic extends TestCase
 	}
 	
 	
+	/**
+	 * Runs the test.
+	 * 
+	 * @throws NotInvertibleException
+	 */
 	public void testAddSimplifySymbolic() throws NotInvertibleException
 	{
 		final TestDimensionFour td = new TestDimensionFour();

@@ -334,9 +334,17 @@ public class TestCovariantDerivativeFlatAsym3D extends TestCase {
 	
 	
 	
-	
+	/**
+	 * Generates temporary indices for use in tensor arithmetic.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	protected static class TestTemporaryIndexFactory extends TemporaryIndexFactory<String>
 	{
+		/**
+		 * The current temporary index.
+		 */
 		protected static int tempIndex = 0;
 
 		@Override
