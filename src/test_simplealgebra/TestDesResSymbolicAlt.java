@@ -682,10 +682,18 @@ public class TestDesResSymbolicAlt extends TestCase
 	
 	
 	
-	
+	/**
+	 * Provides precedence comparison rules for the test.  Used when generating MathML.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	private class PrecCompare extends PrecedenceComparator<ComplexElem<DoubleElem, DoubleElemFactory>,ComplexElemFactory<DoubleElem, DoubleElemFactory>>
 	{
 
+		/**
+		 * Constructs the precedence comparison object.
+		 */
 		public PrecCompare()
 		{
 		}

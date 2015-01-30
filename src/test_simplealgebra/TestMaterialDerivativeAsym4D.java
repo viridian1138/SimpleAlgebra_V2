@@ -180,6 +180,55 @@ public class TestMaterialDerivativeAsym4D extends TestCase
 	
 	
 	
+	
+	private class CVal_Elem extends SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
+	{
+
+		
+		public CVal_Elem(ComplexElemFactory<DoubleElem,DoubleElemFactory> _fac ) {
+			super(_fac);
+		}
+
+		@Override
+		public ComplexElem<DoubleElem,DoubleElemFactory> eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException,
+				MultiplicativeDistributionRequiredException {
+			throw( new RuntimeException( "NotSupported" ) );
+		}
+
+		@Override
+		public ComplexElem<DoubleElem,DoubleElemFactory> evalPartialDerivative(ArrayList<? extends Elem<?, ?>> withRespectTo , HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace)
+				throws NotInvertibleException,
+				MultiplicativeDistributionRequiredException {
+			throw( new RuntimeException( "NotSupported" ) );
+		}
+		
+		@Override
+		public boolean symbolicEquals( SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> b )
+		{
+			if( b instanceof CVal_Elem )
+			{
+				return( true );
+			}
+			
+			return( false );
+		}
+		
+		@Override
+		public void writeString( PrintStream ps ) {
+			ps.print( "C( )" );
+		}
+		
+		@Override
+		public void writeMathML( PrecedenceComparator<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> pc , PrintStream ps )
+		{
+			ps.print( "<mi>c</mi>" );
+		}
+		
+	}
+	
+	
+	
+	
 	private class A0_Elem extends SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 	{
 
@@ -766,13 +815,13 @@ public class TestMaterialDerivativeAsym4D extends TestCase
 		
 		@Override
 		public void writeString( PrintStream ps ) {
-			ps.print( "X0( )" );
+			ps.print( "T( )" );
 		}
 		
 		@Override
 		public void writeMathML( PrecedenceComparator<DoubleElem,DoubleElemFactory> pc , PrintStream ps )
 		{
-			ps.print( "<msub><mi>x</mi><mn>0</mn></msub>" );
+			ps.print( "<mi>t</mi>" );
 		}
 		
 	}
@@ -1065,10 +1114,22 @@ public class TestMaterialDerivativeAsym4D extends TestCase
 	
 	
 	
-	
+	/**
+	 * Factory for generating an instance of the metric tensor.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	protected static class TestMetricTensorFactory extends MetricTensorInvertingFactory<Object, TestDimensionFour, ComplexElem<DoubleElem,DoubleElemFactory>, ComplexElemFactory<DoubleElem,DoubleElemFactory> >
 	{
 	
+		/**
+		 * Constructs the factory for metric tensors.
+		 * 
+		 * @param _fac The factory for the enclosed type.
+		 * @param _cSquared Symbolic elem for the square of the speed of light.
+		 * @param _t_2Ux Symbolic elem for the potential term.
+		 */
 		public TestMetricTensorFactory( EinsteinTensorElemFactory<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> _fac ,
 				SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> _cSquared,
 				SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> _t_2Ux )
@@ -1085,10 +1146,19 @@ public class TestMaterialDerivativeAsym4D extends TestCase
 			return( new SimpleMetric( fac , covariantIndices , index0 , index1 , cSquared , t_2Ux ) );
 		}
 		
+		/**
+		 * The factory for the enclosed type.
+		 */
 		private EinsteinTensorElemFactory<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> fac;
 		
+		/**
+		 * Symbolic elem for the square of the speed of light.
+		 */
 		private SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> cSquared;
 		
+		/**
+		 * Symbolic elem for the potential term.
+		 */
 		private SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> t_2Ux;
 				
 		
@@ -1121,15 +1191,26 @@ public class TestMaterialDerivativeAsym4D extends TestCase
 		}
 		
 		@Override
-		public PartialDerivativeOp<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>, SymbolicElem<DoubleElem, DoubleElemFactory>> getPartial(
+		public SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> getPartial(
 				BigInteger basisIndex) {
 			
 			if( basisIndex.equals( BigInteger.ZERO ) )
 			{
-				ArrayList<SymbolicElem<DoubleElem, DoubleElemFactory>> tmp = new ArrayList<SymbolicElem<DoubleElem, DoubleElemFactory>>();
-				tmp.add( new X0_Elem( new DoubleElemFactory() ) );
-				return( new PartialDerivativeOp<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>, 
-						SymbolicElem<DoubleElem, DoubleElemFactory>>( fac , tmp ) );
+				try
+				{
+					ArrayList<SymbolicElem<DoubleElem, DoubleElemFactory>> tmp = new ArrayList<SymbolicElem<DoubleElem, DoubleElemFactory>>();
+					tmp.add( new X0_Elem( new DoubleElemFactory() ) );
+					final CVal_Elem cv = new CVal_Elem( new ComplexElemFactory<DoubleElem,DoubleElemFactory>( new DoubleElemFactory() ) );
+					final PartialDerivativeOp<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>, 
+						SymbolicElem<DoubleElem, DoubleElemFactory>> pd =
+							new PartialDerivativeOp<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>, 
+							SymbolicElem<DoubleElem, DoubleElemFactory>>( fac , tmp );
+					return( ( cv.invertLeft() ).mult( pd ) );
+				}
+				catch( NotInvertibleException ex )
+				{
+					throw( new RuntimeException( "Failed." ) );
+				}
 			}
 			
 			
@@ -1211,10 +1292,18 @@ public class TestMaterialDerivativeAsym4D extends TestCase
 	
 	
 	
-	
+	/**
+	 * Provides precedence comparison rules for the test.  Used when generating MathML.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	private class PrecCompare extends PrecedenceComparator<ComplexElem<DoubleElem, DoubleElemFactory>,ComplexElemFactory<DoubleElem, DoubleElemFactory>>
 	{
 
+		/**
+		 * Constructs the precedence comparison object.
+		 */
 		public PrecCompare()
 		{
 		}

@@ -1607,7 +1607,12 @@ public void writeString( PrintStream ps ) {
 
 
 
-
+/**
+ * Factory for generating an instance of the metric tensor.
+ * 
+ * @author thorngreen
+ *
+ */
 protected class TestMetricTensorFactory extends MetricTensorInvertingFactory<String, TestDimensionFour,
 	SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>,SymbolicElemFactory<DoubleElem, DoubleElemFactory>>,
 	SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>,SymbolicElemFactory<DoubleElem, DoubleElemFactory>>

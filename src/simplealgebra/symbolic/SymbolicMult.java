@@ -79,6 +79,20 @@ public class SymbolicMult<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 		ds.insert( this );
 	}
 	
+	
+	@Override
+	public SymbolicElem<R, S> mult(SymbolicElem<R, S> b) {
+		if( b.isSymbolicZero() || b.isSymbolicIdentity() )
+		{
+			if( elemB instanceof PartialDerivativeOp )
+			{
+				return( this.getFac().zero() );
+			}
+		}
+		return( super.mult( b ) );
+	}
+	
+	
 	@Override
 	public R eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
 		if( elemA instanceof DerivativeElem )

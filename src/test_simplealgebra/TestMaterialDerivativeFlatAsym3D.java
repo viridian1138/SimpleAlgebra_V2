@@ -895,7 +895,12 @@ public class TestMaterialDerivativeFlatAsym3D extends TestCase
 	
 	
 	
-	
+	/**
+	 * Factory for generating an instance of the metric tensor.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	protected static class TestMetricTensorFactory extends MetricTensorInvertingFactory<Object, TestDimensionThree, ComplexElem<DoubleElem,DoubleElemFactory>, ComplexElemFactory<DoubleElem,DoubleElemFactory> >
 	{
 	
@@ -1060,10 +1065,18 @@ public class TestMaterialDerivativeFlatAsym3D extends TestCase
 	
 	
 	
-	
+	/**
+	 * Provides precedence comparison rules for the test.  Used when generating MathML.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	private class PrecCompare extends PrecedenceComparator<ComplexElem<DoubleElem, DoubleElemFactory>,ComplexElemFactory<DoubleElem, DoubleElemFactory>>
 	{
 
+		/**
+		 * Constructs the precedence comparison object.
+		 */
 		public PrecCompare()
 		{
 		}

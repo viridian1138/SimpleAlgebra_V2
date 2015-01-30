@@ -1009,9 +1009,25 @@ public class TestMaterialDerivativeSymbolic extends TestCase
 	
 	
 	
+	/**
+	 * A simple instance of a metric tensor.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	protected static class SimpleMetric extends SymbolicElem<EinsteinTensorElem<Object,SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>,EinsteinTensorElemFactory<Object,SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>>
 	{
 
+		/**
+		 * Constructs the metric tensor.
+		 * 
+		 * @param _fac The factory for the enclosed type.
+		 * @param _icovariantIndices Indicates whether the indices should be contravariant or covariant.
+		 * @param _index0 First tensor index of the metric.
+		 * @param _index1 Second tensor index of the metric.
+		 * @param _cSquared Symbolic elem for the square of the speed of light.
+		 * @param _t_2Ux Symbolic elem for the potential term.
+		 */
 		public SimpleMetric(
 				EinsteinTensorElemFactory<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> _fac,
 				boolean _icovariantIndices, Object _index0, Object _index1,
@@ -1081,23 +1097,51 @@ public class TestMaterialDerivativeSymbolic extends TestCase
 		}
 		
 		
+		/**
+		 * Indicates whether the indices should be contravariant or covariant.
+		 */
 		private boolean icovariantIndices;
 		
+		/**
+		 * First tensor index of the metric.
+		 */
 		private Object index0;
 		
+		/**
+		 * Second tensor index of the metric.
+		 */
 		private Object index1;
 		
+		/**
+		 * Symbolic elem for the square of the speed of light.
+		 */
 		private SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> cSquared;
 		
+		/**
+		 * Symbolic elem for the potential term.
+		 */
 		private SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> t_2Ux;
 		
 	}
 	
 	
 	
+	/**
+	 * Factory for generating an instance of the metric tensor.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	protected static class TestMetricTensorFactory extends MetricTensorInvertingFactory<Object, TestDimensionFour, ComplexElem<DoubleElem,DoubleElemFactory>, ComplexElemFactory<DoubleElem,DoubleElemFactory> >
 	{
 		
+		/**
+		 * Constructs the factory for metric tensors.
+		 * 
+		 * @param _fac The factory for the enclosed type.
+		 * @param _cSquared Symbolic elem for the square of the speed of light.
+		 * @param _t_2Ux Symbolic elem for the potential term.
+		 */
 		public TestMetricTensorFactory( EinsteinTensorElemFactory<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> _fac ,
 				SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> _cSquared,
 				SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> _t_2Ux )
@@ -1114,10 +1158,19 @@ public class TestMaterialDerivativeSymbolic extends TestCase
 			return( new SimpleMetric( fac , covariantIndices , index0 , index1 , cSquared , t_2Ux ) );
 		}
 		
+		/**
+		 * The factory for the enclosed type.
+		 */
 		private EinsteinTensorElemFactory<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> fac;
 		
+		/**
+		 * Symbolic elem for the square of the speed of light.
+		 */
 		private SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> cSquared;
 		
+		/**
+		 * Symbolic elem for the potential term.
+		 */
 		private SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> t_2Ux;
 		
 		
@@ -1235,10 +1288,18 @@ public class TestMaterialDerivativeSymbolic extends TestCase
 	
 	
 	
-	
+	/**
+	 * Provides precedence comparison rules for the test.  Used when generating MathML.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	private class PrecCompare extends PrecedenceComparator<ComplexElem<DoubleElem, DoubleElemFactory>,ComplexElemFactory<DoubleElem, DoubleElemFactory>>
 	{
 
+		/**
+		 * Constructs the precedence comparison object.
+		 */
 		public PrecCompare()
 		{
 		}

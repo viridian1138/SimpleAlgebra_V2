@@ -451,7 +451,12 @@ public class TestConnectionCoefficient extends TestCase {
 	
 	
 	
-	
+	/**
+	 * Factory for generating an instance of the metric tensor.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	protected static class TestMetricTensorFactory extends MetricTensorInvertingFactory<String, TestDimensionFour, DoubleElem, DoubleElemFactory>
 	{
 
