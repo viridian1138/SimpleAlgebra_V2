@@ -75,7 +75,12 @@ public class TestMaterialDerivativeFlatAsym3D extends TestCase
 {
 
 	
-	
+	/**
+	 * Returns a symbolic instance of zero.
+	 * 
+	 * @param _fac The factory for the enclosed type.
+	 * @return The symbolic instance of zero.
+	 */
 	private static SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>
 		createSymbolicZero( ComplexElemFactory<DoubleElem,DoubleElemFactory> _fac )
 	{
@@ -85,10 +90,20 @@ public class TestMaterialDerivativeFlatAsym3D extends TestCase
 	
 	
 	
+	/**
+	 * Elem representing the square of the speed of light.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	private class CSquaredElem extends SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 	{
 
-		
+		/**
+		 * Constructs the elem.
+		 * 
+		 * @param _fac The factory for the enclosed type.
+		 */
 		public CSquaredElem(ComplexElemFactory<DoubleElem,DoubleElemFactory> _fac ) {
 			super(_fac);
 		}
@@ -132,10 +147,20 @@ public class TestMaterialDerivativeFlatAsym3D extends TestCase
 	
 	
 	
+	/**
+	 * Elem representing the potential term.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	private class T_2UxElem extends SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 	{
 
-		
+		/**
+		 * Constructs the elem.
+		 * 
+		 * @param _fac The factory for the enclosed type.
+		 */
 		public T_2UxElem(ComplexElemFactory<DoubleElem,DoubleElemFactory> _fac ) {
 			super(_fac);
 		}
@@ -179,10 +204,20 @@ public class TestMaterialDerivativeFlatAsym3D extends TestCase
 	
 	
 	
+	/**
+	 * Node representing the 0-th component of the vector potential.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	private class A0_Elem extends SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 	{
 
-		
+		/**
+		 * Constructs the elem.
+		 * 
+		 * @param _fac The factory for the enclosed type.
+		 */
 		public A0_Elem(ComplexElemFactory<DoubleElem,DoubleElemFactory> _fac ) {
 			super(_fac);
 		}

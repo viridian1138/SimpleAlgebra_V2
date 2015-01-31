@@ -67,10 +67,20 @@ public class TestMetricDeterminant extends TestCase
 {
 
 	
+	/**
+	 * Elem representing the square of the speed of light.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	private class CSquaredElem extends SymbolicElem<DoubleElem,DoubleElemFactory>
 	{
 
-		
+		/**
+		 * Constructs the elem.
+		 * 
+		 * @param _fac The factory for the enclosed type.
+		 */
 		public CSquaredElem(DoubleElemFactory _fac ) {
 			super(_fac);
 		}
@@ -108,10 +118,20 @@ public class TestMetricDeterminant extends TestCase
 	
 	
 	
+	/**
+	 * Elem representing the potential term.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	private class T_2UxElem extends SymbolicElem<DoubleElem,DoubleElemFactory>
 	{
 
-		
+		/**
+		 * Constructs the elem.
+		 * 
+		 * @param _fac The factory for the enclosed type.
+		 */
 		public T_2UxElem(DoubleElemFactory _fac ) {
 			super(_fac);
 		}
