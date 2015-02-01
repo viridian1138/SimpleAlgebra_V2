@@ -317,10 +317,20 @@ public class TestMaterialDerivativeAsym4D extends TestCase
 	}
 	
 	
+	/**
+	 * Node representing the 1st component of the vector potential.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	private class A1_Elem extends SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 	{
 
-		
+		/**
+		 * Constructs the elem.
+		 * 
+		 * @param _fac The factory for the enclosed type.
+		 */
 		public A1_Elem(ComplexElemFactory<DoubleElem,DoubleElemFactory> _fac ) {
 			super(_fac);
 		}
@@ -364,11 +374,20 @@ public class TestMaterialDerivativeAsym4D extends TestCase
 	
 	
 	
-	
+	/**
+	 * Node representing the 2nd component of the vector potential.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	private class A2_Elem extends SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 	{
 
-		
+		/**
+		 * Constructs the elem.
+		 * 
+		 * @param _fac The factory for the enclosed type.
+		 */
 		public A2_Elem(ComplexElemFactory<DoubleElem,DoubleElemFactory> _fac ) {
 			super(_fac);
 		}
@@ -1185,7 +1204,8 @@ public class TestMaterialDerivativeAsym4D extends TestCase
 		public SymbolicElem<EinsteinTensorElem<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>, EinsteinTensorElemFactory<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>> getMetricTensor(
 				boolean covariantIndices, Object index0, Object index1 ) {
 			
-			return( new SimpleMetric( fac , covariantIndices , index0 , index1 , cSquared , t_2Ux ) );
+			final SimpleMetric sm = new SimpleMetric( fac , covariantIndices , index0 , index1 , cSquared , t_2Ux );
+			return( sm );
 		}
 		
 		/**

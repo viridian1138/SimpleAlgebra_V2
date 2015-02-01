@@ -220,10 +220,20 @@ public class TestGaugeSymbolic extends TestCase
 	}
 	
 	
+	/**
+	 * Node representing the 1st component of the vector potential.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	private class A1_Elem extends SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 	{
 
-		
+		/**
+		 * Constructs the elem.
+		 * 
+		 * @param _fac The factory for the enclosed type.
+		 */
 		public A1_Elem(ComplexElemFactory<DoubleElem,DoubleElemFactory> _fac ) {
 			super(_fac);
 		}
@@ -261,11 +271,20 @@ public class TestGaugeSymbolic extends TestCase
 	
 	
 	
-	
+	/**
+	 * Node representing the 2nd component of the vector potential.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	private class A2_Elem extends SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 	{
 
-		
+		/**
+		 * Constructs the elem.
+		 * 
+		 * @param _fac The factory for the enclosed type.
+		 */
 		public A2_Elem(ComplexElemFactory<DoubleElem,DoubleElemFactory> _fac ) {
 			super(_fac);
 		}

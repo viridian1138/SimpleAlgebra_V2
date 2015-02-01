@@ -129,7 +129,7 @@ public class SimpleCurveMetricTensorFactory<Z extends Object, R extends Elem<R,?
 				ArrayList<BigInteger> el = new ArrayList<BigInteger>();
 				el.add( BigInteger.ZERO );
 				el.add( BigInteger.ZERO );
-				tel.setVal( el , cSq.getAlteredCSquared( covariantIndic ) );
+				tel.setVal( el , cSq.getAlteredCSquared( true /* covariantIndic */ ) );
 			}
 			
 			for( BigInteger cnt = BigInteger.ONE ; cnt.compareTo(numElem) < 0 ; cnt = cnt.add( BigInteger.ONE ) )
