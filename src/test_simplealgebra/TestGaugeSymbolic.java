@@ -325,11 +325,20 @@ public class TestGaugeSymbolic extends TestCase
 	
 	
 	
-	
+	/**
+	 * Node representing the 3rd component of the vector potential.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	private class A3_Elem extends SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 	{
 
-		
+		/**
+		 * Constructs the elem.
+		 * 
+		 * @param _fac The factory for the enclosed type.
+		 */
 		public A3_Elem(ComplexElemFactory<DoubleElem,DoubleElemFactory> _fac ) {
 			super(_fac);
 		}
@@ -368,17 +377,31 @@ public class TestGaugeSymbolic extends TestCase
 	
 	
 	
-	
+	/**
+	 * Factory for the vector potential.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	private class VectFac extends VectorPotentialFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 	{
 
+		/**
+		 * The factory for the enclosed type.
+		 */
 		ComplexElemFactory<DoubleElem,DoubleElemFactory> fac;
 		
+		/**
+		 * Constructs the factory.
+		 * 
+		 * @param _fac The factory for the enclosed type.
+		 */
 		public VectFac( ComplexElemFactory<DoubleElem,DoubleElemFactory> _fac )
 		{
 			fac = _fac;
 		}
 		
+		@Override
 		public SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> getVectorPotential( BigInteger basisIndex )
 		{
 			

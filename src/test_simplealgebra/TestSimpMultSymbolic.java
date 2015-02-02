@@ -100,7 +100,12 @@ public class TestSimpMultSymbolic extends TestCase
 	}
 	
 	
-	
+	/**
+	 * The symbolic elem for the square matrix upon which to apply the operation.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	private class BElem extends SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
 	{
 

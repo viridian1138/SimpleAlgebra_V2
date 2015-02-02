@@ -552,12 +552,22 @@ public class TestMaterialDerivativeFlatAsym3D extends TestCase
 	
 	
 	
-	
+	/**
+	 * Elem representing the vector potential.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	private class VectFac extends SymbolicElem<EinsteinTensorElem<Object,SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>,EinsteinTensorElemFactory<Object,SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>>
 	{
 
 		
-		
+		/**
+		 * Constructs the elem.
+		 * 
+		 * @param _fac The factory for the enclosed type.
+		 * @param _index The contravariant index of the tensor.
+		 */
 		public VectFac(
 				EinsteinTensorElemFactory<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> _fac,
 				Object _index ) {
@@ -565,6 +575,12 @@ public class TestMaterialDerivativeFlatAsym3D extends TestCase
 			index = _index;
 		}
 
+		/**
+		 * Returns one component of the vector potential.
+		 * 
+		 * @param basisIndex The index of the component.
+		 * @return The component of the vector potential.
+		 */
 		public SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> getVectorPotential( BigInteger basisIndex )
 		{
 			
@@ -656,7 +672,9 @@ public class TestMaterialDerivativeFlatAsym3D extends TestCase
 			ps.print( "v()" );
 		}
 		
-		
+		/**
+		 * The contravariant index of the tensor.
+		 */
 		private Object index;
 
 	};
@@ -835,10 +853,20 @@ public class TestMaterialDerivativeFlatAsym3D extends TestCase
 	
 	
 	
-	
+	/**
+	 * Elem for the derivative with respect to X0 as a tensor.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	private class DerivTElem extends SymbolicElem<EinsteinTensorElem<Object,SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>,EinsteinTensorElemFactory<Object,SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>>
 	{
 
+		/**
+		 * Constructs the elem.
+		 * 
+		 * @param _fac The factory for the enclosed type.
+		 */
 		public DerivTElem(
 				EinsteinTensorElemFactory<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> _fac) {
 			super(_fac);
@@ -1079,12 +1107,25 @@ public class TestMaterialDerivativeFlatAsym3D extends TestCase
 	
 	
 	
-	
+	/**
+	 * Factory for the flow velocity.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	private class FlowFac extends FlowVectorFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>, SymbolicElem<DoubleElem,DoubleElemFactory>>
 	{
 
+		/**
+		 * The factory for the enclosed type.
+		 */
 		ComplexElemFactory<DoubleElem,DoubleElemFactory> fac;
 		
+		/**
+		 * Constructs the factory.
+		 * 
+		 * @param _fac The factory for the enclosed type.
+		 */
 		public FlowFac( ComplexElemFactory<DoubleElem,DoubleElemFactory> _fac )
 		{
 			fac = _fac;

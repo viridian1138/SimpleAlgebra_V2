@@ -85,6 +85,13 @@ public class TestInvertNestedLeft extends TestCase {
 	}
 	
 	
+	/**
+	 * Generates a random matrix for the test.
+	 * 
+	 * @param rand The random number generator.
+	 * @param se The factory for the matrix.
+	 * @return The random matrix.
+	 */
 	protected SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory> generateMat( final Random rand,
 			SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory> se )
 	{

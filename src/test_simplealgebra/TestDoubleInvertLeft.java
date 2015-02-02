@@ -91,6 +91,13 @@ public class TestDoubleInvertLeft extends TestCase {
 	}
 	
 	
+	/**
+	 * Generates a random matrix for use in the test.
+	 * 
+	 * @param rand The random number generator.
+	 * @param se The factory for the matrix.
+	 * @return The random matrix.
+	 */
 	protected SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory> generateMatA( final Random rand,
 			SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory> se )
 	{
@@ -112,6 +119,13 @@ public class TestDoubleInvertLeft extends TestCase {
 	}
 	
 	
+	/**
+	 * Generates a random matrix of matrices for use in the test.
+	 * 
+	 * @param rand The random number generator.
+	 * @param se The factory for the matrix of matrices.
+	 * @return The random matrix of matrices.
+	 */
 	protected SquareMatrixElem<TestDimensionFour,SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,
 		SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>> generateMatB( final Random rand,
 			SquareMatrixElemFactory<TestDimensionFour,SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,
@@ -137,7 +151,13 @@ public class TestDoubleInvertLeft extends TestCase {
 	
 	
 	
-	
+	/**
+	 * Generates a random matrix of matrices of matrices for use in the test.
+	 * 
+	 * @param rand The random number generator.
+	 * @param se The factory for the matrix of matrices of matrices.
+	 * @return The random matrix of matrices of matrices.
+	 */
 	protected SquareMatrixElem<TestDimensionFour,SquareMatrixElem<TestDimensionFour,SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,
 	SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>,
 	SquareMatrixElemFactory<TestDimensionFour,SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,

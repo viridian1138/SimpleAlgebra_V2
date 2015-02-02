@@ -97,7 +97,12 @@ public class TestInvOverNegMultSymbolic extends TestCase
 	}
 	
 	
-	
+	/**
+	 * The symbolic elem for the matrix upon which to apply the operation.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	private class BElem extends SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
 	{
 

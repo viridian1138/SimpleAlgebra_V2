@@ -153,6 +153,12 @@ public class TestRiemannTensor extends TestCase {
 	}
 	
 	
+	/**
+	 * The symbolic elem for the tensor upon which to apply the differential equation.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	private class BElem extends SymbolicElem<EinsteinTensorElem<String,SymbolicElem<DoubleElem, DoubleElemFactory>,SymbolicElemFactory<DoubleElem, DoubleElemFactory>>,EinsteinTensorElemFactory<String,SymbolicElem<DoubleElem, DoubleElemFactory>,SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>
 	{
 
