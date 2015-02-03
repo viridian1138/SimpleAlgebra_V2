@@ -455,11 +455,30 @@ public class TestSchrodingerA extends TestCase {
 	
 	
 	
+	/**
+	 * A constant coefficient with a numerator and a denominator.
+	 * 	
+	 * @author thorngreen
+	 *
+	 */
 	private class CoeffNode
 	{
+		/**
+		 * The numerator.
+		 */
 		private ComplexElem<DoubleElem,DoubleElemFactory> numer;
+		
+		/**
+		 * The denominator.
+		 */
 		private ComplexElem<DoubleElem,DoubleElemFactory> denom;
 		
+		/**
+		 * Constructs the coefficient.
+		 * 
+		 * @param _numer The numerator.
+		 * @param _denom The denominator.
+		 */
 		public CoeffNode( ComplexElem<DoubleElem,DoubleElemFactory> _numer , ComplexElem<DoubleElem,DoubleElemFactory> _denom )
 		{
 			numer = _numer;
@@ -467,13 +486,18 @@ public class TestSchrodingerA extends TestCase {
 		}
 		
 		/**
-		 * @return the numer
+		 * Gets the numerator.
+		 * 
+		 * @return The numerator.
 		 */
 		public ComplexElem<DoubleElem,DoubleElemFactory> getNumer() {
 			return numer;
 		}
+		
 		/**
-		 * @return the denom
+		 * Gets the denominator.
+		 * 
+		 * @return The denominator.
 		 */
 		public ComplexElem<DoubleElem,DoubleElemFactory> getDenom() {
 			return denom;
@@ -943,10 +967,24 @@ public class TestSchrodingerA extends TestCase {
 	
 	
 	
-	
+	/**
+	 * Newton-Raphson evaluator for the test.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	protected class StelemNewton extends NewtonRaphsonSingleElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 	{
 
+		/**
+		 * Constructs the evaluator.
+		 * 
+		 * @param _function The function over which to evaluate Netwon-Raphson.
+		 * @param _withRespectTo The variable over which to evaluate the derivative of the function.
+		 * @param implicitSpaceFirstLevel The initial implicit space over which to take the function and its derivative.
+		 * @throws NotInvertibleException
+		 * @throws MultiplicativeDistributionRequiredException
+		 */
 		public StelemNewton(
 				SymbolicElem<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> _function,
 				ArrayList<? extends Elem<?, ?>> _withRespectTo, 
@@ -958,6 +996,9 @@ public class TestSchrodingerA extends TestCase {
 			// System.out.println( this.partialEval.writeString() );
 		}
 		
+		/**
+		 * The iteration count for Newton-Raphson iterations.
+		 */
 		protected int intCnt = 0;
 
 		@Override

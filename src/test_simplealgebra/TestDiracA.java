@@ -665,12 +665,30 @@ private class StelemReduction3L extends SymbolicReduction<
 	
 
 
-	
+/**
+ * A constant coefficient with a numerator and a denominator.
+ * 	
+ * @author thorngreen
+ *
+ */
 private class CoeffNode
 {
+	/**
+	 * The numerator.
+	 */
 	private DoubleElem numer;
+	
+	/**
+	 * The denominator.
+	 */
 	private DoubleElem denom;
 	
+	/**
+	 * Constructs the coefficient.
+	 * 
+	 * @param _numer The numerator.
+	 * @param _denom The denominator.
+	 */
 	public CoeffNode( DoubleElem _numer , DoubleElem _denom )
 	{
 		numer = _numer;
@@ -678,13 +696,18 @@ private class CoeffNode
 	}
 	
 	/**
-	 * @return the numer
+	 * Gets the numerator.
+	 * 
+	 * @return The numerator.
 	 */
 	public DoubleElem getNumer() {
 		return numer;
 	}
+	
 	/**
-	 * @return the denom
+	 * Gets the denominator.
+	 * 
+	 * @return The denominator.
 	 */
 	public DoubleElem getDenom() {
 		return denom;
@@ -1226,12 +1249,29 @@ protected void applyAdd(
 	
 	
 	
-	
+	/**
+	 * Newton-Raphson evaluator for the test.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	protected class StelemNewton extends NewtonRaphsonMultiElemRemap<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>
 	{
 
 		
 		
+		/**
+		 * Constructs the evaluator.
+		 * 
+		 * @param _functions Input multivector of functions.
+		 * @param _withRespectTosI Set of variables to take derivatives with respect to.
+		 * @param implicitSpaceFirstLevel Implicit space for the initial eval.
+		 * @param _sfac Factory for enclosed type.
+		 * @param _dim The number of dimensions in the multivector.
+		 * @param _ord The input Ord.
+		 * @throws NotInvertibleException
+		 * @throws MultiplicativeDistributionRequiredException
+		 */
 		public StelemNewton(
 				GeometricAlgebraMultivectorElem<TestDimensionFour, SpacetimeAlgebraOrd<TestDimensionFour>, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> _functions,
 				HashMap<HashSet<BigInteger>, ArrayList<? extends Elem<?, ?>>> _withRespectTosI,
@@ -1247,7 +1287,9 @@ protected void applyAdd(
 			// System.out.println( this.partialEval.writeString() );
 		}
 
-
+		/**
+		 * The iteration count for Newton-Raphson iterations.
+		 */
 		protected int intCnt = 0;
 
 		@Override
@@ -1295,9 +1337,26 @@ protected void applyAdd(
 //		}
 //		
 		
+		/**
+		 * The internal multivariate Newton-Raphson.
+		 * 
+		 * @author thorngreen
+		 *
+		 */
 		protected class StelemNewtonEnt extends NewtonRaphsonMultiElem<simplealgebra.algo.NewtonRaphsonMultiElemRemap.Adim, DoubleElem, DoubleElemFactory>
 		{
 
+			/**
+			 * Constructs the evaluator.
+			 * 
+			 * @param _functions The functions over which to evaluate Netwon-Raphson.
+			 * @param _withRespectTos The set of variables over which to take derivatives.
+			 * @param implicitSpaceFirstLevel The initial implicit space over which to take the functions and their derivatives.
+			 * @param _sfac The factory for the enclosed type.
+			 * @param _dim The number of dimensions over which to evaluate Newton-Raphson.
+			 * @throws NotInvertibleException
+			 * @throws MultiplicativeDistributionRequiredException
+			 */
 			public StelemNewtonEnt(
 					GeometricAlgebraMultivectorElem<simplealgebra.algo.NewtonRaphsonMultiElemRemap.Adim, GeometricAlgebraOrd<simplealgebra.algo.NewtonRaphsonMultiElemRemap.Adim>, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> _functions,
 					ArrayList<ArrayList<? extends Elem<?, ?>>> _withRespectTos,

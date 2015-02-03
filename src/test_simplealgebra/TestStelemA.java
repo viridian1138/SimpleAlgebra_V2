@@ -272,11 +272,30 @@ public class TestStelemA extends TestCase {
 	
 	
 	
+	/**
+	 * A constant coefficient with a numerator and a denominator.
+	 * 	
+	 * @author thorngreen
+	 *
+	 */
 	private class CoeffNode
 	{
+		/**
+		 * The numerator.
+		 */
 		private DoubleElem numer;
+		
+		/**
+		 * The denominator.
+		 */
 		private DoubleElem denom;
 		
+		/**
+		 * Constructs the coefficient.
+		 * 
+		 * @param _numer The numerator.
+		 * @param _denom The denominator.
+		 */
 		public CoeffNode( DoubleElem _numer , DoubleElem _denom )
 		{
 			numer = _numer;
@@ -284,13 +303,18 @@ public class TestStelemA extends TestCase {
 		}
 		
 		/**
-		 * @return the numer
+		 * Gets the numerator.
+		 * 
+		 * @return The numerator.
 		 */
 		public DoubleElem getNumer() {
 			return numer;
 		}
+		
 		/**
-		 * @return the denom
+		 * Gets the denominator.
+		 * 
+		 * @return The denominator.
 		 */
 		public DoubleElem getDenom() {
 			return denom;
@@ -754,10 +778,24 @@ public class TestStelemA extends TestCase {
 	
 	
 	
-	
+	/**
+	 * Newton-Raphson evaluator for the test.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	protected class StelemNewton extends NewtonRaphsonSingleElem<DoubleElem,DoubleElemFactory>
 	{
 
+		/**
+		 * Constructs the evaluator.
+		 * 
+		 * @param _function The function over which to evaluate Netwon-Raphson.
+		 * @param _withRespectTo The variable over which to evaluate the derivative of the function.
+		 * @param implicitSpaceFirstLevel The initial implicit space over which to take the function and its derivative.
+		 * @throws NotInvertibleException
+		 * @throws MultiplicativeDistributionRequiredException
+		 */
 		public StelemNewton(
 				SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>> _function,
 				ArrayList<? extends Elem<?, ?>> _withRespectTo, 
@@ -769,6 +807,9 @@ public class TestStelemA extends TestCase {
 			// System.out.println( this.partialEval.writeString() );
 		}
 		
+		/**
+		 * The iteration count for Newton-Raphson iterations.
+		 */
 		protected int intCnt = 0;
 
 		@Override
