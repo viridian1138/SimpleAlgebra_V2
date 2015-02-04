@@ -721,7 +721,15 @@ public class TestStelemC extends TestCase {
 		}
 		
 		
-		
+		/**
+		 * Applies a discretized approximation of a derivative 
+		 * 
+		 * @param implicitSpacesIn The input implicit space containing the discretized approximation function.
+		 * @param node The ordinate over which to take the derivative.
+		 * @param numDerivatives The number of derivatives to apply.
+		 * @param hh The size of the discretization.
+		 * @param implicitSpacesOut The output implicit space containing the discretized approximation function with the derivatives applied.
+		 */
 		protected void applyDerivativeAction( HashMap<HashMap<Ordinate, BigInteger>,CoeffNode> implicitSpacesIn , 
 				Ordinate node , final int numDerivatives , DoubleElem hh ,
 				HashMap<HashMap<Ordinate, BigInteger>,CoeffNode> implicitSpacesOut )
@@ -872,6 +880,13 @@ public class TestStelemC extends TestCase {
 		}
 		
 		
+		/**
+		 * Adds a coefficient times the input implicit space to the output implicit space.
+		 * 
+		 * @param implicitSpace The input implicit space.
+		 * @param node The coefficient.
+		 * @param implicitSpacesOut The output implicit space.
+		 */
 		protected void applyAdd( 
 				HashMap<Ordinate, BigInteger> implicitSpace , CoeffNode node ,
 				HashMap<HashMap<Ordinate, BigInteger>,CoeffNode> implicitSpacesOut )

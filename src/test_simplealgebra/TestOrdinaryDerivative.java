@@ -176,7 +176,11 @@ public class TestOrdinaryDerivative extends TestCase {
 	private class BElem extends SymbolicElem<EinsteinTensorElem<String,SymbolicElem<DoubleElem, DoubleElemFactory>,SymbolicElemFactory<DoubleElem, DoubleElemFactory>>,EinsteinTensorElemFactory<String,SymbolicElem<DoubleElem, DoubleElemFactory>,SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>
 	{
 
-		
+		/**
+		 * Constructs the elem.
+		 * 
+		 * @param _fac The factory for the enclosed type.
+		 */
 		public BElem(EinsteinTensorElemFactory<String,SymbolicElem<DoubleElem, DoubleElemFactory>,SymbolicElemFactory<DoubleElem, DoubleElemFactory>> _fac) {
 			super(_fac);
 		}
@@ -249,12 +253,25 @@ public class TestOrdinaryDerivative extends TestCase {
 	
 	
 	
-	
+	/**
+	 * Symbolic elem for one component of the tensor upon which to apply the differential equation.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	private class CElem extends SymbolicElem<DoubleElem,DoubleElemFactory>
 	{
+		/**
+		 * The index of the component.
+		 */
 		private int col;
 
-		
+		/**
+		 * Constructs the elem.
+		 * 
+		 * @param _fac The factory for the enclosed type.
+		 * @param _col The index of the component.
+		 */
 		public CElem(DoubleElemFactory _fac, int _col) {
 			super(_fac);
 			col = _col;
@@ -305,7 +322,9 @@ public class TestOrdinaryDerivative extends TestCase {
 		}
 		
 		/**
-		 * @return the col
+		 * Gets the index of the component.
+		 * 
+		 * @return The index of the component.
 		 */
 		public int getCol() {
 			return col;
