@@ -601,9 +601,21 @@ public class TestStelemB extends TestCase {
 	
 	
 	
+	/**
+	 * An elem defining a partial derivative that is evaluated over the discretized space of the test.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	private class AStelem extends Stelem<SymbolicElem<DoubleElem,DoubleElemFactory>,
 		SymbolicElemFactory<DoubleElem,DoubleElemFactory>,Ordinate>
 	{	
+		
+		/**
+		 * Constructs the elem.
+		 * 
+		 * @param _fac The factory for the enclosed type.
+		 */
 		public AStelem(SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>, 
 				SymbolicElemFactory<DoubleElem,DoubleElemFactory>> _fac) {
 			super(_fac);

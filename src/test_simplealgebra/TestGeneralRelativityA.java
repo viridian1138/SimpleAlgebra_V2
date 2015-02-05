@@ -75,6 +75,12 @@ public class TestGeneralRelativityA extends TestCase {
 	
 	
 	
+	/**
+	 * Returns a tensor scalar that is equal to the parameter value.
+	 * 
+	 * @param in The value to be assigned to the scalar.
+	 * @return The constructed tensor.
+	 */
 	private static EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> genFromConst( double in )  // Rank Zero.
 	{
 		final DoubleElem dd = new DoubleElem( in );
@@ -919,13 +925,28 @@ private class CNelem extends Nelem<SymbolicElem<DoubleElem,DoubleElemFactory>,
 	
 
 
-	
+/**
+ * An elem defining a partial derivative that is evaluated over the discretized space of the test.
+ * 
+ * @author thorngreen
+ *
+ */	
 private class AStelem extends Stelem<SymbolicElem<DoubleElem,DoubleElemFactory>,
 	SymbolicElemFactory<DoubleElem,DoubleElemFactory>,Ordinate>
 {	
-	
+
+/**
+ * The index of the tensor component represented by the elem.
+ */
 protected ArrayList<BigInteger> index;
-	
+
+
+/**
+ * Constructs the elem.
+ * 
+ * @param _fac The factory for the enclosed type.
+ * @param _index The index of the tensor component represented by the elem.
+ */
 public AStelem( SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> _fac,
 		ArrayList<BigInteger> _index ) {
 	super(_fac);

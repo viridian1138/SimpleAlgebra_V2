@@ -73,6 +73,12 @@ public class TestSchrodingerA extends TestCase {
 			new DoubleElem( 0.0 ) , new DoubleElem( 1.0 ) );
 	
 	
+	/**
+	 * Returns a complex-value scalar that is equal to the parameter value.
+	 * 
+	 * @param in The value to be assigned to the scalar.
+	 * @return The constructed complex number.
+	 */
 	private static ComplexElem<DoubleElem,DoubleElemFactory> genFromConst( double in )
 	{
 		return( new ComplexElem<DoubleElem,DoubleElemFactory>( new DoubleElem( in ) , DOUBLE_ZERO ) );
@@ -685,9 +691,20 @@ public class TestSchrodingerA extends TestCase {
 	
 	
 	
+	/**
+	 * An elem defining a partial derivative that is evaluated over the discretized space of the test.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	private class AStelem extends Stelem<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,
 		SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,Ordinate>
-	{	
+	{
+		/**
+		 * Constructs the elem.
+		 * 
+		 * @param _fac The factory for the enclosed type.
+		 */
 		public AStelem(SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>, 
 				SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>> _fac) {
 			super(_fac);

@@ -91,6 +91,12 @@ public class TestDiracA extends TestCase {
 	}
 	
 	
+	/**
+	 * Returns a multivector scalar that is equal to the parameter value.
+	 * 
+	 * @param in The value to be assigned to the scalar.
+	 * @return The constructed multivector.
+	 */
 	private static GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> genFromConst( double in )
 	{
 		final DoubleElem dd = new DoubleElem( in );
@@ -964,13 +970,27 @@ private class CNelem extends Nelem<SymbolicElem<DoubleElem,DoubleElemFactory>,
 	
 
 
-	
+/**
+ * An elem defining a partial derivative that is evaluated over the discretized space of the test.
+ * 
+ * @author thorngreen
+ *
+ */	
 private class AStelem extends Stelem<SymbolicElem<DoubleElem,DoubleElemFactory>,
 	SymbolicElemFactory<DoubleElem,DoubleElemFactory>,Ordinate>
 {	
-	
+
+/**
+ * The index of the multivector component represented by the elem.
+ */
 protected HashSet<BigInteger> index;
 	
+/**
+ * Constructs the elem.
+ * 
+ * @param _fac The factory for the enclosed type.
+ * @param _index The index of the multivector component represented by the elem.
+ */
 public AStelem( SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> _fac,
 		HashSet<BigInteger> _index ) {
 	super(_fac);
