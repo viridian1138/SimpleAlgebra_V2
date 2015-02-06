@@ -175,14 +175,29 @@ public class TestDiracA extends TestCase {
 	
 	
 	
+	/**
+	 * Size of the T-Axis discretization.
+	 */
 	protected static final DoubleElem T_HH = genFromConstDbl( 0.0025 );
 	
+	/**
+	 * Size of the X-Axis discretization.
+	 */
 	protected static final DoubleElem X_HH = genFromConstDbl( 0.01 );
 	
+	/**
+	 * Size of the Y-Axis discretization.
+	 */
 	protected static final DoubleElem Y_HH = genFromConstDbl( 0.01 );
 	
+	/**
+	 * Size of the Z-Axis discretization.
+	 */
 	protected static final DoubleElem Z_HH = genFromConstDbl( 0.01 );
 	
+	/**
+	 * Discretization sizes arrayed by coordinate index.
+	 */
 	protected static final DoubleElem[] HH = { T_HH , X_HH , Y_HH , Z_HH };
 	
 	
@@ -205,9 +220,24 @@ public class TestDiracA extends TestCase {
 	
 	
 	
+	/**
+	 * Discretized index for the T-Axis.
+	 */
 	protected static final int TV = 0;
+	
+	/**
+	 * Discretized index for the X-Axis.
+	 */
 	protected static final int XV = 1;
+	
+	/**
+	 * Discretized index for the Y-Axis.
+	 */
 	protected static final int YV = 2;
+	
+	/**
+	 * Discretized index for the Z-Axis.
+	 */
 	protected static final int ZV = 3;
 	
 	
@@ -722,20 +752,43 @@ private class CoeffNode
 }
 
 
-	
+	/**
+	 * Elem representing the discretized equivalent
+	 * of one component of the multivector constrained by the differential equation.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	private class BNelem extends Nelem<DoubleElem,DoubleElemFactory,Ordinate>
 	{
+		/**
+		 * The index of the component of the multivector.
+		 */
 		protected HashSet<BigInteger> index;
 		
 
+		/**
+		 * Constructs the elem.
+		 * 
+		 * @param _fac The factory for the enclosed type.
+		 * @param _coord Map taking implicit space terms representing ordinates to discrete ordinates of type BigInteger.
+		 * @param _index The index of the component of the multivector.
+		 */
 		public BNelem(DoubleElemFactory _fac, HashMap<Ordinate, BigInteger> _coord , HashSet<BigInteger> _index ) {
 			super(_fac, _coord);
 			index = _index;
 		}
 		
 		
+		/**
+		 * Column indices in the discretized space.
+		 */
 		protected final int[] cols = new int[ 4 ];
 		
+		/**
+		 * Assertion booleans used to verify that all
+		 * column indices have been initialized.
+		 */
 		protected final boolean[] assertCols = new boolean[ 4 ];
 		
 

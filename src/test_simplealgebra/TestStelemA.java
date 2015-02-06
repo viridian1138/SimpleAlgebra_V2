@@ -323,16 +323,36 @@ public class TestStelemA extends TestCase {
 	}
 	
 	
+	/**
+	 * Elem representing the discretized equivalent 
+	 * of the value constrained by the differential equation.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	private class BNelem extends Nelem<DoubleElem,DoubleElemFactory,Ordinate>
 	{
 
+		/**
+		 * Constructs the elem.
+		 * 
+		 * @param _fac The factory for the enclosed type.
+		 * @param _coord Map taking implicit space terms representing ordinates to discrete ordinates of type BigInteger.
+		 */
 		public BNelem(DoubleElemFactory _fac, HashMap<Ordinate, BigInteger> _coord) {
 			super(_fac, _coord);
 		}
 		
 		
+		/**
+		 * Column indices in the discretized space.
+		 */
 		protected final int[] cols = new int[ 2 ];
 		
+		/**
+		 * Assertion booleans used to verify that all
+		 * column indices have been initialized.
+		 */
 		protected final boolean[] assertCols = new boolean[ 2 ];
 		
 
