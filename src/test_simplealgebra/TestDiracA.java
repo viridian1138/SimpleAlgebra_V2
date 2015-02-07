@@ -287,6 +287,14 @@ public class TestDiracA extends TestCase {
 	
 	
 	
+	/**
+	 * Fills the temp array with elements from the iter array.
+	 * 
+	 * @param tcnt The T-Axis index for the center in the iter array.
+	 * @param xcnt The X-Axis index for the center in the iter array.
+	 * @param ycnt The Y-Axis index for the center in the iter array.
+	 * @param zcnt The Z-Axis index for the center in the iter array.
+	 */
 	protected static void fillTempArray( final int tcnt , final int xcnt , final int ycnt , final int zcnt )
 	{
 		for( int ta = -1 ; ta < 2 ; ta++ )
@@ -317,11 +325,16 @@ public class TestDiracA extends TestCase {
 	
 	
 	
-	
+	/**
+	 * Test array used to verify that the entire temp array has been filled.
+	 */
 	private static int[][][][] spatialAssertArray = new int[ 3 ][ 3 ][ 3 ][ 3 ];
 	
 	
 	
+	/**
+	 * Clears the test array used to verify that the entire temp array has been filled.
+	 */
 	protected static void clearSpatialAssertArray( )
 	{
 		for( int ta = -1 ; ta < 2 ; ta++ )
@@ -899,7 +912,17 @@ private class CoeffNode
 	
 	
 	
-	
+/**
+ * Elem representing the symbolic expression for 
+ * the discretized equivalent
+ * of one component of the multivector constrained by the differential equation.
+ * The partial derivatives of this elem generate
+ * the slopes for producing Newton-Raphson iterations (e.g. the Jacobian slopes),
+ * as opposed to partial derivatives for the underlying differential equation.
+ * 
+ * @author thorngreen
+ *
+ */	
 private class CNelem extends Nelem<SymbolicElem<DoubleElem,DoubleElemFactory>,
 	SymbolicElemFactory<DoubleElem,DoubleElemFactory>,Ordinate>
 {

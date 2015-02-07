@@ -74,11 +74,16 @@ public class TestStelemA extends TestCase {
 	
 	
 	
-	
+	/**
+	 * Test array used to verify that the entire temp array has been filled.
+	 */
 	private static int[][] spatialAssertArray = new int[ 3 ][ 3 ];
 	
 	
 	
+	/**
+	 * Clears the test array used to verify that the entire temp array has been filled.
+	 */
 	protected static void clearSpatialAssertArray( )
 	{
 		for( int ta = -1 ; ta < 2 ; ta++ )
@@ -431,6 +436,17 @@ public class TestStelemA extends TestCase {
 	
 	
 	
+	/**
+	 * Elem representing the symbolic expression for 
+	 * the discretized equivalent
+	 * of the value constrained by the differential equation.
+	 * The partial derivatives of this elem generate
+	 * the slopes for producing Newton-Raphson iterations (e.g. the Jacobian slopes),
+	 * as opposed to partial derivatives for the underlying differential equation.
+	 * 
+	 * @author thorngreen
+	 *
+	 */	
 	private class CNelem extends Nelem<SymbolicElem<DoubleElem,DoubleElemFactory>,
 		SymbolicElemFactory<DoubleElem,DoubleElemFactory>,Ordinate>
 	{
