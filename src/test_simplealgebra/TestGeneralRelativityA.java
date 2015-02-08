@@ -231,7 +231,12 @@ public class TestGeneralRelativityA extends TestCase {
 	
 	
 	
-	
+	/**
+	 * Given a change calculated by a Newton-Raphson iteration,
+	 * applies the change to the temp array.
+	 * 
+	 * @param dbl The change to apply to the temp array.
+	 */
 	protected static void performIterationUpdate( EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> dbl )
 	{
 		EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> va
@@ -246,7 +251,12 @@ public class TestGeneralRelativityA extends TestCase {
 	
 	
 	
-	
+	/**
+	 * Returns the result of the Newton-Raphson iterations
+	 * from the temp array.
+	 * 
+	 * @return The value in the temp array.
+	 */
 	protected static EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> getUpdateValue()
 	{
 		EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> va
@@ -568,7 +578,8 @@ private class Ordinate extends SymbolicElem<EinsteinTensorElem<String,DoubleElem
 
 
 /**
- * A symbolic elem representing a constant value.
+ * A symbolic elem representing a constant value
+ * at the base Newton-Raphson evaluation level.
  * 
  * @author thorngreen
  *
@@ -605,10 +616,25 @@ private class SymbolicConst extends SymbolicReduction<DoubleElem,DoubleElemFacto
 }
 	
 	
-	
+
+/**
+ * An elem representing a symbolic constant at the level of mapping 
+ * discretized approximations of the underlying differential
+ * equation into expressions (e.g. Jacobian slopes)
+ * for Newton-Raphson evaluations.
+ * 
+ * @author thorngreen
+ *
+ */
 private class StelemReduction2L extends SymbolicReduction<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>
 {
 
+	/**
+	 * Constructs the elem.
+	 * 
+	 * @param _elem The constant to be represented.
+	 * @param _fac The factory for the constant.
+	 */
 	public StelemReduction2L( SymbolicElem<DoubleElem,DoubleElemFactory> _elem, 
 			SymbolicElemFactory<DoubleElem,DoubleElemFactory> _fac) {
 		super(_elem, _fac);
@@ -635,11 +661,25 @@ private class StelemReduction2L extends SymbolicReduction<SymbolicElem<DoubleEle
 
 
 
+/**
+ * An elem representing a symbolic constant at the level
+ * of mapping the underlying differential equation into
+ * its discretized approximation.
+ * 
+ * @author thorngreen
+ *
+ */
 private class StelemReduction3L extends SymbolicReduction<
 	SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
 	SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>
 {
 
+	/**
+	 * Constructs the elem.
+	 * 
+	 * @param _elem The constant to be represented.
+	 * @param _fac The factory for the constant.
+	 */
 	public StelemReduction3L(
 			SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> _elem, 
 			SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> _fac) {
@@ -882,8 +922,18 @@ private class CoeffNode
 private class CNelem extends Nelem<SymbolicElem<DoubleElem,DoubleElemFactory>,
 	SymbolicElemFactory<DoubleElem,DoubleElemFactory>,Ordinate>
 {
+	/**
+	 * The index of the component of the tensor.
+	 */
 	protected ArrayList<BigInteger> index;
 
+	/**
+	 * Constructs the elem.
+	 * 
+	 * @param _fac The factory for the enclosed type.
+	 * @param _coord Map taking implicit space terms representing ordinates to discrete ordinates of type BigInteger.
+	 * @param _index The index of the component of the tensor.
+	 */
 	public CNelem(SymbolicElemFactory<DoubleElem,DoubleElemFactory> _fac, 
 			HashMap<Ordinate, BigInteger> _coord , ArrayList<BigInteger> _index ) {
 		super(_fac, _coord);
@@ -931,35 +981,37 @@ private class CNelem extends Nelem<SymbolicElem<DoubleElem,DoubleElemFactory>,
 	}
 	
 	
-	protected boolean symbolicDEval( 
-			SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> b )
-	{
-		if( b instanceof CNelem )
-		{
-			CNelem bn = (CNelem) b;
-			if( coord.keySet().size() != bn.coord.keySet().size() )
-			{
-				return( false );
-			}
-			Iterator<Ordinate> it = coord.keySet().iterator();
-			while( it.hasNext() )
-			{
-				Ordinate key = it.next();
-				BigInteger ka = coord.get( key );
-				BigInteger kb = bn.coord.get( key );
-				if( ( ka == null ) || ( kb == null ) )
-				{
-					return( false );
-				}
-				if( !( ka.equals( kb ) ) )
-				{
-					return( false );
-				}
-			}
-			return( true );
-		}
-		return( false );
-	}
+//	
+//	protected boolean symbolicDEval( 
+//			SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> b )
+//	{
+//		if( b instanceof CNelem )
+//		{
+//			CNelem bn = (CNelem) b;
+//			if( coord.keySet().size() != bn.coord.keySet().size() )
+//			{
+//				return( false );
+//			}
+//			Iterator<Ordinate> it = coord.keySet().iterator();
+//			while( it.hasNext() )
+//			{
+//				Ordinate key = it.next();
+//				BigInteger ka = coord.get( key );
+//				BigInteger kb = bn.coord.get( key );
+//				if( ( ka == null ) || ( kb == null ) )
+//				{
+//					return( false );
+//				}
+//				if( !( ka.equals( kb ) ) )
+//				{
+//					return( false );
+//				}
+//			}
+//			return( true );
+//		}
+//		return( false );
+//	}
+//	
 	
 	
 	@Override

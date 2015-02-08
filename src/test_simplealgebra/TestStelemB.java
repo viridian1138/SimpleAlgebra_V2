@@ -103,12 +103,24 @@ public class TestStelemB extends TestCase {
 	
 	
 	
+	/**
+	 * Given a change calculated by a Newton-Raphson iteration,
+	 * applies the change to the temp array.
+	 * 
+	 * @param dbl The change to apply to the temp array.
+	 */
 	protected static void performIterationUpdate( DoubleElem dbl )
 	{
 		tempArray[ 2 ][ 1 ] += dbl.getVal();
 	}
 	
 	
+	/**
+	 * Returns the result of the Newton-Raphson iterations
+	 * from the temp array.
+	 * 
+	 * @return The value in the temp array.
+	 */
 	protected static double getUpdateValue()
 	{
 		return( tempArray[ 2 ][ 1 ] );
@@ -300,7 +312,8 @@ public class TestStelemB extends TestCase {
 	
 	
 	/**
-	 * A symbolic elem representing a constant value.
+	 * A symbolic elem representing a constant value
+	 * at the base Newton-Raphson evaluation level.
 	 * 
 	 * @author thorngreen
 	 *
@@ -337,9 +350,24 @@ public class TestStelemB extends TestCase {
 	
 	
 	
+	/**
+	 * An elem representing a symbolic constant at the level of mapping 
+	 * discretized approximations of the underlying differential
+	 * equation into expressions (e.g. Jacobian slopes)
+	 * for Newton-Raphson evaluations.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	private class StelemReduction2L extends SymbolicReduction<SymbolicElem<DoubleElem, DoubleElemFactory>,SymbolicElemFactory<DoubleElem, DoubleElemFactory>>
 	{
 
+		/**
+		 * Constructs the elem.
+		 * 
+		 * @param _elem The constant to be represented.
+		 * @param _fac The factory for the constant.
+		 */
 		public StelemReduction2L(SymbolicElem<DoubleElem, DoubleElemFactory> _elem, SymbolicElemFactory<DoubleElem, DoubleElemFactory> _fac) {
 			super(_elem, _fac);
 		}
@@ -365,11 +393,25 @@ public class TestStelemB extends TestCase {
 	
 	
 	
+	/**
+	 * An elem representing a symbolic constant at the level
+	 * of mapping the underlying differential equation into
+	 * its discretized approximation.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	private class StelemReduction3L extends SymbolicReduction<
 		SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
 		SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>
 	{
 
+		/**
+		 * Constructs the elem.
+		 * 
+		 * @param _elem The constant to be represented.
+		 * @param _fac The factory for the constant.
+		 */
 		public StelemReduction3L(
 				SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> _elem, 
 				SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> _fac) {
@@ -573,6 +615,12 @@ public class TestStelemB extends TestCase {
 		SymbolicElemFactory<DoubleElem,DoubleElemFactory>,Ordinate>
 	{
 
+		/**
+		 * Constructs the elem.
+		 * 
+		 * @param _fac The factory for the enclosed type.
+		 * @param _coord Map taking implicit space terms representing ordinates to discrete ordinates of type BigInteger.
+		 */
 		public CNelem(SymbolicElemFactory<DoubleElem,DoubleElemFactory> _fac, HashMap<Ordinate, BigInteger> _coord) {
 			super(_fac, _coord);
 		}

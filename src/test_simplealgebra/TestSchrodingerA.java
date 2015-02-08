@@ -179,19 +179,36 @@ public class TestSchrodingerA extends TestCase {
 	
 	
 	
+	/**
+	 * Given a change calculated by a Newton-Raphson iteration,
+	 * applies the change to the temp array.
+	 * 
+	 * @param dbl The change to apply to the temp array.
+	 */
 	protected static void performIterationUpdate( ComplexElem<DoubleElem, DoubleElemFactory> dbl )
 	{
 		tempArrayRe[ 2 ][ 1 ][ 1 ][ 1 ] += dbl.getRe().getVal();
 		tempArrayIm[ 2 ][ 1 ][ 1 ][ 1 ] += dbl.getIm().getVal();
 	}
 	
-	
+	/**
+	 * Returns the real component of the result of the Newton-Raphson iterations
+	 * from the temp array.
+	 * 
+	 * @return The real value in the temp array.
+	 */
 	protected static double getUpdateValueRe()
 	{
 		return( tempArrayRe[ 2 ][ 1 ][ 1 ][ 1 ] );
 	}
 	
 	
+	/**
+	 * Returns the imaginary component of the result of the Newton-Raphson iterations
+	 * from the temp array.
+	 * 
+	 * @return The imaginary value in the temp array.
+	 */
 	protected static double getUpdateValueIm()
 	{
 		return( tempArrayIm[ 2 ][ 1 ][ 1 ][ 1 ] );
@@ -402,7 +419,8 @@ public class TestSchrodingerA extends TestCase {
 	
 	
 	/**
-	 * A symbolic elem representing a constant value.
+	 * A symbolic elem representing a constant value
+	 * at the base Newton-Raphson evaluation level.
 	 * 
 	 * @author thorngreen
 	 *
@@ -441,9 +459,24 @@ public class TestSchrodingerA extends TestCase {
 	
 	
 	
+	/**
+	 * An elem representing a symbolic constant at the level of mapping 
+	 * discretized approximations of the underlying differential
+	 * equation into expressions (e.g. Jacobian slopes)
+	 * for Newton-Raphson evaluations.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	private class StelemReduction2L extends SymbolicReduction<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>
 	{
 
+		/**
+		 * Constructs the elem.
+		 * 
+		 * @param _elem The constant to be represented.
+		 * @param _fac The factory for the constant.
+		 */
 		public StelemReduction2L(SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> _elem, SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> _fac) {
 			super(_elem, _fac);
 		}
@@ -469,11 +502,25 @@ public class TestSchrodingerA extends TestCase {
 	
 	
 	
+	/**
+	 * An elem representing a symbolic constant at the level
+	 * of mapping the underlying differential equation into
+	 * its discretized approximation.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	private class StelemReduction3L extends SymbolicReduction<
 		SymbolicElem<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>,
 		SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>>
 	{
 
+		/**
+		 * Constructs the elem.
+		 * 
+		 * @param _elem The constant to be represented.
+		 * @param _fac The factory for the constant.
+		 */
 		public StelemReduction3L(
 				SymbolicElem<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>> _elem, 
 				SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>> _fac) {
@@ -685,6 +732,12 @@ public class TestSchrodingerA extends TestCase {
 		SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,Ordinate>
 	{
 
+		/**
+		 * Constructs the elem.
+		 * 
+		 * @param _fac The factory for the enclosed type.
+		 * @param _coord Map taking implicit space terms representing ordinates to discrete ordinates of type BigInteger.
+		 */
 		public CNelem(SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> _fac, HashMap<Ordinate, BigInteger> _coord) {
 			super(_fac, _coord);
 		}
