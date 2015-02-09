@@ -91,16 +91,26 @@ public class TestStelemC extends TestCase {
 	
 	
 	
-	
+	/**
+	 * The number of discretizations on the T-Axis over which to iterate.
+	 */
 	protected static final int NUM_T_ITER = 400;
 	
+	/**
+	 * The number of discretizations on the X-Axis over which to iterate.
+	 */
 	protected static final int NUM_X_ITER = 25;
 	
+	/**
+	 * The number of discretizations on the Y-Axis over which to iterate.
+	 */
 	protected static final int NUM_Y_ITER = 10;
 	
 	
 	
-	
+	/**
+	 * Result array over which to iterate.
+	 */
 	protected static double[][][] iterArray = new double[ NUM_T_ITER ][ NUM_X_ITER ][ NUM_Y_ITER ];
 	
 	
@@ -122,9 +132,10 @@ public class TestStelemC extends TestCase {
 	
 	
 	/**
-	 * 0 = T
-	 * 1 = X
-	 * 2 = Y
+	 * Temporary array in which to generate Newton-Raphson solutions.
+	 * <p>0 = T
+	 * <p>1 = X
+	 * <p>2 = Y
 	 */
 	private static double[][][] tempArray = new double[ 3 ][ 3 ][ 3 ];
 	

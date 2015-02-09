@@ -68,13 +68,27 @@ import simplealgebra.ga.*;
 public class TestDiracA extends TestCase {
 	
 	
+	/**
+	 * Constant representing the number zero.
+	 */
 	private static final DoubleElem DOUBLE_ZERO = new DoubleElem( 0.0 );
 	
+	/**
+	 * Constant representing the number 2.
+	 */
 	private static final DoubleElem MM = genFromConstDbl( 2.0 );
 	
+	/**
+	 * Constant representing the imaginary pseudoscalar.
+	 */
 	private static final GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> II = genII();
 	
 	
+	/**
+	 * Generates the constant for the imaginary pseudoscalar.
+	 * 
+	 * @return The constant for the imaginary pseudoscalar.
+	 */
 	private static GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> genII( )
 	{
 		final DoubleElem dd = new DoubleElem( 1.0 );
@@ -108,10 +122,17 @@ public class TestDiracA extends TestCase {
 	}
 	
 	
-	
+	/**
+	 * Random number generator for producing initial conditions.
+	 */
 	private static final Random rand = new Random( 4455 );
 	
 	
+	/**
+	 * Generates a random multivector where all of the elements are between zero and twice the input value.
+	 * @param in The input value.
+	 * @return The random multivector.
+	 */
 	private static GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> genDiffAll( double in )
 	{
 		DoubleElemFactory da = new DoubleElemFactory();
@@ -135,6 +156,11 @@ public class TestDiracA extends TestCase {
 	
 	
 	
+	/**
+	 * Generates a random multivector where all of the elements of odd grade are between zero and twice the input value, and all elements of even grade are between zero and 2E-8 times the input value..
+	 * @param in The input value.
+	 * @return The random multivector.
+	 */
 	private static GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> genDiffEnt( double in )
 	{
 		DoubleElemFactory da = new DoubleElemFactory();
@@ -162,6 +188,11 @@ public class TestDiracA extends TestCase {
 	}
 	
 	
+	/**
+	 * Returns a DoubleElem with the value from the parameter.
+	 * @param in The input parameter.
+	 * @return The generated DoubleElem.
+	 */
 	private static DoubleElem genFromConstDbl( double in )
 	{
 		return( new DoubleElem( in ) );
@@ -205,17 +236,32 @@ public class TestDiracA extends TestCase {
 	
 	
 	
+	/**
+	 * The number of discretizations on the T-Axis over which to iterate.
+	 */
 	protected static final int NUM_T_ITER = 7;
 	
+	/**
+	 * The number of discretizations on the X-Axis over which to iterate.
+	 */
 	protected static final int NUM_X_ITER = 10;
 	
+	/**
+	 * The number of discretizations on the Y-Axis over which to iterate.
+	 */
 	protected static final int NUM_Y_ITER = 10;
 	
+	/**
+	 * The number of discretizations on the Z-Axis over which to iterate.
+	 */
 	protected static final int NUM_Z_ITER = 10;
 	
 	
 	
 	
+	/**
+	 * Result array over which to iterate.
+	 */
 	protected static final GeometricAlgebraMultivectorElem[][][][] iterArray = new GeometricAlgebraMultivectorElem[ NUM_T_ITER ][ NUM_X_ITER ][ NUM_Y_ITER ][ NUM_Z_ITER ];
 	
 	
@@ -243,10 +289,11 @@ public class TestDiracA extends TestCase {
 	
 	
 	/**
-	 * 0 = T
-	 * 1 = X
-	 * 2 = Y
-	 * 3 = Z
+	 * Temporary array in which to generate Newton-Raphson solutions.
+	 * <p>0 = T
+	 * <p>1 = X
+	 * <p>2 = Y
+	 * <p>3 = Z
 	 */
 	private static GeometricAlgebraMultivectorElem[][][][] tempArray = new GeometricAlgebraMultivectorElem[ 3 ][ 3 ][ 3 ][ 3 ];
 	
@@ -367,7 +414,12 @@ public class TestDiracA extends TestCase {
 	
 	
 	
-	
+/**
+ * Returns a unit vector pointing down a particular axis.
+ * 	
+ * @param axis The index of the axis for the vector.
+ * @return The unit vector.
+ */
 private GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> genUnitVector( int axis )
 {
 	final DoubleElem dd = new DoubleElem( 1.0 );
@@ -384,6 +436,12 @@ private GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<Te
 
 
 
+/**
+ * Returns a unit bivector containing one component from the time axis and one component from a spatial axis.
+ * 
+ * @param axis The index of the spatial axis.
+ * @return The unit bivector.
+ */
 private GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> genTimeBivector( int axis )
 {
 	GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>  st = genUnitVector( axis );
@@ -395,7 +453,12 @@ private GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<Te
 
 
 	
-	
+/**
+ * Returns the sum of the squares of all of the multivector elements.
+ * 	
+ * @param in The input tensor.
+ * @return The sum of the squares of the multivector values.
+ */	
 private double calcMagnitudeSq( GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> in )
 {
 	double db = 0.0;
@@ -413,6 +476,12 @@ private double calcMagnitudeSq( GeometricAlgebraMultivectorElem<TestDimensionFou
 
 
 
+/**
+ * Returns the square of the magnitude of a DoubleElem.
+ * 
+ * @param in The DoubleElem.
+ * @return The square of the magnitude of the DoubleElem.
+ */
 private double calcMagnitudeSq( DoubleElem in )
 {
 	double db = in.getVal();
@@ -422,6 +491,13 @@ private double calcMagnitudeSq( DoubleElem in )
 
 
 
+/**
+ * Returns whether two tensors are exactly equal.
+ * 
+ * @param a Tensor to be checked for equality.
+ * @param b Tensor to be checked for equality.
+ * @return True iff. the two tensors are exactly equal.
+ */
 private boolean calcEq( GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> a , GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> b )
 {
 	Iterator<HashSet<BigInteger>> it = a.getKeyIterator();

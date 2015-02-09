@@ -54,8 +54,9 @@ import simplealgebra.symbolic.SymbolicReduction;
 public class TestStelemA extends TestCase {
 	
 	/**
-	 * 0 = T
-	 * 1 = X
+	 * Temporary array in which to generate Newton-Raphson solutions.
+	 * <p>0 = T
+	 * <p>1 = X
 	 */
 	private static double[][] tempArray = new double[ 3 ][ 3 ];
 	

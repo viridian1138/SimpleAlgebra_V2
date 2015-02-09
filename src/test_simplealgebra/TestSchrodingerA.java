@@ -65,10 +65,19 @@ import simplealgebra.et.EinsteinTensorElemFactory;
 public class TestSchrodingerA extends TestCase {
 	
 	
+	/**
+	 * Constant representing the number zero.
+	 */
 	private static final DoubleElem DOUBLE_ZERO = new DoubleElem( 0.0 );
 	
+	/**
+	 * Constant representing the number 2.
+	 */
 	private static final ComplexElem<DoubleElem,DoubleElemFactory> MM = genFromConst( 2.0 );
 	
+	/**
+	 * Constant representing the imaginary number.
+	 */
 	private static final ComplexElem<DoubleElem,DoubleElemFactory> II = new ComplexElem<DoubleElem,DoubleElemFactory>( 
 			new DoubleElem( 0.0 ) , new DoubleElem( 1.0 ) );
 	
@@ -119,20 +128,36 @@ public class TestSchrodingerA extends TestCase {
 	
 	
 	
-	
+	/**
+	 * The number of discretizations on the T-Axis over which to iterate.
+	 */
 	protected static final int NUM_T_ITER = 400;
 	
+	/**
+	 * The number of discretizations on the X-Axis over which to iterate.
+	 */
 	protected static final int NUM_X_ITER = 25;
 	
+	/**
+	 * The number of discretizations on the Y-Axis over which to iterate.
+	 */
 	protected static final int NUM_Y_ITER = 10;
 	
+	/**
+	 * The number of discretizations on the Z-Axis over which to iterate.
+	 */
 	protected static final int NUM_Z_ITER = 10;
 	
 	
 	
-	
+	/**
+	 * Result array of real values over which to iterate.
+	 */
 	protected static double[][][][] iterArrayRe = new double[ NUM_T_ITER ][ NUM_X_ITER ][ NUM_Y_ITER ][ NUM_Z_ITER ];
 	
+	/**
+	 * Result array of imaginary values over which to iterate.
+	 */
 	protected static double[][][][] iterArrayIm = new double[ NUM_T_ITER ][ NUM_X_ITER ][ NUM_Y_ITER ][ NUM_Z_ITER ];
 	
 	
@@ -160,19 +185,21 @@ public class TestSchrodingerA extends TestCase {
 	
 	
 	/**
-	 * 0 = T
-	 * 1 = X
-	 * 2 = Y
-	 * 3 = Z
+	 * Temporary array of real values in which to generate Newton-Raphson solutions.
+	 * <p>0 = T
+	 * <p>1 = X
+	 * <p>2 = Y
+	 * <p>3 = Z
 	 */
 	private static double[][][][] tempArrayRe = new double[ 3 ][ 3 ][ 3 ][ 3 ];
 	
 	
 	/**
-	 * 0 = T
-	 * 1 = X
-	 * 2 = Y
-	 * 3 = Z
+	 * Temporary array of imaginary values in which to generate Newton-Raphson solutions.
+	 * <p>0 = T
+	 * <p>1 = X
+	 * <p>2 = Y
+	 * <p>3 = Z
 	 */
 	private static double[][][][] tempArrayIm = new double[ 3 ][ 3 ][ 3 ][ 3 ];
 	
