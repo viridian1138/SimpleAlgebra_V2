@@ -66,11 +66,50 @@ import test_simplealgebra.TestConnectionCoefficient.SEvalElem;
 
 
 
+/**
+ * Tests the ability to numerically evaluate the differential equation <math display="inline">
+ * <mrow>
+ *   <msub>
+ *           <mi>G</mi>
+ *       <mrow>
+ *         <mi>u</mi>
+ *         <mi>v</mi>
+ *       </mrow>
+ *   </msub>
+ *  <mo>=</mo>
+ *  <mn>0</mn>
+ * </mrow>
+ * </math> where <math display="inline">
+ * <mrow>
+ *   <msub>
+ *           <mi>G</mi>
+ *       <mrow>
+ *         <mi>u</mi>
+ *         <mi>v</mi>
+ *       </mrow>
+ *   </msub>
+ * </mrow>
+ * </math> is the Einstein tensor.
+ * 
+ * 
+ * 
+ * See http://en.wikipedia.org/wiki/Einstein_tensor
+ *
+ * 
+ * @author thorngreen
+ *
+ */
 public class TestGeneralRelativityA extends TestCase {
 	
 	
+	/**
+	 * DoubleElem representing the constant zero.
+	 */
 	private static final DoubleElem DOUBLE_ZERO = new DoubleElem( 0.0 );
 	
+	/**
+	 * DoubleElem representing the constant 2.
+	 */
 	private static final DoubleElem MM = genFromConstDbl( 2.0 );
 	
 	
@@ -92,10 +131,17 @@ public class TestGeneralRelativityA extends TestCase {
 	}
 	
 	
-	
+	/**
+	 * Random number generator for producing initial conditions.
+	 */
 	private static final Random rand = new Random( 4455 );
 	
 	
+	/**
+	 * Generates a random tensor of rank 2 where all of the elements are between zero and twice the input value.
+	 * @param in The input value.
+	 * @return The random tensor.
+	 */
 	private static EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> genDiffAll( double in )
 	{
 		DoubleElemFactory da = new DoubleElemFactory();
@@ -117,7 +163,11 @@ public class TestGeneralRelativityA extends TestCase {
 	}
 	
 	
-	
+	/**
+	 * Generates a random tensor of rank 2 where all of the elements are between zero and twice the input value.
+	 * @param in The input value.
+	 * @return The random tensor.
+	 */
 	private static EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> genDiffEnt( double in )
 	{
 		DoubleElemFactory da = new DoubleElemFactory();
@@ -139,6 +189,11 @@ public class TestGeneralRelativityA extends TestCase {
 	}
 	
 	
+	/**
+	 * Returns a tensor equal to the input value.
+	 * @param in The input value.
+	 * @return The generated tensor.
+	 */
 	private static DoubleElem genFromConstDbl( double in )
 	{
 		return( new DoubleElem( in ) );
@@ -181,18 +236,32 @@ public class TestGeneralRelativityA extends TestCase {
 	
 	
 	
-	
+	/**
+	 * The number of discretizations on the T-Axis over which to iterate.
+	 */
 	protected static final int NUM_T_ITER = 7;
 	
+	/**
+	 * The number of discretizations on the X-Axis over which to iterate.
+	 */
 	protected static final int NUM_X_ITER = 10;
 	
+	/**
+	 * The number of discretizations on the Y-Axis over which to iterate.
+	 */
 	protected static final int NUM_Y_ITER = 10;
 	
+	/**
+	 * The number of discretizations on the Z-Axis over which to iterate.
+	 */
 	protected static final int NUM_Z_ITER = 10;
 	
 	
 	
 	
+	/**
+	 * Result array over which to iterate.
+	 */
 	protected static final EinsteinTensorElem[][][][] iterArray = new EinsteinTensorElem[ NUM_T_ITER ][ NUM_X_ITER ][ NUM_Y_ITER ][ NUM_Z_ITER ];
 	
 	
@@ -220,10 +289,11 @@ public class TestGeneralRelativityA extends TestCase {
 	
 	
 	/**
-	 * 0 = T
-	 * 1 = X
-	 * 2 = Y
-	 * 3 = Z
+	 * Temporary array in which to generate Newton-Raphson solutions.
+	 * <p>0 = T
+	 * <p>1 = X
+	 * <p>2 = Y
+	 * <p>3 = Z
 	 */
 	private static EinsteinTensorElem[][][][] tempArray = new EinsteinTensorElem[ 3 ][ 3 ][ 3 ][ 3 ];
 	
@@ -350,7 +420,12 @@ public class TestGeneralRelativityA extends TestCase {
 
 
 	
-	
+/**
+ * Returns the sum of the squares of all of the tensor elements.
+ * 	
+ * @param in The input tensor.
+ * @return The sum of the squares of the tensor values.
+ */
 private double calcMagnitudeSq( EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> in )
 {
 	double db = 0.0;
@@ -368,6 +443,12 @@ private double calcMagnitudeSq( EinsteinTensorElem<String,DoubleElem,DoubleElemF
 
 
 
+/**
+ * Returns the square of the magnitude of a DoubleElem.
+ * 
+ * @param in The DoubleElem.
+ * @return The square of the magnitude of the DoubleElem.
+ */
 private double calcMagnitudeSq( DoubleElem in )
 {
 	double db = in.getVal();
@@ -377,6 +458,13 @@ private double calcMagnitudeSq( DoubleElem in )
 
 
 
+/**
+ * Returns whether two tensors are exactly equal.
+ * 
+ * @param a Tensor to be checked for equality.
+ * @param b Tensor to be checked for equality.
+ * @return True iff. the two tensors are exactly equal.
+ */
 private boolean calcEq( EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> a , EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> b )
 {
 	Iterator<ArrayList<BigInteger>> it = a.getKeyIterator();
@@ -1914,7 +2002,40 @@ protected class TestMetricTensorFactory extends MetricTensorInvertingFactory<Str
 
 
 	
-	
+
+/**
+ * Tests the ability to numerically evaluate the differential equation <math display="inline">
+ * <mrow>
+ *   <msub>
+ *           <mi>G</mi>
+ *       <mrow>
+ *         <mi>u</mi>
+ *         <mi>v</mi>
+ *       </mrow>
+ *   </msub>
+ *  <mo>=</mo>
+ *  <mn>0</mn>
+ * </mrow>
+ * </math> where <math display="inline">
+ * <mrow>
+ *   <msub>
+ *           <mi>G</mi>
+ *       <mrow>
+ *         <mi>u</mi>
+ *         <mi>v</mi>
+ *       </mrow>
+ *   </msub>
+ * </mrow>
+ * </math> is the Einstein tensor.
+ * 
+ * 
+ * 
+ * See http://en.wikipedia.org/wiki/Einstein_tensor
+ *
+ * 
+ * @author thorngreen
+ *
+ */
 public void testStelemSimple() throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
 		final Random rand = new Random( 3344 );
