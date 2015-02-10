@@ -66,6 +66,39 @@ import test_simplealgebra.TestConnectionCoefficient.SEvalElem;
 
 
 
+/**
+ * Tests the ability to numerically evaluate the differential equation <math display="inline">
+ * <mrow>
+ *   <msub>
+ *           <mi>G</mi>
+ *       <mrow>
+ *         <mi>u</mi>
+ *         <mi>v</mi>
+ *       </mrow>
+ *   </msub>
+ *  <mo>=</mo>
+ *  <mn>0</mn>
+ * </mrow>
+ * </math> where <math display="inline">
+ * <mrow>
+ *   <msub>
+ *           <mi>G</mi>
+ *       <mrow>
+ *         <mi>u</mi>
+ *         <mi>v</mi>
+ *       </mrow>
+ *   </msub>
+ * </mrow>
+ * </math> is the Einstein tensor.
+ * 
+ * 
+ * 
+ * See http://en.wikipedia.org/wiki/Einstein_tensor
+ *
+ * 
+ * @author thorngreen
+ *
+ */
 public class TestGeneralRelativityA extends TestCase {
 	
 	
@@ -1969,7 +2002,40 @@ protected class TestMetricTensorFactory extends MetricTensorInvertingFactory<Str
 
 
 	
-	
+
+/**
+ * Tests the ability to numerically evaluate the differential equation <math display="inline">
+ * <mrow>
+ *   <msub>
+ *           <mi>G</mi>
+ *       <mrow>
+ *         <mi>u</mi>
+ *         <mi>v</mi>
+ *       </mrow>
+ *   </msub>
+ *  <mo>=</mo>
+ *  <mn>0</mn>
+ * </mrow>
+ * </math> where <math display="inline">
+ * <mrow>
+ *   <msub>
+ *           <mi>G</mi>
+ *       <mrow>
+ *         <mi>u</mi>
+ *         <mi>v</mi>
+ *       </mrow>
+ *   </msub>
+ * </mrow>
+ * </math> is the Einstein tensor.
+ * 
+ * 
+ * 
+ * See http://en.wikipedia.org/wiki/Einstein_tensor
+ *
+ * 
+ * @author thorngreen
+ *
+ */
 public void testStelemSimple() throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
 		final Random rand = new Random( 3344 );
