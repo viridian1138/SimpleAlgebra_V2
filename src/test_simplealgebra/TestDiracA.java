@@ -1783,7 +1783,13 @@ public void writeString( PrintStream ps ) {
 
 
 
-
+/**
+ * An elem for evaluating the underlying differential equation into
+ * its discretized approximation.
+ * 
+ * @author thorngreen
+ *
+ */
 protected class VEvalElem3 extends SymbolicElem<SymbolicElem<SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>,
 	GeometricAlgebraMultivectorElemFactory<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>,
 	GeometricAlgebraMultivectorElemFactory<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>,
