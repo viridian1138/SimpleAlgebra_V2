@@ -29,12 +29,20 @@ import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
 /**
+ * Runs standard tests for SimpleAlgebra.
+ * 
+ * 
  * @author thorngreen
  *
  */
 public class SimpleAlgebraTestSuite extends TestSuite {
 
 	
+	/**
+	 * Builds a suite of standard tests for SimpleAlgebra.
+	 * 
+	 * @return The suite of standard tests.
+	 */
 	public static Test suite()
 	{
 		final TestSuite s = new TestSuite();
@@ -84,6 +92,11 @@ public class SimpleAlgebraTestSuite extends TestSuite {
 	}
 	
 	
+	/**
+	 * Runs standard tests for SimpleAlgebra.
+	 * 
+	 * @param in Unused input parameters.
+	 */
 	public static void main( String[] in )
 	{
 		TestRunner run = new TestRunner();
