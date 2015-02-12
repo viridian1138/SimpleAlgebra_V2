@@ -51,7 +51,6 @@ import simplealgebra.symbolic.SymbolicReduction;
 import simplealgebra.et.*;
 import simplealgebra.symbolic.*;
 import simplealgebra.ddx.*;
-import test_simplealgebra.TestConnectionCoefficient.SEvalElem;
 
 
 
@@ -431,13 +430,28 @@ public class TestRicciScalar extends TestCase {
 	
 	
 	
-	protected static class SEvalElem extends SymbolicElem<EinsteinTensorElem<String, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, EinsteinTensorElemFactory<String, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>
+	/**
+	 * An symbolic elem for a tensor.  Used to represent the metric tensor.
+	 * 
+	 * @author tgreen
+	 *
+	 */
+	protected static class SymbolicMetricTensor extends SymbolicElem<EinsteinTensorElem<String, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, EinsteinTensorElemFactory<String, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>
 	{
 		
+		/**
+		 * The tensor to be represented by the symbolic elem.
+		 */
 		protected EinsteinTensorElem<String, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>
 			dval = null;
 
-		public SEvalElem(
+		/**
+		 * Constructs the elem.
+		 * 
+		 * @param _fac The factory for the enclosed type.
+		 * @param _dval The tensor to be represented by the symbolic elem.
+		 */
+		public SymbolicMetricTensor(
 				EinsteinTensorElemFactory<String, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>> _fac,
 				EinsteinTensorElem<String, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>> _dval ) {
 			super(_fac);
@@ -529,7 +543,7 @@ public class TestRicciScalar extends TestCase {
 			}
 			
 			
-			final SEvalElem seval = new SEvalElem( ge , g0 );
+			final SymbolicMetricTensor seval = new SymbolicMetricTensor( ge , g0 );
 			
 			
 			return( seval );
