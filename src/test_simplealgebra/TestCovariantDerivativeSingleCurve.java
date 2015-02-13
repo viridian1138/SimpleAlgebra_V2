@@ -678,7 +678,7 @@ public class TestCovariantDerivativeSingleCurve extends TestCase {
 		
 		final CovariantDerivativeFactory<String, TestDimensionFour, DoubleElem, DoubleElemFactory, Ordinate> cofac =
 			new CovariantDerivativeFactory<String, TestDimensionFour, DoubleElem, DoubleElemFactory, Ordinate>(se2s, elem, 
-					"v", new TestTemporaryIndexFactory(), tmt, tdim, dd, null);
+					"v", null /* !!!!!!!!!!!!!1 Uveca !!!!!!!!!! */ , new TestTemporaryIndexFactory(), tmt, tdim, dd, null);
 		
 		
 		

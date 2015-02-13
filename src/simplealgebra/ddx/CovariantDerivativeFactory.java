@@ -88,6 +88,16 @@ import simplealgebra.symbolic.SymbolicElemFactory;
  *        <mi>&alpha;</mi>
  *      </mrow>
  *  </msup>
+ *  <msup>
+ *        <mrow>
+ *          
+ *              <mi>U</mi>
+ *          
+ *        </mrow>
+ *      <mrow>
+ *        <mi>&nu;</mi>
+ *      </mrow>
+ *  </msup>
  * </mrow>
  * </math> where the <math display="inline">
  * <mrow>
@@ -96,11 +106,13 @@ import simplealgebra.symbolic.SymbolicElemFactory;
  *        <mi>v</mi>
  *  </msub>
  * </mrow>
- * </math> term is the ordinary derivative and the <math display="inline">
+ * </math> term is the ordinary derivative, the <math display="inline">
  * <mrow>
  *  <mi>&Gamma;</mi>
  * </mrow>
- * </math> term is the connection coefficient.
+ * </math> term is the connection coefficient, 
+ * and the U vector represents the underlying coordinate system, particularly that
+ * some ordinates such as time may be in different coordinate systems from other ordinates.
  * 
  * 
  * <P>
@@ -125,6 +137,7 @@ public class CovariantDerivativeFactory<Z extends Object, U extends NumDimension
 	 * @param _fac The factory for the enclosed type.
 	 * @param _tensorWithRespectTo The expression to which to apply the derivative.
 	 * @param _derivativeIndex The tensor index of the covariant derivative.
+	 * @param _coordVecFac The factory for the underlying coordinate system U.
 	 * @param _temp A factory for generating temporary indices in the connection coefficient.
 	 * @param _metric A factory for generating metric tensors.
 	 * @param _dim The number of dimensions for the index.
@@ -135,6 +148,7 @@ public class CovariantDerivativeFactory<Z extends Object, U extends NumDimension
 				SymbolicElemFactory<R, S>> _fac , 
 		SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> _tensorWithRespectTo,
 			Z _derivativeIndex,
+			CoordinateSystemFactory<Z,R,S> _coordVecFac,
 			TemporaryIndexFactory<Z> _temp,
 			MetricTensorFactory<Z,R,S> _metric,
 			U _dim ,
@@ -194,8 +208,14 @@ public class CovariantDerivativeFactory<Z extends Object, U extends NumDimension
 			}
 			
 			
-			SymbolicRegenContravar<Z,SymbolicElem<R,S>,SymbolicElemFactory<R,S>> src = 
+			SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> src = 
 					new SymbolicRegenContravar<Z,SymbolicElem<R,S>,SymbolicElemFactory<R,S>>( tensorWithRespectTo , fac, reContravar );
+			
+			
+			if( coordVecFac != null )
+			{
+				src = src.mult( coordVecFac.genCoord( derivativeIndex ) );
+			}
 			
 			
 			SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>
@@ -265,6 +285,11 @@ public class CovariantDerivativeFactory<Z extends Object, U extends NumDimension
 	 * The tensor index of the covariant derivative.
 	 */
 	private Z derivativeIndex;
+	
+	/**
+	 * The factory for the underlying coordinate system U.
+	 */
+	private CoordinateSystemFactory<Z,R,S> coordVecFac;
 	
 	/**
 	 * A factory for generating temporary indices in the connection coefficient.

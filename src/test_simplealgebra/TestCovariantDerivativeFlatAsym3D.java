@@ -655,7 +655,7 @@ public class TestCovariantDerivativeFlatAsym3D extends TestCase {
 		
 		final CovariantDerivativeFactory<String, TestDimensionThree, DoubleElem, DoubleElemFactory, Ordinate> cofac =
 			new CovariantDerivativeFactory<String, TestDimensionThree, DoubleElem, DoubleElemFactory, Ordinate>(se2s, elem, 
-					"v", new TestTemporaryIndexFactory(), tmt, tdim, dd, null);
+					"v", null /* !!!!!!!!!!!!!1 Uveca !!!!!!!!!! */ , new TestTemporaryIndexFactory(), tmt, tdim, dd, null);
 		
 		
 		

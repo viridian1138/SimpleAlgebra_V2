@@ -105,6 +105,7 @@ public class MaterialDerivativeFactory<Z extends Object, U extends NumDimensions
 	 * 
 	 * @param _fac The factory for the enclosed type.
 	 * @param _tensorWithRespectTo The expression to which to apply the derivative.
+	 * @param _coordVecFac The factory for the underlying coordinate system U.
 	 * @param _temp A factory for generating temporary indices in the connection coefficient.
 	 * @param _metric A factory for generating metric tensors.
 	 * @param _dim The number of dimensions for the index.
@@ -116,6 +117,7 @@ public class MaterialDerivativeFactory<Z extends Object, U extends NumDimensions
 	public MaterialDerivativeFactory( EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, 
 				SymbolicElemFactory<R, S>> _fac , 
 		SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> _tensorWithRespectTo,
+			CoordinateSystemFactory<Z,R,S> _coordVecFac,
 			TemporaryIndexFactory<Z> _temp,
 			MetricTensorFactory<Z,R,S> _metric,
 			U _dim ,
@@ -130,7 +132,7 @@ public class MaterialDerivativeFactory<Z extends Object, U extends NumDimensions
 		dim = _dim;
 		flfac = _flfac;
 		derivT = _derivT;
-		cofac = new CovariantDerivativeFactory<Z,U,R,S,K>( _fac , _tensorWithRespectTo, derivativeIndex, _temp, _metric, _dim , _dfac , _remap  );
+		cofac = new CovariantDerivativeFactory<Z,U,R,S,K>( _fac , _tensorWithRespectTo, derivativeIndex, _coordVecFac , _temp, _metric, _dim , _dfac , _remap  );
 	}
 	
 	

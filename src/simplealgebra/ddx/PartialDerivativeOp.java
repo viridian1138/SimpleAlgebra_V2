@@ -139,6 +139,7 @@ public class PartialDerivativeOp<R extends Elem<R,?>, S extends ElemFactory<R,S>
 		ps.print( "</mrow></mfrac>" );
 	}
 	
+	
 	@Override
 	public boolean symbolicEquals( SymbolicElem<R, S> b )
 	{
@@ -147,32 +148,48 @@ public class PartialDerivativeOp<R extends Elem<R,?>, S extends ElemFactory<R,S>
 			PartialDerivativeOp bp = (PartialDerivativeOp) b;
 			if( withRespectTo.size() == bp.withRespectTo.size() )
 			{
-				for( int cnt = 0 ; cnt < withRespectTo.size() ; cnt++ )
-				{
-					final K elA = withRespectTo.get( cnt );
-					final Object elB = bp.withRespectTo.get( cnt );
-					if( ( elA instanceof SymbolicElem ) && ( elB instanceof SymbolicElem ) )
-					{
-						if( !( ( (SymbolicElem) elA ).symbolicEquals( (SymbolicElem) elB ) ) )
-						{
-							return( false );
-						}
-					}
-					else
-					{
-						if( !( elA.equals( elB ) ) )
-						{
-							return( false );
-						}
-					}
-				}
-				
-				return( true );
+				return( symbolicEqualsComp( bp ) );
 			}
 		}
 		
 		return( false );
 	}
+	
+	
+	
+	/**
+	 * Handles the evaluation of symbolic equality after the caller 
+	 * reules out the preliminary conditions.
+	 * 
+	 * @param bp The partial derivative to be compared.
+	 * @return True iff. this is equal to bp.
+	 */
+	private boolean symbolicEqualsComp( PartialDerivativeOp bp )
+	{
+		for( int cnt = 0 ; cnt < withRespectTo.size() ; cnt++ )
+		{
+			final K elA = withRespectTo.get( cnt );
+			final Object elB = bp.withRespectTo.get( cnt );
+			if( ( elA instanceof SymbolicElem ) && ( elB instanceof SymbolicElem ) )
+			{
+				if( !( ( (SymbolicElem) elA ).symbolicEquals( (SymbolicElem) elB ) ) )
+				{
+					return( false );
+				}
+			}
+			else
+			{
+				if( !( elA.equals( elB ) ) )
+				{
+					return( false );
+				}
+			}
+		}
+		
+		return( true );
+	}
+	
+	
 	
 	/**
 	 * Gets the variable(s) over which to take the partial derivative.

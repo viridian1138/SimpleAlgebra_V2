@@ -1521,6 +1521,7 @@ public class TestMaterialDerivativeSymbolic extends TestCase
 					ComplexElemFactory<DoubleElem,DoubleElemFactory>, SymbolicElem<DoubleElem,DoubleElemFactory>>
 				( etfac , 
 							vectFac ,
+							null /* !!!!!!!!!!!!!1 Uveca !!!!!!!!!! */ ,
 							new TestTemporaryIndexFactory(),
 							scfac,
 							td ,
