@@ -1638,15 +1638,31 @@ protected void applyAdd(
 	
 	
 	
-	
+
+/**
+ * An elem for performing evaluations
+ * at the base Newton-Raphson level.
+ * 
+ * @author thorngreen
+ *
+ */
 protected class VEvalElem extends SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>,
 	GeometricAlgebraMultivectorElemFactory<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>>	
 {
 	
+	/**
+	 * The multivector to be evalueted by the elem.
+	 */
 	protected GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>
 		dval = null;
 	
 
+	/**
+	 * Constructs the elem.
+	 * 
+	 * @param _fac The factory for the enclosed type.
+	 * @param _dval The multivector to eb evaluated by the elem.
+	 */
 	public VEvalElem(
 			GeometricAlgebraMultivectorElemFactory<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory> _fac,
 			GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> _dval ) {
@@ -1707,22 +1723,46 @@ protected class VEvalElem extends SymbolicElem<GeometricAlgebraMultivectorElem<T
 
 
 
-
+/**
+ * An elem for evaluating 
+ * discretized approximations of the underlying differential
+ * equation into expressions (e.g. Jacobian slopes)
+ * for Newton-Raphson evaluations.
+ * 
+ * @author thorngreen
+ *
+ */
 protected class VEvalElem2 extends SymbolicElem<SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>,
 	GeometricAlgebraMultivectorElemFactory<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>,
 	GeometricAlgebraMultivectorElemFactory<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>>>	
 {
 
+/**
+ * The multivector to be evaluated by the elem.
+ */
 protected GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>  
 	dval = null;
 
+/**
+ * Factory for components at the base Newton-Raphson level.
+ */
 protected SymbolicElemFactory<DoubleElem,DoubleElemFactory> sefac;
 
+/**
+ * Factory for evaluated multivectors at the base Newton-Raphson level.
+ */
 protected GeometricAlgebraMultivectorElemFactory<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory> vefac;
 
 
 
-
+/**
+ * Constructs the elem.
+ * 
+ * @param _fac The factory for the enclosed type.
+ * @param _sefac Factory for components at the base Newton-Raphson level.
+ * @param _vefac Factory for evaluated multivectors at the base Newton-Raphson level.
+ * @param _dval The multivector to be evaluated by the elem.
+ */
 public VEvalElem2(
 		SymbolicElemFactory<GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory>,GeometricAlgebraMultivectorElemFactory<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory>> _fac,
 		SymbolicElemFactory<DoubleElem,DoubleElemFactory> _sefac ,
@@ -1797,16 +1837,32 @@ protected class VEvalElem3 extends SymbolicElem<SymbolicElem<SymbolicElem<Geomet
 	GeometricAlgebraMultivectorElemFactory<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>>>>	
 {
 
+/**
+ * The multivector to be evaluated by the elem.
+ */
 protected GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>   
 dval = null;
 
+/**
+ * Factory for components at the level of discretized approximations.
+ */
 protected SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> sefac;
 
+/**
+ * Factory for evaluated multivectors at the base Newton-Raphson level.
+ */
 protected GeometricAlgebraMultivectorElemFactory<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory> vefac;
 
 
 
-
+/**
+ * Constructs the elem.
+ * 
+ * @param _fac The factory for the enclosed type.
+ * @param _sefac Factory for components at the level of discretized approximations.
+ * @param _vefac Factory for evaluated multivectors at the base Newton-Raphson level.
+ * @param _dval The multivector to be evaluated by the elem.
+ */
 public VEvalElem3(
 		SymbolicElemFactory<SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>,
 		GeometricAlgebraMultivectorElemFactory<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>,

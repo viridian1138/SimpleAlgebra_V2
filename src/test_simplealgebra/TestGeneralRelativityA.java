@@ -1606,15 +1606,31 @@ protected void applyAdd(
 	
 	
 	
-	
+
+/**
+ * An elem for performing evaluations
+ * at the base Newton-Raphson level.
+ * 
+ * @author thorngreen
+ *
+ */
 protected class VEvalElem extends SymbolicElem<EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>,
 	EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>>	
 {
 	
+	/**
+	 * The tensor to be evaluated by the elem.
+	 */
 	protected EinsteinTensorElem<String,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>
 		dval = null;
 	
 
+	/**
+	 * Constructs the elem.
+	 * 
+	 * @param _fac The factory for the enclosed type.
+	 * @param _dval The tensor to be evaluated by the elem.
+	 */
 	public VEvalElem(
 			EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory> _fac,
 			EinsteinTensorElem<String,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> _dval ) {
@@ -1676,21 +1692,46 @@ protected class VEvalElem extends SymbolicElem<EinsteinTensorElem<String,DoubleE
 
 
 
+/**
+ * An elem for evaluating 
+ * discretized approximations of the underlying differential
+ * equation into expressions (e.g. Jacobian slopes)
+ * for Newton-Raphson evaluations.
+ * 
+ * @author thorngreen
+ *
+ */
 protected class VEvalElem2 extends SymbolicElem<SymbolicElem<EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>,
 	EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>,
 	EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>>>	
 {
 
+/**
+ * The tensor to be evaluated by the elem.
+ */
 protected EinsteinTensorElem<String,SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>  
 	dval = null;
 
+/**
+ * Factory for components at the base Newton-Raphson level.
+ */
 protected SymbolicElemFactory<DoubleElem,DoubleElemFactory> sefac;
 
+/**
+ * Factory for evaluated tensors at the base Newton-Raphson level.
+ */
 protected EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory> vefac;
 
 
 
-
+/**
+ * Constructs the elem.
+ * 
+ * @param _fac The factory for the enclosed type.
+ * @param _sefac Factory for components at the base Newton-Raphson level.
+ * @param _vefac Factory for evaluated tensors at the base Newton-Raphson level.
+ * @param _dval The tensor to be evaluated by the elem.
+ */
 public VEvalElem2(
 		SymbolicElemFactory<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>,EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>> _fac,
 		SymbolicElemFactory<DoubleElem,DoubleElemFactory> _sefac ,
@@ -1766,16 +1807,32 @@ protected class VEvalElem3 extends SymbolicElem<SymbolicElem<SymbolicElem<Einste
 	EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>>>>	
 {
 
+/**
+ * The tensor to be evaluated by the elem.
+ */
 protected EinsteinTensorElem<String,SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>   
 dval = null;
 
+/**
+ * Factory for components at the level of discretized approximations.
+ */
 protected SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> sefac;
 
+/**
+ * Factory for evaluated tensors at the base Newton-Raphson level.
+ */
 protected EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory> vefac;
 
 
 
-
+/**
+ * Constructs the elem.
+ * 
+ * @param _fac The factory for the enclosed type.
+ * @param _sefac Factory for components at the level of discretized approximations.
+ * @param _vefac Factory for evaluated tensors at the base Newton-Raphson level.
+ * @param _dval The tensor to be evaluated by the elem.
+ */
 public VEvalElem3(
 		SymbolicElemFactory<SymbolicElem<EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>,
 		EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>,
