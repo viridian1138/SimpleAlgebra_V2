@@ -223,6 +223,18 @@ public class SymbolicReduction<R extends Elem<R,?>, S extends ElemFactory<R,S>> 
 	}
 	
 	
+	
+	@Override
+	public boolean isPartialDerivativeZero()
+	{
+		if( elem instanceof SymbolicElem )
+		{
+			( (SymbolicElem) elem ).isPartialDerivativeZero( );
+		}
+		return( true );
+	}
+	
+	
 	@Override
 	public void writeString( PrintStream ps ) {
 		ps.print( "reduction( " );

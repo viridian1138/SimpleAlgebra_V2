@@ -104,6 +104,12 @@ public class TestDesResSymbolicAlt extends TestCase
 		}
 		
 		@Override
+		public boolean isPartialDerivativeZero()
+		{
+			return( true );
+		}
+		
+		@Override
 		public void writeString( PrintStream ps ) {
 			ps.print( "cSquared( )" );
 		}

@@ -82,7 +82,7 @@ public class SymbolicMult<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 	
 	@Override
 	public SymbolicElem<R, S> mult(SymbolicElem<R, S> b) {
-		if( b.isSymbolicZero() || b.isSymbolicIdentity() )
+		if( b.isPartialDerivativeZero() )
 		{
 			if( elemB instanceof PartialDerivativeOp )
 			{

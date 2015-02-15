@@ -100,6 +100,12 @@ public class SymbolicIdentity<R extends Elem<R,?>, S extends ElemFactory<R,S>> e
 	}
 	
 	@Override
+	public boolean isPartialDerivativeZero()
+	{
+		return( true );
+	}
+	
+	@Override
 	public boolean isSymbolicIdentity()
 	{
 		return( true );

@@ -712,7 +712,7 @@ end
 
 
 
-rule "Partial Derivative Of Constant --> Zero"
+rule "Partial Derivative Of Constant A --> Zero"
       when
           pd : PartialDerivativeOp( )
           red : SymbolicReduction( )
@@ -744,30 +744,19 @@ end
 
 
 
-rule "Partial Derivative Of Zero --> Zero"
+rule "Partial Derivative Of Constant B --> Zero"
       when
           pd : PartialDerivativeOp( )
-          cn : SymbolicZero( )
+          cn : SymbolicElem( )
           mult : SymbolicMult( elemA == pd , elemB == cn )
           ds: DroolsSession()
+           eval( cn.isPartialDerivativeZero() )
       then
          insert( new Reng( mult , cn ) );
 end
 
 
 
-
-
-
-rule "Partial Derivative Of Identity --> Zero"
-      when
-          pd : PartialDerivativeOp( )
-          cn : SymbolicIdentity( )
-          mult : SymbolicMult( elemA == pd , elemB == cn )
-          ds: DroolsSession()
-      then
-         insert( new Reng( mult , new SymbolicZero( mult.getFac().getFac() , ds ) ) );
-end
 
 
 

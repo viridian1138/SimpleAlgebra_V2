@@ -92,6 +92,13 @@ public class SymbolicZero<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 		return( false );
 	}
 	
+	
+	@Override
+	public boolean isPartialDerivativeZero()
+	{
+		return( true );
+	}
+	
 
 	@Override
 	public void writeString( PrintStream ps ) {

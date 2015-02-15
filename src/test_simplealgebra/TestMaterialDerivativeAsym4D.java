@@ -134,6 +134,12 @@ public class TestMaterialDerivativeAsym4D extends TestCase
 		}
 		
 		@Override
+		public boolean isPartialDerivativeZero()
+		{
+			return( true );
+		}
+		
+		@Override
 		public void writeString( PrintStream ps ) {
 			ps.print( "cSquared( )" );
 		}
@@ -244,6 +250,12 @@ public class TestMaterialDerivativeAsym4D extends TestCase
 			}
 			
 			return( false );
+		}
+		
+		@Override
+		public boolean isPartialDerivativeZero()
+		{
+			return( true );
 		}
 		
 		@Override

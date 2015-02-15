@@ -168,6 +168,17 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 	
 	
 	/**
+	 * Returns whether the partial derivative of the elem is zero.
+	 * 
+	 * @return True if the partial derivative of the elem is zero.
+	 */
+	public boolean isPartialDerivativeZero()
+	{
+		return( false );
+	}
+	
+	
+	/**
 	 * Writes MathML ( http://www.w3.org/Math/ ) presentation tags describing the elem, wrapped in the top-level math tag, to a print stream.
 	 * @param pc A description of how to assign precedence for converting to infix notation.
 	 * @param ps The print stream to which to write the tags.
