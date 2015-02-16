@@ -60,10 +60,59 @@ import simplealgebra.et.EinsteinTensorElemFactory;
 
 
 
+/**
+ * Tests the ability to numerically evaluate the differential equation <math display="inline">
+ * <mrow>
+ *  <msup>
+ *          <mo>&nabla;</mo>
+ *        <mn>2</mn>
+ *  </msup>
+ *  <mi>&phi;</mi>
+ *  <mo>-</mo>
+ *  <mfrac>
+ *    <mrow>
+ *      <mn>1</mn>
+ *    </mrow>
+ *    <mrow>
+ *      <msup>
+ *              <mi>c</mi>
+ *            <mn>2</mn>
+ *      </msup>
+ *    </mrow>
+ *  </mfrac>
+ *  <mfrac>
+ *    <mrow>
+ *      <msup>
+ *              <mo>&PartialD;</mo>
+ *            <mn>2</mn>
+ *      </msup>
+ *    </mrow>
+ *    <mrow>
+ *      <mo>&PartialD;</mo>
+ *      <msup>
+ *              <mi>t</mi>
+ *            <mn>2</mn>
+ *      </msup>
+ *    </mrow>
+ *  </mfrac>
+ *  <mi>&phi;</mi>
+ *  <mo>=</mo>
+ *  <mn>0</mn>
+ * </mrow>
+ * </math>
+ *
+ * in dimensions (x, t) where "c" is an arbitrary constant.
+ *
+ * 
+ * @author thorngreen
+ *
+ */
 public class TestStelemB extends TestCase {
 	
 	
-	
+	/**
+	 * The arbitrary constant.
+	 */
 	protected static final DoubleElem C = new DoubleElem( 0.05 );
 	
 	
@@ -1076,6 +1125,53 @@ public class TestStelemB extends TestCase {
 	
 	
 	
+	/**
+	 * Tests the ability to numerically evaluate the differential equation <math display="inline">
+	 * <mrow>
+	 *  <msup>
+	 *          <mo>&nabla;</mo>
+	 *        <mn>2</mn>
+	 *  </msup>
+	 *  <mi>&phi;</mi>
+	 *  <mo>-</mo>
+	 *  <mfrac>
+	 *    <mrow>
+	 *      <mn>1</mn>
+	 *    </mrow>
+	 *    <mrow>
+	 *      <msup>
+	 *              <mi>c</mi>
+	 *            <mn>2</mn>
+	 *      </msup>
+	 *    </mrow>
+	 *  </mfrac>
+	 *  <mfrac>
+	 *    <mrow>
+	 *      <msup>
+	 *              <mo>&PartialD;</mo>
+	 *            <mn>2</mn>
+	 *      </msup>
+	 *    </mrow>
+	 *    <mrow>
+	 *      <mo>&PartialD;</mo>
+	 *      <msup>
+	 *              <mi>t</mi>
+	 *            <mn>2</mn>
+	 *      </msup>
+	 *    </mrow>
+	 *  </mfrac>
+	 *  <mi>&phi;</mi>
+	 *  <mo>=</mo>
+	 *  <mn>0</mn>
+	 * </mrow>
+	 * </math>
+	 *
+	 * in dimensions (x, t) where "c" is an arbitrary constant.
+	 *
+	 * 
+	 * @author thorngreen
+	 *
+	 */	
 	public void testStelemSimple() throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
 		final Random rand = new Random( 3344 );
