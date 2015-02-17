@@ -62,6 +62,66 @@ import simplealgebra.et.EinsteinTensorElemFactory;
 
 
 
+/**
+ * 
+ * Tests the ability to numerically evaluate the differential equation <math display="inline">
+ * <mrow>
+ *   <mo>-</mo>
+ *   <mfrac>
+ *     <mrow>
+ *       <msup>
+ *               <mi>&hbar;</mi>
+ *             <mn>2</mn>
+ *       </msup>
+ *     </mrow>
+ *     <mrow>
+ *       <mn>2</mn>
+ *       <mi>m</mi>
+ *     </mrow>
+ *   </mfrac>
+ *   <msup>
+ *           <mo>&nabla;</mo>
+ *         <mn>2</mn>
+ *   </msup>
+ *   <mi>&Psi;</mi>
+ *   <mo>+</mo>
+ *   <mi>V</mi>
+ *   <mi>&Psi;</mi>
+ *   <mo>=</mo>
+ *   <mi>i</mi>
+ *   <mi>&hbar;</mi>
+ *   <mfrac>
+ *     <mrow>
+ *       <mo>&PartialD;</mo>
+ *     </mrow>
+ *     <mrow>
+ *       <mo>&PartialD;</mo>
+ *       <mi>t</mi>
+ *     </mrow>
+ *   </mfrac>
+ *   <mi>&Psi;</mi>
+ * </mrow>
+ * </math>
+ * 
+ * 
+ * where <math display="inline">
+ * <mrow>
+ *  <mi>m</mi>
+ * </mrow>
+ * </math> and <math display="inline">
+ * <mrow>
+ *  <mi>&hbar;</mi>
+ * </mrow>
+ * </math> are arbitrary constants and <math display="inline">
+ * <mrow>
+ *  <mi>V</mi>
+ * </mrow>
+ * </math> is zero.
+ * 
+ * 
+ * @author thorngreen
+ *
+ */
 public class TestSchrodingerA extends TestCase {
 	
 	
@@ -71,7 +131,7 @@ public class TestSchrodingerA extends TestCase {
 	private static final DoubleElem DOUBLE_ZERO = new DoubleElem( 0.0 );
 	
 	/**
-	 * Constant representing the number 2.
+	 * Arbitrary constant.
 	 */
 	private static final ComplexElem<DoubleElem,DoubleElemFactory> MM = genFromConst( 2.0 );
 	
@@ -94,7 +154,9 @@ public class TestSchrodingerA extends TestCase {
 	}
 	
 	
-	
+	/**
+	 * Arbitrary constant.
+	 */
 	protected static final ComplexElem<DoubleElem,DoubleElemFactory> HBAR = genFromConst( 0.005 );
 	
 	
@@ -1210,6 +1272,66 @@ public class TestSchrodingerA extends TestCase {
 	
 	
 	
+	/**
+	 * 
+	 * Tests the ability to numerically evaluate the differential equation <math display="inline">
+	 * <mrow>
+	 *   <mo>-</mo>
+	 *   <mfrac>
+	 *     <mrow>
+	 *       <msup>
+	 *               <mi>&hbar;</mi>
+	 *             <mn>2</mn>
+	 *       </msup>
+	 *     </mrow>
+	 *     <mrow>
+	 *       <mn>2</mn>
+	 *       <mi>m</mi>
+	 *     </mrow>
+	 *   </mfrac>
+	 *   <msup>
+	 *           <mo>&nabla;</mo>
+	 *         <mn>2</mn>
+	 *   </msup>
+	 *   <mi>&Psi;</mi>
+	 *   <mo>+</mo>
+	 *   <mi>V</mi>
+	 *   <mi>&Psi;</mi>
+	 *   <mo>=</mo>
+	 *   <mi>i</mi>
+	 *   <mi>&hbar;</mi>
+	 *   <mfrac>
+	 *     <mrow>
+	 *       <mo>&PartialD;</mo>
+	 *     </mrow>
+	 *     <mrow>
+	 *       <mo>&PartialD;</mo>
+	 *       <mi>t</mi>
+	 *     </mrow>
+	 *   </mfrac>
+	 *   <mi>&Psi;</mi>
+	 * </mrow>
+	 * </math>
+	 * 
+	 * 
+	 * where <math display="inline">
+	 * <mrow>
+	 *  <mi>m</mi>
+	 * </mrow>
+	 * </math> and <math display="inline">
+	 * <mrow>
+	 *  <mi>&hbar;</mi>
+	 * </mrow>
+	 * </math> are arbitrary constants and <math display="inline">
+	 * <mrow>
+	 *  <mi>V</mi>
+	 * </mrow>
+	 * </math> is zero.
+	 * 
+	 * 
+	 * @author thorngreen
+	 *
+	 */	
 	public void testStelemSimple() throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
 		final Random rand = new Random( 3344 );
