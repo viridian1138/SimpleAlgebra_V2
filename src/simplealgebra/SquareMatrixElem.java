@@ -1038,7 +1038,12 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	{
 		try
 		{
-			R tp = this.get(coli, coli).invertLeft();
+			final R ap = this.get(coli, coli);
+			if( ap == null )
+			{
+				throw( new NotInvertibleException() );
+			}
+			final R tp = ap.invertLeft();
 			return( tp );
 		}
 		catch( NotInvertibleException ex )
@@ -1049,7 +1054,12 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 			{
 				try
 				{
-					R tp = this.get(cnt, coli).invertLeft();
+					final R ap = this.get(cnt, coli);
+					if( ap == null )
+					{
+						throw( new NotInvertibleException() );
+					}
+					final R tp = ap.invertLeft();
 					exchangeColumns( coli , cnt );
 					ret.exchangeColumns( coli , cnt );
 					return( tp );
@@ -1077,7 +1087,12 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	{
 		try
 		{
-			R tp = this.get(rowi, rowi).invertLeft();
+			final R ap = this.get(rowi, rowi);
+			if( ap == null )
+			{
+				throw( new NotInvertibleException() );
+			}
+			final R tp = ap.invertLeft();
 			return( tp );
 		}
 		catch( NotInvertibleException ex )
@@ -1088,7 +1103,12 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 			{
 				try
 				{
-					R tp = this.get(cnt, rowi).invertLeft();
+					final R ap = this.get(cnt, rowi);
+					if( ap == null )
+					{
+						throw( new NotInvertibleException() );
+					}
+					final R tp = ap.invertLeft();
 					exchangeRows( rowi , cnt );
 					ret.exchangeRows( rowi , cnt );
 					return( tp );
@@ -1115,7 +1135,12 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	{
 		try
 		{
-			R tp = this.get(coli, coli).invertRight();
+			final R ap = this.get(coli, coli);
+			if( ap == null )
+			{
+				throw( new NotInvertibleException() );
+			}
+			final R tp = ap.invertRight();
 			return( tp );
 		}
 		catch( NotInvertibleException ex )
@@ -1126,7 +1151,12 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 			{
 				try
 				{
-					R tp = this.get(cnt, coli).invertRight();
+					final R ap = this.get(cnt, coli);
+					if( ap == null )
+					{
+						throw( new NotInvertibleException() );
+					}
+					final R tp = ap.invertRight();
 					exchangeColumns( coli , cnt );
 					ret.exchangeColumns( coli , cnt );
 					return( tp );
@@ -1154,7 +1184,12 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	{
 		try
 		{
-			R tp = this.get(rowi, rowi).invertRight();
+			final R ap = this.get(rowi, rowi);
+			if( ap == null )
+			{
+				throw( new NotInvertibleException() );
+			}
+			final R tp = ap.invertRight();
 			return( tp );
 		}
 		catch( NotInvertibleException ex )
@@ -1165,7 +1200,12 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 			{
 				try
 				{
-					R tp = this.get(cnt, rowi).invertRight();
+					final R ap = this.get(cnt, rowi);
+					if( ap == null )
+					{
+						throw( new NotInvertibleException() );
+					}
+					final R tp = ap.invertRight();
 					exchangeRows( rowi , cnt );
 					ret.exchangeRows( rowi , cnt );
 					return( tp );
