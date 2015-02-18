@@ -174,7 +174,7 @@ public class TestInvertSimple extends TestCase {
 	
 	
 	/**
-	 * Verifies that a left-invert of an empty matrix produces the correct exception.
+	 * Verifies that a right-invert of an empty matrix produces the correct exception.
 	 */
 	private void invertRightEmpty()
 	{
