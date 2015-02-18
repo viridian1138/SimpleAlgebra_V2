@@ -70,6 +70,34 @@ public class TestInvertSimple extends TestCase {
 		seedTestInvertLeft( 7777 );
 		seedTestInvertLeft( 8888 );
 		seedTestInvertLeft( 9999 );
+		invertLeftEmpty();
+	}
+	
+	
+	/**
+	 * Verifies that a left-invert of an empty matrix produces the correct exception.
+	 */
+	private void invertLeftEmpty()
+	{
+		final TestDimensionFour td = new TestDimensionFour();
+		
+		final DoubleElemFactory dl = new DoubleElemFactory();
+		
+		final SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory> se = 
+				new SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>(dl, td);
+		
+		final SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory> mat = se.zero();
+		
+		try
+		{
+			mat.invertLeft();
+		}
+		catch( NotInvertibleException ex )
+		{
+			return;
+		}
+		
+		Assert.assertTrue( false );
 	}
 
 
@@ -141,6 +169,34 @@ public class TestInvertSimple extends TestCase {
 		seedTestInvertRight( 7777 );
 		seedTestInvertRight( 8888 );
 		seedTestInvertRight( 9999 );
+		invertRightEmpty();
+	}
+	
+	
+	/**
+	 * Verifies that a left-invert of an empty matrix produces the correct exception.
+	 */
+	private void invertRightEmpty()
+	{
+		final TestDimensionFour td = new TestDimensionFour();
+		
+		final DoubleElemFactory dl = new DoubleElemFactory();
+		
+		final SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory> se = 
+				new SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>(dl, td);
+		
+		final SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory> mat = se.zero();
+		
+		try
+		{
+			mat.invertRight();
+		}
+		catch( NotInvertibleException ex )
+		{
+			return;
+		}
+		
+		Assert.assertTrue( false );
 	}
 
 	
