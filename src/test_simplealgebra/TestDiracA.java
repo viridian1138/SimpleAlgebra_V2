@@ -64,7 +64,63 @@ import simplealgebra.ga.*;
 
 
 
-
+/**
+ * 
+ * Tests the ability to numerically evaluate the differential equation <math display="inline">
+ * <mrow>
+ *   <mo>&nabla;</mo>
+ *  <mi>&Psi;</mi>
+ *  <msub>
+ *          <mi>&sigma;</mi>
+ *        <mn>1</mn>
+ *  </msub>
+ *  <msub>
+ *          <mi>&sigma;</mi>
+ *        <mn>2</mn>
+ *   </msub>
+ *   <mo>-</mo>
+ *   <mfrac>
+ *     <mrow>
+ *       <mi>m</mi>
+ *       <mi>c</mi>
+ *     </mrow>
+ *     <mrow>
+ *       <mi>&hbar;</mi>
+ *     </mrow>
+ *   </mfrac>
+ *   <mi>&Psi;</mi>
+ *   <msub>
+ *           <mi>&gamma;</mi>
+ *         <mn>0</mn>
+ *   </msub>
+ *   <mo>=</mo>
+ *   <mn>0</mn>
+ * </mrow>
+ * </math>
+ * 
+ * 
+ * where <math display="inline">
+ * <mrow>
+ *  <mi>m</mi>
+ * </mrow>
+ * </math> and <math display="inline">
+ * <mrow>
+ *  <mi>&hbar;</mi>
+ * </mrow>
+ * </math> and <math display="inline">
+ * <mrow>
+ *  <mi>c</mi>
+ * </mrow>
+ * </math> are arbitrary constants.
+ * 
+ * 
+ * 
+ * See http://en.wikipedia.org/wiki/Spacetime_algebra
+ * 
+ * 
+ * @author thorngreen
+ *
+ */
 public class TestDiracA extends TestCase {
 	
 	
@@ -74,7 +130,7 @@ public class TestDiracA extends TestCase {
 	private static final DoubleElem DOUBLE_ZERO = new DoubleElem( 0.0 );
 	
 	/**
-	 * Constant representing the number 2.
+	 * Arbitrary constant.
 	 */
 	private static final DoubleElem MM = genFromConstDbl( 2.0 );
 	
@@ -200,8 +256,14 @@ public class TestDiracA extends TestCase {
 	
 	
 	
+	/**
+	 * Arbitrary constant.
+	 */
 	protected static final DoubleElem HBAR = genFromConstDbl( 0.5 );
 	
+	/**
+	 * Arbitrary constant.
+	 */
 	protected static final DoubleElem C = genFromConstDbl( 0.004 );
 	
 	
@@ -1929,6 +1991,63 @@ throw( new RuntimeException( "Not Supported" ) );
 	
 	
 	
+/**
+ * 
+ * Tests the ability to numerically evaluate the differential equation <math display="inline">
+ * <mrow>
+ *   <mo>&nabla;</mo>
+ *  <mi>&Psi;</mi>
+ *  <msub>
+ *          <mi>&sigma;</mi>
+ *        <mn>1</mn>
+ *  </msub>
+ *  <msub>
+ *          <mi>&sigma;</mi>
+ *        <mn>2</mn>
+ *   </msub>
+ *   <mo>-</mo>
+ *   <mfrac>
+ *     <mrow>
+ *       <mi>m</mi>
+ *       <mi>c</mi>
+ *     </mrow>
+ *     <mrow>
+ *       <mi>&hbar;</mi>
+ *     </mrow>
+ *   </mfrac>
+ *   <mi>&Psi;</mi>
+ *   <msub>
+ *           <mi>&gamma;</mi>
+ *         <mn>0</mn>
+ *   </msub>
+ *   <mo>=</mo>
+ *   <mn>0</mn>
+ * </mrow>
+ * </math>
+ * 
+ * 
+ * where <math display="inline">
+ * <mrow>
+ *  <mi>m</mi>
+ * </mrow>
+ * </math> and <math display="inline">
+ * <mrow>
+ *  <mi>&hbar;</mi>
+ * </mrow>
+ * </math> and <math display="inline">
+ * <mrow>
+ *  <mi>c</mi>
+ * </mrow>
+ * </math> are arbitrary constants.
+ * 
+ * 
+ * 
+ * See http://en.wikipedia.org/wiki/Spacetime_algebra
+ * 
+ * 
+ * @author thorngreen
+ *
+ */
 public void testStelemSimple() throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
 		final Random rand = new Random( 3344 );
