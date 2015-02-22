@@ -141,6 +141,65 @@ public abstract class NewtonRaphsonMultiElemRemapTensor<Z extends Object, R exte
 	
 	
 	
+	/**
+	 * Maps from an input functions tensor to an output functions vector.  Override this method to change the mapping.
+	 * 
+	 * @param functions The input functions tensor.
+	 * @param ofun The output functions vector.
+	 */
+	protected void mapFunsInputToOutput( final EinsteinTensorElem<Z,SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,
+			SymbolicElemFactory<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>> functions ,
+			final GeometricAlgebraMultivectorElem<Adim,GeometricAlgebraOrd<Adim>,SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,
+				SymbolicElemFactory<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>> ofun )
+	{
+		final Iterator<ArrayList<BigInteger>> it = functions.getKeyIterator();
+		while( it.hasNext() )
+		{
+			ArrayList<BigInteger> key = it.next();
+			
+			BigInteger key2 = inMapFun.get( key );
+			
+			HashSet<BigInteger> hs = new HashSet<BigInteger>();
+			hs.add( key2 );
+			
+			ofun.setVal( hs , functions.getVal( key ) );
+		}
+	}
+	
+	
+	
+	/**
+	 * Determines the dimension count from the tensor of functions.  Also places 
+	 * functional data into the mapping function data members.  Override this method to change the mapping.
+	 * 
+	 * @param functions The tensor of functions.
+	 * @return The dimension count.
+	 */
+	protected BigInteger mapDimCnt( final EinsteinTensorElem<Z,SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,
+			SymbolicElemFactory<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>> functions )
+	{
+		BigInteger dimCnt = BigInteger.ZERO;
+		
+		
+		final Iterator<ArrayList<BigInteger>> it = functions.getKeyIterator();
+		while( it.hasNext() )
+		{
+			ArrayList<BigInteger> key = it.next();
+			
+			inMapFun.put(key, dimCnt);
+			
+			HashSet<BigInteger> hs = new HashSet<BigInteger>();
+			hs.add( dimCnt );
+			
+			outMapFun.put( hs , key );
+			
+			dimCnt = dimCnt.add( BigInteger.ONE );
+		}
+		
+		return( dimCnt );
+	}
+	
+	
 	
 	/**
 	 * Constructs the remap.
@@ -169,23 +228,7 @@ public abstract class NewtonRaphsonMultiElemRemapTensor<Z extends Object, R exte
 		
 		
 		
-		BigInteger dimCnt = BigInteger.ZERO;
-		
-		
-		Iterator<ArrayList<BigInteger>> it = _functions.getKeyIterator();
-		while( it.hasNext() )
-		{
-			ArrayList<BigInteger> key = it.next();
-			
-			inMapFun.put(key, dimCnt);
-			
-			HashSet<BigInteger> hs = new HashSet<BigInteger>();
-			hs.add( dimCnt );
-			
-			outMapFun.put( hs , key );
-			
-			dimCnt = dimCnt.add( BigInteger.ONE );
-		}
+		BigInteger dimCnt = mapDimCnt( _functions );
 		
 		
 		odim = new Adim( dimCnt );
@@ -198,24 +241,14 @@ public abstract class NewtonRaphsonMultiElemRemapTensor<Z extends Object, R exte
 					SymbolicElemFactory<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>>( _sfac , odim , new GeometricAlgebraOrd<Adim>() );
 		
 		
-		it = _functions.getKeyIterator();
-		while( it.hasNext() )
-		{
-			ArrayList<BigInteger> key = it.next();
-			
-			BigInteger key2 = inMapFun.get( key );
-			
-			HashSet<BigInteger> hs = new HashSet<BigInteger>();
-			hs.add( key2 );
-			
-			ofun.setVal( hs , _functions.getVal( key ) );
-		}
+		
+		mapFunsInputToOutput( _functions , ofun );
 		
 		
 		
 		final ArrayList<ArrayList<? extends Elem<?,?>>> withRespectTos = new ArrayList<ArrayList<? extends Elem<?,?>>>();
 		
-		it = _withRespectTosI.keySet().iterator();
+		final Iterator<ArrayList<BigInteger>> it = _withRespectTosI.keySet().iterator();
 		BigInteger wcnt = BigInteger.ZERO;
 		while( it.hasNext() )
 		{
