@@ -143,6 +143,65 @@ public abstract class NewtonRaphsonMultiElemRemap<U extends NumDimensions, A ext
 	
 	
 	/**
+	 * Maps from an input functions multivector to an output functions vector.  Override this method to change the mapping.
+	 * 
+	 * @param functions The input functions multivector.
+	 * @param ofun The output functions vector.
+	 */
+	protected void mapFunsInputToOutput( final GeometricAlgebraMultivectorElem<U,A,SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,
+			SymbolicElemFactory<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>> functions ,
+			final GeometricAlgebraMultivectorElem<Adim,GeometricAlgebraOrd<Adim>,SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,
+			SymbolicElemFactory<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>> ofun )
+	{
+		final Iterator<HashSet<BigInteger>> it = functions.getKeyIterator();
+		while( it.hasNext() )
+		{
+			HashSet<BigInteger> key = it.next();
+			
+			BigInteger key2 = inMapFun.get( key );
+			
+			HashSet<BigInteger> hs = new HashSet<BigInteger>();
+			hs.add( key2 );
+			
+			ofun.setVal( hs , functions.get( key ) );
+		}
+	}
+	
+	
+	/**
+	 * Determines the dimension count from the multivector of functions.  Also places 
+	 * functional data into the mapping function data members.  Override this method to change the mapping.
+	 * 
+	 * @param functions The multivector of functions.
+	 * @return The dimension count.
+	 */
+	protected BigInteger mapDimCnt( final GeometricAlgebraMultivectorElem<U,A,SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,
+			SymbolicElemFactory<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>> functions )
+	{
+		BigInteger dimCnt = BigInteger.ZERO;
+		
+		
+		final Iterator<HashSet<BigInteger>> it = functions.getKeyIterator();
+		while( it.hasNext() )
+		{
+			HashSet<BigInteger> key = it.next();
+			
+			inMapFun.put(key, dimCnt);
+			
+			HashSet<BigInteger> hs = new HashSet<BigInteger>();
+			hs.add( dimCnt );
+			
+			outMapFun.put( hs , key );
+			
+			dimCnt = dimCnt.add( BigInteger.ONE );
+		}
+		
+		return( dimCnt );
+	}
+	
+	
+	
+	/**
 	 * Constructs the remap.
 	 * 
 	 * @param _functions Input multivector of functions.
@@ -168,23 +227,7 @@ public abstract class NewtonRaphsonMultiElemRemap<U extends NumDimensions, A ext
 		
 		
 		
-		BigInteger dimCnt = BigInteger.ZERO;
-		
-		
-		Iterator<HashSet<BigInteger>> it = _functions.getKeyIterator();
-		while( it.hasNext() )
-		{
-			HashSet<BigInteger> key = it.next();
-			
-			inMapFun.put(key, dimCnt);
-			
-			HashSet<BigInteger> hs = new HashSet<BigInteger>();
-			hs.add( dimCnt );
-			
-			outMapFun.put( hs , key );
-			
-			dimCnt = dimCnt.add( BigInteger.ONE );
-		}
+		final BigInteger dimCnt = mapDimCnt( _functions );
 		
 		
 		odim = new Adim( dimCnt );
@@ -197,24 +240,14 @@ public abstract class NewtonRaphsonMultiElemRemap<U extends NumDimensions, A ext
 					SymbolicElemFactory<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>>( _sfac , odim , new GeometricAlgebraOrd<Adim>() );
 		
 		
-		it = _functions.getKeyIterator();
-		while( it.hasNext() )
-		{
-			HashSet<BigInteger> key = it.next();
-			
-			BigInteger key2 = inMapFun.get( key );
-			
-			HashSet<BigInteger> hs = new HashSet<BigInteger>();
-			hs.add( key2 );
-			
-			ofun.setVal( hs , _functions.get( key ) );
-		}
+		
+		mapFunsInputToOutput( _functions , ofun );
 		
 		
 		
 		final ArrayList<ArrayList<? extends Elem<?,?>>> withRespectTos = new ArrayList<ArrayList<? extends Elem<?,?>>>();
 		
-		it = _withRespectTosI.keySet().iterator();
+		final Iterator<HashSet<BigInteger>> it = _withRespectTosI.keySet().iterator();
 		BigInteger wcnt = BigInteger.ZERO;
 		while( it.hasNext() )
 		{
