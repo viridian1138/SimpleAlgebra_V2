@@ -1259,15 +1259,152 @@ public void writeString( PrintStream ps ) {
 }
 
 
-/**
- * Applies a discretized approximation of a derivative 
- * 
- * @param implicitSpacesIn The input implicit space containing the discretized approximation function.
- * @param node The ordinate over which to take the derivative.
- * @param numDerivatives The number of derivatives to apply.
- * @param hh The size of the discretization.
- * @param implicitSpacesOut The output implicit space containing the discretized approximation function with the derivatives applied.
- */
+        /**
+         * Applies a discretized approximation of a derivative using the following rules where "N"
+		 * is the number of derivatives and "h" is the size of the discretization:
+		 * <P>
+		 * <P> N = 0 -- Zero derivatives have been taken so simply return the original value of  the elem.
+		 * <P>
+		 * <P> N = 1 -- Use the first derivative formula <math display="inline">
+         * <mrow>
+         *   <mfrac>
+         *     <mrow>
+         *       <mi>F</mi><mo>&ApplyFunction;</mo>
+         *       <mfenced open="(" close=")" separators=",">
+         *         <mrow>
+         *           <mi>x</mi>
+         *           <mo>+</mo>
+         *           <mi>h</mi>
+         *         </mrow>
+         *       </mfenced>
+         *       <mo>-</mo>
+         *       <mi>F</mi><mo>&ApplyFunction;</mo>
+         *       <mfenced open="(" close=")" separators=",">
+         *         <mrow>
+         *           <mi>x</mi>
+         *           <mo>-</mo>
+         *           <mi>h</mi>
+         *         </mrow>
+         *       </mfenced>
+         *     </mrow>
+         *     <mrow>
+         *       <mn>2</mn>
+         *       <mi>h</mi>
+         *     </mrow>
+         *   </mfrac>
+         * </mrow>
+         * </math>
+		 * <P>
+		 * <P> (See http://en.wikipedia.org/wiki/Numerical_differentiation)
+		 * <P>
+		 * <P> N = 2 -- Use the second derivative formula <math display="inline">
+         * <mrow>
+         *   <mfrac>
+         *     <mrow>
+         *       <mi>F</mi><mo>&ApplyFunction;</mo>
+         *       <mfenced open="(" close=")" separators=",">
+         *         <mrow>
+         *           <mi>x</mi>
+         *           <mo>+</mo>
+         *           <mi>h</mi>
+         *         </mrow>
+         *       </mfenced>
+         *       <mo>-</mo>
+         *       <mn>2</mn>
+         *       <mi>F</mi><mo>&ApplyFunction;</mo>
+         *       <mfenced open="(" close=")" separators=",">
+         *         <mrow>
+         *           <mi>x</mi>
+         *         </mrow>
+         *       </mfenced>
+         *       <mo>+</mo>
+         *       <mi>F</mi><mo>&ApplyFunction;</mo>
+         *       <mfenced open="(" close=")" separators=",">
+         *         <mrow>
+         *           <mi>x</mi>
+         *           <mo>-</mo>
+         *           <mi>h</mi>
+         *         </mrow>
+         *       </mfenced>
+         *     </mrow>
+         *     <mrow>
+         *       <msup>
+         *               <mi>h</mi>
+         *             <mn>2</mn>
+         *       </msup>
+         *     </mrow>
+         *   </mfrac>
+         * </mrow>
+         * </math>
+		 * <P>
+		 * <P> (See http://en.wikipedia.org/wiki/Second_derivative)
+		 * <P>
+		 * <P> N = 3 -- Use the third derivative formula <math display="inline">
+         * <mrow>
+         *   <mfrac>
+         *     <mrow>
+         *       <mo>-</mo>
+         *       <mi>F</mi><mo>&ApplyFunction;</mo>
+         *       <mfenced open="(" close=")" separators=",">
+         *         <mrow>
+         *           <mi>x</mi>
+         *           <mo>-</mo>
+         *           <mn>2</mn>
+         *           <mi>h</mi>
+         *         </mrow>
+         *       </mfenced>
+         *       <mo>+</mo>
+         *       <mn>2</mn>
+         *       <mi>F</mi><mo>&ApplyFunction;</mo>
+         *       <mfenced open="(" close=")" separators=",">
+         *         <mrow>
+         *           <mi>x</mi>
+         *           <mo>-</mo>
+         *           <mi>h</mi>
+         *         </mrow>
+         *       </mfenced>
+         *       <mo>-</mo>
+         *       <mn>2</mn>
+         *       <mi>F</mi><mo>&ApplyFunction;</mo>
+         *       <mfenced open="(" close=")" separators=",">
+         *         <mrow>
+         *           <mi>x</mi>
+         *           <mo>-</mo>
+         *           <mi>h</mi>
+         *         </mrow>
+         *       </mfenced>
+         *       <mo>+</mo>
+         *       <mi>F</mi><mo>&ApplyFunction;</mo>
+         *       <mfenced open="(" close=")" separators=",">
+         *         <mrow>
+         *           <mi>x</mi>
+         *           <mo>+</mo>
+         *           <mn>2</mn>
+         *           <mi>h</mi>
+         *         </mrow>
+         *       </mfenced>
+         *     </mrow>
+         *     <mrow>
+         *       <mn>2</mn>
+         *       <msup>
+         *               <mi>h</mi>
+         *             <mn>3</mn>
+         *       </msup>
+         *     </mrow>
+         *   </mfrac>
+         * </mrow>
+         * </math>
+		 * <P>
+		 * <P> (See http://www.geometrictools.com/Documentation/FiniteDifferences.pdf)
+		 * <P>
+		 * <P> N > 3 -- Combine results from smaller values of N to build an approximation of a higher-order derivative.
+         * 
+         * @param implicitSpacesIn The input implicit space containing the discretized approximation function.
+         * @param node The ordinate over which to take the derivative.
+         * @param numDerivatives The number of derivatives to apply.
+         * @param hh The size of the discretization.
+         * @param implicitSpacesOut The output implicit space containing the discretized approximation function with the derivatives applied.
+         */
 protected void applyDerivativeAction( HashMap<HashMap<Ordinate, BigInteger>,CoeffNode> implicitSpacesIn , 
 		Ordinate node , final int numDerivatives , DoubleElem hh ,
 		HashMap<HashMap<Ordinate, BigInteger>,CoeffNode> implicitSpacesOut )
