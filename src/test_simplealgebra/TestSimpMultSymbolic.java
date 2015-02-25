@@ -56,14 +56,34 @@ import simplealgebra.symbolic.SymbolicZero;
 
 
 
+/**
+ * Verifies the reduction of simple expressions containing the inverse.
+ * 
+ * @author tgreen
+ *
+ */
 public class TestSimpMultSymbolic extends TestCase 
 {
 
 	
+	/**
+	 * Symbolic elem for <math display="inline">
+     * <mrow>
+     *  <mi>a</mi>
+     * </mrow>
+     * </math> to be used in the test.
+	 * 
+	 * @author tgreen
+	 *
+	 */
 	private class AElem extends SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
 	{
 
-		
+		/**
+		 * Constructs the elem.
+		 * 
+		 * @param _fac The factory for the enclosed type.
+		 */
 		public AElem(SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory> _fac ) {
 			super(_fac);
 		}
@@ -101,9 +121,13 @@ public class TestSimpMultSymbolic extends TestCase
 	
 	
 	/**
-	 * The symbolic elem for the square matrix upon which to apply the operation.
+	 * Symbolic elem for <math display="inline">
+     * <mrow>
+     *  <mi>b</mi>
+     * </mrow>
+     * </math> to be used in the test.
 	 * 
-	 * @author thorngreen
+	 * @author tgreen
 	 *
 	 */
 	private class BElem extends SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
@@ -151,7 +175,24 @@ public class TestSimpMultSymbolic extends TestCase
 	
 	
 	
-	
+	/**
+	 * Verifies that <math display="inline">
+     * <mrow>
+     *  <mi>a</mi>
+     *  <mi>b</mi>
+     *  <msup>
+     *        <mi>b</mi>
+     *        <mo>-1R</mo>
+     *  </msup>
+     *  </mrow>
+     * </math> reduces to  <math display="inline">
+     * <mrow>
+     *  <mi>a</mi>
+     *  </mrow>
+     * </math>.
+	 * 
+	 * @throws NotInvertibleException
+	 */
 	public void testSimpMultSymbolicRight() throws NotInvertibleException
 	{
 		final TestDimensionFour td = new TestDimensionFour();
@@ -189,7 +230,24 @@ public class TestSimpMultSymbolic extends TestCase
 	
 	
 	
-	
+	/**
+	 * Verifies that <math display="inline">
+     * <mrow>
+     * <msup>
+     *        <mi>b</mi>
+     *        <mo>-1L</mo>
+     *  </msup>
+     *  <mi>b</mi>
+     *  <mi>a</mi>
+     *  </mrow>
+     * </math> reduces to  <math display="inline">
+     * <mrow>
+     *  <mi>a</mi>
+     *  </mrow>
+     * </math>.
+	 * 
+	 * @throws NotInvertibleException
+	 */
 	public void testSimpMultSymbolicLeft() throws NotInvertibleException
 	{
 		final TestDimensionFour td = new TestDimensionFour();

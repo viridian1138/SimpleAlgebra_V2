@@ -76,14 +76,21 @@ public class TestOrdinaryDerivative extends TestCase {
 	
 	
 	
-	
+	/**
+	 * Generates a DoubleElem from a primitive double value.
+	 * 
+	 * @param in The input primitive double value.
+	 * @return The output DoubleElem.
+	 */
 	private static DoubleElem genFromConstDbl( double in )
 	{
 		return( new DoubleElem( in ) );
 	}
 	
 	
-	
+	/**
+	 * Arbitrary constant.
+	 */
 	protected static final DoubleElem C = genFromConstDbl( 0.004 );
 	
 	

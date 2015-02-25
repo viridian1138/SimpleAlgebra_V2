@@ -98,7 +98,11 @@ public class TestPhasorWithUncertainty extends TestCase {
 	}
 	
 	
-	
+	/**
+	 * Runs the test.
+	 * 
+	 * @throws NotInvertibleException
+	 */
 	public void testPhasorExample() throws NotInvertibleException
 	{
 		

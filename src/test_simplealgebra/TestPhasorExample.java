@@ -68,7 +68,11 @@ import simplealgebra.ga.*;
 public class TestPhasorExample extends TestCase {
 
 	
-	
+	/**
+	 * Runs the test.
+	 * 
+	 * @throws NotInvertibleException
+	 */
 	public void testPhasorExample() throws NotInvertibleException
 	{
 		

@@ -52,7 +52,14 @@ public class TestComplexTrig extends TestCase {
 	
 	
 	/**
-	 * Test method for {@link simplealgebra.Elem#exp()}.
+	 * Tests several complex-number <math display="inline">
+     * <mrow>
+     *  <msup>
+     *          <mo>e</mo>
+     *        <mi>x</mi>
+     *  </msup>
+     * </mrow>
+     * </math> invocations against their known results.
 	 */
 	public void testComplexTrig() throws NotInvertibleException
 	{
@@ -78,7 +85,17 @@ public class TestComplexTrig extends TestCase {
 
 	
 	/**
-	 * Test method for {@link simplealgebra.Elem#exp()}.
+	 * Tests a randomly-selected invocation of complex-number <math display="inline">
+     * <mrow>
+     *  <msup>
+     *          <mo>e</mo>
+     *        <mi>x</mi>
+     *  </msup>
+     * </mrow>
+     * </math> against its known result.
+	 * 
+	 * @param seed The random number seed for generating the invocation.
+	 * @throws NotInvertibleException
 	 */
 	private void seedTestComplexTrig( long seed ) throws NotInvertibleException {
 		

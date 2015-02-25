@@ -46,11 +46,21 @@ import simplealgebra.symbolic.SymbolicZero;
 
 
 
+/**
+ * Tests that symbolic double-negation yields the identity.
+ * 
+ * @author tgreen
+ *
+ */
 public class TestDoubleNegateSymbolic extends TestCase 
 {
 
 	
-	
+	/**
+	 * Tests that double negation of the identity yields the identity.
+	 * 
+	 * @throws NotInvertibleException
+	 */
 	public void testDoubleNegateElems() throws NotInvertibleException
 	{
 		final TestDimensionFour td = new TestDimensionFour();
@@ -80,6 +90,11 @@ public class TestDoubleNegateSymbolic extends TestCase
 	}
 	
 	
+	/**
+	 * Tests that the negation of zero yields zero.
+	 * 
+	 * @throws NotInvertibleException
+	 */
 	public void testNegateZeroElems() throws NotInvertibleException
 	{
 		final TestDimensionFour td = new TestDimensionFour();
