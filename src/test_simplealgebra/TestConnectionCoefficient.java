@@ -56,19 +56,42 @@ import java.io.*;
 
 
 
-
+/**
+ * Tests the ability to generate the connection coefficient <math display="inline">
+ * <mrow>
+ *  <msubsup>
+ *          <mi>&Gamma;</mi>
+ *      <mrow>
+ *        <mi>j</mi>
+ *        <mi>k</mi>
+ *      </mrow>
+ *        <mi>l</mi>
+ *  </msubsup>
+ *  </mrow>
+ *  </math>
+ * 
+ * @author tgreen
+ *
+ */
 public class TestConnectionCoefficient extends TestCase {
 	
 	
 	
 	
+	/**
+	 * Returns a DoubleElem with the value from the parameter.
+	 * @param in The input parameter.
+	 * @return The generated DoubleElem.
+	 */
 	private static DoubleElem genFromConstDbl( double in )
 	{
 		return( new DoubleElem( in ) );
 	}
 	
 	
-	
+	/**
+	 * Arbitrary constant.
+	 */
 	protected static final DoubleElem C = genFromConstDbl( 0.004 );
 	
 	
@@ -557,7 +580,18 @@ public class TestConnectionCoefficient extends TestCase {
 	
 	
 	/**
-	 * Test method for {@link simplealgebra.OrdinaryDerivative}.
+	 * Tests the ability to generate the connection coefficient <math display="inline">
+     * <mrow>
+     *  <msubsup>
+     *          <mi>&Gamma;</mi>
+     *      <mrow>
+     *        <mi>j</mi>
+     *        <mi>k</mi>
+     *      </mrow>
+     *        <mi>l</mi>
+     *  </msubsup>
+     *  </mrow>
+     *  </math>
 	 */
 	public void testConnectionCoefficient() throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{

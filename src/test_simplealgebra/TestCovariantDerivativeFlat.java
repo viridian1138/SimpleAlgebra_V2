@@ -71,14 +71,20 @@ public class TestCovariantDerivativeFlat extends TestCase {
 	
 	
 	
-	
+	/**
+	 * Returns a DoubleElem with the value from the parameter.
+	 * @param in The input parameter.
+	 * @return The generated DoubleElem.
+	 */
 	private static DoubleElem genFromConstDbl( double in )
 	{
 		return( new DoubleElem( in ) );
 	}
 	
 	
-	
+	/**
+	 * Arbitrary constant.
+	 */
 	protected static final DoubleElem C = genFromConstDbl( 0.004 );
 	
 	
@@ -612,7 +618,8 @@ public class TestCovariantDerivativeFlat extends TestCase {
 	
 	
 	/**
-	 * Test method for {@link simplealgebra.OrdinaryDerivative}.
+	 * Test verifying that the covariant derivative over a flat plane is
+     * the equivalent of an ordinary derivative.
 	 */
 	public void testCovariantDerivative() throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{

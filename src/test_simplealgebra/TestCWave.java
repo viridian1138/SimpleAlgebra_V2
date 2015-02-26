@@ -197,15 +197,61 @@ public class TestCWave extends TestCase {
 	}
 	
 	
+	/**
+	 * Array function for returning the discretized derivative <math display="inline">
+     * <mrow>
+     *   <mfrac>
+     *     <mrow>
+     *       <mi>F</mi><mo>&ApplyFunction;</mo>
+     *       <mfenced open="(" close=")" separators=",">
+     *         <mrow>
+     *           <mi>x</mi>
+     *           <mo>+</mo>
+     *           <mi>h</mi>
+     *         </mrow>
+     *       </mfenced>
+     *       <mo>-</mo>
+     *       <mi>F</mi><mo>&ApplyFunction;</mo>
+     *       <mfenced open="(" close=")" separators=",">
+     *         <mrow>
+     *           <mi>x</mi>
+     *           <mo>-</mo>
+     *           <mi>h</mi>
+     *         </mrow>
+     *       </mfenced>
+     *     </mrow>
+     *     <mrow>
+     *       <mn>2</mn>
+     *       <mi>h</mi>
+     *     </mrow>
+     *   </mfrac>
+     * </mrow>
+     * </math> where "h" is the size of the discretization.
+     * <P>
+     * <P> (See http://en.wikipedia.org/wiki/Numerical_differentiation)
+	 * 
+	 * 
+	 * @author tgreen
+	 *
+	 */
 	protected static class DerivativeFun extends ArrayFun
 	{
+		/**
+		 * The input array function.
+		 */
 		ArrayFun fun;
 		
+		/**
+		 * Constructs the derivative function.
+		 * 
+		 * @param _fun The input function over which to take the derivative.
+		 */
 		public DerivativeFun( ArrayFun _fun )
 		{
 			fun = _fun;
 		}
 		
+		@Override
 		public BigFixedPointElem<LrgPrecision> getVal( int index ) throws NotInvertibleException
 		{
 			return( ( fun.getVal( index + 1 ).add( fun.getVal( index - 1 ).negate() ) ).mult( DELTA_X_L.invertLeft() ).divideBy( 2 ) );
@@ -216,7 +262,47 @@ public class TestCWave extends TestCase {
 	
 	
 	/**
-	 * Test method.
+	 * Simple Euler-Method-like evaluator test for the equation <math display="inline">
+     * <mrow>
+     *  <mfrac>
+     *    <mrow>
+     *      <msup>
+     *              <mo>&PartialD;</mo>
+     *            <mn>2</mn>
+     *      </msup>
+     *      <mi>c</mi>
+     *    </mrow>
+     *    <mrow>
+     *      <mo>&PartialD;</mo>
+     *      <msup>
+     *              <mi>t</mi>
+     *            <mn>2</mn>
+     *      </msup>
+     *    </mrow>
+     *  </mfrac>
+     *  <mo>=</mo>
+     *  <msup>
+     *          <mi>c</mi>
+     *        <mn>2</mn>
+     *  </msup>
+     *  <mfrac>
+     *    <mrow>
+     *      <msup>
+     *              <mo>&PartialD;</mo>
+     *            <mn>2</mn>
+     *      </msup>
+     *      <mi>c</mi>
+     *    </mrow>
+     *    <mrow>
+     *      <mo>&PartialD;</mo>
+     *      <msup>
+     *              <mi>x</mi>
+     *            <mn>2</mn>
+     *      </msup>
+     *    </mrow>
+     *  </mfrac>
+     * </mrow>
+     * </math>
 	 * 
 	 * @throws NotInvertibleException
 	 */

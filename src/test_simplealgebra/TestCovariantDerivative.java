@@ -56,24 +56,57 @@ import simplealgebra.ddx.*;
 
 
 
-
+/**
+ *  Tests the ability to generate the covariant derivative <math display="inline">
+ * <mrow>
+ *  <msub>
+ *          <mo>&nabla;</mo>
+ *        <mi>&nu;</mi>
+ *  </msub>
+ *  <msup>
+ *          <mi>V</mi>
+ *        <mi>&mu;</mi>
+ *  </msup>
+ *  </mrow>
+ *  </math>
+ * 
+ * @author tgreen
+ *
+ */
 public class TestCovariantDerivative extends TestCase {
 	
 	
 	
-	
+	/**
+	 * Returns a DoubleElem with the value from the parameter.
+	 * @param in The input parameter.
+	 * @return The generated DoubleElem.
+	 */
 	private static DoubleElem genFromConstDbl( double in )
 	{
 		return( new DoubleElem( in ) );
 	}
 	
 	
-	
+	/**
+	 * Arbitrary constant.
+	 */
 	protected static final DoubleElem C = genFromConstDbl( 0.004 );
 	
 	
 	/**
-	 * Node representing an ordinate of the coordinate space.
+	 * Tests the ability to generate the covariant derivative <math display="inline">
+     * <mrow>
+     *  <msub>
+     *          <mo>&nabla;</mo>
+     *        <mi>&nu;</mi>
+     *  </msub>
+     *  <msup>
+     *          <mi>V</mi>
+     *        <mi>&mu;</mi>
+     *  </msup>
+     *  </mrow>
+     *  </math>
 	 * 
 	 * @author thorngreen
 	 *
@@ -554,7 +587,18 @@ public class TestCovariantDerivative extends TestCase {
 	
 	
 	/**
-	 * Test method for {@link simplealgebra.OrdinaryDerivative}.
+	 * Tests the ability to generate the covariant derivative <math display="inline">
+     * <mrow>
+     *  <msub>
+     *          <mo>&nabla;</mo>
+     *        <mi>&nu;</mi>
+     *  </msub>
+     *  <msup>
+     *          <mi>V</mi>
+     *        <mi>&mu;</mi>
+     *  </msup>
+     *  </mrow>
+     *  </math>
 	 */
 	public void testCovariantDerivative() throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
