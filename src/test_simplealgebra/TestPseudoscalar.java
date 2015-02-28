@@ -56,7 +56,7 @@ public class TestPseudoscalar extends TestCase {
 	
 	
 	/**
-	 * Tests pseudoscalar identity in 4-D
+	 * Tests pseudoscalar squares to -1 in 4-D
 	 */
 	public void testPseudoscalar4D() throws NotInvertibleException
 	{
@@ -112,7 +112,7 @@ public class TestPseudoscalar extends TestCase {
 	
 	
 	/**
-	 * Tests pseudoscalar identity in 3-D
+	 * Tests pseudoscalar squares to -1 in 3-D
 	 */
 	public void testPseudoscalar3D() throws NotInvertibleException
 	{

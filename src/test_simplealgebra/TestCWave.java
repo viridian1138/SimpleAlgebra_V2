@@ -235,9 +235,64 @@ public class TestCWave extends TestCase {
 	
 	
 	/**
-	 * [Documentation for this method TBD]
+	 * Computes a square root using the taylor series approximation <math display="inline">
+     * <mrow>
+     *   <msqrt>
+     *     <msup>
+     *             <mi>c</mi>
+     *           <mn>2</mn>
+     *     </msup>
+     *     <mo>+</mo>
+     *     <mi>d</mi>
+     *   </msqrt>
+     *   <mo>&asymp;</mo>
+     *   <mi>c</mi>
+     *   <mo>+</mo>
+     *   <mfrac>
+     *     <mrow>
+     *       <mi>d</mi>
+     *     </mrow>
+     *     <mrow>
+     *       <mn>2</mn>
+     *       <mi>c</mi>
+     *     </mrow>
+     *   </mfrac>
+     *   <mo>-</mo>
+     *   <mfrac>
+     *     <mrow>
+     *       <msup>
+     *               <mi>d</mi>
+     *             <mn>2</mn>
+     *       </msup>
+     *     </mrow>
+     *     <mrow>
+     *       <mn>8</mn>
+     *       <msup>
+     *               <mi>c</mi>
+     *             <mn>3</mn>
+     *       </msup>
+     *     </mrow>
+     *   </mfrac>
+     *   <mo>+</mo>
+     *   <mfrac>
+     *     <mrow>
+     *       <msup>
+     *               <mi>d</mi>
+     *             <mn>3</mn>
+     *       </msup>
+     *     </mrow>
+     *     <mrow>
+     *       <mn>16</mn>
+     *       <msup>
+     *               <mi>c</mi>
+     *             <mn>5</mn>
+     *       </msup>
+     *     </mrow>
+     *   </mfrac>
+     * </mrow>
+     * </math>
 	 * <P>
-	 * <P>See http://en.wikipedia.org/wiki/Square_root
+	 * <P>See http://en.wikipedia.org/wiki/Methods_of_computing_square_roots
 	 * 
 	 * @param in The input parameter on which to take the square root.
 	 * @param c The input "c" parameter.
@@ -254,7 +309,7 @@ public class TestCWave extends TestCase {
 		
 		sum = sum.add( d.mult( c.invertLeft() ).divideBy( 2 ) );
 		
-		sum = sum.add( d.mult( d ).mult( c.mult( c ).mult( c ).invertLeft() ).divideBy( 8 ) );
+		sum = sum.add( d.mult( d ).mult( c.mult( c ).mult( c ).invertLeft() ).divideBy( 8 ).negate() );
 		
 		sum = sum.add( d.mult( d ).mult( d ).mult( c.mult( c ).mult( c ).mult( c ).mult( c ).invertLeft() ).divideBy( 16 ) );
 		

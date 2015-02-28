@@ -52,10 +52,6 @@ public class BigFixedPointElem<T extends Precision> extends Elem<BigFixedPointEl
 	 */
 	public BigFixedPointElem( BigInteger _val , T _prec )
 	{
-		if( _val.equals( BigInteger.ZERO ) )
-		{
-			throw( new RuntimeException( "NaN" ) );
-		}
 		val = _val;
 		prec = _prec;
 	}
