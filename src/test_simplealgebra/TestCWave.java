@@ -83,70 +83,168 @@ import simplealgebra.bigfixedpoint.Precision;
  */
 public class TestCWave extends TestCase {
 	
-	
+	/**
+	 * The number of discretizations on the X-Axis over which to iterate.
+	 */
 	static final int ARRAY_SZ = 2000;
 	
-	
+	/**
+	 * Size of the X-Axis discretization.
+	 */
 	static final double DELTA_X = 0.5;
 	
-	
+	/**
+	 * Size of the T-Axis discretization.
+	 */
 	static final double DELTA_T = 1E-10;
 	
 	
-	
+	/**
+	 * Constant containing the number ten.
+	 */
 	static final BigInteger TEN = BigInteger.valueOf( 10 );
 	
 	
-	
+	/**
+	 * Returns the number <math display="inline">
+     * <mrow>
+     *   <msup>
+     *           <mn>10</mn>
+     *       <mrow>
+     *         <mi>X</mi>
+     *         <mo>+</mo>
+     *         <mn>1</mn>
+     *       </mrow>
+     *   </msup>
+     * </mrow>
+     * </math>, where X is the input parameter.
+	 * 
+	 * @param cnt The input parameter.
+	 * @return The value <math display="inline">
+     * <mrow>
+     *   <msup>
+     *           <mn>10</mn>
+     *       <mrow>
+     *         <mi>X</mi>
+     *         <mo>+</mo>
+     *         <mn>1</mn>
+     *       </mrow>
+     *   </msup>
+     * </mrow>
+     * </math>.
+	 */
 	protected static BigInteger calcVal( final int cnt )
 	{
 		return( cnt == 0 ? TEN : TEN.multiply( calcVal( cnt - 1 ) ) );
 	}
 	
+
 	
-	// Largest possible double is around E+308
+	/**
+	 * Constant containing the value <math display="inline">
+     * <mrow>
+     *   <msup>
+     *           <mn>10</mn>
+     *         <mn>291</mn>
+     *   </msup>
+     * </mrow>
+     * </math>.
+	 * 
+	 * Largest possible double is around <math display="inline">
+     * <mrow>
+     *   <msup>
+     *           <mn>10</mn>
+     *         <mn>308</mn>
+     *   </msup>
+     * </mrow>
+     * </math>.
+	 */
 	static final BigInteger baseVal = calcVal( 290 );
 	
 	
 
 	
-	
+	/**
+	 * Constant containing the square of baseVal, or <math display="inline">
+     * <mrow>
+     *   <msup>
+     *           <mn>10</mn>
+     *         <mn>582</mn>
+     *   </msup>
+     * </mrow>
+     * </math>.
+	 */
 	protected static final BigInteger finalBaseValSq = baseVal.multiply( baseVal );
 	
 	
 	
+	/**
+	 * Defines a precision of baseVal, or one part in <math display="inline">
+     * <mrow>
+     *   <msup>
+     *           <mn>10</mn>
+     *         <mn>291</mn>
+     *   </msup>
+     * </mrow>
+     * </math>.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	protected static final class LrgPrecision extends Precision
 	{
+		@Override
 		public BigInteger getVal()
 		{
 			return( baseVal );
 		}
 		
+		@Override
 		public BigInteger getValSquared()
 		{
 			return( finalBaseValSq );
 		}
+		
 	}
 	
 	
-	
+	/**
+	 * A constant defining the large precision.
+	 */
 	static final LrgPrecision lrgPrecision = new LrgPrecision();
 	
 	
-	
+	/**
+	 * Constant defining the size of the X-Axis discretization in terms of the large precision.
+	 */
 	static final BigFixedPointElem<LrgPrecision> DELTA_X_L
 		= new BigFixedPointElem<LrgPrecision>( DELTA_X , lrgPrecision );
 	
-	
+	/**
+	 * Constant defining the size of the T-Axis discretization in terms of the large precision.
+	 */
 	static final BigFixedPointElem<LrgPrecision> DELTA_T_L
 		= new BigFixedPointElem<LrgPrecision>( DELTA_T , lrgPrecision );
 	
 	
+	/**
+	 * Constant defining the square of the T-Axis discretization in terms of the large precision.
+	 */
 	static final BigFixedPointElem<LrgPrecision> DELTA_T_2_L
 		= DELTA_T_L.mult( DELTA_T_L );
 	
 	
-	
+	/**
+	 * [Documentation for this method TBD]
+	 * <P>
+	 * <P>See http://en.wikipedia.org/wiki/Square_root
+	 * 
+	 * @param in The input parameter on which to take the square root.
+	 * @param c The input "c" parameter.
+	 * @param cSquared The square of the "c" parameter.
+	 * @return The approximate square root of "in".
+	 * @throws NotInvertibleException
+	 */
 	protected BigFixedPointElem<LrgPrecision> sqrtC( BigFixedPointElem<LrgPrecision> in , BigFixedPointElem<LrgPrecision> c ,
 			BigFixedPointElem<LrgPrecision> cSquared ) throws NotInvertibleException
 	{
@@ -164,21 +262,49 @@ public class TestCWave extends TestCase {
 	}
 	
 	
+	/**
+	 * Abstract class defining a function upon an X-Axis array.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	protected static abstract class ArrayFun
 	{
+		/**
+		 * Returns the value at a particular array index.
+		 * 
+		 * @param index The array index.
+		 * @return The value.
+		 * @throws NotInvertibleException
+		 */
 		public abstract BigFixedPointElem<LrgPrecision> getVal( int index ) throws NotInvertibleException;
 	}
 	
 	
+	/**
+	 * Defines an array function for a pre-defined array.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	protected static class IndArrayFun extends ArrayFun
 	{
+		/**
+		 * The pre-defined array.
+		 */
 		BigFixedPointElem<LrgPrecision> elem[];
 		
+		/**
+		 * Constructs the array function.
+		 * 
+		 * @param _elem The pre-defined array.
+		 */
 		public IndArrayFun( BigFixedPointElem<LrgPrecision>[] _elem )
 		{
 			elem = _elem;
 		}
 		
+		@Override
 		public BigFixedPointElem<LrgPrecision> getVal( int index )
 		{
 			if( index < 0 )

@@ -101,7 +101,7 @@ import simplealgebra.et.EinsteinTensorElemFactory;
  * </mrow>
  * </math>
  *
- * in dimensions (x, y, z, t) where "c" is an arbitrary constant.
+ * in dimensions (x, y, z, t).
  *
  * 
  * @author thorngreen
@@ -1372,7 +1372,7 @@ public class TestCWave3D extends TestCase {
 	 * </mrow>
 	 * </math>
 	 *
-	 * in dimensions (x, y, z, t) where "c" is an arbitrary constant.
+	 * in dimensions (x, y, z, t).
 	 *
 	 * 
 	 * @author thorngreen
