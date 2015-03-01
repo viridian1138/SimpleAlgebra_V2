@@ -137,12 +137,12 @@ public class TestGeneralRelativityA extends TestCase {
 	
 	
 	/**
-	 * Generates a random tensor of rank 2 where all of the elements are between zero and twice the input value.
-	 * @param in The input value.
-	 * @return The random tensor.
+	 * Generates a default flat rank 2 metric tensor.
+	 * @return The default flat rank 2 metric tensor.
 	 */
-	private static EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> genDiffAll( double in )
+	private static EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> genDiffAll( )
 	{
+		final double CV = C.getVal();
 		DoubleElemFactory da = new DoubleElemFactory();
 		final ArrayList<String> contravariantIndices = new ArrayList<String>();
 		final ArrayList<String> covariantIndices = new ArrayList<String>();
@@ -154,7 +154,10 @@ public class TestGeneralRelativityA extends TestCase {
 		{
 			if( ( acnt % 4 ) == ( acnt / 4 ) )
 			{
-				final DoubleElem dd = new DoubleElem( in * ( 2.0 * rand.nextDouble() ) );
+				// final DoubleElem dd = acnt == 0 ? 
+				//		new DoubleElem( - ( C.getVal() ) * ( C.getVal() ) ) : new DoubleElem( 1.0 );
+				final DoubleElem dd = acnt == 0 ? new DoubleElem( - CV * CV * 1.0 * ( 2.0 * rand.nextDouble() ) )
+					: new DoubleElem( 1.0 * ( 2.0 * rand.nextDouble() ) );
 				final ArrayList<BigInteger> ab = new ArrayList<BigInteger>();
 				ab.add( BigInteger.valueOf( acnt / 4 ) );
 				ab.add( BigInteger.valueOf( acnt % 4 ) );
@@ -172,6 +175,7 @@ public class TestGeneralRelativityA extends TestCase {
 	 */
 	private static EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> genDiffEnt( double in )
 	{
+		final double CV = C.getVal();
 		DoubleElemFactory da = new DoubleElemFactory();
 		final ArrayList<String> contravariantIndices = new ArrayList<String>();
 		final ArrayList<String> covariantIndices = new ArrayList<String>();
@@ -183,7 +187,8 @@ public class TestGeneralRelativityA extends TestCase {
 		{
 			if( ( acnt % 4 ) == ( acnt / 4 ) )
 			{
-				final DoubleElem dd = new DoubleElem( in * ( 2.0 * rand.nextDouble() ) );
+				final DoubleElem dd = acnt == 0 ? new DoubleElem( - CV  * CV * in * ( 2.0 * rand.nextDouble() ) ) :
+					new DoubleElem( in * ( 2.0 * rand.nextDouble() ) );
 				final ArrayList<BigInteger> ab = new ArrayList<BigInteger>();
 				ab.add( BigInteger.valueOf( acnt / 4 ) );
 				ab.add( BigInteger.valueOf( acnt % 4 ) );
@@ -380,6 +385,10 @@ public class TestGeneralRelativityA extends TestCase {
 							( tv < NUM_T_ITER ) && ( xv < NUM_X_ITER ) && ( yv < NUM_Y_ITER ) && ( zv < NUM_Z_ITER )  )
 						{
 							av = iterArray[ tv ][ xv ][ yv ][ zv ];
+						}
+						if( av == null )
+						{
+							av = genDiffAll();
 						}
 						tempArray[ ta + 1 ][ xa + 1 ][ ya + 1 ][ za + 1 ] = av;
 					}
@@ -2280,7 +2289,7 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 					{
 						for( int zcnt = 0 ; zcnt < NUM_Z_ITER ; zcnt++ )
 						{
-							iterArray[ tcnt ][ xcnt ][ ycnt ][ zcnt ] = genDiffAll( 1E-8 );
+							iterArray[ tcnt ][ xcnt ][ ycnt ][ zcnt ] = genDiffAll( );
 						}
 					}
 				}
@@ -2297,7 +2306,7 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 					{
 						for( int zcnt = 0 ; zcnt < 2 ; zcnt++ )
 						{
-							tempArray[ tcnt ][ xcnt ][ ycnt ][ zcnt ] = genDiffAll( 1E-8 );
+							tempArray[ tcnt ][ xcnt ][ ycnt ][ zcnt ] = genDiffAll( );
 						}
 					}
 				}
@@ -2306,11 +2315,7 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 		
 		
 		for( int tcnt = 0 ; tcnt < 2 ; tcnt++ )
-		{
-			// for( int xcnt = 0 ; xcnt < NUM_X_ITER ; xcnt++ )
-			// {
-			//	iterArray[ tcnt ][ xcnt ] = rand.nextDouble();
-			// }
+		{	
 			iterArray[ tcnt ][ 5 ][ 5 ][ 5 ] = genDiffEnt( 10000.0 * ( d1 * d1 ) );
 		}
 		
