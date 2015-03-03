@@ -89,6 +89,7 @@ public class SimpleAlgebraTestSuite extends TestSuite {
 		s.addTestSuite( TestEinsteinTensor_5D.class );
 		s.addTestSuite( TestInvertMatrixBasic.class );
 		s.addTestSuite( TestPseudoscalar.class );
+		s.addTestSuite( TestTensorNotAssociative.class );
 		return( s );
 	}
 	
