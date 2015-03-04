@@ -93,6 +93,20 @@ public class EinsteinTensorElemFactory<Z extends Object, R extends Elem<R,?>, S 
 	}
 	
 	
+	@Override
+	public boolean isMultAssociative()
+	{
+		return( false );
+	}
+	
+	
+	@Override
+	public boolean isNestedMultAssociative()
+	{
+		return( fac.isMultAssociative() );
+	}
+	
+	
 	/**
 	 * The factory for the enclosed type.
 	 */

@@ -92,6 +92,20 @@ public class BigFixedPointElemFactory<T extends Precision> extends ElemFactory<B
 	
 	
 	@Override
+	public boolean isMultAssociative()
+	{
+		return( true );
+	}
+	
+	
+	@Override
+	public boolean isNestedMultAssociative()
+	{
+		return( true );
+	}
+	
+	
+	@Override
 	public SymbolicElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> handleSymbolicOptionalOp( Object id , 
 			ArrayList<SymbolicElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>>> args )  throws NotInvertibleException
 	{

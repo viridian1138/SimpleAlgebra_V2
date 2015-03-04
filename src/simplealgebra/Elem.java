@@ -32,10 +32,6 @@ import java.util.ArrayList;
  * differences:
  * <P>
  * <P>
- * The algebra is not necessarily associative in the case of tensor multiplication.  It is associative
- * for other elem types.
- * <P>
- * <P>
  * Division by a non-zero integer is a fundamental operation of an elem.  For instance, it is impossible
  * to calculate the mean of multiple elems without the ability to divide by the number of elems in the sum.
  * In several other important cases it is important to apply some sort of fraction.
@@ -56,10 +52,15 @@ import java.util.ArrayList;
  * doesn't have an inverse.
  * <P>
  * <P> If the isMultCommutative() method of the elem's type's factory returns true, then all multiplications 
- * of the elem type can be considered to commute.  Otherwise, it is possible that multiplications
+ * of the elem type commute.  Otherwise, it is possible that multiplications
  * of the elem type do not commute.  
  * <P>
  * <P> See http://en.wikipedia.org/wiki/noncommutative_ring
+ * <P>
+ * <P>
+ * <P> If the isMultAssociative() method of the elem's type's factory returns true, then all multiplications 
+ * of the elem type are associative.  Otherwise, it is possible that multiplications
+ * of the elem type are not associative. 
  * 
  * @author thorngreen
  * 

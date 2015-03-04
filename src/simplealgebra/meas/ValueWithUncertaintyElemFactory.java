@@ -102,6 +102,20 @@ public class ValueWithUncertaintyElemFactory<R extends Elem<R,?>, S extends Elem
 	}
 	
 	
+	@Override
+	public boolean isMultAssociative()
+	{
+		return( fac.isMultAssociative() );
+	}
+	
+	
+	@Override
+	public boolean isNestedMultAssociative()
+	{
+		return( fac.isNestedMultAssociative() );
+	}
+	
+	
 	/**
 	 * Gets the factory for the enclosed type.
 	 * 

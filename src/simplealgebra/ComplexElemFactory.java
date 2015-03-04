@@ -106,6 +106,20 @@ public class ComplexElemFactory<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 	}
 	
 	
+	@Override
+	public boolean isMultAssociative()
+	{
+		return( fac.isMultAssociative() );
+	}
+	
+	
+	@Override
+	public boolean isNestedMultAssociative()
+	{
+		return( fac.isMultAssociative() );
+	}
+	
+	
 	/**
 	 * Gets the factory for enclosed type.
 	 * 

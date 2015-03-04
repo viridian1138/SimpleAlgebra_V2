@@ -71,6 +71,20 @@ public class SymbolicElemFactory<R extends Elem<R,?>, S extends ElemFactory<R,S>
 		return( fac.isNestedMultCommutative() );
 	}
 	
+	
+	@Override
+	public boolean isMultAssociative()
+	{
+		return( fac.isMultAssociative() );
+	}
+	
+	@Override
+	public boolean isNestedMultAssociative()
+	{
+		return( fac.isNestedMultAssociative() );
+	}
+	
+	
 	/**
 	 * Gets the factory for the enclosed type.
 	 * 

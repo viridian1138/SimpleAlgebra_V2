@@ -61,6 +61,20 @@ public class DoubleElemFactory extends ElemFactory<DoubleElem, DoubleElemFactory
 		return( true );
 	}
 	
+	
+	@Override
+	public boolean isMultAssociative()
+	{
+		return( true );
+	}
+	
+	@Override
+	public boolean isNestedMultAssociative()
+	{
+		return( true );
+	}
+	
+	
 	@Override
 	public SymbolicElem<DoubleElem, DoubleElemFactory> handleSymbolicOptionalOp( Object id , 
 			ArrayList<SymbolicElem<DoubleElem, DoubleElemFactory>> args )  throws NotInvertibleException

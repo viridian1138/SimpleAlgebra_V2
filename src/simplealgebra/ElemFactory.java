@@ -124,5 +124,22 @@ public abstract class ElemFactory<T extends Elem<T,?>, R extends ElemFactory<T,R
 	public abstract boolean isNestedMultCommutative();
 	
 	
+	/**
+	 * Returns whether the multiplication of the elem type is associative.
+	 * 
+	 * @return Whether the multiplication of the elem type is associative.
+	 */
+	public abstract boolean isMultAssociative();
+	
+	/**
+	 * Returns whether the multiplication of the enclosed type if associative, or true
+	 * if there is no enclosed type.
+	 * 
+	 * @return Whether the multiplication of the enclosed type if associative, or true
+	 * if there is no enclosed type.
+	 */
+	public abstract boolean isNestedMultAssociative();
+	
+	
 }
 

@@ -136,6 +136,20 @@ public class SquareMatrixElemFactory<U extends NumDimensions, R extends Elem<R,?
 	}
 	
 	
+	@Override
+	public boolean isMultAssociative()
+	{
+		return( fac.isMultAssociative() );
+	}
+	
+	
+	@Override
+	public boolean isNestedMultAssociative()
+	{
+		return( fac.isMultAssociative() );
+	}
+	
+	
 	/**
 	 * Returns the factory for the enclosed type.
 	 * 
