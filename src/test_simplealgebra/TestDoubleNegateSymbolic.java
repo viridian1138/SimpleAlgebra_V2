@@ -47,7 +47,7 @@ import simplealgebra.symbolic.SymbolicZero;
 
 
 /**
- * Tests that symbolic double-negation yields the identity.
+ * Tests symbolic double-negation.
  * 
  * @author tgreen
  *

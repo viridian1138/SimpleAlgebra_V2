@@ -48,12 +48,22 @@ import simplealgebra.et.EinsteinTensorElemFactory;
 public class TestTensorBasics extends TestCase {
 	
 	
+	/**
+	 * Returns an empty tensor index list.
+	 * 
+	 * @return An empty tensor index list.
+	 */
 	final static ArrayList<String> indicesEmpty()
 	{
 		return( new ArrayList<String>() );
 	}
 	
 	
+	/**
+	 * Returns a tensor index list with "u".
+	 * 
+	 * @return The tensor index list.
+	 */
 	final static ArrayList<String> indicesU()
 	{
 		final ArrayList<String> ret = new ArrayList<String>();
@@ -62,6 +72,11 @@ public class TestTensorBasics extends TestCase {
 	}
 	
 	
+	/**
+	 * Returns a tensor index list with "v".
+	 * 
+	 * @return The tensor index list.
+	 */
 	final static ArrayList<String> indicesV()
 	{
 		final ArrayList<String> ret = new ArrayList<String>();
@@ -70,7 +85,11 @@ public class TestTensorBasics extends TestCase {
 	}
 	
 	
-	
+	/**
+	 * Returns a tensor index list with "(u,v)".
+	 * 
+	 * @return The tensor index list.
+	 */
 	final static ArrayList<String> indicesUV()
 	{
 		final ArrayList<String> ret = new ArrayList<String>();
@@ -80,7 +99,11 @@ public class TestTensorBasics extends TestCase {
 	}
 	
 	
-	
+	/**
+	 * Returns a tensor index list with "(v,u)".
+	 * 
+	 * @return The tensor index list.
+	 */
 	final static ArrayList<String> indicesVU()
 	{
 		final ArrayList<String> ret = new ArrayList<String>();
@@ -91,6 +114,11 @@ public class TestTensorBasics extends TestCase {
 	
 	
 	
+	/**
+	 * Returns an index for the component of a rank zero tensor.
+	 * 
+	 * @return The tensor index.
+	 */
 	final static ArrayList<BigInteger> scalar( )
 	{
 		final ArrayList<BigInteger> ret = new ArrayList<BigInteger>();
@@ -99,6 +127,11 @@ public class TestTensorBasics extends TestCase {
 	
 	
 	
+	/**
+	 * Returns an index for component zero of a rank one tensor.
+	 * 
+	 * @return The tensor index.
+	 */
 	final static ArrayList<BigInteger> vect0( )
 	{
 		final ArrayList<BigInteger> ret = new ArrayList<BigInteger>();
@@ -107,6 +140,12 @@ public class TestTensorBasics extends TestCase {
 	}
 	
 	
+	
+	/**
+	 * Returns an index for component 1 of a rank one tensor.
+	 * 
+	 * @return The tensor index.
+	 */
 	final static ArrayList<BigInteger> vect1( )
 	{
 		final ArrayList<BigInteger> ret = new ArrayList<BigInteger>();
@@ -115,6 +154,11 @@ public class TestTensorBasics extends TestCase {
 	}
 	
 	
+	/**
+	 * Returns an index for component 2 of a rank one tensor.
+	 * 
+	 * @return The tensor index.
+	 */
 	final static ArrayList<BigInteger> vect2( )
 	{
 		final ArrayList<BigInteger> ret = new ArrayList<BigInteger>();
@@ -123,6 +167,11 @@ public class TestTensorBasics extends TestCase {
 	}
 	
 	
+	/**
+	 * Returns an index for component 3 of a rank one tensor.
+	 * 
+	 * @return The tensor index.
+	 */
 	final static ArrayList<BigInteger> vect3( )
 	{
 		final ArrayList<BigInteger> ret = new ArrayList<BigInteger>();
@@ -132,7 +181,13 @@ public class TestTensorBasics extends TestCase {
 	
 	
 	
-	
+	/**
+	 * Returns an index for a rank 2 tensor at (u,v).
+	 * 
+	 * @param u The u index.
+	 * @param v The v index.
+	 * @return The tensor index.
+	 */
 	final static ArrayList<BigInteger> matUV( int u , int v )
 	{
 		final ArrayList<BigInteger> ret = new ArrayList<BigInteger>();
@@ -142,6 +197,13 @@ public class TestTensorBasics extends TestCase {
 	}
 	
 	
+	/**
+	 * Returns an index for a rank 2 tensor at (v,u).
+	 * 
+	 * @param u The u index.
+	 * @param v The v index.
+	 * @return The tensor index.
+	 */
 	final static ArrayList<BigInteger> matVU( int u , int v )
 	{
 		final ArrayList<BigInteger> ret = new ArrayList<BigInteger>();
