@@ -90,6 +90,8 @@ public class SimpleAlgebraTestSuite extends TestSuite {
 		s.addTestSuite( TestInvertMatrixBasic.class );
 		s.addTestSuite( TestPseudoscalar.class );
 		s.addTestSuite( TestTensorNotAssociative.class );
+		s.addTestSuite( TestInvertLeftSymbolicNonAssoc.class );
+		s.addTestSuite( TestInvertRightSymbolicNonAssoc.class );
 		return( s );
 	}
 	

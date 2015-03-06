@@ -700,6 +700,7 @@ end
 rule "Mult RootA"
       when
           el0 : SymbolicMult()
+          eval( el0.getFac().isMultAssociative() )
           eval( !( el0.getElemA() instanceof SymbolicMult ) )
           eval( !( el0.getElemB() instanceof SymbolicMult ) )
       then
@@ -717,6 +718,7 @@ end
 rule "Mult RootB"
       when
           el0 : SymbolicMult()
+          eval( el0.getFac().isMultAssociative() )
           eval( !( el0.getElemA() instanceof SymbolicMult ) )
           bf: MultFirst( root == el0.getElemB() )
           bl: MultLast( root == el0.getElemB() )
@@ -736,6 +738,7 @@ end
 rule "Mult RootC"
       when
           el0 : SymbolicMult()
+          eval( el0.getFac().isMultAssociative() )
           eval( !( el0.getElemB() instanceof SymbolicMult ) )
           bf: MultFirst( root == el0.getElemA() )
           bl: MultLast( root == el0.getElemA() )
@@ -754,6 +757,7 @@ end
 rule "Mult RootD"
       when
           el0 : SymbolicMult()
+          eval( el0.getFac().isMultAssociative() )
           bf0: MultFirst( root == el0.getElemA() )
           bl0: MultLast( root == el0.getElemA() )
           bf1: MultFirst( root == el0.getElemB() )
@@ -776,6 +780,7 @@ end
 rule "Mult RootX0"
       when
           el0 : SymbolicMult()
+          eval( el0.getFac().isMultAssociative() )
           mn: MultNext( root == el0.getElemB() )
       then
           insert( new MultNext( el0 , mn.getFirst() , mn.getNext() ) );
@@ -789,6 +794,7 @@ end
 rule "Mult RootX1"
       when
           el0 : SymbolicMult()
+          eval( el0.getFac().isMultAssociative() )
           mn: MultNext( root == el0.getElemA() )
       then
           insert( new MultNext( el0 , mn.getFirst() , mn.getNext() ) );
@@ -800,10 +806,11 @@ end
 
 
 
-rule "Inv El Mult El"
+rule "Inv El Mult El Associative"
       when
           elA : SymbolicElem( eval( !( elA instanceof SymbolicMult ) ) )
           elB : SymbolicElem( eval( !( elB instanceof SymbolicMult ) ) )
+          eval( elA.getFac().isMultAssociative() )
           mn: MultNext( first == elA , next == elB )
           eval( !( elA instanceof SymbolicIdentity ) )
           eval( !( elB instanceof SymbolicIdentity ) )
@@ -820,10 +827,11 @@ end
 
 
 
-rule "El Mult Inv El"
+rule "El Mult Inv El Associative"
       when
           elA : SymbolicElem( eval( !( elA instanceof SymbolicMult ) ) )
           elB : SymbolicElem( eval( !( elB instanceof SymbolicMult ) ) )
+          eval( elA.getFac().isMultAssociative() )
           mn: MultNext( first == elA , next == elB )
           eval( !( elA instanceof SymbolicIdentity ) )
           eval( !( elB instanceof SymbolicIdentity ) )
@@ -833,6 +841,52 @@ rule "El Mult Inv El"
           not( Reng( strt == mn.getRoot() ) )
       then
           insert( new Reng( mn.getRoot() , mn.getRoot().handleMultSimplify( elA , elB , ds ) ) );
+end
+
+
+
+
+
+
+
+
+rule "Inv El Mult El Non-Associative"
+      when
+          elA : SymbolicElem( eval( !( elA instanceof SymbolicMult ) ) )
+          elB : SymbolicElem( eval( !( elB instanceof SymbolicMult ) ) )
+          eval( !( elA.getFac().isMultAssociative() ) )
+          mn: SymbolicMult( elemA == elA , elemB == elB )
+          eval( !( elA instanceof SymbolicIdentity ) )
+          eval( !( elB instanceof SymbolicIdentity ) )
+          eval( elB.extSymbolicEquals( new SymbolicInvertRight( elA , elA.getFac().getFac() ) ) )
+          eval( elA != elB )
+          ds: DroolsSession()
+          not( Reng( strt == mn ) )
+      then
+          insert( new Reng( mn , mn.getFac().identity() ) );
+end
+
+
+
+
+
+
+
+
+rule "El Mult Inv El Non-Associative"
+      when
+          elA : SymbolicElem( eval( !( elA instanceof SymbolicMult ) ) )
+          elB : SymbolicElem( eval( !( elB instanceof SymbolicMult ) ) )
+          eval( !( elA.getFac().isMultAssociative() ) )
+          mn: SymbolicMult( elemA == elA , elemB == elB )
+          eval( !( elA instanceof SymbolicIdentity ) )
+          eval( !( elB instanceof SymbolicIdentity ) )
+          eval( elA.extSymbolicEquals( new SymbolicInvertLeft( elB , elB.getFac().getFac() ) ) )
+          eval( elA != elB )
+          ds: DroolsSession()
+          not( Reng( strt == mn ) )
+      then
+          insert( new Reng( mn , mn.getFac().identity() ) );
 end
 
 
