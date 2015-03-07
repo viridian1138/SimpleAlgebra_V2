@@ -50,14 +50,42 @@ import simplealgebra.symbolic.SymbolicIdentity;
 import simplealgebra.symbolic.SymbolicOps;
 
 
+/**
+ * Verifies that <math display="inline">
+ * <mrow>
+ * <msup>
+ *        <mi>a</mi>
+ *        <mo>-1L</mo>
+ *  </msup>
+ *  <mi>a</mi>
+ *  </mrow>
+ * </math> reduces to the identity for a non-associative elem.
+ * 
+ * @author thorngreen
+ *
+ */
 public class TestInvertLeftSymbolicNonAssoc extends TestCase 
 {
 	
 	
+	/**
+	 * Symbolic elem for <math display="inline">
+     * <mrow>
+     *  <mi>a</mi>
+     * </mrow>
+     * </math> to be used in the test.
+	 * 
+	 * @author tgreen
+	 *
+	 */
 	private class AElem extends SymbolicElem<EinsteinTensorElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,EinsteinTensorElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
 	{
 
-		
+		/**
+		 * Constructs the elem.
+		 * 
+		 * @param _fac The factory for the enclosed type.
+		 */
 		public AElem(EinsteinTensorElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory> _fac ) {
 			super(_fac);
 		}
@@ -96,7 +124,19 @@ public class TestInvertLeftSymbolicNonAssoc extends TestCase
 	
 	
 	
-	
+	/**
+	 * Verifies that <math display="inline">
+     * <mrow>
+     * <msup>
+     *        <mi>a</mi>
+     *        <mo>-1L</mo>
+     *  </msup>
+     *  <mi>a</mi>
+     *  </mrow>
+     * </math> reduces to the identity for a non-associative elem.
+	 * 
+	 * @throws NotInvertibleException
+	 */
 	public void testInvertRightElems() throws NotInvertibleException
 	{
 		final TestDimensionFour td = new TestDimensionFour();
