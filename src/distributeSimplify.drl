@@ -863,7 +863,7 @@ rule "Inv El Mult El Non-Associative"
           ds: DroolsSession()
           not( Reng( strt == mn ) )
       then
-          insert( new Reng( mn , mn.getFac().identity() ) );
+          insert( new Reng( mn , new SymbolicIdentity( mn.getFac().getFac() , ds ) ) );
 end
 
 
@@ -886,7 +886,7 @@ rule "El Mult Inv El Non-Associative"
           ds: DroolsSession()
           not( Reng( strt == mn ) )
       then
-          insert( new Reng( mn , mn.getFac().identity() ) );
+          insert( new Reng( mn , new SymbolicIdentity( mn.getFac().getFac() , ds ) ) );
 end
 
 

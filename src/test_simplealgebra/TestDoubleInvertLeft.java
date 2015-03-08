@@ -38,33 +38,33 @@ import simplealgebra.SquareMatrixElemFactory;
 
 /**
  * Tests inverses for a Matrix Algebra <math display="inline">
-<mrow>
-  <msub>
-          <mi>M</mi>
-        <mn>4</mn>
-  </msub>
-  <mo>(</mo>
-  <msub>
-          <mi>M</mi>
-        <mn>4</mn>
-  </msub>
-  
-    <mrow>
-      <mo>(</mo>
-      <msub>
-              <mi>M</mi>
-            <mn>4</mn>
-      </msub>
-      <mo>(</mo>
-      <mi>R</mi>
-      <mo>)</mo>
-      <mo>)</mo>
-      <mo>)</mo>
-    </mrow>
-  
-</mrow>
-</math>
-.  For more information see:
+ * <mrow>
+ *   <msub>
+ *           <mi>M</mi>
+ *         <mn>4</mn>
+ *   </msub>
+ *   <mo>(</mo>
+ *   <msub>
+ *           <mi>M</mi>
+ *         <mn>4</mn>
+ *   </msub>
+ *   
+ *     <mrow>
+ *       <mo>(</mo>
+ *       <msub>
+ *               <mi>M</mi>
+ *             <mn>4</mn>
+ *       </msub>
+ *       <mo>(</mo>
+ *       <mi>R</mi>
+ *       <mo>)</mo>
+ *       <mo>)</mo>
+ *       <mo>)</mo>
+ *     </mrow>
+ *   
+ * </mrow>
+ * </math>
+ * .  For more information see:
  * 
  * http://en.wikipedia.org/wiki/Matrix_ring
  * 
@@ -193,6 +193,8 @@ public class TestDoubleInvertLeft extends TestCase {
 
 	/**
 	 * Test method for {@link simplealgebra.SquareMatrixElem#invertLeft()}.
+	 * 
+	 * @param seed The random number seed for the test.
 	 */
 	private void seedTestInvertLeft( long seed ) throws NotInvertibleException {
 		

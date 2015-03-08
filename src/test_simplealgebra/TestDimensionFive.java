@@ -29,21 +29,20 @@ import java.math.BigInteger;
 import simplealgebra.NumDimensions;
 
 /**
+ * Test class for five-dimensional problems.
+ * 
  * @author thorngreen
  *
  */
 public final class TestDimensionFive extends NumDimensions {
 
 	/**
-	 * 
+	 * Constructs the NumDimensions.
 	 */
 	public TestDimensionFive() {
-		// TODO Auto-generated constructor stub
+		// Does Nothing
 	}
 
-	/* (non-Javadoc)
-	 * @see simplealgebra.NumDimensions#getVal()
-	 */
 	@Override
 	public BigInteger getVal() {
 		return( BigInteger.valueOf(5) );

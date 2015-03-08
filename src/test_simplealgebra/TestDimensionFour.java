@@ -29,21 +29,20 @@ import java.math.BigInteger;
 import simplealgebra.NumDimensions;
 
 /**
+ * Test class for four-dimensional problems.
+ * 
  * @author thorngreen
  *
  */
 public final class TestDimensionFour extends NumDimensions {
 
 	/**
-	 * 
+	 * Constructs the NumDimensions.
 	 */
 	public TestDimensionFour() {
-		// TODO Auto-generated constructor stub
+		// Does Nothing
 	}
 
-	/* (non-Javadoc)
-	 * @see simplealgebra.NumDimensions#getVal()
-	 */
 	@Override
 	public BigInteger getVal() {
 		return( BigInteger.valueOf(4) );
