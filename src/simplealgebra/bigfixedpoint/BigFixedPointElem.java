@@ -149,6 +149,16 @@ public class BigFixedPointElem<T extends Precision> extends Elem<BigFixedPointEl
 	{
 		return( ( val.doubleValue() ) / ( prec.getVal().doubleValue() ) );
 	}
+	
+	
+	/**
+	 * Returns the value at the specified precision.
+	 * @return The value at the specified precision.
+	 */
+	public BigInteger getPrecVal()
+	{
+		return( val );
+	}
 
 	
 	/**
