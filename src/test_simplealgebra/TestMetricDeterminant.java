@@ -62,7 +62,16 @@ import simplealgebra.*;
 import java.io.*;
 
 
-
+/**
+ * Test for generating the determinant of the metric tensor.
+ * 
+ * http://physics.stackexchange.com/questions/33950/what-is-the-equation-of-the-gravitational-potential-in-general-relativity
+ *  
+ * http://en.wikipedia.org/wiki/Metric_tensor_%28general_relativity%29
+ * 
+ * @author thorngreen
+ *
+ */
 public class TestMetricDeterminant extends TestCase 
 {
 
@@ -127,6 +136,10 @@ public class TestMetricDeterminant extends TestCase
 	/**
 	 * Elem representing the potential term.
 	 * 
+	 * http://physics.stackexchange.com/questions/33950/what-is-the-equation-of-the-gravitational-potential-in-general-relativity
+	 *  
+	 * http://en.wikipedia.org/wiki/Metric_tensor_%28general_relativity%29
+	 * 
 	 * @author thorngreen
 	 *
 	 */
@@ -183,7 +196,15 @@ public class TestMetricDeterminant extends TestCase
 	
 	
 	
-	
+	/**
+	 * Test for generating the determinant of the metric tensor.
+	 * 
+	 * http://physics.stackexchange.com/questions/33950/what-is-the-equation-of-the-gravitational-potential-in-general-relativity
+	 *  
+	 * http://en.wikipedia.org/wiki/Metric_tensor_%28general_relativity%29
+	 * 
+	 * @throws NotInvertibleException
+	 */
 	public void testMetricDeterminant() throws NotInvertibleException
 	{
 		final TestDimensionFour td = new TestDimensionFour();
