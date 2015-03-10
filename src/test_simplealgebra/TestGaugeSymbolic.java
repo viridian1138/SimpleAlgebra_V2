@@ -58,6 +58,12 @@ import simplealgebra.symbolic.SymbolicOps;
 import java.io.*;
 
 
+/**
+ * Tests the ability to construct a gauge.
+ * 
+ * @author thorngreen
+ *
+ */
 public class TestGaugeSymbolic extends TestCase 
 {
 
@@ -121,6 +127,10 @@ public class TestGaugeSymbolic extends TestCase
 	
 	/**
 	 * Elem representing the potential term.
+	 * 
+	 * http://physics.stackexchange.com/questions/33950/what-is-the-equation-of-the-gravitational-potential-in-general-relativity
+	 *  
+	 * http://en.wikipedia.org/wiki/Metric_tensor_%28general_relativity%29
 	 * 
 	 * @author thorngreen
 	 *
@@ -706,7 +716,11 @@ public class TestGaugeSymbolic extends TestCase
 	
 	
 	
-	
+	/**
+	 * Tests the ability to construct a gauge.
+	 * 
+	 * @throws NotInvertibleException
+	 */
 	public void testGaugeSymbolic() throws NotInvertibleException
 	{
 		final TestDimensionFour td = new TestDimensionFour();

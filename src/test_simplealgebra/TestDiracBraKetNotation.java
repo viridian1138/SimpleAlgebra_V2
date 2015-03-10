@@ -59,6 +59,14 @@ public class TestDiracBraKetNotation extends TestCase {
 	
 	
 	
+	/**
+	 * Mutator for performing a left-conjugate.
+	 * 
+	 * @author thorngreen
+	 *
+	 * @param <R> The enclosed type.
+	 * @param <S> The factory for the enclosed type.
+	 */
 	protected static class ConjugateLeftMutator<R extends Elem<R,?>, S extends ElemFactory<R,S>> 
 		implements Mutator<ComplexElem<R,S>>
 	{
@@ -84,7 +92,14 @@ public class TestDiracBraKetNotation extends TestCase {
 	
 	
 	
-	
+	/**
+	 * Mutator for performing a right-conjugate.
+	 * 
+	 * @author thorngreen
+	 *
+	 * @param <R> The enclosed type.
+	 * @param <S> The factory for the enclosed type.
+	 */
 	protected static class ConjugateRightMutator<R extends Elem<R,?>, S extends ElemFactory<R,S>> 
 		implements Mutator<ComplexElem<R,S>>
 {
@@ -110,9 +125,9 @@ public class TestDiracBraKetNotation extends TestCase {
 	
 	
 	/**
-	 * Converts a Ket vector to a Bra vector.
-	 * @param in
-	 * @return
+	 * Converts a 4-D Ket vector to a Bra vector.
+	 * @param in Input Ket vector.
+	 * @return Output Bra vector.
 	 * @throws NotInvertibleException
 	 */
 	protected GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
@@ -123,9 +138,9 @@ public class TestDiracBraKetNotation extends TestCase {
 	
 	
 	/**
-	 * Converts a Bra vector to a Ket vector.
-	 * @param in
-	 * @return
+	 * Converts a 4-D Bra vector to a Ket vector.
+	 * @param in Input Bra vector.
+	 * @return Output Ket vector.
 	 * @throws NotInvertibleException
 	 */
 	protected GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
@@ -138,9 +153,9 @@ public class TestDiracBraKetNotation extends TestCase {
 	
 	
 	/**
-	 * Converts a Ket vector to a Bra vector.
-	 * @param in
-	 * @return
+	 * Converts a 3-D Ket vector to a Bra vector.
+	 * @param in Input Ket vector.
+	 * @return Output Bra vector.
 	 * @throws NotInvertibleException
 	 */
 	protected GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
@@ -151,9 +166,9 @@ public class TestDiracBraKetNotation extends TestCase {
 
 
 	/**
-	 * Converts a Bra vector to a Ket vector.
-	 * @param in
-	 * @return
+	 * Converts a 3-D Bra vector to a Ket vector.
+	 * @param in Input Bra vector.
+	 * @return Output Ket vector.
 	 * @throws NotInvertibleException
 	 */
 	protected GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>

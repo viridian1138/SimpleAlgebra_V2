@@ -102,7 +102,25 @@ public class TestInvertSimple extends TestCase {
 
 
 	/**
-	 * Test method for {@link simplealgebra.SquareMatrixElem#invertLeft()}.
+	 * Verifies that for matrices <math display="inline">
+     * <mrow>
+     *  <msup>
+     *          <mi>A</mi>
+     *        <mo>-1L</mo>
+     *  </msup>
+     *  <mi>A</mi>
+     *  <mo>=</mo>
+     *  <mi>I</mi>
+     * </mrow>
+     * </math>
+     * where <math display="inline">
+     * <mrow>
+     *  <mi>I</mi>
+     * </mrow>
+     * </math> is the identity.
+	 * 
+	 * @param seed The random number seed for generating the matrix.
+	 * @throws NotInvertibleException
 	 */
 	private void seedTestInvertLeft( long seed ) throws NotInvertibleException {
 		
@@ -201,7 +219,25 @@ public class TestInvertSimple extends TestCase {
 
 	
 	/**
-	 * Test method for {@link simplealgebra.SquareMatrixElem#invertRight()}.
+	 * Verifies for matrices that <math display="inline">
+     * <mrow>
+     *  <mi>A</mi>
+     *  <msup>
+     *          <mi>A</mi>
+     *        <mo>-1R</mo>
+     *  </msup>
+     *  <mo>=</mo>
+     *  <mi>I</mi>
+     * </mrow>
+     * </math> 
+     * where <math display="inline">
+     * <mrow>
+     *  <mi>I</mi>
+     * </mrow>
+     * </math> is the identity.  Also verifies that the reverse-order holds for commutative nested elems.
+	 * 
+	 * @param seed The random number seed for generating the matrix.
+	 * @throws NotInvertibleException
 	 */
 	private void seedTestInvertRight( long seed ) throws NotInvertibleException {
 		
@@ -278,7 +314,10 @@ public class TestInvertSimple extends TestCase {
 	
 	
 	/**
-	 * Test method for {@link simplealgebra.SquareMatrixElem#invertRight()}.
+	 * Verifies that the matrix right-inverse and the left-inverse are identical for commutative nested elems.
+	 * 
+	 * @param seed The random number seed for generating the matrix.
+	 * @throws NotInvertibleException
 	 */
 	private void seedTestInvertSimilarity( long seed ) throws NotInvertibleException {
 		
