@@ -329,6 +329,19 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 	
 	
 	/**
+	 * Inserts the elem into a Drools ( http://drools.org ) session.
+	 * @param ds The session.
+	 * @return This elem.
+	 */
+	public SymbolicElem<R,S> insSym( DroolsSession ds )
+	{
+		ds.insert( this );
+		return( this );
+	}
+	
+	
+	
+	/**
 	 * The factory for the enclosed type.
 	 */
 	protected S fac;

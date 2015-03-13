@@ -54,7 +54,7 @@ rule "Apply Negate"
           ds : DroolsSession()
           not( Reng( strt == p ) )
      then
-          insert( new Reng( p , new SymbolicNegate( r0.getEnd() , p.getFac().getFac() , ds ) ) );
+          insert( new Reng( p , r0.getEnd().negate().insSym( ds ) ) );
 end
 
 
@@ -185,7 +185,7 @@ rule "Apply AddA"
           ds : DroolsSession()
           not( Reng( strt == p ) )
      then
-          insert( new Reng( p , new SymbolicAdd( r0.getEnd() , p.getElemB() , p.getFac().getFac() , ds ) ) );
+          insert( new Reng( p , r0.getEnd().add( p.getElemB() ).insSym( ds ) ) );
 end
 
 
@@ -199,7 +199,7 @@ rule "Apply AddB"
           ds : DroolsSession()
           not( Reng( strt == p ) )
      then
-          insert( new Reng( p , new SymbolicAdd( p.getElemA() , r0.getEnd() , p.getFac().getFac() , ds ) ) );
+          insert( new Reng( p , p.getElemA().add( r0.getEnd() ).insSym( ds ) ) );
 end
 
 
@@ -213,7 +213,7 @@ rule "Apply MultA"
           ds : DroolsSession()
           not( Reng( strt == p ) )
      then
-          insert( new Reng( p , new SymbolicMult( r0.getEnd() , p.getElemB() , p.getFac().getFac() , ds ) ) );
+          insert( new Reng( p , r0.getEnd().mult( p.getElemB() ).insSym( ds ) ) );
 end
 
 
@@ -227,7 +227,7 @@ rule "Apply MultB"
           ds : DroolsSession()
           not( Reng( strt == p ) )
      then
-          insert( new Reng( p , new SymbolicMult( p.getElemA() , r0.getEnd() , p.getFac().getFac() , ds ) ) );
+          insert( new Reng( p , p.getElemA().mult( r0.getEnd() ).insSym( ds ) ) );
 end
 
 
@@ -489,7 +489,7 @@ rule "Mult Over Negate A"
           ds : DroolsSession()
           not( Reng( strt == mult1 ) )
       then
-          insert( new Reng( mult1 , new SymbolicNegate( new SymbolicMult( a , b , mult1.getFac().getFac() , ds ) , na.getFac().getFac() , ds ) ) );
+          insert( new Reng( mult1 , a.mult( b ).insSym( ds ).negate().insSym( ds ) ) );
 end
 
 
@@ -504,7 +504,7 @@ rule "Mult Over Negate B"
           ds : DroolsSession()
           not( Reng( strt == mult1 ) )
       then
-          insert( new Reng( mult1 , new SymbolicNegate( new SymbolicMult( a , b , mult1.getFac().getFac() , ds ) , nb.getFac().getFac() , ds ) ) );
+          insert( new Reng( mult1 , a.mult( b ).insSym( ds ).negate().insSym( ds ) ) );
 end
 
 
@@ -521,7 +521,7 @@ rule "Mult Over DivideBy A"
           ds : DroolsSession()
           not( Reng( strt == mult1 ) )
       then
-          insert( new Reng( mult1 , new SymbolicDivideBy( new SymbolicMult( a , b , mult1.getFac().getFac() , ds ) , na.getFac().getFac() , na.getIval() , ds ) ) );
+          insert( new Reng( mult1 , new SymbolicDivideBy( a.mult( b ).insSym( ds ) , na.getFac().getFac() , na.getIval() , ds ) ) );
 end
 
 
@@ -536,7 +536,7 @@ rule "Mult Over DivideBy B"
           ds : DroolsSession()
           not( Reng( strt == mult1 ) )
       then
-          insert( new Reng( mult1 , new SymbolicDivideBy( new SymbolicMult( a , b , mult1.getFac().getFac() , ds ) , nb.getFac().getFac() , nb.getIval() , ds ) ) );
+          insert( new Reng( mult1 , new SymbolicDivideBy( a.mult( b ).insSym( ds ) , nb.getFac().getFac() , nb.getIval() , ds ) ) );
 end
 
 
@@ -553,7 +553,7 @@ rule "Negate Over Add"
           ds : DroolsSession()
           not( Reng( strt == d ) )
       then
-          insert( new Reng( d , new SymbolicAdd( new SymbolicNegate( a , d.getFac().getFac() , ds ) , new SymbolicNegate( b , d.getFac().getFac() , ds ) , c.getFac().getFac() , ds ) ) );
+          insert( new Reng( d , a.negate().insSym( ds ).add( b.negate().insSym( ds ) ).insSym( ds ) ) );
 end
 
 

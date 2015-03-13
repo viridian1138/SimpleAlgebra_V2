@@ -124,6 +124,12 @@ public class SymbolicNegate<R extends Elem<R,?>, S extends ElemFactory<R,S>> ext
 	
 	
 	@Override
+	public SymbolicElem<R, S> negate() {
+		return( elem );
+	}
+	
+	
+	@Override
 	public SymbolicElem<R, S> handleOptionalOp( Object id , ArrayList<SymbolicElem<R, S>> args ) throws NotInvertibleException
 	{
 		

@@ -161,7 +161,7 @@ public class SymbolicZero<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 
 	@Override
 	public SymbolicElem<R, S> divideBy(int val) {
-		return( this );
+		return( val != 0 ? this : super.divideBy( val ) );
 	}
 
 }

@@ -54,7 +54,7 @@ rule "Apply Negate"
           ds : DroolsSession()
           not( Reng( strt == p ) )
      then
-          insert( new Reng( p , new SymbolicNegate( r0.getEnd() , p.getFac().getFac() , ds ) ) );
+          insert( new Reng( p , r0.getEnd().negate().insSym( ds ) ) );
 end
 
 
@@ -151,7 +151,7 @@ rule "Apply Divide By"
           ds : DroolsSession()
           not( Reng( strt == p ) )
      then
-          insert( new Reng( p , new SymbolicDivideBy( r0.getEnd() , p.getFac().getFac() , p.getIval() , ds ) ) );
+          insert( new Reng( p , r0.getEnd().divideBy( p.getIval() ).insSym( ds ) ) );
 end
 
 
@@ -185,7 +185,7 @@ rule "Apply AddA"
           ds : DroolsSession()
           not( Reng( strt == p ) )
      then
-          insert( new Reng( p , new SymbolicAdd( r0.getEnd() , p.getElemB() , p.getFac().getFac() , ds ) ) );
+          insert( new Reng( p , r0.getEnd().add( p.getElemB() ).insSym( ds ) ) );
 end
 
 
@@ -199,7 +199,7 @@ rule "Apply AddB"
           ds : DroolsSession()
           not( Reng( strt == p ) )
      then
-          insert( new Reng( p , new SymbolicAdd( p.getElemA() , r0.getEnd() , p.getFac().getFac() , ds ) ) );
+          insert( new Reng( p , p.getElemA().add( r0.getEnd() ).insSym( ds ) ) );
 end
 
 
@@ -213,7 +213,7 @@ rule "Apply MultA"
           ds : DroolsSession()
           not( Reng( strt == p ) )
      then
-          insert( new Reng( p , new SymbolicMult( r0.getEnd() , p.getElemB() , p.getFac().getFac() , ds ) ) );
+          insert( new Reng( p , r0.getEnd().mult( p.getElemB() ).insSym( ds ) ) );
 end
 
 
@@ -227,7 +227,7 @@ rule "Apply MultB"
           ds : DroolsSession()
           not( Reng( strt == p ) )
      then
-          insert( new Reng( p , new SymbolicMult( p.getElemA() , r0.getEnd() , p.getFac().getFac() , ds ) ) );
+          insert( new Reng( p , p.getElemA().mult( r0.getEnd() ).insSym( ds ) ) );
 end
 
 
@@ -489,7 +489,7 @@ rule "Mult Over Negate A"
           ds : DroolsSession()
           not( Reng( strt == mult1 ) )
       then
-          insert( new Reng( mult1 , new SymbolicNegate( new SymbolicMult( a , b , mult1.getFac().getFac() , ds ) , na.getFac().getFac() , ds ) ) );
+          insert( new Reng( mult1 , a.mult( b ).insSym( ds ).negate().insSym( ds ) ) );
 end
 
 
@@ -504,7 +504,7 @@ rule "Mult Over Negate B"
           ds : DroolsSession()
           not( Reng( strt == mult1 ) )
       then
-          insert( new Reng( mult1 , new SymbolicNegate( new SymbolicMult( a , b , mult1.getFac().getFac() , ds ) , nb.getFac().getFac() , ds ) ) );
+          insert( new Reng( mult1 , a.mult( b ).insSym( ds ).negate().insSym( ds ) ) );
 end
 
 
@@ -521,7 +521,7 @@ rule "Mult Over DivideBy A"
           ds : DroolsSession()
           not( Reng( strt == mult1 ) )
       then
-          insert( new Reng( mult1 , new SymbolicDivideBy( new SymbolicMult( a , b , mult1.getFac().getFac() , ds ) , na.getFac().getFac() , na.getIval() , ds ) ) );
+          insert( new Reng( mult1 , a.mult( b ).insSym( ds ).divideBy( na.getIval() ).insSym( ds ) ) );
 end
 
 
@@ -536,7 +536,7 @@ rule "Mult Over DivideBy B"
           ds : DroolsSession()
           not( Reng( strt == mult1 ) )
       then
-          insert( new Reng( mult1 , new SymbolicDivideBy( new SymbolicMult( a , b , mult1.getFac().getFac() , ds ) , nb.getFac().getFac() , nb.getIval() , ds ) ) );
+          insert( new Reng( mult1 , a.mult( b ).insSym( ds ).divideBy( nb.getIval() ).insSym( ds ) ) );
 end
 
 
@@ -553,7 +553,7 @@ rule "Negate Over Add"
           ds : DroolsSession()
           not( Reng( strt == d ) )
       then
-          insert( new Reng( d , new SymbolicAdd( new SymbolicNegate( a , d.getFac().getFac() , ds ) , new SymbolicNegate( b , d.getFac().getFac() , ds ) , c.getFac().getFac() , ds ) ) );
+          insert( new Reng( d , a.negate().insSym( ds ).add( b.negate().insSym( ds ) ).insSym( ds ) ) );
 end
 
 
@@ -569,7 +569,7 @@ rule "DivideBy Over Add"
           ds : DroolsSession()
           not( Reng( strt == d ) )
       then
-          insert( new Reng( d , new SymbolicAdd( new SymbolicDivideBy( a , d.getFac().getFac() , d.getIval() , ds ) , new SymbolicDivideBy( b , d.getFac().getFac() , d.getIval() , ds ) , c.getFac().getFac() , ds ) ) );
+          insert( new Reng( d , new SymbolicAdd( a.divideBy( d.getIval() ).insSym( ds ) , b.divideBy( d.getIval() ).insSym( ds ) , c.getFac().getFac() , ds ) ) );
 end
 
 
@@ -584,7 +584,7 @@ rule "DivideBy Over Negate"
           ds : DroolsSession()
           not( Reng( strt == c ) )
       then
-          insert( new Reng( c , new SymbolicNegate( new SymbolicDivideBy( a , c.getFac().getFac() , c.getIval() , ds ) , b.getFac().getFac() , ds ) ) );
+          insert( new Reng( c , new SymbolicNegate( a.divideBy( c.getIval() ).insSym( ds ) , b.getFac().getFac() , ds ) ) );
 end
 
 
@@ -639,7 +639,7 @@ rule "El Plus Negative ElA"
           addB : SymbolicAdd( elemA == elB )
           r1: AddRoot( elemA == addA )
           AddRoot( elemA == addB , elemB == r1.getElemB() )
-          eval( elA.extSymbolicEquals( new SymbolicNegate( elB , elB.getFac().getFac() ) ) )
+          eval( elA.extSymbolicEquals( elB.negate() ) )
           eval( elA != elB )
           ds: DroolsSession()
           not( Reng( strt == r1.getElemB() ) )
@@ -660,7 +660,7 @@ rule "El Plus Negative ElB"
           addB : SymbolicAdd( elemA == elB )
           r1: AddRoot( elemA == addA )
           AddRoot( elemA == addB , elemB == r1.getElemB() )
-          eval( elA.extSymbolicEquals( new SymbolicNegate( elB , elB.getFac().getFac() ) ) )
+          eval( elA.extSymbolicEquals( elB.negate() ) )
           eval( elA != elB )
           ds:DroolsSession()
           not( Reng( strt == r1.getElemB() ) )
@@ -682,7 +682,7 @@ rule "El Plus Negative ElD"
           addB : SymbolicAdd( elemB == elB )
           r1: AddRoot( elemA == addA )
           AddRoot( elemA == addB , elemB == r1.getElemB() )
-          eval( elA.extSymbolicEquals( new SymbolicNegate( elB , elB.getFac().getFac() ) ) )
+          eval( elA.extSymbolicEquals( elB.negate() ) )
           eval( elA != elB )
           ds:DroolsSession()
           not( Reng( strt == r1.getElemB() ) )
@@ -814,7 +814,7 @@ rule "Inv El Mult El Associative"
           mn: MultNext( first == elA , next == elB )
           eval( !( elA instanceof SymbolicIdentity ) )
           eval( !( elB instanceof SymbolicIdentity ) )
-          eval( elB.extSymbolicEquals( new SymbolicInvertRight( elA , elA.getFac().getFac() ) ) )
+          eval( elB.extSymbolicEquals( elA.invertRight() ) )
           eval( elA != elB )
           ds: DroolsSession()
           not( Reng( strt == mn.getRoot() ) )
@@ -835,7 +835,7 @@ rule "El Mult Inv El Associative"
           mn: MultNext( first == elA , next == elB )
           eval( !( elA instanceof SymbolicIdentity ) )
           eval( !( elB instanceof SymbolicIdentity ) )
-          eval( elA.extSymbolicEquals( new SymbolicInvertLeft( elB , elB.getFac().getFac() ) ) )
+          eval( elA.extSymbolicEquals( elB.invertLeft() ) )
           eval( elA != elB )
           ds: DroolsSession()
           not( Reng( strt == mn.getRoot() ) )
@@ -858,7 +858,7 @@ rule "Inv El Mult El Non-Associative"
           mn: SymbolicMult( elemA == elA , elemB == elB )
           eval( !( elA instanceof SymbolicIdentity ) )
           eval( !( elB instanceof SymbolicIdentity ) )
-          eval( elB.extSymbolicEquals( new SymbolicInvertRight( elA , elA.getFac().getFac() ) ) )
+          eval( elB.extSymbolicEquals( elA.invertRight() ) )
           eval( elA != elB )
           ds: DroolsSession()
           not( Reng( strt == mn ) )
@@ -881,7 +881,7 @@ rule "El Mult Inv El Non-Associative"
           mn: SymbolicMult( elemA == elA , elemB == elB )
           eval( !( elA instanceof SymbolicIdentity ) )
           eval( !( elB instanceof SymbolicIdentity ) )
-          eval( elA.extSymbolicEquals( new SymbolicInvertLeft( elB , elB.getFac().getFac() ) ) )
+          eval( elA.extSymbolicEquals( elB.invertLeft() ) )
           eval( elA != elB )
           ds: DroolsSession()
           not( Reng( strt == mn ) )
