@@ -218,52 +218,140 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 			{
 				case DISTRIBUTE_SIMPLIFY:
 				{
-					StatefulKnowledgeSession session = getDistributeSimplifyKnowledgeBase().newStatefulKnowledgeSession();
-					
-					session.insert( new DroolsSession( session ) );
-					
-					if( LoggingConfiguration.LOGGING_ON )
+					SymbolicElem<R,S> prev = this;
+					StatefulKnowledgeSession session = null;
+					SymbolicPlaceholder<R,S> place = null;
+					while( true )
 					{
-						session.insert( new LoggingConfiguration() );
-					}
+						try
+						{
+							session = getDistributeSimplifyKnowledgeBase().newStatefulKnowledgeSession();
+					
+							session.insert( new DroolsSession( session ) );
+					
+							if( LoggingConfiguration.LOGGING_ON )
+							{
+								session.insert( new LoggingConfiguration() );
+							}
 						
-					SymbolicPlaceholder<R,S> place = new SymbolicPlaceholder<R,S>( this , fac );
+							place = new SymbolicPlaceholder<R,S>( prev , fac );
 						
-					place.performInserts( session );
+							place.performInserts( session );
 								
-					session.fireAllRules();
+							session.fireAllRules();
 					
-					SymbolicElem<R, S> ret = place.getElem();
+							SymbolicElem<R, S> ret = place.getElem();
 					
-					session.dispose();
+							session.dispose();
 						
-					return( ret );
+							return( ret );
+						}
+						catch( OutOfMemoryError ex )
+						{
+							SymbolicElem<R, S> ret = place != null ? place.getElem() : null;
+							
+							/*
+							 * Always try to dispose the session after running out of memory.
+							 */
+							try
+							{
+								if( session != null )
+								{
+									session.dispose();
+								}
+							}
+							catch( Throwable ex2 )
+							{
+								ex2.printStackTrace( System.out );
+							}
+							
+							/*
+							 * If no simplifications were completed, exit with exception.
+							 */
+							if( ( ret == null ) || ( ret == prev ) )
+							{
+								throw( ex );
+							}
+							
+							/*
+							 * If some simplifications completed before the memory limits ran out,
+							 * re-run the session and see if it's possible to get farther on the next run.
+							 */
+							prev = ret;
+							session = null;
+							place = null;
+						}
+					}
 				}
 				// break;
 				
 				
 				case DISTRIBUTE_SIMPLIFY2:
 				{
-					StatefulKnowledgeSession session = getDistributeSimplify2KnowledgeBase().newStatefulKnowledgeSession();
-					
-					session.insert( new DroolsSession( session ) );
-					
-					if( LoggingConfiguration.LOGGING_ON )
+					SymbolicElem<R,S> prev = this;
+					StatefulKnowledgeSession session = null;
+					SymbolicPlaceholder<R,S> place = null;
+					while( true )
 					{
-						session.insert( new LoggingConfiguration() );
-					}
+						try
+						{
+							session = getDistributeSimplify2KnowledgeBase().newStatefulKnowledgeSession();
+					
+							session.insert( new DroolsSession( session ) );
 						
-					SymbolicPlaceholder<R,S> place = new SymbolicPlaceholder<R,S>( this , fac );
+							if( LoggingConfiguration.LOGGING_ON )
+							{
+								session.insert( new LoggingConfiguration() );
+							}
 						
-					place.performInserts( session );
+							place = new SymbolicPlaceholder<R,S>( prev , fac );
+						
+							place.performInserts( session );
 								
-					session.fireAllRules();
+							session.fireAllRules();
 					
-					SymbolicElem<R, S> ret = place.getElem();
+							SymbolicElem<R, S> ret = place.getElem();
 					
-					session.dispose();
+							session.dispose();
 						
-					return( ret );
+							return( ret );
+						}
+						catch( OutOfMemoryError ex )
+						{
+							SymbolicElem<R, S> ret = place != null ? place.getElem() : null;
+							
+							/*
+							 * Always try to dispose the session after running out of memory.
+							 */
+							try
+							{
+								if( session != null )
+								{
+									session.dispose();
+								}
+							}
+							catch( Throwable ex2 )
+							{
+								ex2.printStackTrace( System.out );
+							}
+							
+							/*
+							 * If no simplifications were completed, exit with exception.
+							 */
+							if( ( ret == null ) || ( ret == prev ) )
+							{
+								throw( ex );
+							}
+							
+							/*
+							 * If some simplifications completed before the memory limits ran out,
+							 * re-run the session and see if it's possible to get farther on the next run.
+							 */
+							prev = ret;
+							session = null;
+							place = null;
+						}
+					}
 				}
 				// break;
 				
