@@ -294,7 +294,7 @@ end
 
 
 
-
+// This simplification has a parallel implementation in SymbolicZero.negate()
 rule "Double Negate"
      when
           e0 : SymbolicElem( )
@@ -385,7 +385,7 @@ end
 
 
 
-
+// This simplification has a parallel implementation in SymbolicZero.negate()
 rule "Negate Zero"
       when
           ez : SymbolicZero( )
@@ -397,6 +397,8 @@ end
 
 
 
+
+// This simplification has a parallel implementation in SymbolicZero.add()
 rule "Add Zero A"
       when
           ez : SymbolicZero( )
@@ -453,6 +455,8 @@ end
 
 
 
+
+// This simplification has a parallel implementation in SymbolicZero.mult()
 rule "Mult Zero A"
       when
           ez : SymbolicZero( )
@@ -462,6 +466,7 @@ rule "Mult Zero A"
       then
           insert( new Reng( mult1 , ez ) );
 end
+
 
 
 
@@ -728,12 +733,13 @@ end
 
 
 
-
+// This simplification has a parallel implementation in SymbolicZero.divideBy()
 rule "DivideBy OF Zero --> Zero"
       when
           a : SymbolicZero( )
           b : SymbolicDivideBy( elem == a )
           ds : DroolsSession()
+          eval( b.getIval() != 0 )
       then
           insert( new Reng( b , new SymbolicZero( b.getFac().getFac() , ds ) ) );
 end

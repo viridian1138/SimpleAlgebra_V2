@@ -209,6 +209,8 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 		ps.println( "</html>" );
 	}
 	
+	
+	
 	@Override
 	public SymbolicElem<R, S> handleOptionalOp( Object id , ArrayList<SymbolicElem<R, S>> args ) throws NotInvertibleException
 	{
@@ -218,140 +220,14 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 			{
 				case DISTRIBUTE_SIMPLIFY:
 				{
-					SymbolicElem<R,S> prev = this;
-					StatefulKnowledgeSession session = null;
-					SymbolicPlaceholder<R,S> place = null;
-					while( true )
-					{
-						try
-						{
-							session = getDistributeSimplifyKnowledgeBase().newStatefulKnowledgeSession();
-					
-							session.insert( new DroolsSession( session ) );
-					
-							if( LoggingConfiguration.LOGGING_ON )
-							{
-								session.insert( new LoggingConfiguration() );
-							}
-						
-							place = new SymbolicPlaceholder<R,S>( prev , fac );
-						
-							place.performInserts( session );
-								
-							session.fireAllRules();
-					
-							SymbolicElem<R, S> ret = place.getElem();
-					
-							session.dispose();
-						
-							return( ret );
-						}
-						catch( OutOfMemoryError ex )
-						{
-							SymbolicElem<R, S> ret = place != null ? place.getElem() : null;
-							
-							/*
-							 * Always try to dispose the session after running out of memory.
-							 */
-							try
-							{
-								if( session != null )
-								{
-									session.dispose();
-								}
-							}
-							catch( Throwable ex2 )
-							{
-								ex2.printStackTrace( System.out );
-							}
-							
-							/*
-							 * If no simplifications were completed, exit with exception.
-							 */
-							if( ( ret == null ) || ( ret == prev ) )
-							{
-								throw( ex );
-							}
-							
-							/*
-							 * If some simplifications completed before the memory limits ran out,
-							 * re-run the session and see if it's possible to get farther on the next run.
-							 */
-							prev = ret;
-							session = null;
-							place = null;
-						}
-					}
+					return( handleDistributeSimplify() );
 				}
 				// break;
 				
 				
 				case DISTRIBUTE_SIMPLIFY2:
 				{
-					SymbolicElem<R,S> prev = this;
-					StatefulKnowledgeSession session = null;
-					SymbolicPlaceholder<R,S> place = null;
-					while( true )
-					{
-						try
-						{
-							session = getDistributeSimplify2KnowledgeBase().newStatefulKnowledgeSession();
-					
-							session.insert( new DroolsSession( session ) );
-						
-							if( LoggingConfiguration.LOGGING_ON )
-							{
-								session.insert( new LoggingConfiguration() );
-							}
-						
-							place = new SymbolicPlaceholder<R,S>( prev , fac );
-						
-							place.performInserts( session );
-								
-							session.fireAllRules();
-					
-							SymbolicElem<R, S> ret = place.getElem();
-					
-							session.dispose();
-						
-							return( ret );
-						}
-						catch( OutOfMemoryError ex )
-						{
-							SymbolicElem<R, S> ret = place != null ? place.getElem() : null;
-							
-							/*
-							 * Always try to dispose the session after running out of memory.
-							 */
-							try
-							{
-								if( session != null )
-								{
-									session.dispose();
-								}
-							}
-							catch( Throwable ex2 )
-							{
-								ex2.printStackTrace( System.out );
-							}
-							
-							/*
-							 * If no simplifications were completed, exit with exception.
-							 */
-							if( ( ret == null ) || ( ret == prev ) )
-							{
-								throw( ex );
-							}
-							
-							/*
-							 * If some simplifications completed before the memory limits ran out,
-							 * re-run the session and see if it's possible to get farther on the next run.
-							 */
-							prev = ret;
-							session = null;
-							place = null;
-						}
-					}
+					return( handleDistributeSimplify2() );
 				}
 				// break;
 				
@@ -359,6 +235,155 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 		}
 		
 		return( getFac().getFac().handleSymbolicOptionalOp(id, args) );
+	}
+	
+	
+	
+	/**
+	 * Performs a distribute simplify on the elem.
+	 * 
+	 * @return The result of the simplification.
+	 */
+	protected SymbolicElem<R, S> handleDistributeSimplify()
+	{
+		SymbolicElem<R,S> prev = this;
+		StatefulKnowledgeSession session = null;
+		SymbolicPlaceholder<R,S> place = null;
+		while( true )
+		{
+			try
+			{
+				session = getDistributeSimplifyKnowledgeBase().newStatefulKnowledgeSession();
+		
+				session.insert( new DroolsSession( session ) );
+		
+				if( LoggingConfiguration.LOGGING_ON )
+				{
+					session.insert( new LoggingConfiguration() );
+				}
+			
+				place = new SymbolicPlaceholder<R,S>( prev , fac );
+			
+				place.performInserts( session );
+					
+				session.fireAllRules();
+		
+				SymbolicElem<R, S> ret = place.getElem();
+		
+				session.dispose();
+			
+				return( ret );
+			}
+			catch( OutOfMemoryError ex )
+			{
+				SymbolicElem<R, S> ret = place != null ? place.getElem() : null;
+				
+				/*
+				 * Always try to dispose the session after running out of memory.
+				 */
+				try
+				{
+					if( session != null )
+					{
+						session.dispose();
+					}
+				}
+				catch( Throwable ex2 )
+				{
+					ex2.printStackTrace( System.out );
+				}
+				
+				/*
+				 * If no simplifications were completed, exit with exception.
+				 */
+				if( ( ret == null ) || ( ret == prev ) )
+				{
+					throw( ex );
+				}
+				
+				/*
+				 * If some simplifications completed before the memory limits ran out,
+				 * re-run the session and see if it's possible to get farther on the next run.
+				 */
+				prev = ret;
+				session = null;
+				place = null;
+			}
+		}
+	}
+	
+	
+	/**
+	 * Performs a simpler distribute simplify on the elem.
+	 * 
+	 * @return The result of the simplification.
+	 */
+	protected SymbolicElem<R, S> handleDistributeSimplify2()
+	{
+		SymbolicElem<R,S> prev = this;
+		StatefulKnowledgeSession session = null;
+		SymbolicPlaceholder<R,S> place = null;
+		while( true )
+		{
+			try
+			{
+				session = getDistributeSimplify2KnowledgeBase().newStatefulKnowledgeSession();
+		
+				session.insert( new DroolsSession( session ) );
+			
+				if( LoggingConfiguration.LOGGING_ON )
+				{
+					session.insert( new LoggingConfiguration() );
+				}
+			
+				place = new SymbolicPlaceholder<R,S>( prev , fac );
+			
+				place.performInserts( session );
+					
+				session.fireAllRules();
+		
+				SymbolicElem<R, S> ret = place.getElem();
+		
+				session.dispose();
+			
+				return( ret );
+			}
+			catch( OutOfMemoryError ex )
+			{
+				SymbolicElem<R, S> ret = place != null ? place.getElem() : null;
+				
+				/*
+				 * Always try to dispose the session after running out of memory.
+				 */
+				try
+				{
+					if( session != null )
+					{
+						session.dispose();
+					}
+				}
+				catch( Throwable ex2 )
+				{
+					ex2.printStackTrace( System.out );
+				}
+				
+				/*
+				 * If no simplifications were completed, exit with exception.
+				 */
+				if( ( ret == null ) || ( ret == prev ) )
+				{
+					throw( ex );
+				}
+				
+				/*
+				 * If some simplifications completed before the memory limits ran out,
+				 * re-run the session and see if it's possible to get farther on the next run.
+				 */
+				prev = ret;
+				session = null;
+				place = null;
+			}
+		}
 	}
 	
 	

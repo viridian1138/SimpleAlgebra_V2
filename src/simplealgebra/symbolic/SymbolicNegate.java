@@ -125,6 +125,8 @@ public class SymbolicNegate<R extends Elem<R,?>, S extends ElemFactory<R,S>> ext
 	
 	@Override
 	public SymbolicElem<R, S> negate() {
+		// This simplification has a parallel implementation in the "Double Negate" rules in 
+		// distributeSimplify.drl and distributeSimplify2.drl
 		return( elem );
 	}
 	

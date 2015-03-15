@@ -112,17 +112,36 @@ public class TestMultivectorExponential extends TestCase {
 	}
 	
 	
+	/**
+	 * Returns the hyperbolic sine of the input parameter.
+	 * 
+	 * @param x The input parameter.
+	 * @return The hyperbolic sine.
+	 */
 	private double sinh( double x )
 	{
 		return( ( Math.exp( x ) - Math.exp( -x ) ) / 2.0 );
 	}
 	
 	
+	/**
+	 * Returns the hyperbolic cosine of the input parameter.
+	 * 
+	 * @param x The input parameter.
+	 * @return The hyperbolic cosine.
+	 */
 	private double cosh( double x )
 	{
 		return( ( Math.exp( x ) + Math.exp( -x ) ) / 2.0 );
 	}
 	
+	
+	/**
+	 * Returns the sum of the square magnitudes of an array of five doubles.
+	 * 
+	 * @param v The array of five doubles.
+	 * @return The sum of the squared magnitudes.
+	 */
 	private double vmagSq( double[] v )
 	{
 		double magSq = 0.0;
@@ -136,7 +155,11 @@ public class TestMultivectorExponential extends TestCase {
 
 	
 	/**
-	 * Test method for {@link simplealgebra.Elem#exp()}.
+	 * Validates the exponential using the test from http://przyrbwn.icm.edu.pl/app/pdf/116/a116z219.pdf
+	 * for a random vector.
+	 * 
+	 * @param seed The random-number seed for the vector.
+	 * @throws NotInvertibleException
 	 */
 	private void seedTestMultivectorExponential( long seed ) throws NotInvertibleException {
 		
@@ -205,7 +228,11 @@ public class TestMultivectorExponential extends TestCase {
 	
 	
 	/**
-	 * Test method for {@link simplealgebra.Elem#exp()}.
+	 * Validates the exponential using the test from http://przyrbwn.icm.edu.pl/app/pdf/116/a116z219.pdf
+	 * for a random bivector.
+	 * 
+	 * @param seed The random-number seed for the bivector.
+	 * @throws NotInvertibleException
 	 */
 	private void seedTestMultivectorExponentialBivec( long seed ) throws NotInvertibleException {
 		

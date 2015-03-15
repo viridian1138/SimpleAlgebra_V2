@@ -64,6 +64,13 @@ public class TestInvertNestedTwo extends TestCase {
 	}
 	
 	
+	/**
+	 * Generates a random matrix for a Matrix Algebra M_2(M_2(R)).
+	 * 
+	 * @param rand The random number generator.
+	 * @param se The factory for the enclosed type.
+	 * @return The random matrix.
+	 */
 	protected SquareMatrixElem<TestDimensionTwo,DoubleElem,DoubleElemFactory> generateMat( final Random rand,
 			SquareMatrixElemFactory<TestDimensionTwo,DoubleElem,DoubleElemFactory> se )
 	{
@@ -88,7 +95,25 @@ public class TestInvertNestedTwo extends TestCase {
 
 
 	/**
-	 * Test method for {@link simplealgebra.SquareMatrixElem#invertLeft()}.
+	 * Verifies that for matrices <math display="inline">
+     * <mrow>
+     *  <msup>
+     *          <mi>A</mi>
+     *        <mo>-1L</mo>
+     *  </msup>
+     *  <mi>A</mi>
+     *  <mo>=</mo>
+     *  <mi>I</mi>
+     * </mrow>
+     * </math>
+     * where <math display="inline">
+     * <mrow>
+     *  <mi>I</mi>
+     * </mrow>
+     * </math> is the identity.
+	 * 
+	 * @param seed The random number seed for generating the matrix.
+	 * @throws NotInvertibleException
 	 */
 	private void seedTestInvertLeft( long seed ) throws NotInvertibleException {
 		
@@ -186,7 +211,25 @@ public class TestInvertNestedTwo extends TestCase {
 
 	
 	/**
-	 * Test method for {@link simplealgebra.SquareMatrixElem#invertRight()}.
+	 * Verifies for matrices that <math display="inline">
+     * <mrow>
+     *  <mi>A</mi>
+     *  <msup>
+     *          <mi>A</mi>
+     *        <mo>-1R</mo>
+     *  </msup>
+     *  <mo>=</mo>
+     *  <mi>I</mi>
+     * </mrow>
+     * </math> 
+     * where <math display="inline">
+     * <mrow>
+     *  <mi>I</mi>
+     * </mrow>
+     * </math> is the identity.
+	 * 
+	 * @param seed The random number seed for generating the matrix.
+	 * @throws NotInvertibleException
 	 */
 	private void seedTestInvertRight( long seed ) throws NotInvertibleException {
 		

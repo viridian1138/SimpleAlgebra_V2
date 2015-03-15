@@ -146,21 +146,29 @@ public class SymbolicZero<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 	
 	@Override
 	public SymbolicElem<R, S> add(SymbolicElem<R, S> b) {
+		// This simplification has a parallel implementation in the "Add Zero A" rules in 
+		// distributeSimplify.drl and distributeSimplify2.drl
 		return( b );
 	}
 
 	@Override
 	public SymbolicElem<R, S> mult(SymbolicElem<R, S> b) {
+		// This simplification has a parallel implementation in the "Mult Zero A" rules in 
+		// distributeSimplify.drl and distributeSimplify2.drl
 		return( this );
 	}
 
 	@Override
 	public SymbolicElem<R, S> negate() {
+		// This simplification has a parallel implementation in the "Negate Zero" rules in 
+		// distributeSimplify.drl and distributeSimplify2.drl
 		return( this );
 	}
 
 	@Override
 	public SymbolicElem<R, S> divideBy(int val) {
+		// This simplification has a parallel implementation in the "DivideBy OF Zero --> Zero" rules in 
+		// distributeSimplify.drl and distributeSimplify2.drl
 		return( val != 0 ? this : super.divideBy( val ) );
 	}
 
