@@ -326,13 +326,58 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	 */
 	private SquareMatrixElem<U, R, S> iinvertRight() throws NotInvertibleException
 	{
+//		for( int cntx = 0 ; cntx < 6 ; cntx++ ) // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//		{
+//			System.out.print( " [ " );
+//			for( int cnty = 0 ; cnty < 6 ; cnty++ )
+//			{
+//				System.out.print( " " );
+//				DoubleElem d = (DoubleElem)( this.getVal( BigInteger.valueOf( cnty ) , BigInteger.valueOf( cntx ) ) );
+//				System.out.print( d.getVal() );
+//			}
+//			System.out.println( " ] " );
+//		 }
+//		 System.out.println( "" );
+		
 		SquareMatrixElem<U,R,S> ret = getFac().identity();
 		
 		final BigInteger max = dim.getVal();
 		BigInteger cnt = BigInteger.ZERO;
 		while( cnt.compareTo( max ) < 0 )
 		{
+//			System.out.println( ">>>> " + cnt ); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//			System.out.println( "" );
+//			for( int cntx = 0 ; cntx < 6 ; cntx++ ) // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//			{
+//				System.out.print( " [ " );
+//				for( int cnty = 0 ; cnty < 6 ; cnty++ )
+//				{
+//					System.out.print( " " );
+//					DoubleElem d = (DoubleElem)( this.getVal( BigInteger.valueOf( cnty ) , BigInteger.valueOf( cntx ) ) );
+//					System.out.print( d.getVal() );
+//				}
+//				System.out.println( " ] " );
+//			 }
+//			 System.out.println( "" );
+			 
 			final R mv = setUpColumnRight( cnt , ret );
+			
+//			System.out.println( "#### " + cnt ); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//			System.out.println( "" );
+//			for( int cntx = 0 ; cntx < 6 ; cntx++ ) // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//			{
+//				System.out.print( " [ " );
+//				for( int cnty = 0 ; cnty < 6 ; cnty++ )
+//				{
+//					System.out.print( " " );
+//					DoubleElem d = (DoubleElem)( this.getVal( BigInteger.valueOf( cnty ) , BigInteger.valueOf( cntx ) ) );
+//					System.out.print( d.getVal() );
+//				}
+//				System.out.println( " ] " );
+//			 }
+//			 System.out.println( "" );
+//			 
+//			 System.out.println( "** " + ( (DoubleElem) mv ).getVal() );
 			
 			multiplyThroughColumnRight( cnt , mv );
 			ret.multiplyThroughColumnRight( cnt , mv);
@@ -547,18 +592,18 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	 */
 	private SquareMatrixElem<U, R, S> iinvertLeft() throws NotInvertibleException
 	{
-		// for( int cntx = 0 ; cntx < 16 ; cntx++ ) // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		// {
-		//	System.out.print( " [ " );
-		//	for( int cnty = 0 ; cnty < 16 ; cnty++ )
-		//	{
-		//		System.out.print( " " );
-		//		DoubleElem d = (DoubleElem)( this.get( BigInteger.valueOf( cntx ) , BigInteger.valueOf( cnty ) ) );
-		//		System.out.print( d.getVal() );
-		//	}
-		//	System.out.print( " ] " );
-		// }
-		// System.out.println( "" );
+//		for( int cntx = 0 ; cntx < 6 ; cntx++ ) // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//		{
+//			System.out.print( " [ " );
+//			for( int cnty = 0 ; cnty < 6 ; cnty++ )
+//			{
+//				System.out.print( " " );
+//				DoubleElem d = (DoubleElem)( this.getVal( BigInteger.valueOf( cntx ) , BigInteger.valueOf( cnty ) ) );
+//				System.out.print( d.getVal() );
+//			}
+//			System.out.println( " ] " );
+//		 }
+//		 System.out.println( "" );
 		
 		SquareMatrixElem<U,R,S> ret = getFac().identity();
 		
@@ -566,24 +611,41 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 		BigInteger cnt = BigInteger.ZERO;
 		while( cnt.compareTo( max ) < 0 )
 		{
-			// System.out.println( ">>>> " + cnt ); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//			System.out.println( ">>>> " + cnt ); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//			
+//			System.out.println( "" );
+//			for( int cntx = 0 ; cntx < 6 ; cntx++ ) // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//			{
+//				System.out.print( " [ " );
+//				for( int cnty = 0 ; cnty < 6 ; cnty++ )
+//				{
+//					System.out.print( " " );
+//					DoubleElem d = (DoubleElem)( this.getVal( BigInteger.valueOf( cntx ) , BigInteger.valueOf( cnty ) ) );
+//					System.out.print( d.getVal() );
+//				}
+//				System.out.println( " ] " );
+//			 }
+//			 System.out.println( "" );
 			
 			final R mv = setUpRowLeft( cnt , ret );
 			
-			// for( int cntx = 0 ; cntx < 16 ; cntx++ ) // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-			// {
-			//	System.out.print( " [ " );
-			//	for( int cnty = 0 ; cnty < 16 ; cnty++ )
-			//	{
-			//		System.out.print( " " );
-			//		DoubleElem d = (DoubleElem)( this.get( BigInteger.valueOf( cntx ) , BigInteger.valueOf( cnty ) ) );
-			//		System.out.print( d.getVal() );
-			//	}
-			//	System.out.print( " ] " );
-			// }
-			// System.out.println( "" );
-			
-			// System.out.println( "** " + ( (DoubleElem) mv ).getVal() );
+//			System.out.println( "#### " + cnt ); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//			
+//			System.out.println( "" );
+//			for( int cntx = 0 ; cntx < 6 ; cntx++ ) // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//			{
+//				System.out.print( " [ " );
+//				for( int cnty = 0 ; cnty < 6 ; cnty++ )
+//				{
+//					System.out.print( " " );
+//					DoubleElem d = (DoubleElem)( this.getVal( BigInteger.valueOf( cntx ) , BigInteger.valueOf( cnty ) ) );
+//					System.out.print( d.getVal() );
+//				}
+//				System.out.println( " ] " );
+//			 }
+//			 System.out.println( "" );
+//			
+//			System.out.println( "** " + ( (DoubleElem) mv ).getVal() );
 			
 			multiplyThroughRowLeft( cnt , mv );
 			ret.multiplyThroughRowLeft( cnt , mv);
@@ -1151,7 +1213,7 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 			{
 				try
 				{
-					final R ap = this.get(cnt, coli);
+					final R ap = this.get(coli, cnt);
 					if( ap == null )
 					{
 						throw( new NotInvertibleException() );

@@ -48,6 +48,17 @@ public class TestInvertSparse extends TestCase {
 	
 	
 	
+	/**
+	 * The number of dimensions.
+	 */
+	static final int FIFTY_INT = 50;
+	
+	/**
+	 * The number of dimensions.
+	 */
+	static final BigInteger FIFTY = BigInteger.valueOf( FIFTY_INT );
+	
+	
 	
 	/**
 	 * Test class for fifty-dimensional problems.
@@ -66,7 +77,7 @@ public class TestInvertSparse extends TestCase {
 
 		@Override
 		public BigInteger getVal() {
-			return( BigInteger.valueOf(50) );
+			return( FIFTY );
 		}
 
 	}
@@ -83,7 +94,7 @@ public class TestInvertSparse extends TestCase {
 	protected SquareMatrixElem<TestDimensionFifty,DoubleElem,DoubleElemFactory> generateMat( final Random rand,
 			SquareMatrixElemFactory<TestDimensionFifty,DoubleElem,DoubleElemFactory> se )
 	{
-		final BigInteger FIFTY = BigInteger.valueOf( 50 );
+		final BigInteger FIFTY = BigInteger.valueOf( FIFTY_INT );
 		
 		final SquareMatrixElem<TestDimensionFifty,DoubleElem,DoubleElemFactory> mat = se.zero();
 		
@@ -91,7 +102,7 @@ public class TestInvertSparse extends TestCase {
 		final HashSet<BigInteger> cols = new HashSet<BigInteger>();
 		
 		int cnt;
-		for( cnt = 0 ; cnt < 50 ; cnt++ )
+		for( cnt = 0 ; cnt < FIFTY_INT ; cnt++ )
 		{
 			rows.add( BigInteger.valueOf( cnt ) );
 			cols.add( BigInteger.valueOf( cnt ) );
@@ -132,6 +143,68 @@ public class TestInvertSparse extends TestCase {
 	}
 	
 	
+	
+	
+	
+	
+	
+	/**
+	 * Generates a random matrix for a Matrix Algebra M_50(R).
+	 * 
+	 * @param rand The random number generator.
+	 * @param se The factory for the enclosed type.
+	 * @return The random matrix.
+	 */
+	protected SquareMatrixElem<TestDimensionFifty,DoubleElem,DoubleElemFactory> generateMatRev( final Random rand,
+			SquareMatrixElemFactory<TestDimensionFifty,DoubleElem,DoubleElemFactory> se )
+	{	
+		final SquareMatrixElem<TestDimensionFifty,DoubleElem,DoubleElemFactory> mat = se.zero();
+		
+		final HashSet<BigInteger> rows = new HashSet<BigInteger>();
+		final HashSet<BigInteger> cols = new HashSet<BigInteger>();
+		
+		int cnt;
+		for( cnt = 0 ; cnt < FIFTY_INT ; cnt++ )
+		{
+			rows.add( BigInteger.valueOf( cnt ) );
+			cols.add( BigInteger.valueOf( cnt ) );
+		}
+		
+		while( ( rows.size() > 0 ) || ( cols.size() > 0 ) )
+		{
+			BigInteger row = null;
+			BigInteger col = null;
+			
+			if( rand.nextBoolean() )
+			{
+				row = BigInteger.valueOf( rand.nextInt( 2 ) );
+				col = BigInteger.ZERO;
+			}
+			else
+			{
+				col = BigInteger.valueOf( rand.nextInt( 2 ) );
+				row = BigInteger.ZERO;
+			}
+			
+			while( ( row.compareTo( FIFTY ) < 0 ) && ( col.compareTo( FIFTY ) < 0 ) )
+			{
+				DoubleElem val = new DoubleElem( 2.0 * ( rand.nextDouble() ) - 1.0 );
+				// DoubleElem val2 = new DoubleElem( 2.0 * ( rand.nextDouble() ) - 1.0 );
+				mat.setVal( col , row , val );
+				// mat.setVal( col , row , val2 );
+				rows.remove( row );
+				cols.remove( col );
+				// rows.remove( col );
+				// cols.remove( row );
+				row = row.add( BigInteger.ONE );
+				col = col.add( BigInteger.ONE );
+			}
+		}
+		
+		return( mat );
+	}
+	
+	
 
 	
 	/**
@@ -149,6 +222,8 @@ public class TestInvertSparse extends TestCase {
 		seedTestInvertLeft( 8888 );
 		seedTestInvertLeft( 9999 );
 		seedTestInvertLeft( 4321 );
+		seedTestInvertLeft( 5432 );
+		seedTestInvertLeft( 6543 );
 	}
 	
 
@@ -198,9 +273,9 @@ public class TestInvertSparse extends TestCase {
 		
 		final SquareMatrixElem<TestDimensionFifty,DoubleElem,DoubleElemFactory> shouldBeIdentB = inv.mult( mat );
 		
-		for( i = 0 ; i < 50 ; i++ )
+		for( i = 0 ; i < FIFTY_INT ; i++ )
 		{
-			for( j = 0 ; j < 50 ; j++ )
+			for( j = 0 ; j < FIFTY_INT ; j++ )
 			{
 				final double matchVal = ( i == j ) ? 1.0 : 0.0;
 				
@@ -219,18 +294,21 @@ public class TestInvertSparse extends TestCase {
 	/**
 	 * Test method for {@link simplealgebra.SquareMatrixElem#invertRight()} with sparse matrices.
 	 */
-//	public void testInvertRight() throws NotInvertibleException
-//	{
-//		seedTestInvertRight( 1111 );
-//		seedTestInvertRight( 2222 );
-//		seedTestInvertRight( 3333 );
-//		seedTestInvertRight( 4444 );
-//		seedTestInvertRight( 5555 );
-//		seedTestInvertRight( 6666 );
-//		seedTestInvertRight( 7777 );
-//		seedTestInvertRight( 8888 );
-//		seedTestInvertRight( 9999 );
-//	}
+	public void testInvertRight() throws NotInvertibleException
+	{
+		seedTestInvertRight( 1111 );
+		seedTestInvertRight( 2222 );
+		seedTestInvertRight( 3333 );
+		seedTestInvertRight( 4444 );
+		seedTestInvertRight( 5555 );
+		seedTestInvertRight( 6666 );
+		seedTestInvertRight( 7777 );
+		seedTestInvertRight( 8888 );
+		seedTestInvertRight( 9999 );
+		seedTestInvertRight( 4321 );
+		seedTestInvertRight( 5432 );
+		seedTestInvertRight( 6543 );
+	}
 	
 
 	
@@ -269,7 +347,7 @@ public class TestInvertSparse extends TestCase {
 		final SquareMatrixElemFactory<TestDimensionFifty,DoubleElem,DoubleElemFactory> se = 
 				new SquareMatrixElemFactory<TestDimensionFifty,DoubleElem,DoubleElemFactory>(dl, td);
 		
-		final SquareMatrixElem<TestDimensionFifty,DoubleElem,DoubleElemFactory> mat = generateMat( rand , se );
+		final SquareMatrixElem<TestDimensionFifty,DoubleElem,DoubleElemFactory> mat = generateMatRev( rand , se );
 		
 		int i;
 		int j;
@@ -280,9 +358,9 @@ public class TestInvertSparse extends TestCase {
 		
 		final SquareMatrixElem<TestDimensionFifty,DoubleElem,DoubleElemFactory> shouldBeIdentB = inv.mult( mat );
 		
-		for( i = 0 ; i < 50 ; i++ )
+		for( i = 0 ; i < FIFTY_INT ; i++ )
 		{
-			for( j = 0 ; j < 50 ; j++ )
+			for( j = 0 ; j < FIFTY_INT ; j++ )
 			{
 				final double matchVal = ( i == j ) ? 1.0 : 0.0;
 				
@@ -304,18 +382,21 @@ public class TestInvertSparse extends TestCase {
 	/**
 	 * Test method for {@link simplealgebra.SquareMatrixElem#invertRight()} with sparse matrices.
 	 */
-//	public void testInvertSimilarity() throws NotInvertibleException
-//	{
-//		seedTestInvertSimilarity( 1111 );
-//		seedTestInvertSimilarity( 2222 );
-//		seedTestInvertSimilarity( 3333 );
-//		seedTestInvertSimilarity( 4444 );
-//		seedTestInvertSimilarity( 5555 );
-//		seedTestInvertSimilarity( 6666 );
-//		seedTestInvertSimilarity( 7777 );
-//		seedTestInvertSimilarity( 8888 );
-//		seedTestInvertSimilarity( 9999 );
-//	}
+	public void testInvertSimilarity() throws NotInvertibleException
+	{
+		seedTestInvertSimilarity( 1111 );
+		seedTestInvertSimilarity( 2222 );
+		seedTestInvertSimilarity( 3333 );
+		seedTestInvertSimilarity( 4444 );
+		seedTestInvertSimilarity( 5555 );
+		seedTestInvertSimilarity( 6666 );
+		seedTestInvertSimilarity( 7777 );
+		seedTestInvertSimilarity( 8888 );
+		seedTestInvertSimilarity( 9999 );
+		seedTestInvertSimilarity( 4321 );
+		seedTestInvertSimilarity( 5432 );
+		seedTestInvertSimilarity( 6543 );
+	}
 	
 	
 	
@@ -351,9 +432,9 @@ public class TestInvertSparse extends TestCase {
 		
 		
 		
-		for( i = 0 ; i < 50 ; i++ )
+		for( i = 0 ; i < FIFTY_INT ; i++ )
 		{
-			for( j = 0 ; j < 50 ; j++ )
+			for( j = 0 ; j < FIFTY_INT ; j++ )
 			{
 				final double matchVal = invL.getVal(BigInteger.valueOf(i) , BigInteger.valueOf(j) ).getVal();
 				

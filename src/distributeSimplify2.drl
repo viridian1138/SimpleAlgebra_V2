@@ -741,7 +741,7 @@ rule "DivideBy OF Zero --> Zero"
           ds : DroolsSession()
           eval( b.getIval() != 0 )
       then
-          insert( new Reng( b , new SymbolicZero( b.getFac().getFac() , ds ) ) );
+          insert( new Reng( b , a ) );
 end
 
 
