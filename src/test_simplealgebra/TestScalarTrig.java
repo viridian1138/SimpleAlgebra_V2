@@ -50,7 +50,15 @@ public class TestScalarTrig extends TestCase {
 	
 	
 	/**
-	 * Test method for {@link simplealgebra.Elem#exp()}.
+	 * Tests for scalar <math display="inline">
+	 * <mrow>
+	 *  <msup>
+	 *          <mo>e</mo>
+	 *        <mi>x</mi>
+	 *  </msup>
+	 * </mrow>
+	 * </math>, sin( x ) and cos( x )
+	 *
 	 */
 	public void testScalarTrig() throws NotInvertibleException
 	{
@@ -76,7 +84,17 @@ public class TestScalarTrig extends TestCase {
 
 	
 	/**
-	 * Test method for {@link simplealgebra.Elem#exp()}.
+	 * Tests for scalar <math display="inline">
+	 * <mrow>
+	 *  <msup>
+	 *          <mo>e</mo>
+	 *        <mi>x</mi>
+	 *  </msup>
+	 * </mrow>
+	 * </math>, sin( x ) and cos( x )
+	 * 
+	 * @param seed Random number seed for generating a random "x".
+	 * @throws NotInvertibleException
 	 */
 	private void seedTestScalarTrig( long seed ) throws NotInvertibleException {
 		

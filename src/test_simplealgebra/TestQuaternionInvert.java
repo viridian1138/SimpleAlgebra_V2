@@ -40,14 +40,21 @@ import simplealgebra.ga.QuaternionOrd;
 
 
 /**
+ * Tests the ability to invert a Quaternion multivector in 5-D.
+ * 
  * @author thorngreen
  *
  */
 public class TestQuaternionInvert extends TestCase {
 	
 	
-	
-	private void validateIsUnit( GeometricAlgebraMultivectorElem<TestDimensionFive,QuaternionOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> shouldBeIdent )
+	/**
+	 * Validates that a particular multivector is, to within a constant,
+	 * equal to the identity multivector.  Asserts if the condition is not met.
+	 * 
+	 * @param shouldBeIdent The multivector to be tested against the identity.
+	 */
+	private void validateIsIdentity( GeometricAlgebraMultivectorElem<TestDimensionFive,QuaternionOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> shouldBeIdent )
 	{
 		final int max = 1 << 5;
 		
@@ -89,7 +96,7 @@ public class TestQuaternionInvert extends TestCase {
 	
 	
 	/**
-	 * Test method for {@link simplealgebra.SquareMatrixElem#invertLeft()}.
+	 * Test method for {@link simplealgebra.ga.GeometricAlgebraMultivectorElem#invertLeft()}.
 	 */
 	public void testInvertLeft() throws NotInvertibleException
 	{
@@ -106,7 +113,10 @@ public class TestQuaternionInvert extends TestCase {
 
 
 	/**
-	 * Test method for {@link simplealgebra.SquareMatrixElem#invertLeft()}.
+	 * Validates that a random multivector times its left-inverse is equal to the identity.
+	 * 
+	 * @param seed The random number seed from which to generate the random multivector.
+	 * @throws NotInvertibleException
 	 */
 	private void seedTestInvertLeft( long seed ) throws NotInvertibleException {
 		
@@ -152,16 +162,16 @@ public class TestQuaternionInvert extends TestCase {
 		final GeometricAlgebraMultivectorElem<TestDimensionFive,QuaternionOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> shouldBeIdentB = inv.mult( mv );
 		
 		
-		validateIsUnit( shouldBeIdentA );
+		validateIsIdentity( shouldBeIdentA );
 		
-		validateIsUnit( shouldBeIdentB );
+		validateIsIdentity( shouldBeIdentB );
 		
 		
 	}
 	
 	
 	/**
-	 * Test method for {@link simplealgebra.SquareMatrixElem#invertRight()}.
+	 * Test method for {@link simplealgebra.ga.GeometricAlgebraMultivectorElem#invertRight()}.
 	 */
 	public void testInvertRight() throws NotInvertibleException
 	{
@@ -178,7 +188,10 @@ public class TestQuaternionInvert extends TestCase {
 
 	
 	/**
-	 * Test method for {@link simplealgebra.SquareMatrixElem#invertRight()}.
+	 * Validates that a random multivector times its right-inverse is equal to the identity.
+	 * 
+	 * @param seed The random number seed from which to generate the random multivector.
+	 * @throws NotInvertibleException
 	 */
 	private void seedTestInvertRight( long seed ) throws NotInvertibleException {
 		
@@ -224,9 +237,9 @@ public class TestQuaternionInvert extends TestCase {
 		final GeometricAlgebraMultivectorElem<TestDimensionFive,QuaternionOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> shouldBeIdentB = inv.mult( mv );
 		
 		
-		validateIsUnit( shouldBeIdentA );
+		validateIsIdentity( shouldBeIdentA );
 		
-		validateIsUnit( shouldBeIdentB );
+		validateIsIdentity( shouldBeIdentB );
 		
 		
 	}
@@ -234,7 +247,7 @@ public class TestQuaternionInvert extends TestCase {
 	
 	
 	/**
-	 * Test method for {@link simplealgebra.SquareMatrixElem#invertLeft()}.
+	 * Test method for {@link simplealgebra.ga.GeometricAlgebraMultivectorElem#invertLeft()}.
 	 */
 	public void testSimpleInvert() throws NotInvertibleException
 	{
@@ -251,7 +264,12 @@ public class TestQuaternionInvert extends TestCase {
 	
 	
 	
-	
+	/**
+	 * Tests a series of inverses of randomly-generated blades.
+	 * 
+	 * @param seed The random number seed from which to generate the random blades.
+	 * @throws NotInvertibleException
+	 */
 	private void seedTestSimpleInvert( final long seed ) throws NotInvertibleException
 	{
 		seedTestSimpleInvertVect( seed );
@@ -263,7 +281,12 @@ public class TestQuaternionInvert extends TestCase {
 	
 	
 	
-	
+	/**
+	 * Validates that a random vector times its inverse is equal to the identity.
+	 * 
+	 * @param seed The random number seed from which to generate the random vector.
+	 * @throws NotInvertibleException
+	 */
 	private void seedTestSimpleInvertVect( final long seed ) throws NotInvertibleException
 	{
 		Random rand = new Random( seed );
@@ -302,15 +325,20 @@ public class TestQuaternionInvert extends TestCase {
 		final GeometricAlgebraMultivectorElem<TestDimensionFive,QuaternionOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> shouldBeIdentB = inv.mult( mv );
 		
 		
-		validateIsUnit( shouldBeIdentA );
+		validateIsIdentity( shouldBeIdentA );
 	
-		validateIsUnit( shouldBeIdentB );
+		validateIsIdentity( shouldBeIdentB );
 		
 	}
 	
 	
 	
-	
+	/**
+	 * Validates that a random bivector times its inverse is equal to the identity.
+	 * 
+	 * @param seed The random number seed from which to generate the random bivector.
+	 * @throws NotInvertibleException
+	 */
 	private void seedTestSimpleInvertBivec( final long seed ) throws NotInvertibleException
 	{
 		Random rand = new Random( seed );
@@ -351,14 +379,19 @@ public class TestQuaternionInvert extends TestCase {
 		final GeometricAlgebraMultivectorElem<TestDimensionFive,QuaternionOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> shouldBeIdentB = inv.mult( mv );
 		
 		
-		validateIsUnit( shouldBeIdentA );
+		validateIsIdentity( shouldBeIdentA );
 	
-		validateIsUnit( shouldBeIdentB );
+		validateIsIdentity( shouldBeIdentB );
 		
 	}
 	
 	
-	
+	/**
+	 * Validates that a random trivector times its inverse is equal to the identity.
+	 * 
+	 * @param seed The random number seed from which to generate the random trivector.
+	 * @throws NotInvertibleException
+	 */
 	private void seedTestSimpleInvertTrivec( final long seed ) throws NotInvertibleException
 	{
 		Random rand = new Random( seed );
@@ -401,14 +434,19 @@ public class TestQuaternionInvert extends TestCase {
 		final GeometricAlgebraMultivectorElem<TestDimensionFive,QuaternionOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> shouldBeIdentB = inv.mult( mv );
 		
 		
-		validateIsUnit( shouldBeIdentA );
+		validateIsIdentity( shouldBeIdentA );
 	
-		validateIsUnit( shouldBeIdentB );
+		validateIsIdentity( shouldBeIdentB );
 		
 	}
 	
 	
-	
+	/**
+	 * Validates that a random quad-vector times its inverse is equal to the identity.
+	 * 
+	 * @param seed The random number seed from which to generate the random quad-vector.
+	 * @throws NotInvertibleException
+	 */
 	private void seedTestSimpleInvertQuadvec( final long seed ) throws NotInvertibleException
 	{
 		Random rand = new Random( seed );
@@ -453,14 +491,19 @@ public class TestQuaternionInvert extends TestCase {
 		final GeometricAlgebraMultivectorElem<TestDimensionFive,QuaternionOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> shouldBeIdentB = inv.mult( mv );
 		
 		
-		validateIsUnit( shouldBeIdentA );
+		validateIsIdentity( shouldBeIdentA );
 	
-		validateIsUnit( shouldBeIdentB );
+		validateIsIdentity( shouldBeIdentB );
 		
 	}
 	
 	
-	
+	/**
+	 * Validates that a random quint-vector times its inverse is equal to the identity.
+	 * 
+	 * @param seed The random number seed from which to generate the random quint-vector.
+	 * @throws NotInvertibleException
+	 */
 	private void seedTestSimpleInvertQuint( final long seed ) throws NotInvertibleException
 	{
 		Random rand = new Random( seed );
@@ -496,9 +539,9 @@ public class TestQuaternionInvert extends TestCase {
 		final GeometricAlgebraMultivectorElem<TestDimensionFive,QuaternionOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> shouldBeIdentB = inv.mult( mv );
 		
 		
-		validateIsUnit( shouldBeIdentA );
+		validateIsIdentity( shouldBeIdentA );
 	
-		validateIsUnit( shouldBeIdentB );
+		validateIsIdentity( shouldBeIdentB );
 		
 	}
 	
