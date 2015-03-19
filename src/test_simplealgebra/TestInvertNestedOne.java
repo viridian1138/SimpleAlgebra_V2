@@ -65,7 +65,7 @@ public class TestInvertNestedOne extends TestCase {
 	
 	
 	/**
-	 * Generates a random matrix for a Matrix Algebra M_1(M_1(R)).
+	 * Generates a random matrix for a Matrix Algebra M_1(R).
 	 * 
 	 * @param rand The random number generator.
 	 * @param se The factory for the enclosed type.

@@ -65,7 +65,7 @@ public class TestInvertNestedTwo extends TestCase {
 	
 	
 	/**
-	 * Generates a random matrix for a Matrix Algebra M_2(M_2(R)).
+	 * Generates a random matrix for a Matrix Algebra M_2(R).
 	 * 
 	 * @param rand The random number generator.
 	 * @param se The factory for the enclosed type.

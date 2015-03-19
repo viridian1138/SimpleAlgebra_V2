@@ -85,6 +85,13 @@ public class TestInvertNestedRight extends TestCase {
 	}
 	
 	
+	/**
+	 * Generates a random matrix for a Matrix Algebra M_4(R).
+	 * 
+	 * @param rand The random number generator.
+	 * @param se The factory for the enclosed type.
+	 * @return The random matrix.
+	 */
 	protected SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory> generateMat( final Random rand,
 			SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory> se )
 	{

@@ -38,33 +38,33 @@ import simplealgebra.SquareMatrixElemFactory;
 
 /**
  * Tests inverses for a Matrix Algebra <math display="inline">
-<mrow>
-  <msub>
-          <mi>M</mi>
-        <mn>4</mn>
-  </msub>
-  <mo>(</mo>
-  <msub>
-          <mi>M</mi>
-        <mn>4</mn>
-  </msub>
-  
-    <mrow>
-      <mo>(</mo>
-      <msub>
-              <mi>M</mi>
-            <mn>4</mn>
-      </msub>
-      <mo>(</mo>
-      <mi>R</mi>
-      <mo>)</mo>
-      <mo>)</mo>
-      <mo>)</mo>
-    </mrow>
-  
-</mrow>
-</math>
-.  For more information see:
+ * <mrow>
+ *   <msub>
+ *           <mi>M</mi>
+ *         <mn>4</mn>
+ *   </msub>
+ *   <mo>(</mo>
+ *   <msub>
+ *           <mi>M</mi>
+ *         <mn>4</mn>
+ *   </msub>
+ *  
+ *     <mrow>
+ *       <mo>(</mo>
+ *       <msub>
+ *               <mi>M</mi>
+ *             <mn>4</mn>
+ *       </msub>
+ *       <mo>(</mo>
+ *       <mi>R</mi>
+ *       <mo>)</mo>
+ *       <mo>)</mo>
+ *       <mo>)</mo>
+ *     </mrow>
+ *   
+ * </mrow>
+ * </math>
+ * .  For more information see:
  * 
  * http://en.wikipedia.org/wiki/Matrix_ring
  * 
@@ -91,6 +91,13 @@ public class TestInvertNestedRightNTwo extends TestCase {
 	}
 	
 	
+	/**
+	 * Generates a random matrix for a Matrix Algebra M_4(R).
+	 * 
+	 * @param rand The random number generator.
+	 * @param se The factory for the enclosed type.
+	 * @return The random matrix.
+	 */
 	protected SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory> generateMatA( final Random rand,
 			SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory> se )
 	{
@@ -112,6 +119,13 @@ public class TestInvertNestedRightNTwo extends TestCase {
 	}
 	
 	
+	/**
+	 * Generates a random matrix for a Matrix Algebra M_4(M_4(R)).
+	 * 
+	 * @param rand The random number generator.
+	 * @param se The factory for the enclosed type.
+	 * @return The random matrix.
+	 */
 	protected SquareMatrixElem<TestDimensionFour,SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,
 		SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>> generateMatB( final Random rand,
 			SquareMatrixElemFactory<TestDimensionFour,SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,
@@ -137,7 +151,13 @@ public class TestInvertNestedRightNTwo extends TestCase {
 	
 	
 	
-	
+	/**
+	 * Generates a random matrix for a Matrix Algebra M_4(M_4(M_4(R))).
+	 * 
+	 * @param rand The random number generator.
+	 * @param se The factory for the enclosed type.
+	 * @return The random matrix.
+	 */
 	protected SquareMatrixElem<TestDimensionFour,SquareMatrixElem<TestDimensionFour,SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,
 	SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>,
 	SquareMatrixElemFactory<TestDimensionFour,SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,

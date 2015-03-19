@@ -92,10 +92,10 @@ public class TestDoubleInvertRight extends TestCase {
 	
 	
 	/**
-	 * Generates a random matrix for use in the test.
+	 * Generates a random matrix for a Matrix Algebra M_4(R).
 	 * 
 	 * @param rand The random number generator.
-	 * @param se The factory for the matrix.
+	 * @param se The factory for the enclosed type.
 	 * @return The random matrix.
 	 */
 	protected SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory> generateMatA( final Random rand,
@@ -120,11 +120,11 @@ public class TestDoubleInvertRight extends TestCase {
 	
 	
 	/**
-	 * Generates a random matrix of matrices for use in the test.
+	 * Generates a random matrix for a Matrix Algebra M_4(M_4(R)).
 	 * 
 	 * @param rand The random number generator.
-	 * @param se The factory for the matrix of matrices.
-	 * @return The random matrix of matrices.
+	 * @param se The factory for the enclosed type.
+	 * @return The random matrix.
 	 */
 	protected SquareMatrixElem<TestDimensionFour,SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,
 		SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>> generateMatB( final Random rand,
@@ -152,11 +152,11 @@ public class TestDoubleInvertRight extends TestCase {
 	
 	
 	/**
-	 * Generates a random matrix of matrices of matrices for use in the test.
+	 * Generates a random matrix for a Matrix Algebra M_4(M_4(M_4(R))).
 	 * 
 	 * @param rand The random number generator.
-	 * @param se The factory for the matrix of matrices of matrices.
-	 * @return The random matrix of matrices of matrices.
+	 * @param se The factory for the enclosed type.
+	 * @return The random matrix.
 	 */
 	protected SquareMatrixElem<TestDimensionFour,SquareMatrixElem<TestDimensionFour,SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,
 	SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>,
