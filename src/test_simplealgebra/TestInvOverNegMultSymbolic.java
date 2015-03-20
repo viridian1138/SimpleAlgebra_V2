@@ -53,14 +53,34 @@ import simplealgebra.symbolic.SymbolicOps;
 
 
 
+/**
+ * Verifies that simple expressions containing inverses reduce to the identity.
+ * 
+ * @author tgreen
+ *
+ */
 public class TestInvOverNegMultSymbolic extends TestCase 
 {
 
 	
+	/**
+	 * Symbolic elem for <math display="inline">
+     * <mrow>
+     *  <mi>a</mi>
+     * </mrow>
+     * </math> to be used in the test.
+	 * 
+	 * @author tgreen
+	 *
+	 */
 	private class AElem extends SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
 	{
 
-		
+		/**
+		 * Constructs the elem.
+		 * 
+		 * @param _fac The factory for the enclosed type.
+		 */
 		public AElem(SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory> _fac ) {
 			super(_fac);
 		}
@@ -98,9 +118,13 @@ public class TestInvOverNegMultSymbolic extends TestCase
 	
 	
 	/**
-	 * The symbolic elem for the matrix upon which to apply the operation.
+	 * Symbolic elem for <math display="inline">
+     * <mrow>
+     *  <mi>b</mi>
+     * </mrow>
+     * </math> to be used in the test.
 	 * 
-	 * @author thorngreen
+	 * @author tgreen
 	 *
 	 */
 	private class BElem extends SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
@@ -148,7 +172,26 @@ public class TestInvOverNegMultSymbolic extends TestCase
 	
 	
 	
-	
+	/**
+	 * Verifies that <math display="inline">
+     * <mrow>
+     *  <msup>
+     *         <mfenced open="(" close=")" separators=",">
+     *            <mrow>
+     *              <mo>-</mo>
+     *              <mi>a</mi>
+     *              <mi>b</mi>
+     *            </mrow>
+     *         </mfenced>
+     *        <mo>-1R</mo>
+     *  </msup>
+     *  <mi>a</mi>
+     *  <mi>b</mi>
+     * </mrow>
+     * </math> reduces to the negative identity.
+	 * 
+	 * @throws NotInvertibleException
+	 */
 	public void testInvOverMultSymbolicRight() throws NotInvertibleException
 	{
 		final TestDimensionFour td = new TestDimensionFour();
@@ -191,7 +234,28 @@ public class TestInvOverNegMultSymbolic extends TestCase
 	
 	
 	
-	
+	/**
+	 * Verifies that <math display="inline">
+     * <mrow>
+     *  <msup>
+     *         <mfenced open="(" close=")" separators=",">
+     *            <mrow>
+     *              <mi>a</mi>
+     *              <mi>b</mi>
+     *            </mrow>
+     *         </mfenced>
+     *        <mo>-1R</mo>
+     *  </msup>
+     *  <mfenced open="(" close=")" separators=",">
+     *    <mo>-</mo>
+     *    <mi>a</mi>
+     *    <mi>b</mi>
+     *  </mfenced>
+     * </mrow>
+     * </math> reduces to the negative identity.
+	 * 
+	 * @throws NotInvertibleException
+	 */
 	public void testInvOverMultSymbolicRightB() throws NotInvertibleException
 	{
 		final TestDimensionFour td = new TestDimensionFour();
@@ -234,7 +298,26 @@ public class TestInvOverNegMultSymbolic extends TestCase
 	
 	
 	
-	
+	/**
+	 * Verifies that <math display="inline">
+     * <mrow>
+     *  <mi>a</mi>
+     *  <mi>b</mi>
+     * <msup>
+     *         <mfenced open="(" close=")" separators=",">
+     *            <mrow>
+     *              <mo>-</mo>
+     *              <mi>a</mi>
+     *              <mi>b</mi>
+     *            </mrow>
+     *         </mfenced>
+     *        <mo>-1L</mo>
+     *  </msup>
+     *  </mrow>
+     * </math> reduces to the negative identity.
+	 * 
+	 * @throws NotInvertibleException
+	 */
 	public void testInvOverMultSymbolicLeft() throws NotInvertibleException
 	{
 		final TestDimensionFour td = new TestDimensionFour();
@@ -279,7 +362,28 @@ public class TestInvOverNegMultSymbolic extends TestCase
 	
 	
 	
-	
+	/**
+	 * Verifies that <math display="inline">
+     * <mrow>
+     * <mfenced open="(" close=")" separators=",">
+     *     <mo>-</mo>
+     *     <mi>a</mi>
+     *     <mi>b</mi>
+     *  </mfenced>
+     * <msup>
+     *         <mfenced open="(" close=")" separators=",">
+     *            <mrow>
+     *              <mi>a</mi>
+     *              <mi>b</mi>
+     *            </mrow>
+     *         </mfenced>
+     *        <mo>-1L</mo>
+     *  </msup>
+     *  </mrow>
+     * </math> reduces to the negative identity.
+	 * 
+	 * @throws NotInvertibleException
+	 */
 	public void testInvOverMultSymbolicLeftB() throws NotInvertibleException
 	{
 		final TestDimensionFour td = new TestDimensionFour();

@@ -38,27 +38,27 @@ import simplealgebra.SquareMatrixElemFactory;
 
 /**
  * Tests inverses for a Matrix Algebra <math display="inline">
-<mrow>
-  <msub>
-          <mi>M</mi>
-        <mn>4</mn>
-  </msub>
-  <mo>(</mo>
-  <msub>
-          <mi>M</mi>
-        <mn>4</mn>
-  </msub>
-  
-    <mrow>
-      <mo>(</mo>
-      <mi>R</mi>
-      <mo>)</mo>
-      <mo>)</mo>
-    </mrow>
-  
-</mrow>
-</math>
-.  For more information see:
+ * <mrow>
+ *   <msub>
+ *           <mi>M</mi>
+ *         <mn>4</mn>
+ *   </msub>
+ *   <mo>(</mo>
+ *   <msub>
+ *           <mi>M</mi>
+ *         <mn>4</mn>
+ *   </msub>
+ *   
+ *     <mrow>
+ *       <mo>(</mo>
+ *       <mi>R</mi>
+ *       <mo>)</mo>
+ *       <mo>)</mo>
+ *     </mrow>
+ *   
+ * </mrow>
+ * </math>
+ * .  For more information see:
  * 
  * http://en.wikipedia.org/wiki/Matrix_ring
  * 
@@ -114,7 +114,25 @@ public class TestInvertNestedRight extends TestCase {
 
 
 	/**
-	 * Test method for {@link simplealgebra.SquareMatrixElem#invertRight()}.
+	 * Verifies that for matrices <math display="inline">
+     * <mrow>
+     *  <mi>A</mi>
+     *  <msup>
+     *          <mi>A</mi>
+     *        <mo>-1R</mo>
+     *  </msup>
+     *  <mo>=</mo>
+     *  <mi>I</mi>
+     * </mrow>
+     * </math> 
+     * where <math display="inline">
+     * <mrow>
+     *  <mi>I</mi>
+     * </mrow>
+     * </math> is the identity.  Also verifies that the reverse-order holds for commutative nested elems.
+	 * 
+	 * @param seed The random number seed for generating the matrix.
+	 * @throws NotInvertibleException
 	 */
 	private void seedTestInvertRight( long seed ) throws NotInvertibleException {
 		
@@ -204,7 +222,10 @@ public class TestInvertNestedRight extends TestCase {
 
 	
 	/**
-	 * Test method for {@link simplealgebra.SquareMatrixElem#invertRightRevCoeff()}.
+	 * Verifies matrix reversed-coefficient right-inverses.
+	 * 
+	 * @param seed The random number seed for generating the matrix.
+	 * @throws NotInvertibleException
 	 */
 	private void seedTestInvertRightRevCoeff( long seed ) throws NotInvertibleException {
 		

@@ -192,7 +192,25 @@ public class TestInvertNestedLeftNTwo extends TestCase {
 	
 
 	/**
-	 * Test method for {@link simplealgebra.SquareMatrixElem#invertLeft()}.
+	 * Verifies that for matrices <math display="inline">
+     * <mrow>
+     *  <msup>
+     *          <mi>A</mi>
+     *        <mo>-1L</mo>
+     *  </msup>
+     *  <mi>A</mi>
+     *  <mo>=</mo>
+     *  <mi>I</mi>
+     * </mrow>
+     * </math>
+     * where <math display="inline">
+     * <mrow>
+     *  <mi>I</mi>
+     * </mrow>
+     * </math> is the identity.
+	 * 
+	 * @param seed The random number seed for generating the matrix.
+	 * @throws NotInvertibleException
 	 */
 	private void seedTestInvertLeft( long seed ) throws NotInvertibleException {
 		
@@ -299,7 +317,10 @@ public class TestInvertNestedLeftNTwo extends TestCase {
 
 	
 	/**
-	 * Test method for {@link simplealgebra.SquareMatrixElem#invertLeftRevCoeff()}.
+	 * Verifies matrix reversed-coefficient left-inverses.
+	 * 
+	 * @param seed The random number seed for generating the matrix.
+	 * @throws NotInvertibleException
 	 */
 	private void seedTestInvertLeftRevCoeff( long seed ) throws NotInvertibleException {
 		
