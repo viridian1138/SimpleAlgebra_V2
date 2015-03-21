@@ -56,19 +56,30 @@ import simplealgebra.ddx.*;
 
 
 
-
+/**
+ * Tests the ability to generate Ricci scalars.
+ * 
+ * @author thorngreen
+ *
+ */
 public class TestRicciScalar extends TestCase {
 	
 	
 	
-	
+	/**
+	 * Returns a DoubleElem with the value from the parameter.
+	 * @param in The input parameter.
+	 * @return The generated DoubleElem.
+	 */
 	private static DoubleElem genFromConstDbl( double in )
 	{
 		return( new DoubleElem( in ) );
 	}
 	
 	
-	
+	/**
+	 * Arbitrary constant.
+	 */
 	protected static final DoubleElem C = genFromConstDbl( 0.004 );
 	
 	
@@ -153,7 +164,7 @@ public class TestRicciScalar extends TestCase {
 	
 	
 	/**
-	 * The symbolic elem for the tensor upon which to apply the differential equation.
+	 * The symbolic elem for the tensor upon which to apply the differential expression.
 	 * 
 	 * @author thorngreen
 	 *

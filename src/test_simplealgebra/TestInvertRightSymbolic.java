@@ -59,15 +59,42 @@ import simplealgebra.symbolic.SymbolicNegate;
 public class TestInvertRightSymbolic extends TestCase 
 {
 	
+	/**
+	 * The number of dimensions for the matrix.
+	 */
 	final static int NUM_DIM = 4;
 	
 	
+	/**
+	 * Symbolic elem for <math display="inline">
+     * <mrow>
+     *  <mi>a</mi>
+     * </mrow>
+     * </math> to be used in the test.
+	 * 
+	 * @author tgreen
+	 *
+	 */
 	private class AElem extends SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
 	{
+		/**
+		 * The row of the elem.
+		 */
 		private BigInteger row;
+		
+		/**
+		 * The column of the elem.
+		 */
 		private BigInteger col;
 
 		
+		/**
+		 * Constructs the elem.
+		 * 
+		 * @param _fac The factory for the enclosed type.
+		 * @param _row The row of the elem.
+		 * @param _col The column of the elem.
+		 */
 		public AElem(SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory> _fac , BigInteger _row , BigInteger _col ) {
 			super(_fac);
 			row = _row;
@@ -88,14 +115,18 @@ public class TestInvertRightSymbolic extends TestCase
 		}
 
 		/**
-		 * @return the row
+		 * Gets the row of the elem.
+		 * 
+		 * @return The row of the elem.
 		 */
 		public BigInteger getRow() {
 			return row;
 		}
 
 		/**
-		 * @return the col
+		 * Gets the column of the elem.
+		 * 
+		 * @return The column of the elem.
 		 */
 		public BigInteger getCol() {
 			return col;
@@ -120,6 +151,11 @@ public class TestInvertRightSymbolic extends TestCase
 	}
 	
 	
+	/**
+	 * Verifies that there are no left invert terms in the expression.  Asserts if a left invert is found.
+	 * 
+	 * @param in The expression to check.
+	 */
 	private void verifyNoInvertLeft( 
 			SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>> in )
 	{
@@ -181,7 +217,11 @@ public class TestInvertRightSymbolic extends TestCase
 	
 	
 	
-	
+	/**
+	 * Performs a right invert, and then verifies that the right invert contains no left invert terms.
+	 * 
+	 * @throws NotInvertibleException
+	 */
 	public void testInvertRightElems() throws NotInvertibleException
 	{
 		final TestDimensionFour td = new TestDimensionFour();
