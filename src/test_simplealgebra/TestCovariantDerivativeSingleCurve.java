@@ -62,19 +62,31 @@ import simplealgebra.symbolic.SymbolicSqrt;
 
 
 
-
+/**
+ * Tests the ability to generate a covariant derivative in 4-D where
+ * only a single component of the metric tensor is non-flat.
+ * 
+ * @author thorngreen
+ *
+ */
 public class TestCovariantDerivativeSingleCurve extends TestCase {
 	
 	
 	
-	
+	/**
+	 * Returns a DoubleElem with the value from the parameter.
+	 * @param in The input parameter.
+	 * @return The generated DoubleElem.
+	 */
 	private static DoubleElem genFromConstDbl( double in )
 	{
 		return( new DoubleElem( in ) );
 	}
 	
 	
-	
+	/**
+	 * Arbitrary constant.
+	 */
 	protected static final DoubleElem C = genFromConstDbl( 0.004 );
 	
 	
@@ -165,7 +177,7 @@ public class TestCovariantDerivativeSingleCurve extends TestCase {
 	
 	
 	/**
-	 * The symbolic elem for the tensor upon which to apply the differential equation.
+	 * The symbolic elem for the tensor upon which to apply the differential expression.
 	 * 
 	 * @author thorngreen
 	 *
@@ -251,7 +263,7 @@ public class TestCovariantDerivativeSingleCurve extends TestCase {
 	
 	
 	/**
-	 * Symbolic elem for one component of the tensor upon which to apply the differential equation.
+	 * Symbolic elem for one component of the tensor upon which to apply the differential expression.
 	 * 
 	 * @author thorngreen
 	 *
@@ -626,7 +638,9 @@ public class TestCovariantDerivativeSingleCurve extends TestCase {
 	
 	
 	/**
-	 * Test method for {@link simplealgebra.OrdinaryDerivative}.
+	 * Tests the ability to generate a covariant derivative in 4-D where
+	 * only a single component of the metric tensor is non-flat.
+	 *
 	 */
 	public void testCovariantDerivative() throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{

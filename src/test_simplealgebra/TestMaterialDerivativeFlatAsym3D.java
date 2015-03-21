@@ -70,7 +70,13 @@ import simplealgebra.symbolic.SymbolicZero;
 
 
 
-
+/**
+ * Tests the ability to generate the asymmetric terms of
+ * a material derivative in 3-D over a flat metric.
+ * 
+ * @author thorngreen
+ *
+ */
 public class TestMaterialDerivativeFlatAsym3D extends TestCase 
 {
 
@@ -155,6 +161,10 @@ public class TestMaterialDerivativeFlatAsym3D extends TestCase
 	
 	/**
 	 * Elem representing the potential term.
+	 * 
+	 * http://physics.stackexchange.com/questions/33950/what-is-the-equation-of-the-gravitational-potential-in-general-relativity
+	 *  
+	 * http://en.wikipedia.org/wiki/Metric_tensor_%28general_relativity%29
 	 * 
 	 * @author thorngreen
 	 *
@@ -1229,7 +1239,12 @@ public class TestMaterialDerivativeFlatAsym3D extends TestCase
 	
 	
 	
-	
+	/**
+	 * Derivative remapping class for generating tensors with antisymmetric terms.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	protected static class SymRemap extends DerivativeRemap<Object,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 	{
 
@@ -1260,7 +1275,12 @@ public class TestMaterialDerivativeFlatAsym3D extends TestCase
 	}
 	
 	
-	
+	/**
+	 * Mutator that returns a simplified version of the input SymbolicElem.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	protected static class Sym2Mutator implements Mutator<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>
 	{
 
@@ -1311,7 +1331,11 @@ public class TestMaterialDerivativeFlatAsym3D extends TestCase
 	
 	
 	
-	
+	/**
+	 * Tests the ability to generate the asymmetric terms of
+	 * a material derivative in 3-D over a flat metric.
+	 *
+	 */
 	public void testMaterialDerivativeFlatAsym3D() throws NotInvertibleException
 	{
 		final TestDimensionThree td = new TestDimensionThree();

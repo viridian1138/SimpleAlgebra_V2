@@ -63,11 +63,23 @@ import simplealgebra.symbolic.SymbolicSqrt;
 
 
 
+/**
+ * Test the ability to generate the asymmetric terms of a covariant
+ * derivative over a flat metric.
+ * 
+ * @author thorngreen
+ *
+ */
 public class TestCovariantDerivativeFlatAsym3D extends TestCase {
 	
 	
 	
-	
+
+	/**
+	 * Returns a DoubleElem with the value from the parameter.
+	 * @param in The input parameter.
+	 * @return The generated DoubleElem.
+	 */
 	private static DoubleElem genFromConstDbl( double in )
 	{
 		return( new DoubleElem( in ) );
@@ -155,7 +167,7 @@ public class TestCovariantDerivativeFlatAsym3D extends TestCase {
 	
 	
 	/**
-	 * The symbolic elem for the tensor upon which to apply the differential equation.
+	 * The symbolic elem for the tensor upon which to apply the differential expression.
 	 * 
 	 * @author thorngreen
 	 *
@@ -603,7 +615,7 @@ public class TestCovariantDerivativeFlatAsym3D extends TestCase {
 	
 	
 	/**
-	 * Test method for {@link simplealgebra.OrdinaryDerivative}.
+	 * Test the ability to generate the asymmetric terms of a covariant derivative over a flat metric.
 	 */
 	public void testCovariantDerivative() throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
