@@ -65,6 +65,12 @@ import simplealgebra.symbolic.SymbolicZero;
 
 
 
+/**
+ * Tests the ability to generate the symbolic terms of the material derivative in 4-D.
+ * 
+ * @author thorngreen
+ *
+ */
 public class TestMaterialDerivativeSymbolic extends TestCase 
 {
 
@@ -148,6 +154,10 @@ public class TestMaterialDerivativeSymbolic extends TestCase
 	
 	/**
 	 * Elem representing the potential term.
+	 * 
+	 * http://physics.stackexchange.com/questions/33950/what-is-the-equation-of-the-gravitational-potential-in-general-relativity
+	 *  
+	 * http://en.wikipedia.org/wiki/Metric_tensor_%28general_relativity%29
 	 * 
 	 * @author thorngreen
 	 *
@@ -1466,7 +1476,9 @@ public class TestMaterialDerivativeSymbolic extends TestCase
 	
 	
 	
-	
+	/**
+	 * Tests the ability to generate the symbolic terms of the material derivative in 4-D.
+	 */
 	public void testMaterialDerivativeSymbolic() throws NotInvertibleException
 	{
 		final TestDimensionFour td = new TestDimensionFour();

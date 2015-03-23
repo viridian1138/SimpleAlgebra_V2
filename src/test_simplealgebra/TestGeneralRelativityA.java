@@ -211,8 +211,9 @@ public class TestGeneralRelativityA extends TestCase {
 	
 	
 	
-	protected static final DoubleElem HBAR = genFromConstDbl( 0.5 );
-	
+	/**
+	 * Arbitrary constant.
+	 */
 	protected static final DoubleElem C = genFromConstDbl( 0.004 );
 	
 	

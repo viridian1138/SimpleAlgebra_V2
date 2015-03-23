@@ -58,6 +58,12 @@ import java.io.*;
 
 
 
+/**
+ * Tests the ability to generate terms with the determinant of the metric tensor.
+ * 
+ * @author thorngreen
+ *
+ */
 public class TestDesResSymbolicAlt extends TestCase 
 {
 
@@ -805,7 +811,9 @@ public class TestDesResSymbolicAlt extends TestCase
 	
 	
 	
-	
+	/**
+	 * Tests the ability to generate terms with the determinant of the metric tensor.
+	 */
 	public void TestDesResSymbolicAlt() throws NotInvertibleException
 	{
 		final TestDimensionFour td = new TestDimensionFour();

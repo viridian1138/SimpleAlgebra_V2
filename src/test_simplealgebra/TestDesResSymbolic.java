@@ -58,6 +58,12 @@ import java.io.*;
 
 
 
+/**
+ * Tests the ability to generate terms with the determinant of the metric tensor.
+ * 
+ * @author thorngreen
+ *
+ */
 public class TestDesResSymbolic extends TestCase 
 {
 
@@ -126,6 +132,10 @@ public class TestDesResSymbolic extends TestCase
 	
 	/**
 	 * Elem representing the potential term.
+	 * 
+	 * http://physics.stackexchange.com/questions/33950/what-is-the-equation-of-the-gravitational-potential-in-general-relativity
+	 *  
+	 * http://en.wikipedia.org/wiki/Metric_tensor_%28general_relativity%29
 	 * 
 	 * @author thorngreen
 	 *
@@ -805,7 +815,9 @@ public class TestDesResSymbolic extends TestCase
 	
 	
 	
-	
+	/**
+	 * Tests the ability to generate terms with the determinant of the metric tensor.
+	 */
 	public void testDesResSymbolic() throws NotInvertibleException
 	{
 		final TestDimensionFour td = new TestDimensionFour();

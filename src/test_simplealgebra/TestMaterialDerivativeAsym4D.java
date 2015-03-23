@@ -72,6 +72,13 @@ import test_simplealgebra.TestMaterialDerivativeSymbolic.TestMetricTensorFactory
 
 
 
+/**
+ * Tests the ability to generate the asymmetric terms of
+ * a material derivative in 4-D.
+ * 
+ * @author thorngreen
+ *
+ */
 public class TestMaterialDerivativeAsym4D extends TestCase 
 {
 
@@ -155,6 +162,10 @@ public class TestMaterialDerivativeAsym4D extends TestCase
 	
 	/**
 	 * Elem representing the potential term.
+	 * 
+	 * http://physics.stackexchange.com/questions/33950/what-is-the-equation-of-the-gravitational-potential-in-general-relativity
+	 *  
+	 * http://en.wikipedia.org/wiki/Metric_tensor_%28general_relativity%29
 	 * 
 	 * @author thorngreen
 	 *
@@ -1481,7 +1492,12 @@ public class TestMaterialDerivativeAsym4D extends TestCase
 	
 	
 	
-	
+	/**
+	 * Derivative remapping class for generating tensors with antisymmetric terms.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	protected static class SymRemap extends DerivativeRemap<Object,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 	{
 
@@ -1512,7 +1528,12 @@ public class TestMaterialDerivativeAsym4D extends TestCase
 	}
 	
 	
-	
+	/**
+	 * Mutator that returns a simplified version of the input SymbolicElem.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	protected static class Sym2Mutator implements Mutator<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>
 	{
 
@@ -1563,8 +1584,12 @@ public class TestMaterialDerivativeAsym4D extends TestCase
 	
 	
 	
-	
-	public void testMaterialDerivativeFlatAsym4D() throws NotInvertibleException
+	/**
+	 * Tests the ability to generate the asymmetric terms of
+	 * a material derivative in 4-D.
+	 *
+	 */
+	public void testMaterialDerivativeAsym4D() throws NotInvertibleException
 	{
 		final TestDimensionFour td = new TestDimensionFour();
 		
