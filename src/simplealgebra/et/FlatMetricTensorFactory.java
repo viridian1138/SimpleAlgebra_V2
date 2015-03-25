@@ -41,6 +41,8 @@ import simplealgebra.symbolic.SymbolicElemFactory;
 /**
  * Factory for generating flat (zero curvature) metric tensors as defined in General Relativity.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  * @param <Z> The type of the tensor indices.

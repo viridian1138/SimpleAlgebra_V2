@@ -40,6 +40,8 @@ import simplealgebra.ga.*;
 /**
  * Tests the ability to invert a Geometric Algebra multivector in 5-D.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  */

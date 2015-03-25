@@ -43,6 +43,8 @@ import simplealgebra.symbolic.SymbolicElem;
  * Symbolic elem. for returning either symmetric or antisymmetric
  * portions of a rank-two tensor.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  * @param <Z> The type of the tensor indices.

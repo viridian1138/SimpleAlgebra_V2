@@ -41,6 +41,7 @@ import simplealgebra.symbolic.SymbolicElem;
  * 
  * http://physics.stackexchange.com/questions/33950/what-is-the-equation-of-the-gravitational-potential-in-general-relativity
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
  * @author thorngreen
  *

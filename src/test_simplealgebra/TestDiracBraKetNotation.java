@@ -51,6 +51,7 @@ import simplealgebra.ga.GeometricAlgebraOrd;
  * 
  * and as used in the book "Quantum Mechanics: The Theoretical Minimum" by Leonard Susskind.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
  * @author thorngreen
  *

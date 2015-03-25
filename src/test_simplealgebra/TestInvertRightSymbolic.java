@@ -55,7 +55,14 @@ import simplealgebra.symbolic.SymbolicMult;
 import simplealgebra.symbolic.SymbolicNegate;
 
 
-
+/**
+ * Performs a right invert, and then verifies that the right invert contains no left invert terms.
+ * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
+ * @author thorngreen
+ *
+ */
 public class TestInvertRightSymbolic extends TestCase 
 {
 	

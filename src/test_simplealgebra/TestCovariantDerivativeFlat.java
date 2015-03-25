@@ -64,6 +64,8 @@ import simplealgebra.symbolic.SymbolicSqrt;
  * Test verifying that the covariant derivative over a flat plane is
  * the equivalent of an ordinary derivative.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  */

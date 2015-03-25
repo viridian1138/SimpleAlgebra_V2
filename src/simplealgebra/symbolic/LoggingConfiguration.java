@@ -33,6 +33,8 @@ package simplealgebra.symbolic;
  * and its related rule can be added to a Drools in a fashion similar to adding a cross-cutting
  * concern to an aspect-oriented system.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  */

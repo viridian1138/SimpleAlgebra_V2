@@ -40,6 +40,8 @@ import simplealgebra.symbolic.SymbolicElem;
 /**
  * Factory for a BigFixedPointElem.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  * @param <T> The precision of the BigFixedPointElem.

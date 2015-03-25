@@ -413,6 +413,7 @@ end
 
 
 
+// This simplification has a parallel implementation in SymbolicElem.add()
 rule "Add Zero B"
       when
           ez : SymbolicZero( )
@@ -428,6 +429,7 @@ end
 
 
 
+// This simplification has a parallel implementation in SymbolicIdentity.mult()
 rule "Mult Ident A"
       when
           ez : SymbolicIdentity( )
@@ -471,6 +473,7 @@ end
 
 
 
+// This simplification has a parallel implementation in SymbolicElem.mult()
 rule "Mult Zero B"
       when
           ez : SymbolicZero( )

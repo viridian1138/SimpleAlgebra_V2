@@ -30,6 +30,8 @@ package simplealgebra;
 /**
  * An elem. for which the enclosed elems can be mutated by a Mutator instance.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  * @param <T> The enclosed type.

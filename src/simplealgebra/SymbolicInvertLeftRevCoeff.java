@@ -38,6 +38,8 @@ import simplealgebra.symbolic.*;
  * Symbolic elem for the left-side inverse of a square matrix where the
  * enclosed elements in the matrix are multiplied in reverse-order.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  * @param <U> The number of dimensions in the matrix.

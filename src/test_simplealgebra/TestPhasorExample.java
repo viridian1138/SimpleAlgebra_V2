@@ -62,6 +62,8 @@ import simplealgebra.ga.*;
  * 
  * ( - 30 ohm * Ia - j 20 ohm * Ia ) + ( - j 30 ohm * Ib - 50 ohm * Ib ) = -120V
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  */

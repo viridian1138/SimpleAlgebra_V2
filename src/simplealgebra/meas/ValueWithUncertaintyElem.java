@@ -34,6 +34,8 @@ import simplealgebra.NotInvertibleException;
 /**
  * Elem for a value with an uncertainty (e.g. a measurement error).
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  * @param <R> The enclosed type.

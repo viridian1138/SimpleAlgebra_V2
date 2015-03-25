@@ -38,6 +38,8 @@ import simplealgebra.symbolic.SymbolicElem;
 /**
  * Element representing a derivative.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  * @param <R> The enclosed type of the derivative.

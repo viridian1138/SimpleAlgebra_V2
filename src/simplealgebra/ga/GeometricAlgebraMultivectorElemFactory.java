@@ -38,6 +38,8 @@ import simplealgebra.symbolic.SymbolicElem;
 /**
  * A factory for Geometric Algebra elems.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  * @param <U> The number of dimensions in the algebra.

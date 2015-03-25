@@ -120,6 +120,8 @@ import simplealgebra.symbolic.SymbolicElemFactory;
  * </mrow>
  * </math> terms are connection coefficients. See http://en.wikipedia.org/wiki/Einstein%E2%80%93Hilbert_action
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  * @param <Z> Type defining the terms for the contravariant and covariant indices.

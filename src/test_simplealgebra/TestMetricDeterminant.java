@@ -69,6 +69,8 @@ import java.io.*;
  *  
  * http://en.wikipedia.org/wiki/Metric_tensor_%28general_relativity%29
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  */

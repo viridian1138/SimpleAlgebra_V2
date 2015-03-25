@@ -61,6 +61,8 @@ import simplealgebra.ddx.*;
  * 
  * See http://en.wikipedia.org/wiki/Einstein_tensor
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  */

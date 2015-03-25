@@ -42,6 +42,8 @@ import simplealgebra.ga.QuaternionOrd;
 /**
  * Tests the ability to invert a Quaternion multivector in 5-D.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  */

@@ -116,6 +116,7 @@ import simplealgebra.ga.*;
  * 
  * See http://quantummechanics.ucsd.edu/ph130a/130_notes/node45.html
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
  * @author thorngreen
  *

@@ -50,6 +50,8 @@ import simplealgebra.et.*;
 /**
  * Remaps a tensor of functions to multivariate Newton-Raphson.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  * @param <Z> The type of the tensor indices.

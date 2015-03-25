@@ -31,6 +31,8 @@ import simplealgebra.ElemFactory;
 /**
  * Rule engine node.  Used to represent a symbolic refactoring in Drools ( http://drools.org ).
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  * @param <R> The enclosed type.

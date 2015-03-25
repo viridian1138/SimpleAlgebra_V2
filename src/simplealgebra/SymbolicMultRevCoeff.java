@@ -44,6 +44,7 @@ import simplealgebra.symbolic.*;
  * </mrow>
  * </math>.  Note that the multiplication of the enclosed elems may not be commutative.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
  * @author thorngreen
  *

@@ -61,6 +61,8 @@ import java.io.*;
 /**
  * Tests the ability to generate terms with the determinant of the metric tensor.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  */

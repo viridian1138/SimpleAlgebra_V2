@@ -66,6 +66,8 @@ import simplealgebra.symbolic.SymbolicSqrt;
  * Tests the ability to generate a covariant derivative in 4-D where
  * only a single component of the metric tensor is non-flat.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  */

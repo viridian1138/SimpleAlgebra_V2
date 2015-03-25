@@ -62,6 +62,8 @@ import java.util.ArrayList;
  * of the elem type are associative.  Otherwise, it is possible that multiplications
  * of the elem type are not associative. 
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  * 
  * @param <T> The elem type.

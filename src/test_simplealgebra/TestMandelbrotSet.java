@@ -52,6 +52,7 @@ import simplealgebra.bigfixedpoint.Precision;
  * 
  * The example calculated was derived from http://lodev.org/cgtutor/juliamandelbrot.html
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
  * @author thorngreen
  *

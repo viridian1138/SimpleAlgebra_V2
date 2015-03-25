@@ -32,6 +32,8 @@ package simplealgebra;
  * division by zero, attempts to invert matrices that are not invertible,
  * and attempts to invert idempotent multivectors.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  */

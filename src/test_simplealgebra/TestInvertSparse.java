@@ -40,6 +40,7 @@ import simplealgebra.SquareMatrixElemFactory;
 /**
  * Tests inverses for sparse matrices.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
  * @author thorngreen
  *

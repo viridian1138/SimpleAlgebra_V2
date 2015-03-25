@@ -37,6 +37,8 @@ import simplealgebra.NotInvertibleException;
 /**
  * A symbolic elem for the identity.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  * @param <R> The enclosed type.
@@ -80,6 +82,8 @@ public class SymbolicIdentity<R extends Elem<R,?>, S extends ElemFactory<R,S>> e
 	
 	@Override
 	public SymbolicElem<R, S> mult(SymbolicElem<R, S> b) {
+		// This simplification has a parallel implementation in the "Mult Ident A" rules in 
+		// distributeSimplify.drl and distributeSimplify2.drl
 		return( b );
 	}
 	

@@ -44,6 +44,8 @@ import java.io.*;
 /**
  * A symbolic elem that reduces to a value.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  * @param <R> The enclosed type.

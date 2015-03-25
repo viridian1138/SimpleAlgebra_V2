@@ -34,6 +34,8 @@ import simplealgebra.symbolic.SymbolicElem;
 /**
  * Factory for square matrix elems.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  * @param <U> The number of dimensions in the square matrix.

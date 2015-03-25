@@ -56,6 +56,8 @@ import java.io.*;
 /**
  * Verifies that the expression ( a + a ) + ( -a + -a ) simplifies to zero.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  */

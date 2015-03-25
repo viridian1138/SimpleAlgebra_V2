@@ -35,6 +35,8 @@ import simplealgebra.symbolic.SymbolicElem;
 /**
  * Factory for mapping a flow vector to its set of components.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  * @param <R> The enclosed type.

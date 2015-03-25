@@ -45,6 +45,8 @@ import simplealgebra.ga.GeometricAlgebraOrd;
  * Tests counterexample showing that a multivector of tensors is not associative
  * (although a multivector of doubles would be associative).
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  * 
  */

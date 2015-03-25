@@ -103,6 +103,7 @@ import simplealgebra.et.EinsteinTensorElemFactory;
  *
  * in dimensions (x, y, z, t) where "c" is an arbitrary constant.
  *
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
  * @author thorngreen
  *

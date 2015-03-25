@@ -69,6 +69,8 @@ import simplealgebra.symbolic.*;
  * particular index to be used is passed into the class as a
  * parameter.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  * 
  */

@@ -41,6 +41,8 @@ import simplealgebra.symbolic.SymbolicElem;
 /**
  * Symbolic elem for returning a copy of a tensor with a set of indices removed.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  * @param <Z> The type of the tensor indices.

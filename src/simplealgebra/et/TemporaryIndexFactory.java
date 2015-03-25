@@ -33,6 +33,8 @@ package simplealgebra.et;
 /**
  * A factory for generating temporary indices for use in tensor products.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  * @param <Z> The type of the temporary indices.

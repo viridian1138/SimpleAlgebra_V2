@@ -56,6 +56,14 @@ import simplealgebra.symbolic.SymbolicNegate;
 import java.io.*;
 
 
+/**
+ * Performs a left invert, and then verifies that the left invert contains no right invert terms.
+ * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
+ * @author thorngreen
+ *
+ */
 public class TestInvertLeftSymbolic extends TestCase 
 {
 	

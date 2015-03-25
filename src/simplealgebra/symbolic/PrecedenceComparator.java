@@ -38,6 +38,8 @@ import simplealgebra.ElemFactory;
 /**
  * A description of how to assign precedence for converting to infix notation.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  * @param <R> The enclosed elem type.

@@ -30,6 +30,8 @@ package simplealgebra;
 /**
  * In interface implemented by elems that support mutation.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  * @param <R> The mutable type.

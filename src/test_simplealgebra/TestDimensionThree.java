@@ -31,6 +31,8 @@ import simplealgebra.NumDimensions;
 /**
  * Test class for three-dimensional problems.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  */

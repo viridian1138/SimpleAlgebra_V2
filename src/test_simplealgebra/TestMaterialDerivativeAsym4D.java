@@ -76,6 +76,8 @@ import test_simplealgebra.TestMaterialDerivativeSymbolic.TestMetricTensorFactory
  * Tests the ability to generate the asymmetric terms of
  * a material derivative in 4-D.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  */

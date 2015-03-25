@@ -36,6 +36,8 @@ import simplealgebra.symbolic.SymbolicElemFactory;
  * to specify it directly.  However, when the inverse of the metric is NOT
  * already known this class provides utility methods for computing it.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  * @param <Z> Type defining the terms for the contravariant and covariant indices.

@@ -42,6 +42,8 @@ import simplealgebra.symbolic.SymbolicElem;
  * An elem defining a term that is evaluated over a discretized space such as the discretized
  * space in the Euler Method.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  * @param <R> The enclosed type.

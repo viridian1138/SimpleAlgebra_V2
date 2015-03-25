@@ -48,6 +48,8 @@ import simplealgebra.symbolic.SymbolicElemFactory;
  * Test class that constructs a version of NewtonRaphsonMultiElemRemapTensor for diagonals of
  * rank-two tensors.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  */

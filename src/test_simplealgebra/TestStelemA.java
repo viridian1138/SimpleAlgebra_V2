@@ -105,6 +105,7 @@ import simplealgebra.symbolic.SymbolicReduction;
  *
  * in dimensions (x, t) where "c" is an arbitrary constant.
  *
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
  * @author thorngreen
  *

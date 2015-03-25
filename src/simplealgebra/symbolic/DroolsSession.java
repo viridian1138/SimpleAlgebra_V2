@@ -31,6 +31,8 @@ import org.kie.internal.runtime.StatefulKnowledgeSession;
 /**
  * A rule session container for a Drools ( http://drools.org ) session.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  */

@@ -38,6 +38,8 @@ import simplealgebra.NotInvertibleException;
 /**
  * A fixed-point elem.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  * @param <T> The precision of the elem.

@@ -106,6 +106,7 @@ import simplealgebra.symbolic.SymbolicElemFactory;
  *
  * See http://en.wikipedia.org/wiki/Einstein_tensor
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
  * @author thorngreen
  *

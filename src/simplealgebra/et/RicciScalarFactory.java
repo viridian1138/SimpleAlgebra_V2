@@ -66,6 +66,8 @@ import simplealgebra.symbolic.SymbolicElemFactory;
  * </mrow>
  * </math> term is the Ricci tensor.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  * @param <Z> Type defining the terms for the contravariant and covariant indices.

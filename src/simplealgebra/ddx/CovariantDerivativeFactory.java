@@ -118,6 +118,7 @@ import simplealgebra.symbolic.SymbolicElemFactory;
  * <P>
  * <P>See http://en.wikipedia.org/wiki/Covariant_derivative
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
  * @author thorngreen
  *

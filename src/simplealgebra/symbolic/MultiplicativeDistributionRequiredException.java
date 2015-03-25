@@ -37,6 +37,8 @@ package simplealgebra.symbolic;
  * An exception indicating that a derivative operator needs to be multiplied by its argument in
  * the symbolic expression.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  */

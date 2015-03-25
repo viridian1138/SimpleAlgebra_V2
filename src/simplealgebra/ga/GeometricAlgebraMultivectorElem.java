@@ -53,6 +53,8 @@ import simplealgebra.symbolic.SymbolicNegate;
  * A sparse representation of an elem similar to a Geometric Algebra multivector.  The precise
  * elem that is produced depends on the Ord.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  * @param <U> The number of dimensions in the multivector.

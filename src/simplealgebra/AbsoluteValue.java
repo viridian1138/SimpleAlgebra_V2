@@ -30,6 +30,8 @@ package simplealgebra;
 /**
  * Defines an enumerated command for calculating the absolute value.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  */

@@ -36,6 +36,8 @@ import simplealgebra.symbolic.SymbolicElem;
 /**
  * Factory for a ValueWithUncertaintyElem.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  * @param <R> The enclosed type.

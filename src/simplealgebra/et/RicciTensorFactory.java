@@ -71,6 +71,7 @@ import simplealgebra.symbolic.SymbolicElemFactory;
  * </mrow>
  * </math> term is the Riemann tensor.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
  * @author thorngreen
  *

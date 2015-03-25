@@ -33,6 +33,8 @@ package simplealgebra.symbolic;
 /**
  * Enum for symbolic operations.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  */

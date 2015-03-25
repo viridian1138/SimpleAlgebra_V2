@@ -32,6 +32,8 @@ import simplealgebra.ElemFactory;
  * Node for transitively determining in Drools ( http://drools.org ) the
  * first node in a tree of multiplications under a root multiplication.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  * @param <R> The enclosed type.

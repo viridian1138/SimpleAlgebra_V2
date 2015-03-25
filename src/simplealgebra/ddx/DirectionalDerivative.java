@@ -50,6 +50,8 @@ import simplealgebra.symbolic.SymbolicElemFactory;
  * </mrow>
  * </math>) for a Geometric Algebra multivector.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  * @param <U> The number of dimensions over which to express the directional derivative.

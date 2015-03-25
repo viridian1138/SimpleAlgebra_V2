@@ -48,6 +48,7 @@ import simplealgebra.SquareMatrixElem;
  * 
  * Test cases are adapted from http://people.sc.fsu.edu/~jburkardt/m_src/test_matrix_exponential/test_matrix_exponential.html
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
  * @author thorngreen
  *

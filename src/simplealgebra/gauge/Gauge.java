@@ -42,6 +42,8 @@ import simplealgebra.symbolic.SymbolicElem;
  * 
  * See http://en.wikipedia.org/wiki/Gauge_fixing
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  * @param <R> The enclosed type.

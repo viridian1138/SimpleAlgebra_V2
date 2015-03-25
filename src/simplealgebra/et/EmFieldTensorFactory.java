@@ -86,6 +86,8 @@ import simplealgebra.symbolic.SymbolicElemFactory;
  * 
  * <P> See http://en.wikipedia.org/wiki/Maxwell%27s_equations_in_curved_spacetime
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  * @param <Z> The type for the variables over which to take derivatives.

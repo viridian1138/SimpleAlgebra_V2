@@ -64,6 +64,8 @@ import simplealgebra.ddx.*;
  * The related problem of how to make one of the dimensions compactified
  * is solved outside of the scope of this test.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  */

@@ -31,6 +31,8 @@ package simplealgebra;
 /**
  * A function that mutates an elem. into another elem. of the same type.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  * @param <T> The type of the argument and return.

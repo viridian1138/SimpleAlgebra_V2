@@ -39,6 +39,7 @@ import simplealgebra.symbolic.SymbolicElemFactory;
 /**
  * Class for remapping a tensor derivative of rank two, for instance to remove antisymmetric terms.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
  * @author thorngreen
  *

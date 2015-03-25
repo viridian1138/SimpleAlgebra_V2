@@ -39,6 +39,8 @@ import simplealgebra.NotInvertibleException;
 /**
  * A symbolic elem that serves as a placeholder for another symbolic elem of the same type.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  * @param <R> The enclosed type.

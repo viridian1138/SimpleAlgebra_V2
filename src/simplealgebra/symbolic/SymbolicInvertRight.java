@@ -55,6 +55,8 @@ import simplealgebra.NotInvertibleException;
  * </mrow>
  * </math> is the identity.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  * @param <R> The enclosed type.

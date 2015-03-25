@@ -37,6 +37,7 @@ import simplealgebra.ga.GeometricAlgebraOrd;
  * 
  * See http://en.wikipedia.org/wiki/Phasor
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
  * @author thorngreen
  *

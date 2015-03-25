@@ -67,6 +67,8 @@ import simplealgebra.symbolic.SymbolicSqrt;
  * Test the ability to generate the asymmetric terms of a covariant
  * derivative over a flat metric.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  */

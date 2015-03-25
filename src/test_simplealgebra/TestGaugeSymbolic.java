@@ -61,6 +61,8 @@ import java.io.*;
 /**
  * Tests the ability to construct a gauge.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  */

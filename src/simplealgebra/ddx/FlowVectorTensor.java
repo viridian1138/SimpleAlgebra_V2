@@ -46,6 +46,8 @@ import simplealgebra.symbolic.SymbolicElemFactory;
 /**
  * Implements a tensor for a flow vector.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  * @param <Z> Type defining the terms for the contravariant and covariant indices.

@@ -30,6 +30,8 @@ package simplealgebra;
 /**
  * Defines an enumerated command for a square root.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  */

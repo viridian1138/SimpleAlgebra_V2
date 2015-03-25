@@ -68,6 +68,8 @@ import simplealgebra.symbolic.SymbolicZero;
 /**
  * Tests the ability to generate the symbolic terms of the material derivative in 4-D.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  */

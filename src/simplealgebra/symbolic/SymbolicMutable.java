@@ -43,6 +43,8 @@ import java.io.*;
  * A symbolic elem. "A" that takes in another elem. "B" and mutates each enclosed
  * elem. "C" existing inside "B" by some mutator function.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  * @param <T> The enclosed type inside the enclosed mutable elem.

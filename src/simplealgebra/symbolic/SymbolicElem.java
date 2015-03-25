@@ -45,6 +45,8 @@ import simplealgebra.NotInvertibleException;
 /**
  * A symbolic elem.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  * @param <R> The enclosed type.
@@ -102,11 +104,15 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 	
 	@Override
 	public SymbolicElem<R, S> add(SymbolicElem<R, S> b) {
+		// This simplification has a parallel implementation in the "Add Zero B" rules in 
+		// distributeSimplify.drl and distributeSimplify2.drl
 		return( b.isSymbolicZero() ? this : new SymbolicAdd<R,S>( this , b , fac ) );
 	}
 
 	@Override
 	public SymbolicElem<R, S> mult(SymbolicElem<R, S> b) {
+		// This simplification has a parallel implementation in the "Mult Zero B" rules in 
+		// distributeSimplify.drl and distributeSimplify2.drl
 		return( b.isSymbolicZero() ? b : new SymbolicMult<R,S>( this , b , fac ) );
 	}
 

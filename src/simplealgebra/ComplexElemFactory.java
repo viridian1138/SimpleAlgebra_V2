@@ -32,6 +32,8 @@ import simplealgebra.symbolic.SymbolicElem;
 /**
  * Factory for complex number elems.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  * @param <R> The enclosed type.

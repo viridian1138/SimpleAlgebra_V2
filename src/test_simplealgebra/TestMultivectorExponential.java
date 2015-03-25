@@ -52,6 +52,7 @@ import simplealgebra.ga.*;
  * 
  * (http://przyrbwn.icm.edu.pl/app/pdf/116/a116z219.pdf)
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
  * @author thorngreen
  *

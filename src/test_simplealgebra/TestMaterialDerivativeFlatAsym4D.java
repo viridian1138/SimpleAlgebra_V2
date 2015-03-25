@@ -75,6 +75,8 @@ import simplealgebra.symbolic.SymbolicZero;
  * Tests the ability to generate the asymmetric terms of
  * a material derivative in 4-D over a flat metric.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  */

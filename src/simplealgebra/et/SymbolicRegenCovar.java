@@ -42,6 +42,8 @@ import simplealgebra.symbolic.SymbolicElem;
  * the covariant indices renamed to a new set of index names.
  * This is used, for instance, when the same term is used in a formula with a different index from its original definition.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  * @param <Z> The type of the tensor indices.

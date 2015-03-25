@@ -49,6 +49,8 @@ import simplealgebra.symbolic.SymbolicElemFactory;
 /**
  * Remaps a multivector of functions to multivariate Newton-Raphson.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  * @param <U> The number of dimensions for the multivector.
