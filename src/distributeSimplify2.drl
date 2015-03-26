@@ -771,12 +771,32 @@ end
 
 
 
+// This simplification has a parallel implementation in SymbolicIdentity.invertLeft()
+rule "Invert Left Identity --> Identity"
+      when
+          ez : SymbolicIdentity( )
+          n1 : SymbolicInvertLeft( elem == ez )
+          not( Reng( strt == n1 ) )
+      then
+          insert( new Reng( n1 , ez ) );
+end
 
 
 
 
 
 
+
+
+// This simplification has a parallel implementation in SymbolicIdentity.invertRight()
+rule "Invert Right Identity --> Identity"
+      when
+          ez : SymbolicIdentity( )
+          n1 : SymbolicInvertRight( elem == ez )
+          not( Reng( strt == n1 ) )
+      then
+          insert( new Reng( n1 , ez ) );
+end
 
 
 

@@ -89,11 +89,15 @@ public class SymbolicIdentity<R extends Elem<R,?>, S extends ElemFactory<R,S>> e
 	
 	@Override
 	public SymbolicElem<R, S> invertLeft() throws NotInvertibleException {
+		// This simplification has a parallel implementation in the "Invert Left Identity --> Identity" rules in 
+		// distributeSimplify.drl and distributeSimplify2.drl
 		return( this );
 	}
 	
 	@Override
 	public SymbolicElem<R, S> invertRight() throws NotInvertibleException {
+		// This simplification has a parallel implementation in the "Invert Right Identity --> Identity" rules in 
+		// distributeSimplify.drl and distributeSimplify2.drl
 		return( this );
 	}
 	
