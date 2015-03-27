@@ -93,7 +93,19 @@ public class TestDoubleInvertRight extends TestCase {
 	
 	
 	/**
-	 * Generates a random matrix for a Matrix Algebra M_4(R).
+	 * Generates a random matrix for a Matrix Algebra <math display="inline">
+     * <mrow>
+     *  <msub>
+     *          <mi>M</mi>
+     *        <mn>4</mn>
+     *  </msub>
+     *  <mfenced open="(" close=")" separators=",">
+     *    <mrow>
+     *      <mi>R</mi>
+     *    </mrow>
+     *  </mfenced>
+     * </mrow>
+     * </math>
 	 * 
 	 * @param rand The random number generator.
 	 * @param se The factory for the enclosed type.
@@ -121,7 +133,27 @@ public class TestDoubleInvertRight extends TestCase {
 	
 	
 	/**
-	 * Generates a random matrix for a Matrix Algebra M_4(M_4(R)).
+	 * Generates a random matrix for a Matrix Algebra <math display="inline">
+     * <mrow>
+     *   <msub>
+     *          <mi>M</mi>
+     *        <mn>4</mn>
+     *  </msub>
+     *  <mfenced open="(" close=")" separators=",">
+     *    <mrow>
+     *      <msub>
+     *              <mi>M</mi>
+     *            <mn>4</mn>
+     *      </msub>
+     *      <mfenced open="(" close=")" separators=",">
+     *        <mrow>
+     *          <mi>R</mi>
+     *        </mrow>
+     *      </mfenced>
+     *    </mrow>
+     *  </mfenced>
+     * </mrow>
+     * </math>
 	 * 
 	 * @param rand The random number generator.
 	 * @param se The factory for the enclosed type.
@@ -153,7 +185,35 @@ public class TestDoubleInvertRight extends TestCase {
 	
 	
 	/**
-	 * Generates a random matrix for a Matrix Algebra M_4(M_4(M_4(R))).
+	 * Generates a random matrix for a Matrix Algebra <math display="inline">
+     * <mrow>
+     *   <msub>
+     *           <mi>M</mi>
+     *         <mn>4</mn>
+     *   </msub>
+     *   <mfenced open="(" close=")" separators=",">
+     *     <mrow>
+     *       <msub>
+     *               <mi>M</mi>
+     *             <mn>4</mn>
+     *       </msub>
+     *       <mfenced open="(" close=")" separators=",">
+     *         <mrow>
+     *           <msub>
+     *                   <mi>M</mi>
+     *                 <mn>4</mn>
+     *           </msub>
+     *           <mfenced open="(" close=")" separators=",">
+     *             <mrow>
+     *               <mi>R</mi>
+     *             </mrow>
+     *           </mfenced>
+     *         </mrow>
+     *       </mfenced>
+     *     </mrow>
+     *   </mfenced>
+     * </mrow>
+     * </math>
 	 * 
 	 * @param rand The random number generator.
 	 * @param se The factory for the enclosed type.

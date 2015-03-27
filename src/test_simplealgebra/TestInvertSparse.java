@@ -86,7 +86,19 @@ public class TestInvertSparse extends TestCase {
 	
 	
 	/**
-	 * Generates a random sparse matrix for a Matrix Algebra M_50(R).
+	 * Generates a random sparse matrix for a Matrix Algebra <math display="inline">
+     * <mrow>
+     *  <msub>
+     *          <mi>M</mi>
+     *        <mn>50</mn>
+     *  </msub>
+     *  <mfenced open="(" close=")" separators=",">
+     *    <mrow>
+     *      <mi>R</mi>
+     *    </mrow>
+     *  </mfenced>
+     * </mrow>
+     * </math>
 	 * 
 	 * @param rand The random number generator.
 	 * @param se The factory for the enclosed type.
@@ -150,7 +162,19 @@ public class TestInvertSparse extends TestCase {
 	
 	
 	/**
-	 * Generates a random sparse matrix for a Matrix Algebra M_50(R).
+	 * Generates a random sparse matrix for a Matrix Algebra <math display="inline">
+     * <mrow>
+     *  <msub>
+     *          <mi>M</mi>
+     *        <mn>50</mn>
+     *  </msub>
+     *  <mfenced open="(" close=")" separators=",">
+     *    <mrow>
+     *      <mi>R</mi>
+     *    </mrow>
+     *  </mfenced>
+     * </mrow>
+     * </math>
 	 * 
 	 * @param rand The random number generator.
 	 * @param se The factory for the enclosed type.
@@ -209,7 +233,19 @@ public class TestInvertSparse extends TestCase {
 	
 	
 	/**
-	 * Generates a random diagonal matrix for a Matrix Algebra M_50(R) with the rows offset.
+	 * Generates a random diagonal matrix for a Matrix Algebra <math display="inline">
+     * <mrow>
+     *  <msub>
+     *          <mi>M</mi>
+     *        <mn>50</mn>
+     *  </msub>
+     *  <mfenced open="(" close=")" separators=",">
+     *    <mrow>
+     *      <mi>R</mi>
+     *    </mrow>
+     *  </mfenced>
+     * </mrow>
+     * </math> with the rows offset.
 	 * 
 	 * @param rand The random number generator.
 	 * @param se The factory for the enclosed type.
@@ -274,6 +310,89 @@ public class TestInvertSparse extends TestCase {
 	
 	
 	
+	
+	/**
+	 * Generates the addition of two random diagonal matrices for a Matrix Algebra <math display="inline">
+     * <mrow>
+     *  <msub>
+     *          <mi>M</mi>
+     *        <mn>50</mn>
+     *  </msub>
+     *  <mfenced open="(" close=")" separators=",">
+     *    <mrow>
+     *      <mi>R</mi>
+     *    </mrow>
+     *  </mfenced>
+     * </mrow>
+     * </math> with the rows offset.
+	 * 
+	 * @param rand The random number generator.
+	 * @param se The factory for the enclosed type.
+	 * @return The random matrix.
+	 */
+	protected SquareMatrixElem<TestDimensionFifty,DoubleElem,DoubleElemFactory> generateOffsetDiagonalMatTwo( final Random rand,
+			SquareMatrixElemFactory<TestDimensionFifty,DoubleElem,DoubleElemFactory> se )
+	{
+		final BigInteger FIFTY = BigInteger.valueOf( FIFTY_INT );
+		
+		final SquareMatrixElem<TestDimensionFifty,DoubleElem,DoubleElemFactory> mat = se.zero();
+		
+		for( int ccnt = 0 ; ccnt < 2 ; ccnt++ )
+		{
+		
+			final HashSet<BigInteger> rows = new HashSet<BigInteger>();
+			final HashSet<BigInteger> cols = new HashSet<BigInteger>();
+		
+			int cnt;
+			for( cnt = 0 ; cnt < FIFTY_INT ; cnt++ )
+			{
+				rows.add( BigInteger.valueOf( cnt ) );
+				cols.add( BigInteger.valueOf( cnt ) );
+			}
+		
+			BigInteger row = null;
+			BigInteger col = null;
+		
+			if( rand.nextBoolean() )
+			{
+				row = BigInteger.valueOf( rand.nextInt( 50 ) );
+				col = BigInteger.ZERO;
+			}
+			else
+			{
+				col = BigInteger.valueOf( rand.nextInt( 50 ) );
+				row = BigInteger.ZERO;
+			}
+		
+			while( ( rows.size() > 0 ) || ( cols.size() > 0 ) )
+			{
+				DoubleElem val = new DoubleElem( 2.0 * ( rand.nextDouble() ) - 1.0 );
+				mat.setVal( row , col , val );
+			
+				rows.remove( row );
+				cols.remove( col );
+			
+				row = row.add( BigInteger.ONE );
+				col = col.add( BigInteger.ONE );
+			
+				if( row.compareTo( FIFTY ) >= 0 )
+				{
+					row = BigInteger.ZERO;
+				}
+			
+				if( col.compareTo( FIFTY ) >= 0 )
+				{
+					col = BigInteger.ZERO;
+				}
+			}
+			
+		}
+		
+		return( mat );
+	}
+	
+	
+	
 
 	
 	/**
@@ -315,6 +434,29 @@ public class TestInvertSparse extends TestCase {
 		seedTestInvertLeftDiagonal( 5432 );
 		seedTestInvertLeftDiagonal( 6543 );
 	}
+	
+	
+	
+	
+	/**
+	 * Test method for {@link simplealgebra.SquareMatrixElem#invertLeft()} with sparse diagonal dual-row-offset matrices.
+	 */
+	public void testInvertLeftDiagonalTwo() throws NotInvertibleException
+	{
+		seedTestInvertLeftDiagonalTwo( 1111 );
+		seedTestInvertLeftDiagonalTwo( 2222 );
+		seedTestInvertLeftDiagonalTwo( 3333 );
+		seedTestInvertLeftDiagonalTwo( 4444 );
+		seedTestInvertLeftDiagonalTwo( 5555 );
+		seedTestInvertLeftDiagonalTwo( 6666 );
+		seedTestInvertLeftDiagonalTwo( 7777 );
+		seedTestInvertLeftDiagonalTwo( 8888 );
+		seedTestInvertLeftDiagonalTwo( 9999 );
+		seedTestInvertLeftDiagonalTwo( 4321 );
+		seedTestInvertLeftDiagonalTwo( 5432 );
+		seedTestInvertLeftDiagonalTwo( 6543 );
+	}
+	
 	
 
 
@@ -445,6 +587,70 @@ public class TestInvertSparse extends TestCase {
 	
 	
 	/**
+	 * Verifies that for dual-row-offset diagonal matrices <math display="inline">
+     * <mrow>
+     *  <msup>
+     *          <mi>A</mi>
+     *        <mo>-1L</mo>
+     *  </msup>
+     *  <mi>A</mi>
+     *  <mo>=</mo>
+     *  <mi>I</mi>
+     * </mrow>
+     * </math>
+     * where <math display="inline">
+     * <mrow>
+     *  <mi>I</mi>
+     * </mrow>
+     * </math> is the identity.
+	 * 
+	 * @param seed The random number seed for generating the matrix.
+	 * @throws NotInvertibleException
+	 */
+	private void seedTestInvertLeftDiagonalTwo( long seed ) throws NotInvertibleException {
+		
+		final Random rand = new Random();
+		
+		rand.setSeed( seed );
+		
+		final TestDimensionFifty td = new TestDimensionFifty();
+		
+		final DoubleElemFactory dl = new DoubleElemFactory();
+		
+		final SquareMatrixElemFactory<TestDimensionFifty,DoubleElem,DoubleElemFactory> se = 
+				new SquareMatrixElemFactory<TestDimensionFifty,DoubleElem,DoubleElemFactory>(dl, td);
+		
+		final SquareMatrixElem<TestDimensionFifty,DoubleElem,DoubleElemFactory> mat = generateOffsetDiagonalMatTwo( rand , se );
+		
+		int i;
+		int j;
+		
+		final SquareMatrixElem<TestDimensionFifty,DoubleElem,DoubleElemFactory> inv = mat.invertLeft();
+		
+		final SquareMatrixElem<TestDimensionFifty,DoubleElem,DoubleElemFactory> shouldBeIdentA = mat.mult( inv );
+		
+		final SquareMatrixElem<TestDimensionFifty,DoubleElem,DoubleElemFactory> shouldBeIdentB = inv.mult( mat );
+		
+		for( i = 0 ; i < FIFTY_INT ; i++ )
+		{
+			for( j = 0 ; j < FIFTY_INT ; j++ )
+			{
+				final double matchVal = ( i == j ) ? 1.0 : 0.0;
+				
+				Assert.assertEquals( matchVal , 
+						shouldBeIdentA.getVal(BigInteger.valueOf(i) , BigInteger.valueOf(j) ).getVal() , 1E-9 );
+				
+				Assert.assertEquals( matchVal , 
+						shouldBeIdentB.getVal(BigInteger.valueOf(i) , BigInteger.valueOf(j) ).getVal() , 1E-9 );
+				
+			}
+		}
+		
+	}
+	
+	
+	
+	/**
 	 * Test method for {@link simplealgebra.SquareMatrixElem#invertRight()} with sparse matrices.
 	 */
 	public void testInvertRight() throws NotInvertibleException
@@ -483,6 +689,28 @@ public class TestInvertSparse extends TestCase {
 		seedTestInvertRightDiagonal( 4321 );
 		seedTestInvertRightDiagonal( 5432 );
 		seedTestInvertRightDiagonal( 6543 );
+	}
+	
+	
+	
+	
+	/**
+	 * Test method for {@link simplealgebra.SquareMatrixElem#invertRight()} with sparse diagonal dual-row-offset matrices.
+	 */
+	public void testInvertRightDiagonalTwo() throws NotInvertibleException
+	{
+		seedTestInvertRightDiagonalTwo( 1111 );
+		seedTestInvertRightDiagonalTwo( 2222 );
+		seedTestInvertRightDiagonalTwo( 3333 );
+		seedTestInvertRightDiagonalTwo( 4444 );
+		seedTestInvertRightDiagonalTwo( 5555 );
+		seedTestInvertRightDiagonalTwo( 6666 );
+		seedTestInvertRightDiagonalTwo( 7777 );
+		seedTestInvertRightDiagonalTwo( 8888 );
+		seedTestInvertRightDiagonalTwo( 9999 );
+		seedTestInvertRightDiagonalTwo( 4321 );
+		seedTestInvertRightDiagonalTwo( 5432 );
+		seedTestInvertRightDiagonalTwo( 6543 );
 	}
 	
 
@@ -589,6 +817,72 @@ public class TestInvertSparse extends TestCase {
 				new SquareMatrixElemFactory<TestDimensionFifty,DoubleElem,DoubleElemFactory>(dl, td);
 		
 		final SquareMatrixElem<TestDimensionFifty,DoubleElem,DoubleElemFactory> mat = generateOffsetDiagonalMat( rand , se );
+		
+		int i;
+		int j;
+		
+		final SquareMatrixElem<TestDimensionFifty,DoubleElem,DoubleElemFactory> inv = mat.invertRight();
+		
+		final SquareMatrixElem<TestDimensionFifty,DoubleElem,DoubleElemFactory> shouldBeIdentA = mat.mult( inv );
+		
+		final SquareMatrixElem<TestDimensionFifty,DoubleElem,DoubleElemFactory> shouldBeIdentB = inv.mult( mat );
+		
+		for( i = 0 ; i < FIFTY_INT ; i++ )
+		{
+			for( j = 0 ; j < FIFTY_INT ; j++ )
+			{
+				final double matchVal = ( i == j ) ? 1.0 : 0.0;
+				
+				Assert.assertEquals( matchVal , 
+						shouldBeIdentA.getVal(BigInteger.valueOf(i) , BigInteger.valueOf(j) ).getVal() , 1E-9 );
+				
+				Assert.assertEquals( matchVal , 
+						shouldBeIdentB.getVal(BigInteger.valueOf(i) , BigInteger.valueOf(j) ).getVal() , 1E-9 );
+				
+			}
+		}
+		
+	}
+	
+	
+	
+	
+	
+	/**
+	 * Verifies that for dual-row-offset diagonal matrices <math display="inline">
+     * <mrow>
+     *  <mi>A</mi>
+     *  <msup>
+     *          <mi>A</mi>
+     *        <mo>-1R</mo>
+     *  </msup>
+     *  <mo>=</mo>
+     *  <mi>I</mi>
+     * </mrow>
+     * </math> 
+     * where <math display="inline">
+     * <mrow>
+     *  <mi>I</mi>
+     * </mrow>
+     * </math> is the identity.  Also verifies that the reverse-order holds for commutative nested elems.
+	 * 
+	 * @param seed The random number seed for generating the matrix.
+	 * @throws NotInvertibleException
+	 */
+	private void seedTestInvertRightDiagonalTwo( long seed ) throws NotInvertibleException {
+		
+		final Random rand = new Random();
+		
+		rand.setSeed( seed );
+		
+		final TestDimensionFifty td = new TestDimensionFifty();
+		
+		final DoubleElemFactory dl = new DoubleElemFactory();
+		
+		final SquareMatrixElemFactory<TestDimensionFifty,DoubleElem,DoubleElemFactory> se = 
+				new SquareMatrixElemFactory<TestDimensionFifty,DoubleElem,DoubleElemFactory>(dl, td);
+		
+		final SquareMatrixElem<TestDimensionFifty,DoubleElem,DoubleElemFactory> mat = generateOffsetDiagonalMatTwo( rand , se );
 		
 		int i;
 		int j;

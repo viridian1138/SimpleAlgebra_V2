@@ -37,7 +37,27 @@ import simplealgebra.SquareMatrixElem;
 import simplealgebra.SquareMatrixElemFactory;
 
 /**
- * Tests inverses for a Matrix Algebra M_2(M_2(R)).  For more information see:
+ * Tests inverses for a Matrix Algebra <math display="inline">
+ * <mrow>
+ *   <msub>
+ *          <mi>M</mi>
+ *        <mn>2</mn>
+ *  </msub>
+ *  <mfenced open="(" close=")" separators=",">
+ *    <mrow>
+ *      <msub>
+ *              <mi>M</mi>
+ *            <mn>2</mn>
+ *      </msub>
+ *      <mfenced open="(" close=")" separators=",">
+ *        <mrow>
+ *          <mi>R</mi>
+ *        </mrow>
+ *      </mfenced>
+ *    </mrow>
+ *  </mfenced>
+ * </mrow>
+ * </math>.  For more information see:
  * 
  * http://en.wikipedia.org/wiki/Matrix_ring
  * 
@@ -66,7 +86,19 @@ public class TestInvertNestedTwo extends TestCase {
 	
 	
 	/**
-	 * Generates a random matrix for a Matrix Algebra M_2(R).
+	 * Generates a random matrix for a Matrix Algebra <math display="inline">
+     * <mrow>
+     *  <msub>
+     *          <mi>M</mi>
+     *        <mn>2</mn>
+     *  </msub>
+     *  <mfenced open="(" close=")" separators=",">
+     *    <mrow>
+     *      <mi>R</mi>
+     *    </mrow>
+     *  </mfenced>
+     * </mrow>
+     * </math>
 	 * 
 	 * @param rand The random number generator.
 	 * @param se The factory for the enclosed type.
