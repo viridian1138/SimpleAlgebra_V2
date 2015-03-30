@@ -42,8 +42,12 @@ import simplealgebra.ga.GeometricAlgebraMultivectorElem;
 
 
 /**
- * Elem. for a tensor in Einstein Notation as described in General Relativity.
+ * Elem. for representing tensors and tensor-like elements elements using the einstein summation convention.  
+ * Note that not all elements in the einstein summation convention are tensors in that not all elements in 
+ * the einstein summation convention are coordinate-independent.  However, the definitions in this class 
+ * can represent any sum or product in the einstein summation convention.
  * 
+ * See http://en.wikipedia.org/wiki/tensor
  * 
  * See http://en.wikipedia.org/wiki/Einstein_Notation
  * 
