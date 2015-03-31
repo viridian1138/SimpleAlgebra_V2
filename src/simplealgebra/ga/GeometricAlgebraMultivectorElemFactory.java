@@ -116,6 +116,28 @@ public class GeometricAlgebraMultivectorElemFactory<U extends NumDimensions, A e
 	}
 	
 	
+	/**
+	 * Returns the number of dimensions.
+	 * 
+	 * @return The number of dimensions.
+	 */
+	public U getDim()
+	{
+		return( dim );
+	}
+	
+	
+	/**
+	 * Returns the ord.
+	 * 
+	 * @return The ord.
+	 */
+	public A getOrd()
+	{
+		return( ord );
+	}
+	
+	
 	@Override
 	public SymbolicElem<GeometricAlgebraMultivectorElem<U,A, R, S>, GeometricAlgebraMultivectorElemFactory<U,A,R,S>> handleSymbolicOptionalOp( Object id , 
 			ArrayList<SymbolicElem<GeometricAlgebraMultivectorElem<U,A, R, S>, GeometricAlgebraMultivectorElemFactory<U,A,R,S>>> args )  throws NotInvertibleException
