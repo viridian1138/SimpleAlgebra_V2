@@ -31,8 +31,9 @@ import simplealgebra.ga.Ord;
 
 
 
+
 /**
- * Class for generating a simple linear fit of the form Y = F( X ).
+ * Class for generating a simple N-th power fit of the form Y = F( X )..
  * 
  * @author thorngreen
  *
@@ -41,9 +42,14 @@ import simplealgebra.ga.Ord;
  * @param <R> The enclosed type.
  * @param <S> The factory for the enclosed type.
  */
-public class LinearFit<U extends NumDimensions, A extends Ord<U>, R extends Elem<R,?>, S extends ElemFactory<R,S>> extends
+public class NPowerFit<U extends NumDimensions, A extends Ord<U>, R extends Elem<R,?>, S extends ElemFactory<R,S>> extends
 	Sampling<U,A,R,S>
 {
+	
+	/**
+	 * The power of the fit.
+	 */
+	protected int n;
 	
 	/**
 	 * The X-Coordinates to be fitted.
@@ -66,21 +72,24 @@ public class LinearFit<U extends NumDimensions, A extends Ord<U>, R extends Elem
 	protected R meanY;
 	
 	/**
-	 * The calculated slope coefficient.
+	 * The calculated slope coefficients.
 	 */
-	protected R slope;
+	protected R slopes[];
 	
 	
 	/**
 	 * Constructs the class.
 	 * 
+	 * @param _n The power of the fit.
 	 * @param _xv The X-Coordinates to be fitted.
 	 * @param _yv The Y-Coordinates to be fitted.
 	 */
-	public LinearFit( GeometricAlgebraMultivectorElem<U,A,R,S> _xv , GeometricAlgebraMultivectorElem<U,A,R,S> _yv )
+	public NPowerFit( int _n , GeometricAlgebraMultivectorElem<U,A,R,S> _xv , GeometricAlgebraMultivectorElem<U,A,R,S> _yv )
 	{
+		n = _n;
 		xv = _xv;
 		yv = _yv;
+		slopes = (R[])( new Elem<?,?>[ n ] );
 	}
 	
 	
@@ -94,20 +103,34 @@ public class LinearFit<U extends NumDimensions, A extends Ord<U>, R extends Elem
 		meanX = mean( xv );
 		meanY = mean( yv );
 		
-		final GeometricAlgebraMultivectorElem<U,A,R,S> slopesY = new GeometricAlgebraMultivectorElem<U,A,R,S>( xv.getFac().getFac() , 
-				xv.getFac().getDim() , xv.getFac().getOrd() );
-		slopeTransform( xv , yv , meanX , meanY , slopesY  );
+		R mY = meanY;
+		GeometricAlgebraMultivectorElem<U,A,R,S> yyv = yv;
 		
-		slope = mean( slopesY );
+		
+		for( int cnt = 0 ; cnt < n ; cnt++ )
+		{
+			final GeometricAlgebraMultivectorElem<U,A,R,S> slY = new GeometricAlgebraMultivectorElem<U,A,R,S>( xv.getFac().getFac() , 
+					xv.getFac().getDim() , xv.getFac().getOrd() );
+			slopeTransform( xv , yyv , meanX , mY , slY  );
+			
+			R slp = mean( slY );
+			yyv = slY;
+			mY = slp;
+		}
+		
 	}
 	
 	
 	
-	public R eval( R x , R meanX , R meanY , R slope )
+	public R eval( R x , R meanX , R meanY , R slopes[] )
 	{
 		final R sub = x.add( meanX.negate() );
-		final R slR = slope.mult( sub );
-		final R ret = slR.add( meanY );
+		R sum = xv.getFac().getFac().zero();
+		for( int cnt = n - 1 ; cnt >= 0 ; cnt-- )
+		{
+			sum = ( sum.add( slopes[ cnt ] ) ).mult( sub );
+		}
+		final R ret = sum.add( meanY );
 		return( ret );
 	}
 
@@ -120,10 +143,10 @@ public class LinearFit<U extends NumDimensions, A extends Ord<U>, R extends Elem
 	 */
 	public R eval( R x )
 	{
-		return( eval( x , meanX , meanY , slope ) );
+		return( eval( x , meanX , meanY , slopes ) );
 	}
 
-	
+
 	/**
 	 * Gets the mean of the X-Coordinate positions.
 	 * 
@@ -145,12 +168,12 @@ public class LinearFit<U extends NumDimensions, A extends Ord<U>, R extends Elem
 
 
 	/**
-	 * Gets the calculated slope coefficient.
+	 * Gets the calculated slope coefficients.
 	 * 
-	 * @return The calculated slope coefficient.
+	 * @return The calculated slope coefficients.
 	 */
-	public R getSlope() {
-		return slope;
+	public R[] getSlopes() {
+		return slopes;
 	}
 
 

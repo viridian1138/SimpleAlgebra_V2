@@ -31,21 +31,57 @@ import simplealgebra.ga.Ord;
 
 
 
-
+/**
+ * Class for generating a simple quadratic fit of the form Y = F( X )..
+ * 
+ * @author thorngreen
+ *
+ * @param <U> The number of dimensions in the vector of samples (the number of samples).
+ * @param <A> The Ord of the vector of samples.
+ * @param <R> The enclosed type.
+ * @param <S> The factory for the enclosed type.
+ */
 public class QuadraticFit<U extends NumDimensions, A extends Ord<U>, R extends Elem<R,?>, S extends ElemFactory<R,S>> extends
 	Sampling<U,A,R,S>
 {
 	
-	
+	/**
+	 * The X-Coordinates to be fitted.
+	 */
 	protected GeometricAlgebraMultivectorElem<U,A,R,S> xv; 
+	
+	/**
+	 * The Y-Coordinates to be fitted.
+	 */
 	protected GeometricAlgebraMultivectorElem<U,A,R,S> yv;
 	
+	/**
+	 * The mean of the X-Coordinate positions.
+	 */
 	protected R meanX;
+	
+	/**
+	 * The mean of the Y-Coordinate positions.
+	 */
 	protected R meanY;
+	
+	/**
+	 * The calculated slope coefficient.
+	 */
 	protected R slope;
+	
+	/**
+	 * The calculated acceleration coefficient.
+	 */
 	protected R acc;
 	
 	
+	/**
+	 * Constructs the class.
+	 * 
+	 * @param _xv The X-Coordinates to be fitted.
+	 * @param _yv The Y-Coordinates to be fitted.
+	 */
 	public QuadraticFit( GeometricAlgebraMultivectorElem<U,A,R,S> _xv , GeometricAlgebraMultivectorElem<U,A,R,S> _yv )
 	{
 		xv = _xv;
@@ -53,6 +89,11 @@ public class QuadraticFit<U extends NumDimensions, A extends Ord<U>, R extends E
 	}
 	
 	
+	/**
+	 * Generates the fit.
+	 * 
+	 * @throws NotInvertibleException
+	 */
 	public void generateFit() throws NotInvertibleException
 	{
 		meanX = mean( xv );
@@ -70,30 +111,71 @@ public class QuadraticFit<U extends NumDimensions, A extends Ord<U>, R extends E
 		
 		final GeometricAlgebraMultivectorElem<U,A,R,S> slopesY2 = new GeometricAlgebraMultivectorElem<U,A,R,S>( xv.getFac().getFac() , 
 				xv.getFac().getDim() , xv.getFac().getOrd() );
-		slopeTransform( xv , slopesY , meanX , meanY , slopesY2 );
+		slopeTransform( xv , slopesY , meanX , slope , slopesY2 );
 		
 		acc = mean( slopesY2 );
 		
 		
 	}
-
+	
+	
+	public R eval( R x , R meanX , R meanY , R slope , R acc )
+	{
+		final R sub = x.add( meanX.negate() );
+		final R slA = acc.mult( sub );
+		final R slR = ( slA.add( slope ) ).mult( sub );
+		final R ret = slR.add( meanY );
+		return( ret );
+	}
 
 	
+	/**
+	 * Evaluates the calculated fit function.
+	 * 
+	 * @param x The input X-Coordinate.
+	 * @return The calculated Y-Coordinate from the fit function.
+	 */
+	public R eval( R x )
+	{
+		return( eval( x , meanX , meanY , slope , acc ) );
+	}
+
+
+	/**
+	 * Gets the mean of the X-Coordinate positions.
+	 * 
+	 * @return The mean of the X-Coordinate positions.
+	 */
 	public R getMeanX() {
 		return meanX;
 	}
 
 
+	/**
+	 * Gets the mean of the Y-Coordinate positions.
+	 * 
+	 * @return The mean of the Y-Coordinate positions.
+	 */
 	public R getMeanY() {
 		return meanY;
 	}
 
 
+	/**
+	 * Gets the calculated slope coefficient.
+	 * 
+	 * @return The calculated slope coefficient.
+	 */
 	public R getSlope() {
 		return slope;
 	}
 
 
+	/**
+	 * Gets the calculated acceleration coefficient.
+	 * 
+	 * @return The calculated acceleration coefficient.
+	 */
 	public R getAcc() {
 		return acc;
 	}

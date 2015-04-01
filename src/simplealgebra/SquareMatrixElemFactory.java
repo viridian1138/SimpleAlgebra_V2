@@ -164,6 +164,17 @@ public class SquareMatrixElemFactory<U extends NumDimensions, R extends Elem<R,?
 	
 	
 	/**
+	 * Returns the number of dimensions.
+	 * 
+	 * @return The number of dimensions.
+	 */
+	public U getDim()
+	{
+		return( dim );
+	}
+	
+	
+	/**
 	 * The factory for the enclosed type.
 	 */
 	private S fac;

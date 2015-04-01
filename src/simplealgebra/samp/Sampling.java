@@ -35,11 +35,25 @@ import simplealgebra.ga.Ord;
 
 
 
-
+/**
+ * Base class for generating fits from a set of samples.
+ * 
+ * @author thorngreen
+ *
+ * @param <U> The number of dimensions in the vector of samples (the number of samples).
+ * @param <A> The Ord of the vector of samples.
+ * @param <R> The enclosed type.
+ * @param <S> The factory for the enclosed type.
+ */
 public class Sampling<U extends NumDimensions, A extends Ord<U>, R extends Elem<R,?>, S extends ElemFactory<R,S>> 
 {
 	
-	
+	/**
+	 * Calculates the mean of a set of positions.
+	 * 
+	 * @param y The set of positions from which to calculate the mean.
+	 * @return The calculated mean.
+	 */
 	public R mean( GeometricAlgebraMultivectorElem<U,A,R,S> y )
 	{
 		R sum = y.getFac().getFac().zero();
@@ -65,7 +79,16 @@ public class Sampling<U extends NumDimensions, A extends Ord<U>, R extends Elem<
 	}
 	
 	
-	
+	/**
+	 * Transforms Y-Coordinate positions from coordinate-space to slope-space.
+	 * 
+	 * @param xv The X-Coordinate positions.
+	 * @param yv The Y-Coordinate positions.
+	 * @param meanX The mean of the X-Coordinate positions.
+	 * @param meanY The mean of the Y-Coordinate positions.
+	 * @param slopesY The slope for the Y-Coordinate positions.
+	 * @throws NotInvertibleException
+	 */
 	public void slopeTransform( GeometricAlgebraMultivectorElem<U,A,R,S> xv , GeometricAlgebraMultivectorElem<U,A,R,S> yv , 
 			R meanX , R meanY ,
 			GeometricAlgebraMultivectorElem<U,A,R,S> slopesY ) throws NotInvertibleException
