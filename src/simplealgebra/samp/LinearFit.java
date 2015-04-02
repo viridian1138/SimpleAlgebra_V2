@@ -102,7 +102,15 @@ public class LinearFit<U extends NumDimensions, A extends Ord<U>, R extends Elem
 	}
 	
 	
-	
+	/**
+	 * Evaluates the fit function.
+	 * 
+	 * @param x The input X-Coordinate.
+	 * @param meanX The mean of the X-Coordinate positions.
+	 * @param meanY The mean of the Y-Coordinate positions.
+	 * @param slope The slope coefficient.
+	 * @return The calculated Y-Coordinate from the fit function.
+	 */
 	public R eval( R x , R meanX , R meanY , R slope )
 	{
 		final R sub = x.add( meanX.negate() );

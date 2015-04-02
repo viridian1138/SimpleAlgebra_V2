@@ -113,15 +113,24 @@ public class NPowerFit<U extends NumDimensions, A extends Ord<U>, R extends Elem
 					xv.getFac().getDim() , xv.getFac().getOrd() );
 			slopeTransform( xv , yyv , meanX , mY , slY  );
 			
-			R slp = mean( slY );
+			final R slp = mean( slY );
 			yyv = slY;
 			mY = slp;
+			slopes[ cnt ] = slp;
 		}
 		
 	}
 	
 	
-	
+	/**
+	 * Evaluates the fit function.
+	 * 
+	 * @param x The input X-Coordinate.
+	 * @param meanX The mean of the X-Coordinate positions.
+	 * @param meanY The mean of the Y-Coordinate positions.
+	 * @param slopes The slope coefficients.
+	 * @return The calculated Y-Coordinate from the fit function.
+	 */
 	public R eval( R x , R meanX , R meanY , R slopes[] )
 	{
 		final R sub = x.add( meanX.negate() );
