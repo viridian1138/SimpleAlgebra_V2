@@ -38,6 +38,8 @@ import simplealgebra.ga.Ord;
 /**
  * Base class for generating fits from a set of samples.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  * @param <U> The number of dimensions in the vector of samples (the number of samples).

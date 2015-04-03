@@ -22,6 +22,8 @@
 
 package simplealgebra.samp;
 
+import java.util.ArrayList;
+
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
@@ -34,6 +36,8 @@ import simplealgebra.ga.Ord;
 
 /**
  * Class for generating a simple N-th power fit of the form Y = F( X )..
+ * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
  * @author thorngreen
  *
@@ -74,7 +78,7 @@ public class NPowerFit<U extends NumDimensions, A extends Ord<U>, R extends Elem
 	/**
 	 * The calculated slope coefficients.
 	 */
-	protected R slopes[];
+	protected ArrayList<R> slopes;
 	
 	
 	/**
@@ -89,7 +93,7 @@ public class NPowerFit<U extends NumDimensions, A extends Ord<U>, R extends Elem
 		n = _n;
 		xv = _xv;
 		yv = _yv;
-		slopes = (R[])( new Elem<?,?>[ n ] );
+		slopes = new ArrayList<R>( n );
 	}
 	
 	
@@ -116,7 +120,7 @@ public class NPowerFit<U extends NumDimensions, A extends Ord<U>, R extends Elem
 			final R slp = mean( slY );
 			yyv = slY;
 			mY = slp;
-			slopes[ cnt ] = slp;
+			slopes.add( slp );
 		}
 		
 	}
@@ -131,13 +135,13 @@ public class NPowerFit<U extends NumDimensions, A extends Ord<U>, R extends Elem
 	 * @param slopes The slope coefficients.
 	 * @return The calculated Y-Coordinate from the fit function.
 	 */
-	public R eval( R x , R meanX , R meanY , R slopes[] )
+	public R eval( R x , R meanX , R meanY , ArrayList<R> slopes )
 	{
 		final R sub = x.add( meanX.negate() );
 		R sum = xv.getFac().getFac().zero();
 		for( int cnt = n - 1 ; cnt >= 0 ; cnt-- )
 		{
-			sum = ( sum.add( slopes[ cnt ] ) ).mult( sub );
+			sum = ( sum.add( slopes.get( cnt ) ) ).mult( sub );
 		}
 		final R ret = sum.add( meanY );
 		return( ret );
@@ -181,7 +185,7 @@ public class NPowerFit<U extends NumDimensions, A extends Ord<U>, R extends Elem
 	 * 
 	 * @return The calculated slope coefficients.
 	 */
-	public R[] getSlopes() {
+	public ArrayList<R> getSlopes() {
 		return slopes;
 	}
 

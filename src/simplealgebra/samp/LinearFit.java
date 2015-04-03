@@ -34,6 +34,8 @@ import simplealgebra.ga.Ord;
 /**
  * Class for generating a simple linear fit of the form Y = F( X ).
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  * @param <U> The number of dimensions in the vector of samples (the number of samples).
