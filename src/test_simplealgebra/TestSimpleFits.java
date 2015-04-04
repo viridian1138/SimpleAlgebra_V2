@@ -113,7 +113,7 @@ public class TestSimpleFits extends TestCase {
 		final GeometricAlgebraMultivectorElem<TestDimensionFifty,GeometricAlgebraOrd<TestDimensionFifty>,DoubleElem,DoubleElemFactory> mv = se.zero();
 		
 		
-		for( int cnt = 0 ; cnt < 50 ; cnt++ )
+		for( int cnt = 0 ; cnt < FIFTY_INT ; cnt++ )
 		{
 			final double x = 75.0 + 8.0 * cnt + 0.3 * ( rand.nextDouble() - 0.5 );
 			final HashSet<BigInteger> ind = new HashSet<BigInteger>();
@@ -146,7 +146,7 @@ public class TestSimpleFits extends TestCase {
 		final GeometricAlgebraMultivectorElem<TestDimensionFifty,GeometricAlgebraOrd<TestDimensionFifty>,DoubleElem,DoubleElemFactory> mv = se.zero();
 		
 		
-		for( int cnt = 0 ; cnt < 50 ; cnt++ )
+		for( int cnt = 0 ; cnt < FIFTY_INT ; cnt++ )
 		{
 			final double y = 225.0 + 66.6 * cnt + 0.3 * ( rand.nextDouble() - 0.5 );
 			final HashSet<BigInteger> ind = new HashSet<BigInteger>();
@@ -157,6 +157,130 @@ public class TestSimpleFits extends TestCase {
 		
 		return( mv );
 	}
+	
+	
+	
+	
+	protected GeometricAlgebraMultivectorElem<TestDimensionFifty,GeometricAlgebraOrd<TestDimensionFifty>,
+		GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>,
+		GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>> generateNoisedLinearXVectData( final long seed )
+	{
+		final Random rand = new Random();
+		
+		rand.setSeed( seed );
+		
+		final TestDimensionThree tdA = new TestDimensionThree();
+		
+		final GeometricAlgebraOrd<TestDimensionThree> ordA = new GeometricAlgebraOrd<TestDimensionThree>();
+		
+		final DoubleElemFactory dl = new DoubleElemFactory();
+		
+		final GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> seA = 
+				new GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>(dl, tdA, ordA);
+		
+		final TestDimensionFifty tdB = new TestDimensionFifty();
+		
+		final GeometricAlgebraOrd<TestDimensionFifty> ordB = new GeometricAlgebraOrd<TestDimensionFifty>();
+		
+		
+		final GeometricAlgebraMultivectorElemFactory<TestDimensionFifty,GeometricAlgebraOrd<TestDimensionFifty>,
+			GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>,
+			GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>> seB =
+				new GeometricAlgebraMultivectorElemFactory<TestDimensionFifty,GeometricAlgebraOrd<TestDimensionFifty>,
+				GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>,
+				GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>>(seA, tdB, ordB);
+		
+		
+		final GeometricAlgebraMultivectorElem<TestDimensionFifty,GeometricAlgebraOrd<TestDimensionFifty>,
+			GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>,
+			GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>> mv = seB.zero();
+		
+		
+		for( int cnt = 0 ; cnt < FIFTY_INT ; cnt++ )
+		{
+			final HashSet<BigInteger> ind = new HashSet<BigInteger>();
+			ind.add( BigInteger.valueOf( cnt ) );
+			
+			final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
+				mvA = seA.zero();
+			
+			{
+				final double x = 75.0 + 8.0 * cnt + 0.3 * ( rand.nextDouble() - 0.5 );
+				final HashSet<BigInteger> indA = new HashSet<BigInteger>();
+				indA.add( BigInteger.ZERO );
+				mvA.setVal( indA , new DoubleElem( x ) );
+			}
+			
+			mv.setVal( ind , mvA );
+		}
+		
+		
+		return( mv );
+	}
+	
+	
+	
+	
+protected GeometricAlgebraMultivectorElem<TestDimensionFifty,GeometricAlgebraOrd<TestDimensionFifty>,
+	GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>,
+	GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>> generateNoisedLinearYVectData( final long seed )
+{
+	final Random rand = new Random();
+	
+	rand.setSeed( seed );
+	
+	final TestDimensionThree tdA = new TestDimensionThree();
+	
+	final GeometricAlgebraOrd<TestDimensionThree> ordA = new GeometricAlgebraOrd<TestDimensionThree>();
+	
+	final DoubleElemFactory dl = new DoubleElemFactory();
+	
+	final GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> seA = 
+			new GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>(dl, tdA, ordA);
+	
+	final TestDimensionFifty tdB = new TestDimensionFifty();
+	
+	final GeometricAlgebraOrd<TestDimensionFifty> ordB = new GeometricAlgebraOrd<TestDimensionFifty>();
+	
+	
+	final GeometricAlgebraMultivectorElemFactory<TestDimensionFifty,GeometricAlgebraOrd<TestDimensionFifty>,
+		GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>,
+		GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>> seB =
+			new GeometricAlgebraMultivectorElemFactory<TestDimensionFifty,GeometricAlgebraOrd<TestDimensionFifty>,
+			GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>,
+			GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>>(seA, tdB, ordB);
+	
+	
+	final GeometricAlgebraMultivectorElem<TestDimensionFifty,GeometricAlgebraOrd<TestDimensionFifty>,
+		GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>,
+		GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>> mv = seB.zero();
+	
+	
+	for( int cnt = 0 ; cnt < FIFTY_INT ; cnt++ )
+	{
+		final HashSet<BigInteger> ind = new HashSet<BigInteger>();
+		ind.add( BigInteger.valueOf( cnt ) );
+		
+		final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
+			mvA = seA.zero();
+		
+		{	
+			final double yx = 250.0 + 2.6 * cnt + 0.3 * ( rand.nextDouble() - 0.5 );
+			final double yy = 225.0 + 66.6 * cnt + 0.3 * ( rand.nextDouble() - 0.5 );
+			final HashSet<BigInteger> indAx = new HashSet<BigInteger>();
+			final HashSet<BigInteger> indAy = new HashSet<BigInteger>();
+			indAx.add( BigInteger.ZERO );
+			indAy.add( BigInteger.ONE );
+			mvA.setVal( indAx , new DoubleElem( yx ) );
+			mvA.setVal( indAy , new DoubleElem( yy ) );
+		}
+		
+		mv.setVal( ind , mvA );
+	}
+	
+	
+	return( mv );
+}
 	
 	
 	
@@ -247,6 +371,120 @@ public class TestSimpleFits extends TestCase {
 		System.out.println( "mn 3 ---" );
 		
 		System.out.println( tri1.getSlopes().get( 2 ).getVal() );
+		
+		
+	}
+	
+	
+	
+	
+	
+	public void testSimpleLinearFitsVect() throws NotInvertibleException
+	{
+		
+		final GeometricAlgebraMultivectorElem<TestDimensionFifty,GeometricAlgebraOrd<TestDimensionFifty>,
+			GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>,
+			GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>>
+				xv = generateNoisedLinearXVectData( 334455 );
+		
+		final GeometricAlgebraMultivectorElem<TestDimensionFifty,GeometricAlgebraOrd<TestDimensionFifty>,
+			GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>,
+			GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>>
+				yv = generateNoisedLinearYVectData( 445566 );
+		
+		
+		final LinearFit<TestDimensionFifty, GeometricAlgebraOrd<TestDimensionFifty>, 
+				GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>, 
+				GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>> lin
+			= new LinearFit<TestDimensionFifty, GeometricAlgebraOrd<TestDimensionFifty>, 
+				GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>, 
+				GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>>( xv , yv );
+		
+		
+		final QuadraticFit<TestDimensionFifty, GeometricAlgebraOrd<TestDimensionFifty>, 
+				GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>, 
+				GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>> quad1
+			= new QuadraticFit<TestDimensionFifty, GeometricAlgebraOrd<TestDimensionFifty>, 
+				GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>, 
+				GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>>( xv , yv );
+		
+		
+		final NPowerFit<TestDimensionFifty, GeometricAlgebraOrd<TestDimensionFifty>, 
+				GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>, 
+				GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>> quad2
+			= new NPowerFit<TestDimensionFifty, GeometricAlgebraOrd<TestDimensionFifty>, 
+				GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>, 
+				GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>>( 2 , xv , yv );
+		
+		
+		final NPowerFit<TestDimensionFifty, GeometricAlgebraOrd<TestDimensionFifty>, 
+				GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>, 
+				GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>> tri1
+			= new NPowerFit<TestDimensionFifty, GeometricAlgebraOrd<TestDimensionFifty>, 
+				GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>, 
+				GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>>( 3 , xv , yv );
+		
+		
+		
+		lin.generateFit();
+		
+		quad1.generateFit();
+		
+		quad2.generateFit();
+		
+		tri1.generateFit();
+		
+		
+		
+		/* System.out.println( "mn X ---" );
+		
+		System.out.println( lin.getMeanX().getVal() );
+		
+		System.out.println( quad1.getMeanX().getVal() );
+		
+		System.out.println( quad2.getMeanX().getVal() );
+		
+		System.out.println( tri1.getMeanX().getVal() );
+		
+		
+		
+		System.out.println( "mn Y ---" );
+		
+		System.out.println( lin.getMeanY().getVal() );
+		
+		System.out.println( quad1.getMeanY().getVal() );
+		
+		System.out.println( quad2.getMeanY().getVal() );
+		
+		System.out.println( tri1.getMeanY().getVal() );
+		
+		
+		
+		System.out.println( "mn slp ---" );
+		
+		System.out.println( lin.getSlope().getVal() );
+		
+		System.out.println( quad1.getSlope().getVal() );
+		
+		System.out.println( quad2.getSlopes().get( 0 ).getVal() );
+		
+		System.out.println( tri1.getSlopes().get( 0 ).getVal() );
+		
+		
+		
+		System.out.println( "mn acc ---" );
+		
+		System.out.println( quad1.getAcc().getVal() );
+		
+		System.out.println( quad2.getSlopes().get( 1 ).getVal() );
+		
+		System.out.println( tri1.getSlopes().get( 1 ).getVal() );
+		
+		
+		
+		System.out.println( "mn 3 ---" );
+		
+		System.out.println( tri1.getSlopes().get( 2 ).getVal() ); */
 		
 		
 	}

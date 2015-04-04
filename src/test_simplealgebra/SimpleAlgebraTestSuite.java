@@ -98,6 +98,7 @@ public class SimpleAlgebraTestSuite extends TestSuite {
 		s.addTestSuite( TestNestedNotAssociative.class );
 		s.addTestSuite( TestInvertSparse.class );
 		s.addTestSuite( TestInvertIdentitySymbolic.class );
+		s.addTestSuite( TestSimpleOrdInverses.class );
 		return( s );
 	}
 	
