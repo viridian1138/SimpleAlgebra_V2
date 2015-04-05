@@ -39,6 +39,11 @@ import simplealgebra.NumDimensions;
 public final class TestDimensionThree extends NumDimensions {
 
 	/**
+	 * Three
+	 */
+	public static final int THREE = 3;
+	
+	/**
 	 * Constructs the NumDimensions.
 	 */
 	public TestDimensionThree() {
@@ -47,7 +52,7 @@ public final class TestDimensionThree extends NumDimensions {
 
 	@Override
 	public BigInteger getVal() {
-		return( BigInteger.valueOf(3) );
+		return( BigInteger.valueOf(THREE) );
 	}
 
 }

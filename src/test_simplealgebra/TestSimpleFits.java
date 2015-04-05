@@ -95,6 +95,12 @@ public class TestSimpleFits extends TestCase {
 	
 	
 	
+	/**
+	 * Generates a random vector of X-Axis DoubleElems.
+	 * 
+	 * @param seed The random number seed from which to generate the vector.
+	 * @return The resulting vector.
+	 */
 	protected GeometricAlgebraMultivectorElem<TestDimensionFifty,GeometricAlgebraOrd<TestDimensionFifty>,DoubleElem,DoubleElemFactory> generateNoisedLinearXData( final long seed )
 	{
 		final Random rand = new Random();
@@ -127,7 +133,12 @@ public class TestSimpleFits extends TestCase {
 	
 	
 	
-	
+	/**
+	 * Generates a random vector of Y-Axis DoubleElems.
+	 * 
+	 * @param seed The random number seed from which to generate the vector.
+	 * @return The resulting vector.
+	 */
 	protected GeometricAlgebraMultivectorElem<TestDimensionFifty,GeometricAlgebraOrd<TestDimensionFifty>,DoubleElem,DoubleElemFactory> generateNoisedLinearYData( final long seed )
 	{
 		final Random rand = new Random();
@@ -160,7 +171,12 @@ public class TestSimpleFits extends TestCase {
 	
 	
 	
-	
+	/**
+	 * Generates a random vector of X-Axis vector positions.
+	 * 
+	 * @param seed The random number seed from which to generate the vector.
+	 * @return The resulting vector.
+	 */
 	protected GeometricAlgebraMultivectorElem<TestDimensionFifty,GeometricAlgebraOrd<TestDimensionFifty>,
 		GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>,
 		GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>> generateNoisedLinearXVectData( final long seed )
@@ -221,6 +237,12 @@ public class TestSimpleFits extends TestCase {
 	
 	
 	
+	/**
+	 * Generates a random vector of Y-Axis vector positions.
+	 * 
+	 * @param seed The random number seed from which to generate the vector.
+	 * @return The resulting vector.
+	 */
 protected GeometricAlgebraMultivectorElem<TestDimensionFifty,GeometricAlgebraOrd<TestDimensionFifty>,
 	GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>,
 	GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>> generateNoisedLinearYVectData( final long seed )
@@ -284,7 +306,11 @@ protected GeometricAlgebraMultivectorElem<TestDimensionFifty,GeometricAlgebraOrd
 	
 	
 	
-	
+	/**
+	 * Tests scalar X-Y fits.
+	 * 
+	 * @throws NotInvertibleException
+	 */
 	public void testSimpleLinearFits() throws NotInvertibleException
 	{
 		
@@ -322,55 +348,55 @@ protected GeometricAlgebraMultivectorElem<TestDimensionFifty,GeometricAlgebraOrd
 		
 		
 		
-		System.out.println( "mn X ---" );
+		// System.out.println( "mn X ---" );
 		
-		System.out.println( lin.getMeanX().getVal() );
+		Assert.assertEquals( 75.0 + 8.0 * 24.5 , lin.getMeanX().getVal() , 0.5 );
 		
-		System.out.println( quad1.getMeanX().getVal() );
+		Assert.assertEquals( 75.0 + 8.0 * 24.5 , quad1.getMeanX().getVal() , 0.5 );
 		
-		System.out.println( quad2.getMeanX().getVal() );
+		Assert.assertEquals( 75.0 + 8.0 * 24.5 , quad2.getMeanX().getVal() , 0.5 );
 		
-		System.out.println( tri1.getMeanX().getVal() );
-		
-		
-		
-		System.out.println( "mn Y ---" );
-		
-		System.out.println( lin.getMeanY().getVal() );
-		
-		System.out.println( quad1.getMeanY().getVal() );
-		
-		System.out.println( quad2.getMeanY().getVal() );
-		
-		System.out.println( tri1.getMeanY().getVal() );
+		Assert.assertEquals( 75.0 + 8.0 * 24.5 , tri1.getMeanX().getVal() , 0.5 );
 		
 		
 		
-		System.out.println( "mn slp ---" );
+		// System.out.println( "mn Y ---" );
 		
-		System.out.println( lin.getSlope().getVal() );
+		Assert.assertEquals( 225.0 + 66.6 * 24.5 , lin.getMeanY().getVal() , 0.5 );
 		
-		System.out.println( quad1.getSlope().getVal() );
+		Assert.assertEquals( 225.0 + 66.6 * 24.5 , quad1.getMeanY().getVal() , 0.5 );
 		
-		System.out.println( quad2.getSlopes().get( 0 ).getVal() );
+		Assert.assertEquals( 225.0 + 66.6 * 24.5 , quad2.getMeanY().getVal() , 0.5 );
 		
-		System.out.println( tri1.getSlopes().get( 0 ).getVal() );
-		
-		
-		
-		System.out.println( "mn acc ---" );
-		
-		System.out.println( quad1.getAcc().getVal() );
-		
-		System.out.println( quad2.getSlopes().get( 1 ).getVal() );
-		
-		System.out.println( tri1.getSlopes().get( 1 ).getVal() );
+		Assert.assertEquals( 225.0 + 66.6 * 24.5 , tri1.getMeanY().getVal() , 0.5 );
 		
 		
 		
-		System.out.println( "mn 3 ---" );
+		// System.out.println( "mn slp ---" );
 		
-		System.out.println( tri1.getSlopes().get( 2 ).getVal() );
+		Assert.assertEquals( 66.0 / 8.0 , lin.getSlope().getVal() , 0.5 );
+		
+		Assert.assertEquals( 66.0 / 8.0 , quad1.getSlope().getVal() , 0.5 );
+		
+		Assert.assertEquals( 66.0 / 8.0 , quad2.getSlopes().get( 0 ).getVal() , 0.5 );
+		
+		Assert.assertEquals( 66.0 / 8.0 , tri1.getSlopes().get( 0 ).getVal() , 0.5 );
+		
+		
+		
+		// System.out.println( "mn acc ---" );
+		
+		Assert.assertEquals( 0.0 , quad1.getAcc().getVal() , 0.5 );
+		
+		Assert.assertEquals( 0.0 , quad2.getSlopes().get( 1 ).getVal() , 0.5 );
+		
+		Assert.assertEquals( 0.0 , tri1.getSlopes().get( 1 ).getVal() , 0.5 );
+		
+		
+		
+		// System.out.println( "mn 3 ---" );
+		
+		Assert.assertEquals( 0.0 , tri1.getSlopes().get( 2 ).getVal() , 0.5 );
 		
 		
 	}
@@ -378,7 +404,11 @@ protected GeometricAlgebraMultivectorElem<TestDimensionFifty,GeometricAlgebraOrd
 	
 	
 	
-	
+	/**
+	 * Tests vector X-Y fits.
+	 * 
+	 * @throws NotInvertibleException
+	 */
 	public void testSimpleLinearFitsVect() throws NotInvertibleException
 	{
 		

@@ -39,6 +39,11 @@ import simplealgebra.NumDimensions;
 public final class TestDimensionTwo extends NumDimensions {
 
 	/**
+	 * Two
+	 */
+	public static final int TWO = 2;
+	
+	/**
 	 * Constructs the NumDimensions.
 	 */
 	public TestDimensionTwo() {
@@ -47,7 +52,7 @@ public final class TestDimensionTwo extends NumDimensions {
 
 	@Override
 	public BigInteger getVal() {
-		return( BigInteger.valueOf(2) );
+		return( BigInteger.valueOf(TWO) );
 	}
 
 }

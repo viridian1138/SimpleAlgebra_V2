@@ -112,9 +112,9 @@ public class TestInvertNestedTwo extends TestCase {
 		int i;
 		int j;
 		
-		for( i = 0 ; i < 2 ; i++ )
+		for( i = 0 ; i < TestDimensionTwo.TWO ; i++ )
 		{
-			for( j = 0 ; j < 2 ; j++ )
+			for( j = 0 ; j < TestDimensionTwo.TWO ; j++ )
 			{
 				DoubleElem val = new DoubleElem( 2.0 * ( rand.nextDouble() ) - 1.0 );
 				mat.setVal( BigInteger.valueOf(i) , BigInteger.valueOf(j) , val );
@@ -173,9 +173,9 @@ public class TestInvertNestedTwo extends TestCase {
 		int i;
 		int j;
 		
-		for( i = 0 ; i < 2 ; i++ )
+		for( i = 0 ; i < TestDimensionTwo.TWO ; i++ )
 		{
-			for( j = 0 ; j < 2 ; j++ )
+			for( j = 0 ; j < TestDimensionTwo.TWO ; j++ )
 			{
 				SquareMatrixElem<TestDimensionTwo,DoubleElem,DoubleElemFactory> val = generateMat( rand , se );
 				mat.setVal( BigInteger.valueOf(i) , BigInteger.valueOf(j) , val );
@@ -199,18 +199,18 @@ public class TestInvertNestedTwo extends TestCase {
 		
 		
 		
-		for( i = 0 ; i < 2 ; i++ )
+		for( i = 0 ; i < TestDimensionTwo.TWO ; i++ )
 		{
-			for( j = 0 ; j < 2 ; j++ )
+			for( j = 0 ; j < TestDimensionTwo.TWO ; j++ )
 			{
 				
 				
 				int i2;
 				int j2;
 				
-				for( i2 = 0 ; i2 < 2 ; i2++ )
+				for( i2 = 0 ; i2 < TestDimensionTwo.TWO ; i2++ )
 				{
-					for( j2 = 0 ; j2 < 2 ; j2++ )
+					for( j2 = 0 ; j2 < TestDimensionTwo.TWO ; j2++ )
 					{
 						final double matchVal = ( i == j ) && ( i2 == j2 ) ? 1.0 : 0.0;
 						
@@ -289,9 +289,9 @@ public class TestInvertNestedTwo extends TestCase {
 		int i;
 		int j;
 		
-		for( i = 0 ; i < 2 ; i++ )
+		for( i = 0 ; i < TestDimensionTwo.TWO ; i++ )
 		{
-			for( j = 0 ; j < 2 ; j++ )
+			for( j = 0 ; j < TestDimensionTwo.TWO ; j++ )
 			{
 				SquareMatrixElem<TestDimensionTwo,DoubleElem,DoubleElemFactory> val = generateMat( rand , se );
 				mat.setVal( BigInteger.valueOf(i) , BigInteger.valueOf(j) , val );
@@ -315,18 +315,18 @@ public class TestInvertNestedTwo extends TestCase {
 		
 	
 		
-		for( i = 0 ; i < 2 ; i++ )
+		for( i = 0 ; i < TestDimensionTwo.TWO ; i++ )
 		{
-			for( j = 0 ; j < 2 ; j++ )
+			for( j = 0 ; j < TestDimensionTwo.TWO ; j++ )
 			{
 				
 				
 				int i2;
 				int j2;
 				
-				for( i2 = 0 ; i2 < 2 ; i2++ )
+				for( i2 = 0 ; i2 < TestDimensionTwo.TWO ; i2++ )
 				{
-					for( j2 = 0 ; j2 < 2 ; j2++ )
+					for( j2 = 0 ; j2 < TestDimensionTwo.TWO ; j2++ )
 					{
 						final double matchVal = ( i == j ) && ( i2 == j2 ) ? 1.0 : 0.0;
 						

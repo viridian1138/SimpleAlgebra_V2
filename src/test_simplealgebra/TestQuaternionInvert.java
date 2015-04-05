@@ -58,14 +58,14 @@ public class TestQuaternionInvert extends TestCase {
 	 */
 	private void validateIsIdentity( GeometricAlgebraMultivectorElem<TestDimensionFive,QuaternionOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> shouldBeIdent )
 	{
-		final int max = 1 << 5;
+		final int max = 1 << TestDimensionFive.FIVE;
 		
 		int i;
 		int j;
 		for( i = 0 ; i < max ; i++ )
 		{
 			HashSet<BigInteger> key = new HashSet<BigInteger>();
-			for( j = 0 ; j < 5 ; j++ )
+			for( j = 0 ; j < TestDimensionFive.FIVE ; j++ )
 			{
 				final int bit = 1 << j;
 				final boolean bitOn = ( i & bit ) != 0;
@@ -137,7 +137,7 @@ public class TestQuaternionInvert extends TestCase {
 		
 		final GeometricAlgebraMultivectorElem<TestDimensionFive,QuaternionOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> mv = se.zero();
 		
-		final int max = 1 << 5;
+		final int max = 1 << TestDimensionFive.FIVE;
 		
 		int i;
 		int j;
@@ -145,7 +145,7 @@ public class TestQuaternionInvert extends TestCase {
 		for( i = 0 ; i < max ; i++ )
 		{
 			HashSet<BigInteger> key = new HashSet<BigInteger>();
-			for( j = 0 ; j < 5 ; j++ )
+			for( j = 0 ; j < TestDimensionFive.FIVE ; j++ )
 			{
 				final int bit = 1 << j;
 				final boolean bitOn = ( i & bit ) != 0;
@@ -212,7 +212,7 @@ public class TestQuaternionInvert extends TestCase {
 		
 		final GeometricAlgebraMultivectorElem<TestDimensionFive,QuaternionOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> mv = se.zero();
 		
-		final int max = 1 << 5;
+		final int max = 1 << TestDimensionFive.FIVE;
 		
 		int i;
 		int j;
@@ -220,7 +220,7 @@ public class TestQuaternionInvert extends TestCase {
 		for( i = 0 ; i < max ; i++ )
 		{
 			HashSet<BigInteger> key = new HashSet<BigInteger>();
-			for( j = 0 ; j < 5 ; j++ )
+			for( j = 0 ; j < TestDimensionFive.FIVE ; j++ )
 			{
 				final int bit = 1 << j;
 				final boolean bitOn = ( i & bit ) != 0;

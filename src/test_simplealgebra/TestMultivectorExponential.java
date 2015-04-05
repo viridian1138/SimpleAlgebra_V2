@@ -147,7 +147,7 @@ public class TestMultivectorExponential extends TestCase {
 	{
 		double magSq = 0.0;
 		int cnt;
-		for( cnt = 0 ; cnt < 5 ; cnt++ )
+		for( cnt = 0 ; cnt < TestDimensionFive.FIVE ; cnt++ )
 		{
 			magSq += v[ cnt ] * v[ cnt ];
 		}
@@ -179,10 +179,10 @@ public class TestMultivectorExponential extends TestCase {
 		
 		el.setVal( new HashSet<BigInteger>() , new DoubleElem( s ) );
 		
-		final double[] v = new double[ 5 ];
+		final double[] v = new double[ TestDimensionFive.FIVE ];
 		
 		int cnt;
-		for( cnt = 0 ; cnt < 5 ; cnt++ )
+		for( cnt = 0 ; cnt < TestDimensionFive.FIVE ; cnt++ )
 		{
 			v[ cnt ] = 20.0 * ( rand.nextDouble() - 0.5 );
 			final HashSet<BigInteger> h = new HashSet<BigInteger>();
@@ -202,7 +202,7 @@ public class TestMultivectorExponential extends TestCase {
 		
 		Assert.assertEquals( expS * sinhVmag , exp.get( new HashSet<BigInteger>() ).getVal() , 1E+1 );
 		
-		for( cnt = 0 ; cnt < 5 ; cnt++ )
+		for( cnt = 0 ; cnt < TestDimensionFive.FIVE ; cnt++ )
 		{
 			final HashSet<BigInteger> h = new HashSet<BigInteger>();
 			h.add( BigInteger.valueOf( cnt ) );
@@ -252,15 +252,15 @@ public class TestMultivectorExponential extends TestCase {
 		
 		el.setVal( new HashSet<BigInteger>() , new DoubleElem( s ) );
 		
-		final double[] v = new double[ 5 ];
+		final double[] v = new double[ TestDimensionFive.FIVE ];
 		
 		int cnt;
-		for( cnt = 0 ; cnt < 5 ; cnt++ )
+		for( cnt = 0 ; cnt < TestDimensionFive.FIVE ; cnt++ )
 		{
 			v[ cnt ] = 20.0 * ( rand.nextDouble() - 0.5 );
 			final HashSet<BigInteger> h = new HashSet<BigInteger>();
 			int cntx;
-			for( cntx = 0 ; cntx < 5 ; cntx++ )
+			for( cntx = 0 ; cntx < TestDimensionFive.FIVE ; cntx++ )
 			{
 				if( cntx != cnt )
 				{
@@ -282,11 +282,11 @@ public class TestMultivectorExponential extends TestCase {
 		
 		Assert.assertEquals( expS * sinhVmag , exp.get( new HashSet<BigInteger>() ).getVal() , 1E+1 );
 		
-		for( cnt = 0 ; cnt < 5 ; cnt++ )
+		for( cnt = 0 ; cnt < TestDimensionFive.FIVE ; cnt++ )
 		{
 			final HashSet<BigInteger> h = new HashSet<BigInteger>();
 			int cntx;
-			for( cntx = 0 ; cntx < 5 ; cntx++ )
+			for( cntx = 0 ; cntx < TestDimensionFive.FIVE ; cntx++ )
 			{
 				if( cntx != cnt )
 				{

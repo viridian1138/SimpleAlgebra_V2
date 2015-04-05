@@ -273,12 +273,12 @@ public class TestInvertSparse extends TestCase {
 		
 		if( rand.nextBoolean() )
 		{
-			row = BigInteger.valueOf( rand.nextInt( 50 ) );
+			row = BigInteger.valueOf( rand.nextInt( FIFTY_INT ) );
 			col = BigInteger.ZERO;
 		}
 		else
 		{
-			col = BigInteger.valueOf( rand.nextInt( 50 ) );
+			col = BigInteger.valueOf( rand.nextInt( FIFTY_INT ) );
 			row = BigInteger.ZERO;
 		}
 		
@@ -355,12 +355,12 @@ public class TestInvertSparse extends TestCase {
 		
 			if( rand.nextBoolean() )
 			{
-				row = BigInteger.valueOf( rand.nextInt( 50 ) );
+				row = BigInteger.valueOf( rand.nextInt( FIFTY_INT ) );
 				col = BigInteger.ZERO;
 			}
 			else
 			{
-				col = BigInteger.valueOf( rand.nextInt( 50 ) );
+				col = BigInteger.valueOf( rand.nextInt( FIFTY_INT ) );
 				row = BigInteger.ZERO;
 			}
 		

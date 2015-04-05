@@ -138,9 +138,9 @@ public class TestPhasorExample extends TestCase {
 		
 		int i;
 		int j;
-		for( i = 0 ; i < 2 ; i++ )
+		for( i = 0 ; i < TestDimensionTwo.TWO ; i++ )
 		{
-			for( j = 0 ; j < 2 ; j++ )
+			for( j = 0 ; j < TestDimensionTwo.TWO ; j++ )
 			{
 				final double reMatchVal = i == j ? 1.0 : 0.0;
 				Assert.assertEquals( reMatchVal , 

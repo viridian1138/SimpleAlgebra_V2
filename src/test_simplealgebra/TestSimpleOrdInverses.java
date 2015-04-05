@@ -226,6 +226,41 @@ public class TestSimpleOrdInverses extends TestCase {
 	
 	
 	
+	
+	/**
+	 * Tests verifies by counterexample that the inv ord is not associative.
+	 * 
+	 * @throws NotInvertibleException
+	 */
+	public void testNotAssociative() throws NotInvertibleException
+	{
+		final GeometricAlgebraMultivectorElem<TestDimensionTwo,TestInvOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory>
+			xv = generateNoisedOrdVect( 334455 );
+		
+		final GeometricAlgebraMultivectorElem<TestDimensionTwo,TestInvOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory>
+			yv = generateNoisedOrdVect( 554433 );
+		
+		final GeometricAlgebraMultivectorElem<TestDimensionTwo,TestInvOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory>
+			zv = generateNoisedOrdVect( 555555 );
+		
+		final GeometricAlgebraMultivectorElem<TestDimensionTwo,TestInvOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory>
+			a1 = ( xv.mult( yv ) ).mult( zv );
+		
+		final GeometricAlgebraMultivectorElem<TestDimensionTwo,TestInvOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory>
+			a2 = xv.mult( yv.mult( zv ) );
+		
+		
+		{
+			final HashSet<BigInteger> hs = new HashSet<BigInteger>();
+			final double i1 = a1.get( hs ).getVal();
+			final double i2 = a2.get( hs ).getVal();
+			Assert.assertTrue( Math.abs( i1 - i2 )  > 1E-7 );
+		}
+		
+		
+	}
+	
+	
 
 	
 }

@@ -1052,7 +1052,7 @@ public class TestMaterialDerivativeFlatAsym3D extends TestCase
 			
 			
 			
-			for( int acnt = 0 ; acnt < 3 ; acnt++ )
+			for( int acnt = 0 ; acnt < TestDimensionThree.THREE ; acnt++ )
 			{
 				
 				final ArrayList<BigInteger> ab = new ArrayList<BigInteger>();
@@ -1440,7 +1440,7 @@ public class TestMaterialDerivativeFlatAsym3D extends TestCase
 		
 		// System.out.println( "***" );
 		int i;
-		for( i = 0 ; i < 3 ; i++ )
+		for( i = 0 ; i < TestDimensionThree.THREE ; i++ )
 		{
 			BigInteger ii = BigInteger.valueOf( i );
 			ArrayList<BigInteger> el = new ArrayList<BigInteger>();

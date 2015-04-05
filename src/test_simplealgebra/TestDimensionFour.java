@@ -39,6 +39,11 @@ import simplealgebra.NumDimensions;
 public final class TestDimensionFour extends NumDimensions {
 
 	/**
+	 * Four
+	 */
+	public static final int FOUR = 4;
+	
+	/**
 	 * Constructs the NumDimensions.
 	 */
 	public TestDimensionFour() {
@@ -47,7 +52,7 @@ public final class TestDimensionFour extends NumDimensions {
 
 	@Override
 	public BigInteger getVal() {
-		return( BigInteger.valueOf(4) );
+		return( BigInteger.valueOf(FOUR) );
 	}
 
 }

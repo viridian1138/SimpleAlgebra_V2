@@ -112,9 +112,9 @@ public class TestInvertNestedOne extends TestCase {
 		int i;
 		int j;
 		
-		for( i = 0 ; i < 1 ; i++ )
+		for( i = 0 ; i < TestDimensionOne.ONE ; i++ )
 		{
-			for( j = 0 ; j < 1 ; j++ )
+			for( j = 0 ; j < TestDimensionOne.ONE ; j++ )
 			{
 				DoubleElem val = new DoubleElem( 2.0 * ( rand.nextDouble() ) - 1.0 );
 				mat.setVal( BigInteger.valueOf(i) , BigInteger.valueOf(j) , val );
@@ -171,9 +171,9 @@ public class TestInvertNestedOne extends TestCase {
 		int i;
 		int j;
 		
-		for( i = 0 ; i < 1 ; i++ )
+		for( i = 0 ; i < TestDimensionOne.ONE ; i++ )
 		{
-			for( j = 0 ; j < 1 ; j++ )
+			for( j = 0 ; j < TestDimensionOne.ONE ; j++ )
 			{
 				SquareMatrixElem<TestDimensionOne,DoubleElem,DoubleElemFactory> val = generateMat( rand , se );
 				mat.setVal( BigInteger.valueOf(i) , BigInteger.valueOf(j) , val );
@@ -193,18 +193,18 @@ public class TestInvertNestedOne extends TestCase {
 			SquareMatrixElemFactory<TestDimensionOne, DoubleElem, DoubleElemFactory>> shouldBeIdentB = inv.mult( mat );
 		
 		
-		for( i = 0 ; i < 1 ; i++ )
+		for( i = 0 ; i < TestDimensionOne.ONE ; i++ )
 		{
-			for( j = 0 ; j < 1 ; j++ )
+			for( j = 0 ; j < TestDimensionOne.ONE ; j++ )
 			{
 				
 				
 				int i2;
 				int j2;
 				
-				for( i2 = 0 ; i2 < 1 ; i2++ )
+				for( i2 = 0 ; i2 < TestDimensionOne.ONE ; i2++ )
 				{
-					for( j2 = 0 ; j2 < 1 ; j2++ )
+					for( j2 = 0 ; j2 < TestDimensionOne.ONE ; j2++ )
 					{
 						final double matchVal = ( i == j ) && ( i2 == j2 ) ? 1.0 : 0.0;
 						
@@ -287,9 +287,9 @@ public class TestInvertNestedOne extends TestCase {
 		int i;
 		int j;
 		
-		for( i = 0 ; i < 1 ; i++ )
+		for( i = 0 ; i < TestDimensionOne.ONE ; i++ )
 		{
-			for( j = 0 ; j < 1 ; j++ )
+			for( j = 0 ; j < TestDimensionOne.ONE ; j++ )
 			{
 				SquareMatrixElem<TestDimensionOne,DoubleElem,DoubleElemFactory> val = generateMat( rand , se );
 				mat.setVal( BigInteger.valueOf(i) , BigInteger.valueOf(j) , val );
@@ -309,18 +309,18 @@ public class TestInvertNestedOne extends TestCase {
 			SquareMatrixElemFactory<TestDimensionOne, DoubleElem, DoubleElemFactory>> shouldBeIdentB = inv.mult( mat );
 		
 		
-		for( i = 0 ; i < 1 ; i++ )
+		for( i = 0 ; i < TestDimensionOne.ONE ; i++ )
 		{
-			for( j = 0 ; j < 1 ; j++ )
+			for( j = 0 ; j < TestDimensionOne.ONE ; j++ )
 			{
 				
 				
 				int i2;
 				int j2;
 				
-				for( i2 = 0 ; i2 < 1 ; i2++ )
+				for( i2 = 0 ; i2 < TestDimensionOne.ONE ; i2++ )
 				{
-					for( j2 = 0 ; j2 < 1 ; j2++ )
+					for( j2 = 0 ; j2 < TestDimensionOne.ONE ; j2++ )
 					{
 						final double matchVal = ( i == j ) && ( i2 == j2 ) ? 1.0 : 0.0;
 						

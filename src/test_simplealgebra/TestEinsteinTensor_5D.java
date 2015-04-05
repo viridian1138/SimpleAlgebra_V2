@@ -203,7 +203,7 @@ public class TestEinsteinTensor_5D extends TestCase {
 			final EinsteinTensorElem<String,SymbolicElem<DoubleElem, DoubleElemFactory>,SymbolicElemFactory<DoubleElem, DoubleElemFactory>>
 				elem = new EinsteinTensorElem<String,SymbolicElem<DoubleElem, DoubleElemFactory>,SymbolicElemFactory<DoubleElem, DoubleElemFactory>>(fac.getFac(), contravariantIndices, covariantIndices);
 			
-			for( int cnt = 0 ; cnt < 5 ; cnt++ )
+			for( int cnt = 0 ; cnt < TestDimensionFive.FIVE ; cnt++ )
 			{
 				CElem ce = new CElem( new DoubleElemFactory() , cnt );
 				final ArrayList<BigInteger> key = new ArrayList<BigInteger>();
@@ -549,8 +549,8 @@ public class TestEinsteinTensor_5D extends TestCase {
 			for( int acnt = 0 ; acnt < 25 ; acnt++ )
 			{
 				final ArrayList<BigInteger> ab = new ArrayList<BigInteger>();
-				ab.add( BigInteger.valueOf( acnt / 5 ) );
-				ab.add( BigInteger.valueOf( acnt % 5 ) );
+				ab.add( BigInteger.valueOf( acnt / TestDimensionFive.FIVE ) );
+				ab.add( BigInteger.valueOf( acnt % TestDimensionFive.FIVE ) );
 				final CElem as = new CElem( de , acnt );
 				g0.setVal( ab , as );
 			}
