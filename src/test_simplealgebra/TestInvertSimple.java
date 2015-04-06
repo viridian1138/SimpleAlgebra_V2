@@ -141,9 +141,9 @@ public class TestInvertSimple extends TestCase {
 		int i;
 		int j;
 		
-		for( i = 0 ; i < 4 ; i++ )
+		for( i = 0 ; i < TestDimensionFour.FOUR ; i++ )
 		{
-			for( j = 0 ; j < 4 ; j++ )
+			for( j = 0 ; j < TestDimensionFour.FOUR ; j++ )
 			{
 				DoubleElem val = new DoubleElem( 2.0 * ( rand.nextDouble() ) - 1.0 );
 				mat.setVal( BigInteger.valueOf(i) , BigInteger.valueOf(j) , val );
@@ -156,9 +156,9 @@ public class TestInvertSimple extends TestCase {
 		
 		final SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory> shouldBeIdentB = inv.mult( mat );
 		
-		for( i = 0 ; i < 4 ; i++ )
+		for( i = 0 ; i < TestDimensionFour.FOUR ; i++ )
 		{
-			for( j = 0 ; j < 4 ; j++ )
+			for( j = 0 ; j < TestDimensionFour.FOUR ; j++ )
 			{
 				final double matchVal = ( i == j ) ? 1.0 : 0.0;
 				
@@ -258,9 +258,9 @@ public class TestInvertSimple extends TestCase {
 		int i;
 		int j;
 		
-		for( i = 0 ; i < 4 ; i++ )
+		for( i = 0 ; i < TestDimensionFour.FOUR ; i++ )
 		{
-			for( j = 0 ; j < 4 ; j++ )
+			for( j = 0 ; j < TestDimensionFour.FOUR ; j++ )
 			{
 				DoubleElem val = new DoubleElem( 2.0 * ( rand.nextDouble() ) - 1.0 );
 				mat.setVal( BigInteger.valueOf(i) , BigInteger.valueOf(j) , val );
@@ -273,9 +273,9 @@ public class TestInvertSimple extends TestCase {
 		
 		final SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory> shouldBeIdentB = inv.mult( mat );
 		
-		for( i = 0 ; i < 4 ; i++ )
+		for( i = 0 ; i < TestDimensionFour.FOUR ; i++ )
 		{
-			for( j = 0 ; j < 4 ; j++ )
+			for( j = 0 ; j < TestDimensionFour.FOUR ; j++ )
 			{
 				final double matchVal = ( i == j ) ? 1.0 : 0.0;
 				
@@ -338,9 +338,9 @@ public class TestInvertSimple extends TestCase {
 		int i;
 		int j;
 		
-		for( i = 0 ; i < 4 ; i++ )
+		for( i = 0 ; i < TestDimensionFour.FOUR ; i++ )
 		{
-			for( j = 0 ; j < 4 ; j++ )
+			for( j = 0 ; j < TestDimensionFour.FOUR ; j++ )
 			{
 				DoubleElem val = new DoubleElem( 2.0 * ( rand.nextDouble() ) - 1.0 );
 				mat.setVal( BigInteger.valueOf(i) , BigInteger.valueOf(j) , val );
@@ -353,9 +353,9 @@ public class TestInvertSimple extends TestCase {
 		
 		
 		
-		for( i = 0 ; i < 4 ; i++ )
+		for( i = 0 ; i < TestDimensionFour.FOUR ; i++ )
 		{
-			for( j = 0 ; j < 4 ; j++ )
+			for( j = 0 ; j < TestDimensionFour.FOUR ; j++ )
 			{
 				final double matchVal = invL.getVal(BigInteger.valueOf(i) , BigInteger.valueOf(j) ).getVal();
 				

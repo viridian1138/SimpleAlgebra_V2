@@ -860,7 +860,7 @@ public class TestDesResSymbolic extends TestCase
 		
 		
 		EinsteinTensorElem<Object, SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>> 
-			metric = scfac.getMetricTensor( true, z0, z1, BigInteger.valueOf(4) );
+			metric = scfac.getMetricTensor( true, z0, z1, td.getVal() );
 		
 		
 		SquareMatrixElem<TestDimensionFour, SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>
@@ -913,11 +913,11 @@ public class TestDesResSymbolic extends TestCase
 		
 		
 		EinsteinTensorElem<Object, SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>> 
-			firstMetric = scfac.getMetricTensor( false , uu, aa , BigInteger.valueOf(4) );
+			firstMetric = scfac.getMetricTensor( false , uu, aa , td.getVal() );
 		
 		
 		EinsteinTensorElem<Object, SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>> 
-			lastMetric = scfac.getMetricTensor( false , bb , vv , BigInteger.valueOf(4) );
+			lastMetric = scfac.getMetricTensor( false , bb , vv , td.getVal() );
 		
 		
 		VectFac vectFac = new VectFac( ce );
@@ -932,7 +932,7 @@ public class TestDesResSymbolic extends TestCase
 		
 		
 		EinsteinTensorElem<Object, SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>
-			emFld = emFldFac.getEmFld(aa, bb, BigInteger.valueOf(4) );
+			emFld = emFldFac.getEmFld(aa, bb, td.getVal() );
 		
 		
 		EinsteinTensorElem<Object, SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>
@@ -978,9 +978,9 @@ public class TestDesResSymbolic extends TestCase
 		// System.out.println( "***" );
 		int i;
 		int j;
-		for( i = 0 ; i < 4 ; i++ )
+		for( i = 0 ; i < TestDimensionFour.FOUR ; i++ )
 		{
-			for( j = 0 ; j < 4 ; j++ )
+			for( j = 0 ; j < TestDimensionFour.FOUR ; j++ )
 			{
 				BigInteger ii = BigInteger.valueOf( i );
 				BigInteger jj = BigInteger.valueOf( j );

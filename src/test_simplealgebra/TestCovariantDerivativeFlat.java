@@ -203,7 +203,7 @@ public class TestCovariantDerivativeFlat extends TestCase {
 			final EinsteinTensorElem<String,SymbolicElem<DoubleElem, DoubleElemFactory>,SymbolicElemFactory<DoubleElem, DoubleElemFactory>>
 				elem = new EinsteinTensorElem<String,SymbolicElem<DoubleElem, DoubleElemFactory>,SymbolicElemFactory<DoubleElem, DoubleElemFactory>>(fac.getFac(), contravariantIndices, covariantIndices);
 			
-			for( int cnt = 0 ; cnt < 4 ; cnt++ )
+			for( int cnt = 0 ; cnt < TestDimensionFour.FOUR ; cnt++ )
 			{
 				CElem ce = new CElem( new DoubleElemFactory() , cnt );
 				final ArrayList<BigInteger> key = new ArrayList<BigInteger>();
@@ -545,7 +545,7 @@ public class TestCovariantDerivativeFlat extends TestCase {
 			
 			
 			
-			for( int acnt = 0 ; acnt < 4 ; acnt++ )
+			for( int acnt = 0 ; acnt < TestDimensionFour.FOUR ; acnt++ )
 			{
 				
 				final ArrayList<BigInteger> ab = new ArrayList<BigInteger>();

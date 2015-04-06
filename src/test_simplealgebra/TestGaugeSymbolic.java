@@ -766,7 +766,7 @@ public class TestGaugeSymbolic extends TestCase
 		
 		
 		SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
-			elem = lor.getGauge( BigInteger.valueOf(4) );
+			elem = lor.getGauge( td.getVal() );
 		
 	
 		

@@ -40,6 +40,8 @@ import simplealgebra.ga.GeometricAlgebraMultivectorElemFactory;
 /**
  * Tests the generation of elems that have different left/right inverses, and inverses thereof.
  * 
+ * Note: unlike standard Geometric Algebra elems, this Ord produces a non-standard elem that is not associative.  Hence, operations that rely on associativity may not work properly.
+ * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
  * @author thorngreen
@@ -52,6 +54,8 @@ public class TestSimpleOrdInverses extends TestCase {
 	
 	/**
 	 * Generates a random multivector that has different left/right inverses.
+	 * 
+	 * Note: unlike standard Geometric Algebra elems, this Ord produces a non-standard elem that is not associative.  Hence, operations that rely on associativity may not work properly.
 	 * 
 	 * @param seed The random number seed.
 	 * @return The random multivector.

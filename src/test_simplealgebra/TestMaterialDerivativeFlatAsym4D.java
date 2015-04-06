@@ -1292,7 +1292,7 @@ public class TestMaterialDerivativeFlatAsym4D extends TestCase
 			
 			
 			
-			for( int acnt = 0 ; acnt < 4 ; acnt++ )
+			for( int acnt = 0 ; acnt < TestDimensionFour.FOUR ; acnt++ )
 			{
 				
 				final ArrayList<BigInteger> ab = new ArrayList<BigInteger>();
@@ -1707,7 +1707,7 @@ public class TestMaterialDerivativeFlatAsym4D extends TestCase
 		
 		// System.out.println( "***" );
 		int i;
-		for( i = 0 ; i < 4 ; i++ )
+		for( i = 0 ; i < TestDimensionFour.FOUR ; i++ )
 		{
 			BigInteger ii = BigInteger.valueOf( i );
 			ArrayList<BigInteger> el = new ArrayList<BigInteger>();

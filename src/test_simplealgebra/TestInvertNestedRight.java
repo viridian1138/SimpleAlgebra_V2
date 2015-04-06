@@ -113,9 +113,9 @@ public class TestInvertNestedRight extends TestCase {
 		int i;
 		int j;
 		
-		for( i = 0 ; i < 4 ; i++ )
+		for( i = 0 ; i < TestDimensionFour.FOUR ; i++ )
 		{
-			for( j = 0 ; j < 4 ; j++ )
+			for( j = 0 ; j < TestDimensionFour.FOUR ; j++ )
 			{
 				DoubleElem val = new DoubleElem( 2.0 * ( rand.nextDouble() ) - 1.0 );
 				mat.setVal( BigInteger.valueOf(i) , BigInteger.valueOf(j) , val );
@@ -172,9 +172,9 @@ public class TestInvertNestedRight extends TestCase {
 		int i;
 		int j;
 		
-		for( i = 0 ; i < 4 ; i++ )
+		for( i = 0 ; i < TestDimensionFour.FOUR ; i++ )
 		{
-			for( j = 0 ; j < 4 ; j++ )
+			for( j = 0 ; j < TestDimensionFour.FOUR ; j++ )
 			{
 				SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory> val = generateMat( rand , se );
 				mat.setVal( BigInteger.valueOf(i) , BigInteger.valueOf(j) , val );
@@ -190,18 +190,18 @@ public class TestInvertNestedRight extends TestCase {
 			SquareMatrixElemFactory<TestDimensionFour, DoubleElem, DoubleElemFactory>> shouldBeIdent = mat.mult( inv );
 		
 		
-		for( i = 0 ; i < 4 ; i++ )
+		for( i = 0 ; i < TestDimensionFour.FOUR ; i++ )
 		{
-			for( j = 0 ; j < 4 ; j++ )
+			for( j = 0 ; j < TestDimensionFour.FOUR ; j++ )
 			{
 				
 				
 				int i2;
 				int j2;
 				
-				for( i2 = 0 ; i2 < 4 ; i2++ )
+				for( i2 = 0 ; i2 < TestDimensionFour.FOUR ; i2++ )
 				{
-					for( j2 = 0 ; j2 < 4 ; j2++ )
+					for( j2 = 0 ; j2 < TestDimensionFour.FOUR ; j2++ )
 					{
 						final double matchVal = ( i == j ) && ( i2 == j2 ) ? 1.0 : 0.0;
 						
@@ -265,9 +265,9 @@ public class TestInvertNestedRight extends TestCase {
 		int i;
 		int j;
 		
-		for( i = 0 ; i < 4 ; i++ )
+		for( i = 0 ; i < TestDimensionFour.FOUR ; i++ )
 		{
-			for( j = 0 ; j < 4 ; j++ )
+			for( j = 0 ; j < TestDimensionFour.FOUR ; j++ )
 			{
 				SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory> val = generateMat( rand , se );
 				mat.setVal( BigInteger.valueOf(i) , BigInteger.valueOf(j) , val );
@@ -295,18 +295,18 @@ public class TestInvertNestedRight extends TestCase {
 				mat.handleOptionalOp( SquareMatrixElem.SquareMatrixCmd.MULT_REV_COEFF , args);
 		
 		
-		for( i = 0 ; i < 4 ; i++ )
+		for( i = 0 ; i < TestDimensionFour.FOUR ; i++ )
 		{
-			for( j = 0 ; j < 4 ; j++ )
+			for( j = 0 ; j < TestDimensionFour.FOUR ; j++ )
 			{
 				
 				
 				int i2;
 				int j2;
 				
-				for( i2 = 0 ; i2 < 4 ; i2++ )
+				for( i2 = 0 ; i2 < TestDimensionFour.FOUR ; i2++ )
 				{
-					for( j2 = 0 ; j2 < 4 ; j2++ )
+					for( j2 = 0 ; j2 < TestDimensionFour.FOUR ; j2++ )
 					{
 						final double matchVal = ( i == j ) && ( i2 == j2 ) ? 1.0 : 0.0;
 						

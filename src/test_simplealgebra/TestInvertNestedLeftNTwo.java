@@ -119,9 +119,9 @@ public class TestInvertNestedLeftNTwo extends TestCase {
 		int i;
 		int j;
 		
-		for( i = 0 ; i < 4 ; i++ )
+		for( i = 0 ; i < TestDimensionFour.FOUR ; i++ )
 		{
-			for( j = 0 ; j < 4 ; j++ )
+			for( j = 0 ; j < TestDimensionFour.FOUR ; j++ )
 			{
 				DoubleElem val = new DoubleElem( 2.0 * ( rand.nextDouble() ) - 1.0 );
 				mat.setVal( BigInteger.valueOf(i) , BigInteger.valueOf(j) , val );
@@ -170,9 +170,9 @@ public class TestInvertNestedLeftNTwo extends TestCase {
 		int i;
 		int j;
 		
-		for( i = 0 ; i < 4 ; i++ )
+		for( i = 0 ; i < TestDimensionFour.FOUR ; i++ )
 		{
-			for( j = 0 ; j < 4 ; j++ )
+			for( j = 0 ; j < TestDimensionFour.FOUR ; j++ )
 			{
 				SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory> val = generateMatA(rand, se.getFac() );
 				mat.setVal( BigInteger.valueOf(i) , BigInteger.valueOf(j) , val );
@@ -236,9 +236,9 @@ public class TestInvertNestedLeftNTwo extends TestCase {
 	int i;
 	int j;
 	
-	for( i = 0 ; i < 4 ; i++ )
+	for( i = 0 ; i < TestDimensionFour.FOUR ; i++ )
 	{
-		for( j = 0 ; j < 4 ; j++ )
+		for( j = 0 ; j < TestDimensionFour.FOUR ; j++ )
 		{
 			SquareMatrixElem<TestDimensionFour,SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,
 				SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>> val = generateMatB(rand, se.getFac() );
@@ -322,27 +322,27 @@ public class TestInvertNestedLeftNTwo extends TestCase {
 		int j;
 		
 		
-		for( i = 0 ; i < 4 ; i++ )
+		for( i = 0 ; i < TestDimensionFour.FOUR ; i++ )
 		{
-			for( j = 0 ; j < 4 ; j++ )
+			for( j = 0 ; j < TestDimensionFour.FOUR ; j++ )
 			{
 				
 				
 				int i2;
 				int j2;
 				
-				for( i2 = 0 ; i2 < 4 ; i2++ )
+				for( i2 = 0 ; i2 < TestDimensionFour.FOUR ; i2++ )
 				{
-					for( j2 = 0 ; j2 < 4 ; j2++ )
+					for( j2 = 0 ; j2 < TestDimensionFour.FOUR ; j2++ )
 					{
 						
 						
 						int i3;
 						int j3;
 						
-						for( i3 = 0 ; i3 < 4 ; i3++ )
+						for( i3 = 0 ; i3 < TestDimensionFour.FOUR ; i3++ )
 						{
-							for( j3 = 0 ; j3 < 4 ; j3++ )
+							for( j3 = 0 ; j3 < TestDimensionFour.FOUR ; j3++ )
 							{
 								final double matchVal = ( i == j ) && ( i2 == j2 ) && ( i3 == j3 ) ? 1.0 : 0.0;
 								Assert.assertEquals( matchVal , 
@@ -448,27 +448,27 @@ public class TestInvertNestedLeftNTwo extends TestCase {
 		int j;
 		
 		
-		for( i = 0 ; i < 4 ; i++ )
+		for( i = 0 ; i < TestDimensionFour.FOUR ; i++ )
 		{
-			for( j = 0 ; j < 4 ; j++ )
+			for( j = 0 ; j < TestDimensionFour.FOUR ; j++ )
 			{
 				
 				
 				int i2;
 				int j2;
 				
-				for( i2 = 0 ; i2 < 4 ; i2++ )
+				for( i2 = 0 ; i2 < TestDimensionFour.FOUR ; i2++ )
 				{
-					for( j2 = 0 ; j2 < 4 ; j2++ )
+					for( j2 = 0 ; j2 < TestDimensionFour.FOUR ; j2++ )
 					{
 						
 						
 						int i3;
 						int j3;
 						
-						for( i3 = 0 ; i3 < 4 ; i3++ )
+						for( i3 = 0 ; i3 < TestDimensionFour.FOUR ; i3++ )
 						{
-							for( j3 = 0 ; j3 < 4 ; j3++ )
+							for( j3 = 0 ; j3 < TestDimensionFour.FOUR ; j3++ )
 							{
 								final double matchVal = ( i == j ) && ( i2 == j2 ) && ( i3 == j3 ) ? 1.0 : 0.0;
 								Assert.assertEquals( matchVal , 

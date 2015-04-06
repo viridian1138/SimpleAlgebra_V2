@@ -69,7 +69,7 @@ public class TestInvertRightSymbolic extends TestCase
 	/**
 	 * The number of dimensions for the matrix.
 	 */
-	final static int NUM_DIM = 4;
+	final static int NUM_DIM = TestDimensionFour.FOUR;
 	
 	
 	/**

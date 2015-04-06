@@ -40,6 +40,8 @@ import simplealgebra.ga.Ord;
 /**
  * Defines multiplication rules for a test algebra where left/right inverses are different.  This should be used for tests only, and only in 2-D.
  * 
+ * Note: unlike standard Geometric Algebra elems, this Ord produces a non-standard elem that is not associative.  Hence, operations that rely on associativity may not work properly.
+ * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
  * @author thorngreen

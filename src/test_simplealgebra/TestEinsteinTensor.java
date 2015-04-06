@@ -200,7 +200,7 @@ public class TestEinsteinTensor extends TestCase {
 			final EinsteinTensorElem<String,SymbolicElem<DoubleElem, DoubleElemFactory>,SymbolicElemFactory<DoubleElem, DoubleElemFactory>>
 				elem = new EinsteinTensorElem<String,SymbolicElem<DoubleElem, DoubleElemFactory>,SymbolicElemFactory<DoubleElem, DoubleElemFactory>>(fac.getFac(), contravariantIndices, covariantIndices);
 			
-			for( int cnt = 0 ; cnt < 4 ; cnt++ )
+			for( int cnt = 0 ; cnt < TestDimensionFour.FOUR ; cnt++ )
 			{
 				CElem ce = new CElem( new DoubleElemFactory() , cnt );
 				final ArrayList<BigInteger> key = new ArrayList<BigInteger>();
@@ -546,8 +546,8 @@ public class TestEinsteinTensor extends TestCase {
 			for( int acnt = 0 ; acnt < 16 ; acnt++ )
 			{
 				final ArrayList<BigInteger> ab = new ArrayList<BigInteger>();
-				ab.add( BigInteger.valueOf( acnt / 4 ) );
-				ab.add( BigInteger.valueOf( acnt % 4 ) );
+				ab.add( BigInteger.valueOf( acnt / TestDimensionFour.FOUR ) );
+				ab.add( BigInteger.valueOf( acnt % TestDimensionFour.FOUR ) );
 				final CElem as = new CElem( de , acnt );
 				g0.setVal( ab , as );
 			}

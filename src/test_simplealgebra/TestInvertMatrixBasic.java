@@ -77,7 +77,7 @@ public class TestInvertMatrixBasic extends TestCase {
 			= new SquareMatrixElem<TestDimensionFour, SymbolicElem<DoubleElem,DoubleElemFactory>, SymbolicElemFactory<DoubleElem,DoubleElemFactory>>(se, td);
 		
 		
-		for( int cnt = 0 ; cnt < 4 ; cnt++ )
+		for( int cnt = 0 ; cnt < TestDimensionFour.FOUR ; cnt++ )
 		{
 			final BigInteger index = BigInteger.valueOf( cnt );
 			mat.setVal(index, index, new SymbolicIdentity<DoubleElem, DoubleElemFactory>( de ) );
@@ -90,9 +90,9 @@ public class TestInvertMatrixBasic extends TestCase {
 		Assert.assertTrue( matI != null );
 		
 		
-		for( int row = 0 ; row < 4 ; row++ )
+		for( int row = 0 ; row < TestDimensionFour.FOUR ; row++ )
 		{
-			for( int col = 0 ; col < 4 ; col++ )
+			for( int col = 0 ; col < TestDimensionFour.FOUR ; col++ )
 			{
 				SymbolicElem<DoubleElem,DoubleElemFactory> el = matI.getVal( BigInteger.valueOf(row) , 
 						BigInteger.valueOf(col) );
@@ -284,14 +284,14 @@ public class TestInvertMatrixBasic extends TestCase {
 			= new SquareMatrixElem<NumDimensions, SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory>, SquareMatrixElemFactory<TestDimensionFour, DoubleElem, DoubleElemFactory>>(me, td);
 		
 		
-		for( int cnt = 0 ; cnt < 4 ; cnt++ )
+		for( int cnt = 0 ; cnt < TestDimensionFour.FOUR ; cnt++ )
 		{
 			final BigInteger index = BigInteger.valueOf( cnt );
 			final SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory> an =
 					new SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory>(de, td);
-			for( int row = 0 ; row < 4 ; row++ )
+			for( int row = 0 ; row < TestDimensionFour.FOUR ; row++ )
 			{
-				for( int col = 0 ; col < 4 ; col++ )
+				for( int col = 0 ; col < TestDimensionFour.FOUR ; col++ )
 				{
 					an.setVal(BigInteger.valueOf(row), BigInteger.valueOf(col), new DoubleElem( rand.nextDouble() ) );
 				}
@@ -313,15 +313,15 @@ public class TestInvertMatrixBasic extends TestCase {
 		Assert.assertTrue( matI2 != null );
 		
 		
-		for( int row = 0 ; row < 4 ; row++ )
+		for( int row = 0 ; row < TestDimensionFour.FOUR ; row++ )
 		{
-			for( int col = 0 ; col < 4 ; col++ )
+			for( int col = 0 ; col < TestDimensionFour.FOUR ; col++ )
 			{
 				SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory> elA = matI2.getVal( BigInteger.valueOf(row) , 
 						BigInteger.valueOf(col) );
-				for( int row2 = 0 ; row2 < 4 ; row2++ )
+				for( int row2 = 0 ; row2 < TestDimensionFour.FOUR ; row2++ )
 				{
-					for( int col2 = 0 ; col2 < 4 ; col2++ )
+					for( int col2 = 0 ; col2 < TestDimensionFour.FOUR ; col2++ )
 					{
 						DoubleElem el = elA.getVal( BigInteger.valueOf(row2) , 
 								BigInteger.valueOf(col2) );
@@ -361,9 +361,9 @@ public class TestInvertMatrixBasic extends TestCase {
 			= new SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory>(de, td);
 		
 		
-		for( int row = 0 ; row < 4 ; row++ )
+		for( int row = 0 ; row < TestDimensionFour.FOUR ; row++ )
 		{
-			for( int col = 0 ; col < 4 ; col++ )
+			for( int col = 0 ; col < TestDimensionFour.FOUR ; col++ )
 			{
 				if( ( row + ( 3 - col ) ) < 4 )
 				{
@@ -386,9 +386,9 @@ public class TestInvertMatrixBasic extends TestCase {
 		Assert.assertTrue( matI2 != null );
 		
 		
-		for( int row = 0 ; row < 4 ; row++ )
+		for( int row = 0 ; row < TestDimensionFour.FOUR ; row++ )
 		{
-			for( int col = 0 ; col < 4 ; col++ )
+			for( int col = 0 ; col < TestDimensionFour.FOUR ; col++ )
 			{
 				DoubleElem el = matI2.getVal( BigInteger.valueOf(row) , 
 						BigInteger.valueOf(col) );
@@ -427,9 +427,9 @@ public class TestInvertMatrixBasic extends TestCase {
 			= new SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory>(de, td);
 		
 		
-		for( int row = 0 ; row < 4 ; row++ )
+		for( int row = 0 ; row < TestDimensionFour.FOUR ; row++ )
 		{
-			for( int col = 0 ; col < 4 ; col++ )
+			for( int col = 0 ; col < TestDimensionFour.FOUR ; col++ )
 			{
 				if( ( ( 3 - row ) + col ) < 4 )
 				{
@@ -452,9 +452,9 @@ public class TestInvertMatrixBasic extends TestCase {
 		Assert.assertTrue( matI2 != null );
 		
 		
-		for( int row = 0 ; row < 4 ; row++ )
+		for( int row = 0 ; row < TestDimensionFour.FOUR ; row++ )
 		{
-			for( int col = 0 ; col < 4 ; col++ )
+			for( int col = 0 ; col < TestDimensionFour.FOUR ; col++ )
 			{
 				DoubleElem el = matI2.getVal( BigInteger.valueOf(row) , 
 						BigInteger.valueOf(col) );
@@ -494,7 +494,7 @@ public class TestInvertMatrixBasic extends TestCase {
 			= new SquareMatrixElem<TestDimensionFour, SymbolicElem<DoubleElem,DoubleElemFactory>, SymbolicElemFactory<DoubleElem,DoubleElemFactory>>(se, td);
 		
 		
-		for( int cnt = 0 ; cnt < 4 ; cnt++ )
+		for( int cnt = 0 ; cnt < TestDimensionFour.FOUR ; cnt++ )
 		{
 			final BigInteger index = BigInteger.valueOf( cnt );
 			mat.setVal(index, index, new SymbolicIdentity<DoubleElem, DoubleElemFactory>( de ) );
@@ -507,9 +507,9 @@ public class TestInvertMatrixBasic extends TestCase {
 		Assert.assertTrue( matI != null );
 		
 		
-		for( int row = 0 ; row < 4 ; row++ )
+		for( int row = 0 ; row < TestDimensionFour.FOUR ; row++ )
 		{
-			for( int col = 0 ; col < 4 ; col++ )
+			for( int col = 0 ; col < TestDimensionFour.FOUR ; col++ )
 			{
 				SymbolicElem<DoubleElem,DoubleElemFactory> el = matI.getVal( BigInteger.valueOf(row) , 
 						BigInteger.valueOf(col) );
@@ -703,14 +703,14 @@ public class TestInvertMatrixBasic extends TestCase {
 			= new SquareMatrixElem<NumDimensions, SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory>, SquareMatrixElemFactory<TestDimensionFour, DoubleElem, DoubleElemFactory>>(me, td);
 		
 		
-		for( int cnt = 0 ; cnt < 4 ; cnt++ )
+		for( int cnt = 0 ; cnt < TestDimensionFour.FOUR ; cnt++ )
 		{
 			final BigInteger index = BigInteger.valueOf( cnt );
 			final SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory> an =
 					new SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory>(de, td);
-			for( int row = 0 ; row < 4 ; row++ )
+			for( int row = 0 ; row < TestDimensionFour.FOUR ; row++ )
 			{
-				for( int col = 0 ; col < 4 ; col++ )
+				for( int col = 0 ; col < TestDimensionFour.FOUR ; col++ )
 				{
 					an.setVal(BigInteger.valueOf(row), BigInteger.valueOf(col), new DoubleElem( rand.nextDouble() ) );
 				}
@@ -732,15 +732,15 @@ public class TestInvertMatrixBasic extends TestCase {
 		Assert.assertTrue( matI2 != null );
 		
 		
-		for( int row = 0 ; row < 4 ; row++ )
+		for( int row = 0 ; row < TestDimensionFour.FOUR ; row++ )
 		{
-			for( int col = 0 ; col < 4 ; col++ )
+			for( int col = 0 ; col < TestDimensionFour.FOUR ; col++ )
 			{
 				SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory> elA = matI2.getVal( BigInteger.valueOf(row) , 
 						BigInteger.valueOf(col) );
-				for( int row2 = 0 ; row2 < 4 ; row2++ )
+				for( int row2 = 0 ; row2 < TestDimensionFour.FOUR ; row2++ )
 				{
-					for( int col2 = 0 ; col2 < 4 ; col2++ )
+					for( int col2 = 0 ; col2 < TestDimensionFour.FOUR ; col2++ )
 					{
 						DoubleElem el = elA.getVal( BigInteger.valueOf(row2) , 
 								BigInteger.valueOf(col2) );
@@ -782,9 +782,9 @@ public class TestInvertMatrixBasic extends TestCase {
 			= new SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory>(de, td);
 		
 		
-		for( int row = 0 ; row < 4 ; row++ )
+		for( int row = 0 ; row < TestDimensionFour.FOUR ; row++ )
 		{
-			for( int col = 0 ; col < 4 ; col++ )
+			for( int col = 0 ; col < TestDimensionFour.FOUR ; col++ )
 			{
 				if( ( row + ( 3 - col ) ) < 4 )
 				{
@@ -807,9 +807,9 @@ public class TestInvertMatrixBasic extends TestCase {
 		Assert.assertTrue( matI2 != null );
 		
 		
-		for( int row = 0 ; row < 4 ; row++ )
+		for( int row = 0 ; row < TestDimensionFour.FOUR ; row++ )
 		{
-			for( int col = 0 ; col < 4 ; col++ )
+			for( int col = 0 ; col < TestDimensionFour.FOUR ; col++ )
 			{
 				DoubleElem el = matI2.getVal( BigInteger.valueOf(row) , 
 						BigInteger.valueOf(col) );
@@ -848,9 +848,9 @@ public class TestInvertMatrixBasic extends TestCase {
 			= new SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory>(de, td);
 		
 		
-		for( int row = 0 ; row < 4 ; row++ )
+		for( int row = 0 ; row < TestDimensionFour.FOUR ; row++ )
 		{
-			for( int col = 0 ; col < 4 ; col++ )
+			for( int col = 0 ; col < TestDimensionFour.FOUR ; col++ )
 			{
 				if( ( ( 3 - row ) + col ) < 4 )
 				{
@@ -873,9 +873,9 @@ public class TestInvertMatrixBasic extends TestCase {
 		Assert.assertTrue( matI2 != null );
 		
 		
-		for( int row = 0 ; row < 4 ; row++ )
+		for( int row = 0 ; row < TestDimensionFour.FOUR ; row++ )
 		{
-			for( int col = 0 ; col < 4 ; col++ )
+			for( int col = 0 ; col < TestDimensionFour.FOUR ; col++ )
 			{
 				DoubleElem el = matI2.getVal( BigInteger.valueOf(row) , 
 						BigInteger.valueOf(col) );

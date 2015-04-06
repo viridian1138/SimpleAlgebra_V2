@@ -1580,7 +1580,7 @@ public class TestMaterialDerivativeSymbolic extends TestCase
 		
 		// System.out.println( "***" );
 		int i;
-		for( i = 0 ; i < 4 ; i++ )
+		for( i = 0 ; i < TestDimensionFour.FOUR ; i++ )
 		{
 			BigInteger ii = BigInteger.valueOf( i );
 			ArrayList<BigInteger> el = new ArrayList<BigInteger>();
