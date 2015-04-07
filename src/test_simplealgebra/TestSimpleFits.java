@@ -44,6 +44,7 @@ import simplealgebra.ga.GeometricAlgebraOrd;
 import simplealgebra.ga.Ord;
 import simplealgebra.ga.SpacetimeAlgebraOrd;
 import simplealgebra.samp.*;
+import java.util.*;
 
 
 /**
@@ -466,55 +467,99 @@ protected GeometricAlgebraMultivectorElem<TestDimensionFifty,GeometricAlgebraOrd
 		
 		
 		
-		/* System.out.println( "mn X ---" );
 		
-		System.out.println( lin.getMeanX().getVal() );
-		
-		System.out.println( quad1.getMeanX().getVal() );
-		
-		System.out.println( quad2.getMeanX().getVal() );
-		
-		System.out.println( tri1.getMeanX().getVal() );
-		
-		
-		
-		System.out.println( "mn Y ---" );
-		
-		System.out.println( lin.getMeanY().getVal() );
-		
-		System.out.println( quad1.getMeanY().getVal() );
-		
-		System.out.println( quad2.getMeanY().getVal() );
-		
-		System.out.println( tri1.getMeanY().getVal() );
+		{
+			final HashSet<BigInteger> ind = new HashSet<BigInteger>();
+			ind.add( BigInteger.ZERO );
+			
+			final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> linx = lin.getMeanX();
+			Assert.assertEquals( 75.0 + 8.0 * 24.5 , linx.getVal( ind ).getVal() , 0.5 );
+			
+			final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> quad1x = quad1.getMeanX();
+			Assert.assertEquals( 75.0 + 8.0 * 24.5 , quad1x.getVal( ind ).getVal() , 0.5 );
+			
+			final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> quad2x = quad2.getMeanX();
+			Assert.assertEquals( 75.0 + 8.0 * 24.5 , quad2x.getVal( ind ).getVal() , 0.5 );
+			
+			final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> tri1x = tri1.getMeanX();
+			Assert.assertEquals( 75.0 + 8.0 * 24.5 , tri1x.getVal( ind ).getVal() , 0.5 );
+		}
 		
 		
 		
-		System.out.println( "mn slp ---" );
-		
-		System.out.println( lin.getSlope().getVal() );
-		
-		System.out.println( quad1.getSlope().getVal() );
-		
-		System.out.println( quad2.getSlopes().get( 0 ).getVal() );
-		
-		System.out.println( tri1.getSlopes().get( 0 ).getVal() );
 		
 		
+		{
+			final HashSet<BigInteger> ind = new HashSet<BigInteger>();
+			ind.add( BigInteger.ONE );
+			
+			final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> liny = lin.getMeanY();
+			Assert.assertEquals( 225.0 + 66.6 * 24.5 , liny.getVal( ind ).getVal() , 0.5 );
+			
+			final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> quad1y = quad1.getMeanY();
+			Assert.assertEquals( 225.0 + 66.6 * 24.5 , quad1y.getVal( ind ).getVal() , 0.5 );
+			
+			final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> quad2y = quad2.getMeanY();
+			Assert.assertEquals( 225.0 + 66.6 * 24.5 , quad2y.getVal( ind ).getVal() , 0.5 );
+			
+			final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> tri1y = tri1.getMeanY();
+			Assert.assertEquals( 225.0 + 66.6 * 24.5 , tri1y.getVal( ind ).getVal() , 0.5 );
+		}
 		
-		System.out.println( "mn acc ---" );
-		
-		System.out.println( quad1.getAcc().getVal() );
-		
-		System.out.println( quad2.getSlopes().get( 1 ).getVal() );
-		
-		System.out.println( tri1.getSlopes().get( 1 ).getVal() );
 		
 		
 		
-		System.out.println( "mn 3 ---" );
+		{
+			final HashSet<BigInteger> ind = new HashSet<BigInteger>();
+			ind.add( BigInteger.ZERO );
+			ind.add( BigInteger.ONE );
+			
+			final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> lins = lin.getSlope();
+			Assert.assertEquals( - 66.0 / 8.0 , lins.getVal( ind ).getVal() , 0.5 );
+			
+			final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> quad1s = quad1.getSlope();
+			Assert.assertEquals( - 66.0 / 8.0 , quad1s.getVal( ind ).getVal() , 0.5 );
+			
+			final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> quad2s = quad2.getSlopes().get( 0 );
+			Assert.assertEquals( - 66.0 / 8.0 , quad2s.getVal( ind ).getVal() , 0.5 );
+			
+			final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> tri1s = tri1.getSlopes().get( 0 );
+			Assert.assertEquals( - 66.0 / 8.0 , tri1s.getVal( ind ).getVal() , 0.5 );
+		}
 		
-		System.out.println( tri1.getSlopes().get( 2 ).getVal() ); */
+		
+		
+		
+		
+		{
+			final HashSet<BigInteger> ind = new HashSet<BigInteger>();
+			ind.add( BigInteger.ONE );
+						
+			final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> quad1s = quad1.getAcc();
+			Assert.assertEquals( 0.0 , quad1s.getVal( ind ).getVal() , 0.5 );
+			
+			final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> quad2s = quad2.getSlopes().get( 1 );
+			Assert.assertEquals( 0.0 , quad2s.getVal( ind ).getVal() , 0.5 );
+			
+			final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> tri1s = tri1.getSlopes().get( 1 );
+			Assert.assertEquals( 0.0 , tri1s.getVal( ind ).getVal() , 0.5 );
+		}
+		
+		
+		
+		
+		
+		{
+			final HashSet<BigInteger> ind = new HashSet<BigInteger>();
+			ind.add( BigInteger.ZERO );
+			ind.add( BigInteger.ONE );
+			
+			final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> tri1s = tri1.getSlopes().get( 2 );
+			Assert.assertEquals( 0.0 , tri1s.getVal( ind ).getVal() , 0.5 );
+		}
+		
+		
+		
 		
 		
 	}
