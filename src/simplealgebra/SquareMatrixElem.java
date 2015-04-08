@@ -1467,7 +1467,7 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 
 	
 	@Override
-	public SquareMatrixElem<U, R, S> divideBy(int val) {
+	public SquareMatrixElem<U, R, S> divideBy(BigInteger val) {
 		SquareMatrixElem<U,R,S> ret = new SquareMatrixElem<U,R,S>(fac,dim);
 		Iterator<BigInteger> rowi = rowMap.keySet().iterator();
 		while( rowi.hasNext() )

@@ -742,11 +742,26 @@ rule "DivideBy OF Zero --> Zero"
           a : SymbolicZero( )
           b : SymbolicDivideBy( elem == a )
           ds : DroolsSession()
-          eval( b.getIval() != 0 )
+          eval( b.divNotZero() )
       then
           insert( new Reng( b , a ) );
 end
 
+
+
+
+
+
+// This simplification has a parallel implementation in SymbolicDivideBy.divideBy()
+rule "Double DivideBy"
+     when
+          e0 : SymbolicElem( )
+          n0 : SymbolicDivideBy( elem == e0 )
+          n1 : SymbolicDivideBy( elem == n0 )
+          not( Reng( strt == n1 ) )
+     then
+          insert( new Reng( n1 , new SymbolicDivideBy( e0 , n0.getFac() , n0.getIval().multiply( n1.getIval() ) ) ) );
+end
 
 
 

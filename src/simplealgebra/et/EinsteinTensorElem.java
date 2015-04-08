@@ -647,7 +647,7 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 
 
 	@Override
-	public EinsteinTensorElem<Z, R, S> divideBy(int val) {
+	public EinsteinTensorElem<Z, R, S> divideBy(BigInteger val) {
 		EinsteinTensorElem<Z,R,S> ret = new EinsteinTensorElem<Z,R,S>(fac, contravariantIndices, covariantIndices );
 		Iterator<ArrayList<BigInteger>> it = map.keySet().iterator();
 		while( it.hasNext() )

@@ -302,7 +302,7 @@ public class ComplexElem<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 	}
 
 	@Override
-	public ComplexElem<R, S> divideBy(int val) {
+	public ComplexElem<R, S> divideBy(BigInteger val) {
 		return( new ComplexElem<R,S>( re.divideBy(val) , im.divideBy(val) ) );
 	}
 	

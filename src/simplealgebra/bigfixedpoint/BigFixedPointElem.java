@@ -110,12 +110,12 @@ public class BigFixedPointElem<T extends Precision> extends Elem<BigFixedPointEl
 	}
 
 	@Override
-	public BigFixedPointElem<T> divideBy(int vali) {
-		if( vali == 0 )
+	public BigFixedPointElem<T> divideBy(BigInteger vali) {
+		if( vali.equals( BigInteger.ZERO ) )
 		{
 			throw( new RuntimeException( "NaN" ) );
 		}
-		return( new BigFixedPointElem<T>( val.divide( BigInteger.valueOf( vali ) ) , prec ) );
+		return( new BigFixedPointElem<T>( val.divide( vali ) , prec ) );
 	}
 
 	@Override

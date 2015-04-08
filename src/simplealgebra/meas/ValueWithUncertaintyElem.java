@@ -30,6 +30,7 @@ import simplealgebra.ElemFactory;
 import simplealgebra.MutableElem;
 import simplealgebra.Mutator;
 import simplealgebra.NotInvertibleException;
+import java.math.BigInteger;
 
 /**
  * Elem for a value with an uncertainty (e.g. a measurement error).
@@ -108,7 +109,7 @@ public class ValueWithUncertaintyElem<R extends Elem<R,?>, S extends ElemFactory
 	
 
 	@Override
-	public ValueWithUncertaintyElem<R, S> divideBy(int val) {
+	public ValueWithUncertaintyElem<R, S> divideBy(BigInteger val) {
 		return( new ValueWithUncertaintyElem<R,S>( value.divideBy(val) , uncertainty.divideBy(val) ) );
 	}
 	

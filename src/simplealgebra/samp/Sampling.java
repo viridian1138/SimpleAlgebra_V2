@@ -71,12 +71,7 @@ public class Sampling<U extends NumDimensions, A extends Ord<U>, R extends Elem<
 		}
 		final U dim = y.getFac().getDim();
 		final BigInteger ndim = dim.getVal();
-		final int adim = ndim.intValue();
-		if( !( ndim.equals( BigInteger.valueOf( adim ) ) ) )
-		{
-			throw( new RuntimeException( "Overflow" ) );
-		}
-		sum = sum.divideBy( adim );
+		sum = sum.divideBy( ndim );
 		return( sum );
 	}
 	

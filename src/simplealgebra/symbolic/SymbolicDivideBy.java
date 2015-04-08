@@ -33,6 +33,7 @@ import org.kie.internal.runtime.StatefulKnowledgeSession;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
+import java.math.BigInteger;
 
 
 /**
@@ -55,7 +56,7 @@ public class SymbolicDivideBy<R extends Elem<R,?>, S extends ElemFactory<R,S>> e
 	 * @param _fac The factory for the enclosed elem.
 	 * @param _ival The value to divide by.
 	 */
-	public SymbolicDivideBy( SymbolicElem<R,S> _elem , S _fac , int _ival )
+	public SymbolicDivideBy( SymbolicElem<R,S> _elem , S _fac , BigInteger _ival )
 	{
 		super( _fac );
 		elem = _elem;
@@ -70,7 +71,7 @@ public class SymbolicDivideBy<R extends Elem<R,?>, S extends ElemFactory<R,S>> e
 	 * @param _ival The value to divide by.
 	 * @param ds The Drools session.
 	 */
-	public SymbolicDivideBy( SymbolicElem<R,S> _elem , S _fac , int _ival , DroolsSession ds )
+	public SymbolicDivideBy( SymbolicElem<R,S> _elem , S _fac , BigInteger _ival , DroolsSession ds )
 	{
 		this( _elem , _fac , _ival );
 		ds.insert( this );
@@ -85,6 +86,14 @@ public class SymbolicDivideBy<R extends Elem<R,?>, S extends ElemFactory<R,S>> e
 	public R evalPartialDerivative( ArrayList<? extends Elem<?,?>> withRespectTo , HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
 		return( elem.evalPartialDerivative( withRespectTo , implicitSpace ).divideBy( ival ) );
+	}
+	
+	
+	@Override
+	public SymbolicElem<R, S> divideBy(BigInteger val) {
+		// This simplification has a parallel implementation in the "Double DivideBy" rules in 
+		// distributeSimplify.drl and distributeSimplify2.drl
+		return( new SymbolicDivideBy<R,S>( elem , fac , val.multiply( ival ) ) );
 	}
 	
 	
@@ -120,7 +129,7 @@ public class SymbolicDivideBy<R extends Elem<R,?>, S extends ElemFactory<R,S>> e
 	 * 
 	 * @return The value to divide by.
 	 */
-	public int getIval() {
+	public BigInteger getIval() {
 		return ival;
 	}
 
@@ -144,16 +153,27 @@ public class SymbolicDivideBy<R extends Elem<R,?>, S extends ElemFactory<R,S>> e
 	public void validate() throws RuntimeException
 	{
 		super.validate();
-		if( ival == 0 )
+		if( ival.equals( BigInteger.ZERO ) )
 		{
 			throw( new RuntimeException( "Invalid" ) );
 		}
 	}
 	
+	
+	/**
+	 * Returns true if the divisor is not zero.
+	 * 
+	 * @return True if the divisor is not zero.
+	 */
+	public boolean divNotZero()
+	{
+		return( BigInteger.ZERO.compareTo( ival ) != 0 );
+	}
+	
 	/**
 	 * The value to divide by.
 	 */
-	private int ival;
+	private BigInteger ival;
 	
 	/**
 	 * The enclosed elem.

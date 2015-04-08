@@ -34,6 +34,7 @@ import java.util.HashMap;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
+import java.math.BigInteger;
 
 /**
  * A symbolic elem for the zero value.
@@ -168,10 +169,10 @@ public class SymbolicZero<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 	}
 
 	@Override
-	public SymbolicElem<R, S> divideBy(int val) {
+	public SymbolicElem<R, S> divideBy(BigInteger val) {
 		// This simplification has a parallel implementation in the "DivideBy OF Zero --> Zero" rules in 
 		// distributeSimplify.drl and distributeSimplify2.drl
-		return( val != 0 ? this : super.divideBy( val ) );
+		return( BigInteger.ZERO.compareTo( val ) != 0 ? this : super.divideBy( val ) );
 	}
 
 }

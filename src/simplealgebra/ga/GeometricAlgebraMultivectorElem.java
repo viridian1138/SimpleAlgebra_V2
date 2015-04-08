@@ -739,7 +739,7 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 	
 
 	@Override
-	public GeometricAlgebraMultivectorElem<U,A, R, S> divideBy(int val) {
+	public GeometricAlgebraMultivectorElem<U,A, R, S> divideBy(BigInteger val) {
 		GeometricAlgebraMultivectorElem<U,A,R,S> ret = new GeometricAlgebraMultivectorElem<U,A,R,S>(fac,dim,ord);
 		Iterator<HashSet<BigInteger>> it = map.keySet().iterator();
 		while( it.hasNext() )

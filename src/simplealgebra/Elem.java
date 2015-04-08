@@ -24,6 +24,7 @@
 
 package simplealgebra;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 
 
@@ -136,7 +137,7 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 	 * @param val The integer by which to divide.
 	 * @return The elem divided by the integer.
 	 */
-	public abstract T divideBy( int val );
+	public abstract T divideBy( BigInteger val );
 	
 	/**
 	 * Returns the factory of the elem.
@@ -173,6 +174,18 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 	public T handleOptionalOp( Object id , ArrayList<T> args ) throws NotInvertibleException
 	{
 		throw( new RuntimeException( "Operation Not Supported" ) );
+	}
+	
+	
+	/**
+	 * Simpler version of divideBy() for use with smaller numbers.  Divides the elem by a non-zero integer.
+	 * 
+	 * @param val The integer by which to divide.
+	 * @return The elem divided by the integer.
+	 */
+	public final T divideBy( int val )
+	{
+		return( divideBy( BigInteger.valueOf( val ) ) );
 	}
 	
 	

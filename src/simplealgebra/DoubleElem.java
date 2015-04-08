@@ -26,6 +26,7 @@
 package simplealgebra;
 
 import java.util.ArrayList;
+import java.math.BigInteger;
 
 /**
  * An elem for doubles.
@@ -75,12 +76,12 @@ public class DoubleElem extends Elem<DoubleElem, DoubleElemFactory> {
 	}
 
 	@Override
-	public DoubleElem divideBy(int val) {
-		if( val == 0 )
+	public DoubleElem divideBy(BigInteger val) {
+		if( val.equals( BigInteger.ZERO ) )
 		{
 			throw( new RuntimeException( "NaN" ) );
 		}
-		final DoubleElem de = new DoubleElem( d / val );
+		final DoubleElem de = new DoubleElem( d / val.doubleValue() );
 		return( de );
 	}
 

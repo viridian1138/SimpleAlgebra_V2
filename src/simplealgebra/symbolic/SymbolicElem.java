@@ -41,6 +41,7 @@ import org.kie.internal.runtime.StatefulKnowledgeSession;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
+import java.math.BigInteger;
 
 /**
  * A symbolic elem.
@@ -132,7 +133,7 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 	}
 
 	@Override
-	public SymbolicElem<R, S> divideBy(int val) {
+	public SymbolicElem<R, S> divideBy(BigInteger val) {
 		return( new SymbolicDivideBy<R,S>( this , fac , val ) );
 	}
 
