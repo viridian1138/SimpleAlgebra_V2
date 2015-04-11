@@ -1942,6 +1942,11 @@ protected void applyAdd(
 				return( StelemNewton.this.iterationsDone() );
 			}
 			
+			@Override
+			protected boolean useSimplification() {
+				return( StelemNewton.this.useSimplification() );
+			}
+			
 		};
 		
 

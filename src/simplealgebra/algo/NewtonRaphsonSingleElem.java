@@ -36,7 +36,6 @@ import java.util.Iterator;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
-import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.*;
 
 
@@ -142,6 +141,11 @@ public abstract class NewtonRaphsonSingleElem<R extends Elem<R,?>, S extends Ele
 		function = _function;
 		eval = function.eval( implicitSpaceFirstLevel );
 		partialEval = function.evalPartialDerivative(_withRespectTo, implicitSpaceFirstLevel );
+		if( useSimplification() )
+		{
+			eval = eval.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY2 , null);
+			partialEval = partialEval.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY2 , null);
+		}
 	}
 	
 	
@@ -207,7 +211,20 @@ public abstract class NewtonRaphsonSingleElem<R extends Elem<R,?>, S extends Ele
 	 * @return True iff. the iterations are to complete.
 	 */
 	protected abstract boolean iterationsDone( );
+	
+	
+	/**
+	 * Returns true iff. expression simplification is to be used.  
+	 * Override this method to turn off expression simplification.
+	 * 
+	 * @return True iff. simplification is to be used.
+	 */
+	protected boolean useSimplification()
+	{
+		return( true );
+	}
 
+	
 }
 
 

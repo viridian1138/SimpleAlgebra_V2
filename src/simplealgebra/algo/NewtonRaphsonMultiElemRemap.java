@@ -354,6 +354,18 @@ public abstract class NewtonRaphsonMultiElemRemap<U extends NumDimensions, A ext
 	protected abstract boolean iterationsDone( );
 
 	
+	/**
+	 * Returns true iff. expression simplification is to be used.  
+	 * Override this method to turn off expression simplification.
+	 * 
+	 * @return True iff. simplification is to be used.
+	 */
+	protected boolean useSimplification()
+	{
+		return( true );
+	}
+	
+	
 	
 }
 

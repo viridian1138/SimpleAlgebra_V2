@@ -45,6 +45,7 @@ import simplealgebra.ga.GeometricAlgebraOrd;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
+import simplealgebra.symbolic.SymbolicOps;
 
 
 /**
@@ -164,13 +165,19 @@ public abstract class NewtonRaphsonMultiElem<U extends NumDimensions, R extends 
 		functions = _functions;
 		dim = _dim;
 		sfac = _sfac;
+		final boolean useSimplification = useSimplification();
 		Iterator<HashSet<BigInteger>> ita = functions.getKeyIterator();
 		evals = new GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,SymbolicElem<R,S>,SymbolicElemFactory<R,S>>( 
 				_sfac , _dim , new GeometricAlgebraOrd<U>() );
 		while( ita.hasNext() )
 		{
-			HashSet<BigInteger> key = ita.next();
-			evals.setVal( key , functions.get( key ).eval( implicitSpaceFirstLevel ) );
+			final HashSet<BigInteger> key = ita.next();
+			SymbolicElem<R,S> evalF = functions.get( key ).eval( implicitSpaceFirstLevel );
+			if( useSimplification )
+			{
+				evalF = evalF.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY2 , null);
+			}
+			evals.setVal( key , evalF );
 		}
 		partialEvalJacobian = new SquareMatrixElem<U,SymbolicElem<R,S>,SymbolicElemFactory<R,S>>(_sfac, _dim);
 		final Iterator<ArrayList<? extends Elem<?, ?>>> itb = _withRespectTos.iterator();
@@ -186,7 +193,11 @@ public abstract class NewtonRaphsonMultiElem<U extends NumDimensions, R extends 
 				final HashSet<BigInteger> key2A = ita.next();
 				final BigInteger key2 = key2A.iterator().next();
 				final SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>> fun = _functions.get( key2A );
-				final SymbolicElem<R,S> evalP = fun.evalPartialDerivative( withRespectTo , implicitSpaceFirstLevel );
+				SymbolicElem<R,S> evalP = fun.evalPartialDerivative( withRespectTo , implicitSpaceFirstLevel );
+				if( useSimplification )
+				{
+					evalP = evalP.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY2 , null);
+				}
 				partialEvalJacobian.setVal( key2 , key , evalP );
 			}
 		}
@@ -306,6 +317,19 @@ public abstract class NewtonRaphsonMultiElem<U extends NumDimensions, R extends 
 	 * @return True iff. the iterations are to complete.
 	 */
 	protected abstract boolean iterationsDone( );
+	
+	
+	/**
+	 * Returns true iff. expression simplification is to be used.  
+	 * Override this method to turn off expression simplification.
+	 * 
+	 * @return True iff. simplification is to be used.
+	 */
+	protected boolean useSimplification()
+	{
+		return( true );
+	}
+	
 
 }
 
