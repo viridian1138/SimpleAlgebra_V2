@@ -27,9 +27,13 @@
 package simplealgebra.symbolic;
 
 import java.io.PrintStream;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.kie.api.definition.rule.Rule;
+import org.kie.api.event.rule.BeforeMatchFiredEvent;
+import org.kie.api.event.rule.DefaultAgendaEventListener;
 import org.kie.api.io.ResourceType;
 import org.kie.internal.KnowledgeBase;
 import org.kie.internal.KnowledgeBaseFactory;
@@ -41,7 +45,6 @@ import org.kie.internal.runtime.StatefulKnowledgeSession;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
-import java.math.BigInteger;
 
 /**
  * A symbolic elem.
@@ -268,6 +271,11 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 				{
 					session.insert( new LoggingConfiguration() );
 				}
+				
+				if( LoggingConfiguration.ENENT_LOGGING_ON )
+				{
+					session.addEventListener( generateEventLoggingListener() );
+				}
 			
 				place = new SymbolicPlaceholder<R,S>( prev , fac );
 			
@@ -341,6 +349,11 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 				if( LoggingConfiguration.LOGGING_ON )
 				{
 					session.insert( new LoggingConfiguration() );
+				}
+				
+				if( LoggingConfiguration.ENENT_LOGGING_ON )
+				{
+					session.addEventListener( generateEventLoggingListener() );
 				}
 			
 				place = new SymbolicPlaceholder<R,S>( prev , fac );
@@ -466,6 +479,24 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 	 */
 	protected S fac;
 	
+	
+	/**
+	 * Generates a listener for logging match events.
+	 * 
+	 * @return The listener for logging match events.
+	 */
+	protected DefaultAgendaEventListener generateEventLoggingListener()
+	{
+		return( new DefaultAgendaEventListener()
+		{
+			@Override
+			public void beforeMatchFired( final BeforeMatchFiredEvent event )
+			{
+				final Rule rule = event.getMatch().getRule();
+				System.out.println( rule.getName() );
+			}
+		} );
+	}
 	
 	
 	/**

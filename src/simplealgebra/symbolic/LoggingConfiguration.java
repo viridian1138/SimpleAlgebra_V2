@@ -46,6 +46,12 @@ public class LoggingConfiguration {
 	public static boolean LOGGING_ON = false;
 	
 	/**
+	 * Configuration setting for turning event logging on/off.
+	 */
+	public static boolean ENENT_LOGGING_ON = false;
+	
+	
+	/**
 	 * Called by the Drools session to log an object.
 	 * 
 	 * @param obj The object to be logged.

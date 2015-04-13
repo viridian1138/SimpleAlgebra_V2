@@ -1081,3 +1081,35 @@ end
 
 
 
+
+
+rule "Mult Negative Ident A"
+      when
+          ez : SymbolicIdentity( )
+          nnez : SymbolicNegate( elem == ez )
+          nez : SymbolicElem( )
+          mult1 : SymbolicMult( elemA == nnez , elemB == nez )
+          not( Reng( strt == mult1 ) )
+          not( eval( nez instanceof SymbolicNegate ) )
+      then
+          insert( new Reng( mult1 , nez.negate() ) );
+end
+
+
+
+
+rule "Mult Negative Ident B"
+      when
+          ez : SymbolicIdentity( )
+          nnez : SymbolicNegate( elem == ez )
+          nez : SymbolicElem( )
+          mult1 : SymbolicMult( elemA == nez , elemB == nnez )
+          eval( !( nez.exposesDerivatives() ) )
+          not( Reng( strt == mult1 ) )
+          not( eval( nez instanceof SymbolicNegate ) )
+      then
+          insert( new Reng( mult1 , nez.negate() ) );
+end
+
+
+

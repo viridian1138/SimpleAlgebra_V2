@@ -158,6 +158,28 @@ public class TestStelemC extends TestCase {
 	
 	
 	
+	
+	/**
+	 * Temp step size in the T-direction.
+	 */
+	protected static final int NSTPT = 1;
+	
+	
+	/**
+	 * Temp step size in the X-direction.
+	 */
+	protected static final int NSTPX = 1;
+	
+	
+	/**
+	 * Temp step size in the Y-direction.
+	 */
+	protected static final int NSTPY = 1;
+	
+	
+	
+	
+	
 	/**
 	 * Result array over which to iterate.
 	 */
@@ -187,7 +209,7 @@ public class TestStelemC extends TestCase {
 	 * <p>1 = X
 	 * <p>2 = Y
 	 */
-	private static double[][][] tempArray = new double[ 3 ][ 3 ][ 3 ];
+	private static double[][][] tempArray = new double[ NSTPT * 2 + 1 ][ NSTPX * 2 + 1 ][ NSTPY * 2 + 1 ];
 	
 	
 	
@@ -199,7 +221,7 @@ public class TestStelemC extends TestCase {
 	 */
 	protected static void performIterationUpdate( DoubleElem dbl )
 	{
-		tempArray[ 2 ][ 1 ][ 1 ] += dbl.getVal();
+		tempArray[ NSTPT * 2 ][ NSTPX ][ NSTPY ] += dbl.getVal();
 	}
 	
 	
@@ -211,7 +233,7 @@ public class TestStelemC extends TestCase {
 	 */
 	protected static double getUpdateValue()
 	{
-		return( tempArray[ 2 ][ 1 ][ 1 ] );
+		return( tempArray[ NSTPT * 2 ][ NSTPX ][ NSTPY ] );
 	}
 	
 	
@@ -225,11 +247,11 @@ public class TestStelemC extends TestCase {
 	 */
 	protected static void fillTempArray( final int tcnt , final int xcnt , final int ycnt )
 	{
-		for( int ta = -1 ; ta < 2 ; ta++ )
+		for( int ta = -NSTPT ; ta < NSTPT + 1 ; ta++ )
 		{
-			for( int xa = -1 ; xa < 2 ; xa++ )
+			for( int xa = -NSTPX ; xa < NSTPX + 1 ; xa++ )
 			{
-				for( int ya = -1 ; ya < 2 ; ya++ )
+				for( int ya = -NSTPY ; ya < NSTPY + 1 ; ya++ )
 				{
 					final int tv = tcnt + ta;
 					final int xv = xcnt + xa;
@@ -240,7 +262,7 @@ public class TestStelemC extends TestCase {
 					{
 						av = iterArray[ tv ][ xv ][ yv ];
 					}
-					tempArray[ ta + 1 ][ xa + 1 ][ ya + 1 ] = av;
+					tempArray[ ta + NSTPT ][ xa + NSTPX ][ ya + NSTPY ] = av;
 				}
 			}
 		}
@@ -252,7 +274,7 @@ public class TestStelemC extends TestCase {
 	/**
 	 * Test array used to verify that the entire temp array has been filled.
 	 */
-	private static int[][][] spatialAssertArray = new int[ 3 ][ 3 ][ 3 ];
+	private static int[][][] spatialAssertArray = new int[ NSTPT * 2 + 1 ][ NSTPX * 2 + 1 ][ NSTPY * 2 + 1 ];
 	
 	
 	
@@ -261,13 +283,13 @@ public class TestStelemC extends TestCase {
 	 */
 	protected static void clearSpatialAssertArray( )
 	{
-		for( int ta = -1 ; ta < 2 ; ta++ )
+		for( int ta = -NSTPT ; ta < NSTPT + 1 ; ta++ )
 		{
-			for( int xa = -1 ; xa < 2 ; xa++ )
+			for( int xa = -NSTPX ; xa < NSTPX + 1 ; xa++ )
 			{
-				for( int ya = -1 ; ya < 2 ; ya++ )
+				for( int ya = -NSTPY ; ya < NSTPY + 1 ; ya++ )
 				{
-					spatialAssertArray[ ta + 1 ][ xa + 1 ][ ya + 1 ] = 0;
+					spatialAssertArray[ ta + NSTPT ][ xa + NSTPX ][ ya + NSTPY ] = 0;
 				}
 			}
 		}
@@ -639,7 +661,8 @@ public class TestStelemC extends TestCase {
 			{
 				Ordinate keyCoord = it.next();
 				BigInteger coordVal = coord.get( keyCoord );
-				cols[ keyCoord.getCol() ] = coordVal.intValue() + 1;
+				final int offset = keyCoord.getCol() == 2 ? NSTPY : keyCoord.getCol() == 1 ? NSTPX : NSTPT;
+				cols[ keyCoord.getCol() ] = coordVal.intValue() + offset;
 				assertCols[ keyCoord.getCol() ] = true;
 			}
 			( spatialAssertArray[ cols[ 0 ] ][ cols[ 1 ] ][ cols[ 2 ] ] )++;

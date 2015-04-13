@@ -100,6 +100,7 @@ public class SimpleAlgebraTestSuite extends TestSuite {
 		s.addTestSuite( TestInvertIdentitySymbolic.class );
 		s.addTestSuite( TestSimpleOrdInverses.class );
 		s.addTestSuite( TestDoubleDivideBySymbolic.class );
+		s.addTestSuite( TestMultNegIdentitySymbolic.class );
 		return( s );
 	}
 	
