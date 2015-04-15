@@ -46,6 +46,7 @@ import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicOps;
+import simplealgebra.symbolic.SymbolicZero;
 
 
 /**
@@ -198,7 +199,10 @@ public abstract class NewtonRaphsonMultiElem<U extends NumDimensions, R extends 
 				{
 					evalP = evalP.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY2 , null);
 				}
-				partialEvalJacobian.setVal( key2 , key , evalP );
+				if( !( evalP instanceof SymbolicZero<?,?> ) ) // Allow the matrix to be sparse in instances where the derivative is zero.
+				{
+					partialEvalJacobian.setVal( key2 , key , evalP );
+				}
 			}
 		}
 	}

@@ -64,6 +64,7 @@ import simplealgebra.ga.*;
 
 
 
+
 /**
  * 
  * Tests the ability to numerically evaluate the differential equation <math display="inline">
@@ -1057,12 +1058,12 @@ private class CoeffNode
 	/**
 	 * The numerator.
 	 */
-	private DoubleElem numer;
+	private SymbolicElem<DoubleElem,DoubleElemFactory> numer;
 	
 	/**
 	 * The denominator.
 	 */
-	private DoubleElem denom;
+	private SymbolicElem<DoubleElem,DoubleElemFactory> denom;
 	
 	/**
 	 * Constructs the coefficient.
@@ -1070,7 +1071,7 @@ private class CoeffNode
 	 * @param _numer The numerator.
 	 * @param _denom The denominator.
 	 */
-	public CoeffNode( DoubleElem _numer , DoubleElem _denom )
+	public CoeffNode( SymbolicElem<DoubleElem,DoubleElemFactory> _numer , SymbolicElem<DoubleElem,DoubleElemFactory> _denom )
 	{
 		numer = _numer;
 		denom = _denom;
@@ -1081,7 +1082,7 @@ private class CoeffNode
 	 * 
 	 * @return The numerator.
 	 */
-	public DoubleElem getNumer() {
+	public SymbolicElem<DoubleElem,DoubleElemFactory> getNumer() {
 		return numer;
 	}
 	
@@ -1090,11 +1091,13 @@ private class CoeffNode
 	 * 
 	 * @return The denominator.
 	 */
-	public DoubleElem getDenom() {
+	public SymbolicElem<DoubleElem,DoubleElemFactory> getDenom() {
 		return denom;
 	}
 	
 }
+
+
 
 
 	/**
@@ -1444,7 +1447,7 @@ public SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFacto
 	
 	
 	{
-		CoeffNode cf = new CoeffNode( genFromConstDbl( 1.0 ) , genFromConstDbl( 1.0 ) );
+		CoeffNode cf = new CoeffNode( fac.getFac().identity() , fac.getFac().identity() );
 		HashMap<Ordinate, BigInteger> key = new HashMap<Ordinate, BigInteger>();
 		Iterator<Ordinate> it = imp.keySet().iterator();
 		while( it.hasNext() )
@@ -1484,10 +1487,10 @@ public SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFacto
 					new CNelem( fac.getFac() , spaceAe , index );
 			SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>
 				an1 = an0.mult( 
-						new StelemReduction2L( new SymbolicConst( coeff.getNumer() , fac.getFac().getFac() ) , fac.getFac() ) );
+						new StelemReduction2L( coeff.getNumer() , fac.getFac() ) );
 			SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> 
 				an2 = an1.mult( 
-						( new StelemReduction2L( new SymbolicConst( coeff.getDenom() , fac.getFac().getFac() ) , fac.getFac() ) ).invertLeft() );
+						( new StelemReduction2L( coeff.getDenom() , fac.getFac() ) ).invertLeft() );
 			ret = ret.add( an2 );
 		}
 	}
@@ -1647,10 +1650,12 @@ public void writeString( PrintStream ps ) {
          * @param numDerivatives The number of derivatives to apply.
          * @param hh The size of the discretization.
          * @param implicitSpacesOut The output implicit space containing the discretized approximation function with the derivatives applied.
+         * @throws MultiplicativeDistributionRequiredException 
+         * @throws NotInvertibleException 
          */
 protected void applyDerivativeAction( HashMap<HashMap<Ordinate, BigInteger>,CoeffNode> implicitSpacesIn , 
 		Ordinate node , final int numDerivatives , DoubleElem hh ,
-		HashMap<HashMap<Ordinate, BigInteger>,CoeffNode> implicitSpacesOut )
+		HashMap<HashMap<Ordinate, BigInteger>,CoeffNode> implicitSpacesOut ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 {
 	if( numDerivatives > 3 )
 	{
@@ -1699,9 +1704,9 @@ protected void applyDerivativeAction( HashMap<HashMap<Ordinate, BigInteger>,Coef
 				}
 				
 				final CoeffNode coeffNodeOutM1 = new CoeffNode(  coeffNodeIn.getNumer().negate() , 
-						coeffNodeIn.getDenom().mult( hh ).mult( genFromConstDbl( 2.0 ) ) );
+						coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( genFromConstDbl( 2.0 ) ), hh.getFac() ) ) );
 				final CoeffNode coeffNodeOutP1 = new CoeffNode( coeffNodeIn.getNumer() , 
-						coeffNodeIn.getDenom().mult( hh ).mult( genFromConstDbl( 2.0 ) ) );
+						coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( genFromConstDbl( 2.0 ) ), hh.getFac() ) ) );
 				
 				applyAdd( implicitSpaceOutM1 , coeffNodeOutM1 , implicitSpacesOut );
 				applyAdd( implicitSpaceOutP1 , coeffNodeOutP1 , implicitSpacesOut );
@@ -1733,11 +1738,11 @@ protected void applyDerivativeAction( HashMap<HashMap<Ordinate, BigInteger>,Coef
 				}
 				
 				final CoeffNode coeffNodeOutM1 = new CoeffNode(  coeffNodeIn.getNumer() , 
-						coeffNodeIn.getDenom().mult( hh ).mult( hh ) );
-				final CoeffNode coeffNodeOut = new CoeffNode(  coeffNodeIn.getNumer().negate().mult( genFromConstDbl( 2.0 ) ) , 
-						coeffNodeIn.getDenom().mult( hh ).mult( hh ) );
+						coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( hh ) , hh.getFac() ) ) );
+				final CoeffNode coeffNodeOut = new CoeffNode(  coeffNodeIn.getNumer().negate().mult( new SymbolicConst( genFromConstDbl( 2.0 ) , hh.getFac() ) ) , 
+						coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( hh ) , hh.getFac() ) ) );
 				final CoeffNode coeffNodeOutP1 = new CoeffNode( coeffNodeIn.getNumer() , 
-						coeffNodeIn.getDenom().mult( hh ).mult( hh ) );
+						coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( hh ) , hh.getFac() ) ) );
 				
 				applyAdd( implicitSpaceOutM1 , coeffNodeOutM1 , implicitSpacesOut );
 				applyAdd( implicitSpace , coeffNodeOut , implicitSpacesOut );
@@ -1777,14 +1782,14 @@ protected void applyDerivativeAction( HashMap<HashMap<Ordinate, BigInteger>,Coef
 				}
 			}
 			
-			final CoeffNode coeffNodeOutM1 = new CoeffNode(  coeffNodeIn.getNumer().mult( genFromConstDbl( 2.0 ) ) , 
-					coeffNodeIn.getDenom().mult( hh ).mult( hh ).mult( hh ).mult( genFromConstDbl( 2.0 ) ) );
-			final CoeffNode coeffNodeOutP1 = new CoeffNode( coeffNodeIn.getNumer().negate().mult( genFromConstDbl( 2.0 ) ) , 
-					coeffNodeIn.getDenom().mult( hh ).mult( hh ).mult( hh ).mult( genFromConstDbl( 2.0 ) ) );
+			final CoeffNode coeffNodeOutM1 = new CoeffNode(  coeffNodeIn.getNumer().mult( new SymbolicConst( genFromConstDbl( 2.0 ) , hh.getFac() ) ) , 
+					coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( hh.mult( hh.mult( genFromConstDbl( 2.0 ) ) ) ), hh.getFac() ) ) );
+			final CoeffNode coeffNodeOutP1 = new CoeffNode( coeffNodeIn.getNumer().negate().mult( new SymbolicConst( genFromConstDbl( 2.0 ) , hh.getFac() ) ) , 
+					coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( hh.mult( hh.mult( genFromConstDbl( 2.0 ) ) ) ), hh.getFac() ) ) );
 			final CoeffNode coeffNodeOutM2 = new CoeffNode(  coeffNodeIn.getNumer().negate() , 
-					coeffNodeIn.getDenom().mult( hh ).mult( hh ).mult( hh ).mult( genFromConstDbl( 2.0 ) ) );
+					coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( hh.mult( hh.mult( genFromConstDbl( 2.0 ) ) ) ), hh.getFac() ) ) );
 			final CoeffNode coeffNodeOutP2 = new CoeffNode( coeffNodeIn.getNumer() , 
-					coeffNodeIn.getDenom().mult( hh ).mult( hh ).mult( hh ).mult( genFromConstDbl( 2.0 ) ) );
+					coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( hh.mult( hh.mult( genFromConstDbl( 2.0 ) ) ) ), hh.getFac() ) ) );
 			
 			applyAdd( implicitSpaceOutM1 , coeffNodeOutM1 , implicitSpacesOut );
 			applyAdd( implicitSpaceOutP1 , coeffNodeOutP1 , implicitSpacesOut );
@@ -1804,10 +1809,12 @@ protected void applyDerivativeAction( HashMap<HashMap<Ordinate, BigInteger>,Coef
  * @param implicitSpace The input implicit space.
  * @param node The coefficient.
  * @param implicitSpacesOut The output implicit space.
+ * @throws MultiplicativeDistributionRequiredException 
+ * @throws NotInvertibleException 
  */
 protected void applyAdd( 
 		HashMap<Ordinate, BigInteger> implicitSpace , CoeffNode node ,
-		HashMap<HashMap<Ordinate, BigInteger>,CoeffNode> implicitSpacesOut )
+		HashMap<HashMap<Ordinate, BigInteger>,CoeffNode> implicitSpacesOut ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 {
 	CoeffNode prev = implicitSpacesOut.get( implicitSpace );
 	
@@ -1817,19 +1824,19 @@ protected void applyAdd(
 		return;
 	}
 	
-	if( ( prev.getDenom().getVal() == node.getDenom().getVal() ) &&
-		( prev.getDenom().getVal() == node.getDenom().getVal() ) ) 
+	if( ( prev.getDenom().eval( null ).getVal() == node.getDenom().eval( null ).getVal() ) &&
+		( prev.getDenom().eval( null ).getVal() == node.getDenom().eval( null ).getVal() ) ) 
 	{
-		DoubleElem outN = node.getNumer().add( prev.getNumer() );
+		SymbolicElem<DoubleElem,DoubleElemFactory> outN = node.getNumer().add( prev.getNumer() );
 		CoeffNode nxt = new CoeffNode( outN , prev.getDenom() );
 		implicitSpacesOut.put( implicitSpace , nxt );
 		return;
 	}
 	
 	
-	DoubleElem outDenom = prev.getDenom().mult( node.getDenom() );
+	SymbolicElem<DoubleElem,DoubleElemFactory> outDenom = prev.getDenom().mult( node.getDenom() );
 	
-	DoubleElem outNumer = ( node.getDenom().mult( prev.getNumer() ) ).add( prev.getDenom().mult( node.getNumer() ) );
+	SymbolicElem<DoubleElem,DoubleElemFactory> outNumer = ( node.getDenom().mult( prev.getNumer() ) ).add( prev.getDenom().mult( node.getNumer() ) );
 	
 	CoeffNode nxt = new CoeffNode( outNumer , outDenom );
 	

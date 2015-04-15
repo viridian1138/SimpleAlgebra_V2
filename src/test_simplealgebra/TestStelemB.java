@@ -55,7 +55,7 @@ import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicReduction;
 import simplealgebra.ga.*;
 import simplealgebra.ddx.*;
-import simplealgebra.et.EinsteinTensorElemFactory;
+
 
 
 
