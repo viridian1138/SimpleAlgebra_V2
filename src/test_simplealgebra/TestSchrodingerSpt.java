@@ -57,7 +57,7 @@ import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicReduction;
 import simplealgebra.ga.*;
 import simplealgebra.ddx.*;
-import simplealgebra.et.EinsteinTensorElemFactory;
+
 
 
 
@@ -700,6 +700,8 @@ public class TestSchrodingerSpt extends TestCase {
 	
 	
 	
+	
+	
 	/**
 	 * A constant coefficient with a numerator and a denominator.
 	 * 	
@@ -711,12 +713,12 @@ public class TestSchrodingerSpt extends TestCase {
 		/**
 		 * The numerator.
 		 */
-		private ComplexElem<DoubleElem,DoubleElemFactory> numer;
+		private SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> numer;
 		
 		/**
 		 * The denominator.
 		 */
-		private ComplexElem<DoubleElem,DoubleElemFactory> denom;
+		private SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> denom;
 		
 		/**
 		 * Constructs the coefficient.
@@ -724,7 +726,7 @@ public class TestSchrodingerSpt extends TestCase {
 		 * @param _numer The numerator.
 		 * @param _denom The denominator.
 		 */
-		public CoeffNode( ComplexElem<DoubleElem,DoubleElemFactory> _numer , ComplexElem<DoubleElem,DoubleElemFactory> _denom )
+		public CoeffNode( SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> _numer , SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> _denom )
 		{
 			numer = _numer;
 			denom = _denom;
@@ -735,7 +737,7 @@ public class TestSchrodingerSpt extends TestCase {
 		 * 
 		 * @return The numerator.
 		 */
-		public ComplexElem<DoubleElem,DoubleElemFactory> getNumer() {
+		public SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> getNumer() {
 			return numer;
 		}
 		
@@ -744,11 +746,13 @@ public class TestSchrodingerSpt extends TestCase {
 		 * 
 		 * @return The denominator.
 		 */
-		public ComplexElem<DoubleElem,DoubleElemFactory> getDenom() {
+		public SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> getDenom() {
 			return denom;
 		}
 		
 	}
+	
+	
 	
 	
 	/**
@@ -1014,7 +1018,7 @@ public class TestSchrodingerSpt extends TestCase {
 			
 			
 			{
-				CoeffNode cf = new CoeffNode( genFromConst( 1.0 ) , genFromConst( 1.0 ) );
+				CoeffNode cf = new CoeffNode( fac.getFac().identity() , fac.getFac().identity() );
 				HashMap<Ordinate, BigInteger> key = new HashMap<Ordinate, BigInteger>();
 				Iterator<Ordinate> it = imp.keySet().iterator();
 				while( it.hasNext() )
@@ -1055,10 +1059,10 @@ public class TestSchrodingerSpt extends TestCase {
 							new CNelem( fac.getFac() , spaceAe );
 					SymbolicElem<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>
 						an1 = an0.mult( 
-								new StelemReduction2L( new SymbolicConst( coeff.getNumer() , fac.getFac().getFac() ) , fac.getFac() ) );
+								new StelemReduction2L( coeff.getNumer() , fac.getFac() ) );
 					SymbolicElem<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>> 
 						an2 = an1.mult( 
-								( new StelemReduction2L( new SymbolicConst( coeff.getDenom() , fac.getFac().getFac() ) , fac.getFac() ) ).invertLeft() );
+								( new StelemReduction2L( coeff.getDenom() , fac.getFac() ) ).invertLeft() );
 					ret = ret.add( an2 );
 				}
 			}
@@ -1218,10 +1222,12 @@ public class TestSchrodingerSpt extends TestCase {
 		 * @param numDerivatives The number of derivatives to apply.
 		 * @param hh The size of the discretization.
 		 * @param implicitSpacesOut The output implicit space containing the discretized approximation function with the derivatives applied.
+		 * @throws MultiplicativeDistributionRequiredException 
+		 * @throws NotInvertibleException 
 		 */
 		protected void applyDerivativeAction( HashMap<HashMap<Ordinate, BigInteger>,CoeffNode> implicitSpacesIn , 
 				Ordinate node , final int numDerivatives , ComplexElem<DoubleElem,DoubleElemFactory> hh ,
-				HashMap<HashMap<Ordinate, BigInteger>,CoeffNode> implicitSpacesOut )
+				HashMap<HashMap<Ordinate, BigInteger>,CoeffNode> implicitSpacesOut ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 		{
 			if( numDerivatives > 3 )
 			{
@@ -1270,9 +1276,9 @@ public class TestSchrodingerSpt extends TestCase {
 						}
 						
 						final CoeffNode coeffNodeOutM1 = new CoeffNode(  coeffNodeIn.getNumer().negate() , 
-								coeffNodeIn.getDenom().mult( hh ).mult( genFromConst( 2.0 ) ) );
+								coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( genFromConst( 2.0 ) ), hh.getFac() ) ) );
 						final CoeffNode coeffNodeOutP1 = new CoeffNode( coeffNodeIn.getNumer() , 
-								coeffNodeIn.getDenom().mult( hh ).mult( genFromConst( 2.0 ) ) );
+								coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( genFromConst( 2.0 ) ), hh.getFac() ) ) );
 						
 						applyAdd( implicitSpaceOutM1 , coeffNodeOutM1 , implicitSpacesOut );
 						applyAdd( implicitSpaceOutP1 , coeffNodeOutP1 , implicitSpacesOut );
@@ -1304,11 +1310,11 @@ public class TestSchrodingerSpt extends TestCase {
 						}
 						
 						final CoeffNode coeffNodeOutM1 = new CoeffNode(  coeffNodeIn.getNumer() , 
-								coeffNodeIn.getDenom().mult( hh ).mult( hh ) );
-						final CoeffNode coeffNodeOut = new CoeffNode(  coeffNodeIn.getNumer().negate().mult( genFromConst( 2.0 ) ) , 
-								coeffNodeIn.getDenom().mult( hh ).mult( hh ) );
+								coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( hh ) , hh.getFac() ) ) );
+						final CoeffNode coeffNodeOut = new CoeffNode(  coeffNodeIn.getNumer().negate().mult( new SymbolicConst( genFromConst( 2.0 ) , hh.getFac() ) ) , 
+								coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( hh ) , hh.getFac() ) ) );
 						final CoeffNode coeffNodeOutP1 = new CoeffNode( coeffNodeIn.getNumer() , 
-								coeffNodeIn.getDenom().mult( hh ).mult( hh ) );
+								coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( hh ) , hh.getFac() ) ) );
 						
 						applyAdd( implicitSpaceOutM1 , coeffNodeOutM1 , implicitSpacesOut );
 						applyAdd( implicitSpace , coeffNodeOut , implicitSpacesOut );
@@ -1348,14 +1354,14 @@ public class TestSchrodingerSpt extends TestCase {
 						}
 					}
 					
-					final CoeffNode coeffNodeOutM1 = new CoeffNode(  coeffNodeIn.getNumer().mult( genFromConst( 2.0 ) ) , 
-							coeffNodeIn.getDenom().mult( hh ).mult( hh ).mult( hh ).mult( genFromConst( 2.0 ) ) );
-					final CoeffNode coeffNodeOutP1 = new CoeffNode( coeffNodeIn.getNumer().negate().mult( genFromConst( 2.0 ) ) , 
-							coeffNodeIn.getDenom().mult( hh ).mult( hh ).mult( hh ).mult( genFromConst( 2.0 ) ) );
+					final CoeffNode coeffNodeOutM1 = new CoeffNode(  coeffNodeIn.getNumer().mult( new SymbolicConst( genFromConst( 2.0 ) , hh.getFac() ) ) , 
+							coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( hh.mult( hh.mult( genFromConst( 2.0 ) ) ) ), hh.getFac() ) ) );
+					final CoeffNode coeffNodeOutP1 = new CoeffNode( coeffNodeIn.getNumer().negate().mult( new SymbolicConst( genFromConst( 2.0 ) , hh.getFac() ) ) , 
+							coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( hh.mult( hh.mult( genFromConst( 2.0 ) ) ) ), hh.getFac() ) ) );
 					final CoeffNode coeffNodeOutM2 = new CoeffNode(  coeffNodeIn.getNumer().negate() , 
-							coeffNodeIn.getDenom().mult( hh ).mult( hh ).mult( hh ).mult( genFromConst( 2.0 ) ) );
+							coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( hh.mult( hh.mult( genFromConst( 2.0 ) ) ) ), hh.getFac() ) ) );
 					final CoeffNode coeffNodeOutP2 = new CoeffNode( coeffNodeIn.getNumer() , 
-							coeffNodeIn.getDenom().mult( hh ).mult( hh ).mult( hh ).mult( genFromConst( 2.0 ) ) );
+							coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( hh.mult( hh.mult( genFromConst( 2.0 ) ) ) ), hh.getFac() ) ) );
 					
 					applyAdd( implicitSpaceOutM1 , coeffNodeOutM1 , implicitSpacesOut );
 					applyAdd( implicitSpaceOutP1 , coeffNodeOutP1 , implicitSpacesOut );
@@ -1375,10 +1381,12 @@ public class TestSchrodingerSpt extends TestCase {
 		 * @param implicitSpace The input implicit space.
 		 * @param node The coefficient.
 		 * @param implicitSpacesOut The output implicit space.
+		 * @throws MultiplicativeDistributionRequiredException 
+		 * @throws NotInvertibleException 
 		 */
 		protected void applyAdd( 
 				HashMap<Ordinate, BigInteger> implicitSpace , CoeffNode node ,
-				HashMap<HashMap<Ordinate, BigInteger>,CoeffNode> implicitSpacesOut )
+				HashMap<HashMap<Ordinate, BigInteger>,CoeffNode> implicitSpacesOut ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 		{
 			CoeffNode prev = implicitSpacesOut.get( implicitSpace );
 			
@@ -1388,19 +1396,19 @@ public class TestSchrodingerSpt extends TestCase {
 				return;
 			}
 			
-			if( ( prev.getDenom().getRe().getVal() == node.getDenom().getRe().getVal() ) &&
-				( prev.getDenom().getIm().getVal() == node.getDenom().getIm().getVal() ) )
+			if( ( prev.getDenom().eval( null ).getRe().getVal() == node.getDenom().eval( null ).getRe().getVal() ) &&
+				( prev.getDenom().eval( null ).getIm().getVal() == node.getDenom().eval( null ).getIm().getVal() ) )
 			{
-				ComplexElem<DoubleElem,DoubleElemFactory> outN = node.getNumer().add( prev.getNumer() );
+				SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> outN = node.getNumer().add( prev.getNumer() );
 				CoeffNode nxt = new CoeffNode( outN , prev.getDenom() );
 				implicitSpacesOut.put( implicitSpace , nxt );
 				return;
 			}
 			
 			
-			ComplexElem<DoubleElem,DoubleElemFactory> outDenom = prev.getDenom().mult( node.getDenom() );
+			SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> outDenom = prev.getDenom().mult( node.getDenom() );
 			
-			ComplexElem<DoubleElem,DoubleElemFactory> outNumer = ( node.getDenom().mult( prev.getNumer() ) ).add( prev.getDenom().mult( node.getNumer() ) );
+			SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> outNumer = ( node.getDenom().mult( prev.getNumer() ) ).add( prev.getDenom().mult( node.getNumer() ) );
 			
 			CoeffNode nxt = new CoeffNode( outNumer , outDenom );
 			
