@@ -248,6 +248,16 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 	}
 	
 	
+	/**
+	 * Returns whether the elem can be determined to be a symbolic constant.
+	 * 
+	 * @return True iff the elem can be determined to be a symbolic constant.
+	 */
+	public boolean evalSymbolicConstant()
+	{
+		return( false );
+	}
+	
 	
 	/**
 	 * Performs a distribute simplify on the elem.

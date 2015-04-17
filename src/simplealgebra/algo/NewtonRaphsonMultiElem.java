@@ -299,7 +299,11 @@ public abstract class NewtonRaphsonMultiElem<U extends NumDimensions, R extends 
 			{
 				final HashSet<BigInteger> keyA = itb.next();
 				final BigInteger key = keyA.iterator().next();
-				evalJacobian.setVal( key2 , key , partialEvalJacobian.get( key2 , key ).eval( implicitSpace ) );
+				final SymbolicElem<R,S> pe = partialEvalJacobian.get( key2 , key );
+				// System.out.println( "*****" );
+				// pe.writeString( System.out );
+				evalJacobian.setVal( key2 , key , pe.eval( implicitSpace ) );
+				// System.out.println( "-----" );
 			}
 		}
 		

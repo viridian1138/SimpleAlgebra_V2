@@ -142,6 +142,13 @@ public class SymbolicNegate<R extends Elem<R,?>, S extends ElemFactory<R,S>> ext
 	
 	
 	@Override
+	public boolean evalSymbolicConstant()
+	{
+		return( elem.evalSymbolicConstant() );
+	}
+	
+	
+	@Override
 	public boolean symbolicEquals( SymbolicElem<R, S> b )
 	{
 		if( b instanceof SymbolicNegate )

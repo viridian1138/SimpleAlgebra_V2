@@ -81,6 +81,12 @@ public class SymbolicIdentity<R extends Elem<R,?>, S extends ElemFactory<R,S>> e
 	}
 	
 	@Override
+	public boolean evalSymbolicConstant()
+	{
+		return( true );
+	}
+	
+	@Override
 	public SymbolicElem<R, S> mult(SymbolicElem<R, S> b) {
 		// This simplification has a parallel implementation in the "Mult Ident A" rules in 
 		// distributeSimplify.drl and distributeSimplify2.drl

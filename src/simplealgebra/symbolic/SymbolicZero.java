@@ -148,6 +148,12 @@ public class SymbolicZero<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 	}
 	
 	@Override
+	public boolean evalSymbolicConstant()
+	{
+		return( true );
+	}
+	
+	@Override
 	public SymbolicElem<R, S> add(SymbolicElem<R, S> b) {
 		// This simplification has a parallel implementation in the "Add Zero A" rules in 
 		// distributeSimplify.drl and distributeSimplify2.drl

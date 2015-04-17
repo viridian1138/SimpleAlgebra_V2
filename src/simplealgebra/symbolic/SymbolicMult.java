@@ -299,6 +299,13 @@ public class SymbolicMult<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 	}
 	
 	
+	@Override
+	public boolean evalSymbolicConstant()
+	{
+		return( elemA.evalSymbolicConstant() && elemB.evalSymbolicConstant() );
+	}
+	
+	
 	
 	@Override
 	public boolean symbolicEquals( SymbolicElem<R, S> b )

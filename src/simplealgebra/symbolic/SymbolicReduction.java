@@ -76,7 +76,7 @@ public class SymbolicReduction<R extends Elem<R,?>, S extends ElemFactory<R,S>> 
 	{
 		if( elem instanceof SymbolicElem )
 		{
-			if( isSymbolicElemSimpleConst( elem ) )
+			if( evalSymbolicConstant() )
 			{
 				return( fac.zero() );
 			}
@@ -100,7 +100,7 @@ public class SymbolicReduction<R extends Elem<R,?>, S extends ElemFactory<R,S>> 
 	{
 		if( elem instanceof SymbolicElem )
 		{
-			if( isSymbolicElemSimpleConst( elem ) )
+			if( evalSymbolicConstant() )
 			{
 				return( true );
 			}
@@ -113,30 +113,17 @@ public class SymbolicReduction<R extends Elem<R,?>, S extends ElemFactory<R,S>> 
 	}
 	
 	
-	/**
-	 * Returns true iff. the parameter is a simple constant.
-	 * 
-	 * @param elem The parameter to test.
-	 * @return True iff. the parameter is a simple constant.
-	 */
-	protected boolean isSymbolicElemSimpleConst( Elem elem )
+	@Override
+	public boolean evalSymbolicConstant()
 	{
-		SymbolicElem e = (SymbolicElem) elem;
-		if( !( e instanceof SymbolicReduction ) )
+		if( elem instanceof SymbolicElem )
 		{
-			return( false );
+			SymbolicElem r = (SymbolicElem) elem;
+			return( r.evalSymbolicConstant() );
 		}
 		else
 		{
-			Elem r = ( (SymbolicReduction) e ).getElem();
-			if( r instanceof SymbolicElem )
-			{
-				return( isSymbolicElemSimpleConst( r ) );
-			}
-			else
-			{
-				return( true );
-			}
+			return( true );
 		}
 	}
 	
