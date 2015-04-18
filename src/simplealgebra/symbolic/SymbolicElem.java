@@ -249,11 +249,66 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 	
 	
 	/**
-	 * Returns whether the elem can be determined to be a symbolic constant.
+	 * Mode determining the extent to which the elem will be reduced to determine if it is a constant.
 	 * 
-	 * @return True iff the elem can be determined to be a symbolic constant.
+	 * @author thorngreen
+	 *
 	 */
-	public boolean evalSymbolicConstant()
+	public static enum EVAL_MODE{ APPROX , SIMPLIFY , SIMPLIFY2 };
+	
+	
+	/**
+	 * Returns approximately whether the elem can be determined to be a symbolic constant.
+	 * 
+	 * @param mode Mode determining the extent to which the elem will be reduced to determine if it is a constant.
+	 * @return  True if the elem can be determined to be a symbolic constant.
+	 * @throws NotInvertibleException 
+	 */
+	public boolean evalSymbolicConstant( EVAL_MODE mode )
+	{
+		switch( mode )
+		{
+			case APPROX:
+			{
+				return( evalSymbolicConstantApprox() );
+			}
+			
+			case SIMPLIFY:
+			{
+				try
+				{
+					return( distSimp().evalSymbolicConstantApprox() );
+				}
+				catch( NotInvertibleException ex )
+				{
+					return( false );
+				}
+			}
+			
+			case SIMPLIFY2:
+			{
+				try
+				{
+					return( this.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null).evalSymbolicConstantApprox() );
+				}
+				catch( NotInvertibleException ex )
+				{
+					return( false );
+				}
+			}
+		}
+		
+		throw( new RuntimeException( "Not Supported" ) );
+	}
+	
+	
+	
+	/**
+	 * Returns approximately whether the elem can be determined to be a symbolic constant.
+	 * 
+	 * @return True if the elem can be determined to be a symbolic constant.
+	 */
+	public boolean evalSymbolicConstantApprox()
 	{
 		return( false );
 	}

@@ -118,6 +118,13 @@ public class SymbolicWedge<U extends NumDimensions, A extends Ord<U>, R extends 
 	
 	
 	@Override
+	public boolean evalSymbolicConstantApprox()
+	{
+		return( elemA.evalSymbolicConstantApprox() && elemB.evalSymbolicConstantApprox() );
+	}
+	
+	
+	@Override
 	public boolean exposesDerivatives()
 	{
 		return( elemB.exposesDerivatives() );

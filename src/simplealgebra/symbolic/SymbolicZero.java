@@ -148,7 +148,7 @@ public class SymbolicZero<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 	}
 	
 	@Override
-	public boolean evalSymbolicConstant()
+	public boolean evalSymbolicConstantApprox()
 	{
 		return( true );
 	}

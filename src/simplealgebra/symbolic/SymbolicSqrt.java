@@ -119,6 +119,12 @@ public class SymbolicSqrt<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 	}
 	
 	@Override
+	public boolean evalSymbolicConstantApprox()
+	{
+		return( elem.evalSymbolicConstantApprox() );
+	}
+	
+	@Override
 	public boolean symbolicEquals( SymbolicElem<R, S> b )
 	{
 		if( b instanceof SymbolicSqrt )

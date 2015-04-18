@@ -80,6 +80,13 @@ public class SymbolicTranspose<U extends NumDimensions, R extends Elem<R,?>, S e
 	
 	
 	@Override
+	public boolean evalSymbolicConstantApprox()
+	{
+		return( elem.evalSymbolicConstantApprox() );
+	}
+	
+	
+	@Override
 	public boolean exposesDerivatives()
 	{
 		return( elem.exposesDerivatives() );

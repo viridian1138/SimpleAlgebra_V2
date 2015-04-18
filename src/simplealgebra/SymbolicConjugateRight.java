@@ -129,6 +129,12 @@ public class SymbolicConjugateRight<R extends Elem<R,?>, S extends ElemFactory<R
 	}
 	
 	@Override
+	public boolean evalSymbolicConstantApprox()
+	{
+		return( elem.evalSymbolicConstantApprox() );
+	}
+	
+	@Override
 	public boolean exposesDerivatives()
 	{
 		return( elem.exposesDerivatives() );

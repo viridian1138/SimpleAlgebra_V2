@@ -152,6 +152,13 @@ public class SymbolicInvertLeft<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 	
 	
 	@Override
+	public boolean evalSymbolicConstantApprox()
+	{
+		return( elem.evalSymbolicConstantApprox() );
+	}
+	
+	
+	@Override
 	public boolean symbolicEquals( SymbolicElem<R, S> b )
 	{
 		if( b instanceof SymbolicInvertLeft )

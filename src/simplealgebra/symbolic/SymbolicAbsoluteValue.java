@@ -125,6 +125,12 @@ public class SymbolicAbsoluteValue<R extends Elem<R,?>, S extends ElemFactory<R,
 	}
 	
 	@Override
+	public boolean evalSymbolicConstantApprox()
+	{
+		return( elem.evalSymbolicConstantApprox() );
+	}
+	
+	@Override
 	public boolean symbolicEquals( SymbolicElem<R, S> b )
 	{
 		if( b instanceof SymbolicAbsoluteValue )

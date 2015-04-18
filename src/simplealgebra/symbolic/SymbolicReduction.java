@@ -76,7 +76,7 @@ public class SymbolicReduction<R extends Elem<R,?>, S extends ElemFactory<R,S>> 
 	{
 		if( elem instanceof SymbolicElem )
 		{
-			if( evalSymbolicConstant() )
+			if( evalSymbolicConstantApprox() )
 			{
 				return( fac.zero() );
 			}
@@ -98,28 +98,17 @@ public class SymbolicReduction<R extends Elem<R,?>, S extends ElemFactory<R,S>> 
 	 */
 	public boolean partialDerivativeReducesToZero( ArrayList<Elem<?,?>> withRespectTo )
 	{
-		if( elem instanceof SymbolicElem )
-		{
-			if( evalSymbolicConstant() )
-			{
-				return( true );
-			}
-			else
-			{
-				return( false );
-			}
-		}
-		return( true );
+		return( evalSymbolicConstant( SymbolicElem.EVAL_MODE.APPROX ) );
 	}
 	
 	
 	@Override
-	public boolean evalSymbolicConstant()
+	public boolean evalSymbolicConstantApprox()
 	{
 		if( elem instanceof SymbolicElem )
 		{
 			SymbolicElem r = (SymbolicElem) elem;
-			return( r.evalSymbolicConstant() );
+			return( r.evalSymbolicConstantApprox() );
 		}
 		else
 		{

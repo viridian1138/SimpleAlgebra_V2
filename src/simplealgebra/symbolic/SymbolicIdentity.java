@@ -81,7 +81,7 @@ public class SymbolicIdentity<R extends Elem<R,?>, S extends ElemFactory<R,S>> e
 	}
 	
 	@Override
-	public boolean evalSymbolicConstant()
+	public boolean evalSymbolicConstantApprox()
 	{
 		return( true );
 	}

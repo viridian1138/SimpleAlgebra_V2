@@ -77,6 +77,12 @@ public class SymbolicInvertLeftRevCoeff<U extends NumDimensions, R extends Elem<
 	}
 	
 	@Override
+	public boolean evalSymbolicConstantApprox()
+	{
+		return( elem.evalSymbolicConstantApprox() );
+	}
+	
+	@Override
 	public boolean exposesDerivatives()
 	{
 		return( elem.exposesDerivatives() );

@@ -300,9 +300,9 @@ public class SymbolicMult<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 	
 	
 	@Override
-	public boolean evalSymbolicConstant()
+	public boolean evalSymbolicConstantApprox()
 	{
-		return( elemA.evalSymbolicConstant() && elemB.evalSymbolicConstant() );
+		return( elemA.evalSymbolicConstantApprox() && elemB.evalSymbolicConstantApprox() );
 	}
 	
 	

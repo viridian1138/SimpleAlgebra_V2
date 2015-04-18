@@ -87,6 +87,12 @@ public class SymbolicMultRevCoeff<U extends NumDimensions, R extends Elem<R,?>, 
 	}
 	
 	@Override
+	public boolean evalSymbolicConstantApprox()
+	{
+		return( elemB.evalSymbolicConstantApprox() );
+	}
+	
+	@Override
 	public boolean exposesDerivatives()
 	{
 		return( elemB.exposesDerivatives() );

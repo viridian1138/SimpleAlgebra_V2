@@ -172,9 +172,9 @@ public class SymbolicAdd<R extends Elem<R,?>, S extends ElemFactory<R,S>> extend
 	
 	
 	@Override
-	public boolean evalSymbolicConstant()
+	public boolean evalSymbolicConstantApprox()
 	{
-		return( elemA.evalSymbolicConstant() && elemB.evalSymbolicConstant() );
+		return( elemA.evalSymbolicConstantApprox() && elemB.evalSymbolicConstantApprox() );
 	}
 	
 	

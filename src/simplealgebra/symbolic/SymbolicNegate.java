@@ -142,9 +142,9 @@ public class SymbolicNegate<R extends Elem<R,?>, S extends ElemFactory<R,S>> ext
 	
 	
 	@Override
-	public boolean evalSymbolicConstant()
+	public boolean evalSymbolicConstantApprox()
 	{
-		return( elem.evalSymbolicConstant() );
+		return( elem.evalSymbolicConstantApprox() );
 	}
 	
 	

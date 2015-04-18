@@ -141,6 +141,12 @@ public class SymbolicDivideBy<R extends Elem<R,?>, S extends ElemFactory<R,S>> e
 	public SymbolicElem<R, S> getElem() {
 		return elem;
 	}
+	
+	@Override
+	public boolean evalSymbolicConstantApprox()
+	{
+		return( elem.evalSymbolicConstantApprox() );
+	}
 
 	@Override
 	public void performInserts( StatefulKnowledgeSession session )

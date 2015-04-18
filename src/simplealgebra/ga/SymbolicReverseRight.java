@@ -115,6 +115,13 @@ public class SymbolicReverseRight<U extends NumDimensions, A extends Ord<U>, R e
 	
 	
 	@Override
+	public boolean evalSymbolicConstantApprox()
+	{
+		return( elemA.evalSymbolicConstantApprox() );
+	}
+	
+	
+	@Override
 	public boolean exposesDerivatives()
 	{
 		return( elemA.exposesDerivatives() );

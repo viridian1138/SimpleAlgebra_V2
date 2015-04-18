@@ -118,6 +118,13 @@ public class SymbolicDot<U extends NumDimensions, A extends Ord<U>, R extends El
 	
 	
 	@Override
+	public boolean evalSymbolicConstantApprox()
+	{
+		return( elemA.evalSymbolicConstantApprox() && elemB.evalSymbolicConstantApprox() );
+	}
+	
+	
+	@Override
 	public boolean exposesDerivatives()
 	{
 		return( elemB.exposesDerivatives() );
