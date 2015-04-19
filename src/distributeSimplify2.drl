@@ -436,6 +436,8 @@ rule "Mult Ident A"
           nez : SymbolicElem( )
           mult1 : SymbolicMult( elemA == ez , elemB == nez )
           not( Reng( strt == mult1 ) )
+          not( Reng( strt == nez ) )
+          not( Reng( strt == ez ) )
       then
           insert( new Reng( mult1 , nez ) );
 end
@@ -450,6 +452,8 @@ rule "Mult Ident B"
           mult1 : SymbolicMult( elemA == nez , elemB == ez )
           eval( !( nez.exposesDerivatives() ) )
           not( Reng( strt == mult1 ) )
+          not( Reng( strt == nez ) )
+          not( Reng( strt == ez ) )
       then
           insert( new Reng( mult1 , nez ) );
 end
@@ -496,6 +500,9 @@ rule "Mult Over Negate A"
           mult1 : SymbolicMult( elemA == na , elemB == b )
           ds : DroolsSession()
           not( Reng( strt == mult1 ) )
+          not( Reng( strt == na ) )
+          not( Reng( strt == a ) )
+          not( Reng( strt == b ) )
       then
           insert( new Reng( mult1 , a.mult( b ).insSym( ds ).negate().insSym( ds ) ) );
 end
@@ -511,6 +518,9 @@ rule "Mult Over Negate B"
           mult1 : SymbolicMult( elemA == a , elemB == nb )
           ds : DroolsSession()
           not( Reng( strt == mult1 ) )
+          not( Reng( strt == nb ) )
+          not( Reng( strt == a ) )
+          not( Reng( strt == b ) )
       then
           insert( new Reng( mult1 , a.mult( b ).insSym( ds ).negate().insSym( ds ) ) );
 end
@@ -758,9 +768,10 @@ rule "Double DivideBy"
           e0 : SymbolicElem( )
           n0 : SymbolicDivideBy( elem == e0 )
           n1 : SymbolicDivideBy( elem == n0 )
+          ds : DroolsSession()
           not( Reng( strt == n1 ) )
      then
-          insert( new Reng( n1 , new SymbolicDivideBy( e0 , n0.getFac() , n0.getIval().multiply( n1.getIval() ) ) ) );
+          insert( new Reng( n1 , new SymbolicDivideBy( e0 , n0.getFac() , n0.getIval().multiply( n1.getIval() ) , ds ) ) );
 end
 
 
