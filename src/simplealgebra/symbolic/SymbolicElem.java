@@ -41,6 +41,7 @@ import org.kie.internal.builder.KnowledgeBuilder;
 import org.kie.internal.builder.KnowledgeBuilderFactory;
 import org.kie.internal.io.ResourceFactory;
 import org.kie.internal.runtime.StatefulKnowledgeSession;
+import org.mvel2.optimizers.OptimizerFactory;
 
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
@@ -573,6 +574,8 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 	{
 		if( distributeSimplifyKnowledgeBase == null )
 		{
+			OptimizerFactory.setDefaultOptimizer( OptimizerFactory.SAFE_REFLECTIVE );
+			
 			KnowledgeBuilder builder = KnowledgeBuilderFactory.newKnowledgeBuilder();
 			
 			builder.add( ResourceFactory.newClassPathResource( "distributeSimplify.drl" )  , 
@@ -605,6 +608,8 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 	{
 		if( distributeSimplify2KnowledgeBase == null )
 		{
+			OptimizerFactory.setDefaultOptimizer( OptimizerFactory.SAFE_REFLECTIVE );
+			
 			KnowledgeBuilder builder = KnowledgeBuilderFactory.newKnowledgeBuilder();
 			
 			builder.add( ResourceFactory.newClassPathResource( "distributeSimplify2.drl" )  , 
