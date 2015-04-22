@@ -363,7 +363,7 @@ public abstract class NewtonRaphsonMultiElemRemapTensor<Z extends Object, R exte
 	 */
 	protected boolean useSimplification()
 	{
-		return( false );
+		return( true );
 	}
 
 	

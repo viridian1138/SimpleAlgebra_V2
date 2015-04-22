@@ -371,7 +371,7 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 				}
 				catch( Throwable ex2 )
 				{
-					ex2.printStackTrace( System.out );
+					// ex2.printStackTrace( System.out );
 				}
 				
 				/*
@@ -450,7 +450,7 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 				}
 				catch( Throwable ex2 )
 				{
-					ex2.printStackTrace( System.out );
+					// ex2.printStackTrace( System.out );
 				}
 				
 				/*
