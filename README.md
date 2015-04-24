@@ -6,6 +6,14 @@ SimpleAlgebra
 
 ## Bibliography
 
+Abstract Algebra
+
+...http://en.wikipedia.org/wiki/Abstract_algebra
+
+...https://www.librarything.com/work/51989
+
+...http://en.wikipedia.org/wiki/Noncommutative_ring
+
 Burgers' Equation
 
 ...http://en.wikipedia.org/wiki/Burgers'_equation
@@ -71,6 +79,14 @@ KdV Equation
 Newton-Raphson
 
 ...http://en.wikipedia.org/wiki/Newton's_method
+
+Noncommutative Ring
+
+...See Abstract Algebra
+
+Ring Theory
+
+...See Abstract Algebra
 
 Schrodinger Equation
 
