@@ -38,7 +38,7 @@ Euler's Method
 
 Factory
 
-...See Design Patterns
+ ... See Design Patterns
 
 GA (Geometric Algebra)
 
