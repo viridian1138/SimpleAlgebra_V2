@@ -36,7 +36,7 @@ Euler's Method
 
 ...http://en.wikipedia.org/wiki/Euler_method
 
-+ Factory
+Factory
 
 ...See Design Patterns
 
