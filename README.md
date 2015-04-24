@@ -46,6 +46,10 @@ GA (Geometric Algebra)
 
 ...https://www.librarything.com/work/1030207
 
+Generics (Java)
+
+...http://en.wikipedia.org/wiki/Generics_in_Java
+
 Java Grande
 
 ...http://www.javagrande.org/
