@@ -74,7 +74,7 @@ Spacetime Algebra
 
 Vector Algebra
 
-...See Geometric Algebra
+...See Geometric Algebra (superset of Vector Algebra)
 
 
 
