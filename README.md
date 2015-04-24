@@ -14,6 +14,10 @@ Complex Numbers
 
 ...http://en.wikipedia.org/wiki/Complex_number
 
+Design Patterns
+
+...https://www.librarything.com/work/3985
+
 Dirac Equation
 
 ...http://en.wikipedia.org/wiki/Dirac_equation
@@ -31,6 +35,9 @@ Drools
 Euler's Method
 
 ...http://en.wikipedia.org/wiki/Euler_method
+
+Factory
+...See Design Patterns
 
 GA (Geometric Algebra)
 
