@@ -37,6 +37,7 @@ Euler's Method
 ...http://en.wikipedia.org/wiki/Euler_method
 
 Factory
+
 ...See Design Patterns
 
 GA (Geometric Algebra)
