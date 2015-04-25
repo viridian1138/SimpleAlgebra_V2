@@ -366,6 +366,18 @@ public abstract class NewtonRaphsonMultiElemRemap<U extends NumDimensions, A ext
 	}
 	
 	
+	/**
+	 * In the event that an attempted Newton-Raphson iteration diverges from the desired answer, 
+	 * gets the maximum number of attempts that can be used to backtrack onto the original pre-iteration value.
+	 * 
+	 * @return The maximum number of backtrack iterations.
+	 */
+	protected int getMaxIterationsBacktrack()
+	{
+		return( 100 );
+	}
+	
+	
 	
 }
 

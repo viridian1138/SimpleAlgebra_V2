@@ -247,8 +247,61 @@ public abstract class NewtonRaphsonMultiElem<U extends NumDimensions, R extends 
 		
 		performIterationUpdate( iterationOffset );
 		
-		lastValues = evalValues();
+		
+		GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,R,S> nextValues = evalIndicatesImprovement();
+		if( nextValues != null )
+		{
+			lastValues = nextValues;
+		}
+		else
+		{
+			int cnt = getMaxIterationsBacktrack();
+			iterationOffset = iterationOffset.negate();
+			while( ( cnt > 0 ) && ( nextValues == null ) )
+			{
+				cnt--;
+				iterationOffset = iterationOffset.divideBy( 2 );
+				
+				performIterationUpdate( iterationOffset );
+				
+				nextValues = evalIndicatesImprovement();
+			}
+			// System.out.println( cnt );
+			if( nextValues != null )
+			{
+				lastValues = nextValues;
+			}
+			else
+			{
+				lastValues = evalValues(); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			}
+		}
+		
 	}
+	
+	
+	
+	protected boolean evalIterationImproved( GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,R,S> lastValue , 
+			GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,R,S> newValue )
+	{
+		return( true ); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	}
+	
+	
+	
+	protected GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,R,S> evalIndicatesImprovement( ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	{
+		GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,R,S> ev = evalValues();
+		
+		if( !( evalIterationImproved( lastValues , ev ) ) )
+		{
+			ev = null;
+		}
+		
+		return( ev );
+	}
+	
+	
 	
 	
 	/**
@@ -336,6 +389,18 @@ public abstract class NewtonRaphsonMultiElem<U extends NumDimensions, R extends 
 	protected boolean useSimplification()
 	{
 		return( true );
+	}
+	
+	
+	/**
+	 * In the event that an attempted Newton-Raphson iteration diverges from the desired answer, 
+	 * gets the maximum number of attempts that can be used to backtrack onto the original pre-iteration value.
+	 * 
+	 * @return The maximum number of backtrack iterations.
+	 */
+	protected int getMaxIterationsBacktrack()
+	{
+		return( 100 );
 	}
 	
 

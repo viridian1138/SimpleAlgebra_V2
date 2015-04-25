@@ -177,12 +177,62 @@ public abstract class NewtonRaphsonSingleElem<R extends Elem<R,?>, S extends Ele
 	protected void performIteration() throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
 		final R derivative = evalPartialDerivative();
-		final R iterationOffset = lastValue.mult( derivative.invertLeft() ).negate();
+		R iterationOffset = lastValue.mult( derivative.invertLeft() ).negate();
 		
 		performIterationUpdate( iterationOffset );
 		
-		lastValue = eval.eval( implicitSpace );
+		R nextValue = evalIndicatesImprovement( );
+		if( nextValue != null )
+		{
+			lastValue = nextValue;
+		}
+		else
+		{
+			int cnt = getMaxIterationsBacktrack();
+			iterationOffset = iterationOffset.negate();
+			while( ( cnt > 0 ) && ( nextValue == null ) )
+			{
+				cnt--;
+				iterationOffset = iterationOffset.divideBy( 2 );
+				
+				performIterationUpdate( iterationOffset );
+				
+				nextValue = evalIndicatesImprovement( );
+			}
+			if( nextValue != null )
+			{
+				lastValue = nextValue;
+			}
+			else
+			{
+				lastValue = eval.eval( implicitSpace ); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			}
+		}
 	}
+	
+	
+	
+	protected boolean evalIterationImproved( R lastValue , R nextValue )
+	{
+		return( true );
+	}
+	
+	
+	
+	protected R evalIndicatesImprovement(  ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	{
+		R ev = eval.eval( implicitSpace );
+		
+		if( !( evalIterationImproved( lastValue , ev ) ) )
+		{
+			ev = null;
+		}
+		
+		return( ev );
+	}
+	
+	
+	
 	
 	/**
 	 * Evaluates the derivative for a Netwon-Raphson iteration.
@@ -222,6 +272,18 @@ public abstract class NewtonRaphsonSingleElem<R extends Elem<R,?>, S extends Ele
 	protected boolean useSimplification()
 	{
 		return( true );
+	}
+	
+	
+	/**
+	 * In the event that an attempted Newton-Raphson iteration diverges from the desired answer, 
+	 * gets the maximum number of attempts that can be used to backtrack onto the original pre-iteration value.
+	 * 
+	 * @return The maximum number of backtrack iterations.
+	 */
+	protected int getMaxIterationsBacktrack()
+	{
+		return( 100 );
 	}
 
 	

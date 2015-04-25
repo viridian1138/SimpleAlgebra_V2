@@ -1913,6 +1913,12 @@ protected void applyAdd(
 		{
 			TestDiracA.performIterationUpdate( iterationOffset );
 		}
+		
+		protected boolean evalIterationImproved( GeometricAlgebraMultivectorElem<simplealgebra.algo.NewtonRaphsonMultiElemRemap.Adim, GeometricAlgebraOrd<simplealgebra.algo.NewtonRaphsonMultiElemRemap.Adim>, DoubleElem, DoubleElemFactory> lastValue ,
+				GeometricAlgebraMultivectorElem<simplealgebra.algo.NewtonRaphsonMultiElemRemap.Adim, GeometricAlgebraOrd<simplealgebra.algo.NewtonRaphsonMultiElemRemap.Adim>, DoubleElem, DoubleElemFactory> nextValue )
+		{
+			return( true );
+		}
 	
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -1982,6 +1988,18 @@ protected void applyAdd(
 			@Override
 			protected boolean useSimplification() {
 				return( StelemNewton.this.useSimplification() );
+			}
+			
+			@Override
+			protected int getMaxIterationsBacktrack() {
+				return( StelemNewton.this.getMaxIterationsBacktrack() );
+			}
+			
+			@Override
+			protected boolean evalIterationImproved( GeometricAlgebraMultivectorElem<simplealgebra.algo.NewtonRaphsonMultiElemRemap.Adim, GeometricAlgebraOrd<simplealgebra.algo.NewtonRaphsonMultiElemRemap.Adim>, DoubleElem, DoubleElemFactory> lastValue ,
+					GeometricAlgebraMultivectorElem<simplealgebra.algo.NewtonRaphsonMultiElemRemap.Adim, GeometricAlgebraOrd<simplealgebra.algo.NewtonRaphsonMultiElemRemap.Adim>, DoubleElem, DoubleElemFactory> nextValue )
+			{
+				return( StelemNewton.this.evalIterationImproved(lastValue, nextValue) );
 			}
 			
 		};

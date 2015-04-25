@@ -139,8 +139,8 @@ public class TestGeneralRelativityA extends TestCase {
 	
 	
 	/**
-	 * Generates a default flat rank 2 metric tensor.
-	 * @return The default flat rank 2 metric tensor.
+	 * Generates a default roughly flat rank 2 metric tensor.
+	 * @return The default roughly flat rank 2 metric tensor.
 	 */
 	private static EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> genDiffAll( )
 	{
@@ -158,8 +158,8 @@ public class TestGeneralRelativityA extends TestCase {
 			{
 				// final DoubleElem dd = acnt == 0 ? 
 				//		new DoubleElem( - ( C.getVal() ) * ( C.getVal() ) ) : new DoubleElem( 1.0 );
-				final DoubleElem dd = acnt == 0 ? new DoubleElem( - CV * CV * 1.0 * ( 2.0 * rand.nextDouble() ) )
-					: new DoubleElem( 1.0 * ( 2.0 * rand.nextDouble() ) );
+				final DoubleElem dd = acnt == 0 ? new DoubleElem( - CV * CV * ( 1.0 + ( 1E-6 * rand.nextDouble() ) ) )
+					: new DoubleElem( 1.0 + ( 1E-6 * rand.nextDouble() ) );
 				final ArrayList<BigInteger> ab = new ArrayList<BigInteger>();
 				ab.add( BigInteger.valueOf( acnt / TestDimensionFour.FOUR ) );
 				ab.add( BigInteger.valueOf( acnt % TestDimensionFour.FOUR ) );
@@ -175,7 +175,7 @@ public class TestGeneralRelativityA extends TestCase {
 	 * @param in The input value.
 	 * @return The random tensor.
 	 */
-	private static EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> genDiffEnt( double in )
+	private static EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> genDiffEnt( )
 	{
 		final double CV = C.getVal();
 		DoubleElemFactory da = new DoubleElemFactory();
@@ -189,8 +189,8 @@ public class TestGeneralRelativityA extends TestCase {
 		{
 			if( ( acnt % TestDimensionFour.FOUR ) == ( acnt / TestDimensionFour.FOUR ) )
 			{
-				final DoubleElem dd = acnt == 0 ? new DoubleElem( - CV  * CV * in * ( 2.0 * rand.nextDouble() ) ) :
-					new DoubleElem( in * ( 2.0 * rand.nextDouble() ) );
+				final DoubleElem dd = acnt == 0 ? new DoubleElem( - CV * CV * ( 1.0 + ( 0.001 * rand.nextDouble() ) ) )
+					: new DoubleElem( 1.0 + ( 0.001 * rand.nextDouble() ) );
 				final ArrayList<BigInteger> ab = new ArrayList<BigInteger>();
 				ab.add( BigInteger.valueOf( acnt / TestDimensionFour.FOUR ) );
 				ab.add( BigInteger.valueOf( acnt % TestDimensionFour.FOUR ) );
@@ -415,7 +415,17 @@ public class TestGeneralRelativityA extends TestCase {
 						if( ( tv >= 0 )  && ( xv >= 0 ) && ( yv >= 0 ) && ( zv >= 0 ) &&
 							( tv < NUM_T_ITER ) && ( xv < NUM_X_ITER ) && ( yv < NUM_Y_ITER ) && ( zv < NUM_Z_ITER )  )
 						{
-							av = iterArray[ tv ][ xv ][ yv ][ zv ];
+							if( ta != NSTPT )
+							{
+								av = iterArray[ tv ][ xv ][ yv ][ zv ];
+							}
+							else
+							{
+								if( ( xa == 0 ) && ( ya == 0 ) && ( za == 0 ) )
+								{
+									av = iterArray[ tv ][ xv ][ yv ][ zv ];
+								}
+							}
 						}
 						if( av == null )
 						{
@@ -1712,7 +1722,43 @@ protected void applyAdd(
 		{
 			TestGeneralRelativityA.performIterationUpdate( iterationOffset );
 		}
+		
+		protected boolean evalIterationImproved(
+				GeometricAlgebraMultivectorElem<simplealgebra.algo.NewtonRaphsonMultiElemRemapTensor.Adim, GeometricAlgebraOrd<simplealgebra.algo.NewtonRaphsonMultiElemRemapTensor.Adim>, DoubleElem, DoubleElemFactory> lastValue,
+				GeometricAlgebraMultivectorElem<simplealgebra.algo.NewtonRaphsonMultiElemRemapTensor.Adim, GeometricAlgebraOrd<simplealgebra.algo.NewtonRaphsonMultiElemRemapTensor.Adim>, DoubleElem, DoubleElemFactory> nextValue ) 
+		{
+			DoubleElem lastTotal = new DoubleElem( 0.0 );
+			DoubleElem nextTotal = new DoubleElem( 0.0 );
+			
+			Iterator<HashSet<BigInteger>> it = lastValue.getKeyIterator();
+			while( it.hasNext() )
+			{
+				DoubleElem v = lastValue.get( it.next() );
+				lastTotal = lastTotal.add( v.mult( v ) );
+			}
+			
+			it = nextValue.getKeyIterator();
+			while( it.hasNext() )
+			{
+				DoubleElem v = nextValue.get( it.next() );
+				nextTotal = nextTotal.add( v.mult( v ) );
+			}
+			
+			final double ntv = nextTotal.getVal();
+			final double ptv = lastTotal.getVal();
+			// System.out.println( ntv + " --- " + ptv );
+			if( ntv < ptv )
+			{
+				return( true );
+			}
+			if( ( ntv - ptv ) < ( 1E-7 * ptv ) )
+			{
+				return( true );
+			}
+			return( false );
+		}
 	
+		
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 //		@Override
@@ -1782,6 +1828,19 @@ protected void applyAdd(
 			protected boolean useSimplification()
 			{
 				return( StelemNewton.this.useSimplification() );
+			}
+			
+			@Override
+			protected int getMaxIterationsBacktrack() {
+				return( StelemNewton.this.getMaxIterationsBacktrack() );
+			}
+			
+			@Override
+			protected boolean evalIterationImproved(
+					GeometricAlgebraMultivectorElem<simplealgebra.algo.NewtonRaphsonMultiElemRemapTensor.Adim, GeometricAlgebraOrd<simplealgebra.algo.NewtonRaphsonMultiElemRemapTensor.Adim>, DoubleElem, DoubleElemFactory> lastValue,
+					GeometricAlgebraMultivectorElem<simplealgebra.algo.NewtonRaphsonMultiElemRemapTensor.Adim, GeometricAlgebraOrd<simplealgebra.algo.NewtonRaphsonMultiElemRemapTensor.Adim>, DoubleElem, DoubleElemFactory> nextValue ) 
+			{
+				return( StelemNewton.this.evalIterationImproved(lastValue, nextValue) );
 			}
 			
 		};
@@ -2363,7 +2422,7 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 		
 		for( int tcnt = 0 ; tcnt < 2 ; tcnt++ )
 		{	
-			iterArray[ tcnt ][ 5 ][ 5 ][ 5 ] = genDiffEnt( 10000.0 * ( d1 * d1 ) );
+			iterArray[ tcnt ][ 5 ][ 5 ][ 5 ] = genDiffEnt( );
 		}
 		
 		
@@ -2600,7 +2659,7 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 						Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 0 ] > 0 );
 				
 				
-						System.out.println( "***" );
+						System.out.println( "***  " + xcnt + "  " + ycnt + "  " + zcnt );
 						System.out.println( calcMagnitudeSq( val ) );
 						System.out.println( calcMagnitudeSq( err ) );
 						// Assert.assertTrue( Math.abs( Math.sqrt( calcMagnitudeSq( err ) ) ) < ( 0.01 * Math.abs( Math.sqrt( calcMagnitudeSq( val ) ) ) + 0.01 ) );
