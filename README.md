@@ -6,6 +6,14 @@ SimpleAlgebra
 
 ## Bibliography
 
+Abstract Algebra
+
+...http://en.wikipedia.org/wiki/Abstract_algebra
+
+...https://www.librarything.com/work/51989
+
+...http://en.wikipedia.org/wiki/Noncommutative_ring
+
 Burgers' Equation
 
 ...http://en.wikipedia.org/wiki/Burgers'_equation
@@ -13,6 +21,10 @@ Burgers' Equation
 Complex Numbers
 
 ...http://en.wikipedia.org/wiki/Complex_number
+
+Design Patterns
+
+...https://www.librarything.com/work/3985
 
 Dirac Equation
 
@@ -32,11 +44,19 @@ Euler's Method
 
 ...http://en.wikipedia.org/wiki/Euler_method
 
+Factory
+
+...See Design Patterns
+
 GA (Geometric Algebra)
 
 ...http://en.wikipedia.org/wiki/Geometric_algebra
 
 ...https://www.librarything.com/work/1030207
+
+Generics (Java)
+
+...http://en.wikipedia.org/wiki/Generics_in_Java
 
 Java Grande
 
@@ -59,6 +79,14 @@ KdV Equation
 Newton-Raphson
 
 ...http://en.wikipedia.org/wiki/Newton's_method
+
+Noncommutative Ring
+
+...See Abstract Algebra
+
+Ring Theory
+
+...See Abstract Algebra
 
 Schrodinger Equation
 
