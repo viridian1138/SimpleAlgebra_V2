@@ -126,6 +126,8 @@ Symbolic Ring
 
 ...https://www.librarything.com/work/3568528
 
+...https://www.librarything.com/work/45817
+
 Vector Algebra
 
 ...See Geometric Algebra (superset of Vector Algebra)
