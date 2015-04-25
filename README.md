@@ -58,6 +58,8 @@ GA (Geometric Algebra)
 
 ...https://www.librarything.com/work/1030207
 
+...http://www.librarything.com/work/4327404/book/117976057
+
 Java
 
 ...http://en.wikipedia.org/wiki/Java_(programming_language)
