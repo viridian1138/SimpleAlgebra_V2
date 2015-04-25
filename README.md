@@ -54,6 +54,12 @@ GA (Geometric Algebra)
 
 ...https://www.librarything.com/work/1030207
 
+Java
+
+...http://en.wikipedia.org/wiki/Java_(programming_language)
+
+...https://www.librarything.com/work/187039/book/15763004
+
 Generics (Java)
 
 ...http://en.wikipedia.org/wiki/Generics_in_Java
@@ -76,6 +82,12 @@ KdV Equation
 
 ...http://en.wikipedia.org/wiki/Korteweg%E2%80%93de_Vries_equation
 
+Matrix Ring
+
+...http://en.wikipedia.org/wiki/Matrix_ring
+
+...https://www.librarything.com/work/70280/book/15485800
+
 Newton-Raphson
 
 ...http://en.wikipedia.org/wiki/Newton's_method
@@ -96,9 +108,19 @@ Soliton
 
 ...http://en.wikipedia.org/wiki/Soliton
 
+...https://www.librarything.com/work/1449383
+
 Spacetime Algebra
 
 ...http://en.wikipedia.org/wiki/Spacetime_algebra
+
+Symbolic Ring
+
+...http://en.wikipedia.org/wiki/Computer_algebra_system
+
+...https://www.librarything.com/work/1278764/book/117969064
+
+...https://www.librarything.com/work/3568528
 
 Vector Algebra
 
