@@ -14,6 +14,8 @@ Abstract Algebra
 
 ...http://en.wikipedia.org/wiki/Noncommutative_ring
 
+...https://www.librarything.com/work/1591862/book/117973373
+
 Burgers' Equation
 
 ...http://en.wikipedia.org/wiki/Burgers'_equation
@@ -39,6 +41,8 @@ Drools
 ...https://github.com/mvel/mvel
 
 ...https://github.com/mvel/mvel/blob/master/src/main/java/org/mvel2/optimizers/OptimizerFactory.java
+
+...https://www.librarything.com/work/15954041/book/117973263
 
 Euler's Method
 
