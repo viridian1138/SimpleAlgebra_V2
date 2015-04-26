@@ -60,6 +60,8 @@ Drools
 
 ...https://www.librarything.com/work/15954041/book/117973263
 
+...https://access.redhat.com/solutions/38469
+
 Einstein Summation Convention
 
 ...http://en.wikipedia.org/wiki/Einstein_notation
@@ -143,6 +145,8 @@ Matrix Ring
 Newton-Raphson
 
 ...http://en.wikipedia.org/wiki/Newton's_method
+
+...https://www.librarything.com/work/68845/book/15446558
 
 Noncommutative Ring
 
