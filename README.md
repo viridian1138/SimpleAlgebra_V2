@@ -44,6 +44,10 @@ Dirac Equation
 
 ...http://en.wikipedia.org/wiki/Dirac_equation
 
+Differential Equation
+
+...https://www.librarything.com/work/239050/book/15434451
+
 Drools
 
 ...http://drools.org
@@ -55,6 +59,14 @@ Drools
 ...https://github.com/mvel/mvel/blob/master/src/main/java/org/mvel2/optimizers/OptimizerFactory.java
 
 ...https://www.librarything.com/work/15954041/book/117973263
+
+Einstein Summation Convention
+
+...http://en.wikipedia.org/wiki/Einstein_notation
+
+Einstein Tensor
+
+...http://en.wikipedia.org/wiki/Einstein_tensor
 
 Euler's Method
 
@@ -135,6 +147,14 @@ Newton-Raphson
 Noncommutative Ring
 
 ...See Abstract Algebra
+
+Ricci Tensor
+
+...http://en.wikipedia.org/wiki/Ricci_curvature
+
+Riemann Tensor
+
+...http://en.wikipedia.org/wiki/Riemann_curvature_tensor
 
 Ring Theory
 
