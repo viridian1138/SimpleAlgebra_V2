@@ -62,6 +62,8 @@ Drools
 
 ...https://access.redhat.com/solutions/38469
 
+...https://weblogs.java.net/blog/2005/10/13/drools-performance-limits
+
 Einstein Summation Convention
 
 ...http://en.wikipedia.org/wiki/Einstein_notation
