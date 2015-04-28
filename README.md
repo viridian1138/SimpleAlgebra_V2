@@ -60,9 +60,15 @@ Drools
 
 ...https://www.librarything.com/work/15954041/book/117973263
 
+...https://github.com/google-code-export/iaml
+
+...https://github.com/integrallis/drools-drl/blob/master/src/main/rules/sample.drl
+
 ...https://access.redhat.com/solutions/38469
 
 ...https://weblogs.java.net/blog/2005/10/13/drools-performance-limits
+
+...http://stackoverflow.com/questions/92985/using-drools-in-a-heavy-batch-process
 
 Einstein Summation Convention
 
@@ -125,6 +131,8 @@ JUnit
 ...http://junit.org
 
 ...https://github.com/junit-team/junit
+
+...https://github.com/stefanbirkner/junit3
 
 KdV Equation
 
