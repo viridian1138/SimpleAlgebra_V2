@@ -273,22 +273,36 @@ public abstract class NewtonRaphsonMultiElem<U extends NumDimensions, R extends 
 			}
 			else
 			{
-				lastValues = evalValues(); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+				// No suitable iteration can be found.
+				lastValues = evalValues();
 			}
 		}
 		
 	}
 	
 	
-	
+	/**
+	 * Returns whether convergence-wise the new function value should be accepted as an improvement over the old function value.
+	 * 
+	 * @param lastValue The old function value.
+	 * @param newValue The new function value.
+	 * @return True iff. the new function value should be accepted as an improvement over the old function value.
+	 */
 	protected boolean evalIterationImproved( GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,R,S> lastValue , 
 			GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,R,S> newValue )
 	{
-		return( true ); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		return( true );
 	}
 	
 	
 	
+	/**
+	 * Returns the result of the Newton-Raphson evaluation if convergence-wise the new function value should be accepted as an improvement over the old function value.  Otherwise returns null.
+	 * 
+	 * @return The result of the Newton-Raphson evaluation if convergence-wise the new function value should be accepted as an improvement over the old function value.  Otherwise returns null.
+	 * @throws NotInvertibleException
+	 * @throws MultiplicativeDistributionRequiredException
+	 */
 	protected GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,R,S> evalIndicatesImprovement( ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
 		GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,R,S> ev = evalValues();

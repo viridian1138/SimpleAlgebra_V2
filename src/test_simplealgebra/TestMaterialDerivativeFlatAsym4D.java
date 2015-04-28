@@ -49,6 +49,7 @@ import simplealgebra.NotInvertibleException;
 import simplealgebra.ddx.DirectionalDerivativePartialFactory;
 import simplealgebra.ddx.FlowVectorFactory;
 import simplealgebra.ddx.MaterialDerivativeFactory;
+import simplealgebra.ddx.MaterialDerivativeFactoryParam;
 import simplealgebra.ddx.PartialDerivativeOp;
 import simplealgebra.et.DerivativeRemap;
 import simplealgebra.et.EinsteinTensorElem;
@@ -67,6 +68,7 @@ import simplealgebra.symbolic.SymbolicMult;
 import simplealgebra.symbolic.SymbolicOps;
 import simplealgebra.symbolic.SymbolicSqrt;
 import simplealgebra.symbolic.SymbolicZero;
+import test_simplealgebra.TestMaterialDerivativeAsym4D.TestTemporaryIndexFactory;
 
 
 
@@ -1662,20 +1664,27 @@ public class TestMaterialDerivativeFlatAsym4D extends TestCase
 		final SymRemap remap = new SymRemap();
 		
 		
+		final MaterialDerivativeFactoryParam<Object, TestDimensionFour, ComplexElem<DoubleElem,DoubleElemFactory>, 
+			ComplexElemFactory<DoubleElem,DoubleElemFactory>, SymbolicElem<DoubleElem,DoubleElemFactory>> param =
+			new MaterialDerivativeFactoryParam<Object, TestDimensionFour, ComplexElem<DoubleElem,DoubleElemFactory>, 
+			ComplexElemFactory<DoubleElem,DoubleElemFactory>, SymbolicElem<DoubleElem,DoubleElemFactory>>();
+		
+		param.setFac( etfac );
+		param.setTensorWithRespectTo( vectFac );
+		param.setCoordVecFac( null ); /* !!!!!!!!!!!!!1 Uveca !!!!!!!!!! */
+		param.setTemp( new TestTemporaryIndexFactory() );
+		param.setMetric( scfac );
+		param.setDim( td );
+		param.setDfac( direcFac );
+		param.setFlfac( flowFac );
+		param.setDerivT( derivT );
+		param.setRemap( remap );
+		
+		
 		final MaterialDerivativeFactory<Object, TestDimensionFour, ComplexElem<DoubleElem,DoubleElemFactory>, 
 				ComplexElemFactory<DoubleElem,DoubleElemFactory>, SymbolicElem<DoubleElem,DoubleElemFactory>>
 			mf = new MaterialDerivativeFactory<Object, TestDimensionFour, ComplexElem<DoubleElem,DoubleElemFactory>, 
-					ComplexElemFactory<DoubleElem,DoubleElemFactory>, SymbolicElem<DoubleElem,DoubleElemFactory>>
-				( etfac , 
-							vectFac ,
-							null /* !!!!!!!!!!!!!1 Uveca !!!!!!!!!! */ ,
-							new TestTemporaryIndexFactory(),
-							scfac,
-							td ,
-							direcFac,
-							flowFac,
-							derivT,
-							remap ); 
+					ComplexElemFactory<DoubleElem,DoubleElemFactory>, SymbolicElem<DoubleElem,DoubleElemFactory>>( param ); 
 		
 		
 		

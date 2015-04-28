@@ -205,13 +205,20 @@ public abstract class NewtonRaphsonSingleElem<R extends Elem<R,?>, S extends Ele
 			}
 			else
 			{
-				lastValue = eval.eval( implicitSpace ); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+				// No suitable iteration can be found.
+				lastValue = eval.eval( implicitSpace );
 			}
 		}
 	}
 	
 	
-	
+	/**
+	 * Returns whether convergence-wise the new function value should be accepted as an improvement over the old function value.
+	 * 
+	 * @param lastValue The old function value.
+	 * @param nextValue The new function value.
+	 * @return True iff. the new function value should be accepted as an improvement over the old function value.
+	 */
 	protected boolean evalIterationImproved( R lastValue , R nextValue )
 	{
 		return( true );
@@ -219,6 +226,13 @@ public abstract class NewtonRaphsonSingleElem<R extends Elem<R,?>, S extends Ele
 	
 	
 	
+	/**
+	 * Returns the result of the Newton-Raphson evaluation if convergence-wise the new function value should be accepted as an improvement over the old function value.  Otherwise returns null.
+	 * 
+	 * @return The result of the Newton-Raphson evaluation if convergence-wise the new function value should be accepted as an improvement over the old function value.  Otherwise returns null.
+	 * @throws NotInvertibleException
+	 * @throws MultiplicativeDistributionRequiredException
+	 */
 	protected R evalIndicatesImprovement(  ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
 		R ev = eval.eval( implicitSpace );

@@ -1914,6 +1914,13 @@ protected void applyAdd(
 			TestDiracA.performIterationUpdate( iterationOffset );
 		}
 		
+		/**
+		 * Returns whether convergence-wise the new function value should be accepted as an improvement over the old function value.
+		 * 
+		 * @param lastValue The old function value.
+		 * @param nextValue The new function value.
+		 * @return True iff. the new function value should be accepted as an improvement over the old function value.
+		 */
 		protected boolean evalIterationImproved( GeometricAlgebraMultivectorElem<simplealgebra.algo.NewtonRaphsonMultiElemRemap.Adim, GeometricAlgebraOrd<simplealgebra.algo.NewtonRaphsonMultiElemRemap.Adim>, DoubleElem, DoubleElemFactory> lastValue ,
 				GeometricAlgebraMultivectorElem<simplealgebra.algo.NewtonRaphsonMultiElemRemap.Adim, GeometricAlgebraOrd<simplealgebra.algo.NewtonRaphsonMultiElemRemap.Adim>, DoubleElem, DoubleElemFactory> nextValue )
 		{

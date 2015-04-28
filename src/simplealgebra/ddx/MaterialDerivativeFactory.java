@@ -104,36 +104,18 @@ public class MaterialDerivativeFactory<Z extends Object, U extends NumDimensions
 	/**
 	 * Constructs the tensor factory.
 	 * 
-	 * @param _fac The factory for the enclosed type.
-	 * @param _tensorWithRespectTo The expression to which to apply the derivative.
-	 * @param _coordVecFac The factory for the underlying coordinate system U.
-	 * @param _temp A factory for generating temporary indices in the connection coefficient.
-	 * @param _metric A factory for generating metric tensors.
-	 * @param _dim The number of dimensions for the index.
-	 * @param _dfac Factory for generating the partial derivatives of a directional derivative.
-	 * @param _flfac Factory for generating the components of the flow vector.
-	 * @param _derivT The "t derivative" scalar operator in the material derivative.
-	 * @param _remap Parameter describing how to remap the covariant part of the derivative.  Leave as null if no remapping is desired.
+	 * @param param Object defining the set of input parameters.
 	 */
-	public MaterialDerivativeFactory( EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, 
-				SymbolicElemFactory<R, S>> _fac , 
-		SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> _tensorWithRespectTo,
-			CoordinateSystemFactory<Z,R,S> _coordVecFac,
-			TemporaryIndexFactory<Z> _temp,
-			MetricTensorFactory<Z,R,S> _metric,
-			U _dim ,
-			DirectionalDerivativePartialFactory<R,S,K> _dfac,
-			FlowVectorFactory<R,S,K> _flfac,
-			SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> _derivT,
-			DerivativeRemap<Z,R,S> _remap )
+	public MaterialDerivativeFactory( 
+			MaterialDerivativeFactoryParam<Z,U,R,S,K> param )
 	{
-		super( _fac );
-		tensorWithRespectTo = _tensorWithRespectTo;
-		derivativeIndex = _temp.getTemp();
-		dim = _dim;
-		flfac = _flfac;
-		derivT = _derivT;
-		cofac = new CovariantDerivativeFactory<Z,U,R,S,K>( _fac , _tensorWithRespectTo, derivativeIndex, _coordVecFac , _temp, _metric, _dim , _dfac , _remap  );
+		super( param.getFac() );
+		tensorWithRespectTo = param.getTensorWithRespectTo();
+		derivativeIndex = param.getTemp().getTemp();
+		dim = param.getDim();
+		flfac = param.getFlfac();
+		derivT = param.getDerivT();
+		cofac = new CovariantDerivativeFactory<Z,U,R,S,K>( param.getFac() , param.getTensorWithRespectTo() , derivativeIndex, param.getCoordVecFac() , param.getTemp() , param.getMetric() , param.getDim() , param.getDfac() , param.getRemap()  );
 	}
 	
 	
