@@ -24,6 +24,18 @@ Complex Numbers
 
 ...http://en.wikipedia.org/wiki/Complex_number
 
+Covariant Derivative
+
+...http://en.wikipedia.org/wiki/Covariant_derivative
+
+Derivative (Partial Derivative and Directional Derivative)
+
+...https://www.librarything.com/work/172405/book/15458385
+
+...http://en.wikipedia.org/wiki/Partial_derivative
+
+...http://en.wikipedia.org/wiki/Directional_derivative
+
 Design Patterns
 
 ...https://www.librarything.com/work/3985
@@ -31,6 +43,10 @@ Design Patterns
 Dirac Equation
 
 ...http://en.wikipedia.org/wiki/Dirac_equation
+
+Differential Equation
+
+...https://www.librarything.com/work/239050/book/15434451
 
 Drools
 
@@ -43,6 +59,24 @@ Drools
 ...https://github.com/mvel/mvel/blob/master/src/main/java/org/mvel2/optimizers/OptimizerFactory.java
 
 ...https://www.librarything.com/work/15954041/book/117973263
+
+...https://github.com/google-code-export/iaml
+
+...https://github.com/integrallis/drools-drl/blob/master/src/main/resources/rules/sample.drl
+
+...https://access.redhat.com/solutions/38469
+
+...https://weblogs.java.net/blog/2005/10/13/drools-performance-limits
+
+...http://stackoverflow.com/questions/92985/using-drools-in-a-heavy-batch-process
+
+Einstein Summation Convention
+
+...http://en.wikipedia.org/wiki/Einstein_notation
+
+Einstein Tensor
+
+...http://en.wikipedia.org/wiki/Einstein_tensor
 
 Euler's Method
 
@@ -66,9 +100,23 @@ Java
 
 ...https://www.librarything.com/work/187039/book/15763004
 
+General Relativity
+
+...https://www.librarything.com/work/80799/book/117994174
+
+...https://www.librarything.com/work/10385992/book/117994232
+
+...http://en.wikipedia.org/wiki/General_relativity
+
+...http://m.youtube.com/watch?v=hbmf0bB38h0
+
 Generics (Java)
 
 ...http://en.wikipedia.org/wiki/Generics_in_Java
+
+Jacobian Matrix
+
+...http://en.wikipedia.org/wiki/Jacobian_matrix_and_determinant
 
 Java Grande
 
@@ -84,9 +132,19 @@ JUnit
 
 ...https://github.com/junit-team/junit
 
+...https://github.com/stefanbirkner/junit3
+
 KdV Equation
 
 ...http://en.wikipedia.org/wiki/Korteweg%E2%80%93de_Vries_equation
+
+Lorenz Gauge
+
+...http://en.wikipedia.org/wiki/Lorenz_gauge_condition
+
+Material Derivative
+
+...http://en.wikipedia.org/wiki/Material_derivative
 
 Matrix Ring
 
@@ -98,9 +156,19 @@ Newton-Raphson
 
 ...http://en.wikipedia.org/wiki/Newton's_method
 
+...https://www.librarything.com/work/68845/book/15446558
+
 Noncommutative Ring
 
 ...See Abstract Algebra
+
+Ricci Tensor
+
+...http://en.wikipedia.org/wiki/Ricci_curvature
+
+Riemann Tensor
+
+...http://en.wikipedia.org/wiki/Riemann_curvature_tensor
 
 Ring Theory
 
@@ -109,6 +177,10 @@ Ring Theory
 Schrodinger Equation
 
 ...http://en.wikipedia.org/wiki/Schr%C3%B6dinger_equation
+
+...https://www.librarything.com/work/72710/book/15433893
+
+...https://www.librarything.com/work/348060/book/15445833
 
 Soliton
 
@@ -127,6 +199,8 @@ Symbolic Ring
 ...https://www.librarything.com/work/1278764/book/117969064
 
 ...https://www.librarything.com/work/3568528
+
+...https://www.librarything.com/work/45817
 
 Vector Algebra
 
