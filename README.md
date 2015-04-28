@@ -62,7 +62,7 @@ Drools
 
 ...https://github.com/google-code-export/iaml
 
-...https://github.com/integrallis/drools-drl/blob/master/src/main/rules/sample.drl
+...https://github.com/integrallis/drools-drl/blob/master/src/main/resources/rules/sample.drl
 
 ...https://access.redhat.com/solutions/38469
 
