@@ -1672,25 +1672,15 @@ protected void applyAdd(
 		/**
 		 * Constructs the evaluator.
 		 * 
-		 * @param _functions Input tensor of functions.
-		 * @param _withRespectTosI Set of variables to take derivatives with respect to.
-		 * @param implicitSpaceFirstLevel Implicit space for the initial eval.
-		 * @param _sfac Factory for enclosed type.
-		 * @param _contravariantIndices The contravariant indices of the input tensor.
-		 * @param _covariantIndices The covariant indices of the input tensor.
+		 * @param param Input parameters for the remap.
 		 * @throws NotInvertibleException
 		 * @throws MultiplicativeDistributionRequiredException
 		 */
 		public StelemNewton(
-				EinsteinTensorElem<String, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> _functions,
-				HashMap<ArrayList<BigInteger>, ArrayList<? extends Elem<?, ?>>> _withRespectTosI,
-				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpaceFirstLevel,
-				SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>> _sfac,
-				final ArrayList<String> _contravariantIndices ,
-				final ArrayList<String> _covariantIndices )
+				final NewtonRaphsonMultiElemRemapTensorParam<String,DoubleElem,DoubleElemFactory> param )
 				throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
-			super(_functions, _withRespectTosI, implicitSpaceFirstLevel, _sfac, _contravariantIndices, _covariantIndices);
+			super( param );
 			
 			// System.out.println( "**" );
 			// System.out.println( this.partialEval.writeString() );
@@ -2597,10 +2587,19 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 		System.out.println( "Reached #7..." );
 		
 		
+		final NewtonRaphsonMultiElemRemapTensorParam<String, DoubleElem, DoubleElemFactory>
+			param = new NewtonRaphsonMultiElemRemapTensorParam<String, DoubleElem, DoubleElemFactory>();
 		
-		StelemNewton newton = new StelemNewton( s00 ,
-				wrt3 , implicitSpace2 , se2A ,
-				contravariantIndices , covariantIndices );
+		
+		param.setFunctions( s00 );
+		param.setWithRespectTosI( wrt3 );
+		param.setImplicitSpaceFirstLevel( implicitSpace2 );
+		param.setSfac( se2A );
+		param.setContravariantIndices( contravariantIndices );
+		param.setCovariantIndices( covariantIndices );
+		
+		
+		StelemNewton newton = new StelemNewton( param );
 		
 		
 		for( int tval = 1 ; tval < ( NUM_T_ITER - 1 ) ; tval++ )

@@ -206,31 +206,20 @@ public abstract class NewtonRaphsonMultiElemRemapTensor<Z extends Object, R exte
 	/**
 	 * Constructs the remap.
 	 * 
-	 * @param _functions Input tensor of functions.
-	 * @param _withRespectTosI Set of variables to take derivatives with respect to.
-	 * @param implicitSpaceFirstLevel Implicit space for the initial eval.
-	 * @param _sfac Factory for enclosed type.
-	 * @param _contravariantIndices The contravariant indices of the input tensor.
-	 * @param _covariantIndices The covariant indices of the input tensor.
+	 * @param param Input parameters for the remap.
 	 * @throws NotInvertibleException
 	 * @throws MultiplicativeDistributionRequiredException
 	 */
-	public NewtonRaphsonMultiElemRemapTensor( final EinsteinTensorElem<Z,SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,
-			SymbolicElemFactory<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>> _functions , 
-			final HashMap<ArrayList<BigInteger>,ArrayList<? extends Elem<?,?>>> _withRespectTosI , 
-			final HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpaceFirstLevel ,
-			final SymbolicElemFactory<SymbolicElem<R,S>,SymbolicElemFactory<R,S>> _sfac ,
-			final ArrayList<Z> _contravariantIndices ,
-			final ArrayList<Z> _covariantIndices )
+	public NewtonRaphsonMultiElemRemapTensor( final NewtonRaphsonMultiElemRemapTensorParam<Z,R,S> param )
 					throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
-		contravariantIndices = _contravariantIndices;
-		covariantIndices = _covariantIndices;
-		fac = _sfac.getFac().getFac();
+		contravariantIndices = param.getContravariantIndices();
+		covariantIndices = param.getCovariantIndices();
+		fac = param.getSfac().getFac().getFac();
 		
 		
 		
-		BigInteger dimCnt = mapDimCnt( _functions );
+		BigInteger dimCnt = mapDimCnt( param.getFunctions() );
 		
 		
 		odim = new Adim( dimCnt );
@@ -240,23 +229,23 @@ public abstract class NewtonRaphsonMultiElemRemapTensor<Z extends Object, R exte
 		final GeometricAlgebraMultivectorElem<Adim,GeometricAlgebraOrd<Adim>,SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,
 			SymbolicElemFactory<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>> ofun =
 				new GeometricAlgebraMultivectorElem<Adim,GeometricAlgebraOrd<Adim>,SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,
-					SymbolicElemFactory<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>>( _sfac , odim , new GeometricAlgebraOrd<Adim>() );
+					SymbolicElemFactory<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>>( param.getSfac() , odim , new GeometricAlgebraOrd<Adim>() );
 		
 		
 		
-		mapFunsInputToOutput( _functions , ofun );
+		mapFunsInputToOutput( param.getFunctions() , ofun );
 		
 		
 		
 		final ArrayList<ArrayList<? extends Elem<?,?>>> withRespectTos = new ArrayList<ArrayList<? extends Elem<?,?>>>();
 		
-		final Iterator<ArrayList<BigInteger>> it = _withRespectTosI.keySet().iterator();
+		final Iterator<ArrayList<BigInteger>> it = param.getWithRespectTosI().keySet().iterator();
 		BigInteger wcnt = BigInteger.ZERO;
 		while( it.hasNext() )
 		{
 			ArrayList<BigInteger> key = it.next();
 			
-			withRespectTos.add( _withRespectTosI.get( key ) );
+			withRespectTos.add( param.getWithRespectTosI().get( key ) );
 			
 			HashSet<BigInteger> hs = new HashSet<BigInteger>();
 			hs.add( wcnt );
@@ -267,7 +256,7 @@ public abstract class NewtonRaphsonMultiElemRemapTensor<Z extends Object, R exte
 		}
 		
 		
-		newton = genNewton( ofun , withRespectTos , implicitSpaceFirstLevel , _sfac.getFac() , odim );
+		newton = genNewton( ofun , withRespectTos , param.getImplicitSpaceFirstLevel() , param.getSfac().getFac() , odim );
 		
 	}
 	

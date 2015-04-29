@@ -37,6 +37,7 @@ import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.algo.NewtonRaphsonMultiElemRemapTensor;
+import simplealgebra.algo.NewtonRaphsonMultiElemRemapTensorParam;
 import simplealgebra.et.EinsteinTensorElem;
 import simplealgebra.ga.GeometricAlgebraMultivectorElem;
 import simplealgebra.ga.GeometricAlgebraOrd;
@@ -59,25 +60,15 @@ public abstract class NewtonRaphsonMultiElemRemapTensorDiag<Z extends Object, R 
 	/**
 	 * Constructs the remap.
 	 * 
-	 * @param _functions Input tensor of functions.
-	 * @param _withRespectTosI Set of variables to take derivatives with respect to.
-	 * @param implicitSpaceFirstLevel Implicit space for the initial eval.
-	 * @param _sfac Factory for enclosed type.
-	 * @param _contravariantIndices The contravariant indices of the input tensor.
-	 * @param _covariantIndices The covariant indices of the input tensor.
+	 * @param param Input parameters for the remap.
 	 * @throws NotInvertibleException
 	 * @throws MultiplicativeDistributionRequiredException
 	 */
 	public NewtonRaphsonMultiElemRemapTensorDiag(
-			EinsteinTensorElem<Z, SymbolicElem<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, SymbolicElemFactory<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> _functions,
-			HashMap<ArrayList<BigInteger>, ArrayList<? extends Elem<?, ?>>> _withRespectTosI,
-			HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpaceFirstLevel,
-			SymbolicElemFactory<SymbolicElem<R, S>, SymbolicElemFactory<R, S>> _sfac,
-			ArrayList<Z> _contravariantIndices, ArrayList<Z> _covariantIndices)
+			final NewtonRaphsonMultiElemRemapTensorParam<Z,R,S> param )
 			throws NotInvertibleException,
 			MultiplicativeDistributionRequiredException {
-		super(_functions, _withRespectTosI, implicitSpaceFirstLevel, _sfac,
-				_contravariantIndices, _covariantIndices);
+		super( param );
 	}
 	
 	
