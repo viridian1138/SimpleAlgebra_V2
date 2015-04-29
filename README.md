@@ -142,6 +142,10 @@ Lorenz Gauge
 
 ...http://en.wikipedia.org/wiki/Lorenz_gauge_condition
 
+Mandelbrot Set
+
+...http://en.wikipedia.org/wiki/Mandelbrot_set
+
 Material Derivative
 
 ...http://en.wikipedia.org/wiki/Material_derivative
