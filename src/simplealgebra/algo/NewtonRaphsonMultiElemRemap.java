@@ -206,30 +206,20 @@ public abstract class NewtonRaphsonMultiElemRemap<U extends NumDimensions, A ext
 	/**
 	 * Constructs the remap.
 	 * 
-	 * @param _functions Input multivector of functions.
-	 * @param _withRespectTosI Set of variables to take derivatives with respect to.
-	 * @param implicitSpaceFirstLevel Implicit space for the initial eval.
-	 * @param _sfac Factory for enclosed type.
-	 * @param _dim The number of dimensions in the multivector.
-	 * @param _ord The input Ord.
+	 * @param param Input parameter for the remap.
 	 * @throws NotInvertibleException
 	 * @throws MultiplicativeDistributionRequiredException
 	 */
-	public NewtonRaphsonMultiElemRemap( final GeometricAlgebraMultivectorElem<U,A,SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,
-			SymbolicElemFactory<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>> _functions , 
-			final HashMap<HashSet<BigInteger>,ArrayList<? extends Elem<?,?>>> _withRespectTosI , 
-			final HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpaceFirstLevel ,
-			final SymbolicElemFactory<SymbolicElem<R,S>,SymbolicElemFactory<R,S>> _sfac ,
-			final U _dim , final A _ord )
+	public NewtonRaphsonMultiElemRemap( final NewtonRaphsonMultiElemRemapParam<U,A,R,S> param )
 					throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
-		idim = _dim;
-		iord = _ord;
-		fac = _sfac.getFac().getFac();
+		idim = param.getDim();
+		iord = param.getOrd();
+		fac = param.getSfac().getFac().getFac();
 		
 		
 		
-		final BigInteger dimCnt = mapDimCnt( _functions );
+		final BigInteger dimCnt = mapDimCnt( param.getFunctions() );
 		
 		
 		odim = new Adim( dimCnt );
@@ -239,23 +229,23 @@ public abstract class NewtonRaphsonMultiElemRemap<U extends NumDimensions, A ext
 		final GeometricAlgebraMultivectorElem<Adim,GeometricAlgebraOrd<Adim>,SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,
 			SymbolicElemFactory<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>> ofun =
 				new GeometricAlgebraMultivectorElem<Adim,GeometricAlgebraOrd<Adim>,SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,
-					SymbolicElemFactory<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>>( _sfac , odim , new GeometricAlgebraOrd<Adim>() );
+					SymbolicElemFactory<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>>( param.getSfac() , odim , new GeometricAlgebraOrd<Adim>() );
 		
 		
 		
-		mapFunsInputToOutput( _functions , ofun );
+		mapFunsInputToOutput( param.getFunctions() , ofun );
 		
 		
 		
 		final ArrayList<ArrayList<? extends Elem<?,?>>> withRespectTos = new ArrayList<ArrayList<? extends Elem<?,?>>>();
 		
-		final Iterator<HashSet<BigInteger>> it = _withRespectTosI.keySet().iterator();
+		final Iterator<HashSet<BigInteger>> it = param.getWithRespectTosI().keySet().iterator();
 		BigInteger wcnt = BigInteger.ZERO;
 		while( it.hasNext() )
 		{
 			HashSet<BigInteger> key = it.next();
 			
-			withRespectTos.add( _withRespectTosI.get( key ) );
+			withRespectTos.add( param.getWithRespectTosI().get( key ) );
 			
 			HashSet<BigInteger> hs = new HashSet<BigInteger>();
 			hs.add( wcnt );
@@ -266,7 +256,7 @@ public abstract class NewtonRaphsonMultiElemRemap<U extends NumDimensions, A ext
 		}
 		
 		
-		newton = genNewton( ofun , withRespectTos , implicitSpaceFirstLevel , _sfac.getFac() , odim );
+		newton = genNewton( ofun , withRespectTos , param.getImplicitSpaceFirstLevel() , param.getSfac().getFac() , odim );
 		
 	}
 	

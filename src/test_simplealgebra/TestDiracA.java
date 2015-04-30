@@ -1863,25 +1863,15 @@ protected void applyAdd(
 		/**
 		 * Constructs the evaluator.
 		 * 
-		 * @param _functions Input multivector of functions.
-		 * @param _withRespectTosI Set of variables to take derivatives with respect to.
-		 * @param implicitSpaceFirstLevel Implicit space for the initial eval.
-		 * @param _sfac Factory for enclosed type.
-		 * @param _dim The number of dimensions in the multivector.
-		 * @param _ord The input Ord.
+		 * @param param The input parameter for the remap.
 		 * @throws NotInvertibleException
 		 * @throws MultiplicativeDistributionRequiredException
 		 */
 		public StelemNewton(
-				GeometricAlgebraMultivectorElem<TestDimensionFour, SpacetimeAlgebraOrd<TestDimensionFour>, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> _functions,
-				HashMap<HashSet<BigInteger>, ArrayList<? extends Elem<?, ?>>> _withRespectTosI,
-				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpaceFirstLevel,
-				SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>> _sfac,
-				TestDimensionFour _dim,
-				SpacetimeAlgebraOrd<TestDimensionFour> _ord)
+				final NewtonRaphsonMultiElemRemapParam<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> param )
 				throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
-			super(_functions, _withRespectTosI, implicitSpaceFirstLevel, _sfac, _dim, _ord);
+			super( param );
 			
 			// System.out.println( "**" );
 			// System.out.println( this.partialEval.writeString() );
@@ -2605,9 +2595,21 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 		}
 		
 		
-		StelemNewton newton = new StelemNewton( s00 ,
-				wrt3 , implicitSpace2 , se2A ,
-				tdim , new SpacetimeAlgebraOrd<TestDimensionFour>() );
+		final NewtonRaphsonMultiElemRemapParam<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> param
+			= new NewtonRaphsonMultiElemRemapParam<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>();
+		
+		
+		param.setFunctions( s00 );
+		param.setWithRespectTosI( wrt3 );
+		param.setImplicitSpaceFirstLevel( implicitSpace2 );
+		param.setSfac( se2A );
+		param.setDim( tdim );
+		param.setOrd( new SpacetimeAlgebraOrd<TestDimensionFour>() );
+		
+
+		
+		
+		StelemNewton newton = new StelemNewton( param );
 		
 		
 		for( int tval = 1 ; tval < ( NUM_T_ITER - 1 ) ; tval++ )
