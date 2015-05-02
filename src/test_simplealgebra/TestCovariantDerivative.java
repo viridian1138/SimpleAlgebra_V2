@@ -649,10 +649,24 @@ public class TestCovariantDerivative extends TestCase {
 		
 		
 		
+		final CovariantDerivativeFactoryParam<String, TestDimensionFour, DoubleElem, DoubleElemFactory, Ordinate>
+			param = new CovariantDerivativeFactoryParam<String, TestDimensionFour, DoubleElem, DoubleElemFactory, Ordinate>();
+		
+		
+		
+		param.setFac( se2s );
+		param.setTensorWithRespectTo( elem );
+		param.setDerivativeIndex( "v" );
+		param.setCoordVecFac( null );  /* !!!!!!!!!!!!!1 Uveca !!!!!!!!!! */
+		param.setTemp( new TestTemporaryIndexFactory() );
+		param.setMetric( tmt );
+		param.setDim( tdim );
+		param.setDfac( dd );
+		param.setRemap( null );
+		
 		
 		final CovariantDerivativeFactory<String, TestDimensionFour, DoubleElem, DoubleElemFactory, Ordinate> cofac =
-			new CovariantDerivativeFactory<String, TestDimensionFour, DoubleElem, DoubleElemFactory, Ordinate>(se2s, elem, 
-					"v", null /* !!!!!!!!!!!!!1 Uveca !!!!!!!!!! */ , new TestTemporaryIndexFactory(), tmt, tdim, dd, null);
+			new CovariantDerivativeFactory<String, TestDimensionFour, DoubleElem, DoubleElemFactory, Ordinate>( param );
 		
 		
 		

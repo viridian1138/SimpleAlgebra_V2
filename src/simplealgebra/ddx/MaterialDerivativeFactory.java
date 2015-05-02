@@ -115,7 +115,22 @@ public class MaterialDerivativeFactory<Z extends Object, U extends NumDimensions
 		dim = param.getDim();
 		flfac = param.getFlfac();
 		derivT = param.getDerivT();
-		cofac = new CovariantDerivativeFactory<Z,U,R,S,K>( param.getFac() , param.getTensorWithRespectTo() , derivativeIndex, param.getCoordVecFac() , param.getTemp() , param.getMetric() , param.getDim() , param.getDfac() , param.getRemap()  );
+		
+		final CovariantDerivativeFactoryParam<Z,U,R,S,K> param2 =
+				new CovariantDerivativeFactoryParam<Z,U,R,S,K>();
+		
+		
+		param2.setFac( param.getFac() );
+		param2.setTensorWithRespectTo( param.getTensorWithRespectTo() );
+		param2.setDerivativeIndex( derivativeIndex );
+		param2.setCoordVecFac( param.getCoordVecFac() );
+		param2.setTemp( param.getTemp() );
+		param2.setMetric( param.getMetric() );
+		param2.setDim( param.getDim() );
+		param2.setDfac( param.getDfac() );
+		param2.setRemap( param.getRemap() );
+		
+		cofac = new CovariantDerivativeFactory<Z,U,R,S,K>( param2 );
 	}
 	
 	

@@ -135,34 +135,18 @@ public class CovariantDerivativeFactory<Z extends Object, U extends NumDimension
 	/**
 	 * Constructs the tensor factory.
 	 * 
-	 * @param _fac The factory for the enclosed type.
-	 * @param _tensorWithRespectTo The expression to which to apply the derivative.
-	 * @param _derivativeIndex The tensor index of the covariant derivative.
-	 * @param _coordVecFac The factory for the underlying coordinate system U.
-	 * @param _temp A factory for generating temporary indices in the connection coefficient.
-	 * @param _metric A factory for generating metric tensors.
-	 * @param _dim The number of dimensions for the index.
-	 * @param _dfac Factory for generating the partial derivatives of a directional derivative.
-	 * @param _remap Parameter describing how to remap the derivative.  Leave as null if no remapping is desired.
+	 * @param param The input parameter for the factory.
 	 */
-	public CovariantDerivativeFactory( EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, 
-				SymbolicElemFactory<R, S>> _fac , 
-		SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> _tensorWithRespectTo,
-			Z _derivativeIndex,
-			CoordinateSystemFactory<Z,R,S> _coordVecFac,
-			TemporaryIndexFactory<Z> _temp,
-			MetricTensorFactory<Z,R,S> _metric,
-			U _dim ,
-			DirectionalDerivativePartialFactory<R,S,K> _dfac ,
-			DerivativeRemap<Z,R,S> _remap )
+	public CovariantDerivativeFactory( 
+			CovariantDerivativeFactoryParam<Z,U,R,S,K> param )
 	{
-		super( _fac );
-		tensorWithRespectTo = _tensorWithRespectTo;
-		derivativeIndex = _derivativeIndex;
-		temp = _temp;
-		metric = _metric;
-		remap = _remap;
-		odfac = new OrdinaryDerivativeFactory<Z,U,R,S,K>( _fac , _dim , _dfac , null );
+		super( param.getFac() );
+		tensorWithRespectTo = param.getTensorWithRespectTo();
+		derivativeIndex = param.getDerivativeIndex();
+		temp = param.getTemp();
+		metric = param.getMetric();
+		remap = param.getRemap();
+		odfac = new OrdinaryDerivativeFactory<Z,U,R,S,K>( param.getFac() , param.getDim() , param.getDfac() , null );
 	}
 	
 	
