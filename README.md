@@ -24,6 +24,10 @@ Complex Numbers
 
 ...http://en.wikipedia.org/wiki/Complex_number
 
+Connection Coefficient
+
+...http://en.wikipedia.org/wiki/Levi-Civita_connection
+
 Covariant Derivative
 
 ...http://en.wikipedia.org/wiki/Covariant_derivative
@@ -110,6 +114,8 @@ General Relativity
 
 ...http://m.youtube.com/watch?v=hbmf0bB38h0
 
+...http://physics.stackexchange.com/questions/33950/what-is-the-equation-of-the-gravitational-potential-in-general-relativity
+
 Generics (Java)
 
 ...http://en.wikipedia.org/wiki/Generics_in_Java
@@ -165,6 +171,10 @@ Newton-Raphson
 Noncommutative Ring
 
 ...See Abstract Algebra
+
+Ricci Scalar
+
+...http://en.wikipedia.org/wiki/Scalar_curvature
 
 Ricci Tensor
 
