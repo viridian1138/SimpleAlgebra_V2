@@ -316,12 +316,13 @@ rule "Double Negate"
      when
           n0 : SymbolicNegate( )
           n1 : SymbolicNegate( elem == n0 )
+          e0 : SymbolicElem() from n0.getElem()
           not( Reng( strt == n1 ) )
           not( Reng( strt == n0 ) )
-          not( Reng( strt == n0.getElem() ) )
+          not( Reng( strt == e0 ) )
      then
           // System.out.println( "Double Negate" );
-          insert( new Reng( n1 , n0.getElem() ) );
+          insert( new Reng( n1 , e0 ) );
 end
 
 
@@ -350,12 +351,13 @@ rule "Double Invert Left NonCommute"
      when
           n0 : SymbolicInvertLeft( )
           n1 : SymbolicInvertRight( elem == n0 )
+          e0 : SymbolicElem() from n0.getElem()
           not( Reng( strt == n1 ) )
           not( Reng( strt == n0 ) )
-          not( Reng( strt == n0.getElem() ) )
+          not( Reng( strt == e0 ) )
      then
           // System.out.println( "Double Invert Left NonCommute" );
-          insert( new Reng( n1 , n0.getElem() ) );
+          insert( new Reng( n1 , e0 ) );
 end
 
 
@@ -367,12 +369,13 @@ rule "Double Invert Right NonCommute"
      when
           n0 : SymbolicInvertRight( )
           n1 : SymbolicInvertLeft( elem == n0 )
+          e0 : SymbolicElem() from n0.getElem()
           not( Reng( strt == n1 ) )
           not( Reng( strt == n0 ) )
-          not( Reng( strt == n0.getElem() ) )
+          not( Reng( strt == e0 ) )
      then
           // System.out.println( "Double Invert Right NonCommute" );
-          insert( new Reng( n1 , n0.getElem() ) );
+          insert( new Reng( n1 , e0 ) );
 end
 
 
@@ -384,13 +387,14 @@ rule "Double Invert Left Commute"
      when
           n0 : SymbolicInvertLeft( )
           n1 : SymbolicInvertLeft( elem == n0 )
+          e0 : SymbolicElem() from n0.getElem()
           not( Reng( strt == n1 ) )
           not( Reng( strt == n0 ) )
-          not( Reng( strt == n0.getElem() ) )
-          eval( n0.getElem().getFac().isNestedMultCommutative() )
+          not( Reng( strt == e0 ) )
+          eval( e0.getFac().isNestedMultCommutative() )
      then
           // System.out.println( "Double Invert Left Commute" );
-          insert( new Reng( n1 , n0.getElem() ) );
+          insert( new Reng( n1 , e0 ) );
 end
 
 
@@ -402,13 +406,14 @@ rule "Double Invert Right Commute"
      when
           n0 : SymbolicInvertRight( )
           n1 : SymbolicInvertRight( elem == n0 )
+          e0 : SymbolicElem() from n0.getElem()
           not( Reng( strt == n1 ) )
           not( Reng( strt == n0 ) )
-          not( Reng( strt == n0.getElem() ) )
-          eval( n0.getElem().getFac().isNestedMultCommutative() )
+          not( Reng( strt == e0 ) )
+          eval( e0.getFac().isNestedMultCommutative() )
      then
           // System.out.println( "Double Invert Right Commute" );
-          insert( new Reng( n1 , n0.getElem() ) );
+          insert( new Reng( n1 , e0 ) );
 end
 
 
@@ -434,12 +439,13 @@ rule "Add Zero A"
       when
           ez : SymbolicZero( )
           add1 : SymbolicAdd( elemA == ez )
+          elB : SymbolicElem() from add1.getElemB()
           not( Reng( strt == add1 ) )
-          not( Reng( strt == add1.getElemB() ) )
+          not( Reng( strt == elB ) )
           not( Reng( strt == ez ) )
       then
           // System.out.println( "Add Zero A" );
-          insert( new Reng( add1 , add1.getElemB() ) );
+          insert( new Reng( add1 , elB ) );
 end
 
 
@@ -450,12 +456,13 @@ rule "Add Zero B"
       when
           ez : SymbolicZero( )
           add1 : SymbolicAdd( elemB == ez )
+          elA : SymbolicElem() from add1.getElemA()
           not( Reng( strt == add1 ) )
-          not( Reng( strt == add1.getElemA() ) )
+          not( Reng( strt == elA ) )
           not( Reng( strt == ez ) )
       then
           // System.out.println( "Add Zero B" );
-          insert( new Reng( add1 , add1.getElemA() ) );
+          insert( new Reng( add1 , elA ) );
 end
 
 
@@ -467,12 +474,13 @@ rule "Mult Ident A"
       when
           ez : SymbolicIdentity( )
           mult1 : SymbolicMult( elemA == ez )
+          elB : SymbolicElem() from mult1.getElemB()
           not( Reng( strt == mult1 ) )
-          not( Reng( strt == mult1.getElemB() ) )
+          not( Reng( strt == elB ) )
           not( Reng( strt == ez ) )
       then
           // System.out.println( "Mult Ident A" );
-          insert( new Reng( mult1 , mult1.getElemB() ) );
+          insert( new Reng( mult1 , elB ) );
 end
 
 
@@ -482,13 +490,14 @@ rule "Mult Ident B"
       when
           ez : SymbolicIdentity( )
           mult1 : SymbolicMult( elemB == ez )
+          elA : SymbolicElem() from mult1.getElemA()
           not( Reng( strt == mult1 ) )
-          not( Reng( strt == mult1.getElemA() ) )
+          not( Reng( strt == elA ) )
           not( Reng( strt == ez ) )
-          eval( !( mult1.getElemA().exposesDerivatives() ) )
+          eval( !( elA.exposesDerivatives() ) )
       then
           // System.out.println( "Mult Ident B" );
-          insert( new Reng( mult1 , mult1.getElemA() ) );
+          insert( new Reng( mult1 , elA ) );
 end
 
 
@@ -500,8 +509,9 @@ rule "Mult Zero A"
       when
           ez : SymbolicZero( )
           mult1 : SymbolicMult( elemA == ez )
+          elB : SymbolicElem() from mult1.getElemB()
           not( Reng( strt == mult1 ) )
-          not( Reng( strt == mult1.getElemB() ) )
+          not( Reng( strt == elB ) )
           not( Reng( strt == ez ) )
       then
           // System.out.println( "Mult Zero A" );
@@ -517,8 +527,9 @@ rule "Mult Zero B"
       when
           ez : SymbolicZero( )
           mult1 : SymbolicMult( elemB == ez )
+          elA : SymbolicElem() from mult1.getElemA()
           not( Reng( strt == mult1 ) )
-          not( Reng( strt == mult1.getElemA() ) )
+          not( Reng( strt == elA ) )
           not( Reng( strt == ez ) )
       then
           // System.out.println( "Mult Zero B" );
@@ -533,14 +544,16 @@ rule "Mult Over Negate A"
       when
           na : SymbolicNegate( )
           mult1 : SymbolicMult( elemA == na )
+          a : SymbolicElem() from na.getElem()
+          b : SymbolicElem() from mult1.getElemB()
           not( Reng( strt == mult1 ) )
           not( Reng( strt == na ) )
-          not( Reng( strt == na.getElem() ) )
-          not( Reng( strt == mult1.getElemB() ) )
+          not( Reng( strt == a ) )
+          not( Reng( strt == b ) )
           ds : DroolsSession()
       then
           // System.out.println( "Mult Over Negate A" );
-          insert( new Reng( mult1 , na.getElem().mult( mult1.getElemB() ).insSym( ds ).negate().insSym( ds ) ) );
+          insert( new Reng( mult1 , a.mult( b ).insSym( ds ).negate().insSym( ds ) ) );
 end
 
 
@@ -550,14 +563,16 @@ rule "Mult Over Negate B"
       when
           nb : SymbolicNegate( )
           mult1 : SymbolicMult( elemB == nb )
+          a : SymbolicElem() from mult1.getElemA()
+          b : SymbolicElem() from nb.getElem()
           not( Reng( strt == mult1 ) )
           not( Reng( strt == nb ) )
-          not( Reng( strt == mult1.getElemA() ) )
-          not( Reng( strt == nb.getElem() ) )
+          not( Reng( strt == a ) )
+          not( Reng( strt == b ) )
           ds : DroolsSession()
       then
           // System.out.println( "Mult Over Negate B" );
-          insert( new Reng( mult1 , mult1.getElemA().mult( nb.getElem() ).insSym( ds ).negate().insSym( ds ) ) );
+          insert( new Reng( mult1 , a.mult( b ).insSym( ds ).negate().insSym( ds ) ) );
 end
 
 
@@ -569,14 +584,16 @@ rule "Mult Over DivideBy A"
       when
           na : SymbolicDivideBy( )
           mult1 : SymbolicMult( elemA == na )
+          a : SymbolicElem() from na.getElem()
+          b : SymbolicElem() from mult1.getElemB()
           not( Reng( strt == mult1 ) )
           not( Reng( strt == na ) )
-          not( Reng( strt == na.getElem() ) )
-          not( Reng( strt == mult1.getElemB() ) )
+          not( Reng( strt == a ) )
+          not( Reng( strt == b ) )
           ds : DroolsSession()
       then
           // System.out.println( "Mult Over DivideBy A" );
-          insert( new Reng( mult1 , new SymbolicDivideBy( na.getElem().mult( mult1.getElemB() ).insSym( ds ) , na.getFac().getFac() , na.getIval() , ds ) ) );
+          insert( new Reng( mult1 , new SymbolicDivideBy( a.mult( b ).insSym( ds ) , na.getFac().getFac() , na.getIval() , ds ) ) );
 end
 
 
@@ -586,14 +603,16 @@ rule "Mult Over DivideBy B"
       when
           nb : SymbolicDivideBy( )
           mult1 : SymbolicMult( elemB == nb )
+          a : SymbolicElem() from mult1.getElemA()
+          b : SymbolicElem() from nb.getElem()
           not( Reng( strt == mult1 ) )
           not( Reng( strt == nb ) )
-          not( Reng( strt == mult1.getElemA() ) )
-          not( Reng( strt == nb.getElem() ) )
+          not( Reng( strt == a ) )
+          not( Reng( strt == b ) )
           ds : DroolsSession()
       then
           // System.out.println( "Mult Over DivideBy B" );
-          insert( new Reng( mult1 , new SymbolicDivideBy( mult1.getElemA().mult( nb.getElem() ).insSym( ds ) , nb.getFac().getFac() , nb.getIval() , ds ) ) );
+          insert( new Reng( mult1 , new SymbolicDivideBy( a.mult( b ).insSym( ds ) , nb.getFac().getFac() , nb.getIval() , ds ) ) );
 end
 
 
@@ -605,14 +624,16 @@ rule "Negate Over Add"
       when
           c : SymbolicAdd( )
           d : SymbolicNegate( elem == c )
+          a : SymbolicElem() from c.getElemA()
+          b : SymbolicElem() from c.getElemB()
           not( Reng( strt == d ) )
           not( Reng( strt == c ) )
-          not( Reng( strt == c.getElemB() ) )
-          not( Reng( strt == c.getElemA() ) )
+          not( Reng( strt == b ) )
+          not( Reng( strt == a ) )
           ds : DroolsSession()
       then
           // System.out.println( "Negate Over Add" );
-          insert( new Reng( d , c.getElemA().negate().insSym( ds ).add( c.getElemB().negate().insSym( ds ) ).insSym( ds ) ) );
+          insert( new Reng( d , a.negate().insSym( ds ).add( b.negate().insSym( ds ) ).insSym( ds ) ) );
 end
 
 
@@ -623,14 +644,16 @@ rule "DivideBy Over Add"
       when
           c : SymbolicAdd( )
           d : SymbolicDivideBy( elem == c )
+          a : SymbolicElem() from c.getElemA()
+          b : SymbolicElem() from c.getElemB()
           not( Reng( strt == d ) )
           not( Reng( strt == c ) )
-          not( Reng( strt == c.getElemB() ) )
-          not( Reng( strt == c.getElemA() ) )
+          not( Reng( strt == b ) )
+          not( Reng( strt == a ) )
           ds : DroolsSession()
       then
           // System.out.println( "DivideBy Over Add" );
-          insert( new Reng( d , new SymbolicAdd( new SymbolicDivideBy( c.getElemA() , d.getFac().getFac() , d.getIval() , ds ) , new SymbolicDivideBy( c.getElemB() , d.getFac().getFac() , d.getIval() , ds ) , c.getFac().getFac() , ds ) ) );
+          insert( new Reng( d , new SymbolicAdd( new SymbolicDivideBy( a , d.getFac().getFac() , d.getIval() , ds ) , new SymbolicDivideBy( b , d.getFac().getFac() , d.getIval() , ds ) , c.getFac().getFac() , ds ) ) );
 end
 
 
@@ -641,13 +664,14 @@ rule "DivideBy Over Negate"
       when
           b : SymbolicNegate( )
           c : SymbolicDivideBy( elem == b )
+          a : SymbolicElem() from b.getElem()
           not( Reng( strt == c ) )
           not( Reng( strt == b ) )
-          not( Reng( strt == b.getElem() ) )
+          not( Reng( strt == a ) )
           ds : DroolsSession()
       then
           // System.out.println( "DivideBy Over Negate" );
-          insert( new Reng( c , new SymbolicNegate( new SymbolicDivideBy( b.getElem() , c.getFac().getFac() , c.getIval() , ds ) , b.getFac().getFac() , ds ) ) );
+          insert( new Reng( c , new SymbolicNegate( new SymbolicDivideBy( a , c.getFac().getFac() , c.getIval() , ds ) , b.getFac().getFac() , ds ) ) );
 end
 
 
@@ -807,14 +831,15 @@ rule "Partial Derivative Of Constant B --> Zero"
       when
           pd : PartialDerivativeOp( )
           mult : SymbolicMult( elemA == pd )
+          cn : SymbolicElem() from mult.getElemB()
           not( Reng( strt == mult ) )
-          not( Reng( strt == mult.getElemB() ) )
+          not( Reng( strt == cn ) )
           not( Reng( strt == pd ) )
           ds: DroolsSession()
-          eval( mult.getElemB().isPartialDerivativeZero() )
+          eval( cn.isPartialDerivativeZero() )
       then
          // System.out.println( "Partial Derivative Of Constant B --> Zero" );
-         insert( new Reng( mult , new SymbolicZero( mult.getElemB().getFac() , ds ) ) );
+         insert( new Reng( mult , new SymbolicZero( cn.getFac() , ds ) ) );
 end
 
 
@@ -865,14 +890,15 @@ rule "Mult Negative Ident A"
           ez : SymbolicIdentity( )
           nnez : SymbolicNegate( elem == ez )
           mult1 : SymbolicMult( elemA == nnez )
+          nez : SymbolicElem() from mult1.getElemB()
           not( Reng( strt == mult1 ) )
-          not( Reng( strt == mult1.getElemB() ) )
+          not( Reng( strt == nez ) )
           not( Reng( strt == nnez ) )
           not( Reng( strt == ez ) )
-          not( eval( mult1.getElemB() instanceof SymbolicNegate ) )
+          not( eval( nez instanceof SymbolicNegate ) )
       then
           // System.out.println( "Mult Negative Ident A" );
-          insert( new Reng( mult1 , mult1.getElemB().negate() ) );
+          insert( new Reng( mult1 , nez.negate() ) );
 end
 
 
@@ -883,15 +909,16 @@ rule "Mult Negative Ident B"
           ez : SymbolicIdentity( )
           nnez : SymbolicNegate( elem == ez )
           mult1 : SymbolicMult( elemB == nnez )
+          nez : SymbolicElem() from mult1.getElemA()
           not( Reng( strt == mult1 ) )
-          not( Reng( strt == mult1.getElemA() ) )
+          not( Reng( strt == nez ) )
           not( Reng( strt == nnez ) )
           not( Reng( strt == ez ) )
-          not( eval( mult1.getElemA() instanceof SymbolicNegate ) )
-          eval( !( mult1.getElemA().exposesDerivatives() ) )
+          not( eval( nez instanceof SymbolicNegate ) )
+          eval( !( nez.exposesDerivatives() ) )
       then
           // System.out.println( "Mult Negative Ident B" );
-          insert( new Reng( mult1 , mult1.getElemA().negate() ) );
+          insert( new Reng( mult1 , nez.negate() ) );
 end
 
 
