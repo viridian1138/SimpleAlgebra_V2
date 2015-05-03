@@ -687,12 +687,16 @@ rule "Distribute InvertLeft Over Mult"
       when
           elm : SymbolicMult()
           el0 : SymbolicInvertLeft( elem == elm )
+          a : SymbolicElem() from elm.getElemA()
+          b : SymbolicElem() from elm.getElemB()
           not( Reng( strt == el0 ) )
           not( Reng( strt == elm ) )
+          not( Reng( strt == a ) )
+          not( Reng( strt == b ) )
           ds: DroolsSession()
       then
          // System.out.println( "Distribute InvertLeft Over Mult" );
-         insert( new Reng( el0 , new SymbolicMult( new SymbolicInvertLeft( elm.getElemB() , el0.getFac().getFac() , ds ) , new SymbolicInvertLeft( elm.getElemA() , el0.getFac().getFac() , ds ) , elm.getFac().getFac() , ds ) ) );
+         insert( new Reng( el0 , new SymbolicMult( new SymbolicInvertLeft( b , el0.getFac().getFac() , ds ) , new SymbolicInvertLeft( a , el0.getFac().getFac() , ds ) , elm.getFac().getFac() , ds ) ) );
 end
 
 
@@ -708,12 +712,16 @@ rule "Distribute InvertRight Over Mult"
       when
           elm : SymbolicMult()
           el0 : SymbolicInvertRight( elem == elm )
+          a : SymbolicElem() from elm.getElemA()
+          b : SymbolicElem() from elm.getElemB()
           not( Reng( strt == el0 ) )
           not( Reng( strt == elm ) )
+          not( Reng( strt == a ) )
+          not( Reng( strt == b ) )
           ds: DroolsSession()
       then
          // System.out.println( "Distribute InvertRight Over Mult" );
-         insert( new Reng( el0 , new SymbolicMult( new SymbolicInvertRight( elm.getElemB() , el0.getFac().getFac() , ds ) , new SymbolicInvertRight( elm.getElemA() , el0.getFac().getFac() , ds ) , elm.getFac().getFac() , ds ) ) );
+         insert( new Reng( el0 , new SymbolicMult( new SymbolicInvertRight( b , el0.getFac().getFac() , ds ) , new SymbolicInvertRight( a , el0.getFac().getFac() , ds ) , elm.getFac().getFac() , ds ) ) );
 end
 
 
@@ -732,13 +740,14 @@ rule "InvertLeft Over Negative"
       when
           el1 : SymbolicNegate( )
           el0 : SymbolicInvertLeft( elem == el1 )
+          e0 : SymbolicElem() from el1.getElem()
           not( Reng( strt == el0 ) )
           not( Reng( strt == el1 ) )
-          not( Reng( strt == el1.getElem() ) )
+          not( Reng( strt == e0 ) )
           ds: DroolsSession()
       then
          // System.out.println( "InvertLeft Over Negate" );
-         insert( new Reng( el0 , new SymbolicNegate( new SymbolicInvertLeft( el1.getElem() , el0.getFac().getFac() , ds ) , el1.getFac().getFac() , ds ) ) );
+         insert( new Reng( el0 , new SymbolicNegate( new SymbolicInvertLeft( e0 , el0.getFac().getFac() , ds ) , el1.getFac().getFac() , ds ) ) );
 end
 
 
@@ -754,13 +763,14 @@ rule "InvertRight Over Negative"
       when
           el1 : SymbolicNegate( )
           el0 : SymbolicInvertRight( elem == el1 )
+          e0 : SymbolicElem() from el1.getElem()
           not( Reng( strt == el0 ) )
           not( Reng( strt == el1 ) )
-          not( Reng( strt == el1.getElem() ) )
+          not( Reng( strt == e0 ) )
           ds: DroolsSession()
       then
          // System.out.println( "InvertRight Over Negate" );
-         insert( new Reng( el0 , new SymbolicNegate( new SymbolicInvertRight( el1.getElem() , el0.getFac().getFac() , ds ) , el1.getFac().getFac() , ds ) ) );
+         insert( new Reng( el0 , new SymbolicNegate( new SymbolicInvertRight( e0 , el0.getFac().getFac() , ds ) , el1.getFac().getFac() , ds ) ) );
 end
 
 
@@ -813,13 +823,14 @@ rule "Double DivideBy"
      when
           n0 : SymbolicDivideBy( )
           n1 : SymbolicDivideBy( elem == n0 )
+          e0 : SymbolicElem() from n0.getElem()
           not( Reng( strt == n1 ) )
           not( Reng( strt == n0 ) )
-          not( Reng( strt == n0.getElem() ) )
+          not( Reng( strt == e0 ) )
           ds : DroolsSession()
      then
           // System.out.println( "Double DivideBy" );
-          insert( new Reng( n1 , new SymbolicDivideBy( n0.getElem() , n0.getFac() , n0.getIval().multiply( n1.getIval() ) , ds ) ) );
+          insert( new Reng( n1 , new SymbolicDivideBy( e0 , n0.getFac() , n0.getIval().multiply( n1.getIval() ) , ds ) ) );
 end
 
 

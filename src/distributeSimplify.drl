@@ -746,10 +746,12 @@ end
 
 rule "El Plus Negative ElA"
       when
-          elA : SymbolicElem( eval( !( elA instanceof SymbolicAdd ) ) )
-          elB : SymbolicElem( eval( !( elB instanceof SymbolicAdd ) ) )
-          addA : SymbolicAdd( elemA == elA )
-          addB : SymbolicAdd( elemA == elB )
+          addA : SymbolicAdd( )
+          addB : SymbolicAdd( )
+          elA : SymbolicElem() from addA.getElemA()
+          elB : SymbolicElem() from addB.getElemA()
+          eval( !( elA instanceof SymbolicAdd ) )
+          eval( !( elB instanceof SymbolicAdd ) )
           r1: AddRoot( elemA == addA )
           AddRoot( elemA == addB , elemB == r1.getElemB() )
           eval( elA.extSymbolicEquals( elB.negate() ) )
@@ -767,10 +769,12 @@ end
 
 rule "El Plus Negative ElB"
       when
-          elA : SymbolicElem( eval( !( elA instanceof SymbolicAdd ) ) )
-          elB : SymbolicElem( eval( !( elB instanceof SymbolicAdd ) ) )
-          addA : SymbolicAdd( elemB == elA )
-          addB : SymbolicAdd( elemA == elB )
+          addA : SymbolicAdd( )
+          addB : SymbolicAdd( )
+          elA : SymbolicElem() from addA.getElemB()
+          elB : SymbolicElem() from addB.getElemA()
+          eval( !( elA instanceof SymbolicAdd ) )
+          eval( !( elB instanceof SymbolicAdd ) )
           r1: AddRoot( elemA == addA )
           AddRoot( elemA == addB , elemB == r1.getElemB() )
           eval( elA.extSymbolicEquals( elB.negate() ) )
@@ -789,10 +793,12 @@ end
 
 rule "El Plus Negative ElD"
       when
-          elA : SymbolicElem( eval( !( elA instanceof SymbolicAdd ) ) )
-          elB : SymbolicElem( eval( !( elB instanceof SymbolicAdd ) ) )
-          addA : SymbolicAdd( elemB == elA )
-          addB : SymbolicAdd( elemB == elB )
+          addA : SymbolicAdd( )
+          addB : SymbolicAdd( )
+          elA : SymbolicElem() from addA.getElemB()
+          elB : SymbolicElem() from addB.getElemB()
+          eval( !( elA instanceof SymbolicAdd ) )
+          eval( !( elB instanceof SymbolicAdd ) )
           r1: AddRoot( elemA == addA )
           AddRoot( elemA == addB , elemB == r1.getElemB() )
           eval( elA.extSymbolicEquals( elB.negate() ) )
@@ -814,12 +820,14 @@ rule "Mult RootA"
       when
           el0 : SymbolicMult()
           eval( el0.getFac().isMultAssociative() )
-          eval( !( el0.getElemA() instanceof SymbolicMult ) )
-          eval( !( el0.getElemB() instanceof SymbolicMult ) )
+          a : SymbolicElem() from el0.getElemA()
+          b : SymbolicElem() from el0.getElemB()
+          eval( !( a instanceof SymbolicMult ) )
+          eval( !( b instanceof SymbolicMult ) )
       then
-          insert( new MultFirst( el0 , el0.getElemA() ) );
-          insert( new MultLast( el0 , el0.getElemB() ) );
-          insert( new MultNext( el0 , el0.getElemA() , el0.getElemB() ) );
+          insert( new MultFirst( el0 , a ) );
+          insert( new MultLast( el0 , b ) );
+          insert( new MultNext( el0 , a , b ) );
 end
 
 
@@ -832,13 +840,15 @@ rule "Mult RootB"
       when
           el0 : SymbolicMult()
           eval( el0.getFac().isMultAssociative() )
-          eval( !( el0.getElemA() instanceof SymbolicMult ) )
-          bf: MultFirst( root == el0.getElemB() )
-          bl: MultLast( root == el0.getElemB() )
+          a : SymbolicElem() from el0.getElemA()
+          b : SymbolicElem() from el0.getElemB()
+          eval( !( a instanceof SymbolicMult ) )
+          bf: MultFirst( root == b )
+          bl: MultLast( root == b )
       then
-          insert( new MultFirst( el0 , el0.getElemA() ) );
+          insert( new MultFirst( el0 , a ) );
           insert( new MultLast( el0 , bl.getLast() ) );
-          insert( new MultNext( el0 , el0.getElemA() , bf.getFirst() ) );
+          insert( new MultNext( el0 , a , bf.getFirst() ) );
 end
 
 
@@ -852,13 +862,15 @@ rule "Mult RootC"
       when
           el0 : SymbolicMult()
           eval( el0.getFac().isMultAssociative() )
-          eval( !( el0.getElemB() instanceof SymbolicMult ) )
-          bf: MultFirst( root == el0.getElemA() )
-          bl: MultLast( root == el0.getElemA() )
+          a : SymbolicElem() from el0.getElemA()
+          b : SymbolicElem() from el0.getElemB()
+          eval( !( b instanceof SymbolicMult ) )
+          bf: MultFirst( root == a )
+          bl: MultLast( root == a )
       then
           insert( new MultFirst( el0 , bf.getFirst() ) );
-          insert( new MultLast( el0 , el0.getElemB() ) );
-          insert( new MultNext( el0 , bl.getLast() , el0.getElemB() ) );
+          insert( new MultLast( el0 , b ) );
+          insert( new MultNext( el0 , bl.getLast() , b ) );
 end
 
 
@@ -871,10 +883,12 @@ rule "Mult RootD"
       when
           el0 : SymbolicMult()
           eval( el0.getFac().isMultAssociative() )
-          bf0: MultFirst( root == el0.getElemA() )
-          bl0: MultLast( root == el0.getElemA() )
-          bf1: MultFirst( root == el0.getElemB() )
-          bl1: MultLast( root == el0.getElemB() )
+          a : SymbolicElem() from el0.getElemA()
+          b : SymbolicElem() from el0.getElemB()
+          bf0: MultFirst( root == a )
+          bl0: MultLast( root == a )
+          bf1: MultFirst( root == b )
+          bl1: MultLast( root == b )
       then
           insert( new MultFirst( el0 , bf0.getFirst() ) );
           insert( new MultLast( el0 , bl1.getLast() ) );
@@ -922,17 +936,22 @@ end
 rule "Inv El Mult El Associative"
       when
           mn: MultNext( )
-          eval( !( mn.getFirst() instanceof SymbolicMult ) )
-          eval( !( mn.getNext() instanceof SymbolicMult ) )
-          eval( mn.getFirst().getFac().isMultAssociative() )
-          eval( !( mn.getFirst() instanceof SymbolicIdentity ) )
-          eval( !( mn.getNext() instanceof SymbolicIdentity ) )
-          eval( mn.getNext().extSymbolicEquals( mn.getFirst().invertRight() ) )
-          eval( mn.getFirst() != mn.getNext() )
+          a : SymbolicElem() from mn.getFirst()
+          b : SymbolicElem() from mn.getNext()
+          rt : SymbolicMult() from mn.getRoot()
+          eval( !( a instanceof SymbolicMult ) )
+          eval( !( b instanceof SymbolicMult ) )
+          eval( a.getFac().isMultAssociative() )
+          eval( !( a instanceof SymbolicIdentity ) )
+          eval( !( b instanceof SymbolicIdentity ) )
+          eval( b.extSymbolicEquals( a.invertRight() ) )
+          eval( a != b )
           ds: DroolsSession()
-          not( Reng( strt == mn.getRoot() ) )
+          not( Reng( strt == rt ) )
+          not( Reng( strt == a ) )
+          not( Reng( strt == b ) )
       then
-          insert( new Reng( mn.getRoot() , mn.getRoot().handleMultSimplify( mn.getFirst() , mn.getNext() , ds ) ) );
+          insert( new Reng( rt , rt.handleMultSimplify( a , b , ds ) ) );
 end
 
 
@@ -943,17 +962,22 @@ end
 rule "El Mult Inv El Associative"
       when
           mn: MultNext( )
-          eval( !( mn.getFirst() instanceof SymbolicMult ) )
-          eval( !( mn.getNext() instanceof SymbolicMult ) )
-          eval( mn.getFirst().getFac().isMultAssociative() )
-          eval( !( mn.getFirst() instanceof SymbolicIdentity ) )
-          eval( !( mn.getNext() instanceof SymbolicIdentity ) )
-          eval( mn.getFirst().extSymbolicEquals( mn.getNext().invertLeft() ) )
-          eval( mn.getFirst() != mn.getNext() )
+          a : SymbolicElem() from mn.getFirst()
+          b : SymbolicElem() from mn.getNext()
+          rt : SymbolicMult() from mn.getRoot()
+          eval( !( a instanceof SymbolicMult ) )
+          eval( !( b instanceof SymbolicMult ) )
+          eval( a.getFac().isMultAssociative() )
+          eval( !( a instanceof SymbolicIdentity ) )
+          eval( !( b instanceof SymbolicIdentity ) )
+          eval( a.extSymbolicEquals( b.invertLeft() ) )
+          eval( a != b )
           ds: DroolsSession()
-          not( Reng( strt == mn.getRoot() ) )
+          not( Reng( strt == rt ) )
+          not( Reng( strt == a ) )
+          not( Reng( strt == b ) )
       then
-          insert( new Reng( mn.getRoot() , mn.getRoot().handleMultSimplify( mn.getFirst() , mn.getNext() , ds ) ) );
+          insert( new Reng( rt , rt.handleMultSimplify( a , b , ds ) ) );
 end
 
 
@@ -966,15 +990,19 @@ end
 rule "Inv El Mult El Non-Associative"
       when
           mn: SymbolicMult( )
-          eval( !( mn.getElemA() instanceof SymbolicMult ) )
-          eval( !( mn.getElemB() instanceof SymbolicMult ) )
+          a : SymbolicElem() from mn.getElemA()
+          b : SymbolicElem() from mn.getElemB()
+          eval( !( a instanceof SymbolicMult ) )
+          eval( !( b instanceof SymbolicMult ) )
           eval( !( mn.getFac().isMultAssociative() ) )
-          eval( !( mn.getElemA() instanceof SymbolicIdentity ) )
-          eval( !( mn.getElemB() instanceof SymbolicIdentity ) )
-          eval( mn.getElemB().extSymbolicEquals( mn.getElemA().invertRight() ) )
-          eval( mn.getElemA() != mn.getElemB() )
+          eval( !( a instanceof SymbolicIdentity ) )
+          eval( !( b instanceof SymbolicIdentity ) )
+          eval( b.extSymbolicEquals( a.invertRight() ) )
+          eval( a != b )
           ds: DroolsSession()
           not( Reng( strt == mn ) )
+          not( Reng( strt == a ) )
+          not( Reng( strt == b ) )
       then
           insert( new Reng( mn , new SymbolicIdentity( mn.getFac().getFac() , ds ) ) );
 end
@@ -989,15 +1017,19 @@ end
 rule "El Mult Inv El Non-Associative"
       when
           mn: SymbolicMult( )
-          eval( !( mn.getElemA() instanceof SymbolicMult ) )
-          eval( !( mn.getElemB() instanceof SymbolicMult ) )
+          a : SymbolicElem() from mn.getElemA()
+          b : SymbolicElem() from mn.getElemB()
+          eval( !( a instanceof SymbolicMult ) )
+          eval( !( b instanceof SymbolicMult ) )
           eval( !( mn.getFac().isMultAssociative() ) )
-          eval( !( mn.getElemA() instanceof SymbolicIdentity ) )
-          eval( !( mn.getElemB() instanceof SymbolicIdentity ) )
-          eval( mn.getElemA().extSymbolicEquals( mn.getElemB().invertLeft() ) )
-          eval( mn.getElemA() != mn.getElemB() )
+          eval( !( a instanceof SymbolicIdentity ) )
+          eval( !( b instanceof SymbolicIdentity ) )
+          eval( a.extSymbolicEquals( b.invertLeft() ) )
+          eval( a != b )
           ds: DroolsSession()
           not( Reng( strt == mn ) )
+          not( Reng( strt == a ) )
+          not( Reng( strt == b ) )
       then
           insert( new Reng( mn , new SymbolicIdentity( mn.getFac().getFac() , ds ) ) );
 end
@@ -1013,12 +1045,16 @@ rule "Distribute InvertLeft Over Mult"
       when
           elm : SymbolicMult()
           el0 : SymbolicInvertLeft( elem == elm )
+          a : SymbolicElem() from elm.getElemA()
+          b : SymbolicElem() from elm.getElemB()
           not( Reng( strt == el0 ) )
           not( Reng( strt == elm ) )
+          not( Reng( strt == a ) )
+          not( Reng( strt == b ) )
           ds: DroolsSession()
       then
          // System.out.println( "Distribute InvertLeft Over Mult" );
-         insert( new Reng( el0 , new SymbolicMult( new SymbolicInvertLeft( elm.getElemB() , el0.getFac().getFac() , ds ) , new SymbolicInvertLeft( elm.getElemA() , el0.getFac().getFac() , ds ) , elm.getFac().getFac() , ds ) ) );
+         insert( new Reng( el0 , new SymbolicMult( new SymbolicInvertLeft( b , el0.getFac().getFac() , ds ) , new SymbolicInvertLeft( a , el0.getFac().getFac() , ds ) , elm.getFac().getFac() , ds ) ) );
 end
 
 
@@ -1034,12 +1070,16 @@ rule "Distribute InvertRight Over Mult"
       when
           elm : SymbolicMult()
           el0 : SymbolicInvertRight( elem == elm )
+          a : SymbolicElem() from elm.getElemA()
+          b : SymbolicElem() from elm.getElemB()
           not( Reng( strt == el0 ) )
           not( Reng( strt == elm ) )
+          not( Reng( strt == a ) )
+          not( Reng( strt == b ) )
           ds: DroolsSession()
       then
          // System.out.println( "Distribute InvertRight Over Mult" );
-         insert( new Reng( el0 , new SymbolicMult( new SymbolicInvertRight( elm.getElemB() , el0.getFac().getFac() , ds ) , new SymbolicInvertRight( elm.getElemA() , el0.getFac().getFac() , ds ) , elm.getFac().getFac() , ds ) ) );
+         insert( new Reng( el0 , new SymbolicMult( new SymbolicInvertRight( b , el0.getFac().getFac() , ds ) , new SymbolicInvertRight( a , el0.getFac().getFac() , ds ) , elm.getFac().getFac() , ds ) ) );
 end
 
 
@@ -1058,13 +1098,14 @@ rule "InvertLeft Over Negative"
       when
           el1 : SymbolicNegate( )
           el0 : SymbolicInvertLeft( elem == el1 )
+          e0 : SymbolicElem() from el1.getElem()
           not( Reng( strt == el0 ) )
           not( Reng( strt == el1 ) )
-          not( Reng( strt == el1.getElem() ) )
+          not( Reng( strt == e0 ) )
           ds: DroolsSession()
       then
          // System.out.println( "InvertLeft Over Negate" );
-         insert( new Reng( el0 , new SymbolicNegate( new SymbolicInvertLeft( el1.getElem() , el0.getFac().getFac() , ds ) , el1.getFac().getFac() , ds ) ) );
+         insert( new Reng( el0 , new SymbolicNegate( new SymbolicInvertLeft( e0 , el0.getFac().getFac() , ds ) , el1.getFac().getFac() , ds ) ) );
 end
 
 
@@ -1080,13 +1121,14 @@ rule "InvertRight Over Negative"
       when
           el1 : SymbolicNegate( )
           el0 : SymbolicInvertRight( elem == el1 )
+          e0 : SymbolicElem() from el1.getElem()
           not( Reng( strt == el0 ) )
           not( Reng( strt == el1 ) )
-          not( Reng( strt == el1.getElem() ) )
+          not( Reng( strt == e0 ) )
           ds: DroolsSession()
       then
          // System.out.println( "InvertRight Over Negate" );
-         insert( new Reng( el0 , new SymbolicNegate( new SymbolicInvertRight( el1.getElem() , el0.getFac().getFac() , ds ) , el1.getFac().getFac() , ds ) ) );
+         insert( new Reng( el0 , new SymbolicNegate( new SymbolicInvertRight( e0 , el0.getFac().getFac() , ds ) , el1.getFac().getFac() , ds ) ) );
 end
 
 
