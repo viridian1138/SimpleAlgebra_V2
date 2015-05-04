@@ -746,21 +746,22 @@ end
 
 rule "El Plus Negative ElA"
       when
-          addA : SymbolicAdd( )
-          addB : SymbolicAdd( )
+          r1: AddRoot( )
+          r1b: SymbolicAdd() from r1.getElemB()
+          r2: AddRoot( elemB == r1b )
+          addA : SymbolicAdd( ) from r1.getElemA()
+          addB : SymbolicAdd( ) from r2.getElemA()
           elA : SymbolicElem() from addA.getElemA()
           elB : SymbolicElem() from addB.getElemA()
           eval( !( elA instanceof SymbolicAdd ) )
           eval( !( elB instanceof SymbolicAdd ) )
-          r1: AddRoot( elemA == addA )
-          AddRoot( elemA == addB , elemB == r1.getElemB() )
           eval( elA.extSymbolicEquals( elB.negate() ) )
           eval( elA != elB )
           ds: DroolsSession()
-          not( Reng( strt == r1.getElemB() ) )
+          not( Reng( strt == r1b ) )
       then
           // System.out.println( "ElA " + addA + " " + addB );
-          insert( new Reng( r1.getElemB() , r1.getElemB().handleAddSimplify( elA , elB , ds ) ) );
+          insert( new Reng( r1b , r1b.handleAddSimplify( elA , elB , ds ) ) );
 end
 
 
@@ -769,21 +770,22 @@ end
 
 rule "El Plus Negative ElB"
       when
-          addA : SymbolicAdd( )
-          addB : SymbolicAdd( )
+          r1: AddRoot( )
+          r1b: SymbolicAdd() from r1.getElemB()
+          r2: AddRoot( elemB == r1b )
+          addA : SymbolicAdd( ) from r1.getElemA()
+          addB : SymbolicAdd( ) from r2.getElemA()
           elA : SymbolicElem() from addA.getElemB()
           elB : SymbolicElem() from addB.getElemA()
           eval( !( elA instanceof SymbolicAdd ) )
           eval( !( elB instanceof SymbolicAdd ) )
-          r1: AddRoot( elemA == addA )
-          AddRoot( elemA == addB , elemB == r1.getElemB() )
           eval( elA.extSymbolicEquals( elB.negate() ) )
           eval( elA != elB )
           ds:DroolsSession()
-          not( Reng( strt == r1.getElemB() ) )
+          not( Reng( strt == r1b ) )
       then
           // System.out.println( "ElB " + addA + " " + addB );
-          insert( new Reng( r1.getElemB() , r1.getElemB().handleAddSimplify( elA , elB , ds ) ) );
+          insert( new Reng( r1b , r1b.handleAddSimplify( elA , elB , ds ) ) );
 end
 
 
@@ -793,21 +795,22 @@ end
 
 rule "El Plus Negative ElD"
       when
-          addA : SymbolicAdd( )
-          addB : SymbolicAdd( )
+          r1: AddRoot( )
+          r1b: SymbolicAdd() from r1.getElemB()
+          r2: AddRoot( elemB == r1b )
+          addA : SymbolicAdd( ) from r1.getElemA()
+          addB : SymbolicAdd( ) from r2.getElemA()
           elA : SymbolicElem() from addA.getElemB()
           elB : SymbolicElem() from addB.getElemB()
           eval( !( elA instanceof SymbolicAdd ) )
           eval( !( elB instanceof SymbolicAdd ) )
-          r1: AddRoot( elemA == addA )
-          AddRoot( elemA == addB , elemB == r1.getElemB() )
           eval( elA.extSymbolicEquals( elB.negate() ) )
           eval( elA != elB )
           ds:DroolsSession()
-          not( Reng( strt == r1.getElemB() ) )
+          not( Reng( strt == r1b ) )
       then
           // System.out.println( "ElB " + addA + " " + addB );
-          insert( new Reng( r1.getElemB() , r1.getElemB().handleAddSimplify( elA , elB , ds ) ) );
+          insert( new Reng( r1b , r1b.handleAddSimplify( elA , elB , ds ) ) );
 end
 
 
@@ -825,6 +828,7 @@ rule "Mult RootA"
           eval( !( a instanceof SymbolicMult ) )
           eval( !( b instanceof SymbolicMult ) )
       then
+          // System.out.println( "Mult RootA" );
           insert( new MultFirst( el0 , a ) );
           insert( new MultLast( el0 , b ) );
           insert( new MultNext( el0 , a , b ) );
@@ -846,6 +850,7 @@ rule "Mult RootB"
           bf: MultFirst( root == b )
           bl: MultLast( root == b )
       then
+          // System.out.println( "Mult RootB" );
           insert( new MultFirst( el0 , a ) );
           insert( new MultLast( el0 , bl.getLast() ) );
           insert( new MultNext( el0 , a , bf.getFirst() ) );
@@ -868,6 +873,7 @@ rule "Mult RootC"
           bf: MultFirst( root == a )
           bl: MultLast( root == a )
       then
+          // System.out.println( "Mult RootC" );
           insert( new MultFirst( el0 , bf.getFirst() ) );
           insert( new MultLast( el0 , b ) );
           insert( new MultNext( el0 , bl.getLast() , b ) );
@@ -890,6 +896,7 @@ rule "Mult RootD"
           bf1: MultFirst( root == b )
           bl1: MultLast( root == b )
       then
+          // System.out.println( "Mult RootD" );
           insert( new MultFirst( el0 , bf0.getFirst() ) );
           insert( new MultLast( el0 , bl1.getLast() ) );
           insert( new MultNext( el0 , bl0.getLast() , bf1.getFirst() ) );
@@ -910,6 +917,7 @@ rule "Mult RootX0"
           eval( el0.getFac().isMultAssociative() )
           mn: MultNext( root == el0.getElemB() )
       then
+          // System.out.println( "Mult RootX0" );
           insert( new MultNext( el0 , mn.getFirst() , mn.getNext() ) );
 end
 
@@ -924,6 +932,7 @@ rule "Mult RootX1"
           eval( el0.getFac().isMultAssociative() )
           mn: MultNext( root == el0.getElemA() )
       then
+          // System.out.println( "Mult RootX1" );
           insert( new MultNext( el0 , mn.getFirst() , mn.getNext() ) );
 end
 
@@ -951,6 +960,7 @@ rule "Inv El Mult El Associative"
           not( Reng( strt == a ) )
           not( Reng( strt == b ) )
       then
+          // System.out.println( "Inv El Mult El Associative" );
           insert( new Reng( rt , rt.handleMultSimplify( a , b , ds ) ) );
 end
 
@@ -977,6 +987,7 @@ rule "El Mult Inv El Associative"
           not( Reng( strt == a ) )
           not( Reng( strt == b ) )
       then
+          // System.out.println( "El Mult Inv El Associative" );
           insert( new Reng( rt , rt.handleMultSimplify( a , b , ds ) ) );
 end
 
@@ -1004,6 +1015,7 @@ rule "Inv El Mult El Non-Associative"
           not( Reng( strt == a ) )
           not( Reng( strt == b ) )
       then
+          // System.out.println( "Inv El Mult El Non-Associative" );
           insert( new Reng( mn , new SymbolicIdentity( mn.getFac().getFac() , ds ) ) );
 end
 
@@ -1031,6 +1043,7 @@ rule "El Mult Inv El Non-Associative"
           not( Reng( strt == a ) )
           not( Reng( strt == b ) )
       then
+          // System.out.println( "El Mult Inv El Non-Associative" );
           insert( new Reng( mn , new SymbolicIdentity( mn.getFac().getFac() , ds ) ) );
 end
 
