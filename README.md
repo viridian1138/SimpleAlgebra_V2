@@ -74,6 +74,8 @@ Drools
 
 ...http://stackoverflow.com/questions/92985/using-drools-in-a-heavy-batch-process
 
+...https://docs.jboss.org/drools/release/5.2.0.Final/drools-expert-docs/html/ch05.html
+
 Einstein Summation Convention
 
 ...http://en.wikipedia.org/wiki/Einstein_notation
