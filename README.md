@@ -76,6 +76,8 @@ Drools
 
 ...https://docs.jboss.org/drools/release/5.2.0.Final/drools-expert-docs/html/ch05.html
 
+...http://blog.athico.com/2007/06/chained-from-accumulate-collect.html
+
 Einstein Summation Convention
 
 ...http://en.wikipedia.org/wiki/Einstein_notation
