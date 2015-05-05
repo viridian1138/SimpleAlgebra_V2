@@ -68,8 +68,8 @@ import simplealgebra.symbolic.SymbolicMult;
 import simplealgebra.symbolic.SymbolicOps;
 import simplealgebra.symbolic.SymbolicSqrt;
 import simplealgebra.symbolic.SymbolicZero;
-import test_simplealgebra.TestMaterialDerivativeSymbolic.SimpleMetric;
-import test_simplealgebra.TestMaterialDerivativeSymbolic.TestMetricTensorFactory;
+
+
 
 
 
@@ -1256,6 +1256,293 @@ public class TestMaterialDerivativeAsym4D extends TestCase
 	
 	
 	/**
+	 * Input parameter for SimpleMetric.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
+	protected static class SimpleMetricParam
+	{
+		
+		
+		
+		
+		
+		/**
+		 * Gets the factory for the enclosed type.
+		 * 
+		 * @return The factory for the enclosed type.
+		 */
+		public EinsteinTensorElemFactory<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> getFac() {
+			return fac;
+		}
+
+
+		/**
+		 * Sets the factory for the enclosed type.
+		 * 
+		 * @param fac The factory for the enclosed type.
+		 */
+		public void setFac(
+				EinsteinTensorElemFactory<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> fac) {
+			this.fac = fac;
+		}
+
+
+		/**
+		 * Gets whether the indices should be contravariant or covariant.
+		 * 
+		 * @return Indicates whether the indices should be contravariant or covariant.
+		 */
+		public boolean isIcovariantIndices() {
+			return icovariantIndices;
+		}
+
+
+		/**
+		 * Sets whether the indices should be contravariant or covariant.
+		 * 
+		 * @param icovariantIndices Indicates whether the indices should be contravariant or covariant.
+		 */
+		public void setIcovariantIndices(boolean icovariantIndices) {
+			this.icovariantIndices = icovariantIndices;
+		}
+
+
+		/**
+		 * Gets the first tensor index of the metric.
+		 * 
+		 * @return The first tensor index of the metric.
+		 */
+		public Object getIndex0() {
+			return index0;
+		}
+
+
+		/**
+		 * Sets the first tensor index of the metric.
+		 * 
+		 * @param index0 The first tensor index of the metric.
+		 */
+		public void setIndex0(Object index0) {
+			this.index0 = index0;
+		}
+
+
+		/**
+		 * Gets the second tensor index of the metric.
+		 * 
+		 * @return The second tensor index of the metric.
+		 */
+		public Object getIndex1() {
+			return index1;
+		}
+
+
+		/**
+		 * Sets the second tensor index of the metric.
+		 * 
+		 * @param index0 The second tensor index of the metric.
+		 */
+		public void setIndex1(Object index1) {
+			this.index1 = index1;
+		}
+
+
+		/**
+		 * Gets the symbolic elem for the square of the speed of light.
+		 * 
+		 * @return The symbolic elem for the square of the speed of light.
+		 */
+		public SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> getcSquared() {
+			return cSquared;
+		}
+
+
+		/**
+		 * Sets the symbolic elem for the square of the speed of light.
+		 * 
+		 * @param cSquared The symbolic elem for the square of the speed of light.
+		 */
+		public void setcSquared(
+				SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> cSquared) {
+			this.cSquared = cSquared;
+		}
+
+
+		/**
+		 * Gets the symbolic elem for the potential term.
+		 * 
+		 * @return The symbolic elem for the potential term.
+		 */
+		public SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> getT_2Ux() {
+			return t_2Ux;
+		}
+
+
+		/**
+		 * Sets the symbolic elem for the potential term.
+		 * 
+		 * @param t_2Ux The symbolic elem for the potential term.
+		 */
+		public void setT_2Ux(
+				SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> t_2Ux) {
+			this.t_2Ux = t_2Ux;
+		}
+
+
+		
+		/**
+		 * The factory for the enclosed type.
+		 */
+		protected EinsteinTensorElemFactory<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> fac;
+		
+		
+		/**
+		 * Indicates whether the indices should be contravariant or covariant.
+		 */
+		protected boolean icovariantIndices;
+		
+		
+		/**
+		 * First tensor index of the metric.
+		 */
+		protected Object index0;
+		
+		
+		/**
+		 * Second tensor index of the metric.
+		 */
+		protected Object index1;
+		
+		
+		/**
+		 * Symbolic elem for the square of the speed of light.
+		 */
+		protected SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> cSquared;
+		
+		
+		/**
+		 * Symbolic elem for the potential term.
+		 */
+		protected SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> t_2Ux;
+		
+		
+	}
+	
+	
+	
+	/**
+	 * A simple instance of a metric tensor.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
+	protected static class SimpleMetric extends SymbolicElem<EinsteinTensorElem<Object,SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>,EinsteinTensorElemFactory<Object,SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>>
+	{
+
+		/**
+		 * Constructs the metric tensor.
+		 * 
+		 * @param param Input parameter.
+		 */
+		public SimpleMetric(
+				SimpleMetricParam param ) {
+			super( param.getFac() );
+			icovariantIndices = param.isIcovariantIndices();
+			index0 = param.getIndex0();
+			index1 = param.getIndex1();
+			cSquared = param.getcSquared();
+			t_2Ux = param.getT_2Ux();
+		}
+
+		@Override
+		public EinsteinTensorElem<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> eval(
+				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace)
+				throws NotInvertibleException,
+				MultiplicativeDistributionRequiredException {
+			
+			final TestDimensionFour td = new TestDimensionFour();
+			
+			
+			SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>
+				se = this.getFac().getFac().getFac();
+			
+			
+			SimpleCurveMetricTensorFactory<Object, ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> cnf =
+						new SimpleCurveMetricTensorFactory<Object, ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>(
+								se, cSquared, t_2Ux);
+			
+			
+			
+			EinsteinTensorElem<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> ret =
+					cnf.getMetricTensor(icovariantIndices, index0, index1, td.getVal() );
+			
+			return( ret );
+		}
+
+		@Override
+		public EinsteinTensorElem<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> evalPartialDerivative(
+				ArrayList<? extends Elem<?, ?>> withRespectTo,
+				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace)
+				throws NotInvertibleException,
+				MultiplicativeDistributionRequiredException {
+			
+			final EinsteinTensorElem<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>
+			v = this.eval( implicitSpace );
+		
+			final PartialDerivativeOp<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>,SymbolicElem<DoubleElem,DoubleElemFactory>> op = 
+					new PartialDerivativeOp<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>,SymbolicElem<DoubleElem,DoubleElemFactory>>(
+							this.getFac().getFac().getFac().getFac(), (ArrayList<SymbolicElem<DoubleElem, DoubleElemFactory>>) withRespectTo );
+		
+			final ArrayList<Object> indices = new ArrayList<Object>();
+		
+			final EinsteinTensorElem<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>
+				el = new EinsteinTensorElem<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>(
+						this.getFac().getFac().getFac(), indices, indices);
+		
+			el.setVal( new ArrayList<BigInteger>() , op );
+		
+			return( el.mult( v ) );
+		}
+
+		@Override
+		public void writeString(PrintStream ps) {
+			throw( new RuntimeException( "NotSupported" ) );
+		}
+		
+		
+		/**
+		 * Indicates whether the indices should be contravariant or covariant.
+		 */
+		private boolean icovariantIndices;
+		
+		/**
+		 * First tensor index of the metric.
+		 */
+		private Object index0;
+		
+		/**
+		 * Second tensor index of the metric.
+		 */
+		private Object index1;
+		
+		/**
+		 * Symbolic elem for the square of the speed of light.
+		 */
+		private SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> cSquared;
+		
+		/**
+		 * Symbolic elem for the potential term.
+		 */
+		private SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> t_2Ux;
+		
+	}
+
+	
+	
+	
+	/**
 	 * Factory for generating an instance of the metric tensor.
 	 * 
 	 * @author thorngreen
@@ -1284,7 +1571,16 @@ public class TestMaterialDerivativeAsym4D extends TestCase
 		public SymbolicElem<EinsteinTensorElem<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>, EinsteinTensorElemFactory<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>> getMetricTensor(
 				boolean covariantIndices, Object index0, Object index1 ) {
 			
-			final SimpleMetric sm = new SimpleMetric( fac , covariantIndices , index0 , index1 , cSquared , t_2Ux );
+			final SimpleMetricParam param = new SimpleMetricParam();
+			
+			param.setFac( fac );
+			param.setIcovariantIndices( covariantIndices );
+			param.setIndex0( index0 );
+			param.setIndex1( index1 );
+			param.setcSquared( cSquared );
+			param.setT_2Ux( t_2Ux );
+			
+			final SimpleMetric sm = new SimpleMetric( param );
 			return( sm );
 		}
 		

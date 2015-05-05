@@ -427,13 +427,14 @@ rule "Double Invert Right Commute"
      when
           n0 : SymbolicInvertRight( )
           n1 : SymbolicInvertRight( elem == n0 )
+          e0 : SymbolicElem() from n0.getElem()
           not( Reng( strt == n1 ) )
           not( Reng( strt == n0 ) )
-          not( Reng( strt == n0.getElem() ) )
-          eval( n0.getElem().getFac().isNestedMultCommutative() )
+          not( Reng( strt == e0 ) )
+          eval( e0.getFac().isNestedMultCommutative() )
      then
           // System.out.println( "Double Invert Right Commute" );
-          insert( new Reng( n1 , n0.getElem() ) );
+          insert( new Reng( n1 , e0 ) );
 end
 
 
@@ -719,6 +720,7 @@ rule "Add RootA"
           elA : AddRoot( elemB == el0 )
           elB : SymbolicAdd( elemA == el0 )
           not( Reng( strt == elB ) )
+          not( Reng( strt == elA ) )
           not( Reng( strt == el0 ) )
       then
           // System.out.println( "Add Root A " + elA.getElemA() + " " + elB );
@@ -735,6 +737,7 @@ rule "Add RootB"
           elA : AddRoot( elemB == el0 )
           elB : SymbolicAdd( elemB == el0 )
           not( Reng( strt == elB ) )
+          not( Reng( strt == elA ) )
           not( Reng( strt == el0 ) )
       then
           // System.out.println( "Add Root B " + elA.getElemA() + " " + elB );
@@ -759,6 +762,10 @@ rule "El Plus Negative ElA"
           eval( elA != elB )
           ds: DroolsSession()
           not( Reng( strt == r1b ) )
+          not( Reng( strt == addA ) )
+          not( Reng( strt == addB ) )
+          not( Reng( strt == elA ) )
+          not( Reng( strt == elB ) )
       then
           // System.out.println( "ElA " + addA + " " + addB );
           insert( new Reng( r1b , r1b.handleAddSimplify( elA , elB , ds ) ) );
@@ -783,6 +790,10 @@ rule "El Plus Negative ElB"
           eval( elA != elB )
           ds:DroolsSession()
           not( Reng( strt == r1b ) )
+          not( Reng( strt == addA ) )
+          not( Reng( strt == addB ) )
+          not( Reng( strt == elA ) )
+          not( Reng( strt == elB ) )
       then
           // System.out.println( "ElB " + addA + " " + addB );
           insert( new Reng( r1b , r1b.handleAddSimplify( elA , elB , ds ) ) );
@@ -808,6 +819,10 @@ rule "El Plus Negative ElD"
           eval( elA != elB )
           ds:DroolsSession()
           not( Reng( strt == r1b ) )
+          not( Reng( strt == addA ) )
+          not( Reng( strt == addB ) )
+          not( Reng( strt == elA ) )
+          not( Reng( strt == elB ) )
       then
           // System.out.println( "ElB " + addA + " " + addB );
           insert( new Reng( r1b , r1b.handleAddSimplify( elA , elB , ds ) ) );
@@ -827,6 +842,9 @@ rule "Mult RootA"
           b : SymbolicElem() from el0.getElemB()
           eval( !( a instanceof SymbolicMult ) )
           eval( !( b instanceof SymbolicMult ) )
+          not( Reng( strt == el0 ) )
+          not( Reng( strt == a ) )
+          not( Reng( strt == b ) )
       then
           // System.out.println( "Mult RootA" );
           insert( new MultFirst( el0 , a ) );
@@ -849,6 +867,9 @@ rule "Mult RootB"
           eval( !( a instanceof SymbolicMult ) )
           bf: MultFirst( root == b )
           bl: MultLast( root == b )
+          not( Reng( strt == el0 ) )
+          not( Reng( strt == a ) )
+          not( Reng( strt == b ) )
       then
           // System.out.println( "Mult RootB" );
           insert( new MultFirst( el0 , a ) );
@@ -872,6 +893,9 @@ rule "Mult RootC"
           eval( !( b instanceof SymbolicMult ) )
           bf: MultFirst( root == a )
           bl: MultLast( root == a )
+          not( Reng( strt == el0 ) )
+          not( Reng( strt == a ) )
+          not( Reng( strt == b ) )
       then
           // System.out.println( "Mult RootC" );
           insert( new MultFirst( el0 , bf.getFirst() ) );
@@ -895,6 +919,9 @@ rule "Mult RootD"
           bl0: MultLast( root == a )
           bf1: MultFirst( root == b )
           bl1: MultLast( root == b )
+          not( Reng( strt == el0 ) )
+          not( Reng( strt == a ) )
+          not( Reng( strt == b ) )
       then
           // System.out.println( "Mult RootD" );
           insert( new MultFirst( el0 , bf0.getFirst() ) );
@@ -916,6 +943,7 @@ rule "Mult RootX0"
           el0 : SymbolicMult()
           eval( el0.getFac().isMultAssociative() )
           mn: MultNext( root == el0.getElemB() )
+          not( Reng( strt == el0 ) )
       then
           // System.out.println( "Mult RootX0" );
           insert( new MultNext( el0 , mn.getFirst() , mn.getNext() ) );
@@ -931,6 +959,7 @@ rule "Mult RootX1"
           el0 : SymbolicMult()
           eval( el0.getFac().isMultAssociative() )
           mn: MultNext( root == el0.getElemA() )
+          not( Reng( strt == el0 ) )
       then
           // System.out.println( "Mult RootX1" );
           insert( new MultNext( el0 , mn.getFirst() , mn.getNext() ) );

@@ -63,7 +63,7 @@ import simplealgebra.symbolic.SymbolicMult;
 import simplealgebra.symbolic.SymbolicOps;
 import simplealgebra.symbolic.SymbolicSqrt;
 import simplealgebra.symbolic.SymbolicZero;
-import test_simplealgebra.TestMaterialDerivativeAsym4D.TestTemporaryIndexFactory;
+
 
 
 
@@ -1120,6 +1120,183 @@ public class TestMaterialDerivativeSymbolic extends TestCase
 	
 	
 	/**
+	 * Input parameter for SimpleMetric.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
+	protected static class SimpleMetricParam
+	{
+		
+		
+		
+		
+		
+		/**
+		 * Gets the factory for the enclosed type.
+		 * 
+		 * @return The factory for the enclosed type.
+		 */
+		public EinsteinTensorElemFactory<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> getFac() {
+			return fac;
+		}
+
+
+		/**
+		 * Sets the factory for the enclosed type.
+		 * 
+		 * @param fac The factory for the enclosed type.
+		 */
+		public void setFac(
+				EinsteinTensorElemFactory<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> fac) {
+			this.fac = fac;
+		}
+
+
+		/**
+		 * Gets whether the indices should be contravariant or covariant.
+		 * 
+		 * @return Indicates whether the indices should be contravariant or covariant.
+		 */
+		public boolean isIcovariantIndices() {
+			return icovariantIndices;
+		}
+
+
+		/**
+		 * Sets whether the indices should be contravariant or covariant.
+		 * 
+		 * @param icovariantIndices Indicates whether the indices should be contravariant or covariant.
+		 */
+		public void setIcovariantIndices(boolean icovariantIndices) {
+			this.icovariantIndices = icovariantIndices;
+		}
+
+
+		/**
+		 * Gets the first tensor index of the metric.
+		 * 
+		 * @return The first tensor index of the metric.
+		 */
+		public Object getIndex0() {
+			return index0;
+		}
+
+
+		/**
+		 * Sets the first tensor index of the metric.
+		 * 
+		 * @param index0 The first tensor index of the metric.
+		 */
+		public void setIndex0(Object index0) {
+			this.index0 = index0;
+		}
+
+
+		/**
+		 * Gets the second tensor index of the metric.
+		 * 
+		 * @return The second tensor index of the metric.
+		 */
+		public Object getIndex1() {
+			return index1;
+		}
+
+
+		/**
+		 * Sets the second tensor index of the metric.
+		 * 
+		 * @param index0 The second tensor index of the metric.
+		 */
+		public void setIndex1(Object index1) {
+			this.index1 = index1;
+		}
+
+
+		/**
+		 * Gets the symbolic elem for the square of the speed of light.
+		 * 
+		 * @return The symbolic elem for the square of the speed of light.
+		 */
+		public SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> getcSquared() {
+			return cSquared;
+		}
+
+
+		/**
+		 * Sets the symbolic elem for the square of the speed of light.
+		 * 
+		 * @param cSquared The symbolic elem for the square of the speed of light.
+		 */
+		public void setcSquared(
+				SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> cSquared) {
+			this.cSquared = cSquared;
+		}
+
+
+		/**
+		 * Gets the symbolic elem for the potential term.
+		 * 
+		 * @return The symbolic elem for the potential term.
+		 */
+		public SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> getT_2Ux() {
+			return t_2Ux;
+		}
+
+
+		/**
+		 * Sets the symbolic elem for the potential term.
+		 * 
+		 * @param t_2Ux The symbolic elem for the potential term.
+		 */
+		public void setT_2Ux(
+				SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> t_2Ux) {
+			this.t_2Ux = t_2Ux;
+		}
+
+
+		
+		/**
+		 * The factory for the enclosed type.
+		 */
+		protected EinsteinTensorElemFactory<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> fac;
+		
+		
+		/**
+		 * Indicates whether the indices should be contravariant or covariant.
+		 */
+		protected boolean icovariantIndices;
+		
+		
+		/**
+		 * First tensor index of the metric.
+		 */
+		protected Object index0;
+		
+		
+		/**
+		 * Second tensor index of the metric.
+		 */
+		protected Object index1;
+		
+		
+		/**
+		 * Symbolic elem for the square of the speed of light.
+		 */
+		protected SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> cSquared;
+		
+		
+		/**
+		 * Symbolic elem for the potential term.
+		 */
+		protected SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> t_2Ux;
+		
+		
+	}
+	
+	
+	
+	/**
 	 * A simple instance of a metric tensor.
 	 * 
 	 * @author thorngreen
@@ -1131,24 +1308,16 @@ public class TestMaterialDerivativeSymbolic extends TestCase
 		/**
 		 * Constructs the metric tensor.
 		 * 
-		 * @param _fac The factory for the enclosed type.
-		 * @param _icovariantIndices Indicates whether the indices should be contravariant or covariant.
-		 * @param _index0 First tensor index of the metric.
-		 * @param _index1 Second tensor index of the metric.
-		 * @param _cSquared Symbolic elem for the square of the speed of light.
-		 * @param _t_2Ux Symbolic elem for the potential term.
+		 * @param param Input parameter.
 		 */
 		public SimpleMetric(
-				EinsteinTensorElemFactory<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> _fac,
-				boolean _icovariantIndices, Object _index0, Object _index1,
-				SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> _cSquared,
-				SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> _t_2Ux ) {
-			super(_fac);
-			icovariantIndices = _icovariantIndices;
-			index0 = _index0;
-			index1 = _index1;
-			cSquared = _cSquared;
-			t_2Ux = _t_2Ux;
+				SimpleMetricParam param ) {
+			super( param.getFac() );
+			icovariantIndices = param.isIcovariantIndices();
+			index0 = param.getIndex0();
+			index1 = param.getIndex1();
+			cSquared = param.getcSquared();
+			t_2Ux = param.getT_2Ux();
 		}
 
 		@Override
@@ -1265,7 +1434,16 @@ public class TestMaterialDerivativeSymbolic extends TestCase
 		public SymbolicElem<EinsteinTensorElem<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>, EinsteinTensorElemFactory<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>> getMetricTensor(
 				boolean covariantIndices, Object index0, Object index1 ) {
 			
-			return( new SimpleMetric( fac , covariantIndices , index0 , index1 , cSquared , t_2Ux ) );
+			final SimpleMetricParam param = new SimpleMetricParam();
+			
+			param.setFac( fac );
+			param.setIcovariantIndices( covariantIndices );
+			param.setIndex0( index0 );
+			param.setIndex1( index1 );
+			param.setcSquared( cSquared );
+			param.setT_2Ux( t_2Ux );
+			
+			return( new SimpleMetric( param ) );
 		}
 		
 		/**
