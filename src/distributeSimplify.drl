@@ -719,12 +719,14 @@ rule "Add RootA"
           el0 : SymbolicAdd()
           elA : AddRoot( elemB == el0 )
           elB : SymbolicAdd( elemA == el0 )
+          elAA : SymbolicAdd() from elA.getElemA()
+          not( Reng( strt == elAA ) )
           not( Reng( strt == elB ) )
           not( Reng( strt == elA ) )
           not( Reng( strt == el0 ) )
       then
-          // System.out.println( "Add Root A " + elA.getElemA() + " " + elB );
-          insert( new AddRoot( elA.getElemA() , elB ) );
+          // System.out.println( "Add Root A " + elAA + " " + elB );
+          insert( new AddRoot( elAA , elB ) );
 end
 
 
@@ -736,12 +738,14 @@ rule "Add RootB"
           el0 : SymbolicAdd()
           elA : AddRoot( elemB == el0 )
           elB : SymbolicAdd( elemB == el0 )
+          elAA : SymbolicAdd() from elA.getElemA()
+          not( Reng( strt == elAA ) )
           not( Reng( strt == elB ) )
           not( Reng( strt == elA ) )
           not( Reng( strt == el0 ) )
       then
-          // System.out.println( "Add Root B " + elA.getElemA() + " " + elB );
-          insert( new AddRoot( elA.getElemA() , elB ) );
+          // System.out.println( "Add Root B " + elAA + " " + elB );
+          insert( new AddRoot( elAA , elB ) );
 end
 
 

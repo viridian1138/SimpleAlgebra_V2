@@ -234,29 +234,30 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	 * 
 	 * This implementation assumes that repeated tensor indices happen exactly twice, and on opposite sides of the multiplication.
 	 * 
-	 * @param b_contravariantIndices Contravariant indices of the multiplication argument.
-	 * @param b_covariantIndices Covariant indices of the multiplication argument.
-	 * @param new_contravariantIndices Contravariant indices of the multiplication result.
-	 * @param new_covariantIndices Covariant indices of the multiplication result.
-	 * @param matchIndicesA List of left-side match indices for the combined key.
-	 * @param matchIndicesB List of right-side match indices for the combined key.
-	 * @param nonMatchIndices Indices that aren't removed from the multiplication result due to a need to match.
+	 * @param param Input parameter.
 	 */
-	protected void processIndexMatching( ArrayList<Z> b_contravariantIndices , ArrayList<Z> b_covariantIndices ,
-			ArrayList<Z> new_contravariantIndices , ArrayList<Z> new_covariantIndices , 
-			ArrayList<Integer> matchIndicesA , ArrayList<Integer> matchIndicesB , ArrayList<Integer> nonMatchIndices )
+	protected void processIndexMatching( final IndexMatchParams<Z> param )
 	{
+		
+		final ArrayList<Z> b_contravariantIndices = param.getB_contravariantIndices();
+		final ArrayList<Z> b_covariantIndices = param.getB_covariantIndices();
+		final ArrayList<Z> new_contravariantIndices = param.getNew_contravariantIndices();
+		final ArrayList<Z> new_covariantIndices = param.getNew_covariantIndices();
+		final ArrayList<Integer> matchIndicesA = param.getMatchIndicesA();
+		final ArrayList<Integer> matchIndicesB = param.getMatchIndicesB();
+		final ArrayList<Integer> nonMatchIndices = param.getNonMatchIndices();
+		
 		int ocnt = 0;
 		
 		
-		ArrayList<Z> combinedB = buildCombinedContravariantCovariantIn( b_contravariantIndices , b_covariantIndices );
+		final ArrayList<Z> combinedB = buildCombinedContravariantCovariantIn( b_contravariantIndices , b_covariantIndices );
 		
 		
 		{
-			Iterator<Z> it = contravariantIndices.iterator();
+			final Iterator<Z> it = contravariantIndices.iterator();
 			while( it.hasNext() )
 			{
-				Z tstA = it.next();
+				final Z tstA = it.next();
 				final int indB = combinedB.indexOf( tstA );
 				if( indB < 0 )
 				{
@@ -283,10 +284,10 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 		
 		
 		{
-			Iterator<Z> it = covariantIndices.iterator();
+			final Iterator<Z> it = covariantIndices.iterator();
 			while( it.hasNext() )
 			{
-				Z tstA = it.next();
+				final Z tstA = it.next();
 				final int indB = combinedB.indexOf( tstA );
 				if( indB < 0 )
 				{
@@ -313,10 +314,10 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 		
 		
 		{
-			Iterator<Z> it = b_contravariantIndices.iterator();
+			final Iterator<Z> it = b_contravariantIndices.iterator();
 			while( it.hasNext() )
 			{
-				Z tstB = it.next();
+				final Z tstB = it.next();
 				if( !( contravariantIndices.contains( tstB ) ) && !( covariantIndices.contains( tstB ) ) )
 				{
 					new_contravariantIndices.add( tstB );
@@ -327,10 +328,10 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 		}
 		
 		{
-			Iterator<Z> it = b_covariantIndices.iterator();
+			final Iterator<Z> it = b_covariantIndices.iterator();
 			while( it.hasNext() )
 			{
-				Z tstB = it.next();
+				final Z tstB = it.next();
 				if( !( contravariantIndices.contains( tstB ) ) && !( covariantIndices.contains( tstB ) ) )
 				{
 					new_covariantIndices.add( tstB );
@@ -343,40 +344,179 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 		
 	}
 	
+	
+	
+	/**
+	 * Input Parameter for processIndexMatching()
+	 * 
+	 * This documentation should be viewed using Firefox version 33.1.1 or above.
+	 * 
+	 * @author thorngreen
+	 *
+	 * @param <Z> The type for the tensor indices.
+	 */
+	protected static class IndexMatchParams<Z extends Object>
+	{
+		
+		
+		
+		/**
+		 * Gets the contravariant indices of the multiplication argument.
+		 * 
+		 * @return The contravariant indices of the multiplication argument.
+		 */
+		public ArrayList<Z> getB_contravariantIndices() {
+			return b_contravariantIndices;
+		}
+
+		/**
+		 * Sets the contravariant indices of the multiplication argument.
+		 * 
+		 * @param b_contravariantIndices The contravariant indices of the multiplication argument.
+		 */
+		public void setB_contravariantIndices(ArrayList<Z> b_contravariantIndices) {
+			this.b_contravariantIndices = b_contravariantIndices;
+		}
+
+		/**
+		 * Gets the covariant indices of the multiplication argument.
+		 * 
+		 * @return The covariant indices of the multiplication argument.
+		 */
+		public ArrayList<Z> getB_covariantIndices() {
+			return b_covariantIndices;
+		}
+
+		/**
+		 * Sets the covariant indices of the multiplication argument.
+		 * 
+		 * @param b_covariantIndices The covariant indices of the multiplication argument.
+		 */
+		public void setB_covariantIndices(ArrayList<Z> b_covariantIndices) {
+			this.b_covariantIndices = b_covariantIndices;
+		}
+
+		/**
+		 * Gets the contravariant indices of the multiplication result.
+		 * 
+		 * @return The contravariant indices of the multiplication result.
+		 */
+		public ArrayList<Z> getNew_contravariantIndices() {
+			return new_contravariantIndices;
+		}
+
+		/**
+		 * Gets the covariant indices of the multiplication result.
+		 * 
+		 * @return The covariant indices of the multiplication result.
+		 */
+		public ArrayList<Z> getNew_covariantIndices() {
+			return new_covariantIndices;
+		}
+
+		/**
+		 * Gets the list of left-side match indices for the combined key.
+		 * 
+		 * @return The list of left-side match indices for the combined key.
+		 */
+		public ArrayList<Integer> getMatchIndicesA() {
+			return matchIndicesA;
+		}
+
+		/**
+		 * Gets the list of right-side match indices for the combined key.
+		 * 
+		 * @return The list of right-side match indices for the combined key.
+		 */
+		public ArrayList<Integer> getMatchIndicesB() {
+			return matchIndicesB;
+		}
+
+		/**
+		 * Gets the indices that aren't removed from the multiplication result due to a need to match.
+		 * 
+		 * @return The indices that aren't removed from the multiplication result due to a need to match.
+		 */
+		public ArrayList<Integer> getNonMatchIndices() {
+			return nonMatchIndices;
+		}
+
+		
+		/**
+		 * Contravariant indices of the multiplication argument.
+		 */
+		ArrayList<Z> b_contravariantIndices;
+		
+		/**
+		 * Covariant indices of the multiplication argument.
+		 */
+		ArrayList<Z> b_covariantIndices;
+		
+		/**
+		 * Contravariant indices of the multiplication result.
+		 */
+		final ArrayList<Z> new_contravariantIndices = new ArrayList<Z>();
+		
+		/**
+		 * Covariant indices of the multiplication result.
+		 */
+		final ArrayList<Z> new_covariantIndices = new ArrayList<Z>();
+		
+		/**
+		 * List of left-side match indices for the combined key.
+		 */
+		final ArrayList<Integer> matchIndicesA = new ArrayList<Integer>();
+		
+		/**
+		 * List of right-side match indices for the combined key.
+		 */
+		final ArrayList<Integer> matchIndicesB = new ArrayList<Integer>();
+		
+		/**
+		 * Indices that aren't removed from the multiplication result due to a need to match.
+		 */
+		final ArrayList<Integer> nonMatchIndices = new ArrayList<Integer>();
+		
+	}
+	
 
 	
 	
 	@Override
 	public EinsteinTensorElem<Z, R, S> mult(EinsteinTensorElem<Z, R, S> b) {
 		
-		ArrayList<Integer> matchIndicesA = new ArrayList<Integer>();
-		ArrayList<Integer> matchIndicesB = new ArrayList<Integer>();
-		ArrayList<Integer> nonMatchIndices = new ArrayList<Integer>();
+		final IndexMatchParams<Z> param = new IndexMatchParams<Z>();
 		
-		ArrayList<Z> new_contravariantIndices = new ArrayList<Z>();
-		ArrayList<Z> new_covariantIndices = new ArrayList<Z>();
+		param.setB_contravariantIndices( b.contravariantIndices );
+		param.setB_covariantIndices( b.covariantIndices );
 		
-		processIndexMatching( b.contravariantIndices , b.covariantIndices ,
-				new_contravariantIndices , new_covariantIndices , matchIndicesA , matchIndicesB , nonMatchIndices );
+		processIndexMatching( param );
 		
-		HashMap<ArrayList<BigInteger>,ArrayList<ArrayList<BigInteger>>> matchMap = buildSummationIndexMap( b , matchIndicesB );
+		final ArrayList<Integer> matchIndicesA = param.getMatchIndicesA();
+		final ArrayList<Integer> matchIndicesB = param.getMatchIndicesB();
+		final ArrayList<Integer> nonMatchIndices = param.getNonMatchIndices();
 		
-		EinsteinTensorElem<Z,R,S> ret = new EinsteinTensorElem<Z,R,S>( fac , new_contravariantIndices , new_covariantIndices );
+		final ArrayList<Z> new_contravariantIndices = param.getNew_contravariantIndices();
+		final ArrayList<Z> new_covariantIndices = param.getNew_covariantIndices();
 		
-		Iterator<ArrayList<BigInteger>> it = map.keySet().iterator();
+		final HashMap<ArrayList<BigInteger>,ArrayList<ArrayList<BigInteger>>> matchMap = buildSummationIndexMap( b , matchIndicesB );
+		
+		final EinsteinTensorElem<Z,R,S> ret = new EinsteinTensorElem<Z,R,S>( fac , new_contravariantIndices , new_covariantIndices );
+		
+		final Iterator<ArrayList<BigInteger>> it = map.keySet().iterator();
 		
 		while( it.hasNext() )
 		{
-			ArrayList<BigInteger> key = it.next();
+			final ArrayList<BigInteger> key = it.next();
 			final R val = map.get(key);
-			ArrayList<BigInteger> matchMapKey = buildSummationIndex( key , matchIndicesA );
+			final ArrayList<BigInteger> matchMapKey = buildSummationIndex( key , matchIndicesA );
 			final ArrayList<ArrayList<BigInteger>> mmatch = matchMap.get(matchMapKey);
 			if( mmatch != null )
 			{
 				Iterator<ArrayList<BigInteger>> ita = mmatch.iterator();
 				while( ita.hasNext() )
 				{
-					ArrayList<BigInteger> bkey = ita.next();
+					final ArrayList<BigInteger> bkey = ita.next();
 					final R bval = b.map.get( bkey );
 					final R muval = val.mult( bval );
 					final ArrayList<BigInteger> combinedAB = buildCombinedAB( key , bkey );
