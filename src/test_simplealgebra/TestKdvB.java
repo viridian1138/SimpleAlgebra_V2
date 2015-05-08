@@ -52,6 +52,7 @@ import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicReduction;
 import simplealgebra.ddx.*;
+import test_simplealgebra.TestBurgersB.TempArrayFillInnerParam;
 
 
 
@@ -204,6 +205,155 @@ public class TestKdvB extends TestCase {
 	{
 		return( tempArray[ NSTPT * 2 ][ NSTPX ] );
 	}
+	
+	
+	
+	
+	/**
+	 * Input parameter for fillTempArrayInner()
+	 * 
+	 * @author thorngreen
+	 *
+	 */
+	protected static class TempArrayFillInnerParam
+	{
+		
+		
+		
+		
+		
+		
+		/**
+		 * Gets the T-Axis index for the center in the iter array.
+		 * 
+		 * @return The T-Axis index for the center in the iter array.
+		 */
+		public int getTcnt() {
+			return tcnt;
+		}
+
+
+		/**
+		 * Sets the T-Axis index for the center in the iter array.
+		 * 
+		 * @param tcnt The T-Axis index for the center in the iter array.
+		 */
+		public void setTcnt(int tcnt) {
+			this.tcnt = tcnt;
+		}
+
+
+		/**
+		 * Gets the X-Axis index for the center in the iter array.
+		 * 
+		 * @return The X-Axis index for the center in the iter array.
+		 */
+		public int getXcnt() {
+			return xcnt;
+		}
+
+
+		/**
+		 * Sets the X-Axis index for the center in the iter array.
+		 * 
+		 * @param tcnt The X-Axis index for the center in the iter array.
+		 */
+		public void setXcnt(int xcnt) {
+			this.xcnt = xcnt;
+		}
+
+
+
+		/**
+		 * Gets the T-Axis iteration of the array fill.
+		 * 
+		 * @return The T-Axis iteration of the array fill.
+		 */
+		public int getTa() {
+			return ta;
+		}
+
+
+		/**
+		 * Sets the T-Axis iteration of the array fill.
+		 * 
+		 * @param ta The T-Axis iteration of the array fill.
+		 */
+		public void setTa(int ta) {
+			this.ta = ta;
+		}
+
+
+		/**
+		 * Gets the X-Axis iteration of the array fill.
+		 * 
+		 * @return The X-Axis iteration of the array fill.
+		 */
+		public int getXa() {
+			return xa;
+		}
+
+
+		/**
+		 * Sets the X-Axis iteration of the array fill.
+		 * 
+		 * @param ta The X-Axis iteration of the array fill.
+		 */
+		public void setXa(int xa) {
+			this.xa = xa;
+		}
+
+
+
+		/**
+		 * The T-Axis index for the center in the iter array.
+		 */
+		protected int tcnt;
+		
+		/**
+		 * The X-Axis index for the center in the iter array.
+		 */
+		protected int xcnt;
+		
+		/**
+		 * The T-Axis iteration of the array fill.
+		 */
+		protected int ta;
+		
+		/**
+		 * The X-Axis iteration of the array fill.
+		 */
+		protected int xa;
+		
+	
+	}
+	
+	
+	
+	/**
+	 * Fills one element of the temp array with an element from the iter array.
+	 * 
+	 * @param param Input parameter describing where to get the element.
+	 */
+	protected static void fillTempArrayInner( TempArrayFillInnerParam param )
+	{
+		final int tcnt = param.getTcnt();
+		final int xcnt = param.getXcnt();
+		
+		final int ta = param.getTa();
+		final int xa = param.getXa();
+		
+		final int tv = tcnt + ta;
+		final int xv = xcnt + xa;
+		double av = 0.0;
+		if( ( tv >= 0 )  && ( xv >= 0 ) && 
+				( tv < NUM_T_ITER ) && ( xv < NUM_X_ITER ) )
+		{
+			av = iterArray[ tv ][ xv ];
+		}
+		tempArray[ ta + NSTPT ][ xa + NSTPX ] = av;
+		
+	}
 
 	
 	
@@ -215,19 +365,18 @@ public class TestKdvB extends TestCase {
 	 */
 	protected static void fillTempArray( final int tcnt , final int xcnt )
 	{
+		final TempArrayFillInnerParam param = new TempArrayFillInnerParam();
+		
+		param.setTcnt( tcnt );
+		param.setXcnt( xcnt );
+		
 		for( int ta = -NSTPT ; ta < NSTPT + 1 ; ta++ )
 		{
+			param.setTa( ta );
 			for( int xa = -NSTPX ; xa < NSTPX + 1 ; xa++ )
 			{
-				final int tv = tcnt + ta;
-				final int xv = xcnt + xa;
-				double av = 0.0;
-				if( ( tv >= 0 )  && ( xv >= 0 ) && 
-						( tv < NUM_T_ITER ) && ( xv < NUM_X_ITER ) )
-				{
-					av = iterArray[ tv ][ xv ];
-				}
-				tempArray[ ta + NSTPT ][ xa + NSTPX ] = av;
+				param.setXa( xa );
+				fillTempArrayInner( param );
 			}
 		}
 	}

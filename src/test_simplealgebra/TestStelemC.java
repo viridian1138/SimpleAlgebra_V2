@@ -55,6 +55,7 @@ import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicReduction;
 import simplealgebra.ga.*;
 import simplealgebra.ddx.*;
+import test_simplealgebra.TestSchrodingerA.TempArrayFillInnerParam;
 
 
 
@@ -239,6 +240,209 @@ public class TestStelemC extends TestCase {
 	
 	
 	
+	
+	
+	/**
+	 * Input parameter for fillTempArrayInner()
+	 * 
+	 * @author thorngreen
+	 *
+	 */
+	protected static class TempArrayFillInnerParam
+	{
+		
+		
+		
+		
+		
+		
+		/**
+		 * Gets the T-Axis index for the center in the iter array.
+		 * 
+		 * @return The T-Axis index for the center in the iter array.
+		 */
+		public int getTcnt() {
+			return tcnt;
+		}
+
+
+		/**
+		 * Sets the T-Axis index for the center in the iter array.
+		 * 
+		 * @param tcnt The T-Axis index for the center in the iter array.
+		 */
+		public void setTcnt(int tcnt) {
+			this.tcnt = tcnt;
+		}
+
+
+		/**
+		 * Gets the X-Axis index for the center in the iter array.
+		 * 
+		 * @return The X-Axis index for the center in the iter array.
+		 */
+		public int getXcnt() {
+			return xcnt;
+		}
+
+
+		/**
+		 * Sets the X-Axis index for the center in the iter array.
+		 * 
+		 * @param tcnt The X-Axis index for the center in the iter array.
+		 */
+		public void setXcnt(int xcnt) {
+			this.xcnt = xcnt;
+		}
+
+
+		/**
+		 * Gets the Y-Axis index for the center in the iter array.
+		 * 
+		 * @return The Y-Axis index for the center in the iter array.
+		 */
+		public int getYcnt() {
+			return ycnt;
+		}
+
+
+		/**
+		 * Sets the Y-Axis index for the center in the iter array.
+		 * 
+		 * @param tcnt The Y-Axis index for the center in the iter array.
+		 */
+		public void setYcnt(int ycnt) {
+			this.ycnt = ycnt;
+		}
+
+
+
+		/**
+		 * Gets the T-Axis iteration of the array fill.
+		 * 
+		 * @return The T-Axis iteration of the array fill.
+		 */
+		public int getTa() {
+			return ta;
+		}
+
+
+		/**
+		 * Sets the T-Axis iteration of the array fill.
+		 * 
+		 * @param ta The T-Axis iteration of the array fill.
+		 */
+		public void setTa(int ta) {
+			this.ta = ta;
+		}
+
+
+		/**
+		 * Gets the X-Axis iteration of the array fill.
+		 * 
+		 * @return The X-Axis iteration of the array fill.
+		 */
+		public int getXa() {
+			return xa;
+		}
+
+
+		/**
+		 * Sets the X-Axis iteration of the array fill.
+		 * 
+		 * @param ta The X-Axis iteration of the array fill.
+		 */
+		public void setXa(int xa) {
+			this.xa = xa;
+		}
+
+
+		/**
+		 * Gets the Y-Axis iteration of the array fill.
+		 * 
+		 * @return The Y-Axis iteration of the array fill.
+		 */
+		public int getYa() {
+			return ya;
+		}
+
+
+		/**
+		 * Sets the Y-Axis iteration of the array fill.
+		 * 
+		 * @param ta The Y-Axis iteration of the array fill.
+		 */
+		public void setYa(int ya) {
+			this.ya = ya;
+		}
+		
+
+
+		/**
+		 * The T-Axis index for the center in the iter array.
+		 */
+		protected int tcnt;
+		
+		/**
+		 * The X-Axis index for the center in the iter array.
+		 */
+		protected int xcnt;
+		
+		/**
+		 * The Y-Axis index for the center in the iter array.
+		 */
+		protected int ycnt;
+		
+		/**
+		 * The T-Axis iteration of the array fill.
+		 */
+		protected int ta;
+		
+		/**
+		 * The X-Axis iteration of the array fill.
+		 */
+		protected int xa;
+		
+		/**
+		 * The Y-Axis iteration of the array fill.
+		 */
+		protected int ya;
+		
+	
+	}
+	
+	
+	
+	/**
+	 * Fills one element of the temp array with an element from the iter array.
+	 * 
+	 * @param param Input parameter describing where to get the element.
+	 */
+	protected static void fillTempArrayInner( TempArrayFillInnerParam param )
+	{
+		final int tcnt = param.getTcnt();
+		final int xcnt = param.getXcnt();
+		final int ycnt = param.getYcnt();
+		
+		final int ta = param.getTa();
+		final int xa = param.getXa();
+		final int ya = param.getYa();
+		
+		final int tv = tcnt + ta;
+		final int xv = xcnt + xa;
+		final int yv = ycnt + ya;
+		double av = 0.0;
+		if( ( tv >= 0 )  && ( xv >= 0 ) && ( yv >= 0 ) &&
+				( tv < NUM_T_ITER ) && ( xv < NUM_X_ITER ) && ( yv < NUM_Y_ITER ) )
+		{
+			av = iterArray[ tv ][ xv ][ yv ];
+		}
+		tempArray[ ta + NSTPT ][ xa + NSTPX ][ ya + NSTPY ] = av;
+		
+	}
+	
+	
+	
 	/**
 	 * Fills the temp array with elements from the iter array.
 	 * 
@@ -248,22 +452,22 @@ public class TestStelemC extends TestCase {
 	 */
 	protected static void fillTempArray( final int tcnt , final int xcnt , final int ycnt )
 	{
+		final TempArrayFillInnerParam param = new TempArrayFillInnerParam();
+		
+		param.setTcnt( tcnt );
+		param.setXcnt( xcnt );
+		param.setYcnt( ycnt );
+		
 		for( int ta = -NSTPT ; ta < NSTPT + 1 ; ta++ )
 		{
+			param.setTa( ta );
 			for( int xa = -NSTPX ; xa < NSTPX + 1 ; xa++ )
 			{
+				param.setXa( xa );
 				for( int ya = -NSTPY ; ya < NSTPY + 1 ; ya++ )
 				{
-					final int tv = tcnt + ta;
-					final int xv = xcnt + xa;
-					final int yv = ycnt + ya;
-					double av = 0.0;
-					if( ( tv >= 0 )  && ( xv >= 0 ) && ( yv >= 0 ) &&
-							( tv < NUM_T_ITER ) && ( xv < NUM_X_ITER ) && ( yv < NUM_Y_ITER ) )
-					{
-						av = iterArray[ tv ][ xv ][ yv ];
-					}
-					tempArray[ ta + NSTPT ][ xa + NSTPX ][ ya + NSTPY ] = av;
+					param.setYa( ya );
+					fillTempArrayInner( param ); 
 				}
 			}
 		}
