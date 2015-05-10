@@ -1641,6 +1641,28 @@ public class TestCWave3DCplx extends TestCase {
 	}
 	
 	
+	/**
+	 * Calculates the expectation value given the wave value.
+	 * 
+	 * See http://en.wikipedia.org/wiki/expectation_value_(quantum_mechanics)
+	 * 
+	 * @param in The input wave value.
+	 * @return The calculated expectation value.
+	 */
+	protected double expectationValue( final ComplexElem<DoubleElem,DoubleElemFactory> in ) throws Throwable
+	{
+		final ArrayList<ComplexElem<DoubleElem,DoubleElemFactory>> args = 
+				new ArrayList<ComplexElem<DoubleElem,DoubleElemFactory>>();
+		
+		final ComplexElem<DoubleElem,DoubleElemFactory> conj = 
+				in.handleOptionalOp( ComplexElem.ComplexCmd.CONJUGATE_LEFT , args );
+		
+		final ComplexElem<DoubleElem,DoubleElemFactory> mult = conj.mult( in );
+		
+		return( mult.getRe().getVal() );
+	}
+	
+	
 	
 	/**
 	 * Tests the ability to numerically evaluate the differential equation <math display="inline">
@@ -1689,7 +1711,7 @@ public class TestCWave3DCplx extends TestCase {
 	 * @author thorngreen
 	 *
 	 */
-	public void testStelemSimple() throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	public void testStelemSimple() throws Throwable
 	{
 		final Random rand = new Random( 3344 );
 		
@@ -1935,9 +1957,6 @@ public class TestCWave3DCplx extends TestCase {
 				
 						final ComplexElem<DoubleElem,DoubleElemFactory> ivala = TestCWave3DCplx.getUpdateValue();
 				
-						final double ivalRe = ivala.getRe().getVal();
-						final double ivalIm = ivala.getIm().getVal();
-				
 			
 				
 						ComplexElem<DoubleElem,DoubleElemFactory> err = newton.eval( implicitSpace2 );
@@ -1945,20 +1964,15 @@ public class TestCWave3DCplx extends TestCase {
 		
 						final ComplexElem<DoubleElem,DoubleElemFactory> vala = TestCWave3DCplx.getUpdateValue();
 						
-						final double valRe = vala.getRe().getVal();
-						final double valIm = vala.getIm().getVal();
-						
-						final double errRe = err.getRe().getVal();
-						final double errIm = err.getIm().getVal();
 						
 				
 						if( ( xcnt == 12 ) && ( ycnt == 5 ) && ( zcnt == 5 ) )
 						{
 							System.out.println( "******************" );
 							System.out.println( " ( " + xcnt + " , " + ycnt + " , " + zcnt + " ) " );
-							System.out.println( Math.sqrt( ivalRe * ivalRe + ivalIm * ivalIm ) );
-							System.out.println( Math.sqrt( valRe * valRe + valIm * valIm ) );
-							System.out.println( "## " + ( Math.sqrt( errRe * errRe + errIm * errIm ) ) );
+							System.out.println( Math.sqrt( expectationValue( ivala ) ) );
+							System.out.println( Math.sqrt( expectationValue( vala ) ) );
+							System.out.println( "## " + ( Math.sqrt( expectationValue( err ) ) ) );
 						}
 						
 						
@@ -1977,7 +1991,7 @@ public class TestCWave3DCplx extends TestCase {
 						Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 0 ] > 0 );
 				
 				
-						Assert.assertTrue( Math.abs( Math.sqrt( errRe * errRe + errIm * errIm ) ) < ( 0.01 * Math.abs( Math.sqrt( valRe * valRe + valIm * valIm ) ) + 0.01 ) );
+						Assert.assertTrue( Math.abs( Math.sqrt( expectationValue( err ) ) ) < ( 0.01 * Math.abs( Math.sqrt( expectationValue( vala ) ) ) + 0.01 ) );
 				
 			
 						iterArray[ tval + 1 ][ xcnt ][ ycnt ][ zcnt ] = vala;

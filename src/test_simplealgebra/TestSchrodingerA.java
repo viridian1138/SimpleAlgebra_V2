@@ -1701,6 +1701,29 @@ public class TestSchrodingerA extends TestCase {
 	
 	
 	
+	/**
+	 * Calculates the expectation value given the wave value.
+	 * 
+	 * See http://en.wikipedia.org/wiki/expectation_value_(quantum_mechanics)
+	 * 
+	 * @param in The input wave value.
+	 * @return The calculated expectation value.
+	 */
+	protected double expectationValue( final ComplexElem<DoubleElem,DoubleElemFactory> in ) throws Throwable
+	{
+		final ArrayList<ComplexElem<DoubleElem,DoubleElemFactory>> args = 
+				new ArrayList<ComplexElem<DoubleElem,DoubleElemFactory>>();
+		
+		final ComplexElem<DoubleElem,DoubleElemFactory> conj = 
+				in.handleOptionalOp( ComplexElem.ComplexCmd.CONJUGATE_LEFT , args );
+		
+		final ComplexElem<DoubleElem,DoubleElemFactory> mult = conj.mult( in );
+		
+		return( mult.getRe().getVal() );
+	}
+	
+	
+	
 	
 	/**
 	 * 
@@ -1762,7 +1785,7 @@ public class TestSchrodingerA extends TestCase {
 	 * @author thorngreen
 	 *
 	 */	
-	public void testStelemSimple() throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	public void testStelemSimple() throws Throwable
 	{
 		final Random rand = new Random( 3344 );
 		
@@ -2027,28 +2050,28 @@ public class TestSchrodingerA extends TestCase {
 						clearSpatialAssertArray();
 		
 				
-						final double ivalRe = TestSchrodingerA.getUpdateValueRe();
-						final double ivalIm = TestSchrodingerA.getUpdateValueIm();
-				
-				
+						final ComplexElem<DoubleElem,DoubleElemFactory> ival =
+								new ComplexElem<DoubleElem,DoubleElemFactory>(
+										new DoubleElem( TestSchrodingerA.getUpdateValueRe() ) , 
+										new DoubleElem( TestSchrodingerA.getUpdateValueIm() ) );
 			
 				
 						ComplexElem<DoubleElem, DoubleElemFactory> err = newton.eval( implicitSpace2 );
 		
 		
-						final double valRe = TestSchrodingerA.getUpdateValueRe();
-						final double valIm = TestSchrodingerA.getUpdateValueIm();
+						final ComplexElem<DoubleElem,DoubleElemFactory> val =
+								new ComplexElem<DoubleElem,DoubleElemFactory>(
+										new DoubleElem( TestSchrodingerA.getUpdateValueRe() ) , 
+										new DoubleElem( TestSchrodingerA.getUpdateValueIm() ) );
 						
-						final double errRe = err.getRe().getVal();
-						final double errIm = err.getIm().getVal();
 				
 						if( ( xcnt == 12 ) && ( ycnt == 5 ) && ( zcnt == 5 ) )
 						{
 							System.out.println( "******************" );
 							System.out.println( " ( " + xcnt + " , " + ycnt + " , " + zcnt + " ) " );
-							System.out.println( Math.sqrt( ivalRe * ivalRe + ivalIm * ivalIm ) );
-							System.out.println( Math.sqrt( valRe * valRe + valIm * valIm ) );
-							System.out.println( "## " + ( Math.sqrt( errRe * errRe + errIm * errIm ) ) );
+							System.out.println( expectationValue( ival ) );
+							System.out.println( expectationValue( val ) );
+							System.out.println( "## " + ( expectationValue( err ) ) );
 						}
 						
 						
@@ -2067,11 +2090,11 @@ public class TestSchrodingerA extends TestCase {
 						Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 0 ] > 0 );
 				
 				
-						Assert.assertTrue( Math.abs( Math.sqrt( errRe * errRe + errIm * errIm ) ) < ( 0.01 * Math.abs( Math.sqrt( valRe * valRe + valIm * valIm ) ) + 0.01 ) );
+						Assert.assertTrue( Math.abs( Math.sqrt( expectationValue( err ) ) ) < ( 0.01 * Math.abs( Math.sqrt( expectationValue( val ) ) ) + 0.01 ) );
 				
 			
-						iterArrayRe[ tval + 1 ][ xcnt ][ ycnt ][ zcnt ] = valRe;
-						iterArrayIm[ tval + 1 ][ xcnt ][ ycnt ][ zcnt ] = valIm;
+						iterArrayRe[ tval + 1 ][ xcnt ][ ycnt ][ zcnt ] = val.getRe().getVal();
+						iterArrayIm[ tval + 1 ][ xcnt ][ ycnt ][ zcnt ] = val.getIm().getVal();
 					}
 					
 				}
