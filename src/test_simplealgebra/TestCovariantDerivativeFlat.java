@@ -28,6 +28,7 @@ import java.io.PrintStream;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 
 import junit.framework.Assert;
@@ -585,12 +586,27 @@ public class TestCovariantDerivativeFlat extends TestCase {
 	 */
 	private class PrecCompare extends PrecedenceComparator<DoubleElem, DoubleElemFactory>
 	{
+		
+		/**
+		 * Set of terminal symbol classes for the parent node in the expression tree.
+		 */
+		protected final HashSet<Class> terminalSymbolsA = new HashSet<Class>();
+		
+		/**
+		 * Set of terminal symbol classes for the child node in the expression tree.
+		 */
+		protected final HashSet<Class> terminalSymbolsB = new HashSet<Class>();
 
+		
 		/**
 		 * Constructs the precedence comparison object.
 		 */
 		public PrecCompare()
 		{
+			 terminalSymbolsA.add( SymbolicSqrt.class ); 
+			 terminalSymbolsB.add( SymbolicSqrt.class ); 
+			 terminalSymbolsA.add( PartialDerivativeOp.class );
+			 terminalSymbolsB.add( PartialDerivativeOp.class );
 		}
 		
 		@Override
@@ -599,11 +615,23 @@ public class TestCovariantDerivativeFlat extends TestCase {
 				SymbolicElem<DoubleElem, DoubleElemFactory> b,
 				boolean after) {
 			
-			if( ( a instanceof SymbolicSqrt ) 
-					|| ( b instanceof SymbolicSqrt ) || ( a instanceof PartialDerivativeOp )
-					|| ( b instanceof PartialDerivativeOp ) )
+			Iterator<Class> it = terminalSymbolsA.iterator();
+			while( it.hasNext() )
 			{
-				return( false );
+				if( it.next().isInstance( a ) )
+				{
+					return( false );
+				}
+			}
+			
+			
+			it = terminalSymbolsB.iterator();
+			while( it.hasNext() )
+			{
+				if( it.next().isInstance( b ) )
+				{
+					return( false );
+				}
 			}
 			
 			if( ( a instanceof SymbolicAdd ) && ( b instanceof SymbolicMult ) )

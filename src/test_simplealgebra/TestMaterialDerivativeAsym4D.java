@@ -35,6 +35,7 @@ import java.io.PrintStream;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 
 import junit.framework.Assert;
@@ -68,6 +69,7 @@ import simplealgebra.symbolic.SymbolicMult;
 import simplealgebra.symbolic.SymbolicOps;
 import simplealgebra.symbolic.SymbolicSqrt;
 import simplealgebra.symbolic.SymbolicZero;
+
 
 
 
@@ -1751,12 +1753,38 @@ public class TestMaterialDerivativeAsym4D extends TestCase
 	 */
 	private class PrecCompare extends PrecedenceComparator<ComplexElem<DoubleElem, DoubleElemFactory>,ComplexElemFactory<DoubleElem, DoubleElemFactory>>
 	{
+		
+		/**
+		 * Set of terminal symbol classes for the parent node in the expression tree.
+		 */
+		protected final HashSet<Class> terminalSymbolsA = new HashSet<Class>();
+		
+		/**
+		 * Set of terminal symbol classes for the child node in the expression tree.
+		 */
+		protected final HashSet<Class> terminalSymbolsB = new HashSet<Class>();
 
+		
 		/**
 		 * Constructs the precedence comparison object.
 		 */
 		public PrecCompare()
 		{
+			terminalSymbolsB.add( A0_Elem.class );
+			terminalSymbolsB.add( A1_Elem.class );
+			terminalSymbolsB.add( A2_Elem.class );
+			terminalSymbolsB.add( A3_Elem.class );
+			terminalSymbolsB.add( V0_Elem.class );
+			terminalSymbolsB.add( V1_Elem.class );
+			terminalSymbolsB.add( V2_Elem.class );
+			terminalSymbolsB.add( V3_Elem.class );
+			terminalSymbolsB.add( CSquaredElem.class );
+			terminalSymbolsA.add( SymbolicSqrt.class );
+			terminalSymbolsB.add( SymbolicSqrt.class );
+			terminalSymbolsA.add( PartialDerivativeOp.class );
+			terminalSymbolsB.add( PartialDerivativeOp.class );
+			terminalSymbolsA.add( T_2UxElem.class );
+			terminalSymbolsB.add( T_2UxElem.class );
 		}
 		
 		@Override
@@ -1765,16 +1793,23 @@ public class TestMaterialDerivativeAsym4D extends TestCase
 				SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> b,
 				boolean after) {
 			
-			if( ( b instanceof A0_Elem ) || ( b instanceof A1_Elem ) 
-					|| ( b instanceof A2_Elem ) || ( b instanceof A3_Elem )
-					|| ( b instanceof V0_Elem ) || ( b instanceof V1_Elem ) 
-					|| ( b instanceof V2_Elem ) || ( b instanceof V3_Elem )
-					|| ( b instanceof CSquaredElem ) || ( a instanceof SymbolicSqrt ) 
-					|| ( b instanceof SymbolicSqrt ) || ( a instanceof PartialDerivativeOp )
-					|| ( b instanceof PartialDerivativeOp ) || ( a instanceof T_2UxElem )
-					|| ( b instanceof T_2UxElem ) )
+			Iterator<Class> it = terminalSymbolsA.iterator();
+			while( it.hasNext() )
 			{
-				return( false );
+				if( it.next().isInstance( a ) )
+				{
+					return( false );
+				}
+			}
+			
+			
+			it = terminalSymbolsB.iterator();
+			while( it.hasNext() )
+			{
+				if( it.next().isInstance( b ) )
+				{
+					return( false );
+				}
 			}
 			
 			if( ( a instanceof SymbolicAdd ) && ( b instanceof SymbolicMult ) )
