@@ -937,126 +937,206 @@ public class TestStelemA extends TestCase {
 				
 				case 1:
 					{
-						final HashMap<Ordinate, BigInteger> implicitSpaceOutM1 = new HashMap<Ordinate, BigInteger>();
-						final HashMap<Ordinate, BigInteger> implicitSpaceOutP1 = new HashMap<Ordinate, BigInteger>();
-						
-						Iterator<Ordinate> itA = implicitSpace.keySet().iterator();
-						while( itA.hasNext() )
-						{
-							Ordinate ae = itA.next();
-							final BigInteger valAe = implicitSpace.get( ae );
-							if( node.symbolicEquals( ae ) )
-							{
-								final BigInteger valAeM1 = valAe.subtract( BigInteger.ONE );
-								final BigInteger valAeP1 = valAe.add( BigInteger.ONE );
-								implicitSpaceOutM1.put( ae , valAeM1 );
-								implicitSpaceOutP1.put( ae , valAeP1 );
-							}
-							else
-							{
-								implicitSpaceOutM1.put( ae , valAe );
-								implicitSpaceOutP1.put( ae , valAe );
-							}
-						}
-						
-						final CoeffNode coeffNodeOutM1 = new CoeffNode(  coeffNodeIn.getNumer().negate() , 
-								coeffNodeIn.getDenom().mult( new SymbolicConst( h.mult( new DoubleElem( 2.0 ) ), h.getFac() ) ) );
-						final CoeffNode coeffNodeOutP1 = new CoeffNode( coeffNodeIn.getNumer() , 
-								coeffNodeIn.getDenom().mult( new SymbolicConst( h.mult( new DoubleElem( 2.0 ) ), h.getFac() ) ) );
-						
-						applyAdd( implicitSpaceOutM1 , coeffNodeOutM1 , implicitSpacesOut );
-						applyAdd( implicitSpaceOutP1 , coeffNodeOutP1 , implicitSpacesOut );
+						applyDerivativeAction1( 
+								implicitSpace , coeffNodeIn, 
+								node , h , implicitSpacesOut );
 					}
 					break;
 					
 				case 2:
 					{
-						final HashMap<Ordinate, BigInteger> implicitSpaceOutM1 = new HashMap<Ordinate, BigInteger>();
-						final HashMap<Ordinate, BigInteger> implicitSpaceOutP1 = new HashMap<Ordinate, BigInteger>();
-						
-						Iterator<Ordinate> itA = implicitSpace.keySet().iterator();
-						while( itA.hasNext() )
-						{
-							Ordinate ae = itA.next();
-							final BigInteger valAe = implicitSpace.get( ae );
-							if( node.symbolicEquals( ae ) )
-							{
-								final BigInteger valAeM1 = valAe.subtract( BigInteger.ONE );
-								final BigInteger valAeP1 = valAe.add( BigInteger.ONE );
-								implicitSpaceOutM1.put( ae , valAeM1 );
-								implicitSpaceOutP1.put( ae , valAeP1 );
-							}
-							else
-							{
-								implicitSpaceOutM1.put( ae , valAe );
-								implicitSpaceOutP1.put( ae , valAe );
-							}
-						}
-						
-						final CoeffNode coeffNodeOutM1 = new CoeffNode(  coeffNodeIn.getNumer() , 
-								coeffNodeIn.getDenom().mult( new SymbolicConst( h.mult( h ) , h.getFac() ) ) );
-						final CoeffNode coeffNodeOut = new CoeffNode(  coeffNodeIn.getNumer().negate().mult( new SymbolicConst( new DoubleElem( 2.0 ) , h.getFac() ) ) , 
-								coeffNodeIn.getDenom().mult( new SymbolicConst( h.mult( h ) , h.getFac() ) ) );
-						final CoeffNode coeffNodeOutP1 = new CoeffNode( coeffNodeIn.getNumer() , 
-								coeffNodeIn.getDenom().mult( new SymbolicConst( h.mult( h ) , h.getFac() ) ) );
-						
-						applyAdd( implicitSpaceOutM1 , coeffNodeOutM1 , implicitSpacesOut );
-						applyAdd( implicitSpace , coeffNodeOut , implicitSpacesOut );
-						applyAdd( implicitSpaceOutP1 , coeffNodeOutP1 , implicitSpacesOut );
+						applyDerivativeAction2( 
+								implicitSpace , coeffNodeIn, 
+								node , h , implicitSpacesOut );
 					}
 					break;
 					
 				case 3:
-				{
-					final HashMap<Ordinate, BigInteger> implicitSpaceOutM1 = new HashMap<Ordinate, BigInteger>();
-					final HashMap<Ordinate, BigInteger> implicitSpaceOutP1 = new HashMap<Ordinate, BigInteger>();
-					final HashMap<Ordinate, BigInteger> implicitSpaceOutM2 = new HashMap<Ordinate, BigInteger>();
-					final HashMap<Ordinate, BigInteger> implicitSpaceOutP2 = new HashMap<Ordinate, BigInteger>();
-					
-					Iterator<Ordinate> itA = implicitSpace.keySet().iterator();
-					while( itA.hasNext() )
 					{
-						Ordinate ae = itA.next();
-						final BigInteger valAe = implicitSpace.get( ae );
-						if( node.symbolicEquals( ae ) )
-						{
-							final BigInteger valAeM1 = valAe.subtract( BigInteger.ONE );
-							final BigInteger valAeP1 = valAe.add( BigInteger.ONE );
-							final BigInteger valAeM2 = valAe.subtract( BigInteger.valueOf( 2 ) );
-							final BigInteger valAeP2 = valAe.add( BigInteger.valueOf( 2 ) );
-							implicitSpaceOutM1.put( ae , valAeM1 );
-							implicitSpaceOutP1.put( ae , valAeP1 );
-							implicitSpaceOutM2.put( ae , valAeM2 );
-							implicitSpaceOutP2.put( ae , valAeP2 );
-						}
-						else
-						{
-							implicitSpaceOutM1.put( ae , valAe );
-							implicitSpaceOutP1.put( ae , valAe );
-							implicitSpaceOutM2.put( ae , valAe );
-							implicitSpaceOutP2.put( ae , valAe );
-						}
+						applyDerivativeAction3( 
+								implicitSpace , coeffNodeIn, 
+								node , h , implicitSpacesOut );
 					}
-					
-					final CoeffNode coeffNodeOutM1 = new CoeffNode(  coeffNodeIn.getNumer().mult( new SymbolicConst( new DoubleElem( 2.0 ) , h.getFac() ) ) , 
-							coeffNodeIn.getDenom().mult( new SymbolicConst( h.mult( h.mult( h.mult( new DoubleElem( 2.0 ) ) ) ), h.getFac() ) ) );
-					final CoeffNode coeffNodeOutP1 = new CoeffNode( coeffNodeIn.getNumer().negate().mult( new SymbolicConst( new DoubleElem( 2.0 ) , h.getFac() ) ) , 
-							coeffNodeIn.getDenom().mult( new SymbolicConst( h.mult( h.mult( h.mult( new DoubleElem( 2.0 ) ) ) ), h.getFac() ) ) );
-					final CoeffNode coeffNodeOutM2 = new CoeffNode(  coeffNodeIn.getNumer().negate() , 
-							coeffNodeIn.getDenom().mult( new SymbolicConst( h.mult( h.mult( h.mult( new DoubleElem( 2.0 ) ) ) ), h.getFac() ) ) );
-					final CoeffNode coeffNodeOutP2 = new CoeffNode( coeffNodeIn.getNumer() , 
-							coeffNodeIn.getDenom().mult( new SymbolicConst( h.mult( h.mult( h.mult( new DoubleElem( 2.0 ) ) ) ), h.getFac() ) ) );
-					
-					applyAdd( implicitSpaceOutM1 , coeffNodeOutM1 , implicitSpacesOut );
-					applyAdd( implicitSpaceOutP1 , coeffNodeOutP1 , implicitSpacesOut );
-					applyAdd( implicitSpaceOutM2 , coeffNodeOutM2 , implicitSpacesOut );
-					applyAdd( implicitSpaceOutP2 , coeffNodeOutP2 , implicitSpacesOut );
-				}
-				break;
+					break;
 					
 				}
 			}
 		}
+		
+		
+		
+		
+		
+		/**
+		 * Applies a discretized approximation of a first derivative.
+		 * 
+		 * @param implicitSpace The input implicit space containing the discretized approximation function.
+		 * @param coeffNodeIn The discretized coefficient onto which to apply the derivative.
+		 * @param node The ordinate over which to take the derivative.
+		 * @param h The size of the discretization.
+		 * @param implicitSpacesOut The output implicit space containing the discretized approximation function with the derivatives applied.
+		 * @throws NotInvertibleException
+		 * @throws MultiplicativeDistributionRequiredException
+		 */
+		protected void applyDerivativeAction1( 
+				final HashMap<Ordinate, BigInteger> implicitSpace , final CoeffNode coeffNodeIn ,
+				Ordinate node , DoubleElem h ,
+				HashMap<HashMap<Ordinate, BigInteger>,CoeffNode> implicitSpacesOut ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+		{
+			final HashMap<Ordinate, BigInteger> implicitSpaceOutM1 = new HashMap<Ordinate, BigInteger>();
+			final HashMap<Ordinate, BigInteger> implicitSpaceOutP1 = new HashMap<Ordinate, BigInteger>();
+			
+			Iterator<Ordinate> itA = implicitSpace.keySet().iterator();
+			while( itA.hasNext() )
+			{
+				Ordinate ae = itA.next();
+				final BigInteger valAe = implicitSpace.get( ae );
+				if( node.symbolicEquals( ae ) )
+				{
+					final BigInteger valAeM1 = valAe.subtract( BigInteger.ONE );
+					final BigInteger valAeP1 = valAe.add( BigInteger.ONE );
+					implicitSpaceOutM1.put( ae , valAeM1 );
+					implicitSpaceOutP1.put( ae , valAeP1 );
+				}
+				else
+				{
+					implicitSpaceOutM1.put( ae , valAe );
+					implicitSpaceOutP1.put( ae , valAe );
+				}
+			}
+			
+			final CoeffNode coeffNodeOutM1 = new CoeffNode(  coeffNodeIn.getNumer().negate() , 
+					coeffNodeIn.getDenom().mult( new SymbolicConst( h.mult( new DoubleElem( 2.0 ) ), h.getFac() ) ) );
+			final CoeffNode coeffNodeOutP1 = new CoeffNode( coeffNodeIn.getNumer() , 
+					coeffNodeIn.getDenom().mult( new SymbolicConst( h.mult( new DoubleElem( 2.0 ) ), h.getFac() ) ) );
+			
+			applyAdd( implicitSpaceOutM1 , coeffNodeOutM1 , implicitSpacesOut );
+			applyAdd( implicitSpaceOutP1 , coeffNodeOutP1 , implicitSpacesOut );
+		}
+		
+		
+		
+		
+		
+		/**
+		 * Applies a discretized approximation of a second derivative.
+		 * 
+		 * @param implicitSpace The input implicit space containing the discretized approximation function.
+		 * @param coeffNodeIn The discretized coefficient onto which to apply the derivative.
+		 * @param node The ordinate over which to take the derivative.
+		 * @param h The size of the discretization.
+		 * @param implicitSpacesOut The output implicit space containing the discretized approximation function with the derivatives applied.
+		 * @throws NotInvertibleException
+		 * @throws MultiplicativeDistributionRequiredException
+		 */
+		protected void applyDerivativeAction2( 
+				final HashMap<Ordinate, BigInteger> implicitSpace , final CoeffNode coeffNodeIn ,
+				Ordinate node , DoubleElem h ,
+				HashMap<HashMap<Ordinate, BigInteger>,CoeffNode> implicitSpacesOut ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+		{
+			final HashMap<Ordinate, BigInteger> implicitSpaceOutM1 = new HashMap<Ordinate, BigInteger>();
+			final HashMap<Ordinate, BigInteger> implicitSpaceOutP1 = new HashMap<Ordinate, BigInteger>();
+			
+			Iterator<Ordinate> itA = implicitSpace.keySet().iterator();
+			while( itA.hasNext() )
+			{
+				Ordinate ae = itA.next();
+				final BigInteger valAe = implicitSpace.get( ae );
+				if( node.symbolicEquals( ae ) )
+				{
+					final BigInteger valAeM1 = valAe.subtract( BigInteger.ONE );
+					final BigInteger valAeP1 = valAe.add( BigInteger.ONE );
+					implicitSpaceOutM1.put( ae , valAeM1 );
+					implicitSpaceOutP1.put( ae , valAeP1 );
+				}
+				else
+				{
+					implicitSpaceOutM1.put( ae , valAe );
+					implicitSpaceOutP1.put( ae , valAe );
+				}
+			}
+			
+			final CoeffNode coeffNodeOutM1 = new CoeffNode(  coeffNodeIn.getNumer() , 
+					coeffNodeIn.getDenom().mult( new SymbolicConst( h.mult( h ) , h.getFac() ) ) );
+			final CoeffNode coeffNodeOut = new CoeffNode(  coeffNodeIn.getNumer().negate().mult( new SymbolicConst( new DoubleElem( 2.0 ) , h.getFac() ) ) , 
+					coeffNodeIn.getDenom().mult( new SymbolicConst( h.mult( h ) , h.getFac() ) ) );
+			final CoeffNode coeffNodeOutP1 = new CoeffNode( coeffNodeIn.getNumer() , 
+					coeffNodeIn.getDenom().mult( new SymbolicConst( h.mult( h ) , h.getFac() ) ) );
+			
+			applyAdd( implicitSpaceOutM1 , coeffNodeOutM1 , implicitSpacesOut );
+			applyAdd( implicitSpace , coeffNodeOut , implicitSpacesOut );
+			applyAdd( implicitSpaceOutP1 , coeffNodeOutP1 , implicitSpacesOut );
+		}
+		
+		
+		
+		
+		
+		
+		/**
+		 * Applies a discretized approximation of a third derivative.
+		 * 
+		 * @param implicitSpace The input implicit space containing the discretized approximation function.
+		 * @param coeffNodeIn The discretized coefficient onto which to apply the derivative.
+		 * @param node The ordinate over which to take the derivative.
+		 * @param h The size of the discretization.
+		 * @param implicitSpacesOut The output implicit space containing the discretized approximation function with the derivatives applied.
+		 * @throws NotInvertibleException
+		 * @throws MultiplicativeDistributionRequiredException
+		 */
+		protected void applyDerivativeAction3( 
+				final HashMap<Ordinate, BigInteger> implicitSpace , final CoeffNode coeffNodeIn ,
+				Ordinate node , DoubleElem h ,
+				HashMap<HashMap<Ordinate, BigInteger>,CoeffNode> implicitSpacesOut ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+		{
+			final HashMap<Ordinate, BigInteger> implicitSpaceOutM1 = new HashMap<Ordinate, BigInteger>();
+			final HashMap<Ordinate, BigInteger> implicitSpaceOutP1 = new HashMap<Ordinate, BigInteger>();
+			final HashMap<Ordinate, BigInteger> implicitSpaceOutM2 = new HashMap<Ordinate, BigInteger>();
+			final HashMap<Ordinate, BigInteger> implicitSpaceOutP2 = new HashMap<Ordinate, BigInteger>();
+			
+			Iterator<Ordinate> itA = implicitSpace.keySet().iterator();
+			while( itA.hasNext() )
+			{
+				Ordinate ae = itA.next();
+				final BigInteger valAe = implicitSpace.get( ae );
+				if( node.symbolicEquals( ae ) )
+				{
+					final BigInteger valAeM1 = valAe.subtract( BigInteger.ONE );
+					final BigInteger valAeP1 = valAe.add( BigInteger.ONE );
+					final BigInteger valAeM2 = valAe.subtract( BigInteger.valueOf( 2 ) );
+					final BigInteger valAeP2 = valAe.add( BigInteger.valueOf( 2 ) );
+					implicitSpaceOutM1.put( ae , valAeM1 );
+					implicitSpaceOutP1.put( ae , valAeP1 );
+					implicitSpaceOutM2.put( ae , valAeM2 );
+					implicitSpaceOutP2.put( ae , valAeP2 );
+				}
+				else
+				{
+					implicitSpaceOutM1.put( ae , valAe );
+					implicitSpaceOutP1.put( ae , valAe );
+					implicitSpaceOutM2.put( ae , valAe );
+					implicitSpaceOutP2.put( ae , valAe );
+				}
+			}
+			
+			final CoeffNode coeffNodeOutM1 = new CoeffNode(  coeffNodeIn.getNumer().mult( new SymbolicConst( new DoubleElem( 2.0 ) , h.getFac() ) ) , 
+					coeffNodeIn.getDenom().mult( new SymbolicConst( h.mult( h.mult( h.mult( new DoubleElem( 2.0 ) ) ) ), h.getFac() ) ) );
+			final CoeffNode coeffNodeOutP1 = new CoeffNode( coeffNodeIn.getNumer().negate().mult( new SymbolicConst( new DoubleElem( 2.0 ) , h.getFac() ) ) , 
+					coeffNodeIn.getDenom().mult( new SymbolicConst( h.mult( h.mult( h.mult( new DoubleElem( 2.0 ) ) ) ), h.getFac() ) ) );
+			final CoeffNode coeffNodeOutM2 = new CoeffNode(  coeffNodeIn.getNumer().negate() , 
+					coeffNodeIn.getDenom().mult( new SymbolicConst( h.mult( h.mult( h.mult( new DoubleElem( 2.0 ) ) ) ), h.getFac() ) ) );
+			final CoeffNode coeffNodeOutP2 = new CoeffNode( coeffNodeIn.getNumer() , 
+					coeffNodeIn.getDenom().mult( new SymbolicConst( h.mult( h.mult( h.mult( new DoubleElem( 2.0 ) ) ) ), h.getFac() ) ) );
+			
+			applyAdd( implicitSpaceOutM1 , coeffNodeOutM1 , implicitSpacesOut );
+			applyAdd( implicitSpaceOutP1 , coeffNodeOutP1 , implicitSpacesOut );
+			applyAdd( implicitSpaceOutM2 , coeffNodeOutM2 , implicitSpacesOut );
+			applyAdd( implicitSpaceOutP2 , coeffNodeOutP2 , implicitSpacesOut );
+		}
+		
+		
+		
+		
 		
 		/**
 		 * Adds a coefficient times the input implicit space to the output implicit space.
