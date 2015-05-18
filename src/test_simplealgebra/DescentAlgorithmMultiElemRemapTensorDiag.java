@@ -36,8 +36,8 @@ import java.util.Iterator;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
-import simplealgebra.algo.NewtonRaphsonMultiElemRemapTensor;
-import simplealgebra.algo.NewtonRaphsonMultiElemRemapTensorParam;
+import simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor;
+import simplealgebra.algo.DescentAlgorithmMultiElemRemapTensorParam;
 import simplealgebra.et.EinsteinTensorElem;
 import simplealgebra.ga.GeometricAlgebraMultivectorElem;
 import simplealgebra.ga.GeometricAlgebraOrd;
@@ -46,7 +46,7 @@ import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 
 /**
- * Test class that constructs a version of NewtonRaphsonMultiElemRemapTensor for diagonals of
+ * Test class that constructs a version of DescentAlgorithmMultiElemRemapTensor for diagonals of
  * rank-two tensors.
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
@@ -54,8 +54,8 @@ import simplealgebra.symbolic.SymbolicElemFactory;
  * @author thorngreen
  *
  */
-public abstract class NewtonRaphsonMultiElemRemapTensorDiag<Z extends Object, R extends Elem<R,?>, S extends ElemFactory<R,S>> extends
-		NewtonRaphsonMultiElemRemapTensor<Z, R, S> {
+public abstract class DescentAlgorithmMultiElemRemapTensorDiag<Z extends Object, R extends Elem<R,?>, S extends ElemFactory<R,S>> extends
+		DescentAlgorithmMultiElemRemapTensor<Z, R, S> {
 
 	/**
 	 * Constructs the remap.
@@ -64,8 +64,8 @@ public abstract class NewtonRaphsonMultiElemRemapTensorDiag<Z extends Object, R 
 	 * @throws NotInvertibleException
 	 * @throws MultiplicativeDistributionRequiredException
 	 */
-	public NewtonRaphsonMultiElemRemapTensorDiag(
-			final NewtonRaphsonMultiElemRemapTensorParam<Z,R,S> param )
+	public DescentAlgorithmMultiElemRemapTensorDiag(
+			final DescentAlgorithmMultiElemRemapTensorParam<Z,R,S> param )
 			throws NotInvertibleException,
 			MultiplicativeDistributionRequiredException {
 		super( param );

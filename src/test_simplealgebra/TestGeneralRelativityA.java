@@ -330,7 +330,7 @@ public class TestGeneralRelativityA extends TestCase {
 	
 	
 	/**
-	 * Temporary array in which to generate Newton-Raphson solutions.
+	 * Temporary array in which to generate descent algorithm solutions.
 	 * <p>0 = T
 	 * <p>1 = X
 	 * <p>2 = Y
@@ -343,7 +343,7 @@ public class TestGeneralRelativityA extends TestCase {
 	
 	
 	/**
-	 * Given a change calculated by a Newton-Raphson iteration,
+	 * Given a change calculated by a descent algorithm iteration,
 	 * applies the change to the temp array.
 	 * 
 	 * @param dbl The change to apply to the temp array.
@@ -361,9 +361,23 @@ public class TestGeneralRelativityA extends TestCase {
 	}
 	
 	
+	/**
+	 * Given a change calculated by a descent algorithm iteration,
+	 * applies the change to the temp array.
+	 * 
+	 * @param dbl The change to apply to the temp array.
+	 */
+	protected static void setIterationValue( EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> dbl )
+	{
+		EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> va
+			= (EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>)( tempArray[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] );
+		tempArray[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] = dbl;
+	}
+	
+	
 	
 	/**
-	 * Returns the result of the Newton-Raphson iterations
+	 * Returns the result of the descent algorithm iterations
 	 * from the temp array.
 	 * 
 	 * @return The value in the temp array.
@@ -977,7 +991,7 @@ private class Ordinate extends SymbolicElem<EinsteinTensorElem<String,DoubleElem
 
 /**
  * A symbolic elem representing a constant value
- * at the base Newton-Raphson evaluation level.
+ * at the base descent algorithm evaluation level.
  * 
  * @author thorngreen
  *
@@ -1019,7 +1033,7 @@ private class SymbolicConst extends SymbolicReduction<DoubleElem,DoubleElemFacto
  * An elem representing a symbolic constant at the level of mapping 
  * discretized approximations of the underlying differential
  * equation into expressions (e.g. Jacobian slopes)
- * for Newton-Raphson evaluations.
+ * for descent algorithm evaluations.
  * 
  * @author thorngreen
  *
@@ -1317,7 +1331,7 @@ private class CoeffNode
  * the discretized equivalent
  * of one component of the tensor constrained by the differential equation.
  * The partial derivatives of this elem generate
- * the slopes for producing Newton-Raphson iterations (e.g. the Jacobian slopes),
+ * the slopes for producing descent algorithm iterations (e.g. the Jacobian slopes),
  * as opposed to partial derivatives for the underlying differential equation.
  * 
  * @author thorngreen
@@ -2004,12 +2018,12 @@ protected void applyAdd(
 	
 	
 	/**
-	 * Newton-Raphson evaluator for the test.
+	 * descent algorithm evaluator for the test.
 	 * 
 	 * @author thorngreen
 	 *
 	 */
-	protected class StelemNewton extends NewtonRaphsonMultiElemRemapTensorDiag<String,DoubleElem,DoubleElemFactory>
+	protected class StelemDescent extends DescentAlgorithmMultiElemRemapTensorDiag<String,DoubleElem,DoubleElemFactory>
 	{
 
 		
@@ -2020,8 +2034,8 @@ protected void applyAdd(
 		 * @throws NotInvertibleException
 		 * @throws MultiplicativeDistributionRequiredException
 		 */
-		public StelemNewton(
-				final NewtonRaphsonMultiElemRemapTensorParam<String,DoubleElem,DoubleElemFactory> param )
+		public StelemDescent(
+				final DescentAlgorithmMultiElemRemapTensorParam<String,DoubleElem,DoubleElemFactory> param )
 				throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
 			super( param );
@@ -2031,7 +2045,7 @@ protected void applyAdd(
 		}
 
 		/**
-		 * The iteration count for Newton-Raphson iterations.
+		 * The iteration count for descent algorithm iterations.
 		 */
 		protected int intCnt = 0;
 
@@ -2057,6 +2071,18 @@ protected void applyAdd(
 			TestGeneralRelativityA.performIterationUpdate( iterationOffset );
 		}
 		
+		@Override
+		protected void setIterationValue( EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> iterationOffset )
+		{
+			TestGeneralRelativityA.setIterationValue( iterationOffset );
+		}
+		
+		@Override
+		protected EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> getIterationValue( )
+		{
+			return( TestGeneralRelativityA.getUpdateValue( ) );
+		}
+		
 		
 		/**
 		 * Returns whether convergence-wise the new function value should be accepted as an improvement over the old function value.
@@ -2066,8 +2092,8 @@ protected void applyAdd(
 		 * @return True iff. the new function value should be accepted as an improvement over the old function value.
 		 */
 		protected boolean evalIterationImproved(
-				GeometricAlgebraMultivectorElem<simplealgebra.algo.NewtonRaphsonMultiElemRemapTensor.Adim, GeometricAlgebraOrd<simplealgebra.algo.NewtonRaphsonMultiElemRemapTensor.Adim>, DoubleElem, DoubleElemFactory> lastValue,
-				GeometricAlgebraMultivectorElem<simplealgebra.algo.NewtonRaphsonMultiElemRemapTensor.Adim, GeometricAlgebraOrd<simplealgebra.algo.NewtonRaphsonMultiElemRemapTensor.Adim>, DoubleElem, DoubleElemFactory> nextValue ) 
+				GeometricAlgebraMultivectorElem<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim, GeometricAlgebraOrd<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim>, DoubleElem, DoubleElemFactory> lastValue,
+				GeometricAlgebraMultivectorElem<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim, GeometricAlgebraOrd<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim>, DoubleElem, DoubleElemFactory> nextValue ) 
 		{
 			DoubleElem lastTotal = new DoubleElem( 0.0 );
 			DoubleElem nextTotal = new DoubleElem( 0.0 );
@@ -2125,80 +2151,77 @@ protected void applyAdd(
 //		
 		
 		/**
-		 * The internal multivariate Newton-Raphson.
+		 * The internal multivariate descent algorithm.
 		 * 
 		 * @author thorngreen
 		 *
 		 */
-		protected class StelemNewtonEnt extends NewtonRaphsonMultiElem<simplealgebra.algo.NewtonRaphsonMultiElemRemapTensor.Adim, DoubleElem, DoubleElemFactory>
+		protected class StelemDescentEnt extends DescentAlgorithmMultiElemInputParam<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim, DoubleElem, DoubleElemFactory>
 		{
-
-			/**
-			 * Constructs the evaluator.
-			 * 
-			 * @param _functions The functions over which to evaluate Netwon-Raphson.
-			 * @param _withRespectTos The set of variables over which to take derivatives.
-			 * @param implicitSpaceFirstLevel The initial implicit space over which to take the functions and their derivatives.
-			 * @param _sfac The factory for the enclosed type.
-			 * @param _dim The number of dimensions over which to evaluate Newton-Raphson.
-			 * @throws NotInvertibleException
-			 * @throws MultiplicativeDistributionRequiredException
-			 */
-			public StelemNewtonEnt(
-					GeometricAlgebraMultivectorElem<simplealgebra.algo.NewtonRaphsonMultiElemRemapTensor.Adim, GeometricAlgebraOrd<simplealgebra.algo.NewtonRaphsonMultiElemRemapTensor.Adim>, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> _functions,
-					ArrayList<ArrayList<? extends Elem<?, ?>>> _withRespectTos,
-					HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpaceFirstLevel,
-					SymbolicElemFactory<DoubleElem, DoubleElemFactory> _sfac,
-					simplealgebra.algo.NewtonRaphsonMultiElemRemapTensor.Adim _dim)
-					throws NotInvertibleException,
-					MultiplicativeDistributionRequiredException {
-				super(_functions, _withRespectTos, implicitSpaceFirstLevel, _sfac, _dim);
-			}
 
 			@Override
 			protected void performIterationUpdate(
-					GeometricAlgebraMultivectorElem<simplealgebra.algo.NewtonRaphsonMultiElemRemapTensor.Adim, GeometricAlgebraOrd<simplealgebra.algo.NewtonRaphsonMultiElemRemapTensor.Adim>, DoubleElem, DoubleElemFactory> iterationOffset) {
-				StelemNewton.this.performIterationUpdateInternal( iterationOffset );
+					GeometricAlgebraMultivectorElem<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim, GeometricAlgebraOrd<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim>, DoubleElem, DoubleElemFactory> iterationOffset) {
+				StelemDescent.this.performIterationUpdateInternal( iterationOffset );
+			}
+			
+			@Override
+			protected void setIterationValue(
+					GeometricAlgebraMultivectorElem<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim, GeometricAlgebraOrd<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim>, DoubleElem, DoubleElemFactory> iterationOffset) {
+				StelemDescent.this.setIterationValueInternal( iterationOffset );
+			}
+			
+			@Override
+			protected GeometricAlgebraMultivectorElem<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim, GeometricAlgebraOrd<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim>, DoubleElem, DoubleElemFactory> getIterationValue() 
+			{
+				return( StelemDescent.this.getIterationValueInternal( ) );
 			}
 
 			@Override
 			protected boolean iterationsDone() {
-				return( StelemNewton.this.iterationsDone() );
+				return( StelemDescent.this.iterationsDone() );
 			}
 			
 			@Override
 			protected boolean useSimplification()
 			{
-				return( StelemNewton.this.useSimplification() );
+				return( StelemDescent.this.useSimplification() );
 			}
 			
 			@Override
 			protected int getMaxIterationsBacktrack() {
-				return( StelemNewton.this.getMaxIterationsBacktrack() );
+				return( StelemDescent.this.getMaxIterationsBacktrack() );
 			}
 			
 			@Override
 			protected boolean evalIterationImproved(
-					GeometricAlgebraMultivectorElem<simplealgebra.algo.NewtonRaphsonMultiElemRemapTensor.Adim, GeometricAlgebraOrd<simplealgebra.algo.NewtonRaphsonMultiElemRemapTensor.Adim>, DoubleElem, DoubleElemFactory> lastValue,
-					GeometricAlgebraMultivectorElem<simplealgebra.algo.NewtonRaphsonMultiElemRemapTensor.Adim, GeometricAlgebraOrd<simplealgebra.algo.NewtonRaphsonMultiElemRemapTensor.Adim>, DoubleElem, DoubleElemFactory> nextValue ) 
+					GeometricAlgebraMultivectorElem<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim, GeometricAlgebraOrd<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim>, DoubleElem, DoubleElemFactory> lastValue,
+					GeometricAlgebraMultivectorElem<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim, GeometricAlgebraOrd<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim>, DoubleElem, DoubleElemFactory> nextValue ) 
 			{
-				return( StelemNewton.this.evalIterationImproved(lastValue, nextValue) );
+				return( StelemDescent.this.evalIterationImproved(lastValue, nextValue) );
 			}
 			
 		};
 		
 
 		@Override
-		protected NewtonRaphsonMultiElem<simplealgebra.algo.NewtonRaphsonMultiElemRemapTensor.Adim, DoubleElem, DoubleElemFactory> genNewton(
-				GeometricAlgebraMultivectorElem<simplealgebra.algo.NewtonRaphsonMultiElemRemapTensor.Adim, GeometricAlgebraOrd<simplealgebra.algo.NewtonRaphsonMultiElemRemapTensor.Adim>, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> _functions,
+		protected DescentAlgorithmMultiElem<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim, DoubleElem, DoubleElemFactory> genDescent(
+				GeometricAlgebraMultivectorElem<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim, GeometricAlgebraOrd<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim>, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> _functions,
 				ArrayList<ArrayList<? extends Elem<?, ?>>> _withRespectTos,
 				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpaceFirstLevel,
 				SymbolicElemFactory<DoubleElem, DoubleElemFactory> _sfac,
-				simplealgebra.algo.NewtonRaphsonMultiElemRemapTensor.Adim _dim)
+				simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim _dim)
 				throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
 			
-			return( new StelemNewtonEnt( _functions, _withRespectTos, implicitSpaceFirstLevel , _sfac , _dim ) );
+			final StelemDescentEnt sa = new StelemDescentEnt();
+			sa.setFunctions( _functions );
+			sa.setWithRespectTos( _withRespectTos );
+			sa.setImplicitSpaceFirstLevel( implicitSpaceFirstLevel );
+			sa.setSfac( _sfac );
+			sa.setDim( _dim );
+			
+			return( new NewtonRaphsonMultiElemInterpBacktrack<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim, DoubleElem, DoubleElemFactory>( sa ) );
 		}
 		
 	}
@@ -2209,7 +2232,7 @@ protected void applyAdd(
 
 /**
  * An elem for performing evaluations
- * at the base Newton-Raphson level.
+ * at the base descent algorithm level.
  * 
  * @author thorngreen
  *
@@ -2296,7 +2319,7 @@ protected class VEvalElem extends SymbolicElem<EinsteinTensorElem<String,DoubleE
  * An elem for evaluating 
  * discretized approximations of the underlying differential
  * equation into expressions (e.g. Jacobian slopes)
- * for Newton-Raphson evaluations.
+ * for descent algorithm evaluations.
  * 
  * @author thorngreen
  *
@@ -2313,12 +2336,12 @@ protected EinsteinTensorElem<String,SymbolicElem<SymbolicElem<DoubleElem,DoubleE
 	dval = null;
 
 /**
- * Factory for components at the base Newton-Raphson level.
+ * Factory for components at the base descent algorithm level.
  */
 protected SymbolicElemFactory<DoubleElem,DoubleElemFactory> sefac;
 
 /**
- * Factory for evaluated tensors at the base Newton-Raphson level.
+ * Factory for evaluated tensors at the base descent algorithm level.
  */
 protected EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory> vefac;
 
@@ -2328,8 +2351,8 @@ protected EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory> vefac
  * Constructs the elem.
  * 
  * @param _fac The factory for the enclosed type.
- * @param _sefac Factory for components at the base Newton-Raphson level.
- * @param _vefac Factory for evaluated tensors at the base Newton-Raphson level.
+ * @param _sefac Factory for components at the base descent algorithm level.
+ * @param _vefac Factory for evaluated tensors at the base descent algorithm level.
  * @param _dval The tensor to be evaluated by the elem.
  */
 public VEvalElem2(
@@ -2419,7 +2442,7 @@ dval = null;
 protected SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> sefac;
 
 /**
- * Factory for evaluated tensors at the base Newton-Raphson level.
+ * Factory for evaluated tensors at the base descent algorithm level.
  */
 protected EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory> vefac;
 
@@ -2430,7 +2453,7 @@ protected EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory> vefac
  * 
  * @param _fac The factory for the enclosed type.
  * @param _sefac Factory for components at the level of discretized approximations.
- * @param _vefac Factory for evaluated tensors at the base Newton-Raphson level.
+ * @param _vefac Factory for evaluated tensors at the base descent algorithm level.
  * @param _dval The tensor to be evaluated by the elem.
  */
 public VEvalElem3(
@@ -2933,8 +2956,8 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 		System.out.println( "Reached #7..." );
 		
 		
-		final NewtonRaphsonMultiElemRemapTensorParam<String, DoubleElem, DoubleElemFactory>
-			param = new NewtonRaphsonMultiElemRemapTensorParam<String, DoubleElem, DoubleElemFactory>();
+		final DescentAlgorithmMultiElemRemapTensorParam<String, DoubleElem, DoubleElemFactory>
+			param = new DescentAlgorithmMultiElemRemapTensorParam<String, DoubleElem, DoubleElemFactory>();
 		
 		
 		param.setFunctions( s00 );
@@ -2945,7 +2968,7 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 		param.setCovariantIndices( covariantIndices );
 		
 		
-		StelemNewton newton = new StelemNewton( param );
+		StelemDescent descent = new StelemDescent( param );
 		
 		
 		for( int tval = 1 ; tval < ( NUM_T_ITER - 1 ) ; tval++ )
@@ -2979,7 +3002,7 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 				
 			
 				
-						EinsteinTensorElem<String,DoubleElem, DoubleElemFactory> err = newton.eval( implicitSpace2 );
+						EinsteinTensorElem<String,DoubleElem, DoubleElemFactory> err = descent.eval( implicitSpace2 );
 		
 		
 						final EinsteinTensorElem<String,DoubleElem, DoubleElemFactory> 

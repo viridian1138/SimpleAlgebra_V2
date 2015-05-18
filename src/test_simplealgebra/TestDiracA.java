@@ -58,7 +58,7 @@ import simplealgebra.ddx.*;
 import simplealgebra.et.EinsteinTensorElem;
 import simplealgebra.et.EinsteinTensorElemFactory;
 import simplealgebra.ga.*;
-import test_simplealgebra.TestGeneralRelativityA.TempArrayFillInnerParam;
+
 
 
 
@@ -507,7 +507,7 @@ public class TestDiracA extends TestCase {
 	
 	
 	/**
-	 * Temporary array in which to generate Newton-Raphson solutions.
+	 * Temporary array in which to generate descent algorithm solutions.
 	 * <p>0 = T
 	 * <p>1 = X
 	 * <p>2 = Y
@@ -520,7 +520,7 @@ public class TestDiracA extends TestCase {
 	
 	
 	/**
-	 * Given a change calculated by a Newton-Raphson iteration,
+	 * Given a change calculated by a descent algorithm iteration,
 	 * applies the change to the temp array.
 	 * 
 	 * @param dbl The change to apply to the temp array.
@@ -541,7 +541,21 @@ public class TestDiracA extends TestCase {
 	
 	
 	/**
-	 * Returns the result of the Newton-Raphson iterations
+	 * Given a change calculated by a descent algorithm iteration,
+	 * applies the change to the temp array.
+	 * 
+	 * @param dbl The change to apply to the temp array.
+	 */
+	protected static void setIterationValue( GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> dbl )
+	{
+		tempArray[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] = dbl;
+	}
+	
+	
+	
+	
+	/**
+	 * Returns the result of the descent algorithm iterations
 	 * from the temp array.
 	 * 
 	 * @return The value in the temp array.
@@ -1177,7 +1191,7 @@ private class Ordinate extends SymbolicElem<GeometricAlgebraMultivectorElem<Test
 
 /**
  * A symbolic elem representing a constant value
- * at the base Newton-Raphson evaluation level.
+ * at the base descent algorithm evaluation level.
  * 
  * @author thorngreen
  *
@@ -1219,7 +1233,7 @@ private static class SymbolicConst extends SymbolicReduction<DoubleElem,DoubleEl
  * An elem representing a symbolic constant at the level of mapping 
  * discretized approximations of the underlying differential
  * equation into expressions (e.g. Jacobian slopes)
- * for Newton-Raphson evaluations.
+ * for descent algorithm evaluations.
  * 
  * @author thorngreen
  *
@@ -1513,7 +1527,7 @@ private class CoeffNode
  * the discretized equivalent
  * of one component of the multivector constrained by the differential equation.
  * The partial derivatives of this elem generate
- * the slopes for producing Newton-Raphson iterations (e.g. the Jacobian slopes),
+ * the slopes for producing descent algorithm iterations (e.g. the Jacobian slopes),
  * as opposed to partial derivatives for the underlying differential equation.
  * 
  * @author thorngreen
@@ -2185,12 +2199,12 @@ protected void applyAdd(
 	
 	
 	/**
-	 * Newton-Raphson evaluator for the test.
+	 * descent algorithm evaluator for the test.
 	 * 
 	 * @author thorngreen
 	 *
 	 */
-	protected class StelemNewton extends NewtonRaphsonMultiElemRemap<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>
+	protected class StelemDescent extends DescentAlgorithmMultiElemRemap<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>
 	{
 
 		
@@ -2202,8 +2216,8 @@ protected void applyAdd(
 		 * @throws NotInvertibleException
 		 * @throws MultiplicativeDistributionRequiredException
 		 */
-		public StelemNewton(
-				final NewtonRaphsonMultiElemRemapParam<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> param )
+		public StelemDescent(
+				final DescentAlgorithmMultiElemRemapParam<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> param )
 				throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
 			super( param );
@@ -2213,7 +2227,7 @@ protected void applyAdd(
 		}
 
 		/**
-		 * The iteration count for Newton-Raphson iterations.
+		 * The iteration count for descent algorithm iterations.
 		 */
 		protected int intCnt = 0;
 
@@ -2239,6 +2253,17 @@ protected void applyAdd(
 			TestDiracA.performIterationUpdate( iterationOffset );
 		}
 		
+		@Override
+		protected void setIterationValue( GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> iterationOffset )
+		{
+			TestDiracA.setIterationValue( iterationOffset );
+		}
+		
+		@Override protected GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> getIterationValue()
+		{
+			return( TestDiracA.getUpdateValue() );
+		}
+		
 		/**
 		 * Returns whether convergence-wise the new function value should be accepted as an improvement over the old function value.
 		 * 
@@ -2246,8 +2271,8 @@ protected void applyAdd(
 		 * @param nextValue The new function value.
 		 * @return True iff. the new function value should be accepted as an improvement over the old function value.
 		 */
-		protected boolean evalIterationImproved( GeometricAlgebraMultivectorElem<simplealgebra.algo.NewtonRaphsonMultiElemRemap.Adim, GeometricAlgebraOrd<simplealgebra.algo.NewtonRaphsonMultiElemRemap.Adim>, DoubleElem, DoubleElemFactory> lastValue ,
-				GeometricAlgebraMultivectorElem<simplealgebra.algo.NewtonRaphsonMultiElemRemap.Adim, GeometricAlgebraOrd<simplealgebra.algo.NewtonRaphsonMultiElemRemap.Adim>, DoubleElem, DoubleElemFactory> nextValue )
+		protected boolean evalIterationImproved( GeometricAlgebraMultivectorElem<simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim, GeometricAlgebraOrd<simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim>, DoubleElem, DoubleElemFactory> lastValue ,
+				GeometricAlgebraMultivectorElem<simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim, GeometricAlgebraOrd<simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim>, DoubleElem, DoubleElemFactory> nextValue )
 		{
 			return( true );
 		}
@@ -2276,76 +2301,72 @@ protected void applyAdd(
 //		
 		
 		/**
-		 * The internal multivariate Newton-Raphson.
+		 * The internal multivariate descent algorithm.
 		 * 
 		 * @author thorngreen
 		 *
 		 */
-		protected class StelemNewtonEnt extends NewtonRaphsonMultiElem<simplealgebra.algo.NewtonRaphsonMultiElemRemap.Adim, DoubleElem, DoubleElemFactory>
+		protected class StelemDescentEnt extends DescentAlgorithmMultiElemInputParam<simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim, DoubleElem, DoubleElemFactory>
 		{
-
-			/**
-			 * Constructs the evaluator.
-			 * 
-			 * @param _functions The functions over which to evaluate Netwon-Raphson.
-			 * @param _withRespectTos The set of variables over which to take derivatives.
-			 * @param implicitSpaceFirstLevel The initial implicit space over which to take the functions and their derivatives.
-			 * @param _sfac The factory for the enclosed type.
-			 * @param _dim The number of dimensions over which to evaluate Newton-Raphson.
-			 * @throws NotInvertibleException
-			 * @throws MultiplicativeDistributionRequiredException
-			 */
-			public StelemNewtonEnt(
-					GeometricAlgebraMultivectorElem<simplealgebra.algo.NewtonRaphsonMultiElemRemap.Adim, GeometricAlgebraOrd<simplealgebra.algo.NewtonRaphsonMultiElemRemap.Adim>, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> _functions,
-					ArrayList<ArrayList<? extends Elem<?, ?>>> _withRespectTos,
-					HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpaceFirstLevel,
-					SymbolicElemFactory<DoubleElem, DoubleElemFactory> _sfac,
-					simplealgebra.algo.NewtonRaphsonMultiElemRemap.Adim _dim)
-					throws NotInvertibleException,
-					MultiplicativeDistributionRequiredException {
-				super(_functions, _withRespectTos, implicitSpaceFirstLevel, _sfac, _dim);
-			}
 
 			@Override
 			protected void performIterationUpdate(
-					GeometricAlgebraMultivectorElem<simplealgebra.algo.NewtonRaphsonMultiElemRemap.Adim, GeometricAlgebraOrd<simplealgebra.algo.NewtonRaphsonMultiElemRemap.Adim>, DoubleElem, DoubleElemFactory> iterationOffset) {
-				StelemNewton.this.performIterationUpdateInternal( iterationOffset );
+					GeometricAlgebraMultivectorElem<simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim, GeometricAlgebraOrd<simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim>, DoubleElem, DoubleElemFactory> iterationOffset) {
+				StelemDescent.this.performIterationUpdateInternal( iterationOffset );
+			}
+			
+			@Override
+			protected void setIterationValue(
+					GeometricAlgebraMultivectorElem<simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim, GeometricAlgebraOrd<simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim>, DoubleElem, DoubleElemFactory> iterationOffset) {
+				StelemDescent.this.setIterationValueInternal( iterationOffset );
+			}
+			
+			@Override protected GeometricAlgebraMultivectorElem<simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim, GeometricAlgebraOrd<simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim>, DoubleElem, DoubleElemFactory> getIterationValue()
+			{
+				return( StelemDescent.this.getIterationValueInternal( ) );
 			}
 
 			@Override
 			protected boolean iterationsDone() {
-				return( StelemNewton.this.iterationsDone() );
+				return( StelemDescent.this.iterationsDone() );
 			}
 			
 			@Override
 			protected boolean useSimplification() {
-				return( StelemNewton.this.useSimplification() );
+				return( StelemDescent.this.useSimplification() );
 			}
 			
 			@Override
 			protected int getMaxIterationsBacktrack() {
-				return( StelemNewton.this.getMaxIterationsBacktrack() );
+				return( StelemDescent.this.getMaxIterationsBacktrack() );
 			}
 			
 			@Override
-			protected boolean evalIterationImproved( GeometricAlgebraMultivectorElem<simplealgebra.algo.NewtonRaphsonMultiElemRemap.Adim, GeometricAlgebraOrd<simplealgebra.algo.NewtonRaphsonMultiElemRemap.Adim>, DoubleElem, DoubleElemFactory> lastValue ,
-					GeometricAlgebraMultivectorElem<simplealgebra.algo.NewtonRaphsonMultiElemRemap.Adim, GeometricAlgebraOrd<simplealgebra.algo.NewtonRaphsonMultiElemRemap.Adim>, DoubleElem, DoubleElemFactory> nextValue )
+			protected boolean evalIterationImproved( GeometricAlgebraMultivectorElem<simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim, GeometricAlgebraOrd<simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim>, DoubleElem, DoubleElemFactory> lastValue ,
+					GeometricAlgebraMultivectorElem<simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim, GeometricAlgebraOrd<simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim>, DoubleElem, DoubleElemFactory> nextValue )
 			{
-				return( StelemNewton.this.evalIterationImproved(lastValue, nextValue) );
+				return( StelemDescent.this.evalIterationImproved(lastValue, nextValue) );
 			}
 			
 		};
 		
 
 		@Override
-		protected NewtonRaphsonMultiElem<simplealgebra.algo.NewtonRaphsonMultiElemRemap.Adim, DoubleElem, DoubleElemFactory> genNewton(
-				GeometricAlgebraMultivectorElem<simplealgebra.algo.NewtonRaphsonMultiElemRemap.Adim, GeometricAlgebraOrd<simplealgebra.algo.NewtonRaphsonMultiElemRemap.Adim>, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> _functions,
+		protected DescentAlgorithmMultiElem<simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim, DoubleElem, DoubleElemFactory> genDescent(
+				GeometricAlgebraMultivectorElem<simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim, GeometricAlgebraOrd<simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim>, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> _functions,
 				ArrayList<ArrayList<? extends Elem<?, ?>>> _withRespectTos,
 				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpaceFirstLevel,
 				SymbolicElemFactory<DoubleElem, DoubleElemFactory> _sfac,
-				simplealgebra.algo.NewtonRaphsonMultiElemRemap.Adim _dim ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
+				simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim _dim ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
 			
-			return( new StelemNewtonEnt( _functions, _withRespectTos, implicitSpaceFirstLevel , _sfac , _dim ) );
+			final StelemDescentEnt sa = new StelemDescentEnt();
+			sa.setFunctions( _functions );
+			sa.setWithRespectTos( _withRespectTos );
+			sa.setImplicitSpaceFirstLevel( implicitSpaceFirstLevel );
+			sa.setSfac( _sfac );
+			sa.setDim( _dim );
+			
+			return( new NewtonRaphsonMultiElemNoBacktrack<simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim, DoubleElem, DoubleElemFactory>( sa ) );
 		}
 		
 	}
@@ -2356,7 +2377,7 @@ protected void applyAdd(
 
 /**
  * An elem for performing evaluations
- * at the base Newton-Raphson level.
+ * at the base descent algorithm level.
  * 
  * @author thorngreen
  *
@@ -2442,7 +2463,7 @@ protected class VEvalElem extends SymbolicElem<GeometricAlgebraMultivectorElem<T
  * An elem for evaluating 
  * discretized approximations of the underlying differential
  * equation into expressions (e.g. Jacobian slopes)
- * for Newton-Raphson evaluations.
+ * for descent algorithm evaluations.
  * 
  * @author thorngreen
  *
@@ -2459,12 +2480,12 @@ protected GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<
 	dval = null;
 
 /**
- * Factory for components at the base Newton-Raphson level.
+ * Factory for components at the base descent algorithm level.
  */
 protected SymbolicElemFactory<DoubleElem,DoubleElemFactory> sefac;
 
 /**
- * Factory for evaluated multivectors at the base Newton-Raphson level.
+ * Factory for evaluated multivectors at the base descent algorithm level.
  */
 protected GeometricAlgebraMultivectorElemFactory<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory> vefac;
 
@@ -2474,8 +2495,8 @@ protected GeometricAlgebraMultivectorElemFactory<TestDimensionFour,SpacetimeAlge
  * Constructs the elem.
  * 
  * @param _fac The factory for the enclosed type.
- * @param _sefac Factory for components at the base Newton-Raphson level.
- * @param _vefac Factory for evaluated multivectors at the base Newton-Raphson level.
+ * @param _sefac Factory for components at the base descent algorithm level.
+ * @param _vefac Factory for evaluated multivectors at the base descent algorithm level.
  * @param _dval The multivector to be evaluated by the elem.
  */
 public VEvalElem2(
@@ -2564,7 +2585,7 @@ dval = null;
 protected SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> sefac;
 
 /**
- * Factory for evaluated multivectors at the base Newton-Raphson level.
+ * Factory for evaluated multivectors at the base descent algorithm level.
  */
 protected GeometricAlgebraMultivectorElemFactory<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory> vefac;
 
@@ -2575,7 +2596,7 @@ protected GeometricAlgebraMultivectorElemFactory<TestDimensionFour,SpacetimeAlge
  * 
  * @param _fac The factory for the enclosed type.
  * @param _sefac Factory for components at the level of discretized approximations.
- * @param _vefac Factory for evaluated multivectors at the base Newton-Raphson level.
+ * @param _vefac Factory for evaluated multivectors at the base descent algorithm level.
  * @param _dval The multivector to be evaluated by the elem.
  */
 public VEvalElem3(
@@ -2930,8 +2951,8 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 		}
 		
 		
-		final NewtonRaphsonMultiElemRemapParam<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> param
-			= new NewtonRaphsonMultiElemRemapParam<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>();
+		final DescentAlgorithmMultiElemRemapParam<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> param
+			= new DescentAlgorithmMultiElemRemapParam<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>();
 		
 		
 		param.setFunctions( s00 );
@@ -2944,7 +2965,7 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 
 		
 		
-		StelemNewton newton = new StelemNewton( param );
+		StelemDescent descent = new StelemDescent( param );
 		
 		
 		for( int tval = 1 ; tval < ( NUM_T_ITER - 1 ) ; tval++ )
@@ -2978,7 +2999,7 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 				
 			
 				
-						GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem, DoubleElemFactory> err = newton.eval( implicitSpace2 );
+						GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem, DoubleElemFactory> err = descent.eval( implicitSpace2 );
 		
 		
 						final GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem, DoubleElemFactory> 

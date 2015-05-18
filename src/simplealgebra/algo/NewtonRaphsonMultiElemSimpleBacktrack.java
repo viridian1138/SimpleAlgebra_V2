@@ -95,6 +95,7 @@ import simplealgebra.symbolic.SymbolicZero;
  * </mrow>
  * </math>
  *
+ * Includes a simple backtracking method.
  * 
  * <P>See http://en.wikipedia.org/wiki/Newton's_method
  * 
@@ -106,7 +107,8 @@ import simplealgebra.symbolic.SymbolicZero;
  * @param <R> The enclosed type for the evaluation.
  * @param <S> The factory for the enclosed type for the evaluation.
  */
-public abstract class NewtonRaphsonMultiElem<U extends NumDimensions, R extends Elem<R,?>, S extends ElemFactory<R,S>> {
+public class NewtonRaphsonMultiElemSimpleBacktrack<U extends NumDimensions, R extends Elem<R,?>, S extends ElemFactory<R,S>>
+	extends DescentAlgorithmMultiElem<U,R,S> {
 	
 	/**
 	 * The functions over which to evaluate Netwon-Raphson.
@@ -145,43 +147,42 @@ public abstract class NewtonRaphsonMultiElem<U extends NumDimensions, R extends 
 	protected SymbolicElemFactory<R,S> sfac;
 	
 	/**
+	 * Input parameters for the algorithm.
+	 */
+	protected DescentAlgorithmMultiElemInputParam<U,R,S> param;
+	
+	/**
 	 * Constructs the evaluator.
 	 * 
-	 * @param _functions The functions over which to evaluate Netwon-Raphson.
-	 * @param _withRespectTos The set of variables over which to take derivatives.
-	 * @param implicitSpaceFirstLevel The initial implicit space over which to take the functions and their derivatives.
-	 * @param _sfac The factory for the enclosed type.
-	 * @param _dim The number of dimensions over which to evaluate Newton-Raphson.
+	 * @param _param The input parameters for the evaluator.
 	 * @throws NotInvertibleException
 	 * @throws MultiplicativeDistributionRequiredException
 	 */
-	public NewtonRaphsonMultiElem( final GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,
-			SymbolicElemFactory<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>> _functions , 
-			final ArrayList<ArrayList<? extends Elem<?,?>>> _withRespectTos , 
-			final HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpaceFirstLevel ,
-			final SymbolicElemFactory<R,S> _sfac ,
-			final U _dim )
+	public NewtonRaphsonMultiElemSimpleBacktrack( 
+			final DescentAlgorithmMultiElemInputParam<U,R,S> _param )
 					throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
-		functions = _functions;
-		dim = _dim;
-		sfac = _sfac;
-		final boolean useSimplification = useSimplification();
+		functions = _param.getFunctions();
+		dim = _param.getDim();
+		sfac = _param.getSfac();
+		param = _param;
+		final boolean useSimplification = _param.useSimplification();
 		Iterator<HashSet<BigInteger>> ita = functions.getKeyIterator();
 		evals = new GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,SymbolicElem<R,S>,SymbolicElemFactory<R,S>>( 
-				_sfac , _dim , new GeometricAlgebraOrd<U>() );
+				_param.getSfac() , _param.getDim() , new GeometricAlgebraOrd<U>() );
 		while( ita.hasNext() )
 		{
 			final HashSet<BigInteger> key = ita.next();
-			SymbolicElem<R,S> evalF = functions.get( key ).eval( implicitSpaceFirstLevel );
+			SymbolicElem<R,S> evalF = functions.get( key ).eval( _param.getImplicitSpaceFirstLevel() );
 			if( useSimplification )
 			{
 				evalF = evalF.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY2 , null);
 			}
 			evals.setVal( key , evalF );
 		}
-		partialEvalJacobian = new SquareMatrixElem<U,SymbolicElem<R,S>,SymbolicElemFactory<R,S>>(_sfac, _dim);
-		final Iterator<ArrayList<? extends Elem<?, ?>>> itb = _withRespectTos.iterator();
+		partialEvalJacobian = new SquareMatrixElem<U,SymbolicElem<R,S>,SymbolicElemFactory<R,S>>(
+				_param.getSfac() , _param.getDim() );
+		final Iterator<ArrayList<? extends Elem<?, ?>>> itb = _param.getWithRespectTos().iterator();
 		BigInteger bcnt = BigInteger.ZERO;
 		while( itb.hasNext() )
 		{
@@ -193,8 +194,8 @@ public abstract class NewtonRaphsonMultiElem<U extends NumDimensions, R extends 
 			{
 				final HashSet<BigInteger> key2A = ita.next();
 				final BigInteger key2 = key2A.iterator().next();
-				final SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>> fun = _functions.get( key2A );
-				SymbolicElem<R,S> evalP = fun.evalPartialDerivative( withRespectTo , implicitSpaceFirstLevel );
+				final SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>> fun = _param.getFunctions().get( key2A );
+				SymbolicElem<R,S> evalP = fun.evalPartialDerivative( withRespectTo , _param.getImplicitSpaceFirstLevel() );
 				if( useSimplification )
 				{
 					evalP = evalP.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY2 , null);
@@ -220,7 +221,7 @@ public abstract class NewtonRaphsonMultiElem<U extends NumDimensions, R extends 
 	{
 		implicitSpace = implicitSpaceInitialGuess;
 		lastValues = evalValues();
-		while( !( iterationsDone() ) )
+		while( !( param.iterationsDone() ) )
 		{
 			performIteration();
 		}
@@ -245,7 +246,7 @@ public abstract class NewtonRaphsonMultiElem<U extends NumDimensions, R extends 
 		lastValues.colVectorMultLeftDefault( derivativeJacobianInverse , iterationOffset );
 		iterationOffset = iterationOffset.negate();
 		
-		performIterationUpdate( iterationOffset );
+		param.performIterationUpdate( iterationOffset );
 		
 		
 		GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,R,S> nextValues = evalIndicatesImprovement();
@@ -255,14 +256,14 @@ public abstract class NewtonRaphsonMultiElem<U extends NumDimensions, R extends 
 		}
 		else
 		{
-			int cnt = getMaxIterationsBacktrack();
+			int cnt = param.getMaxIterationsBacktrack();
 			iterationOffset = iterationOffset.negate();
 			while( ( cnt > 0 ) && ( nextValues == null ) )
 			{
 				cnt--;
 				iterationOffset = iterationOffset.divideBy( 2 );
 				
-				performIterationUpdate( iterationOffset );
+				param.performIterationUpdate( iterationOffset );
 				
 				nextValues = evalIndicatesImprovement();
 			}
@@ -281,20 +282,6 @@ public abstract class NewtonRaphsonMultiElem<U extends NumDimensions, R extends 
 	}
 	
 	
-	/**
-	 * Returns whether convergence-wise the new function value should be accepted as an improvement over the old function value.
-	 * 
-	 * @param lastValue The old function value.
-	 * @param newValue The new function value.
-	 * @return True iff. the new function value should be accepted as an improvement over the old function value.
-	 */
-	protected boolean evalIterationImproved( GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,R,S> lastValue , 
-			GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,R,S> newValue )
-	{
-		return( true );
-	}
-	
-	
 	
 	/**
 	 * Returns the result of the Newton-Raphson evaluation if convergence-wise the new function value should be accepted as an improvement over the old function value.  Otherwise returns null.
@@ -307,7 +294,7 @@ public abstract class NewtonRaphsonMultiElem<U extends NumDimensions, R extends 
 	{
 		GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,R,S> ev = evalValues();
 		
-		if( !( evalIterationImproved( lastValues , ev ) ) )
+		if( !( param.evalIterationImproved( lastValues , ev ) ) )
 		{
 			ev = null;
 		}
@@ -375,46 +362,6 @@ public abstract class NewtonRaphsonMultiElem<U extends NumDimensions, R extends 
 		}
 		
 		return( evalJacobian );
-	}
-	
-	
-	/**
-	 * Updates function parameters based on the iteration.
-	 * 
-	 * @param iterationOffset The amount to which the iteration has estimated the function parameter should change.
-	 */
-	protected abstract void performIterationUpdate( GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,R,S> iterationOffset );
-	
-	
-	/**
-	 * Returns whether the iterations have completed.
-	 * 
-	 * @return True iff. the iterations are to complete.
-	 */
-	protected abstract boolean iterationsDone( );
-	
-	
-	/**
-	 * Returns true iff. expression simplification is to be used.  
-	 * Override this method to turn off expression simplification.
-	 * 
-	 * @return True iff. simplification is to be used.
-	 */
-	protected boolean useSimplification()
-	{
-		return( true );
-	}
-	
-	
-	/**
-	 * In the event that an attempted Newton-Raphson iteration diverges from the desired answer, 
-	 * gets the maximum number of attempts that can be used to backtrack onto the original pre-iteration value.
-	 * 
-	 * @return The maximum number of backtrack iterations.
-	 */
-	protected int getMaxIterationsBacktrack()
-	{
-		return( 100 );
 	}
 	
 

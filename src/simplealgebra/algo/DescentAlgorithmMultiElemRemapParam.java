@@ -44,7 +44,7 @@ import simplealgebra.symbolic.SymbolicElemFactory;
 
 
 /**
- * Input parameter for NewtonRaphsonMultiElemRemap.
+ * Input parameter for DescentAlgorithmMultiElemRemap.
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
@@ -55,7 +55,7 @@ import simplealgebra.symbolic.SymbolicElemFactory;
  * @param <R> The nested type.
  * @param <S> The factory for the nested type.
  */
-public class NewtonRaphsonMultiElemRemapParam<U extends NumDimensions, A extends Ord<U>, R extends Elem<R,?>, S extends ElemFactory<R,S>> {
+public class DescentAlgorithmMultiElemRemapParam<U extends NumDimensions, A extends Ord<U>, R extends Elem<R,?>, S extends ElemFactory<R,S>> {
 	
 	
 	

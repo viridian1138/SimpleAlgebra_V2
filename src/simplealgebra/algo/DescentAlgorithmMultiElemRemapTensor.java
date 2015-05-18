@@ -44,25 +44,26 @@ import simplealgebra.ga.*;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
+import simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim;
+import simplealgebra.et.*;
 
 
 /**
- * Remaps a multivector of functions to multivariate Newton-Raphson.
+ * Remaps a tensor of functions to multivariate descent algorithm.
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
  * @author thorngreen
  *
- * @param <U> The number of dimensions for the multivector.
- * @param <A> The Ord for the multivector.
+ * @param <Z> The type of the tensor indices.
  * @param <R> The nested type.
  * @param <S> The factory for the nested type.
  */
-public abstract class NewtonRaphsonMultiElemRemap<U extends NumDimensions, A extends Ord<U>, R extends Elem<R,?>, S extends ElemFactory<R,S>> {
+public abstract class DescentAlgorithmMultiElemRemapTensor<Z extends Object, R extends Elem<R,?>, S extends ElemFactory<R,S>> {
 	
 	
 	/**
-	 * The dimensionality for Newton-Raphson.
+	 * The dimensionality for descent algorithm.
 	 * 
 	 * @author thorngreen
 	 *
@@ -98,42 +99,47 @@ public abstract class NewtonRaphsonMultiElemRemap<U extends NumDimensions, A ext
 	
 	
 	/**
-	 * Mapping from multivector function indices to Newton-Raphson function indices.
+	 * Mapping from tensor function indices to descent algorithm function indices.
 	 */
-	protected HashMap<HashSet<BigInteger>,BigInteger> inMapFun = new HashMap<HashSet<BigInteger>,BigInteger>();
+	protected HashMap<ArrayList<BigInteger>,BigInteger> inMapFun = new HashMap<ArrayList<BigInteger>,BigInteger>();
 	
 	
 	/**
-	 * Mapping from Newton-Raphson function indices to multivector function indices.
+	 * Mapping from descent algorithm function indices to tensor function indices.
 	 */
-	protected HashMap<HashSet<BigInteger>,HashSet<BigInteger>> outMapFun = new HashMap<HashSet<BigInteger>,HashSet<BigInteger>>();
+	protected HashMap<HashSet<BigInteger>,ArrayList<BigInteger>> outMapFun = new HashMap<HashSet<BigInteger>,ArrayList<BigInteger>>();
 	
 	
 	/**
-	 * Mapping from Newton-Raphson offset indices to multivector offset indices.
+	 * Mapping from tensor offset indices to descent algorithm offset indices.
 	 */
-	protected HashMap<HashSet<BigInteger>,HashSet<BigInteger>> outMapOffset = new HashMap<HashSet<BigInteger>,HashSet<BigInteger>>();
+	protected HashMap<ArrayList<BigInteger>,HashSet<BigInteger>> inMapOffset = new HashMap<ArrayList<BigInteger>,HashSet<BigInteger>>();
 	
 	
 	/**
-	 * Multivariate Newton-Raphson.
+	 * Mapping from descent algorithm offset indices to tensor offset indices.
 	 */
-	protected NewtonRaphsonMultiElem<Adim,R,S> newton;
-	
+	protected HashMap<HashSet<BigInteger>,ArrayList<BigInteger>> outMapOffset = new HashMap<HashSet<BigInteger>,ArrayList<BigInteger>>();
 	
 	
 	/**
-	 * Number of dimensions for input multivector.
+	 * Multivariate descent algorithm.
 	 */
-	protected U idim;
+	protected DescentAlgorithmMultiElem<Adim,R,S> descent;
+	
 	
 	/**
-	 * Ord for input multivector.
+	 * Contravariant indices for input tensor.
 	 */
-	protected A iord;
+	protected ArrayList<Z> contravariantIndices;
 	
 	/**
-	 * Number of dimensions for Newton-Raphson.
+	 * Covariant indices for input tensor.
+	 */
+	protected ArrayList<Z> covariantIndices;
+	
+	/**
+	 * Number of dimensions for descent algorithm.
 	 */
 	protected Adim odim;
 	
@@ -145,48 +151,49 @@ public abstract class NewtonRaphsonMultiElemRemap<U extends NumDimensions, A ext
 	
 	
 	/**
-	 * Maps from an input functions multivector to an output functions vector.  Override this method to change the mapping.
+	 * Maps from an input functions tensor to an output functions vector.  Override this method to change the mapping.
 	 * 
-	 * @param functions The input functions multivector.
+	 * @param functions The input functions tensor.
 	 * @param ofun The output functions vector.
 	 */
-	protected void mapFunsInputToOutput( final GeometricAlgebraMultivectorElem<U,A,SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,
+	protected void mapFunsInputToOutput( final EinsteinTensorElem<Z,SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,
 			SymbolicElemFactory<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>> functions ,
 			final GeometricAlgebraMultivectorElem<Adim,GeometricAlgebraOrd<Adim>,SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,
-			SymbolicElemFactory<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>> ofun )
+				SymbolicElemFactory<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>> ofun )
 	{
-		final Iterator<HashSet<BigInteger>> it = functions.getKeyIterator();
+		final Iterator<ArrayList<BigInteger>> it = functions.getKeyIterator();
 		while( it.hasNext() )
 		{
-			HashSet<BigInteger> key = it.next();
+			ArrayList<BigInteger> key = it.next();
 			
 			BigInteger key2 = inMapFun.get( key );
 			
 			HashSet<BigInteger> hs = new HashSet<BigInteger>();
 			hs.add( key2 );
 			
-			ofun.setVal( hs , functions.get( key ) );
+			ofun.setVal( hs , functions.getVal( key ) );
 		}
 	}
 	
 	
+	
 	/**
-	 * Determines the dimension count from the multivector of functions.  Also places 
+	 * Determines the dimension count from the tensor of functions.  Also places 
 	 * functional data into the mapping function data members.  Override this method to change the mapping.
 	 * 
-	 * @param functions The multivector of functions.
+	 * @param functions The tensor of functions.
 	 * @return The dimension count.
 	 */
-	protected BigInteger mapDimCnt( final GeometricAlgebraMultivectorElem<U,A,SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,
+	protected BigInteger mapDimCnt( final EinsteinTensorElem<Z,SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,
 			SymbolicElemFactory<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>> functions )
 	{
 		BigInteger dimCnt = BigInteger.ZERO;
 		
 		
-		final Iterator<HashSet<BigInteger>> it = functions.getKeyIterator();
+		final Iterator<ArrayList<BigInteger>> it = functions.getKeyIterator();
 		while( it.hasNext() )
 		{
-			HashSet<BigInteger> key = it.next();
+			ArrayList<BigInteger> key = it.next();
 			
 			inMapFun.put(key, dimCnt);
 			
@@ -206,20 +213,20 @@ public abstract class NewtonRaphsonMultiElemRemap<U extends NumDimensions, A ext
 	/**
 	 * Constructs the remap.
 	 * 
-	 * @param param Input parameter for the remap.
+	 * @param param Input parameters for the remap.
 	 * @throws NotInvertibleException
 	 * @throws MultiplicativeDistributionRequiredException
 	 */
-	public NewtonRaphsonMultiElemRemap( final NewtonRaphsonMultiElemRemapParam<U,A,R,S> param )
+	public DescentAlgorithmMultiElemRemapTensor( final DescentAlgorithmMultiElemRemapTensorParam<Z,R,S> param )
 					throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
-		idim = param.getDim();
-		iord = param.getOrd();
+		contravariantIndices = param.getContravariantIndices();
+		covariantIndices = param.getCovariantIndices();
 		fac = param.getSfac().getFac().getFac();
 		
 		
 		
-		final BigInteger dimCnt = mapDimCnt( param.getFunctions() );
+		BigInteger dimCnt = mapDimCnt( param.getFunctions() );
 		
 		
 		odim = new Adim( dimCnt );
@@ -239,11 +246,11 @@ public abstract class NewtonRaphsonMultiElemRemap<U extends NumDimensions, A ext
 		
 		final ArrayList<ArrayList<? extends Elem<?,?>>> withRespectTos = new ArrayList<ArrayList<? extends Elem<?,?>>>();
 		
-		final Iterator<HashSet<BigInteger>> it = param.getWithRespectTosI().keySet().iterator();
+		final Iterator<ArrayList<BigInteger>> it = param.getWithRespectTosI().keySet().iterator();
 		BigInteger wcnt = BigInteger.ZERO;
 		while( it.hasNext() )
 		{
-			HashSet<BigInteger> key = it.next();
+			ArrayList<BigInteger> key = it.next();
 			
 			withRespectTos.add( param.getWithRespectTosI().get( key ) );
 			
@@ -251,29 +258,30 @@ public abstract class NewtonRaphsonMultiElemRemap<U extends NumDimensions, A ext
 			hs.add( wcnt );
 			
 			outMapOffset.put( hs , key );
+			inMapOffset.put( key , hs );
 			
 			wcnt = wcnt.add( BigInteger.ONE );
 		}
 		
 		
-		newton = genNewton( ofun , withRespectTos , param.getImplicitSpaceFirstLevel() , param.getSfac().getFac() , odim );
+		descent = genDescent( ofun , withRespectTos , param.getImplicitSpaceFirstLevel() , param.getSfac().getFac() , odim );
 		
 	}
 	
 	
 	/**
-	 * Runs Newton-Raphson.
+	 * Runs descent algorithm.
 	 * 
 	 * @param implicitSpaceInitialGuess The implicit space for the initial guess.
 	 * @return An iterated result.
 	 * @throws NotInvertibleException
 	 * @throws MultiplicativeDistributionRequiredException
 	 */
-	public GeometricAlgebraMultivectorElem<U,A,R,S> eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpaceInitialGuess ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	public EinsteinTensorElem<Z,R,S> eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpaceInitialGuess ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
-		GeometricAlgebraMultivectorElem<Adim,GeometricAlgebraOrd<Adim>,R,S> sv = newton.eval(implicitSpaceInitialGuess);
-		GeometricAlgebraMultivectorElem<U,A,R,S> ret =
-				new GeometricAlgebraMultivectorElem<U,A,R,S>( fac , idim , iord );
+		GeometricAlgebraMultivectorElem<Adim,GeometricAlgebraOrd<Adim>,R,S> sv = descent.eval(implicitSpaceInitialGuess);
+		EinsteinTensorElem<Z,R,S> ret =
+				new EinsteinTensorElem<Z,R,S>( fac , contravariantIndices , covariantIndices );
 		
 		Iterator<HashSet<BigInteger>> it = sv.getKeyIterator();
 		while( it.hasNext() )
@@ -287,18 +295,18 @@ public abstract class NewtonRaphsonMultiElemRemap<U extends NumDimensions, A ext
 	
 	
 	/**
-	 * Constructs a multivariate Newton-Raphson.
+	 * Constructs a multivariate descent algorithm.
 	 * 
 	 * @param _functions Input vector of functions.
 	 * @param _withRespectTos Set of variables to take derivatives with respect to.
 	 * @param implicitSpaceFirstLevel Implicit space for the initial eval.
 	 * @param _sfac The enclosed factory.
 	 * @param _dim The number of dimensions over which to evaluate.
-	 * @return An instance of multivariate Newton-Raphson.
+	 * @return An instance of multivariate descent algorithm.
 	 * @throws NotInvertibleException
 	 * @throws MultiplicativeDistributionRequiredException
 	 */
-	protected abstract NewtonRaphsonMultiElem<Adim,R,S> genNewton( final GeometricAlgebraMultivectorElem<Adim,GeometricAlgebraOrd<Adim>,SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,
+	protected abstract DescentAlgorithmMultiElem<Adim,R,S> genDescent( final GeometricAlgebraMultivectorElem<Adim,GeometricAlgebraOrd<Adim>,SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,
 			SymbolicElemFactory<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>> _functions , 
 			final ArrayList<ArrayList<? extends Elem<?,?>>> _withRespectTos , 
 			final HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpaceFirstLevel ,
@@ -307,14 +315,14 @@ public abstract class NewtonRaphsonMultiElemRemap<U extends NumDimensions, A ext
 	
 	
 	/**
-	 * Updates function parameters based on the internal Newton-Raphson iteration results.
+	 * Updates function parameters based on the internal descent algorithm iteration results.
 	 * 
 	 * @param iterationOffset The amount to which the iteration has estimated the function parameter should change.
 	 */
 	protected void performIterationUpdateInternal( GeometricAlgebraMultivectorElem<Adim,GeometricAlgebraOrd<Adim>,R,S> iterationOffset )
 	{
-		GeometricAlgebraMultivectorElem<U,A,R,S> ret =
-				new GeometricAlgebraMultivectorElem<U,A,R,S>( fac , idim , iord );
+		EinsteinTensorElem<Z,R,S> ret =
+				new EinsteinTensorElem<Z,R,S>( fac , contravariantIndices , covariantIndices );
 		
 		Iterator<HashSet<BigInteger>> it = iterationOffset.getKeyIterator();
 		while( it.hasNext() )
@@ -328,11 +336,74 @@ public abstract class NewtonRaphsonMultiElemRemap<U extends NumDimensions, A ext
 	
 	
 	/**
-	 * Updates function parameters for multivector iteration results.
+	 * Updates function parameters for tensor iteration results.
 	 * 
 	 * @param iterationOffset The amount to which the iteration has estimated the function parameter should change.
 	 */
-	protected abstract void performIterationUpdate( GeometricAlgebraMultivectorElem<U,A,R,S> iterationOffset );
+	protected abstract void performIterationUpdate( EinsteinTensorElem<Z,R,S> iterationOffset );
+	
+	
+	
+	/**
+	 * Sets the current value of the iteration.
+	 * 
+	 * @param value The new value.
+	 */
+	protected void setIterationValueInternal( GeometricAlgebraMultivectorElem<Adim,GeometricAlgebraOrd<Adim>,R,S> iterationOffset )
+	{
+		EinsteinTensorElem<Z,R,S> ret =
+				new EinsteinTensorElem<Z,R,S>( fac , contravariantIndices , covariantIndices );
+		
+		Iterator<HashSet<BigInteger>> it = iterationOffset.getKeyIterator();
+		while( it.hasNext() )
+		{
+			HashSet<BigInteger> key = it.next();
+			ret.setVal( outMapOffset.get( key ) , iterationOffset.get( key ) );
+		}
+		
+		setIterationValue( ret );
+	}
+	
+	
+	/**
+	 * Sets the current value of the iteration.
+	 * 
+	 * @param value The new value.
+	 */
+	protected abstract void setIterationValue( EinsteinTensorElem<Z,R,S> iterationOffset );
+	
+	
+	
+	/**
+	 * Gets the current value of the iteration.
+	 * 
+	 * @return The current value of the iteration.
+	 */
+	protected GeometricAlgebraMultivectorElem<Adim,GeometricAlgebraOrd<Adim>,R,S> getIterationValueInternal( )
+	{
+		GeometricAlgebraMultivectorElem<Adim,GeometricAlgebraOrd<Adim>,R,S> ret =
+				new GeometricAlgebraMultivectorElem<Adim,GeometricAlgebraOrd<Adim>,R,S>( fac , odim , new GeometricAlgebraOrd<Adim>() );
+		
+		EinsteinTensorElem<Z,R,S> value =
+				getIterationValue();
+		
+		Iterator<ArrayList<BigInteger>> it = value.getKeyIterator();
+		while( it.hasNext() )
+		{
+			ArrayList<BigInteger> key = it.next();
+			ret.setVal( inMapOffset.get( key ) , value.getVal( key ) );
+		}
+		
+		return( ret );
+	}
+	
+	
+	/**
+	 * Gets the current value of the iteration.
+	 * 
+	 * @return The current value of the iteration.
+	 */
+	protected abstract EinsteinTensorElem<Z,R,S> getIterationValue( );
 	
 	
 	
@@ -342,7 +413,7 @@ public abstract class NewtonRaphsonMultiElemRemap<U extends NumDimensions, A ext
 	 * @return True iff. the iterations are to complete.
 	 */
 	protected abstract boolean iterationsDone( );
-
+	
 	
 	/**
 	 * Returns true iff. expression simplification is to be used.  
@@ -352,12 +423,12 @@ public abstract class NewtonRaphsonMultiElemRemap<U extends NumDimensions, A ext
 	 */
 	protected boolean useSimplification()
 	{
-		return( true );
+		return( false );
 	}
 	
 	
 	/**
-	 * In the event that an attempted Newton-Raphson iteration diverges from the desired answer, 
+	 * In the event that an attempted descent algorithm iteration diverges from the desired answer, 
 	 * gets the maximum number of attempts that can be used to backtrack onto the original pre-iteration value.
 	 * 
 	 * @return The maximum number of backtrack iterations.
@@ -366,7 +437,7 @@ public abstract class NewtonRaphsonMultiElemRemap<U extends NumDimensions, A ext
 	{
 		return( 100 );
 	}
-	
+
 	
 	
 }
