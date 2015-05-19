@@ -442,6 +442,53 @@ public class TestCWave extends TestCase {
 	}
 	
 	
+	/**
+	 * Performs a single iteration of the CWave run.
+	 * 
+	 * @param runs The array for run results.
+	 * @param derivMaster The x derivative of C for the run before the previous.
+	 * @param elemCMaster The C value for the run before the previous.
+	 * @param elemCRun The C value for the previous run.
+	 * @throws NotInvertibleException
+	 */
+	protected void performCWaveIteration( final Object[] runs ,
+			final ArrayFun derivMaster ,
+			final BigFixedPointElem<LrgPrecision>[] elemCMaster ,
+			final BigFixedPointElem<LrgPrecision>[] elemCRun ) throws NotInvertibleException
+	{
+		Object ob = runs[ 0 ];
+		for( int cnti = 0 ; cnti < 4 ; cnti++ )
+		{
+			runs[ cnti ] = runs[ cnti + 1 ];
+		}
+		runs[ 4 ] = ob;
+		
+		ArrayFun derivRun = new DerivativeFun( new DerivativeFun( new IndArrayFun( 
+				(BigFixedPointElem<LrgPrecision>[])( runs[ 2 ] ) ) ) );
+		
+		BigFixedPointElem<LrgPrecision>[] elemCOut = (BigFixedPointElem<LrgPrecision>[])( runs[ 4 ] );
+		
+		BigFixedPointElem<LrgPrecision>[] elemCDt = (BigFixedPointElem<LrgPrecision>[])( runs[ 0 ] );
+		
+		int cntx;
+		for( cntx = 0 ; cntx < ARRAY_SZ ; cntx++ )
+		{
+			BigFixedPointElem<LrgPrecision> dXMaster = derivMaster.getVal( cntx );
+			BigFixedPointElem<LrgPrecision> dXRun = derivRun.getVal( cntx );
+		
+			BigFixedPointElem<LrgPrecision> dXmMaster = dXMaster.mult( elemCMaster[ cntx ] ).mult( elemCMaster[ cntx ] );
+		
+			BigFixedPointElem<LrgPrecision> dXmRun = dXRun.mult( elemCRun[ cntx ] ).mult( elemCRun[ cntx ] );
+		
+			BigFixedPointElem<LrgPrecision> dXm = dXmRun.add( dXmMaster.negate() );
+		
+			BigFixedPointElem<LrgPrecision> dOut = ( elemCDt[ cntx ] ).add( dXm.mult( DELTA_T_2_L ) );
+			
+			elemCOut[ cntx ] = dOut;
+		}
+	}
+	
+	
 	
 	/**
 	 * Simple Euler-Method-like evaluator test for the equation <math display="inline">
@@ -606,38 +653,7 @@ public class TestCWave extends TestCase {
 		
 		for( int cntt = 0 ; cntt < 7 ; cntt++ )
 		{
-			Object ob = runs[ 0 ];
-			for( int cnti = 0 ; cnti < 4 ; cnti++ )
-			{
-				runs[ cnti ] = runs[ cnti + 1 ];
-			}
-			runs[ 4 ] = ob;
-			
-			ArrayFun derivRun = new DerivativeFun( new DerivativeFun( new IndArrayFun( 
-					(BigFixedPointElem<LrgPrecision>[])( runs[ 2 ] ) ) ) );
-			
-			BigFixedPointElem<LrgPrecision>[] elemCOut = (BigFixedPointElem<LrgPrecision>[])( runs[ 4 ] );
-			
-			BigFixedPointElem<LrgPrecision>[] elemCDt = (BigFixedPointElem<LrgPrecision>[])( runs[ 0 ] );
-			
-			
-			for( cntx = 0 ; cntx < ARRAY_SZ ; cntx++ )
-			{
-				BigFixedPointElem<LrgPrecision> dXMaster = derivMaster.getVal( cntx );
-				BigFixedPointElem<LrgPrecision> dXRun = derivRun.getVal( cntx );
-			
-				BigFixedPointElem<LrgPrecision> dXmMaster = dXMaster.mult( elemCMaster[ cntx ] ).mult( elemCMaster[ cntx ] );
-			
-				BigFixedPointElem<LrgPrecision> dXmRun = dXRun.mult( elemCRun[ cntx ] ).mult( elemCRun[ cntx ] );
-			
-				BigFixedPointElem<LrgPrecision> dXm = dXmRun.add( dXmMaster.negate() );
-			
-				BigFixedPointElem<LrgPrecision> dOut = ( elemCDt[ cntx ] ).add( dXm.mult( DELTA_T_2_L ) );
-				
-				elemCOut[ cntx ] = dOut;
-			}
-			
-			
+			performCWaveIteration( runs , derivMaster , elemCMaster , elemCRun );
 		}
 		
 		
