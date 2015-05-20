@@ -2659,6 +2659,98 @@ throw( new RuntimeException( "Not Supported" ) );
 }
 
 }
+
+
+
+
+
+/**
+ * Performs descent iterations for one value of T.
+ * 
+ * @param tval The value of T over which to iterate.
+ * @param descent The descent algorithm to use for the iterations.
+ * @param implicitSpace2 The implicit space over which to iterate.
+ * @throws NotInvertibleException
+ * @throws MultiplicativeDistributionRequiredException
+ */
+protected void performIterationT( final int tval , final StelemDescent descent , final HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace2 ) 
+		throws NotInvertibleException, MultiplicativeDistributionRequiredException
+{
+	for( int xcnt = 0 ; xcnt < NUM_X_ITER ; xcnt++ )
+	{
+		for( int ycnt = 0 ; ycnt < NUM_Y_ITER ; ycnt++ )
+		{
+			for( int zcnt = 0 ; zcnt < NUM_Z_ITER ; zcnt++ )
+			{
+				iterArray[ tval + 1 ][ xcnt ][ ycnt ][ zcnt ] = iterArray[ tval ][ xcnt ][ ycnt ][ zcnt ];
+			}
+		}
+	}
+	
+	for( int xcnt = 0 ; xcnt < NUM_X_ITER ; xcnt++ )
+	{
+		for( int ycnt = 0 ; ycnt < NUM_Y_ITER ; ycnt++ )
+		{
+			for( int zcnt = 0 ; zcnt < NUM_Z_ITER ; zcnt++ )
+			{
+				// System.out.println( "iter... " + xcnt + " " + ycnt + " " + zcnt );
+				
+				fillTempArray( tval , xcnt , ycnt , zcnt );
+				clearSpatialAssertArray();
+
+		
+				final GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem, DoubleElemFactory> 
+					ival = TestDiracA.getUpdateValue();
+		
+		
+	
+		
+				GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem, DoubleElemFactory> 
+					err = descent.eval( implicitSpace2 );
+
+
+				final GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem, DoubleElemFactory> 
+					val = TestDiracA.getUpdateValue();
+				
+				
+		
+				if( ( xcnt == 5 ) && ( ycnt == 5 ) && ( zcnt == 5 ) )
+				{
+					System.out.println( "******************" );
+					System.out.println( " ( " + xcnt + " , " + ycnt + " , " + zcnt + " ) " );
+					System.out.println( Math.sqrt( calcMagnitudeSq( ival ) ) );
+					System.out.println( Math.sqrt( calcMagnitudeSq( val ) ) );
+					System.out.println( "## " + ( Math.sqrt( calcMagnitudeSq( err ) ) ) );
+				}
+				
+				
+				Assert.assertTrue( spatialAssertArray[ 0 ][ 0 ][ 0 ][ 0 ] == 0 );
+				
+				Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 1 ] > 0 );
+				
+				Assert.assertTrue( spatialAssertArray[ 2 ][ 1 ][ 1 ][ 1 ] > 0 );
+				Assert.assertTrue( spatialAssertArray[ 1 ][ 2 ][ 1 ][ 1 ] > 0 );
+				Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 2 ][ 1 ] > 0 );
+				Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 2 ] > 0 );
+				
+				Assert.assertTrue( spatialAssertArray[ 0 ][ 1 ][ 1 ][ 1 ] > 0 );
+				Assert.assertTrue( spatialAssertArray[ 1 ][ 0 ][ 1 ][ 1 ] > 0 );
+				Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 0 ][ 1 ] > 0 );
+				Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 0 ] > 0 );
+		
+		
+				// System.out.println( calcMagnitudeSq( val ) );
+				// System.out.println( calcMagnitudeSq( err ) );
+				Assert.assertTrue( Math.abs( Math.sqrt( calcMagnitudeSq( err ) ) ) < ( 0.01 * Math.abs( Math.sqrt( calcMagnitudeSq( val ) ) ) + 0.01 ) );
+		
+	
+				iterArray[ tval + 1 ][ xcnt ][ ycnt ][ zcnt ] = val;
+			}
+			
+		}
+				
+	}
+}
 	
 
 
@@ -2970,80 +3062,7 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 		
 		for( int tval = 1 ; tval < ( NUM_T_ITER - 1 ) ; tval++ )
 		{
-			for( int xcnt = 0 ; xcnt < NUM_X_ITER ; xcnt++ )
-			{
-				for( int ycnt = 0 ; ycnt < NUM_Y_ITER ; ycnt++ )
-				{
-					for( int zcnt = 0 ; zcnt < NUM_Z_ITER ; zcnt++ )
-					{
-						iterArray[ tval + 1 ][ xcnt ][ ycnt ][ zcnt ] = iterArray[ tval ][ xcnt ][ ycnt ][ zcnt ];
-					}
-				}
-			}
-			
-			for( int xcnt = 0 ; xcnt < NUM_X_ITER ; xcnt++ )
-			{
-				for( int ycnt = 0 ; ycnt < NUM_Y_ITER ; ycnt++ )
-				{
-					for( int zcnt = 0 ; zcnt < NUM_Z_ITER ; zcnt++ )
-					{
-						// System.out.println( "iter... " + xcnt + " " + ycnt + " " + zcnt );
-						
-						fillTempArray( tval , xcnt , ycnt , zcnt );
-						clearSpatialAssertArray();
-		
-				
-						final GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem, DoubleElemFactory> 
-							ival = TestDiracA.getUpdateValue();
-				
-				
-			
-				
-						GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem, DoubleElemFactory> err = descent.eval( implicitSpace2 );
-		
-		
-						final GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem, DoubleElemFactory> 
-							val = TestDiracA.getUpdateValue();
-						
-						
-				
-						if( ( xcnt == 5 ) && ( ycnt == 5 ) && ( zcnt == 5 ) )
-						{
-							System.out.println( "******************" );
-							System.out.println( " ( " + xcnt + " , " + ycnt + " , " + zcnt + " ) " );
-							System.out.println( Math.sqrt( calcMagnitudeSq( ival ) ) );
-							System.out.println( Math.sqrt( calcMagnitudeSq( val ) ) );
-							System.out.println( "## " + ( Math.sqrt( calcMagnitudeSq( err ) ) ) );
-						}
-						
-						
-						Assert.assertTrue( spatialAssertArray[ 0 ][ 0 ][ 0 ][ 0 ] == 0 );
-						
-						Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 1 ] > 0 );
-						
-						Assert.assertTrue( spatialAssertArray[ 2 ][ 1 ][ 1 ][ 1 ] > 0 );
-						Assert.assertTrue( spatialAssertArray[ 1 ][ 2 ][ 1 ][ 1 ] > 0 );
-						Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 2 ][ 1 ] > 0 );
-						Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 2 ] > 0 );
-						
-						Assert.assertTrue( spatialAssertArray[ 0 ][ 1 ][ 1 ][ 1 ] > 0 );
-						Assert.assertTrue( spatialAssertArray[ 1 ][ 0 ][ 1 ][ 1 ] > 0 );
-						Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 0 ][ 1 ] > 0 );
-						Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 0 ] > 0 );
-				
-				
-						// System.out.println( calcMagnitudeSq( val ) );
-						// System.out.println( calcMagnitudeSq( err ) );
-						Assert.assertTrue( Math.abs( Math.sqrt( calcMagnitudeSq( err ) ) ) < ( 0.01 * Math.abs( Math.sqrt( calcMagnitudeSq( val ) ) ) + 0.01 ) );
-				
-			
-						iterArray[ tval + 1 ][ xcnt ][ ycnt ][ zcnt ] = val;
-					}
-					
-				}
-						
-			}
-			
+			performIterationT( tval , descent , implicitSpace2 );
 		}
 		
 		// System.out.println( "==============================" ); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
