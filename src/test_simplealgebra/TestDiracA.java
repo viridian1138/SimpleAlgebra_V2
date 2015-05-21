@@ -2663,6 +2663,67 @@ throw( new RuntimeException( "Not Supported" ) );
 
 
 
+/**
+ * Initializes the iter array.
+ * 
+ * @param d1 The dimensional size to be used for the initialization.
+ */
+protected void initIterArray( final double d1 )
+{
+	for( int tcnt = 0 ; tcnt < 2 ; tcnt++ )
+	{
+		for( int xcnt = 0 ; xcnt < NUM_X_ITER ; xcnt++ )
+		{
+			for( int ycnt = 0 ; ycnt < NUM_Y_ITER ; ycnt++ )
+			{
+				for( int zcnt = 0 ; zcnt < NUM_Z_ITER ; zcnt++ )
+				{
+					iterArray[ tcnt ][ xcnt ][ ycnt ][ zcnt ] = genDiffAll( 1E-8 );
+				}
+			}
+		}
+	}
+	
+	
+	for( int tcnt = 0 ; tcnt < 2 ; tcnt++ )
+	{
+		// for( int xcnt = 0 ; xcnt < NUM_X_ITER ; xcnt++ )
+		// {
+		//	iterArray[ tcnt ][ xcnt ] = rand.nextDouble();
+		// }
+		iterArray[ tcnt ][ 5 ][ 5 ][ 5 ] = genDiffEnt( 10000.0 * ( d1 * d1 ) );
+	}
+	
+	
+}
+
+
+
+
+
+/**
+ * Initializes the temp array.
+ */
+protected void initTempArray()
+{
+	for( int tcnt = 0 ; tcnt < 2 ; tcnt++ )
+	{
+		for( int xcnt = 0 ; xcnt < 2 ; xcnt++ )
+		{
+			for( int ycnt = 0 ; ycnt < 2 ; ycnt++ )
+			{
+				for( int zcnt = 0 ; zcnt < 2 ; zcnt++ )
+				{
+					tempArray[ tcnt ][ xcnt ][ ycnt ][ zcnt ] = genDiffAll( 1E-8 );
+				}
+			}
+		}
+	}
+}
+
+
+
+
 
 /**
  * Performs descent iterations for one value of T.
@@ -2824,48 +2885,14 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 		final SpacetimeAlgebraOrd<TestDimensionFour> ord = new SpacetimeAlgebraOrd<TestDimensionFour>();
 		
 		
-		{
-			for( int tcnt = 0 ; tcnt < 2 ; tcnt++ )
-			{
-				for( int xcnt = 0 ; xcnt < NUM_X_ITER ; xcnt++ )
-				{
-					for( int ycnt = 0 ; ycnt < NUM_Y_ITER ; ycnt++ )
-					{
-						for( int zcnt = 0 ; zcnt < NUM_Z_ITER ; zcnt++ )
-						{
-							iterArray[ tcnt ][ xcnt ][ ycnt ][ zcnt ] = genDiffAll( 1E-8 );
-						}
-					}
-				}
-			}
-		}
 		
 		
-		{
-			for( int tcnt = 0 ; tcnt < 2 ; tcnt++ )
-			{
-				for( int xcnt = 0 ; xcnt < 2 ; xcnt++ )
-				{
-					for( int ycnt = 0 ; ycnt < 2 ; ycnt++ )
-					{
-						for( int zcnt = 0 ; zcnt < 2 ; zcnt++ )
-						{
-							tempArray[ tcnt ][ xcnt ][ ycnt ][ zcnt ] = genDiffAll( 1E-8 );
-						}
-					}
-				}
-			}
-		}
+		initIterArray( d1 );
 		
 		
-		for( int tcnt = 0 ; tcnt < 2 ; tcnt++ )
-		{
-			// for( int xcnt = 0 ; xcnt < NUM_X_ITER ; xcnt++ )
-			// {
-			//	iterArray[ tcnt ][ xcnt ] = rand.nextDouble();
-			// }
-			iterArray[ tcnt ][ 5 ][ 5 ][ 5 ] = genDiffEnt( 10000.0 * ( d1 * d1 ) );
-		}
+		initTempArray();
+		
+	
 		
 		
 		final DoubleElemFactory de = new DoubleElemFactory();
