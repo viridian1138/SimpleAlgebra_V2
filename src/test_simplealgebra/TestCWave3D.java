@@ -57,6 +57,7 @@ import simplealgebra.ga.*;
 import simplealgebra.ddx.*;
 import simplealgebra.et.EinsteinTensorElem;
 import test_simplealgebra.TestGeneralRelativityA.TempArrayFillInnerParam;
+import test_simplealgebra.TestStelemD.StelemNewton;
 
 
 
@@ -1695,6 +1696,116 @@ public class TestCWave3D extends TestCase {
 	
 	
 	
+	
+	
+	/**
+	 * Performs descent iterations for one value of T.
+	 * 
+	 * @param tval The value of T over which to iterate.
+	 * @param newton The descent algorithm to use for the iterations.
+	 * @param implicitSpace2 The implicit space over which to iterate.
+	 * @throws NotInvertibleException
+	 * @throws MultiplicativeDistributionRequiredException
+	 */
+	protected void performIterationT( final int tval , final StelemNewton newton , final HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace2 ) 
+			throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	{
+		for( int xcnt = 0 ; xcnt < NUM_X_ITER ; xcnt++ )
+		{
+			for( int ycnt = 0 ; ycnt < NUM_Y_ITER ; ycnt++ )
+			{
+				for( int zcnt = 0 ; zcnt < NUM_Z_ITER ; zcnt++ )
+				{
+					iterArray[ tval + 1 ][ xcnt ][ ycnt ][ zcnt ] = iterArray[ tval ][ xcnt ][ ycnt ][ zcnt ];
+				}
+			}
+		}
+		
+		for( int xcnt = 0 ; xcnt < NUM_X_ITER ; xcnt++ )
+		{
+			for( int ycnt = 0 ; ycnt < NUM_Y_ITER ; ycnt++ )
+			{
+				for( int zcnt = 0 ; zcnt < NUM_Z_ITER ; zcnt++ )
+				{
+					fillTempArray( tval , xcnt , ycnt , zcnt );
+					clearSpatialAssertArray();
+	
+			
+					final double ival = TestCWave3D.getUpdateValue();
+			
+			
+		
+			
+					DoubleElem err = newton.eval( implicitSpace2 );
+	
+	
+					final double val = TestCWave3D.getUpdateValue();
+			
+					if( ( xcnt == 12 ) && ( ycnt == 5 ) && ( zcnt == 5 ) )
+					{
+						System.out.println( "******************" );
+						System.out.println( " ( " + xcnt + " , " + ycnt + " , " + zcnt + " ) " );
+						System.out.println( ival );
+						System.out.println( val );
+						System.out.println( "## " + ( err.getVal() ) );
+					}
+					
+					
+					Assert.assertTrue( spatialAssertArray[ 0 ][ 0 ][ 0 ][ 0 ] == 0 );
+					
+					Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 1 ] > 0 );
+					
+					Assert.assertTrue( spatialAssertArray[ 2 ][ 1 ][ 1 ][ 1 ] > 0 );
+					Assert.assertTrue( spatialAssertArray[ 1 ][ 2 ][ 1 ][ 1 ] > 0 );
+					Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 2 ][ 1 ] > 0 );
+					Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 2 ] > 0 );
+					
+					Assert.assertTrue( spatialAssertArray[ 0 ][ 1 ][ 1 ][ 1 ] > 0 );
+					Assert.assertTrue( spatialAssertArray[ 1 ][ 0 ][ 1 ][ 1 ] > 0 );
+					Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 0 ][ 1 ] > 0 );
+					Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 0 ] > 0 );
+			
+			
+					Assert.assertTrue( Math.abs( err.getVal() ) < ( 0.01 * Math.abs( val ) + 0.01 ) );
+			
+		
+					iterArray[ tval + 1 ][ xcnt ][ ycnt ][ zcnt ] = val;
+				}
+				
+			}
+					
+		}
+		
+	}
+	
+	
+	
+	
+	/**
+	 * Initializes the iter array.
+	 */
+	protected void initIterArray( )
+	{
+		for( int tcnt = 0 ; tcnt < 2 ; tcnt++ )
+		{
+			for( int xcnt = 0 ; xcnt < NUM_X_ITER ; xcnt++ )
+			{
+				for( int ycnt = 0 ; ycnt < NUM_Y_ITER ; ycnt++ )
+				{
+					for( int zcnt = 0 ; zcnt < NUM_Z_ITER ; zcnt++ )
+					{
+						iterArray[ tcnt ][ xcnt ][ ycnt ][ zcnt ] = CINT;
+					}
+				}
+			}
+			iterArray[ tcnt ][ 12 ][ 5 ][ 5 ] = 0.95 * CINT;
+		}
+	}
+	
+	
+	
+	
+	
 	/**
 	 * Tests the ability to numerically evaluate the differential equation <math display="inline">
 	 * <mrow>
@@ -1754,20 +1865,7 @@ public class TestCWave3D extends TestCase {
 		
 		
 		
-		for( int tcnt = 0 ; tcnt < 2 ; tcnt++ )
-		{
-			for( int xcnt = 0 ; xcnt < NUM_X_ITER ; xcnt++ )
-			{
-				for( int ycnt = 0 ; ycnt < NUM_Y_ITER ; ycnt++ )
-				{
-					for( int zcnt = 0 ; zcnt < NUM_Z_ITER ; zcnt++ )
-					{
-						iterArray[ tcnt ][ xcnt ][ ycnt ][ zcnt ] = CINT;
-					}
-				}
-			}
-			iterArray[ tcnt ][ 12 ][ 5 ][ 5 ] = 0.95 * CINT;
-		}
+		initIterArray( );
 		
 		
 		
@@ -1970,72 +2068,7 @@ public class TestCWave3D extends TestCase {
 		
 		for( int tval = 1 ; tval < ( NUM_T_ITER - 1 ) ; tval++ )
 		{
-			for( int xcnt = 0 ; xcnt < NUM_X_ITER ; xcnt++ )
-			{
-				for( int ycnt = 0 ; ycnt < NUM_Y_ITER ; ycnt++ )
-				{
-					for( int zcnt = 0 ; zcnt < NUM_Z_ITER ; zcnt++ )
-					{
-						iterArray[ tval + 1 ][ xcnt ][ ycnt ][ zcnt ] = iterArray[ tval ][ xcnt ][ ycnt ][ zcnt ];
-					}
-				}
-			}
-			
-			for( int xcnt = 0 ; xcnt < NUM_X_ITER ; xcnt++ )
-			{
-				for( int ycnt = 0 ; ycnt < NUM_Y_ITER ; ycnt++ )
-				{
-					for( int zcnt = 0 ; zcnt < NUM_Z_ITER ; zcnt++ )
-					{
-						fillTempArray( tval , xcnt , ycnt , zcnt );
-						clearSpatialAssertArray();
-		
-				
-						final double ival = TestCWave3D.getUpdateValue();
-				
-				
-			
-				
-						DoubleElem err = newton.eval( implicitSpace2 );
-		
-		
-						final double val = TestCWave3D.getUpdateValue();
-				
-						if( ( xcnt == 12 ) && ( ycnt == 5 ) && ( zcnt == 5 ) )
-						{
-							System.out.println( "******************" );
-							System.out.println( " ( " + xcnt + " , " + ycnt + " , " + zcnt + " ) " );
-							System.out.println( ival );
-							System.out.println( val );
-							System.out.println( "## " + ( err.getVal() ) );
-						}
-						
-						
-						Assert.assertTrue( spatialAssertArray[ 0 ][ 0 ][ 0 ][ 0 ] == 0 );
-						
-						Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 1 ] > 0 );
-						
-						Assert.assertTrue( spatialAssertArray[ 2 ][ 1 ][ 1 ][ 1 ] > 0 );
-						Assert.assertTrue( spatialAssertArray[ 1 ][ 2 ][ 1 ][ 1 ] > 0 );
-						Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 2 ][ 1 ] > 0 );
-						Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 2 ] > 0 );
-						
-						Assert.assertTrue( spatialAssertArray[ 0 ][ 1 ][ 1 ][ 1 ] > 0 );
-						Assert.assertTrue( spatialAssertArray[ 1 ][ 0 ][ 1 ][ 1 ] > 0 );
-						Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 0 ][ 1 ] > 0 );
-						Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 0 ] > 0 );
-				
-				
-						Assert.assertTrue( Math.abs( err.getVal() ) < ( 0.01 * Math.abs( val ) + 0.01 ) );
-				
-			
-						iterArray[ tval + 1 ][ xcnt ][ ycnt ][ zcnt ] = val;
-					}
-					
-				}
-						
-			}
-			
+			performIterationT( tval , newton , implicitSpace2 );
 		}
 		
 		System.out.println( "==============================" );

@@ -57,6 +57,7 @@ import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicReduction;
 import simplealgebra.ga.*;
 import simplealgebra.ddx.*;
+import test_simplealgebra.TestStelemD.StelemNewton;
 
 
 
@@ -1846,6 +1847,115 @@ public class TestSchrodingerSpt extends TestCase {
 	
 	
 	/**
+	 * Performs descent iterations for one value of T.
+	 * 
+	 * @param tval The value of T over which to iterate.
+	 * @param newton The descent algorithm to use for the iterations.
+	 * @param implicitSpace2 The implicit space over which to iterate.
+	 * @throws NotInvertibleException
+	 * @throws MultiplicativeDistributionRequiredException
+	 */
+	protected void performIterationT( final int tval , final StelemNewton newton , final HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace2 ) 
+			throws Throwable
+	{
+		for( int xcnt = 0 ; xcnt < NUM_X_ITER ; xcnt++ )
+		{
+			for( int ycnt = 0 ; ycnt < NUM_Y_ITER ; ycnt++ )
+			{
+				for( int zcnt = 0 ; zcnt < NUM_Z_ITER ; zcnt++ )
+				{
+					iterArrayRe[ tval + 1 ][ xcnt ][ ycnt ][ zcnt ] = iterArrayRe[ tval ][ xcnt ][ ycnt ][ zcnt ];
+					iterArrayIm[ tval + 1 ][ xcnt ][ ycnt ][ zcnt ] = iterArrayIm[ tval ][ xcnt ][ ycnt ][ zcnt ];
+				}
+			}
+		}
+		
+		for( int xcnt = 0 ; xcnt < NUM_X_ITER ; xcnt++ )
+		{
+			for( int ycnt = 0 ; ycnt < NUM_Y_ITER ; ycnt++ )
+			{
+				for( int zcnt = 0 ; zcnt < NUM_Z_ITER ; zcnt++ )
+				{
+					fillTempArray( tval , xcnt , ycnt , zcnt );
+					clearSpatialAssertArray();
+	
+			
+					final ComplexElem<DoubleElem,DoubleElemFactory> ival =
+							new ComplexElem<DoubleElem,DoubleElemFactory>(
+									new DoubleElem( TestSchrodingerSpt.getUpdateValueRe() ) , 
+									new DoubleElem( TestSchrodingerSpt.getUpdateValueIm() ) );
+		
+			
+					ComplexElem<DoubleElem, DoubleElemFactory> err = newton.eval( implicitSpace2 );
+	
+	
+					final ComplexElem<DoubleElem,DoubleElemFactory> val =
+							new ComplexElem<DoubleElem,DoubleElemFactory>(
+									new DoubleElem( TestSchrodingerSpt.getUpdateValueRe() ) , 
+									new DoubleElem( TestSchrodingerSpt.getUpdateValueIm() ) );
+			
+					
+					if( ( xcnt == 12 ) && ( ycnt == 5 ) && ( zcnt == 5 ) )
+					{
+						System.out.println( "******************" );
+						System.out.println( " ( " + xcnt + " , " + ycnt + " , " + zcnt + " ) " );
+						System.out.println( expectationValue( ival ) );
+						System.out.println( expectationValue( val ) );
+						System.out.println( "## " + ( expectationValue( err ) ) );
+					}
+					
+					
+					Assert.assertTrue( spatialAssertArray[ 0 ][ 0 ][ 0 ][ 0 ] == 0 );
+					
+					Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 1 ] > 0 );
+					
+					Assert.assertTrue( spatialAssertArray[ 2 ][ 1 ][ 1 ][ 1 ] > 0 );
+					Assert.assertTrue( spatialAssertArray[ 1 ][ 2 ][ 1 ][ 1 ] > 0 );
+					Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 2 ][ 1 ] > 0 );
+					Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 2 ] > 0 );
+					
+					Assert.assertTrue( spatialAssertArray[ 0 ][ 1 ][ 1 ][ 1 ] > 0 );
+					Assert.assertTrue( spatialAssertArray[ 1 ][ 0 ][ 1 ][ 1 ] > 0 );
+					Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 0 ][ 1 ] > 0 );
+					Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 0 ] > 0 );
+			
+			
+					Assert.assertTrue( Math.abs( Math.sqrt( expectationValue( err ) ) ) < ( 0.01 * Math.abs( Math.sqrt( expectationValue( val ) ) ) + 0.01 ) );
+			
+		
+					iterArrayRe[ tval + 1 ][ xcnt ][ ycnt ][ zcnt ] = val.getRe().getVal();
+					iterArrayIm[ tval + 1 ][ xcnt ][ ycnt ][ zcnt ] = val.getIm().getVal();
+				}
+				
+			}
+					
+		}
+	}
+	
+	
+	
+	
+	/**
+	 * Initializes the iter array.
+	 * 
+	 * @param d1 The dimensional size to be used for the initialization.
+	 */
+	protected void initIterArray( final double d1 )
+	{
+		for( int tcnt = 0 ; tcnt < 2 ; tcnt++ )
+		{
+			// for( int xcnt = 0 ; xcnt < NUM_X_ITER ; xcnt++ )
+			// {
+			//	iterArray[ tcnt ][ xcnt ] = rand.nextDouble();
+			// }
+			iterArrayRe[ tcnt ][ 12 ][ 5 ][ 5 ] = 10000.0 * ( d1 * d1 );
+		}
+	}
+	
+	
+	
+	
+	/**
 	 * 
 	 * Tests the ability to numerically evaluate the differential equation <math display="inline">
 	 * <mrow>
@@ -1917,14 +2027,7 @@ public class TestSchrodingerSpt extends TestCase {
 		
 		
 		
-		for( int tcnt = 0 ; tcnt < 2 ; tcnt++ )
-		{
-			// for( int xcnt = 0 ; xcnt < NUM_X_ITER ; xcnt++ )
-			// {
-			//	iterArray[ tcnt ][ xcnt ] = rand.nextDouble();
-			// }
-			iterArrayRe[ tcnt ][ 12 ][ 5 ][ 5 ] = 10000.0 * ( d1 * d1 );
-		}
+		initIterArray( d1 );
 		
 		
 		
@@ -2148,80 +2251,9 @@ public class TestSchrodingerSpt extends TestCase {
 		
 		for( int tval = 1 ; tval < ( NUM_T_ITER - 1 ) ; tval++ )
 		{
-			for( int xcnt = 0 ; xcnt < NUM_X_ITER ; xcnt++ )
-			{
-				for( int ycnt = 0 ; ycnt < NUM_Y_ITER ; ycnt++ )
-				{
-					for( int zcnt = 0 ; zcnt < NUM_Z_ITER ; zcnt++ )
-					{
-						iterArrayRe[ tval + 1 ][ xcnt ][ ycnt ][ zcnt ] = iterArrayRe[ tval ][ xcnt ][ ycnt ][ zcnt ];
-						iterArrayIm[ tval + 1 ][ xcnt ][ ycnt ][ zcnt ] = iterArrayIm[ tval ][ xcnt ][ ycnt ][ zcnt ];
-					}
-				}
-			}
-			
-			for( int xcnt = 0 ; xcnt < NUM_X_ITER ; xcnt++ )
-			{
-				for( int ycnt = 0 ; ycnt < NUM_Y_ITER ; ycnt++ )
-				{
-					for( int zcnt = 0 ; zcnt < NUM_Z_ITER ; zcnt++ )
-					{
-						fillTempArray( tval , xcnt , ycnt , zcnt );
-						clearSpatialAssertArray();
-		
-				
-						final ComplexElem<DoubleElem,DoubleElemFactory> ival =
-								new ComplexElem<DoubleElem,DoubleElemFactory>(
-										new DoubleElem( TestSchrodingerSpt.getUpdateValueRe() ) , 
-										new DoubleElem( TestSchrodingerSpt.getUpdateValueIm() ) );
-			
-				
-						ComplexElem<DoubleElem, DoubleElemFactory> err = newton.eval( implicitSpace2 );
-		
-		
-						final ComplexElem<DoubleElem,DoubleElemFactory> val =
-								new ComplexElem<DoubleElem,DoubleElemFactory>(
-										new DoubleElem( TestSchrodingerSpt.getUpdateValueRe() ) , 
-										new DoubleElem( TestSchrodingerSpt.getUpdateValueIm() ) );
-				
-						
-						if( ( xcnt == 12 ) && ( ycnt == 5 ) && ( zcnt == 5 ) )
-						{
-							System.out.println( "******************" );
-							System.out.println( " ( " + xcnt + " , " + ycnt + " , " + zcnt + " ) " );
-							System.out.println( expectationValue( ival ) );
-							System.out.println( expectationValue( val ) );
-							System.out.println( "## " + ( expectationValue( err ) ) );
-						}
-						
-						
-						Assert.assertTrue( spatialAssertArray[ 0 ][ 0 ][ 0 ][ 0 ] == 0 );
-						
-						Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 1 ] > 0 );
-						
-						Assert.assertTrue( spatialAssertArray[ 2 ][ 1 ][ 1 ][ 1 ] > 0 );
-						Assert.assertTrue( spatialAssertArray[ 1 ][ 2 ][ 1 ][ 1 ] > 0 );
-						Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 2 ][ 1 ] > 0 );
-						Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 2 ] > 0 );
-						
-						Assert.assertTrue( spatialAssertArray[ 0 ][ 1 ][ 1 ][ 1 ] > 0 );
-						Assert.assertTrue( spatialAssertArray[ 1 ][ 0 ][ 1 ][ 1 ] > 0 );
-						Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 0 ][ 1 ] > 0 );
-						Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 0 ] > 0 );
-				
-				
-						Assert.assertTrue( Math.abs( Math.sqrt( expectationValue( err ) ) ) < ( 0.01 * Math.abs( Math.sqrt( expectationValue( val ) ) ) + 0.01 ) );
-				
-			
-						iterArrayRe[ tval + 1 ][ xcnt ][ ycnt ][ zcnt ] = val.getRe().getVal();
-						iterArrayIm[ tval + 1 ][ xcnt ][ ycnt ][ zcnt ] = val.getIm().getVal();
-					}
-					
-				}
-						
-			}
-			
+			performIterationT( tval , newton , implicitSpace2 );
 		}
+		
 		
 		// System.out.println( "==============================" ); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		// System.out.println( iterArray[ NUM_T_ITER - 1 ][ 10 ][ 5 ][ 5 ] ); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
