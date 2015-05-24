@@ -53,6 +53,7 @@ import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicReduction;
 import simplealgebra.ddx.*;
 import test_simplealgebra.TestBurgersB.TempArrayFillInnerParam;
+import test_simplealgebra.TestStelemD.StelemNewton;
 
 
 
@@ -1465,6 +1466,96 @@ public class TestKdvB extends TestCase {
 	
 	
 	
+	/**
+	 * Initializes the iter array.
+	 * 
+	 * @param d1 The dimensional size to be used for the initialization.
+	 */
+	protected void initIterArray( final double d1 )
+	{
+		for( int tcnt = 0 ; tcnt < 2 ; tcnt++ )
+		{
+			// for( int xcnt = 0 ; xcnt < NUM_X_ITER ; xcnt++ )
+			// {
+			//	iterArray[ tcnt ][ xcnt ] = rand.nextDouble();
+			// }
+			iterArray[ tcnt ][ 12 ] = 10000.0 * ( d1 * d1 );
+		}
+	}
+	
+	
+	
+	
+	/**
+	 * Performs descent iterations for one value of T.
+	 * 
+	 * @param tval The value of T over which to iterate.
+	 * @param newton The descent algorithm to use for the iterations.
+	 * @param implicitSpace2 The implicit space over which to iterate.
+	 * @throws NotInvertibleException
+	 * @throws MultiplicativeDistributionRequiredException
+	 */
+	protected void performIterationT( final int tval , final StelemNewton newton , final HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace2 ) 
+			throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	{
+		// System.out.println( "//// " + tval );
+		
+					for( int xcnt = 0 ; xcnt < NUM_X_ITER ; xcnt++ )
+					{
+						iterArray[ tval + 1 ][ xcnt ] = iterArray[ tval ][ xcnt ];
+					}
+					
+					for( int xcnt = 0 ; xcnt < NUM_X_ITER ; xcnt++ )
+					{
+						fillTempArray( tval , xcnt );
+						clearSpatialAssertArray();
+						
+										
+						
+						
+						
+						
+						final double ival = TestKdvB.getUpdateValue();
+						
+						
+					
+						
+						DoubleElem err = newton.eval( implicitSpace2 );
+				
+				
+						final double val = TestKdvB.getUpdateValue();
+						
+						if( xcnt == 12 )
+						{
+							System.out.println( "******************" );
+							System.out.println( xcnt );
+							System.out.println( ival );
+							System.out.println( val );
+							System.out.println( "## " + ( err.getVal() ) );
+						}
+						
+						
+						// Assert.assertTrue( spatialAssertArray[ 0 ][ 0 ] == 0 );
+						
+						// Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ] > 0 );
+						
+						// Assert.assertTrue( spatialAssertArray[ 2 ][ 1 ] > 0 );
+						// Assert.assertTrue( spatialAssertArray[ 1 ][ 2 ] > 0 );
+						
+						// Assert.assertTrue( spatialAssertArray[ 0 ][ 1 ] > 0 );
+						// Assert.assertTrue( spatialAssertArray[ 1 ][ 0 ] > 0 );
+						
+						
+						Assert.assertTrue( Math.abs( err.getVal() ) < ( 0.01 * Math.abs( val ) + 0.01 ) );
+						
+					
+						iterArray[ tval + 1 ][ xcnt ] = val;
+								
+					}
+	}
+	
+	
+	
 	
 	/**
 	 * Tests the ability to numerically evaluate the differential equation <math display="inline">
@@ -1526,14 +1617,7 @@ public class TestKdvB extends TestCase {
 		
 		
 		
-		for( int tcnt = 0 ; tcnt < 2 ; tcnt++ )
-		{
-			// for( int xcnt = 0 ; xcnt < NUM_X_ITER ; xcnt++ )
-			// {
-			//	iterArray[ tcnt ][ xcnt ] = rand.nextDouble();
-			// }
-			iterArray[ tcnt ][ 12 ] = 10000.0 * ( d1 * d1 );
-		}
+		initIterArray( d1 );
 		
 		
 		
@@ -1641,61 +1725,7 @@ public class TestKdvB extends TestCase {
 		
 		for( int tval = 1 ; tval < ( NUM_T_ITER - 1 ) ; tval++ )
 		{
-			// System.out.println( "//// " + tval );
-			
-			for( int xcnt = 0 ; xcnt < NUM_X_ITER ; xcnt++ )
-			{
-				iterArray[ tval + 1 ][ xcnt ] = iterArray[ tval ][ xcnt ];
-			}
-			
-			for( int xcnt = 0 ; xcnt < NUM_X_ITER ; xcnt++ )
-			{
-				fillTempArray( tval , xcnt );
-				clearSpatialAssertArray();
-				
-								
-				
-				
-				
-				
-				final double ival = TestKdvB.getUpdateValue();
-				
-				
-			
-				
-				DoubleElem err = newton.eval( implicitSpace2 );
-		
-		
-				final double val = TestKdvB.getUpdateValue();
-				
-				if( xcnt == 12 )
-				{
-					System.out.println( "******************" );
-					System.out.println( xcnt );
-					System.out.println( ival );
-					System.out.println( val );
-					System.out.println( "## " + ( err.getVal() ) );
-				}
-				
-				
-				// Assert.assertTrue( spatialAssertArray[ 0 ][ 0 ] == 0 );
-				
-				// Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ] > 0 );
-				
-				// Assert.assertTrue( spatialAssertArray[ 2 ][ 1 ] > 0 );
-				// Assert.assertTrue( spatialAssertArray[ 1 ][ 2 ] > 0 );
-				
-				// Assert.assertTrue( spatialAssertArray[ 0 ][ 1 ] > 0 );
-				// Assert.assertTrue( spatialAssertArray[ 1 ][ 0 ] > 0 );
-				
-				
-				Assert.assertTrue( Math.abs( err.getVal() ) < ( 0.01 * Math.abs( val ) + 0.01 ) );
-				
-			
-				iterArray[ tval + 1 ][ xcnt ] = val;
-						
-			}
-			
+			performIterationT( tval , newton , implicitSpace2 );
 		}
 		
 		System.out.println( "==============================" );
