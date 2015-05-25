@@ -101,6 +101,8 @@ public class SimpleAlgebraTestSuite extends TestSuite {
 		s.addTestSuite( TestSimpleOrdInverses.class );
 		s.addTestSuite( TestDoubleDivideBySymbolic.class );
 		s.addTestSuite( TestMultNegIdentitySymbolic.class );
+		s.addTestSuite( TestBaseDbArrayBasics.class );
+		s.addTestSuite( TestBaseDbArrayIndependence.class );
 		return( s );
 	}
 	
