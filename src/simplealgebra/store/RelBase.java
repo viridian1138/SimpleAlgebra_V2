@@ -29,7 +29,7 @@ package simplealgebra.store;
 
 
 /**
- * The stored DB base reference for BaseDbArray or a subclass of BaseDbArray.  This class should only be used by BaseDbArray or subclasses of BaseDbArray.
+ * The stored DB base reference for BaseDbArray_SingleWrite or a subclass of BaseDbArray_SingleWrite.  This class should only be used by BaseDbArray_SingleWrite or subclasses of BaseDbArray_SingleWrite.
  * 
  * @author thorngreen
  *

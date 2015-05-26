@@ -32,12 +32,13 @@ import junit.framework.TestCase;
 
 import org.hypergraphdb.HyperGraph;
 
+import simplealgebra.DoubleElem;
 import simplealgebra.NotInvertibleException;
-import simplealgebra.store.BaseDbArray;
+import simplealgebra.store.BaseDbArray_SingleWrite;
 
 
 /**
- * Tests use of BaseDbArray.
+ * Tests use of BaseDbArray_SingleWrite.
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
@@ -151,7 +152,7 @@ public class TestBaseDbArrayBasics extends TestCase {
 	
 	
 	/**
-	 * Tests basic use of BaseDbArray.
+	 * Tests basic use of BaseDbArray_SingleWrite.
 	 * 
 	 * @throws NotInvertibleException
 	 */
@@ -166,7 +167,7 @@ public class TestBaseDbArrayBasics extends TestCase {
 		graph = new HyperGraph( databaseLocation );
 		
 		
-		BaseDbArray<Double> db = new BaseDbArray<Double>( graph );
+		BaseDbArray_SingleWrite<Double> db = new BaseDbArray_SingleWrite<Double>( graph );
 		
 		
 		db.insert( genA() , new Double( 1.111111 ) );

@@ -32,7 +32,7 @@ package simplealgebra.store;
 
 
 /**
- * A stored DB payload for BaseDbArray or a subclass of BaseDbArray.  This class should only be used by BaseDbArray or subclasses of BaseDbArray.
+ * A stored DB payload for BaseDbArray_SingleWrite or a subclass of BaseDbArray_SingleWrite.  This class should only be used by BaseDbArray_SingleWrite or subclasses of BaseDbArray_SingleWrite.
  * 
  * @author thorngreen
  *

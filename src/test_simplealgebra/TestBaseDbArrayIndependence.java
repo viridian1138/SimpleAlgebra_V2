@@ -33,11 +33,11 @@ import junit.framework.TestCase;
 import org.hypergraphdb.HyperGraph;
 
 import simplealgebra.NotInvertibleException;
-import simplealgebra.store.BaseDbArray;
+import simplealgebra.store.BaseDbArray_SingleWrite;
 
 
 /**
- * Verifies that separate instances of BaseDbArray remain independent.
+ * Verifies that separate instances of BaseDbArray_SingleWrite remain independent.
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
@@ -151,7 +151,7 @@ public class TestBaseDbArrayIndependence extends TestCase {
 	
 	
 	/**
-	 * Verifies that separate instances of BaseDbArray remain independent.
+	 * Verifies that separate instances of BaseDbArray_SingleWrite remain independent.
 	 * 
 	 * @throws NotInvertibleException
 	 */
@@ -166,9 +166,9 @@ public class TestBaseDbArrayIndependence extends TestCase {
 		graph = new HyperGraph( databaseLocation );
 		
 		
-		BaseDbArray<Double> dbA = new BaseDbArray<Double>( graph );
+		BaseDbArray_SingleWrite<Double> dbA = new BaseDbArray_SingleWrite<Double>( graph );
 		
-		BaseDbArray<Double> dbB = new BaseDbArray<Double>( graph );
+		BaseDbArray_SingleWrite<Double> dbB = new BaseDbArray_SingleWrite<Double>( graph );
 		
 		
 		dbA.insert( genA() , new Double( 1.111111 ) );

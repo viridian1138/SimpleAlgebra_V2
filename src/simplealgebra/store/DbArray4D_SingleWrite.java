@@ -37,13 +37,14 @@ import org.hypergraphdb.HyperGraph;
 
 
 /**
- * DB entity resembling a sparse 4-D array.
+ * DB entity resembling a sparse 4-D array.  For performance reasons it is assumed
+ * that there will only be a single write to each index location.
  * 
  * @author thorngreen
  *
  * @param <T> The enclosed type.
  */
-public class DbArray4D<T extends Object> extends BaseDbArray<T> {
+public class DbArray4D_SingleWrite<T extends Object> extends BaseDbArray_SingleWrite<T> {
 	
 	
 	/**
@@ -51,7 +52,7 @@ public class DbArray4D<T extends Object> extends BaseDbArray<T> {
 	 * 
 	 * @param _graph The graph on which to perform DB operations.
 	 */
-	public DbArray4D( final HyperGraph _graph )
+	public DbArray4D_SingleWrite( final HyperGraph _graph )
 	{
 		super( _graph );
 	}

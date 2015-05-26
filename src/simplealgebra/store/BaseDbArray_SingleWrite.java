@@ -29,6 +29,7 @@ package simplealgebra.store;
 
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.WeakHashMap;
 
 import org.hypergraphdb.HGHandle;
 import org.hypergraphdb.HGSearchResult;
@@ -41,13 +42,14 @@ import org.hypergraphdb.query.HGQueryCondition;
 
 
 /**
- * DB entity resembling a sparse multidimensional array.
+ * DB entity resembling a sparse multidimensional array.  For performance reasons it is
+ * assumed that there will only be a single write to each index location.
  * 
  * @author thorngreen
  *
  * @param <T> The enclosed type.
  */
-public class BaseDbArray<T extends Object> {
+public class BaseDbArray_SingleWrite<T extends Object> {
 	
 	/**
 	 * The graph on which to perform DB operations.
@@ -59,13 +61,19 @@ public class BaseDbArray<T extends Object> {
 	 */
 	protected HGHandle hbase = null;
 	
+	/**
+	 * Cache memory to speed read access times.
+	 */
+	protected final WeakHashMap<ArrayList<BigInteger>,T> cacheMemory = new WeakHashMap<ArrayList<BigInteger>,T>();
+	
+	
 	
 	/**
 	 * Constructs the array.
 	 * 
 	 * @param _graph The graph on which to perform DB operations.
 	 */
-	public BaseDbArray( final HyperGraph _graph )
+	public BaseDbArray_SingleWrite( final HyperGraph _graph )
 	{
 		graph = _graph;
 		RelBase base = new RelBase();
@@ -81,8 +89,13 @@ public class BaseDbArray<T extends Object> {
 	 */
 	public T query( final ArrayList<BigInteger> arb )
 	{
+		T ret = cacheMemory.get( arb );
+		if( ret != null )
+		{
+			return( ret );
+		}
+		
 		HGQueryCondition condition = new And( hg.link( hbase ) , hg.eq( arb ) );
-		T ret = null;
 		
 		
 		HGSearchResult<HGHandle> rs = graph.find( condition );
@@ -107,6 +120,10 @@ public class BaseDbArray<T extends Object> {
 			}
 		}
 		
+		if( ret != null )
+		{
+			cacheMemory.put( arb , ret );
+		}
 		return( ret );
 	}
 	
@@ -130,6 +147,8 @@ public class BaseDbArray<T extends Object> {
 		hga.setValue( arb );
 		
 		graph.add( hga );
+		
+		cacheMemory.put( arb , val );
 	}
 	
 
