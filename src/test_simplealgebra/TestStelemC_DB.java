@@ -34,6 +34,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Random;
 
+import org.hypergraphdb.HyperGraph;
+
 import junit.framework.Assert;
 import junit.framework.TestCase;
 import simplealgebra.DoubleElem;
@@ -49,12 +51,14 @@ import simplealgebra.ga.GeometricAlgebraMultivectorElem;
 import simplealgebra.ga.GeometricAlgebraMultivectorElemFactory;
 import simplealgebra.stelem.Nelem;
 import simplealgebra.stelem.Stelem;
+import simplealgebra.store.DbArray3D_SingleWrite;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicReduction;
 import simplealgebra.ga.*;
 import simplealgebra.ddx.*;
+import test_simplealgebra.TestStelemB_DB.TestDbArray;
 
 
 
@@ -104,13 +108,15 @@ import simplealgebra.ddx.*;
  * </math>
  *
  * in dimensions (x, y, t) where "c" is an arbitrary constant.
+ * 
+ * Uses an external-database iteration array to test the ability to support datasets larger than available RAM.
  *
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
  * @author thorngreen
  *
  */
-public class TestStelemC extends TestCase {
+public class TestStelemC_DB extends TestCase {
 	
 	
 	/**
@@ -180,12 +186,11 @@ public class TestStelemC extends TestCase {
 	
 	
 	
-	
-	
 	/**
 	 * Result array over which to iterate.
 	 */
-	protected static double[][][] iterArray = new double[ NUM_T_ITER ][ NUM_X_ITER ][ NUM_Y_ITER ];
+	protected static TestDbArray iterArray = null;
+	
 	
 	
 	/**
@@ -238,6 +243,40 @@ public class TestStelemC extends TestCase {
 		return( tempArray[ NSTPT * 2 ][ NSTPX ][ NSTPY ] );
 	}
 	
+	
+	
+	/**
+	 * DB entity resembling a sparse 3-D array, e.g. for voxel data.  For performance reasons it is assumed
+	 * that there will only be a single write to each index location.
+	 * 
+	 * @author thorngreen
+	 */
+	protected static class TestDbArray extends DbArray3D_SingleWrite<Double>
+	{
+		
+		/**
+		 * Constructs the array.
+		 * 
+		 * @param _graph The graph on which to perform DB operations.
+		 */
+		public TestDbArray( final HyperGraph _graph )
+		{
+			super( _graph );
+		}
+		
+		@Override
+		public Double query( final ArrayList<BigInteger> arb )
+		{
+			Double ret = super.query( arb );
+			if( ret == null )
+			{
+				ret = 0.0;
+			}
+			return( ret );
+		}
+		
+		
+	}
 	
 	
 	
@@ -435,7 +474,7 @@ public class TestStelemC extends TestCase {
 		if( ( tv >= 0 )  && ( xv >= 0 ) && ( yv >= 0 ) &&
 				( tv < NUM_T_ITER ) && ( xv < NUM_X_ITER ) && ( yv < NUM_Y_ITER ) )
 		{
-			av = iterArray[ tv ][ xv ][ yv ];
+			av = iterArray.get( tv , xv , yv );
 		}
 		tempArray[ ta + NSTPT ][ xa + NSTPX ][ ya + NSTPY ] = av;
 		
@@ -883,7 +922,7 @@ public class TestStelemC extends TestCase {
 			Assert.assertTrue( assertCols[ 0 ] );
 			Assert.assertTrue( assertCols[ 1 ] );
 			Assert.assertTrue( assertCols[ 2 ] );
-			return( new DoubleElem( TestStelemC.tempArray[ cols[ 0 ] ][ cols[ 1 ] ][ cols[ 2 ] ] ) );
+			return( new DoubleElem( TestStelemC_DB.tempArray[ cols[ 0 ] ][ cols[ 1 ] ][ cols[ 2 ] ] ) );
 		}
 
 		@Override
@@ -1607,7 +1646,7 @@ public class TestStelemC extends TestCase {
 		@Override
 		protected void performIterationUpdate( DoubleElem iterationOffset )
 		{
-			TestStelemC.performIterationUpdate( iterationOffset );
+			TestStelemC_DB.performIterationUpdate( iterationOffset );
 		}
 		
 	}
@@ -1627,7 +1666,7 @@ public class TestStelemC extends TestCase {
 			// {
 			//	iterArray[ tcnt ][ xcnt ] = rand.nextDouble();
 			// }
-			iterArray[ tcnt ][ 12 ][ 5 ] = 10000.0 * ( d1 * d1 );
+			iterArray.set( tcnt , 12 , 5 , 10000.0 * ( d1 * d1 ) );
 		}
 	}
 	
@@ -1655,7 +1694,7 @@ public class TestStelemC extends TestCase {
 				clearSpatialAssertArray();
 	
 			
-				final double ival = TestStelemC.getUpdateValue();
+				final double ival = TestStelemC_DB.getUpdateValue();
 			
 			
 		
@@ -1663,7 +1702,7 @@ public class TestStelemC extends TestCase {
 				DoubleElem err = newton.eval( implicitSpace2 );
 	
 	
-				final double val = TestStelemC.getUpdateValue();
+				final double val = TestStelemC_DB.getUpdateValue();
 			
 				if( ( xcnt == 12 ) && ( ycnt == 5 ) )
 				{
@@ -1691,7 +1730,7 @@ public class TestStelemC extends TestCase {
 				Assert.assertTrue( Math.abs( err.getVal() ) < ( 0.01 * Math.abs( val ) + 0.01 ) );
 			
 		
-				iterArray[ tval + 1 ][ xcnt ][ ycnt ] = val;
+				iterArray.set( tval + 1 , xcnt , ycnt , val );
 			}
 					
 		}
@@ -1750,6 +1789,16 @@ public class TestStelemC extends TestCase {
 	 */	
 	public void testStelemSimple() throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
+		
+		String databaseLocation = "mydb";
+		HyperGraph graph;
+		
+		graph = new HyperGraph( databaseLocation );
+		
+		
+		iterArray = new TestDbArray( graph );
+		
+		
 		final Random rand = new Random( 3344 );
 		
 		final double d1 = Math.sqrt( X_HH.getVal() * X_HH.getVal() + Y_HH.getVal() * Y_HH.getVal() );
@@ -1967,8 +2016,10 @@ public class TestStelemC extends TestCase {
 		}
 		
 		System.out.println( "==============================" );
-		System.out.println( iterArray[ NUM_T_ITER - 1 ][ 10 ][ 5 ] );
+		System.out.println( iterArray.get( NUM_T_ITER - 1 , 10 , 5 ) );
 		// Assert.assertTrue( Math.abs( val - ( -1.450868 ) ) < 0.01 ); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		
+		graph.close();
 		
 	}
 	

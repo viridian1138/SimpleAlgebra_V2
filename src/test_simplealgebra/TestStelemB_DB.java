@@ -207,6 +207,12 @@ public class TestStelemB_DB extends TestCase {
 	
 	
 	
+	/**
+	 * DB entity resembling a sparse 3-D array, e.g. for voxel data.  For performance reasons it is assumed
+	 * that there will only be a single write to each index location.
+	 * 
+	 * @author thorngreen
+	 */
 	protected static class TestDbArray extends DbArray2D_SingleWrite<Double>
 	{
 		
