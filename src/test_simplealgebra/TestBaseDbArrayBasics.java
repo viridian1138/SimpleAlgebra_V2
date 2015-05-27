@@ -30,11 +30,14 @@ import java.util.ArrayList;
 import junit.framework.Assert;
 import junit.framework.TestCase;
 
+import org.hypergraphdb.HGHandle;
 import org.hypergraphdb.HyperGraph;
 
 import simplealgebra.DoubleElem;
+import simplealgebra.DoubleElemFactory;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.store.BaseDbArray_SingleWrite;
+import simplealgebra.store.TypeSystemInit;
 
 
 /**
@@ -166,6 +169,8 @@ public class TestBaseDbArrayBasics extends TestCase {
 		
 		graph = new HyperGraph( databaseLocation );
 		
+		TypeSystemInit.initType( graph );
+		
 		
 		BaseDbArray_SingleWrite<Double> db = new BaseDbArray_SingleWrite<Double>( graph );
 		
@@ -200,6 +205,87 @@ public class TestBaseDbArrayBasics extends TestCase {
 	}
 	
 	
+	
+	
+	/**
+	 * Tests basic use of BaseDbArray_SingleWrite.
+	 * 
+	 * @throws NotInvertibleException
+	 */
+	public void testBaseDbArrayBasicsEl() throws Throwable
+	{
+		
+		// System.out.println( "Started..." ); 
+		
+		String databaseLocation = "mydb";
+		HyperGraph graph;
+		
+		graph = new HyperGraph( databaseLocation );
+		
+		TypeSystemInit.initType( graph );
+		
+		
+		BaseDbArray_SingleWrite<DoubleElem> db = new BaseDbArray_SingleWrite<DoubleElem>( graph );
+		
+		
+		db.insert( genA() , new DoubleElem( 1.111111 ) );
+		
+		db.insert( genB() , new DoubleElem( 2.2222222 ) );
+		
+		db.insert( genC() , new DoubleElem( 3.3333333 ) );
+		
+		db.insert( genC2() , new DoubleElem( 3.6333333 ) );
+		
+		
+		
+		Assert.assertEquals( 1.111111 , db.query( genA() ).getVal() , 1E-5 );
+		
+		
+		Assert.assertEquals( 2.2222222 , db.query( genB() ).getVal() , 1E-5 );
+		
+		
+		Assert.assertEquals( 3.3333333 , db.query( genC() ).getVal() , 1E-5 );
+		
+		
+		Assert.assertEquals( 3.6333333 , db.query( genC2() ).getVal() , 1E-5 );
+		
+
+		
+		graph.close();
+		
+		// System.out.println( "Done..." ); 
+		
+	}
+	
+	
+	
+	/**
+	 * Tests the ability to store a DoubleElemFactory.
+	 * 
+	 * @throws NotInvertibleException
+	 */
+	public void testStoreDoubleElemFactory() throws Throwable
+	{
+		
+		// System.out.println( "Started..." ); 
+		
+		String databaseLocation = "mydb";
+		HyperGraph graph;
+		
+		graph = new HyperGraph( databaseLocation );
+		
+		TypeSystemInit.initType( graph );
+		
+		
+		HGHandle hndl = graph.add( new DoubleElemFactory() );
+		
+		
+		DoubleElemFactory d = graph.get( hndl );
+		
+		
+		graph.close();
+	
+	}
 
 	
 }

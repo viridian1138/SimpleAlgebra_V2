@@ -55,8 +55,6 @@ import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicReduction;
 import simplealgebra.ga.*;
 import simplealgebra.ddx.*;
-import test_simplealgebra.TestDiracA.StelemDescent;
-import test_simplealgebra.TestSchrodingerA.TempArrayFillInnerParam;
 
 
 
@@ -554,6 +552,20 @@ public class TestStelemD extends TestCase {
 				}
 			}
 		}
+		
+		
+		// Overlay initial seed for iterations.
+		for( int xa = 0 ; xa < NSTPX * 2 + 1 ; xa++ )
+		{
+			for( int ya = 0 ; ya < NSTPY * 2 + 1 ; ya++ )
+			{
+				for( int za = 0 ; za < NSTPZ * 2 + 1 ; za++ )
+				{
+					tempArray[ NSTPT * 2 ][ xa ][ ya ][ za ] = tempArray[ NSTPT * 2 - 1 ][ xa ][ ya ][ za ];
+				}
+			}
+		}
+				
 	}
 	
 	
@@ -1731,16 +1743,6 @@ public class TestStelemD extends TestCase {
 	protected void performIterationT( final int tval , final StelemNewton newton , final HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace2 ) 
 			throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
-		for( int xcnt = 0 ; xcnt < NUM_X_ITER ; xcnt++ )
-		{
-			for( int ycnt = 0 ; ycnt < NUM_Y_ITER ; ycnt++ )
-			{
-				for( int zcnt = 0 ; zcnt < NUM_Z_ITER ; zcnt++ )
-				{
-					iterArray[ tval + 1 ][ xcnt ][ ycnt ][ zcnt ] = iterArray[ tval ][ xcnt ][ ycnt ][ zcnt ];
-				}
-			}
-		}
 		
 		for( int xcnt = 0 ; xcnt < NUM_X_ITER ; xcnt++ )
 		{

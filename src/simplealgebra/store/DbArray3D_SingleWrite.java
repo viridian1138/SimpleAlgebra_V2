@@ -40,6 +40,8 @@ import org.hypergraphdb.HyperGraph;
  * DB entity resembling a sparse 3-D array, e.g. for voxel data.  For performance reasons it is assumed
  * that there will only be a single write to each index location.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  * @param <T> The enclosed type.

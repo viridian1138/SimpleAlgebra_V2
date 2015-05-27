@@ -34,6 +34,7 @@ import org.hypergraphdb.HyperGraph;
 
 import simplealgebra.NotInvertibleException;
 import simplealgebra.store.BaseDbArray_SingleWrite;
+import simplealgebra.store.TypeSystemInit;
 
 
 /**
@@ -164,6 +165,8 @@ public class TestBaseDbArrayIndependence extends TestCase {
 		HyperGraph graph;
 		
 		graph = new HyperGraph( databaseLocation );
+		
+		TypeSystemInit.initType( graph );
 		
 		
 		BaseDbArray_SingleWrite<Double> dbA = new BaseDbArray_SingleWrite<Double>( graph );

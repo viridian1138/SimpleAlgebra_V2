@@ -103,6 +103,7 @@ public class SimpleAlgebraTestSuite extends TestSuite {
 		s.addTestSuite( TestMultNegIdentitySymbolic.class );
 		s.addTestSuite( TestBaseDbArrayBasics.class );
 		s.addTestSuite( TestBaseDbArrayIndependence.class );
+		s.addTestSuite( TestDbElemDbl.class );
 		return( s );
 	}
 	

@@ -31,6 +31,8 @@ package simplealgebra.store;
 /**
  * The stored DB base reference for BaseDbArray_SingleWrite or a subclass of BaseDbArray_SingleWrite.  This class should only be used by BaseDbArray_SingleWrite or subclasses of BaseDbArray_SingleWrite.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  */

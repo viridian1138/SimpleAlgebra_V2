@@ -2,8 +2,6 @@
 
 
 
-
-
 //$$strtCprt
 /**
 * Simple Algebra 
@@ -26,47 +24,33 @@
 
 
 
-
-
 package simplealgebra.store;
+
+import org.hypergraphdb.HyperGraph;
 
 
 /**
- * A stored DB payload for BaseDbArray_SingleWrite or a subclass of BaseDbArray_SingleWrite.  This class should only be used by BaseDbArray_SingleWrite or subclasses of BaseDbArray_SingleWrite.
+ * Common initializer for HyperGraph types.
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
  * @author thorngreen
  *
- * @param <T> The enclosed type.
  */
-public class RelPayload<T extends Object> 
-{
-
-	/**
-	 * Gets the object encapsulated by the payload.
-	 * 
-	 * @return The object encapsulated by the payload.
-	 */
-	public T getD() {
-		return d;
-	}
+public class TypeSystemInit {
 
 	
 	/**
-	 * Sets the object encapsulated by the payload.
+	 * Initialize the types in a graph.
 	 * 
-	 * @param d The object encapsulated by the payload.
+	 * @param graph The graph in which to initialize the types.
 	 */
-	public void setD( T d ) {
-		this.d = d;
+	public static void initType( HyperGraph graph )
+	{
+		DoubleElemType.initType( graph );
 	}
 
-	
-	/**
-	 * The object encapsulated by the payload.
-	 */
-	private T d;
 	
 }
+
 

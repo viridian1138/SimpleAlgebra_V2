@@ -3,7 +3,6 @@
 
 
 
-
 //$$strtCprt
 /**
 * Simple Algebra 
@@ -35,31 +34,32 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Random;
 
-import junit.framework.Assert;
-import junit.framework.TestCase;
-
 import org.hypergraphdb.HyperGraph;
 
+import junit.framework.Assert;
+import junit.framework.TestCase;
 import simplealgebra.DoubleElem;
 import simplealgebra.DoubleElemFactory;
 import simplealgebra.Elem;
+import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
+import simplealgebra.NumDimensions;
 import simplealgebra.algo.NewtonRaphsonSingleElem;
-import simplealgebra.ddx.DirectionalDerivative;
 import simplealgebra.ddx.DirectionalDerivativePartialFactory;
 import simplealgebra.ddx.PartialDerivativeOp;
 import simplealgebra.ga.GeometricAlgebraMultivectorElem;
 import simplealgebra.ga.GeometricAlgebraMultivectorElemFactory;
-import simplealgebra.ga.GeometricAlgebraOrd;
 import simplealgebra.stelem.Nelem;
 import simplealgebra.stelem.Stelem;
-import simplealgebra.store.DbArray2D_SingleWrite;
+import simplealgebra.store.DbArray4D_SingleWrite;
 import simplealgebra.store.TypeSystemInit;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicReduction;
-
+import simplealgebra.ga.*;
+import simplealgebra.ddx.*;
+import test_simplealgebra.TestStelemC_DB.TestDbArray;
 
 
 
@@ -106,7 +106,7 @@ import simplealgebra.symbolic.SymbolicReduction;
  * </mrow>
  * </math>
  *
- * in dimensions (x, t) where "c" is an arbitrary constant.
+ * in dimensions (x, y, z, t) where "c" is an arbitrary constant.
  * 
  * Uses an external-database iteration array to test the ability to support datasets larger than available RAM.
  *
@@ -115,7 +115,7 @@ import simplealgebra.symbolic.SymbolicReduction;
  * @author thorngreen
  *
  */
-public class TestStelemB_DB extends TestCase {
+public class TestStelemD_DB extends TestCase {
 	
 	
 	/**
@@ -136,22 +136,45 @@ public class TestStelemB_DB extends TestCase {
 	protected static final DoubleElem X_HH = new DoubleElem( 0.01 );
 	
 	/**
-	 * Discretization sizes arrayed by coordinate index.
+	 * Size of the Y-Axis discretization.
 	 */
-	protected static final DoubleElem[] HH = { T_HH , X_HH };
-	
-	
+	protected static final DoubleElem Y_HH = new DoubleElem( 0.01 );
 	
 	/**
-	 * The number of discretizations on the X-Axis over which to iterate.
+	 * Size of the Z-Axis discretization.
 	 */
-	protected static final int NUM_X_ITER = 25;
+	protected static final DoubleElem Z_HH = new DoubleElem( 0.01 );
+	
+	/**
+	 * Discretization sizes arrayed by coordinate index.
+	 */
+	protected static final DoubleElem[] HH = { T_HH , X_HH , Y_HH , Z_HH };
+	
+	
+	
 	
 	
 	/**
 	 * The number of discretizations on the T-Axis over which to iterate.
 	 */
 	protected static final int NUM_T_ITER = 400;
+	
+	/**
+	 * The number of discretizations on the X-Axis over which to iterate.
+	 */
+	protected static final int NUM_X_ITER = 25;
+	
+	/**
+	 * The number of discretizations on the Y-Axis over which to iterate.
+	 */
+	protected static final int NUM_Y_ITER = 10;
+	
+	/**
+	 * The number of discretizations on the Z-Axis over which to iterate.
+	 */
+	protected static final int NUM_Z_ITER = 10;
+	
+	
 	
 	
 	/**
@@ -166,6 +189,18 @@ public class TestStelemB_DB extends TestCase {
 	protected static final int NSTPX = 1;
 	
 	
+	/**
+	 * Temp step size in the Y-direction.
+	 */
+	protected static final int NSTPY = 1;
+	
+	
+	/**
+	 * Temp step size in the Z-direction.
+	 */
+	protected static final int NSTPZ = 1;
+	
+	
 	
 	/**
 	 * Result array over which to iterate.
@@ -175,11 +210,35 @@ public class TestStelemB_DB extends TestCase {
 	
 	
 	/**
+	 * Discretized index for the T-Axis.
+	 */
+	protected static final int TV = 0;
+	
+	/**
+	 * Discretized index for the X-Axis.
+	 */
+	protected static final int XV = 1;
+	
+	/**
+	 * Discretized index for the Y-Axis.
+	 */
+	protected static final int YV = 2;
+	
+	/**
+	 * Discretized index for the Z-Axis.
+	 */
+	protected static final int ZV = 3;
+	
+	
+	
+	/**
 	 * Temporary array in which to generate Newton-Raphson solutions.
 	 * <p>0 = T
 	 * <p>1 = X
+	 * <p>2 = Y
+	 * <p>3 = Z
 	 */
-	private static double[][] tempArray = new double[ NSTPT * 2 + 1 ][ NSTPX * 2 + 1 ];
+	private static double[][][][] tempArray = new double[ NSTPT * 2 + 1 ][ NSTPX * 2 + 1 ][ NSTPY * 2 + 1 ][ NSTPZ * 2 + 1 ];
 	
 	
 	
@@ -191,7 +250,7 @@ public class TestStelemB_DB extends TestCase {
 	 */
 	protected static void performIterationUpdate( DoubleElem dbl )
 	{
-		tempArray[ NSTPT * 2 ][ NSTPX ] += dbl.getVal();
+		tempArray[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] += dbl.getVal();
 	}
 	
 	
@@ -203,7 +262,7 @@ public class TestStelemB_DB extends TestCase {
 	 */
 	protected static double getUpdateValue()
 	{
-		return( tempArray[ NSTPT * 2 ][ NSTPX ] );
+		return( tempArray[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] );
 	}
 	
 	
@@ -214,7 +273,7 @@ public class TestStelemB_DB extends TestCase {
 	 * 
 	 * @author thorngreen
 	 */
-	protected static class TestDbArray extends DbArray2D_SingleWrite<Double>
+	protected static class TestDbArray extends DbArray4D_SingleWrite<Double>
 	{
 		
 		/**
@@ -240,7 +299,6 @@ public class TestStelemB_DB extends TestCase {
 		
 		
 	}
-	
 	
 	
 	
@@ -298,6 +356,45 @@ public class TestStelemB_DB extends TestCase {
 		}
 
 
+		/**
+		 * Gets the Y-Axis index for the center in the iter array.
+		 * 
+		 * @return The Y-Axis index for the center in the iter array.
+		 */
+		public int getYcnt() {
+			return ycnt;
+		}
+
+
+		/**
+		 * Sets the Y-Axis index for the center in the iter array.
+		 * 
+		 * @param tcnt The Y-Axis index for the center in the iter array.
+		 */
+		public void setYcnt(int ycnt) {
+			this.ycnt = ycnt;
+		}
+
+
+		/**
+		 * Gets the Z-Axis index for the center in the iter array.
+		 * 
+		 * @return The Z-Axis index for the center in the iter array.
+		 */
+		public int getZcnt() {
+			return zcnt;
+		}
+
+
+		/**
+		 * Sets the Z-Axis index for the center in the iter array.
+		 * 
+		 * @param tcnt The Z-Axis index for the center in the iter array.
+		 */
+		public void setZcnt(int zcnt) {
+			this.zcnt = zcnt;
+		}
+
 
 		/**
 		 * Gets the T-Axis iteration of the array fill.
@@ -339,6 +436,45 @@ public class TestStelemB_DB extends TestCase {
 		}
 
 
+		/**
+		 * Gets the Y-Axis iteration of the array fill.
+		 * 
+		 * @return The Y-Axis iteration of the array fill.
+		 */
+		public int getYa() {
+			return ya;
+		}
+
+
+		/**
+		 * Sets the Y-Axis iteration of the array fill.
+		 * 
+		 * @param ta The Y-Axis iteration of the array fill.
+		 */
+		public void setYa(int ya) {
+			this.ya = ya;
+		}
+
+
+		/**
+		 * Gets the Z-Axis iteration of the array fill.
+		 * 
+		 * @return The Z-Axis iteration of the array fill.
+		 */
+		public int getZa() {
+			return za;
+		}
+
+
+		/**
+		 * Sets the Z-Axis iteration of the array fill.
+		 * 
+		 * @param ta The Z-Axis iteration of the array fill.
+		 */
+		public void setZa(int za) {
+			this.za = za;
+		}
+
 
 		/**
 		 * The T-Axis index for the center in the iter array.
@@ -351,6 +487,16 @@ public class TestStelemB_DB extends TestCase {
 		protected int xcnt;
 		
 		/**
+		 * The Y-Axis index for the center in the iter array.
+		 */
+		protected int ycnt;
+		
+		/**
+		 * The Z-Axis index for the center in the iter array.
+		 */
+		protected int zcnt;
+		
+		/**
 		 * The T-Axis iteration of the array fill.
 		 */
 		protected int ta;
@@ -359,6 +505,16 @@ public class TestStelemB_DB extends TestCase {
 		 * The X-Axis iteration of the array fill.
 		 */
 		protected int xa;
+		
+		/**
+		 * The Y-Axis iteration of the array fill.
+		 */
+		protected int ya;
+	
+		/**
+		 * The Z-Axis iteration of the array fill.
+		 */
+		protected int za;
 		
 	
 	}
@@ -374,22 +530,30 @@ public class TestStelemB_DB extends TestCase {
 	{
 		final int tcnt = param.getTcnt();
 		final int xcnt = param.getXcnt();
+		final int ycnt = param.getYcnt();
+		final int zcnt = param.getZcnt();
 		
 		final int ta = param.getTa();
 		final int xa = param.getXa();
+		final int ya = param.getYa();
+		final int za = param.getZa();
 		
 		final int tv = tcnt + ta;
 		final int xv = xcnt + xa;
+		final int yv = ycnt + ya;
+		final int zv = zcnt + za;
 		double av = 0.0;
-		if( ( tv >= 0 )  && ( xv >= 0 ) && 
-				( tv < NUM_T_ITER ) && ( xv < NUM_X_ITER ) )
+		if( ( tv >= 0 )  && ( xv >= 0 ) && ( yv >= 0 ) && ( zv >= 0 ) &&
+			( tv < NUM_T_ITER ) && ( xv < NUM_X_ITER ) && ( yv < NUM_Y_ITER ) && ( zv < NUM_Z_ITER )  )
 		{
-			av = iterArray.get( tv , xv );
+			av = iterArray.get( tv , xv , yv , zv );
 		}
-		tempArray[ ta + NSTPT ][ xa + NSTPX ] = av;
+		tempArray[ ta + NSTPT ][ xa + NSTPX ][ ya + NSTPY ][ za + NSTPZ ] = av;
 		
 	}
-
+	
+	
+	
 	
 	
 	/**
@@ -397,13 +561,17 @@ public class TestStelemB_DB extends TestCase {
 	 * 
 	 * @param tcnt The T-Axis index for the center in the iter array.
 	 * @param xcnt The X-Axis index for the center in the iter array.
+	 * @param ycnt The Y-Axis index for the center in the iter array.
+	 * @param zcnt The Z-Axis index for the center in the iter array.
 	 */
-	protected static void fillTempArray( final int tcnt , final int xcnt )
+	protected static void fillTempArray( final int tcnt , final int xcnt , final int ycnt , final int zcnt )
 	{
 		final TempArrayFillInnerParam param = new TempArrayFillInnerParam();
 		
 		param.setTcnt( tcnt );
 		param.setXcnt( xcnt );
+		param.setYcnt( ycnt );
+		param.setZcnt( zcnt );
 		
 		for( int ta = -NSTPT ; ta < NSTPT + 1 ; ta++ )
 		{
@@ -411,24 +579,40 @@ public class TestStelemB_DB extends TestCase {
 			for( int xa = -NSTPX ; xa < NSTPX + 1 ; xa++ )
 			{
 				param.setXa( xa );
-				fillTempArrayInner( param );
+				for( int ya = -NSTPY ; ya < NSTPY + 1 ; ya++ )
+				{
+					param.setYa( ya );
+					for( int za = -NSTPX ; za < NSTPZ + 1 ; za++ )
+					{
+						param.setZa( za );
+						fillTempArrayInner( param ); 
+					}
+				}
 			}
 		}
+		
 		
 		// Overlay initial seed for iterations.
 		for( int xa = 0 ; xa < NSTPX * 2 + 1 ; xa++ )
 		{
-			tempArray[ NSTPT * 2 ][ xa ] = tempArray[ NSTPT * 2 - 1 ][ xa ];
+			for( int ya = 0 ; ya < NSTPY * 2 + 1 ; ya++ )
+			{
+				for( int za = 0 ; za < NSTPZ * 2 + 1 ; za++ )
+				{
+					tempArray[ NSTPT * 2 ][ xa ][ ya ][ za ] = tempArray[ NSTPT * 2 - 1 ][ xa ][ ya ][ za ];
+				}
+			}
 		}
 		
 	}
 	
 	
 	
+	
 	/**
 	 * Test array used to verify that the entire temp array has been filled.
 	 */
-	private static int[][] spatialAssertArray = new int[ NSTPT * 2 + 1 ][ NSTPX * 2 + 1 ];
+	private static int[][][][] spatialAssertArray = new int[ NSTPT * 2 + 1 ][ NSTPX * 2 + 1 ][ NSTPY * 2 + 1 ][ NSTPZ * 2 + 1 ];
 	
 	
 	
@@ -441,7 +625,13 @@ public class TestStelemB_DB extends TestCase {
 		{
 			for( int xa = -NSTPX ; xa < NSTPX + 1 ; xa++ )
 			{
-				spatialAssertArray[ ta + NSTPT ][ xa + NSTPX ] = 0;
+				for( int ya = -NSTPY ; ya < NSTPY + 1 ; ya++ )
+				{
+					for( int za = -NSTPZ ; za < NSTPZ + 1 ; za++ )
+					{
+						spatialAssertArray[ ta + NSTPT ][ xa + NSTPX ][ ya + NSTPY ][ za + NSTPZ ] = 0;
+					}
+				}
 			}
 		}
 	}
@@ -786,13 +976,13 @@ public class TestStelemB_DB extends TestCase {
 		/**
 		 * Column indices in the discretized space.
 		 */
-		protected final int[] cols = new int[ 2 ];
+		protected final int[] cols = new int[ 4 ];
 		
 		/**
 		 * Assertion booleans used to verify that all
 		 * column indices have been initialized.
 		 */
-		protected final boolean[] assertCols = new boolean[ 2 ];
+		protected final boolean[] assertCols = new boolean[ 4 ];
 		
 
 		@Override
@@ -801,22 +991,28 @@ public class TestStelemB_DB extends TestCase {
 				MultiplicativeDistributionRequiredException {
 			cols[ 0 ] = 0;
 			cols[ 1 ] = 0;
+			cols[ 2 ] = 0;
+			cols[ 3 ] = 0;
 			assertCols[ 0 ] = false;
 			assertCols[ 1 ] = false;
-			Assert.assertTrue( coord.keySet().size() == 2 );
+			assertCols[ 2 ] = false;
+			assertCols[ 3 ] = false;
+			Assert.assertTrue( coord.keySet().size() == 4 );
 			Iterator<Ordinate> it = coord.keySet().iterator();
 			while( it.hasNext() )
 			{
 				Ordinate keyCoord = it.next();
 				BigInteger coordVal = coord.get( keyCoord );
-				final int offset = keyCoord.getCol() == 1 ? NSTPX : NSTPT;
+				final int offset = keyCoord.getCol() == 3 ? NSTPZ : keyCoord.getCol() == 2 ? NSTPY : keyCoord.getCol() == 1 ? NSTPX : NSTPT;
 				cols[ keyCoord.getCol() ] = coordVal.intValue() + offset;
 				assertCols[ keyCoord.getCol() ] = true;
 			}
-			( spatialAssertArray[ cols[ 0 ] ][ cols[ 1 ] ] )++;
+			( spatialAssertArray[ cols[ 0 ] ][ cols[ 1 ] ][ cols[ 2 ] ][ cols[ 3 ] ] )++;
 			Assert.assertTrue( assertCols[ 0 ] );
 			Assert.assertTrue( assertCols[ 1 ] );
-			return( new DoubleElem( TestStelemB_DB.tempArray[ cols[ 0 ] ][ cols[ 1 ] ] ) );
+			Assert.assertTrue( assertCols[ 2 ] );
+			Assert.assertTrue( assertCols[ 3 ] );
+			return( new DoubleElem( TestStelemD_DB.tempArray[ cols[ 0 ] ][ cols[ 1 ] ][ cols[ 2 ] ][ cols[ 3 ] ] ) );
 		}
 
 		@Override
@@ -970,7 +1166,6 @@ public class TestStelemB_DB extends TestCase {
 	}
 	
 	
-	
 	/**
 	 * An elem defining a partial derivative that is evaluated over the discretized space of the test.
 	 * 
@@ -1078,7 +1273,7 @@ public class TestStelemB_DB extends TestCase {
 		
 		
 		/**
-		 * Applies a discretized approximation of a derivative using the following rules where "N"
+		 * * Applies a discretized approximation of a derivative using the following rules where "N"
 		 * is the number of derivatives and "h" is the size of the discretization:
 		 * <P>
 		 * <P> N = 0 -- Zero derivatives have been taken so simply return the original value of  the elem.
@@ -1270,8 +1465,8 @@ public class TestStelemB_DB extends TestCase {
 				case 3:
 					{
 						applyDerivativeAction3( 
-								implicitSpace , coeffNodeIn, 
-								node , hh , implicitSpacesOut );
+							implicitSpace , coeffNodeIn, 
+							node , hh , implicitSpacesOut );
 					}
 					break;
 					
@@ -1448,7 +1643,6 @@ public class TestStelemB_DB extends TestCase {
 		
 		
 		
-		
 		/**
 		 * Adds a coefficient times the input implicit space to the output implicit space.
 		 * 
@@ -1491,6 +1685,7 @@ public class TestStelemB_DB extends TestCase {
 		
 		
 	}
+	
 	
 	
 	
@@ -1544,11 +1739,10 @@ public class TestStelemB_DB extends TestCase {
 		@Override
 		protected void performIterationUpdate( DoubleElem iterationOffset )
 		{
-			TestStelemB_DB.performIterationUpdate( iterationOffset );
+			TestStelemD_DB.performIterationUpdate( iterationOffset );
 		}
 		
 	}
-	
 	
 	
 	
@@ -1565,9 +1759,12 @@ public class TestStelemB_DB extends TestCase {
 			// {
 			//	iterArray[ tcnt ][ xcnt ] = rand.nextDouble();
 			// }
-			iterArray.set( tcnt , 12 , 10000.0 * ( d1 * d1 ) );
+			iterArray.set( tcnt , 12 , 5 , 5 , 10000.0 * ( d1 * d1 ) );
 		}
 	}
+	
+	
+	
 	
 	
 	
@@ -1584,55 +1781,63 @@ public class TestStelemB_DB extends TestCase {
 	protected void performIterationT( final int tval , final StelemNewton newton , final HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace2 ) 
 			throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
+		
 		for( int xcnt = 0 ; xcnt < NUM_X_ITER ; xcnt++ )
 		{
-			fillTempArray( tval , xcnt );
-			clearSpatialAssertArray();
-			
-							
-			
-			
-			
-			
-			final double ival = TestStelemB_DB.getUpdateValue();
-			
-			
-		
-			
-			DoubleElem err = newton.eval( implicitSpace2 );
-	
-	
-			final double val = TestStelemB_DB.getUpdateValue();
-			
-			if( xcnt == 12 )
+			for( int ycnt = 0 ; ycnt < NUM_Y_ITER ; ycnt++ )
 			{
-				System.out.println( "******************" );
-				System.out.println( xcnt );
-				System.out.println( ival );
-				System.out.println( val );
-				System.out.println( "## " + ( err.getVal() ) );
-			}
+				for( int zcnt = 0 ; zcnt < NUM_Z_ITER ; zcnt++ )
+				{
+					fillTempArray( tval , xcnt , ycnt , zcnt );
+					clearSpatialAssertArray();
+	
 			
+					final double ival = TestStelemD_DB.getUpdateValue();
 			
-			Assert.assertTrue( spatialAssertArray[ 0 ][ 0 ] == 0 );
-			
-			Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ] > 0 );
-			
-			Assert.assertTrue( spatialAssertArray[ 2 ][ 1 ] > 0 );
-			Assert.assertTrue( spatialAssertArray[ 1 ][ 2 ] > 0 );
-			
-			Assert.assertTrue( spatialAssertArray[ 0 ][ 1 ] > 0 );
-			Assert.assertTrue( spatialAssertArray[ 1 ][ 0 ] > 0 );
-			
-			
-			Assert.assertTrue( Math.abs( err.getVal() ) < ( 0.01 * Math.abs( val ) + 0.01 ) );
 			
 		
-			iterArray.set( tval + 1 , xcnt , val );
+			
+					DoubleElem err = newton.eval( implicitSpace2 );
+	
+	
+					final double val = TestStelemD_DB.getUpdateValue();
+			
+					if( ( xcnt == 12 ) && ( ycnt == 5 ) && ( zcnt == 5 ) )
+					{
+						System.out.println( "******************" );
+						System.out.println( " ( " + xcnt + " , " + ycnt + " , " + zcnt + " ) " );
+						System.out.println( ival );
+						System.out.println( val );
+						System.out.println( "## " + ( err.getVal() ) );
+					}
+					
+					
+					Assert.assertTrue( spatialAssertArray[ 0 ][ 0 ][ 0 ][ 0 ] == 0 );
+					
+					Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 1 ] > 0 );
+					
+					Assert.assertTrue( spatialAssertArray[ 2 ][ 1 ][ 1 ][ 1 ] > 0 );
+					Assert.assertTrue( spatialAssertArray[ 1 ][ 2 ][ 1 ][ 1 ] > 0 );
+					Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 2 ][ 1 ] > 0 );
+					Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 2 ] > 0 );
+					
+					Assert.assertTrue( spatialAssertArray[ 0 ][ 1 ][ 1 ][ 1 ] > 0 );
+					Assert.assertTrue( spatialAssertArray[ 1 ][ 0 ][ 1 ][ 1 ] > 0 );
+					Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 0 ][ 1 ] > 0 );
+					Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 0 ] > 0 );
+			
+			
+					Assert.assertTrue( Math.abs( err.getVal() ) < ( 0.01 * Math.abs( val ) + 0.01 ) );
+			
+		
+					iterArray.set( tval + 1 , xcnt , ycnt , zcnt , val );
+				}
+				
+			}
 					
 		}
-		
 	}
+	
 	
 	
 	
@@ -1678,12 +1883,12 @@ public class TestStelemB_DB extends TestCase {
 	 * </mrow>
 	 * </math>
 	 *
-	 * in dimensions (x, t) where "c" is an arbitrary constant.
+	 * in dimensions (x, y, z, t) where "c" is an arbitrary constant.
 	 *
 	 * 
 	 * @author thorngreen
 	 *
-	 */	
+	 */
 	public void testStelemSimple() throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
 		
@@ -1700,14 +1905,16 @@ public class TestStelemB_DB extends TestCase {
 		
 		final Random rand = new Random( 3344 );
 		
-		final double d1 = X_HH.getVal();
+		final double d1 = Math.sqrt( X_HH.getVal() * X_HH.getVal() + Y_HH.getVal() * Y_HH.getVal() + Z_HH.getVal() * Z_HH.getVal() );
 		
-		final TestDimensionOne tdim = new TestDimensionOne();
+		final TestDimensionThree tdim = new TestDimensionThree();
 		
-		final GeometricAlgebraOrd<TestDimensionOne> ord = new GeometricAlgebraOrd<TestDimensionOne>();
+		final GeometricAlgebraOrd<TestDimensionThree> ord = new GeometricAlgebraOrd<TestDimensionThree>();
+		
 		
 		
 		initIterArray( d1 );
+		
 		
 		
 		final DoubleElemFactory de = new DoubleElemFactory();
@@ -1726,7 +1933,7 @@ public class TestStelemB_DB extends TestCase {
 		
 		final ArrayList<Ordinate> wrtT = new ArrayList<Ordinate>();
 		
-		wrtT.add( new Ordinate( de , 0 ) );
+		wrtT.add( new Ordinate( de , TV ) );
 		
 		// final ArrayList<AElem> wrtX = new ArrayList<AElem>();
 		
@@ -1734,22 +1941,22 @@ public class TestStelemB_DB extends TestCase {
 		
 		
 		final GeometricAlgebraMultivectorElemFactory<
-			TestDimensionOne,GeometricAlgebraOrd<TestDimensionOne>, 
+			TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>, 
 			SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>, 
 			SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>
 			ge =
 			new GeometricAlgebraMultivectorElemFactory<
-			TestDimensionOne,GeometricAlgebraOrd<TestDimensionOne>, 
+			TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>, 
 			SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>, 
 			SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>( se3 , tdim , ord );
 		
 		
 		final GeometricAlgebraMultivectorElem<
-			TestDimensionOne,GeometricAlgebraOrd<TestDimensionOne>, 
+			TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>, 
 			SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>, 
 			SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>
 				g0 = new GeometricAlgebraMultivectorElem<
-					TestDimensionOne,GeometricAlgebraOrd<TestDimensionOne>, 
+					TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>, 
 					SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>, 
 					SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>
 					( se3 , tdim , ord );
@@ -1760,13 +1967,13 @@ public class TestStelemB_DB extends TestCase {
 		final DDirec ddirec = new DDirec(de, se2);
 		
 		final DirectionalDerivative<
-			TestDimensionOne,GeometricAlgebraOrd<TestDimensionOne>, 
+			TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>, 
 			SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>, 
 			SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>, 
 			Ordinate>
 			del =
 			new DirectionalDerivative<
-			TestDimensionOne,GeometricAlgebraOrd<TestDimensionOne>, 
+			TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>, 
 			SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>, 
 			SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>, 
 			Ordinate>( 
@@ -1775,7 +1982,7 @@ public class TestStelemB_DB extends TestCase {
 					ddirec );
 		
 		final GeometricAlgebraMultivectorElem<
-			TestDimensionOne,GeometricAlgebraOrd<TestDimensionOne>, 
+			TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>, 
 			SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>, 
 			SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>
 				del0 = del.eval( null );
@@ -1802,23 +2009,23 @@ public class TestStelemB_DB extends TestCase {
 		//	= pa0X.mult( as ); 
 		
 		final GeometricAlgebraMultivectorElem<
-			TestDimensionOne,GeometricAlgebraOrd<TestDimensionOne>, 
+			TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>, 
 			SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>, 
 			SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>
 				gxx0 = del0.mult( g0 );
 		
 		final ArrayList<GeometricAlgebraMultivectorElem<
-			TestDimensionOne,GeometricAlgebraOrd<TestDimensionOne>, 
+			TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>, 
 			SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>, 
 			SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>> args0 
 				= new ArrayList<GeometricAlgebraMultivectorElem<
-					TestDimensionOne,GeometricAlgebraOrd<TestDimensionOne>, 
+					TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>, 
 					SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>, 
 					SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>>();
 		args0.add( gxx0 );
 		
 		final GeometricAlgebraMultivectorElem<
-			TestDimensionOne,GeometricAlgebraOrd<TestDimensionOne>, 
+			TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>, 
 			SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>, 
 			SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>
 				gxx1 = del0.handleOptionalOp( GeometricAlgebraMultivectorElem.GeometricAlgebraMultivectorCmd.DOT , args0 );
@@ -1846,11 +2053,11 @@ public class TestStelemB_DB extends TestCase {
 		
 		
 		final GeometricAlgebraMultivectorElem<
-			TestDimensionOne,GeometricAlgebraOrd<TestDimensionOne>, 
+			TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>, 
 			SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>, 
 			SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>
 				gtt = new GeometricAlgebraMultivectorElem<
-					TestDimensionOne,GeometricAlgebraOrd<TestDimensionOne>, 
+					TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>, 
 					SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>, 
 					SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>
 					( se3 , tdim , ord );
@@ -1860,7 +2067,7 @@ public class TestStelemB_DB extends TestCase {
 		
 		
 		final GeometricAlgebraMultivectorElem<
-			TestDimensionOne,GeometricAlgebraOrd<TestDimensionOne>, 
+			TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>, 
 			SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>, 
 			SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>
 				mg1 = gxx1.add( gtt );
@@ -1881,8 +2088,10 @@ public class TestStelemB_DB extends TestCase {
 		
 		final HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace2 = implicitSpace0;
 		
-		implicitSpace0.put( new Ordinate( de , 0 ) , new Ordinate( de , 0 ) );
-		implicitSpace0.put( new Ordinate( de , 1 ) , new Ordinate( de , 0 ) );
+		implicitSpace0.put( new Ordinate( de , TV ) , new Ordinate( de , 0 ) );
+		implicitSpace0.put( new Ordinate( de , XV ) , new Ordinate( de , 0 ) );
+		implicitSpace0.put( new Ordinate( de , YV ) , new Ordinate( de , 0 ) );
+		implicitSpace0.put( new Ordinate( de , ZV ) , new Ordinate( de , 0 ) );
 		
 		final SymbolicElem<
 			SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> s0 = m1.eval( implicitSpace2 );
@@ -1895,8 +2104,10 @@ public class TestStelemB_DB extends TestCase {
 		final ArrayList<Elem<?, ?>> wrt3 = new ArrayList<Elem<?, ?>>();
 		{
 			final HashMap<Ordinate, BigInteger> coord = new HashMap<Ordinate, BigInteger>();
-			coord.put( new Ordinate( de , 0 ) , BigInteger.valueOf( 1 ) );
-			coord.put( new Ordinate( de , 1 ) , BigInteger.valueOf( 0 ) );
+			coord.put( new Ordinate( de , TV ) , BigInteger.valueOf( 1 ) );
+			coord.put( new Ordinate( de , XV ) , BigInteger.valueOf( 0 ) );
+			coord.put( new Ordinate( de , YV ) , BigInteger.valueOf( 0 ) );
+			coord.put( new Ordinate( de , ZV ) , BigInteger.valueOf( 0 ) );
 			wrt3.add( new CNelem( se , coord ) );
 		}
 		
@@ -1911,7 +2122,7 @@ public class TestStelemB_DB extends TestCase {
 		}
 		
 		System.out.println( "==============================" );
-		System.out.println( iterArray.get( NUM_T_ITER - 1 , 10 ) );
+		System.out.println( iterArray.get( NUM_T_ITER - 1 , 10 , 5 , 5 ) );
 		// Assert.assertTrue( Math.abs( val - ( -1.450868 ) ) < 0.01 ); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		
 		graph.close();

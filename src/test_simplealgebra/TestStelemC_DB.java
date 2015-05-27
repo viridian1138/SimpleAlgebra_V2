@@ -52,6 +52,7 @@ import simplealgebra.ga.GeometricAlgebraMultivectorElemFactory;
 import simplealgebra.stelem.Nelem;
 import simplealgebra.stelem.Stelem;
 import simplealgebra.store.DbArray3D_SingleWrite;
+import simplealgebra.store.TypeSystemInit;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
@@ -1794,6 +1795,8 @@ public class TestStelemC_DB extends TestCase {
 		HyperGraph graph;
 		
 		graph = new HyperGraph( databaseLocation );
+		
+		TypeSystemInit.initType( graph );
 		
 		
 		iterArray = new TestDbArray( graph );
