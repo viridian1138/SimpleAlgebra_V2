@@ -63,6 +63,17 @@ public class BigFixedPointElemFactory<T extends Precision> extends ElemFactory<B
 	 * The precision of the BigFixedPointElem.
 	 */
 	private T prec;
+	
+	
+	/**
+	 * Gets the precision of the BigFixedPointElem.
+	 * 
+	 * @return The precision of the BigFixedPointElem.
+	 */
+	public T getPrec()
+	{
+		return( prec );
+	}
 
 
 

@@ -39,6 +39,9 @@ import simplealgebra.DoubleElemFactory;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.store.BaseDbArray_SingleWrite;
 import simplealgebra.store.TypeSystemInit;
+import simplealgebra.bigfixedpoint.BigFixedPointElem;
+import simplealgebra.bigfixedpoint.BigFixedPointElemFactory;
+import simplealgebra.bigfixedpoint.Precision;
 
 
 /**
@@ -290,12 +293,46 @@ public class TestBaseDbArrayBasics extends TestCase {
 	
 	
 	
+	public static BigInteger genPrecVal()
+	{
+		final BigInteger ten = BigInteger.valueOf( 10 );
+		BigInteger vl = ten;
+		for( int count = 0 ; count < 150 ; count++ )
+		{
+			vl = vl.multiply( ten );
+		}
+		return( vl );
+	}
+	
+	
+	public static final BigInteger lrgPrec = genPrecVal();
+	
+	public static final BigInteger lrgPrecSq = lrgPrec.multiply( lrgPrec );
+	
+	
+	public static class LrgPrec extends Precision
+	{
+
+		@Override
+		public BigInteger getVal() {
+			return( lrgPrec );
+		}
+
+		@Override
+		public BigInteger getValSquared() {
+			return( lrgPrecSq );
+		}
+		
+	}
+	
+	
+	
 	/**
-	 * Tests the ability to store a ComplexElemFactory.
+	 * Tests the ability to store basic types.
 	 * 
 	 * @throws Throwable
 	 */
-	public void testStoreComplexElemFactory() throws Throwable
+	public void testStoreBasicTypes() throws Throwable
 	{
 		
 		// System.out.println( "Started..." ); 
@@ -308,16 +345,48 @@ public class TestBaseDbArrayBasics extends TestCase {
 		TypeSystemInit.initType( graph );
 		
 		
-		HGHandle hndl = graph.add( new ComplexElemFactory<DoubleElem,DoubleElemFactory>( new DoubleElemFactory() ) );
+		{
+			HGHandle hndl = graph.add( new ComplexElemFactory<DoubleElem,DoubleElemFactory>( new DoubleElemFactory() ) );
+		
+			ComplexElemFactory<DoubleElem,DoubleElemFactory> d = graph.get( hndl );
+		
+			Assert.assertTrue( d.getFac() != null );
+		
+			Assert.assertTrue( d.getFac() instanceof DoubleElemFactory );
+		}
 		
 		
-		ComplexElemFactory<DoubleElem,DoubleElemFactory> d = graph.get( hndl );
+		
+		{
+			HGHandle hndl = graph.add( new BigFixedPointElem<LrgPrec>( 
+					lrgPrec.multiply( BigInteger.valueOf( 2 ) ) , new LrgPrec() ) );
+			
+			BigFixedPointElem<LrgPrec> d = graph.get( hndl );
+			
+			Assert.assertTrue( d.getPrecVal() != null );
+			
+			Assert.assertTrue( d.getFac().getPrec() != null );
+			
+			Assert.assertTrue( d.getFac().getPrec() instanceof LrgPrec );
+			
+			Assert.assertTrue( d.getPrecVal().equals( lrgPrec.multiply( BigInteger.valueOf( 2 ) ) ) );
+			
+		}
 		
 		
-		Assert.assertTrue( d.getFac() != null );
 		
+		{
+			HGHandle hndl = graph.add( new BigFixedPointElemFactory<LrgPrec>( 
+					new LrgPrec() ) );
+			
+			BigFixedPointElemFactory<LrgPrec> d = graph.get( hndl );
+			
+			Assert.assertTrue( d.getPrec() != null );
+			
+			Assert.assertTrue( d.getPrec() instanceof LrgPrec );
+			
+		}
 		
-		Assert.assertTrue( d.getFac() instanceof DoubleElemFactory );
 		
 		
 		graph.close();

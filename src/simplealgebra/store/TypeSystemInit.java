@@ -50,6 +50,9 @@ public class TypeSystemInit {
 		DoubleElemType.initType( graph );
 		ComplexElemType.initType( graph );
 		ComplexElemFactoryType.initType( graph );
+		BigFixedPointElemType.initType( graph );
+		BigFixedPointElemFactoryType.initType( graph );
+		
 	}
 
 	
