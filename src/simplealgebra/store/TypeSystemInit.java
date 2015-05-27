@@ -48,6 +48,8 @@ public class TypeSystemInit {
 	public static void initType( HyperGraph graph )
 	{
 		DoubleElemType.initType( graph );
+		ComplexElemType.initType( graph );
+		ComplexElemFactoryType.initType( graph );
 	}
 
 	

@@ -33,6 +33,7 @@ import junit.framework.TestCase;
 import org.hypergraphdb.HGHandle;
 import org.hypergraphdb.HyperGraph;
 
+import simplealgebra.ComplexElemFactory;
 import simplealgebra.DoubleElem;
 import simplealgebra.DoubleElemFactory;
 import simplealgebra.NotInvertibleException;
@@ -157,7 +158,7 @@ public class TestBaseDbArrayBasics extends TestCase {
 	/**
 	 * Tests basic use of BaseDbArray_SingleWrite.
 	 * 
-	 * @throws NotInvertibleException
+	 * @throws Throwable
 	 */
 	public void testBaseDbArrayBasics() throws Throwable
 	{
@@ -210,7 +211,7 @@ public class TestBaseDbArrayBasics extends TestCase {
 	/**
 	 * Tests basic use of BaseDbArray_SingleWrite.
 	 * 
-	 * @throws NotInvertibleException
+	 * @throws Throwable
 	 */
 	public void testBaseDbArrayBasicsEl() throws Throwable
 	{
@@ -262,7 +263,7 @@ public class TestBaseDbArrayBasics extends TestCase {
 	/**
 	 * Tests the ability to store a DoubleElemFactory.
 	 * 
-	 * @throws NotInvertibleException
+	 * @throws Throwable
 	 */
 	public void testStoreDoubleElemFactory() throws Throwable
 	{
@@ -281,6 +282,42 @@ public class TestBaseDbArrayBasics extends TestCase {
 		
 		
 		DoubleElemFactory d = graph.get( hndl );
+		
+		
+		graph.close();
+	
+	}
+	
+	
+	
+	/**
+	 * Tests the ability to store a ComplexElemFactory.
+	 * 
+	 * @throws Throwable
+	 */
+	public void testStoreComplexElemFactory() throws Throwable
+	{
+		
+		// System.out.println( "Started..." ); 
+		
+		String databaseLocation = "mydb";
+		HyperGraph graph;
+		
+		graph = new HyperGraph( databaseLocation );
+		
+		TypeSystemInit.initType( graph );
+		
+		
+		HGHandle hndl = graph.add( new ComplexElemFactory<DoubleElem,DoubleElemFactory>( new DoubleElemFactory() ) );
+		
+		
+		ComplexElemFactory<DoubleElem,DoubleElemFactory> d = graph.get( hndl );
+		
+		
+		Assert.assertTrue( d.getFac() != null );
+		
+		
+		Assert.assertTrue( d.getFac() instanceof DoubleElemFactory );
 		
 		
 		graph.close();

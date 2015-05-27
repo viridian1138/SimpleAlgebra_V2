@@ -154,7 +154,7 @@ public class TestBaseDbArrayIndependence extends TestCase {
 	/**
 	 * Verifies that separate instances of BaseDbArray_SingleWrite remain independent.
 	 * 
-	 * @throws NotInvertibleException
+	 * @throws Throwable
 	 */
 	public void testBaseDbArrayIndependence() throws Throwable
 	{

@@ -29,6 +29,8 @@ import junit.framework.TestCase;
 
 import org.hypergraphdb.HyperGraph;
 
+import simplealgebra.ComplexElem;
+import simplealgebra.ComplexElemFactory;
 import simplealgebra.DoubleElem;
 import simplealgebra.DoubleElemFactory;
 import simplealgebra.store.DbElem;
@@ -96,6 +98,64 @@ public class TestDbElemDbl extends TestCase {
 		
 	}
 	
+	
+	
+	
+	/**
+	 * Tests basic use of DbElem
+	 * 
+	 * @throws Throwable
+	 */
+	public void testDbElemCplx( ) throws Throwable
+	{
+		// System.out.println( "Started..." ); 
+		
+		String databaseLocation = "mydb";
+		HyperGraph graph;
+				
+		graph = new HyperGraph( databaseLocation );
+				
+		TypeSystemInit.initType( graph );
+				
+				
+				
+				
+		final DbElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> da = 
+				new DbElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>( 
+						new ComplexElem<DoubleElem,DoubleElemFactory>( new DoubleElem( 1.111111 ) , new DoubleElem( 2.222222 ) ) , graph);
+				
+				
+		final DbElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> db = 
+				new DbElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>( 
+						new ComplexElem<DoubleElem,DoubleElemFactory>( new DoubleElem( 3.3333333 ) , new DoubleElem( 4.44444444 ) ) , graph);
+				
+				
+		final DbElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> dc = 
+				new DbElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>( 
+						new ComplexElem<DoubleElem,DoubleElemFactory>( new DoubleElem( 5.5555555 ) , new DoubleElem( 6.6666666 ) ) , graph);
+				
+				
+				
+				
+		Assert.assertEquals( da.query().getRe().getVal() , 1.111111 , 1E-5 );
+				
+		Assert.assertEquals( da.query().getIm().getVal() , 2.222222 , 1E-5 );
+				
+		Assert.assertEquals( db.query().getRe().getVal() , 3.3333333 , 1E-5 );
+		
+		Assert.assertEquals( db.query().getIm().getVal() , 4.44444444 , 1E-5 );
+		
+		Assert.assertEquals( dc.query().getRe().getVal() , 5.5555555 , 1E-5 );
+		
+		Assert.assertEquals( dc.query().getIm().getVal() , 6.6666666 , 1E-5 );
+				
+				
+				
+		graph.close();
+				
+		// System.out.println( "Done..." ); 
+		
+	}
 
 
 	
