@@ -22,9 +22,11 @@
 
 
 
-package simplealgebra.store;
+package simplealgebra.bigfixedpoint.db;
 
 
+
+import java.math.BigInteger;
 
 import org.hypergraphdb.HGHandle;
 import org.hypergraphdb.HGPersistentHandle;
@@ -34,28 +36,28 @@ import org.hypergraphdb.IncidenceSetRef;
 import org.hypergraphdb.LazyRef;
 import org.hypergraphdb.type.HGAtomTypeBase;
 
-import simplealgebra.bigfixedpoint.BigFixedPointElemFactory;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
+import simplealgebra.bigfixedpoint.BigFixedPointElem;
 import simplealgebra.bigfixedpoint.Precision;
 
 
 
 /**
- * HyperGraph type for storing BigFixedPointElemFactory instances.
+ * HyperGraph type for storing BigFixedPointElem instances.
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
  * @author thorngreen
  *
  */
-public class BigFixedPointElemFactoryType<T extends Precision> extends HGAtomTypeBase {
+public class BigFixedPointElemType<T extends Precision> extends HGAtomTypeBase {
 
 	
 	/**
 	 * Constructs the type instance.
 	 */
-	public BigFixedPointElemFactoryType() {
+	public BigFixedPointElemType() {
 	}
 
 	
@@ -63,10 +65,13 @@ public class BigFixedPointElemFactoryType<T extends Precision> extends HGAtomTyp
 	public Object make(HGPersistentHandle handle, LazyRef<HGHandle[]> targetSet,
 			IncidenceSetRef incidenceSet) {
 		HGHandle[] layout = graph.getStore().getLink( handle );
-		T prec = graph.get( layout[ 0 ] );
+		BigInteger val = graph.get( layout[ 0 ] );
+		T prec = graph.get( layout[ 1 ] );
+		if( val == null )
+			throw( new RuntimeException( "Failed" ) );
 		if( prec == null )
 			throw( new RuntimeException( "Failed" ) );
-		return( new BigFixedPointElemFactory<T>( prec ) );
+		return( new BigFixedPointElem<T>( val , prec ) );
 	}
 
 	@Override
@@ -77,9 +82,10 @@ public class BigFixedPointElemFactoryType<T extends Precision> extends HGAtomTyp
 	
 	@Override
 	public HGPersistentHandle store(Object instance) {
-		BigFixedPointElemFactory<T> oid = (BigFixedPointElemFactory<T>)( instance );
-		HGHandle precHandle = hg.assertAtom(graph, oid.getPrec() );
-		HGPersistentHandle[] hn = { precHandle.getPersistent() };
+		BigFixedPointElem<T> oid = (BigFixedPointElem<T>)( instance );
+		HGHandle valHandle = hg.assertAtom(graph, oid.getPrecVal() );
+		HGHandle precHandle = hg.assertAtom(graph, oid.getFac().getPrec() );
+		HGPersistentHandle[] hn = { valHandle.getPersistent() , precHandle.getPersistent() };
 		return( graph.getStore().store( hn ) );
 	}
 	
@@ -91,9 +97,9 @@ public class BigFixedPointElemFactoryType<T extends Precision> extends HGAtomTyp
 	 */
 	public static void initType( HyperGraph graph )
 	{
-		BigFixedPointElemFactoryType<?> type = new BigFixedPointElemFactoryType();
+		BigFixedPointElemType<?> type = new BigFixedPointElemType();
 		HGPersistentHandle typeHandle = graph.getHandleFactory().makeHandle();
-		graph.getTypeSystem().addPredefinedType( typeHandle , type , BigFixedPointElemFactory.class );
+		graph.getTypeSystem().addPredefinedType( typeHandle , type , BigFixedPointElem.class );
 	}
 
 

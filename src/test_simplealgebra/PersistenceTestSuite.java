@@ -22,49 +22,50 @@
 
 
 
+package test_simplealgebra;
 
-
-package simplealgebra.store;
-
-import org.hypergraphdb.HyperGraph;
-
-import simplealgebra.bigfixedpoint.db.BigFixedPointElemFactoryType;
-import simplealgebra.bigfixedpoint.db.BigFixedPointElemType;
-import simplealgebra.et.db.EinsteinTensorElemFactoryType;
-import simplealgebra.et.db.EinsteinTensorElemType;
-
+import junit.framework.Test;
+import junit.framework.TestSuite;
+import junit.textui.TestRunner;
 
 /**
- * Common initializer for HyperGraph types.
+ * Runs standard persistence tests for SimpleAlgebra.
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
  * @author thorngreen
  *
  */
-public class TypeSystemInit {
+public class PersistenceTestSuite extends TestSuite {
 
 	
 	/**
-	 * Initialize the types in a graph.
+	 * Builds a suite of standard tests for SimpleAlgebra.
 	 * 
-	 * @param graph The graph in which to initialize the types.
+	 * @return The suite of standard tests.
 	 */
-	public static void initType( HyperGraph graph )
+	public static Test suite()
 	{
-		DoubleElemType.initType( graph );
-		ComplexElemType.initType( graph );
-		ComplexElemFactoryType.initType( graph );
-		
-		BigFixedPointElemType.initType( graph );
-		BigFixedPointElemFactoryType.initType( graph );
-		
-		EinsteinTensorElemType.initType( graph );
-		EinsteinTensorElemFactoryType.initType( graph );
-		
+		final TestSuite s = new TestSuite();
+		s.addTestSuite( TestBaseDbArrayBasics.class );
+		s.addTestSuite( TestBaseDbArrayIndependence.class );
+		s.addTestSuite( TestDbElemDbl.class );
+		s.addTestSuite( TestDbElemTensor.class );
+		return( s );
+	}
+	
+	
+	/**
+	 * Runs standard tests for SimpleAlgebra.
+	 * 
+	 * @param in Unused input parameters.
+	 */
+	public static void main( String[] in )
+	{
+		TestRunner run = new TestRunner();
+		run.doRun( suite() );
 	}
 
-	
-}
 
+}
 
