@@ -22,13 +22,14 @@
 
 
 
-package simplealgebra.et.db;
+package simplealgebra.ga.db;
 
 
 
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
 
@@ -40,27 +41,29 @@ import org.hypergraphdb.IncidenceSetRef;
 import org.hypergraphdb.LazyRef;
 import org.hypergraphdb.type.HGAtomTypeBase;
 
-import simplealgebra.et.EinsteinTensorElem;
+import simplealgebra.ga.GeometricAlgebraMultivectorElem;
+import simplealgebra.ga.Ord;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
+import simplealgebra.NumDimensions;
 
 
 
 /**
- * HyperGraph type for storing EinsteinTensorElem instances.
+ * HyperGraph type for storing GeometricAlgebraMultivectorElem instances.
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
  * @author thorngreen
  *
  */
-public class EinsteinTensorElemType<Z extends Object, R extends Elem<R,?>, S extends ElemFactory<R,S>> extends HGAtomTypeBase {
+public class GeometricAlgebraMultivectorElemType<U extends NumDimensions, A extends Ord<U>, R extends Elem<R,?>, S extends ElemFactory<R,S>> extends HGAtomTypeBase {
 
 	
 	/**
 	 * Constructs the type instance.
 	 */
-	public EinsteinTensorElemType() {
+	public GeometricAlgebraMultivectorElemType() {
 	}
 
 	
@@ -68,27 +71,27 @@ public class EinsteinTensorElemType<Z extends Object, R extends Elem<R,?>, S ext
 	public Object make(HGPersistentHandle handle, LazyRef<HGHandle[]> targetSet,
 			IncidenceSetRef incidenceSet) {
 		HGHandle[] layout = graph.getStore().getLink( handle );
-		ArrayList<Z> contravar = graph.get( layout[ 0 ] );
-		ArrayList<Z> covar = graph.get( layout[ 1 ] );
-		S fac = graph.get( layout[ 2 ] );
-		Map<ArrayList<BigInteger>,R> map = graph.get( layout[ 3 ] );
-		if( contravar == null )
-			throw( new RuntimeException( "Failed" ) );
-		if( covar == null )
-			throw( new RuntimeException( "Failed" ) );
+		S fac = graph.get( layout[ 0 ] );
+		U dim = graph.get( layout[ 1 ] );
+		A ord = graph.get( layout[ 2 ] );
+		Map<HashSet<BigInteger>,R> map = graph.get( layout[ 3 ] );
 		if( fac == null )
+			throw( new RuntimeException( "Failed" ) );
+		if( dim == null )
+			throw( new RuntimeException( "Failed" ) );
+		if( ord == null )
 			throw( new RuntimeException( "Failed" ) );
 		if( map == null )
 			throw( new RuntimeException( "Failed" ) );
-		final EinsteinTensorElem<Z,R,S> et = new EinsteinTensorElem<Z,R,S>( fac , contravar , covar );
-		Iterator<ArrayList<BigInteger>> it = map.keySet().iterator();
+		final GeometricAlgebraMultivectorElem<U,A,R,S> ga = new GeometricAlgebraMultivectorElem<U,A,R,S>( fac , dim , ord );
+		Iterator<HashSet<BigInteger>> it = map.keySet().iterator();
 		while( it.hasNext() )
 		{
-			ArrayList<BigInteger> key = it.next();
+			HashSet<BigInteger> key = it.next();
 			R val = map.get( key );
-			et.setVal( key , val );
+			ga.setVal( key , val );
 		}
-		return( et );
+		return( ga );
 	}
 
 	@Override
@@ -99,21 +102,21 @@ public class EinsteinTensorElemType<Z extends Object, R extends Elem<R,?>, S ext
 	
 	@Override
 	public HGPersistentHandle store(Object instance) {
-		EinsteinTensorElem<Z,R,S> oid = (EinsteinTensorElem<Z,R,S>)( instance );
-		HGHandle contravarHandle = graph.add( oid.getContravariantIndices() ); // hg.assertAtom(graph, oid.getContravariantIndices() ); !!!!!!!!!!!!!!!!!!!!!
-		HGHandle covarHandle = graph.add( oid.getCovariantIndices() ); // hg.assertAtom(graph, oid.getCovariantIndices() ); !!!!!!!!!!!!!!!!!!!!!!!!!!
+		GeometricAlgebraMultivectorElem<U,A,R,S> oid = (GeometricAlgebraMultivectorElem<U,A,R,S>)( instance );
 		HGHandle facHandle = hg.assertAtom(graph, oid.getFac().getFac() );
-		final HashMap<ArrayList<BigInteger>,R> map = new HashMap<ArrayList<BigInteger>,R>();
-		Iterator<ArrayList<BigInteger>> it = oid.getKeyIterator();
+		HGHandle dimHandle = hg.assertAtom(graph, oid.getFac().getDim() );
+		HGHandle ordHandle = hg.assertAtom(graph, oid.getFac().getOrd() );
+		final HashMap<HashSet<BigInteger>,R> map = new HashMap<HashSet<BigInteger>,R>();
+		Iterator<HashSet<BigInteger>> it = oid.getKeyIterator();
 		while( it.hasNext() )
 		{
-			ArrayList<BigInteger> key = it.next();
+			HashSet<BigInteger> key = it.next();
 			R val = oid.getVal( key );
 			map.put( key , val );
 		}
 		HGHandle mapHandle = hg.assertAtom(graph, map );
-		HGPersistentHandle[] hn = { contravarHandle.getPersistent() , covarHandle.getPersistent() , 
-				facHandle.getPersistent() , mapHandle.getPersistent() };
+		HGPersistentHandle[] hn = { facHandle.getPersistent() , dimHandle.getPersistent() , 
+				ordHandle.getPersistent() , mapHandle.getPersistent() };
 		return( graph.getStore().store( hn ) );
 	}
 	
@@ -125,9 +128,9 @@ public class EinsteinTensorElemType<Z extends Object, R extends Elem<R,?>, S ext
 	 */
 	public static void initType( HyperGraph graph )
 	{
-		EinsteinTensorElemType<?,?,?> type = new EinsteinTensorElemType();
+		GeometricAlgebraMultivectorElemType<?,?,?,?> type = new GeometricAlgebraMultivectorElemType();
 		HGPersistentHandle typeHandle = graph.getHandleFactory().makeHandle();
-		graph.getTypeSystem().addPredefinedType( typeHandle , type , EinsteinTensorElem.class );
+		graph.getTypeSystem().addPredefinedType( typeHandle , type , GeometricAlgebraMultivectorElem.class );
 	}
 
 

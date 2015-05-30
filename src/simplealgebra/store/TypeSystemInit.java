@@ -32,6 +32,9 @@ import simplealgebra.bigfixedpoint.db.BigFixedPointElemFactoryType;
 import simplealgebra.bigfixedpoint.db.BigFixedPointElemType;
 import simplealgebra.et.db.EinsteinTensorElemFactoryType;
 import simplealgebra.et.db.EinsteinTensorElemType;
+import simplealgebra.ga.GeometricAlgebraMultivectorElemFactory;
+import simplealgebra.ga.db.GeometricAlgebraMultivectorElemFactoryType;
+import simplealgebra.ga.db.GeometricAlgebraMultivectorElemType;
 
 
 /**
@@ -61,6 +64,9 @@ public class TypeSystemInit {
 		
 		EinsteinTensorElemType.initType( graph );
 		EinsteinTensorElemFactoryType.initType( graph );
+		
+		GeometricAlgebraMultivectorElemType.initType( graph );
+		GeometricAlgebraMultivectorElemFactoryType.initType( graph );
 		
 	}
 
