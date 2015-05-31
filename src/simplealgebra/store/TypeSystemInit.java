@@ -32,9 +32,22 @@ import simplealgebra.bigfixedpoint.db.BigFixedPointElemFactoryType;
 import simplealgebra.bigfixedpoint.db.BigFixedPointElemType;
 import simplealgebra.et.db.EinsteinTensorElemFactoryType;
 import simplealgebra.et.db.EinsteinTensorElemType;
-import simplealgebra.ga.GeometricAlgebraMultivectorElemFactory;
 import simplealgebra.ga.db.GeometricAlgebraMultivectorElemFactoryType;
 import simplealgebra.ga.db.GeometricAlgebraMultivectorElemType;
+import simplealgebra.symbolic.db.SymbolicAbsoluteValueType;
+import simplealgebra.symbolic.db.SymbolicAddType;
+import simplealgebra.symbolic.db.SymbolicDivideByType;
+import simplealgebra.symbolic.db.SymbolicElemFactoryType;
+import simplealgebra.symbolic.db.SymbolicIdentityType;
+import simplealgebra.symbolic.db.SymbolicInvertLeftType;
+import simplealgebra.symbolic.db.SymbolicInvertRightType;
+import simplealgebra.symbolic.db.SymbolicMultType;
+import simplealgebra.symbolic.db.SymbolicMutableType;
+import simplealgebra.symbolic.db.SymbolicNegateType;
+import simplealgebra.symbolic.db.SymbolicPlaceholderType;
+import simplealgebra.symbolic.db.SymbolicReductionType;
+import simplealgebra.symbolic.db.SymbolicSqrtType;
+import simplealgebra.symbolic.db.SymbolicZeroType;
 
 
 /**
@@ -70,6 +83,21 @@ public class TypeSystemInit {
 		
 		SquareMatrixElemType.initType( graph );
 		SquareMatrixElemFactoryType.initType( graph );
+		
+		SymbolicAbsoluteValueType.initType( graph );
+		SymbolicAddType.initType( graph );
+		SymbolicDivideByType.initType( graph );
+		SymbolicElemFactoryType.initType( graph );
+		SymbolicIdentityType.initType( graph );
+		SymbolicInvertLeftType.initType( graph );
+		SymbolicInvertRightType.initType( graph );
+		SymbolicMultType.initType( graph );
+		SymbolicMutableType.initType( graph );
+		SymbolicNegateType.initType( graph );
+		SymbolicPlaceholderType.initType( graph );
+		SymbolicReductionType.initType( graph );
+		SymbolicSqrtType.initType( graph );
+		SymbolicZeroType.initType( graph );
 		
 	}
 
