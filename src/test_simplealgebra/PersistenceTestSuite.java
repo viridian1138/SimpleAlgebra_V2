@@ -52,6 +52,7 @@ public class PersistenceTestSuite extends TestSuite {
 		s.addTestSuite( TestDbElemDbl.class );
 		s.addTestSuite( TestDbElemTensor.class );
 		s.addTestSuite( TestDbElemMultivector.class );
+		s.addTestSuite( TestDbElemBasics.class );
 		return( s );
 	}
 	

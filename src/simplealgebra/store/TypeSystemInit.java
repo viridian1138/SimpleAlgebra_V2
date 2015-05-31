@@ -68,6 +68,9 @@ public class TypeSystemInit {
 		GeometricAlgebraMultivectorElemType.initType( graph );
 		GeometricAlgebraMultivectorElemFactoryType.initType( graph );
 		
+		SquareMatrixElemType.initType( graph );
+		SquareMatrixElemFactoryType.initType( graph );
+		
 	}
 
 	
