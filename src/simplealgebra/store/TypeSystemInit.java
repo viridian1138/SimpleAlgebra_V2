@@ -34,6 +34,12 @@ import simplealgebra.et.db.EinsteinTensorElemFactoryType;
 import simplealgebra.et.db.EinsteinTensorElemType;
 import simplealgebra.ga.db.GeometricAlgebraMultivectorElemFactoryType;
 import simplealgebra.ga.db.GeometricAlgebraMultivectorElemType;
+import simplealgebra.ga.db.SymbolicDotType;
+import simplealgebra.ga.db.SymbolicReverseLeftType;
+import simplealgebra.ga.db.SymbolicReverseRightType;
+import simplealgebra.ga.db.SymbolicWedgeType;
+import simplealgebra.meas.db.ValueWithUncertaintyElemFactoryType;
+import simplealgebra.meas.db.ValueWithUncertaintyElemType;
 import simplealgebra.symbolic.db.SymbolicAbsoluteValueType;
 import simplealgebra.symbolic.db.SymbolicAddType;
 import simplealgebra.symbolic.db.SymbolicDivideByType;
@@ -80,6 +86,10 @@ public class TypeSystemInit {
 		
 		GeometricAlgebraMultivectorElemType.initType( graph );
 		GeometricAlgebraMultivectorElemFactoryType.initType( graph );
+		SymbolicDotType.initType( graph );
+		SymbolicReverseLeftType.initType( graph );
+		SymbolicReverseRightType.initType( graph );
+		SymbolicWedgeType.initType( graph );
 		
 		SquareMatrixElemType.initType( graph );
 		SquareMatrixElemFactoryType.initType( graph );
@@ -98,6 +108,10 @@ public class TypeSystemInit {
 		SymbolicReductionType.initType( graph );
 		SymbolicSqrtType.initType( graph );
 		SymbolicZeroType.initType( graph );
+		
+		ValueWithUncertaintyElemType.initType( graph );
+		ValueWithUncertaintyElemFactoryType.initType( graph );
+		
 		
 	}
 

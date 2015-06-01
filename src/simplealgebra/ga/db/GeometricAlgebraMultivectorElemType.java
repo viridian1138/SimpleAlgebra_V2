@@ -55,7 +55,11 @@ import simplealgebra.NumDimensions;
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
  * @author thorngreen
- *
+ * 
+ * @param <U> The number of dimensions in the algebra.
+ * @param <A> The ord of the algebra.
+ * @param <R> The enclosed type.
+ * @param <S> The factory for the enclosed type.
  */
 public class GeometricAlgebraMultivectorElemType<U extends NumDimensions, A extends Ord<U>, R extends Elem<R,?>, S extends ElemFactory<R,S>> extends HGAtomTypeBase {
 
