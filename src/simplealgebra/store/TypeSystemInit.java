@@ -93,6 +93,14 @@ public class TypeSystemInit {
 		
 		SquareMatrixElemType.initType( graph );
 		SquareMatrixElemFactoryType.initType( graph );
+		SymbolicTransposeType.initType( graph );
+		SymbolicMultRevCoeffType.initType( graph );
+		SymbolicInvertLeftRevCoeffType.initType( graph );
+		SymbolicInvertRightRevCoeffType.initType( graph );	
+		SymbolicConjugateLeftType.initType( graph );
+		SymbolicConjugateRightType.initType( graph );
+		MultLeftMutatorType.initType( graph );
+		MultRightMutatorType.initType( graph );
 		
 		SymbolicAbsoluteValueType.initType( graph );
 		SymbolicAddType.initType( graph );

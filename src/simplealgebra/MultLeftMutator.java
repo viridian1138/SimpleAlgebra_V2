@@ -65,7 +65,26 @@ public class MultLeftMutator<T extends Elem<T,?>> implements Mutator<T> {
 	public String writeString() {
 		return( "multRight[ " + name + " ]" );
 	}
+	
+	/**
+	 * Gets the elem. by which to multiply.
+	 * 
+	 * @return the elem The elem. by which to multiply.
+	 */
+	public T getElem() {
+		return elem;
+	}
 
+	/**
+	 * Gets the name of the mutation.
+	 * 
+	 * @return The name of the mutation.
+	 */
+	public String getName() {
+		return name;
+	}
+
+	
 	/**
 	 * The elem. by which to multiply.
 	 */
