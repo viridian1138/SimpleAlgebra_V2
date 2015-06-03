@@ -124,6 +124,14 @@ Generics (Java)
 
 ...http://en.wikipedia.org/wiki/Generics_in_Java
 
+HypergraphDB
+
+...http://hypergraphdb.org/index
+
+...http://hypergraphdb.org/learn?page=IntroStoreData&project=hypergraphdb
+
+...http://hypergraphdb.org/learn?page=RefCustomTypes&project=hypergraphdb
+
 Jacobian Matrix
 
 ...http://en.wikipedia.org/wiki/Jacobian_matrix_and_determinant
