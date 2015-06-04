@@ -116,6 +116,21 @@ public class DbElem<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 	
 	
 	/**
+	 * Constructs the elem.
+	 * 
+	 * @param _hbase A reference to a stored elem of type R.
+	 * @param _fac The factory for the elem.
+	 * @param _graph The graph on which to perform DB operations.
+	 */
+	public DbElem( HGHandle _hbase , S _fac , HyperGraph _graph )
+	{
+		graph = _graph;
+		hbase = _hbase;
+		fac = _fac;
+	}
+	
+	
+	/**
 	 * Queries the enclosed elem from the DB.
 	 * 
 	 * @return The enclosed elem.

@@ -154,6 +154,37 @@ public class OrdinaryDerivative<Z extends Object, U extends NumDimensions, R ext
 		ps.print( "<mi>" + index + "</mi></msub>" );
 	}
 	
+	
+	
+	/**
+	 * Gets the tensor index for the ordinary derivative.
+	 * 
+	 * @return The tensor index for the ordinary derivative.
+	 */
+	public Z getIndex() {
+		return index;
+	}
+
+	/**
+	 * Gets the number of dimensions for the index.
+	 * 
+	 * @return The number of dimensions for the index.
+	 */
+	public U getDim() {
+		return dim;
+	}
+
+	/**
+	 * Gets the factory for generating the partial derivatives of a directional derivative.
+	 * 
+	 * @return The factory for generating the partial derivatives of a directional derivative.
+	 */
+	public DirectionalDerivativePartialFactory<R, S, K> getDfac() {
+		return dfac;
+	}
+
+
+
 	/**
 	 * The tensor index for the ordinary derivative.
 	 */

@@ -103,6 +103,18 @@ public class DbElemFactory<R extends Elem<R,?>, S extends ElemFactory<R,S>> exte
 	}
 	
 	
+	
+	
+	
+	/**
+	 * Gets the graph for the factory.
+	 * 
+	 * @return The graph for the factory.
+	 */
+	public HyperGraph getGraph() {
+		return graph;
+	}
+
 	/**
 	 * Gets the factory for enclosed type.
 	 * 
