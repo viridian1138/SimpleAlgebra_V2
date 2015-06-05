@@ -97,6 +97,26 @@ public class SymbolicRegenCovar<Z extends Object, R extends Elem<R,?>, S extends
 		super.performInserts( session );
 	}
 	
+	
+	/**
+	 * Gets the new list of names for the covariant indices.
+	 * 
+	 * @return The new list of names for the covariant indices.
+	 */
+	public ArrayList<Z> getNewCovar() {
+		return newCovar;
+	}
+
+	/**
+	 * Gets the argument to be renamed.
+	 * 
+	 * @return The argument to be renamed.
+	 */
+	public SymbolicElem<EinsteinTensorElem<Z, R, S>, EinsteinTensorElemFactory<Z, R, S>> getElem() {
+		return elem;
+	}
+
+
 	/**
 	 * The new list of names for the covariant indices.
 	 */

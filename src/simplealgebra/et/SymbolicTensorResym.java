@@ -129,6 +129,35 @@ public class SymbolicTensorResym<Z extends Object, U extends NumDimensions, R ex
 		super.performInserts( session );
 	}
 	
+	
+	/**
+	 * Gets the number of dimensions.
+	 * 
+	 * @return The number of dimensions.
+	 */
+	public U getDim() {
+		return dim;
+	}
+
+	/**
+	 * Gets the type of resym to perform.
+	 * 
+	 * @return The type of resym to perform.
+	 */
+	public ResymType getReSym() {
+		return reSym;
+	}
+
+	/**
+	 * Gets the argument to be operated upon.
+	 * 
+	 * @return The argument to be operated upon.
+	 */
+	public SymbolicElem<EinsteinTensorElem<Z, R, S>, EinsteinTensorElemFactory<Z, R, S>> getElem() {
+		return elem;
+	}
+
+
 	/**
 	 * The number of dimensions.
 	 */

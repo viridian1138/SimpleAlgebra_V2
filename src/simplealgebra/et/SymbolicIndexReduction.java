@@ -100,6 +100,37 @@ public class SymbolicIndexReduction<Z extends Object, R extends Elem<R,?>, S ext
 		super.performInserts( session );
 	}
 	
+	
+	/**
+	 * Gets the contravariant indices to be removed.
+	 * 
+	 * @return The contravariant indices to be removed.
+	 */
+	public HashSet<Z> getContravariantReduce() {
+		return contravariantReduce;
+	}
+
+
+	/**
+	 * Gets the covariant indices to be removed.
+	 * 
+	 * @return The covariant indices to be removed.
+	 */
+	public HashSet<Z> getCovariantReduce() {
+		return covariantReduce;
+	}
+
+
+	/**
+	 * Gets the nested elem.
+	 * 
+	 * @return The nested elem.
+	 */
+	public SymbolicElem<EinsteinTensorElem<Z, R, S>, EinsteinTensorElemFactory<Z, R, S>> getElem() {
+		return elem;
+	}
+
+
 	/**
 	 * The contravariant indices to be removed.
 	 */

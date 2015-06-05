@@ -97,6 +97,26 @@ public class SymbolicRegenContravar<Z extends Object, R extends Elem<R,?>, S ext
 		super.performInserts( session );
 	}
 	
+	
+	/**
+	 * Gets the new list of names for the contravariant indices.
+	 * 
+	 * @return The new list of names for the contravariant indices.
+	 */
+	public ArrayList<Z> getNewContravar() {
+		return newContravar;
+	}
+
+	/**
+	 * Gets the argument to be renamed.
+	 * 
+	 * @return The argument to be renamed.
+	 */
+	public SymbolicElem<EinsteinTensorElem<Z, R, S>, EinsteinTensorElemFactory<Z, R, S>> getElem() {
+		return elem;
+	}
+
+
 	/**
 	 * The new list of names for the contravariant indices.
 	 */

@@ -33,6 +33,10 @@ import simplealgebra.bigfixedpoint.db.BigFixedPointElemType;
 import simplealgebra.et.db.EinsteinTensorElemFactoryType;
 import simplealgebra.et.db.EinsteinTensorElemType;
 import simplealgebra.et.db.OrdinaryDerivativeType;
+import simplealgebra.et.db.SymbolicIndexReductionType;
+import simplealgebra.et.db.SymbolicRegenContravarType;
+import simplealgebra.et.db.SymbolicRegenCovarType;
+import simplealgebra.et.db.SymbolicTensorResymType;
 import simplealgebra.ga.db.GeometricAlgebraMultivectorElemFactoryType;
 import simplealgebra.ga.db.GeometricAlgebraMultivectorElemType;
 import simplealgebra.ga.db.SymbolicDotType;
@@ -87,6 +91,10 @@ public class TypeSystemInit {
 		EinsteinTensorElemType.initType( graph );
 		EinsteinTensorElemFactoryType.initType( graph );
 		OrdinaryDerivativeType.initType( graph );
+		SymbolicIndexReductionType.initType( graph );
+		SymbolicRegenContravarType.initType( graph );
+		SymbolicRegenCovarType.initType( graph );
+		SymbolicTensorResymType.initType( graph );
 		
 		GeometricAlgebraMultivectorElemType.initType( graph );
 		GeometricAlgebraMultivectorElemFactoryType.initType( graph );
