@@ -30,6 +30,8 @@ import org.hypergraphdb.HyperGraph;
 
 import simplealgebra.bigfixedpoint.db.BigFixedPointElemFactoryType;
 import simplealgebra.bigfixedpoint.db.BigFixedPointElemType;
+import simplealgebra.ddx.db.DirectionalDerivativeType;
+import simplealgebra.ddx.db.PartialDerivativeOpType;
 import simplealgebra.et.db.EinsteinTensorElemFactoryType;
 import simplealgebra.et.db.EinsteinTensorElemType;
 import simplealgebra.et.db.OrdinaryDerivativeType;
@@ -132,6 +134,8 @@ public class TypeSystemInit {
 		ValueWithUncertaintyElemType.initType( graph );
 		ValueWithUncertaintyElemFactoryType.initType( graph );
 		
+		PartialDerivativeOpType.initType( graph );
+		DirectionalDerivativeType.initType( graph );
 		
 	}
 

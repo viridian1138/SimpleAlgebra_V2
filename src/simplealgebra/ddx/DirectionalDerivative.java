@@ -168,6 +168,35 @@ public class DirectionalDerivative<U extends NumDimensions, A extends Ord<U>, R 
 		ps.print( "<mo>&nabla;</mo>" );
 	}
 	
+	
+	/**
+	 * Gets the number of dimensions over which to express the directional derivative.
+	 * 
+	 * @return The number of dimensions over which to express the directional derivative.
+	 */
+	public U getDim() {
+		return dim;
+	}
+
+	/**
+	 * Gets the ord of the directional derivative vector.
+	 * 
+	 * @return The ord of the directional derivative vector.
+	 */
+	public A getOrd() {
+		return ord;
+	}
+
+	/**
+	 * Gets the factory for generating the partial derivatives of the directional derivative.
+	 * 
+	 * @return The factory for generating the partial derivatives of the directional derivative.
+	 */
+	public DirectionalDerivativePartialFactory<R, S, K> getDfac() {
+		return dfac;
+	}
+
+
 	/**
 	 * The number of dimensions over which to express the directional derivative.
 	 */
