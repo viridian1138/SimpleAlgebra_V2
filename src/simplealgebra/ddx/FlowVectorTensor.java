@@ -133,6 +133,35 @@ public class FlowVectorTensor<Z extends Object, U extends NumDimensions, R exten
 		ps.print( "flowVectorTensor" );
 	}
 	
+	
+	/**
+	 * Gets the tensor index for the flow vector.
+	 * 
+	 * @return The tensor index for the flow vector.
+	 */
+	public Z getIndex() {
+		return index;
+	}
+
+	/**
+	 * Gets the number of dimensions for the index.
+	 * 
+	 * @return The number of dimensions for the index.
+	 */
+	public U getDim() {
+		return dim;
+	}
+
+	/**
+	 * Gets the factory for generating the components of the flow vector.
+	 * 
+	 * @return The factory for generating the components of the flow vector.
+	 */
+	public FlowVectorFactory<R, S, K> getDfac() {
+		return dfac;
+	}
+
+
 	/**
 	 * The tensor index for the flow vector.
 	 */
