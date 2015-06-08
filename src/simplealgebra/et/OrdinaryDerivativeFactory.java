@@ -107,6 +107,47 @@ public class OrdinaryDerivativeFactory<Z extends Object, U extends NumDimensions
 }
 	
 	
+	
+	
+	/**
+	 * Gets the tensor index for the ordinary derivative.
+	 * 
+	 * @return The tensor index for the ordinary derivative.
+	 */
+	public EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>> getFac() {
+		return fac;
+	}
+
+	/**
+	 * Gets the number of dimensions for the index.
+	 * 
+	 * @return The number of dimensions for the index.
+	 */
+	public U getDim() {
+		return dim;
+	}
+
+	/**
+	 * Gets the factory for generating the partial derivatives of a directional derivative.
+	 * 
+	 * @return The factory for generating the partial derivatives of a directional derivative.
+	 */
+	public DirectionalDerivativePartialFactory<R, S, K> getDfac() {
+		return dfac;
+	}
+
+	/**
+	 * Gets the function for remapping the derivative after it is calculated.
+	 * 
+	 * @return The function for remapping the derivative after it is calculated.
+	 */
+	public DerivativeRemap<Z, R, S> getRemap() {
+		return remap;
+	}
+
+
+
+
 	/**
 	 * The tensor index for the ordinary derivative.
 	 */

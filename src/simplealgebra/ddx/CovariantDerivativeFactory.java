@@ -143,6 +143,7 @@ public class CovariantDerivativeFactory<Z extends Object, U extends NumDimension
 		super( param.getFac() );
 		tensorWithRespectTo = param.getTensorWithRespectTo();
 		derivativeIndex = param.getDerivativeIndex();
+		coordVecFac = param.getCoordVecFac();
 		temp = param.getTemp();
 		metric = param.getMetric();
 		remap = param.getRemap();
@@ -261,6 +262,88 @@ public class CovariantDerivativeFactory<Z extends Object, U extends NumDimension
 	}
 	
 	
+	
+	
+	
+	/**
+	 * Gets the expression to which to apply the derivative.
+	 * 
+	 * @return The expression to which to apply the derivative.
+	 */
+	public SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> getTensorWithRespectTo() {
+		return tensorWithRespectTo;
+	}
+
+
+
+	/**
+	 * Gets the tensor index of the covariant derivative.
+	 * 
+	 * @return The tensor index of the covariant derivative.
+	 */
+	public Z getDerivativeIndex() {
+		return derivativeIndex;
+	}
+
+
+
+	/**
+	 * Gets the factory for the underlying coordinate system U.
+	 * 
+	 * @return The factory for the underlying coordinate system U.
+	 */
+	public CoordinateSystemFactory<Z, R, S> getCoordVecFac() {
+		return coordVecFac;
+	}
+
+
+
+	/**
+	 * The factory for generating temporary indices in the connection coefficient.
+	 * 
+	 * @return Gets the factory for generating temporary indices in the connection coefficient.
+	 */
+	public TemporaryIndexFactory<Z> getTemp() {
+		return temp;
+	}
+
+
+
+	/**
+	 * Gets the factory for generating metric tensors.
+	 * 
+	 * @return The factory for generating metric tensors.
+	 */
+	public MetricTensorFactory<Z, R, S> getMetric() {
+		return metric;
+	}
+
+
+
+	/**
+	 * Gets the factory for generating ordinary derivatives.
+	 * 
+	 * @return The factory for generating ordinary derivatives.
+	 */
+	public OrdinaryDerivativeFactory<Z, U, R, S, K> getOdfac() {
+		return odfac;
+	}
+
+
+
+	/**
+	 * Gets the function for remapping the derivative after it is calculated.
+	 * 
+	 * @return The function for remapping the derivative after it is calculated.
+	 */
+	public DerivativeRemap<Z, R, S> getRemap() {
+		return remap;
+	}
+
+
+
+
+
 	/**
 	 * The expression to which to apply the derivative.
 	 */

@@ -30,6 +30,7 @@ import org.hypergraphdb.HyperGraph;
 
 import simplealgebra.bigfixedpoint.db.BigFixedPointElemFactoryType;
 import simplealgebra.bigfixedpoint.db.BigFixedPointElemType;
+import simplealgebra.ddx.db.CovariantDerivativeFactoryType;
 import simplealgebra.ddx.db.DirectionalDerivativeType;
 import simplealgebra.ddx.db.FlowVectorTensorType;
 import simplealgebra.ddx.db.PartialDerivativeOpType;
@@ -138,6 +139,7 @@ public class TypeSystemInit {
 		PartialDerivativeOpType.initType( graph );
 		DirectionalDerivativeType.initType( graph );
 		FlowVectorTensorType.initType( graph );
+		CovariantDerivativeFactoryType.initType( graph );
 		
 	}
 
