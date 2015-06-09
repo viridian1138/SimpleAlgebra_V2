@@ -33,6 +33,7 @@ import simplealgebra.bigfixedpoint.db.BigFixedPointElemType;
 import simplealgebra.ddx.db.CovariantDerivativeFactoryType;
 import simplealgebra.ddx.db.DirectionalDerivativeType;
 import simplealgebra.ddx.db.FlowVectorTensorType;
+import simplealgebra.ddx.db.MaterialDerivativeFactoryType;
 import simplealgebra.ddx.db.PartialDerivativeOpType;
 import simplealgebra.et.db.EinsteinTensorElemFactoryType;
 import simplealgebra.et.db.EinsteinTensorElemType;
@@ -140,6 +141,7 @@ public class TypeSystemInit {
 		DirectionalDerivativeType.initType( graph );
 		FlowVectorTensorType.initType( graph );
 		CovariantDerivativeFactoryType.initType( graph );
+		MaterialDerivativeFactoryType.initType( graph );
 		
 	}
 

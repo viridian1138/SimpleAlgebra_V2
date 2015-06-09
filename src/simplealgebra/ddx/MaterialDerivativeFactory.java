@@ -214,6 +214,74 @@ public class MaterialDerivativeFactory<Z extends Object, U extends NumDimensions
 	}
 	
 	
+	
+	
+	/**
+	 * Gets the expression to which to apply the derivative.
+	 * 
+	 * @return The expression to which to apply the derivative.
+	 */
+	public SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> getTensorWithRespectTo() {
+		return tensorWithRespectTo;
+	}
+
+
+
+	/**
+	 * Gets the tensor index of the covariant derivative.
+	 * 
+	 * @return The tensor index of the covariant derivative.
+	 */
+	public Z getDerivativeIndex() {
+		return derivativeIndex;
+	}
+
+
+
+	/**
+	 * Gets the number of dimensions over which to calculate the tensor.
+	 * 
+	 * @return The number of dimensions over which to calculate the tensor.
+	 */
+	public U getDim() {
+		return dim;
+	}
+
+
+
+	/**
+	 * Gets the factory for generating a flow vector.
+	 * 
+	 * @return The factory for generating a flow vector.
+	 */
+	public FlowVectorFactory<R, S, K> getFlfac() {
+		return flfac;
+	}
+
+
+
+	/**
+	 * Gets the factory for generating covariant derivatives.
+	 * 
+	 * @return The factory for generating covariant derivatives.
+	 */
+	public CovariantDerivativeFactory<Z, U, R, S, K> getCofac() {
+		return cofac;
+	}
+
+
+
+	/**
+	 * Gets the "t derivative" scalar operator in the material derivative.
+	 * 
+	 * @return The "t derivative" scalar operator in the material derivative.
+	 */
+	public SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> getDerivT() {
+		return derivT;
+	}
+
+
+
 	/**
 	 * The expression to which to apply the derivative.
 	 */
