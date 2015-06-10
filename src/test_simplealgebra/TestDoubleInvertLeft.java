@@ -251,6 +251,225 @@ public class TestDoubleInvertLeft extends TestCase {
 	
 
 	
+	
+	
+	/**
+	 * Parameter values used by the test.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
+	protected static class InvLeftCompParam
+	{
+		
+		
+		
+		/**
+		 * Gets the i coordinate of the first level of nesting.
+		 * 
+		 * @return The i coordinate of the first level of nesting.
+		 */
+		public int getI() {
+			return i;
+		}
+		
+		/**
+		 * Sets the i coordinate of the first level of nesting.
+		 * 
+		 * @param i The i coordinate of the first level of nesting.
+		 */
+		public void setI(int i) {
+			this.i = i;
+		}
+		
+		/**
+		 * Gets the j coordinate of the first level of nesting.
+		 * 
+		 * @return The j coordinate of the first level of nesting.
+		 */
+		public int getJ() {
+			return j;
+		}
+		
+		/**
+		 * Sets the j coordinate of the first level of nesting.
+		 * 
+		 * @param j The j coordinate of the first level of nesting.
+		 */
+		public void setJ(int j) {
+			this.j = j;
+		}
+		
+		/**
+		 * Gets the i coordinate of the second level of nesting.
+		 * 
+		 * @return The i coordinate of the second level of nesting.
+		 */
+		public int getI2() {
+			return i2;
+		}
+		
+		/**
+		 * Sets the i coordinate of the second level of nesting.
+		 * 
+		 * @param i The i coordinate of the second level of nesting.
+		 */
+		public void setI2(int i2) {
+			this.i2 = i2;
+		}
+		
+		/**
+		 * Gets the j coordinate of the second level of nesting.
+		 * 
+		 * @return The j coordinate of the second level of nesting.
+		 */
+		public int getJ2() {
+			return j2;
+		}
+		
+		/**
+		 * Sets the j coordinate of the second level of nesting.
+		 * 
+		 * @param j The j coordinate of the second level of nesting.
+		 */
+		public void setJ2(int j2) {
+			this.j2 = j2;
+		}
+		
+		
+		/**
+		 * Gets the original matrix.
+		 * 
+		 * @return The original matrix.
+		 */
+		public SquareMatrixElem<TestDimensionFour, SquareMatrixElem<TestDimensionFour, SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory>, SquareMatrixElemFactory<TestDimensionFour, DoubleElem, DoubleElemFactory>>, SquareMatrixElemFactory<TestDimensionFour, SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory>, SquareMatrixElemFactory<TestDimensionFour, DoubleElem, DoubleElemFactory>>> getMat() {
+			return mat;
+		}
+		
+		/**
+		 * Sets the original matrix.
+		 * 
+		 * @param mat The original matrix.
+		 */
+		public void setMat(
+				SquareMatrixElem<TestDimensionFour, SquareMatrixElem<TestDimensionFour, SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory>, SquareMatrixElemFactory<TestDimensionFour, DoubleElem, DoubleElemFactory>>, SquareMatrixElemFactory<TestDimensionFour, SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory>, SquareMatrixElemFactory<TestDimensionFour, DoubleElem, DoubleElemFactory>>> mat) {
+			this.mat = mat;
+		}
+		
+		/**
+		 * Gets the double-inverse of the original matrix.
+		 * 
+		 * @return The double-inverse of the original matrix.
+		 */
+		public SquareMatrixElem<TestDimensionFour, SquareMatrixElem<TestDimensionFour, SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory>, SquareMatrixElemFactory<TestDimensionFour, DoubleElem, DoubleElemFactory>>, SquareMatrixElemFactory<TestDimensionFour, SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory>, SquareMatrixElemFactory<TestDimensionFour, DoubleElem, DoubleElemFactory>>> getInvInv() {
+			return invInv;
+		}
+		
+		/**
+		 * Sets the double-inverse of the original matrix.
+		 * 
+		 * @param invInv The double-inverse of the original matrix.
+		 */
+		public void setInvInv(
+				SquareMatrixElem<TestDimensionFour, SquareMatrixElem<TestDimensionFour, SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory>, SquareMatrixElemFactory<TestDimensionFour, DoubleElem, DoubleElemFactory>>, SquareMatrixElemFactory<TestDimensionFour, SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory>, SquareMatrixElemFactory<TestDimensionFour, DoubleElem, DoubleElemFactory>>> invInv) {
+			this.invInv = invInv;
+		}
+
+
+
+		/**
+		 * The i coordinate of the first level of nesting.
+		 */
+		protected int i;
+		
+		/**
+		 * The j coordinate of the first level of nesting.
+		 */
+		protected int j;
+		
+		/**
+		 * The i coordinate of the second level of nesting.
+		 */
+		protected int i2;
+		
+		/**
+		 * The j coordinate of the second level of nesting.
+		 */
+		protected int j2;
+		
+		/**
+		 * The original matrix.
+		 */
+		protected SquareMatrixElem<TestDimensionFour,SquareMatrixElem<TestDimensionFour,SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,
+			SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>,
+			SquareMatrixElemFactory<TestDimensionFour,SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,
+			SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>> mat;
+		
+		/**
+		 * The double-inverse of the original matrix.
+		 */
+		protected SquareMatrixElem<TestDimensionFour,SquareMatrixElem<TestDimensionFour,SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,
+			SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>,
+			SquareMatrixElemFactory<TestDimensionFour,SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,
+			SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>> invInv;
+		
+	}
+	
+	
+	
+	/**
+	 * Tests equality for the third level of nesting.
+	 * 
+	 * @param in The parameter values used by the test.
+	 */
+	protected void seedTestInvLeftComp2( InvLeftCompParam in )
+	{
+		int i3;
+		int j3;
+		
+		for( i3 = 0 ; i3 < TestDimensionFour.FOUR ; i3++ )
+		{
+			for( j3 = 0 ; j3 < TestDimensionFour.FOUR ; j3++ )
+			{
+				final double matchVal = in.getMat().getVal(BigInteger.valueOf( in.getI() ) , BigInteger.valueOf( in.getJ() )  ).
+						getVal(BigInteger.valueOf( in.getI2() ) , BigInteger.valueOf( in.getJ2() )  ).getVal( 
+								BigInteger.valueOf( i3 ) , BigInteger.valueOf( j3 ) ).getVal();
+				Assert.assertEquals( matchVal , 
+						in.getInvInv().getVal(BigInteger.valueOf( in.getI() ) , BigInteger.valueOf( in.getJ() )  ).
+						getVal(BigInteger.valueOf( in.getI2() ) , BigInteger.valueOf( in.getJ2() )  ).getVal( 
+								BigInteger.valueOf( i3 ) , BigInteger.valueOf( j3 ) ).getVal() , 1E-6 );
+			}
+		}
+	}
+	
+	
+	/**
+	 * Tests equality for second and third levels of nesting.
+	 * 
+	 * @param in The parameter values used by the test.
+	 */
+	protected void seedTestInvLeftComp1( InvLeftCompParam in )
+	{
+		int i2;
+		int j2;
+		
+		for( i2 = 0 ; i2 < TestDimensionFour.FOUR ; i2++ )
+		{
+			for( j2 = 0 ; j2 < TestDimensionFour.FOUR ; j2++ )
+			{
+				in.setI2( i2 );
+				in.setJ2( j2 );
+				
+				seedTestInvLeftComp2( in );
+			}
+		}
+		
+	}
+	
+	
+	
+
+	
 
 	/**
 	 * Test method for {@link simplealgebra.SquareMatrixElem#invertLeft()}.
@@ -306,39 +525,19 @@ public class TestDoubleInvertLeft extends TestCase {
 		int j;
 		
 		
+		final InvLeftCompParam param = new InvLeftCompParam();
+		param.setMat( mat );
+		param.setInvInv( invInv );
+		
+		
 		for( i = 0 ; i < TestDimensionFour.FOUR ; i++ )
 		{
 			for( j = 0 ; j < TestDimensionFour.FOUR ; j++ )
 			{
+				param.setI( i );
+				param.setJ( j );
 				
-				
-				int i2;
-				int j2;
-				
-				for( i2 = 0 ; i2 < TestDimensionFour.FOUR ; i2++ )
-				{
-					for( j2 = 0 ; j2 < TestDimensionFour.FOUR ; j2++ )
-					{
-						
-						
-						int i3;
-						int j3;
-						
-						for( i3 = 0 ; i3 < TestDimensionFour.FOUR ; i3++ )
-						{
-							for( j3 = 0 ; j3 < TestDimensionFour.FOUR ; j3++ )
-							{
-								final double matchVal = mat.getVal(BigInteger.valueOf(i) , BigInteger.valueOf(j)  ).
-										getVal(BigInteger.valueOf(i2) , BigInteger.valueOf(j2)  ).getVal( 
-												BigInteger.valueOf(i3) , BigInteger.valueOf(j3) ).getVal();
-								Assert.assertEquals( matchVal , 
-										invInv.getVal(BigInteger.valueOf(i) , BigInteger.valueOf(j)  ).
-										getVal(BigInteger.valueOf(i2) , BigInteger.valueOf(j2)  ).getVal( 
-												BigInteger.valueOf(i3) , BigInteger.valueOf(j3) ).getVal() , 1E-6 );
-							}
-						}
-					}
-				}
+				seedTestInvLeftComp1( param );
 			}
 		}
 		
