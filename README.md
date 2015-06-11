@@ -124,6 +124,10 @@ Generics (Java)
 
 ...http://en.wikipedia.org/wiki/Generics_in_Java
 
+Graph Databases
+
+...https://www.librarything.com/work/13885843/book/119097476
+
 HypergraphDB
 
 ...http://hypergraphdb.org/index
