@@ -248,6 +248,195 @@ public class TestInvertNestedRightNTwo extends TestCase {
 	
 	return( mat );
 }
+	
+	
+	
+	/**
+	 * Parameter values used by the test.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
+	protected static class InvRightCompParam
+	{
+		
+		
+		
+		/**
+		 * Gets the i coordinate of the first level of nesting.
+		 * 
+		 * @return The i coordinate of the first level of nesting.
+		 */
+		public int getI() {
+			return i;
+		}
+		
+		/**
+		 * Sets the i coordinate of the first level of nesting.
+		 * 
+		 * @param i The i coordinate of the first level of nesting.
+		 */
+		public void setI(int i) {
+			this.i = i;
+		}
+		
+		/**
+		 * Gets the j coordinate of the first level of nesting.
+		 * 
+		 * @return The j coordinate of the first level of nesting.
+		 */
+		public int getJ() {
+			return j;
+		}
+		
+		/**
+		 * Sets the j coordinate of the first level of nesting.
+		 * 
+		 * @param j The j coordinate of the first level of nesting.
+		 */
+		public void setJ(int j) {
+			this.j = j;
+		}
+		
+		/**
+		 * Gets the i coordinate of the second level of nesting.
+		 * 
+		 * @return The i coordinate of the second level of nesting.
+		 */
+		public int getI2() {
+			return i2;
+		}
+		
+		/**
+		 * Sets the i coordinate of the second level of nesting.
+		 * 
+		 * @param i The i coordinate of the second level of nesting.
+		 */
+		public void setI2(int i2) {
+			this.i2 = i2;
+		}
+		
+		/**
+		 * Gets the j coordinate of the second level of nesting.
+		 * 
+		 * @return The j coordinate of the second level of nesting.
+		 */
+		public int getJ2() {
+			return j2;
+		}
+		
+		/**
+		 * Sets the j coordinate of the second level of nesting.
+		 * 
+		 * @param j The j coordinate of the second level of nesting.
+		 */
+		public void setJ2(int j2) {
+			this.j2 = j2;
+		}
+		
+		
+		/**
+		 * Gets the original matrix.
+		 * 
+		 * @return The original matrix.
+		 */
+		public SquareMatrixElem<TestDimensionFour, SquareMatrixElem<TestDimensionFour, SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory>, SquareMatrixElemFactory<TestDimensionFour, DoubleElem, DoubleElemFactory>>, SquareMatrixElemFactory<TestDimensionFour, SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory>, SquareMatrixElemFactory<TestDimensionFour, DoubleElem, DoubleElemFactory>>> getShouldBeIdent() {
+			return shouldBeIdent;
+		}
+		
+		/**
+		 * Sets the original matrix.
+		 * 
+		 * @param mat The original matrix.
+		 */
+		public void setShouldBeIdent(
+				SquareMatrixElem<TestDimensionFour, SquareMatrixElem<TestDimensionFour, SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory>, SquareMatrixElemFactory<TestDimensionFour, DoubleElem, DoubleElemFactory>>, SquareMatrixElemFactory<TestDimensionFour, SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory>, SquareMatrixElemFactory<TestDimensionFour, DoubleElem, DoubleElemFactory>>> shouldBeIdent) {
+			this.shouldBeIdent = shouldBeIdent;
+		}
+
+
+
+		/**
+		 * The i coordinate of the first level of nesting.
+		 */
+		protected int i;
+		
+		/**
+		 * The j coordinate of the first level of nesting.
+		 */
+		protected int j;
+		
+		/**
+		 * The i coordinate of the second level of nesting.
+		 */
+		protected int i2;
+		
+		/**
+		 * The j coordinate of the second level of nesting.
+		 */
+		protected int j2;
+		
+		/**
+		 * The original matrix.
+		 */
+		protected SquareMatrixElem<TestDimensionFour,SquareMatrixElem<TestDimensionFour,SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,
+			SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>,
+			SquareMatrixElemFactory<TestDimensionFour,SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,
+			SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>> shouldBeIdent;
+		
+		
+	}
+	
+	
+	
+	
+	/**
+	 * Tests equality for the third level of nesting.
+	 * 
+	 * @param in The parameter values used by the test.
+	 */
+	protected void seedTestInvRightComp2( InvRightCompParam in )
+	{
+		int i3;
+		int j3;
+		
+		for( i3 = 0 ; i3 < TestDimensionFour.FOUR ; i3++ )
+		{
+			for( j3 = 0 ; j3 < TestDimensionFour.FOUR ; j3++ )
+			{
+				final double matchVal = ( in.getI() == in.getJ() ) && ( in.getI2() == in.getJ2() ) && ( i3 == j3 ) ? 1.0 : 0.0;
+				Assert.assertEquals( matchVal , 
+						in.getShouldBeIdent().getVal(BigInteger.valueOf(in.getI()) , BigInteger.valueOf(in.getJ())  ).
+						getVal(BigInteger.valueOf(in.getI2()) , BigInteger.valueOf(in.getJ2())  ).getVal( 
+								BigInteger.valueOf(i3) , BigInteger.valueOf(j3) ).getVal() , 1E-6 );
+			}
+		}
+	}
+	
+	
+	
+	/**
+	 * Tests equality for second and third levels of nesting.
+	 * 
+	 * @param in The parameter values used by the test.
+	 */
+	protected void seedTestInvRightComp1( InvRightCompParam in )
+	{
+		int i2;
+		int j2;
+		
+		for( i2 = 0 ; i2 < TestDimensionFour.FOUR ; i2++ )
+		{
+			for( j2 = 0 ; j2 < TestDimensionFour.FOUR ; j2++ )
+			{
+				in.setI2( i2 );
+				in.setJ2( j2 );
+				
+				seedTestInvRightComp2( in );
+			}
+		}
+		
+	}
 
 	
 
@@ -320,37 +509,18 @@ public class TestInvertNestedRightNTwo extends TestCase {
 		int j;
 		
 		
+		final InvRightCompParam param = new InvRightCompParam();
+		param.setShouldBeIdent( shouldBeIdent );
+		
+		
 		for( i = 0 ; i < TestDimensionFour.FOUR ; i++ )
 		{
 			for( j = 0 ; j < TestDimensionFour.FOUR ; j++ )
 			{
+				param.setI( i );
+				param.setJ( j );
 				
-				
-				int i2;
-				int j2;
-				
-				for( i2 = 0 ; i2 < TestDimensionFour.FOUR ; i2++ )
-				{
-					for( j2 = 0 ; j2 < TestDimensionFour.FOUR ; j2++ )
-					{
-						
-						
-						int i3;
-						int j3;
-						
-						for( i3 = 0 ; i3 < TestDimensionFour.FOUR ; i3++ )
-						{
-							for( j3 = 0 ; j3 < TestDimensionFour.FOUR ; j3++ )
-							{
-								final double matchVal = ( i == j ) && ( i2 == j2 ) && ( i3 == j3 ) ? 1.0 : 0.0;
-								Assert.assertEquals( matchVal , 
-										shouldBeIdent.getVal(BigInteger.valueOf(i) , BigInteger.valueOf(j)  ).
-										getVal(BigInteger.valueOf(i2) , BigInteger.valueOf(j2)  ).getVal( 
-												BigInteger.valueOf(i3) , BigInteger.valueOf(j3) ).getVal() , 1E-6 );
-							}
-						}
-					}
-				}
+				seedTestInvRightComp1( param );
 			}
 		}
 		
@@ -443,37 +613,18 @@ public class TestInvertNestedRightNTwo extends TestCase {
 		int j;
 		
 		
+		final InvRightCompParam param = new InvRightCompParam();
+		param.setShouldBeIdent( shouldBeIdent );
+		
+		
 		for( i = 0 ; i < TestDimensionFour.FOUR ; i++ )
 		{
 			for( j = 0 ; j < TestDimensionFour.FOUR ; j++ )
 			{
+				param.setI( i );
+				param.setJ( j );
 				
-				
-				int i2;
-				int j2;
-				
-				for( i2 = 0 ; i2 < TestDimensionFour.FOUR ; i2++ )
-				{
-					for( j2 = 0 ; j2 < TestDimensionFour.FOUR ; j2++ )
-					{
-						
-						
-						int i3;
-						int j3;
-						
-						for( i3 = 0 ; i3 < TestDimensionFour.FOUR ; i3++ )
-						{
-							for( j3 = 0 ; j3 < TestDimensionFour.FOUR ; j3++ )
-							{
-								final double matchVal = ( i == j ) && ( i2 == j2 ) && ( i3 == j3 ) ? 1.0 : 0.0;
-								Assert.assertEquals( matchVal , 
-										shouldBeIdent.getVal(BigInteger.valueOf(i) , BigInteger.valueOf(j)  ).
-										getVal(BigInteger.valueOf(i2) , BigInteger.valueOf(j2)  ).getVal( 
-												BigInteger.valueOf(i3) , BigInteger.valueOf(j3) ).getVal() , 1E-6 );
-							}
-						}
-					}
-				}
+				seedTestInvRightComp1( param );
 			}
 		}
 		
