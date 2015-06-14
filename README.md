@@ -90,6 +90,10 @@ Euler's Method
 
 ...http://en.wikipedia.org/wiki/Euler_method
 
+...http://ir.nmu.org.ua/bitstream/handle/123456789/129664/3492b757a4472728fdde443855b0cd93.pdf?sequence=1
+
+...http://www.geometrictools.com/Documentation/FiniteDifferences.pdf
+
 Factory
 
 ...See Design Patterns
@@ -101,6 +105,8 @@ GA (Geometric Algebra)
 ...https://www.librarything.com/work/1030207
 
 ...http://www.librarything.com/work/4327404/book/117976057
+
+...http://przyrbwn.icm.edu.pl/APP/PDF/116/a116z219.pdf
 
 Java
 
@@ -221,6 +227,12 @@ Soliton
 Spacetime Algebra
 
 ...http://en.wikipedia.org/wiki/Spacetime_algebra
+
+Symbolic Algebra
+
+...http://infolab.stanford.edu/pub/cstr/reports/cs/tr/80/785/CS-TR-80-785.pdf
+
+...http://www.researchgate.net/profile/Benjamin_Keller/publication/2693699_Algorithms_and_Orders_for_Finding_Noncommutative_Grbner_Bases/links/0912f50ab0f81d4678000000.pdf
 
 Symbolic Ring
 
