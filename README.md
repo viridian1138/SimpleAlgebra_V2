@@ -228,12 +228,6 @@ Spacetime Algebra
 
 ...http://en.wikipedia.org/wiki/Spacetime_algebra
 
-Symbolic Algebra
-
-...http://infolab.stanford.edu/pub/cstr/reports/cs/tr/80/785/CS-TR-80-785.pdf
-
-...http://www.researchgate.net/profile/Benjamin_Keller/publication/2693699_Algorithms_and_Orders_for_Finding_Noncommutative_Grbner_Bases/links/0912f50ab0f81d4678000000.pdf
-
 Symbolic Ring
 
 ...http://en.wikipedia.org/wiki/Computer_algebra_system
@@ -243,6 +237,11 @@ Symbolic Ring
 ...https://www.librarything.com/work/3568528
 
 ...https://www.librarything.com/work/45817
+
+...http://infolab.stanford.edu/pub/cstr/reports/cs/tr/80/785/CS-TR-80-785.pdf
+
+...http://www.researchgate.net/profile/Benjamin_Keller/publication/2693699_Algorithms_and_Orders_for_Finding_Noncommutative_Grbner_Bases/links/0912f50ab0f81d4678000000.pdf
+
 
 Vector Algebra
 
