@@ -57,8 +57,6 @@ public class TestInvertMatrixBasic extends TestCase {
 	
 	
 	
-	
-	
 	/**
 	 * Test method for the inverse of a simple identity symbolic matrix
 	 */
@@ -262,6 +260,39 @@ public class TestInvertMatrixBasic extends TestCase {
 	
 	
 	
+	/**
+	 * Traverses the inner row/columns of the matrix and verifies that it matches the identity.
+	 * 
+	 * @param elA The nested matrix to use.
+	 * @param row The row in the nesting matrix.
+	 * @param col The column in the nesting matrix.
+	 */
+	protected void handleNestedMatrixChk( 
+			final SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory> elA ,
+			final int row , final int col )
+	{
+		for( int row2 = 0 ; row2 < TestDimensionFour.FOUR ; row2++ )
+		{
+			for( int col2 = 0 ; col2 < TestDimensionFour.FOUR ; col2++ )
+			{
+				DoubleElem el = elA.getVal( BigInteger.valueOf(row2) , 
+						BigInteger.valueOf(col2) );
+				if( ( row == col ) && ( row2 == col2 ) )
+				{
+					Assert.assertTrue( Math.abs( 1.0 - el.getVal() ) < 0.0001 );
+				}
+				else
+				{
+					Assert.assertTrue( Math.abs( 0.0 - el.getVal() ) < 0.0001 );
+				}
+			}
+		}
+	}
+	
+
+	
+	
+	
 	
 	/**
 	 * Test method for the inverse of a simple block diagonal matrix
@@ -319,22 +350,7 @@ public class TestInvertMatrixBasic extends TestCase {
 			{
 				SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory> elA = matI2.getVal( BigInteger.valueOf(row) , 
 						BigInteger.valueOf(col) );
-				for( int row2 = 0 ; row2 < TestDimensionFour.FOUR ; row2++ )
-				{
-					for( int col2 = 0 ; col2 < TestDimensionFour.FOUR ; col2++ )
-					{
-						DoubleElem el = elA.getVal( BigInteger.valueOf(row2) , 
-								BigInteger.valueOf(col2) );
-						if( ( row == col ) && ( row2 == col2 ) )
-						{
-							Assert.assertTrue( Math.abs( 1.0 - el.getVal() ) < 0.0001 );
-						}
-						else
-						{
-							Assert.assertTrue( Math.abs( 0.0 - el.getVal() ) < 0.0001 );
-						}
-					}
-				}
+				handleNestedMatrixChk( elA , row , col );
 			}
 		}
 		
@@ -738,22 +754,7 @@ public class TestInvertMatrixBasic extends TestCase {
 			{
 				SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory> elA = matI2.getVal( BigInteger.valueOf(row) , 
 						BigInteger.valueOf(col) );
-				for( int row2 = 0 ; row2 < TestDimensionFour.FOUR ; row2++ )
-				{
-					for( int col2 = 0 ; col2 < TestDimensionFour.FOUR ; col2++ )
-					{
-						DoubleElem el = elA.getVal( BigInteger.valueOf(row2) , 
-								BigInteger.valueOf(col2) );
-						if( ( row == col ) && ( row2 == col2 ) )
-						{
-							Assert.assertTrue( Math.abs( 1.0 - el.getVal() ) < 0.0001 );
-						}
-						else
-						{
-							Assert.assertTrue( Math.abs( 0.0 - el.getVal() ) < 0.0001 );
-						}
-					}
-				}
+				handleNestedMatrixChk( elA , row , col );
 			}
 		}
 		
