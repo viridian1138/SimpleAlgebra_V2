@@ -314,40 +314,68 @@ public class SymbolicMult<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 		{
 			if( this.getFac().isMultCommutative() )
 			{
-				boolean aa = this.getElemA().symbolicEquals( ((SymbolicMult<R,S>) b).getElemA() );
-				boolean bb = this.getElemB().symbolicEquals( ((SymbolicMult<R,S>) b).getElemB() );
-				if( aa && bb )
-				{
-					return( true );
-				}
-				
-				aa = this.getElemA().symbolicEquals( ((SymbolicMult<R,S>) b).getElemB() );
-				bb = this.getElemB().symbolicEquals( ((SymbolicMult<R,S>) b).getElemA() );
-				return( aa && bb );
+				return( symbolicEqualsCommutative( (SymbolicMult<R,S>) b ) );
 			}
 			else
 			{
-				final ArrayList<SymbolicElem<R,S>> ind0 = new ArrayList<SymbolicElem<R,S>>();
-				final ArrayList<SymbolicElem<R,S>> ind1 = new ArrayList<SymbolicElem<R,S>>();
-				this.handleMultInsert( ind0 );
-				((SymbolicMult) b).handleMultInsert( ind1 );
-				if( ind0.size() == ind1.size() )
-				{
-					int cnt;
-					for( cnt = 0 ; cnt < ind0.size() ; cnt++ )
-					{
-						if( !( ind0.get( cnt ).symbolicEquals( ind1.get( cnt ) ) ) )
-						{
-							return( false );
-						}
-					}
-					return( true );
-				}
+				return( symbolicEqualsNonCommutative( (SymbolicMult<R,S>) b ) );
 			}
 		}
 		
 		return( false );
 	}
+	
+	
+	/**
+	 * Returns whether this expression is equal to the one in the parameter for a commutative algebra.
+	 * 
+	 * @param b The expression to be compared.
+	 * @return True if the expressions are found to be equal, false otherwise.
+	 */
+	protected boolean symbolicEqualsCommutative( SymbolicMult<R,S> b )
+	{
+		boolean aa = this.getElemA().symbolicEquals( b.getElemA() );
+		boolean bb = this.getElemB().symbolicEquals( b.getElemB() );
+		if( aa && bb )
+		{
+			return( true );
+		}
+		
+		aa = this.getElemA().symbolicEquals( b.getElemB() );
+		bb = this.getElemB().symbolicEquals( b.getElemA() );
+		return( aa && bb );
+	}
+	
+	
+	
+	/**
+	 * Returns whether this expression is equal to the one in the parameter for a non-commutative algebra.
+	 * 
+	 * @param b The expression to be compared.
+	 * @return True if the expressions are found to be equal, false otherwise.
+	 */
+	protected boolean symbolicEqualsNonCommutative( SymbolicMult<R,S> b )
+	{
+		final ArrayList<SymbolicElem<R,S>> ind0 = new ArrayList<SymbolicElem<R,S>>();
+		final ArrayList<SymbolicElem<R,S>> ind1 = new ArrayList<SymbolicElem<R,S>>();
+		this.handleMultInsert( ind0 );
+		b.handleMultInsert( ind1 );
+		if( ind0.size() == ind1.size() )
+		{
+			int cnt;
+			for( cnt = 0 ; cnt < ind0.size() ; cnt++ )
+			{
+				if( !( ind0.get( cnt ).symbolicEquals( ind1.get( cnt ) ) ) )
+				{
+					return( false );
+				}
+			}
+			return( true );
+		}
+		
+		return( false );
+	}
+	
 	
 	
 	@Override
