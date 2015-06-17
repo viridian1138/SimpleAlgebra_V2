@@ -78,6 +78,8 @@ Drools
 
 ...http://blog.athico.com/2007/06/chained-from-accumulate-collect.html
 
+...https://code.google.com/p/hypergraphdb/wiki/RefAtomCache
+
 Einstein Summation Convention
 
 ...http://en.wikipedia.org/wiki/Einstein_notation
