@@ -33,6 +33,7 @@ import junit.framework.TestCase;
 import org.hypergraphdb.HGHandle;
 import org.hypergraphdb.HyperGraph;
 
+import simplealgebra.store.DbFastArray2D_Dbl;
 import simplealgebra.store.TypeSystemInit;
 
 
@@ -45,60 +46,23 @@ import simplealgebra.store.TypeSystemInit;
  * @author thorngreen
  * 
  */
-public class DbPerformanceWriteTest extends TestCase {
+public class DbFastArrayTestDbl extends TestCase {
 	
-	
-	/**
-	 * The number of X-Axis entries.
-	 */
-	static final int X_SZ = 200;
-	
-	/**
-	 * The number of Y-Axis entries.
-	 */
-	static final int Y_SZ = 100;
-	
-	/**
-	 * The number of T-Axis entries.
-	 */
-	static final int T_SZ = 10000;
-	
-	
-	
-	/**
-	 * Creates a random row as a 2-D array.
-	 * 
-	 * @param rand The input random number generator.
-	 * @return The output 2-D array.
-	 */
-	protected double[][] createRow( Random rand )
-	{
-		final double[][] vl = new double[ X_SZ ][ Y_SZ ];
-		
-		for( int x = 0 ; x < X_SZ ; x++ )
-		{
-			for( int y = 0 ; y < Y_SZ ; y++ )
-			{
-				vl[ x ][ y ] = rand.nextDouble();
-			}
-		}
-		
-		return( vl );
-	}
 
+	static final int T_SZ = 1000;
 	
 	
 	
 	/**
 	 * Test Hypergraph execution
 	 */
-	public void testDbPerformanceWrite() throws Throwable
+	public void testFastArray2D() throws Throwable
 	{
 		Random rand = new Random( 2345 );
 		
 		
 
-		String databaseLocation = "mydbM";
+		String databaseLocation = "mydbF";
 		HyperGraph graph;
 		
 		graph = new HyperGraph( databaseLocation );
@@ -108,8 +72,8 @@ public class DbPerformanceWriteTest extends TestCase {
 		
 		
 		
-		
-		HGHandle[] hgs = new HGHandle[ T_SZ ];
+		DbFastArray2D_Dbl db =
+				new DbFastArray2D_Dbl( graph , 3 , 3 , T_SZ , 10 );
 		
 		
 		System.out.println( "Write Test Start..." );
@@ -122,15 +86,14 @@ public class DbPerformanceWriteTest extends TestCase {
 				System.out.println( "/// " + t );
 			}
 			
-			graph.getTransactionManager().beginTransaction();
-			
-			hgs[ t ] = graph.add( createRow( rand ) ).getPersistent();
-			
-			graph.getTransactionManager().commit();
-			
-			if( ( t % 2 ) == 0 )
+			for( int x = 0 ; x < 10 ; x++ )
 			{
-				graph.getCache().getIncidenceCache().clear();
+				if( ( x % 10 ) == 0 )
+				{
+					System.out.println( "+++ " + t );
+				}
+				
+				db.set(t, x, rand.nextDouble() );
 			}
 			
 		}
@@ -151,16 +114,11 @@ public class DbPerformanceWriteTest extends TestCase {
 				System.out.println( "/// " + count );
 			}
 			
-			int rowNum = rand.nextInt( T_SZ );
+			Double vl = db.get( rand.nextInt( T_SZ ) , rand.nextInt( 10 ) );
 			
-			double[][] row = graph.get( hgs[ rowNum ] );
+			graph.getCache().getIncidenceCache().clear();
 			
-			if( ( count % 2 ) == 0 )
-			{
-				graph.getCache().getIncidenceCache().clear();
-			}
-			
-			Assert.assertTrue( row != null );
+			Assert.assertTrue( vl != null );
 		}
 		
 		

@@ -33,7 +33,7 @@ import junit.framework.TestCase;
 import org.hypergraphdb.HGHandle;
 import org.hypergraphdb.HyperGraph;
 
-import simplealgebra.store.DbFastArray2D_SingleWrite;
+import simplealgebra.store.DbFastArray2D;
 import simplealgebra.store.TypeSystemInit;
 
 
@@ -48,6 +48,8 @@ import simplealgebra.store.TypeSystemInit;
  */
 public class DbFastArrayTest extends TestCase {
 	
+	
+	static final int T_SZ = 100;
 
 	
 	
@@ -70,14 +72,14 @@ public class DbFastArrayTest extends TestCase {
 		
 		
 		
-		DbFastArray2D_SingleWrite<Double> db =
-				new DbFastArray2D_SingleWrite<Double>( graph , 3 , 3 , 5 );
+		DbFastArray2D<Double> db =
+				new DbFastArray2D<Double>( graph , 3 , 3 , T_SZ , 10 );
 		
 		
 		System.out.println( "Write Test Start..." );
 		
 		
-		for( int t = 0 ; t < 100 ; t++ )
+		for( int t = 0 ; t < T_SZ ; t++ )
 		{
 			if( ( t % 10 ) == 0 )
 			{
@@ -112,7 +114,7 @@ public class DbFastArrayTest extends TestCase {
 				System.out.println( "/// " + count );
 			}
 			
-			Double vl = db.get( rand.nextInt( 100 ) , rand.nextInt( 10 ) );
+			Double vl = db.get( rand.nextInt( T_SZ ) , rand.nextInt( 10 ) );
 			
 			graph.getCache().getIncidenceCache().clear();
 			

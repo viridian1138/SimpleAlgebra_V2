@@ -1,4 +1,28 @@
 
+
+
+
+//$$strtCprt
+/**
+* Simple Algebra 
+* 
+* Copyright (C) 2014 Thornton Green
+* 
+* This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as
+* published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
+* This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty 
+* of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+* You should have received a copy of the GNU General Public License along with this program; if not, 
+* see <http://www.gnu.org/licenses>.
+* Additional permission under GNU GPL version 3 section 7
+*
+*/
+//$$endCprt
+
+
+
+
+
 package simplealgebra.store;
 
 import java.math.BigInteger;
@@ -7,7 +31,16 @@ import org.hypergraphdb.HGHandle;
 import org.hypergraphdb.HyperGraph;
 
 
-public class DbFastArray2D_SingleWrite<T extends Object> {
+/**
+ * DB entity resembling a dense 2-D array.
+ * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
+ * @author thorngreen
+ *
+ * @param <T> The enclosed type.
+ */
+public class DbFastArray2D<T extends Object> {
 	
 	
 	HyperGraph graph;
@@ -15,6 +48,10 @@ public class DbFastArray2D_SingleWrite<T extends Object> {
 	int tmult;
 	
 	int xmult;
+	
+	int tmax;
+	
+	int xmax;
 	
 	int dsz;
 	
@@ -34,12 +71,14 @@ public class DbFastArray2D_SingleWrite<T extends Object> {
 	
 	
 	
-	public DbFastArray2D_SingleWrite( final HyperGraph _graph , int _tmult , int _xmult , int _dsz )
+	public DbFastArray2D( final HyperGraph _graph , int _tmult , int _xmult , int _tmax , int _xmax )
 	{
 		graph = _graph;
 		tmult = _tmult;
 		xmult = _xmult;
-		dsz = _dsz;
+		tmax = _tmax;
+		xmax = _xmax;
+		dsz = calcDsz( _tmult , _xmult , _tmax , _xmax );
 		
 		Object hnd = null;
 		
@@ -235,6 +274,19 @@ public class DbFastArray2D_SingleWrite<T extends Object> {
 		
 			graph.getCache().getIncidenceCache().clear();
 		}
+	}
+	
+	
+	protected int calcDsz( int _tmult , int _xmult , int _tmax , int _xmax )
+	{
+		int dsz = 0;
+		while( ( _tmax > _tmult ) || ( _xmax > _xmult ) )
+		{
+			_tmax = _tmax / _tmult;
+			_xmax = _xmax / _xmult;
+			dsz++;
+		}
+		return( dsz + 1 );
 	}
 	
 	
