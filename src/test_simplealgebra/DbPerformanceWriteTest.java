@@ -31,7 +31,9 @@ import junit.framework.Assert;
 import junit.framework.TestCase;
 
 import org.hypergraphdb.HGHandle;
+import org.hypergraphdb.HGPersistentHandle;
 import org.hypergraphdb.HyperGraph;
+import org.hypergraphdb.IncidenceSet;
 
 import simplealgebra.store.TypeSystemInit;
 
@@ -98,7 +100,7 @@ public class DbPerformanceWriteTest extends TestCase {
 		
 		
 
-		String databaseLocation = "mydbM";
+		String databaseLocation = "mydbW";
 		HyperGraph graph;
 		
 		graph = new HyperGraph( databaseLocation );
@@ -106,6 +108,7 @@ public class DbPerformanceWriteTest extends TestCase {
 		
 		TypeSystemInit.initType( graph );
 		
+		// graph.getCache().setIncidenceCache( new SimpleWeakCache<HGPersistentHandle,IncidenceSet>() );
 		
 		
 		
@@ -128,9 +131,11 @@ public class DbPerformanceWriteTest extends TestCase {
 			
 			graph.getTransactionManager().commit();
 			
+			// System.out.println( graph.getCache().getIncidenceCache() );
 			if( ( t % 2 ) == 0 )
 			{
 				graph.getCache().getIncidenceCache().clear();
+				// System.out.println( graph.getCache().getIncidenceCache().size() );
 			}
 			
 		}

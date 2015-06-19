@@ -53,7 +53,7 @@ import simplealgebra.ga.GeometricAlgebraMultivectorElemFactory;
 import simplealgebra.ga.GeometricAlgebraOrd;
 import simplealgebra.stelem.Nelem;
 import simplealgebra.stelem.Stelem;
-import simplealgebra.store.DbArray2D_SingleWrite;
+import simplealgebra.store.DbFastArray2D_Dbl;
 import simplealgebra.store.TypeSystemInit;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SymbolicElem;
@@ -170,7 +170,7 @@ public class TestStelemB_DB extends TestCase {
 	/**
 	 * Result array over which to iterate.
 	 */
-	protected static TestDbArray iterArray = null;
+	protected static DbFastArray2D_Dbl iterArray = null;
 	
 	
 	
@@ -208,38 +208,7 @@ public class TestStelemB_DB extends TestCase {
 	
 	
 	
-	/**
-	 * DB entity resembling a sparse 3-D array, e.g. for voxel data.  For performance reasons it is assumed
-	 * that there will only be a single write to each index location.
-	 * 
-	 * @author thorngreen
-	 */
-	protected static class TestDbArray extends DbArray2D_SingleWrite<Double>
-	{
-		
-		/**
-		 * Constructs the array.
-		 * 
-		 * @param _graph The graph on which to perform DB operations.
-		 */
-		public TestDbArray( final HyperGraph _graph )
-		{
-			super( _graph );
-		}
-		
-		@Override
-		public Double query( final ArrayList<BigInteger> arb )
-		{
-			Double ret = super.query( arb );
-			if( ret == null )
-			{
-				ret = 0.0;
-			}
-			return( ret );
-		}
-		
-		
-	}
+	
 	
 	
 	
@@ -1687,7 +1656,7 @@ public class TestStelemB_DB extends TestCase {
 	public void testStelemSimple() throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
 		
-		String databaseLocation = "mydb";
+		String databaseLocation = "mydbV";
 		HyperGraph graph;
 		
 		graph = new HyperGraph( databaseLocation );
@@ -1695,7 +1664,7 @@ public class TestStelemB_DB extends TestCase {
 		TypeSystemInit.initType( graph );
 		
 		
-		iterArray = new TestDbArray( graph );
+		iterArray = new DbFastArray2D_Dbl( graph , 4 , 4 , NUM_T_ITER , NUM_X_ITER );
 		
 		
 		final Random rand = new Random( 3344 );

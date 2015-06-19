@@ -49,7 +49,7 @@ import simplealgebra.store.TypeSystemInit;
 public class DbFastArrayTestDbl extends TestCase {
 	
 
-	static final int T_SZ = 1000;
+	static final int T_SZ = 10000;
 	
 	
 	
@@ -90,7 +90,7 @@ public class DbFastArrayTestDbl extends TestCase {
 			{
 				if( ( x % 10 ) == 0 )
 				{
-					System.out.println( "+++ " + t );
+					System.out.println( "+++ " + x );
 				}
 				
 				db.set(t, x, rand.nextDouble() );

@@ -59,7 +59,6 @@ import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicReduction;
 import simplealgebra.ga.*;
 import simplealgebra.ddx.*;
-import test_simplealgebra.TestStelemB_DB.TestDbArray;
 
 
 
