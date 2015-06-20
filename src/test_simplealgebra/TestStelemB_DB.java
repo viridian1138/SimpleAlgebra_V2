@@ -1883,6 +1883,9 @@ public class TestStelemB_DB extends TestCase {
 		System.out.println( iterArray.get( NUM_T_ITER - 1 , 10 ) );
 		// Assert.assertTrue( Math.abs( val - ( -1.450868 ) ) < 0.01 ); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		
+		
+		iterArray.close();
+		
 		graph.close();
 		
 	}

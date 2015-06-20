@@ -38,7 +38,7 @@ import org.hypergraphdb.HyperGraph;
  * 
  * @author thorngreen
  */
-public class DbFastArray3D_Dbl {
+public class DbFastArray4D_Dbl {
 	
 	
 	HyperGraph graph;
@@ -49,11 +49,15 @@ public class DbFastArray3D_Dbl {
 	
 	int ymult;
 	
+	int zmult;
+	
 	int tmax;
 	
 	int xmax;
 	
 	int ymax;
+	
+	int zmax;
 	
 	int dsz;
 	
@@ -68,34 +72,39 @@ public class DbFastArray3D_Dbl {
 	
 	int yprev = -10000;
 	
-	double[][][] oprev = null;
+	int zprev = -10000;
+	
+	double[][][][] oprev = null;
 	
 	boolean writeBack = false;
 	
 	
 	
 	
-	public DbFastArray3D_Dbl( final HyperGraph _graph , int _tmult , int _xmult , int _ymult ,
-			int _tmax , int _xmax , int _ymax )
+	public DbFastArray4D_Dbl( final HyperGraph _graph , int _tmult , int _xmult , int _ymult , int _zmult ,
+			int _tmax , int _xmax , int _ymax , int _zmax )
 	{
 		graph = _graph;
 		tmult = _tmult;
 		xmult = _xmult;
 		ymult = _ymult;
+		zmult = _zmult;
 		tmax = _tmax;
 		xmax = _xmax;
 		ymax = _ymax;
-		dsz = calcDsz( _tmult , _xmult , _ymult , _tmax , _xmax , _ymax );
+		zmax = _zmax;
+		dsz = calcDsz( _tmult , _xmult , _ymult , _zmult ,
+				_tmax , _xmax , _ymax , _zmax );
 		
 		Object hnd = null;
 		
 		if( dsz > 1 )
 		{
-			hnd = new HGHandle[ tmult ][ xmult ][ ymult ];
+			hnd = new HGHandle[ tmult ][ xmult ][ ymult ][ zmult ];
 		}
 		else
 		{
-			hnd = new Object[ tmult ][ xmult ][ ymult ];
+			hnd = new Object[ tmult ][ xmult ][ ymult ][ zmult ];
 		}
 		
 		graph.getTransactionManager().beginTransaction();
@@ -115,15 +124,17 @@ public class DbFastArray3D_Dbl {
 	 * @param t The "T" index of the array.
 	 * @param x The "X" index of the array.
 	 * @param y The "Y" index of the array.
+	 * @param z The "Z" index of the array.
 	 * @return The object at the 2-D index, or null if no object exists.
 	 */
-	public double get( int t , int x , int y )
+	public double get( int t , int x , int y , int z )
 	{
-		if( ( t / tmult == tprev / tmult ) && ( x / xmult == xprev / xmult ) && ( y / ymult == yprev / ymult ) )
+		if( ( t / tmult == tprev / tmult ) && ( x / xmult == xprev / xmult ) 
+				&& ( y / ymult == yprev / ymult ) && ( z / zmult == zprev / zmult ) )
 		{
 			if( oprev != null )
 			{
-				return( oprev[ t % tmult ][ x % xmult ][ y % ymult ] );
+				return( oprev[ t % tmult ][ x % xmult ][ y % ymult ][ z % zmult ] );
 			}
 			else
 			{
@@ -140,18 +151,22 @@ public class DbFastArray3D_Dbl {
 		tprev = t;
 		xprev = x;
 		yprev = y;
+		zprev = z;
 		
 		final int[] indext = new int[ dsz ];
 		final int[] indexx = new int[ dsz ];
 		final int[] indexy = new int[ dsz ];
+		final int[] indexz = new int[ dsz ];
 		for( int cnt = 0 ; cnt < dsz ; cnt++ )
 		{
 			indext[ ( dsz - 1 ) - cnt ] = t % tmult; 
 			indexx[ ( dsz - 1 ) - cnt ] = x % xmult; 
-			indexy[ ( dsz - 1 ) - cnt ] = y % ymult; 
+			indexy[ ( dsz - 1 ) - cnt ] = y % ymult;
+			indexz[ ( dsz - 1 ) - cnt ] = z % zmult;
 			t = t / tmult;
 			x = x / xmult;
 			y = y / ymult;
+			z = z / zmult;
 		}
 		
 		
@@ -160,9 +175,9 @@ public class DbFastArray3D_Dbl {
 		
 		for( int cnt = 0 ; cnt < ( dsz - 1 ) ; cnt++ )
 		{
-			HGHandle[][][] obj = graph.get( cur );
+			HGHandle[][][][] obj = graph.get( cur );
 			graph.getCache().getIncidenceCache().clear();
-			cur = obj[ indext[ cnt ] ][ indexx[ cnt ] ][ indexy[ cnt ] ];
+			cur = obj[ indext[ cnt ] ][ indexx[ cnt ] ][ indexy[ cnt ] ][ indexz[ cnt ] ];
 			if( cur == null )
 			{
 				oprev = null;
@@ -171,10 +186,10 @@ public class DbFastArray3D_Dbl {
 		}
 		
 		
-		double[][][] obj = graph.get( cur );
+		double[][][][] obj = graph.get( cur );
 		graph.getCache().getIncidenceCache().clear();
 		oprev = obj;
-		return( obj[ indext[ dsz - 1 ] ][ indexx[ dsz - 1 ] ][ indexy[ dsz - 1 ] ] );
+		return( obj[ indext[ dsz - 1 ] ][ indexx[ dsz - 1 ] ][ indexy[ dsz - 1 ] ][ indexz[ dsz - 1 ] ] );
 	}
 	
 	
@@ -184,16 +199,18 @@ public class DbFastArray3D_Dbl {
 	 * @param t The "T" index of the array.
 	 * @param x The "X" index of the array.
 	 * @param y The "Y" index of the array.
+	 * @param z The "Z" index of the array.
 	 * @param val The object to be set at the index.
 	 */
-	public void set( int t , int x , int y , double val )
+	public void set( int t , int x , int y , int z , double val )
 	{
 		
-		if( ( t / tmult == tprev / tmult ) && ( x / xmult == xprev / xmult ) && ( y / ymult == yprev / ymult ) )
+		if( ( t / tmult == tprev / tmult ) && ( x / xmult == xprev / xmult ) 
+				&& ( y / ymult == yprev / ymult ) && ( z / zmult == zprev / zmult ) )
 		{
 			if( oprev != null )
 			{
-				oprev[ t % tmult ][ x % xmult ][ y % ymult ] = val;
+				oprev[ t % tmult ][ x % xmult ][ y % ymult ][ z % zmult ] = val;
 				
 				writeBack = true;
 				
@@ -209,18 +226,22 @@ public class DbFastArray3D_Dbl {
 		tprev = t;
 		xprev = x;
 		yprev = y;
+		zprev = z;
 		
 		final int[] indext = new int[ dsz ];
 		final int[] indexx = new int[ dsz ];
 		final int[] indexy = new int[ dsz ];
+		final int[] indexz = new int[ dsz ];
 		for( int cnt = 0 ; cnt < dsz ; cnt++ )
 		{
 			indext[ ( dsz - 1 ) - cnt ] = t % tmult; 
 			indexx[ ( dsz - 1 ) - cnt ] = x % xmult; 
 			indexy[ ( dsz - 1 ) - cnt ] = y % ymult; 
+			indexz[ ( dsz - 1 ) - cnt ] = z % zmult;
 			t = t / tmult;
 			x = x / xmult;
 			y = y / ymult;
+			z = z / zmult;
 		}
 		
 		
@@ -229,18 +250,18 @@ public class DbFastArray3D_Dbl {
 		
 		for( int cnt = 0 ; cnt < ( dsz - 1 ) ; cnt++ )
 		{
-			HGHandle[][][] obj = graph.get( cur );
-			HGHandle acur = obj[ indext[ cnt ] ][ indexx[ cnt ] ][ indexy[ cnt ] ];
+			HGHandle[][][][] obj = graph.get( cur );
+			HGHandle acur = obj[ indext[ cnt ] ][ indexx[ cnt ] ][ indexy[ cnt ] ][ indexz[ cnt ] ];
 			if( acur == null )
 			{
 				if( cnt != ( dsz - 2 ) )
 				{
-					HGHandle[][][] hnd = new HGHandle[ tmult ][ xmult ][ ymult ];
+					HGHandle[][][][] hnd = new HGHandle[ tmult ][ xmult ][ ymult ][ zmult ];
 				
 					graph.getTransactionManager().beginTransaction();
 				
 					HGHandle hndd = graph.add( hnd ).getPersistent();
-					obj[ indext[ cnt ] ][ indexx[ cnt ] ][ indexy[ cnt ] ] = hndd;
+					obj[ indext[ cnt ] ][ indexx[ cnt ] ][ indexy[ cnt ] ][ indexz[ cnt ] ] = hndd;
 					graph.update( obj );
 				
 					graph.getTransactionManager().commit();
@@ -249,12 +270,12 @@ public class DbFastArray3D_Dbl {
 				}
 				else
 				{
-					double[][][] hnd = new double[ tmult ][ xmult ][ ymult ];
+					double[][][][] hnd = new double[ tmult ][ xmult ][ ymult ][ zmult ];
 					
 					graph.getTransactionManager().beginTransaction();
 				
 					HGHandle hndd = graph.add( hnd ).getPersistent();
-					obj[ indext[ cnt ] ][ indexx[ cnt ] ][ indexy[ cnt ] ] = hndd;
+					obj[ indext[ cnt ] ][ indexx[ cnt ] ][ indexy[ cnt ] ][ indexz[ cnt ] ] = hndd;
 					graph.update( obj );
 				
 					graph.getTransactionManager().commit();
@@ -270,8 +291,8 @@ public class DbFastArray3D_Dbl {
 		}
 		
 		
-		double[][][] obj = graph.get( cur );
-		obj[ indext[ dsz - 1 ] ][ indexx[ dsz - 1 ] ][ indexy[ dsz - 1 ] ] = val;
+		double[][][][] obj = graph.get( cur );
+		obj[ indext[ dsz - 1 ] ][ indexx[ dsz - 1 ] ][ indexy[ dsz - 1 ] ][ indexz[ dsz - 1 ] ] = val;
 		
 		graph.getCache().getIncidenceCache().clear();
 		
@@ -294,14 +315,16 @@ public class DbFastArray3D_Dbl {
 	}
 	
 	
-	protected int calcDsz( int _tmult , int _xmult , int _ymult , int _tmax , int _xmax , int _ymax )
+	protected int calcDsz( int _tmult , int _xmult , int _ymult , int _zmult ,
+			int _tmax , int _xmax , int _ymax , int _zmax )
 	{
 		int dsz = 0;
-		while( ( _tmax > _tmult ) || ( _xmax > _xmult ) || ( _ymax > _ymult ) )
+		while( ( _tmax > _tmult ) || ( _xmax > _xmult ) || ( _ymax > _ymult ) || ( _zmax > _zmult ) )
 		{
 			_tmax = _tmax / _tmult;
 			_xmax = _xmax / _xmult;
 			_ymax = _ymax / _ymult;
+			_zmax = _zmax / _zmult;
 			dsz++;
 		}
 		return( dsz + 1 );

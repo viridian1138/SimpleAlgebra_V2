@@ -126,6 +126,7 @@ public class DbFastArrayTest extends TestCase {
 		
 		
 		
+		db.close();
 		
 		graph.close();
 		

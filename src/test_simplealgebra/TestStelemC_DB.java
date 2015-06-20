@@ -51,7 +51,7 @@ import simplealgebra.ga.GeometricAlgebraMultivectorElem;
 import simplealgebra.ga.GeometricAlgebraMultivectorElemFactory;
 import simplealgebra.stelem.Nelem;
 import simplealgebra.stelem.Stelem;
-import simplealgebra.store.DbArray3D_SingleWrite;
+import simplealgebra.store.DbFastArray3D_Dbl;
 import simplealgebra.store.TypeSystemInit;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SymbolicElem;
@@ -189,7 +189,7 @@ public class TestStelemC_DB extends TestCase {
 	/**
 	 * Result array over which to iterate.
 	 */
-	protected static TestDbArray iterArray = null;
+	protected static DbFastArray3D_Dbl iterArray = null;
 	
 	
 	
@@ -245,38 +245,6 @@ public class TestStelemC_DB extends TestCase {
 	
 	
 	
-	/**
-	 * DB entity resembling a sparse 3-D array, e.g. for voxel data.  For performance reasons it is assumed
-	 * that there will only be a single write to each index location.
-	 * 
-	 * @author thorngreen
-	 */
-	protected static class TestDbArray extends DbArray3D_SingleWrite<Double>
-	{
-		
-		/**
-		 * Constructs the array.
-		 * 
-		 * @param _graph The graph on which to perform DB operations.
-		 */
-		public TestDbArray( final HyperGraph _graph )
-		{
-			super( _graph );
-		}
-		
-		@Override
-		public Double query( final ArrayList<BigInteger> arb )
-		{
-			Double ret = super.query( arb );
-			if( ret == null )
-			{
-				ret = 0.0;
-			}
-			return( ret );
-		}
-		
-		
-	}
 	
 	
 	
@@ -1690,6 +1658,7 @@ public class TestStelemC_DB extends TestCase {
 		{
 			for( int ycnt = 0 ; ycnt < NUM_Y_ITER ; ycnt++ )
 			{
+				System.out.println( ">> " + tval + " / " + xcnt + " / " + ycnt );
 				fillTempArray( tval , xcnt , ycnt );
 				clearSpatialAssertArray();
 	
@@ -1798,7 +1767,8 @@ public class TestStelemC_DB extends TestCase {
 		TypeSystemInit.initType( graph );
 		
 		
-		iterArray = new TestDbArray( graph );
+		iterArray = new DbFastArray3D_Dbl( graph , 4 , 4 , 4 ,
+				NUM_T_ITER , NUM_X_ITER , NUM_Y_ITER );
 		
 		
 		final Random rand = new Random( 3344 );
@@ -2020,6 +1990,9 @@ public class TestStelemC_DB extends TestCase {
 		System.out.println( "==============================" );
 		System.out.println( iterArray.get( NUM_T_ITER - 1 , 10 , 5 ) );
 		// Assert.assertTrue( Math.abs( val - ( -1.450868 ) ) < 0.01 ); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		
+		
+		iterArray.close();
 		
 		graph.close();
 		
