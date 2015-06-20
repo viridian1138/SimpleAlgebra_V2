@@ -74,7 +74,7 @@ public class DbFastArray4D_Dbl {
 	
 	int zprev = -10000;
 	
-	double[][][][] oprev = null;
+	double[] oprev = null;
 	
 	boolean writeBack = false;
 	
@@ -100,11 +100,11 @@ public class DbFastArray4D_Dbl {
 		
 		if( dsz > 1 )
 		{
-			hnd = new HGHandle[ tmult ][ xmult ][ ymult ][ zmult ];
+			hnd = new HGHandle[ tmult * xmult * ymult * zmult ];
 		}
 		else
 		{
-			hnd = new Object[ tmult ][ xmult ][ ymult ][ zmult ];
+			hnd = new double[ tmult * xmult * ymult * zmult ];
 		}
 		
 		graph.getTransactionManager().beginTransaction();
@@ -134,7 +134,7 @@ public class DbFastArray4D_Dbl {
 		{
 			if( oprev != null )
 			{
-				return( oprev[ t % tmult ][ x % xmult ][ y % ymult ][ z % zmult ] );
+				return( oprev[ ( t % tmult ) * ( xmult * ymult * zmult ) + ( x % xmult ) * ( ymult * zmult ) + ( y % ymult ) * ( zmult) + ( z % zmult ) ] );
 			}
 			else
 			{
@@ -175,9 +175,9 @@ public class DbFastArray4D_Dbl {
 		
 		for( int cnt = 0 ; cnt < ( dsz - 1 ) ; cnt++ )
 		{
-			HGHandle[][][][] obj = graph.get( cur );
+			HGHandle[] obj = graph.get( cur );
 			graph.getCache().getIncidenceCache().clear();
-			cur = obj[ indext[ cnt ] ][ indexx[ cnt ] ][ indexy[ cnt ] ][ indexz[ cnt ] ];
+			cur = obj[ ( indext[ cnt ] ) * ( xmult * ymult * zmult ) + ( indexx[ cnt ] ) * ( ymult * zmult ) + ( indexy[ cnt ] ) * ( zmult ) + indexz[ cnt ] ];
 			if( cur == null )
 			{
 				oprev = null;
@@ -186,10 +186,10 @@ public class DbFastArray4D_Dbl {
 		}
 		
 		
-		double[][][][] obj = graph.get( cur );
+		double[] obj = graph.get( cur );
 		graph.getCache().getIncidenceCache().clear();
 		oprev = obj;
-		return( obj[ indext[ dsz - 1 ] ][ indexx[ dsz - 1 ] ][ indexy[ dsz - 1 ] ][ indexz[ dsz - 1 ] ] );
+		return( obj[ ( indext[ dsz - 1 ] ) * ( xmult * ymult * zmult ) + ( indexx[ dsz - 1 ] ) * ( ymult * zmult ) + ( indexy[ dsz - 1 ] ) * ( zmult ) + indexz[ dsz - 1 ] ] );
 	}
 	
 	
@@ -210,7 +210,7 @@ public class DbFastArray4D_Dbl {
 		{
 			if( oprev != null )
 			{
-				oprev[ t % tmult ][ x % xmult ][ y % ymult ][ z % zmult ] = val;
+				oprev[ ( t % tmult ) * ( xmult * ymult * zmult ) + ( x % xmult ) * ( ymult * zmult ) + ( y % ymult ) * ( zmult ) + ( z % zmult ) ] = val;
 				
 				writeBack = true;
 				
@@ -250,18 +250,18 @@ public class DbFastArray4D_Dbl {
 		
 		for( int cnt = 0 ; cnt < ( dsz - 1 ) ; cnt++ )
 		{
-			HGHandle[][][][] obj = graph.get( cur );
-			HGHandle acur = obj[ indext[ cnt ] ][ indexx[ cnt ] ][ indexy[ cnt ] ][ indexz[ cnt ] ];
+			HGHandle[] obj = graph.get( cur );
+			HGHandle acur = obj[ ( indext[ cnt ] ) * ( xmult * ymult * zmult ) + ( indexx[ cnt ] ) * ( ymult * zmult ) + ( indexy[ cnt ] ) * ( zmult ) + indexz[ cnt ] ];
 			if( acur == null )
 			{
 				if( cnt != ( dsz - 2 ) )
 				{
-					HGHandle[][][][] hnd = new HGHandle[ tmult ][ xmult ][ ymult ][ zmult ];
+					HGHandle[] hnd = new HGHandle[ tmult * xmult * ymult * zmult ];
 				
 					graph.getTransactionManager().beginTransaction();
 				
 					HGHandle hndd = graph.add( hnd ).getPersistent();
-					obj[ indext[ cnt ] ][ indexx[ cnt ] ][ indexy[ cnt ] ][ indexz[ cnt ] ] = hndd;
+					obj[ ( indext[ cnt ] ) * ( xmult * ymult * zmult ) + ( indexx[ cnt ] ) * ( ymult * zmult ) + ( indexy[ cnt ] ) * ( zmult ) + ( indexz[ cnt ] ) ] = hndd;
 					graph.update( obj );
 				
 					graph.getTransactionManager().commit();
@@ -270,12 +270,12 @@ public class DbFastArray4D_Dbl {
 				}
 				else
 				{
-					double[][][][] hnd = new double[ tmult ][ xmult ][ ymult ][ zmult ];
+					double[] hnd = new double[ tmult * xmult * ymult * zmult ];
 					
 					graph.getTransactionManager().beginTransaction();
 				
 					HGHandle hndd = graph.add( hnd ).getPersistent();
-					obj[ indext[ cnt ] ][ indexx[ cnt ] ][ indexy[ cnt ] ][ indexz[ cnt ] ] = hndd;
+					obj[ ( indext[ cnt ] ) * ( xmult * ymult * zmult ) + ( indexx[ cnt ] ) * ( ymult * zmult ) + ( indexy[ cnt ] ) * ( zmult ) + ( indexz[ cnt ] ) ] = hndd;
 					graph.update( obj );
 				
 					graph.getTransactionManager().commit();
@@ -291,8 +291,8 @@ public class DbFastArray4D_Dbl {
 		}
 		
 		
-		double[][][][] obj = graph.get( cur );
-		obj[ indext[ dsz - 1 ] ][ indexx[ dsz - 1 ] ][ indexy[ dsz - 1 ] ][ indexz[ dsz - 1 ] ] = val;
+		double[] obj = graph.get( cur );
+		obj[ ( indext[ dsz - 1 ] ) * ( xmult * ymult * zmult ) + ( indexx[ dsz - 1 ] ) * ( ymult * zmult ) + ( indexy[ dsz - 1 ] ) * ( zmult ) + ( indexz[ dsz - 1 ] ) ] = val;
 		
 		graph.getCache().getIncidenceCache().clear();
 		
