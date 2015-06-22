@@ -104,7 +104,8 @@ public class DbFastArray3D_Dbl {
 		
 		graph.getTransactionManager().commit();
 		
-		graph.getCache().getIncidenceCache().clear();
+		//graph.getCache().close();
+		MemoryClearingSystem.handleCheckClear( graph );
 		
 	}
 	
@@ -160,8 +161,11 @@ public class DbFastArray3D_Dbl {
 		
 		for( int cnt = 0 ; cnt < ( dsz - 1 ) ; cnt++ )
 		{
+			graph.getTransactionManager().beginTransaction();
 			HGHandle[] obj = graph.get( cur );
-			graph.getCache().getIncidenceCache().clear();
+			graph.getTransactionManager().commit();
+			//graph.getCache().close();
+			MemoryClearingSystem.handleCheckClear( graph );
 			cur = obj[ ( indext[ cnt ] ) * ( xmult * ymult ) + ( indexx[ cnt ] ) * ( ymult ) + ( indexy[ cnt ] ) ];
 			if( cur == null )
 			{
@@ -171,8 +175,10 @@ public class DbFastArray3D_Dbl {
 		}
 		
 		
+		graph.getTransactionManager().beginTransaction();
 		double[] obj = graph.get( cur );
-		graph.getCache().getIncidenceCache().clear();
+		graph.getTransactionManager().commit();
+		// graph.getCache().close();
 		oprev = obj;
 		return( obj[ ( indext[ dsz - 1 ] ) * ( xmult * ymult ) + ( indexx[ dsz - 1 ] ) * ( ymult )  + ( indexy[ dsz - 1 ] ) ] );
 	}
@@ -229,6 +235,7 @@ public class DbFastArray3D_Dbl {
 		
 		for( int cnt = 0 ; cnt < ( dsz - 1 ) ; cnt++ )
 		{
+			graph.getTransactionManager().beginTransaction();
 			HGHandle[] obj = graph.get( cur );
 			HGHandle acur = obj[ ( indext[ cnt ] ) * ( xmult * ymult ) + ( indexx[ cnt ] ) * ( ymult ) + ( indexy[ cnt ] ) ];
 			if( acur == null )
@@ -237,27 +244,19 @@ public class DbFastArray3D_Dbl {
 				{
 					HGHandle[] hnd = new HGHandle[ tmult * xmult * ymult ];
 				
-					graph.getTransactionManager().beginTransaction();
-				
 					HGHandle hndd = graph.add( hnd ).getPersistent();
 					obj[ ( indext[ cnt ] ) * ( xmult * ymult ) + ( indexx[ cnt ] ) * ( ymult ) + ( indexy[ cnt ] ) ] = hndd;
 					graph.update( obj );
-				
-					graph.getTransactionManager().commit();
 				
 					cur = hndd;
 				}
 				else
 				{
 					double[] hnd = new double[ tmult * xmult * ymult ];
-					
-					graph.getTransactionManager().beginTransaction();
 				
 					HGHandle hndd = graph.add( hnd ).getPersistent();
 					obj[ ( indext[ cnt ] ) * ( xmult * ymult ) + ( indexx[ cnt ] ) * ( ymult ) + ( indexy[ cnt ] ) ] = hndd;
 					graph.update( obj );
-				
-					graph.getTransactionManager().commit();
 				
 					cur = hndd;
 				}
@@ -266,14 +265,17 @@ public class DbFastArray3D_Dbl {
 			{
 				cur = acur;
 			}
-			graph.getCache().getIncidenceCache().clear();
+			graph.getTransactionManager().commit();
+			//graph.getCache().close();
+			MemoryClearingSystem.handleCheckClear( graph );
 		}
 		
 		
+		graph.getTransactionManager().beginTransaction();
 		double[] obj = graph.get( cur );
-		obj[ ( indext[ dsz - 1 ] ) * ( xmult * ymult ) + ( indexx[ dsz - 1 ] ) * ( ymult ) + ( indexy[ dsz - 1 ] ) ] = val;
+		graph.getTransactionManager().commit();
 		
-		graph.getCache().getIncidenceCache().clear();
+		obj[ ( indext[ dsz - 1 ] ) * ( xmult * ymult ) + ( indexx[ dsz - 1 ] ) * ( ymult ) + ( indexy[ dsz - 1 ] ) ] = val;
 		
 		oprev = obj;
 	}
@@ -283,13 +285,14 @@ public class DbFastArray3D_Dbl {
 	{
 		if( writeBack && ( oprev != null ) )
 		{
-			graph.getTransactionManager().beginTransaction();
+			// graph.getTransactionManager().beginTransaction();
 		
 			graph.update( oprev );
 		
-			graph.getTransactionManager().commit();
+			// graph.getTransactionManager().commit();
 		
-			graph.getCache().getIncidenceCache().clear();
+			//graph.getCache().close();
+			MemoryClearingSystem.handleCheckClear( graph );
 		}
 	}
 	

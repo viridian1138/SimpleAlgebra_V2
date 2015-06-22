@@ -34,6 +34,7 @@ import org.hypergraphdb.HGHandle;
 import org.hypergraphdb.HyperGraph;
 
 import simplealgebra.store.DbFastArray2D_Dbl;
+import simplealgebra.store.MemoryClearingSystem;
 import simplealgebra.store.TypeSystemInit;
 
 
@@ -116,7 +117,8 @@ public class DbFastArrayTestDbl extends TestCase {
 			
 			Double vl = db.get( rand.nextInt( T_SZ ) , rand.nextInt( 10 ) );
 			
-			graph.getCache().getIncidenceCache().clear();
+			//graph.getCache().close();
+			MemoryClearingSystem.handleCheckClear( graph );
 			
 			Assert.assertTrue( vl != null );
 		}

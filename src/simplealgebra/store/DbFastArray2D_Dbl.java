@@ -95,7 +95,8 @@ public class DbFastArray2D_Dbl {
 		
 		graph.getTransactionManager().commit();
 		
-		graph.getCache().getIncidenceCache().clear();
+		//graph.getCache().close();
+		MemoryClearingSystem.handleCheckClear( graph );
 		
 	}
 	
@@ -146,8 +147,11 @@ public class DbFastArray2D_Dbl {
 		
 		for( int cnt = 0 ; cnt < ( dsz - 1 ) ; cnt++ )
 		{
+			graph.getTransactionManager().beginTransaction();
 			HGHandle[] obj = graph.get( cur );
-			graph.getCache().getIncidenceCache().clear();
+			graph.getTransactionManager().commit();
+			//graph.getCache().close();
+			MemoryClearingSystem.handleCheckClear( graph );
 			cur = obj[ ( indext[ cnt ] ) * ( xmult ) + ( indexx[ cnt ] ) ];
 			if( cur == null )
 			{
@@ -157,8 +161,10 @@ public class DbFastArray2D_Dbl {
 		}
 		
 		
+		graph.getTransactionManager().beginTransaction();
 		double[] obj = graph.get( cur );
-		graph.getCache().getIncidenceCache().clear();
+		graph.getTransactionManager().commit();
+		// graph.getCache().close();
 		oprev = obj;
 		return( obj[ ( indext[ dsz - 1 ] ) * ( xmult ) + ( indexx[ dsz - 1 ] ) ] );
 	}
@@ -210,6 +216,7 @@ public class DbFastArray2D_Dbl {
 		
 		for( int cnt = 0 ; cnt < ( dsz - 1 ) ; cnt++ )
 		{
+			graph.getTransactionManager().beginTransaction();
 			HGHandle[] obj = graph.get( cur );
 			HGHandle acur = obj[ ( indext[ cnt ] ) * ( xmult ) + ( indexx[ cnt ] ) ];
 			if( acur == null )
@@ -218,27 +225,19 @@ public class DbFastArray2D_Dbl {
 				{
 					HGHandle[] hnd = new HGHandle[ tmult * xmult ];
 				
-					graph.getTransactionManager().beginTransaction();
-				
 					HGHandle hndd = graph.add( hnd ).getPersistent();
 					obj[ ( indext[ cnt ] ) * ( xmult ) + ( indexx[ cnt ] ) ] = hndd;
 					graph.update( obj );
-				
-					graph.getTransactionManager().commit();
 				
 					cur = hndd;
 				}
 				else
 				{
 					double[] hnd = new double[ tmult * xmult ];
-					
-					graph.getTransactionManager().beginTransaction();
 				
 					HGHandle hndd = graph.add( hnd ).getPersistent();
 					obj[ ( indext[ cnt ] ) * ( xmult ) + ( indexx[ cnt ] ) ] = hndd;
 					graph.update( obj );
-				
-					graph.getTransactionManager().commit();
 				
 					cur = hndd;
 				}
@@ -247,14 +246,17 @@ public class DbFastArray2D_Dbl {
 			{
 				cur = acur;
 			}
-			graph.getCache().getIncidenceCache().clear();
+			graph.getTransactionManager().commit();
+			//graph.getCache().close();
+			MemoryClearingSystem.handleCheckClear( graph );
 		}
 		
 		
+		graph.getTransactionManager().beginTransaction();
 		double[] obj = graph.get( cur );
+		graph.getTransactionManager().commit();
+
 		obj[ ( indext[ dsz - 1 ] ) * ( xmult ) + ( indexx[ dsz - 1 ] ) ] = val;
-		
-		graph.getCache().getIncidenceCache().clear();
 		
 		oprev = obj;
 	}
@@ -264,13 +266,14 @@ public class DbFastArray2D_Dbl {
 	{
 		if( writeBack && ( oprev != null ) )
 		{
-			graph.getTransactionManager().beginTransaction();
+			// graph.getTransactionManager().beginTransaction();
 		
 			graph.update( oprev );
 		
-			graph.getTransactionManager().commit();
+			// graph.getTransactionManager().commit();
 		
-			graph.getCache().getIncidenceCache().clear();
+			//graph.getCache().close();
+			MemoryClearingSystem.handleCheckClear( graph );
 		}
 	}
 	

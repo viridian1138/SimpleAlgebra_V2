@@ -35,6 +35,7 @@ import org.hypergraphdb.HGPersistentHandle;
 import org.hypergraphdb.HyperGraph;
 import org.hypergraphdb.IncidenceSet;
 
+import simplealgebra.store.MemoryClearingSystem;
 import simplealgebra.store.TypeSystemInit;
 
 
@@ -100,13 +101,15 @@ public class DbPerformanceWriteTest extends TestCase {
 		
 		
 
-		String databaseLocation = "mydbW";
+		String databaseLocation = "mydbM";
 		HyperGraph graph;
 		
 		graph = new HyperGraph( databaseLocation );
 
 		
 		TypeSystemInit.initType( graph );
+		
+		MemoryClearingSystem.initMemoryClearing();
 		
 		// graph.getCache().setIncidenceCache( new SimpleWeakCache<HGPersistentHandle,IncidenceSet>() );
 		
@@ -131,12 +134,19 @@ public class DbPerformanceWriteTest extends TestCase {
 			
 			graph.getTransactionManager().commit();
 			
-			// System.out.println( graph.getCache().getIncidenceCache() );
-			if( ( t % 2 ) == 0 )
-			{
-				graph.getCache().getIncidenceCache().clear();
-				// System.out.println( graph.getCache().getIncidenceCache().size() );
-			}
+			//if( ( t % 2 ) == 0 )
+			//{
+			//	graph.getCache().close();
+			//}
+			MemoryClearingSystem.handleCheckClear( graph );
+			
+			//if( ( t % 5 ) == 0 )
+			//{
+			//	synchronized( Thread.currentThread() )
+			//	{
+			//		Thread.currentThread().wait( 500 );
+			//	}
+			//}
 			
 		}
 		
@@ -158,12 +168,25 @@ public class DbPerformanceWriteTest extends TestCase {
 			
 			int rowNum = rand.nextInt( T_SZ );
 			
+			graph.getTransactionManager().beginTransaction();
+			
 			double[][] row = graph.get( hgs[ rowNum ] );
 			
-			if( ( count % 2 ) == 0 )
-			{
-				graph.getCache().getIncidenceCache().clear();
-			}
+			graph.getTransactionManager().commit();
+			
+			//if( ( count % 2 ) == 0 )
+			//{
+			//	graph.getCache().close();
+			//}
+			MemoryClearingSystem.handleCheckClear( graph );
+			
+			//if( ( count % 5 ) == 0 )
+			//{
+			//	synchronized( Thread.currentThread() )
+			//	{
+			//		Thread.currentThread().wait( 500 );
+			//	}
+			//}
 			
 			Assert.assertTrue( row != null );
 		}

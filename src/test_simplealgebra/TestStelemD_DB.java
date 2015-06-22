@@ -1859,7 +1859,7 @@ public class TestStelemD_DB extends TestCase {
 	public void testStelemSimple() throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
 		
-		String databaseLocation = "mydb";
+		String databaseLocation = "mydbG";
 		HyperGraph graph;
 		
 		graph = new HyperGraph( databaseLocation );

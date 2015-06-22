@@ -1658,7 +1658,7 @@ public class TestStelemC_DB extends TestCase {
 		{
 			for( int ycnt = 0 ; ycnt < NUM_Y_ITER ; ycnt++ )
 			{
-				System.out.println( ">> " + tval + " / " + xcnt + " / " + ycnt );
+				//System.out.println( ">> " + tval + " / " + xcnt + " / " + ycnt );
 				fillTempArray( tval , xcnt , ycnt );
 				clearSpatialAssertArray();
 	
@@ -1759,7 +1759,7 @@ public class TestStelemC_DB extends TestCase {
 	public void testStelemSimple() throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
 		
-		String databaseLocation = "mydb";
+		String databaseLocation = "mydbF";
 		HyperGraph graph;
 		
 		graph = new HyperGraph( databaseLocation );
