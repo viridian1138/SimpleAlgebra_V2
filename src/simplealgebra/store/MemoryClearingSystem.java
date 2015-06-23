@@ -33,16 +33,28 @@ import org.hypergraphdb.HyperGraph;
 
 
 
+/**
+ * Class for automatically clearing unused Hypergraph memory.
+ * 
+ * @author thorngreen
+ *
+ */
 public class MemoryClearingSystem {
 	
 
-	
+	/**
+	 * Initializes the memory clearing system.
+	 */
 	public static void initMemoryClearing()
 	{
 	}
 	
 	
-	
+	/**
+	 * Clears memory from the graph if necessary.
+	 * 
+	 * @param graph The graph from which to clear memory.
+	 */
 	public static void handleCheckClear( HyperGraph graph )
 	{
 		final long freeMemory = Runtime.getRuntime().freeMemory();

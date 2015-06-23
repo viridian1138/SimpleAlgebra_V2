@@ -32,7 +32,7 @@ import org.hypergraphdb.HyperGraph;
 
 
 /**
- * DB entity resembling a dense 2-D array.
+ * DB entity resembling a dense 2-D array.  Basic layout of schema is octree-inspired.
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
@@ -42,30 +42,61 @@ import org.hypergraphdb.HyperGraph;
  */
 public class DbFastArray2D<T extends Object> {
 	
-	
+	/**
+	 * The graph in which the array exists.
+	 */
 	HyperGraph graph;
 	
+	/**
+	 * The size of each cell along the T-axis.
+	 */
 	int tmult;
-	
+
+	/**
+	 * The size of each cell along the X-axis.
+	 */
 	int xmult;
 	
+	/**
+	 * The size of the array along the T-axis.
+	 */
 	int tmax;
 	
+	/**
+	 * The size of the array along the X-axis.
+	 */
 	int xmax;
 	
+	/**
+	 * The number of octree-like levels in the structure.
+	 */
 	int dsz;
 	
+	/**
+	 * Reference to the top node of the array.
+	 */
 	HGHandle hndl;
 	
 	
 	
-	
+	/**
+	 * The T-value associated with the cached object in oprev.
+	 */
 	int tprev = -10000;
 	
+	/**
+	 * The X-value associated with the cached object in oprev.
+	 */
 	int xprev = -10000;
 	
+	/**
+	 * The currently cached set of values, or null if there are no cached values.
+	 */
 	Object[] oprev = null;
 	
+	/**
+	 * True if the values in oprev have changed, and need to be written back to the db.  False otherwise.
+	 */
 	boolean writeBack = false;
 	
 	
@@ -264,6 +295,9 @@ public class DbFastArray2D<T extends Object> {
 	}
 	
 	
+	/**
+	 * Closes the array.
+	 */
 	public void close()
 	{
 		if( writeBack && ( oprev != null ) )

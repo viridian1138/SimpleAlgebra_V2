@@ -32,7 +32,7 @@ import org.hypergraphdb.HyperGraph;
 
 
 /**
- * DB entity resembling a dense 3-D array of doubles.
+ * DB entity resembling a dense 3-D array (i.e. voxel array) of doubles.  Basic layout of schema is octree-inspired.
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
@@ -40,36 +40,76 @@ import org.hypergraphdb.HyperGraph;
  */
 public class DbFastArray3D_Dbl {
 	
-	
+	/**
+	 * The graph in which the array exists.
+	 */
 	HyperGraph graph;
 	
+	/**
+	 * The size of each cell along the T-axis.
+	 */
 	int tmult;
 	
+	/**
+	 * The size of each cell along the X-axis.
+	 */
 	int xmult;
 	
+	/**
+	 * The size of each cell along the Y-axis.
+	 */
 	int ymult;
 	
+	/**
+	 * The size of the array along the T-axis.
+	 */
 	int tmax;
 	
+	/**
+	 * The size of the array along the X-axis.
+	 */
 	int xmax;
 	
+	/**
+	 * The size of the array along the Y-axis.
+	 */
 	int ymax;
 	
+	/**
+	 * The number of octree-like levels in the structure.
+	 */
 	int dsz;
 	
+	/**
+	 * Reference to the top node of the array.
+	 */
 	HGHandle hndl;
 	
 	
 	
-	
+	/**
+	 * The T-value associated with the cached object in oprev.
+	 */
 	int tprev = -10000;
 	
+	/**
+	 * The X-value associated with the cached object in oprev.
+	 */
 	int xprev = -10000;
 	
+	/**
+	 * The Y-value associated with the cached object in oprev.
+	 */
 	int yprev = -10000;
 	
+	/**
+	 * The currently cached set of values, or null if there are no cached values.
+	 */
 	double[] oprev = null;
 	
+	/**
+	 * True if the values in oprev have changed, and need to be written back to the db.  False otherwise.
+	 */
 	boolean writeBack = false;
 	
 	
@@ -111,12 +151,12 @@ public class DbFastArray3D_Dbl {
 	
 	
 	/**
-	 * Gets the object at the 2-D index.
+	 * Gets the value at the 3-D index.
 	 * 
 	 * @param t The "T" index of the array.
 	 * @param x The "X" index of the array.
 	 * @param y The "Y" index of the array.
-	 * @return The object at the 2-D index, or null if no object exists.
+	 * @return The value at the 3-D index, or zero if no value exists.
 	 */
 	public double get( int t , int x , int y )
 	{
@@ -185,12 +225,12 @@ public class DbFastArray3D_Dbl {
 	
 	
 	/**
-	 * Sets the object at the 2-D index.
+	 * Sets the value at the 3-D index.
 	 * 
 	 * @param t The "T" index of the array.
 	 * @param x The "X" index of the array.
 	 * @param y The "Y" index of the array.
-	 * @param val The object to be set at the index.
+	 * @param val The value to be set at the index.
 	 */
 	public void set( int t , int x , int y , double val )
 	{
@@ -281,6 +321,9 @@ public class DbFastArray3D_Dbl {
 	}
 	
 	
+	/**
+	 * Closes the array.
+	 */
 	public void close()
 	{
 		if( writeBack && ( oprev != null ) )
