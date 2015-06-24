@@ -101,7 +101,15 @@ public class DbFastArray2D<T extends Object> {
 	
 	
 	
-	
+	/**
+	 * Constructs the array.
+	 * 
+	 * @param _graph The graph in which the array exists.
+	 * @param _tmult The size of the each cell along the T-axis.
+	 * @param _xmult The size of the each cell along the X-axis.
+	 * @param _tmax The size of the array along the T-axis.
+	 * @param _xmax The size of the array along the X-axis.
+	 */
 	public DbFastArray2D( final HyperGraph _graph , int _tmult , int _xmult , int _tmax , int _xmax )
 	{
 		graph = _graph;
@@ -314,6 +322,15 @@ public class DbFastArray2D<T extends Object> {
 	}
 	
 	
+	/**
+	 * Calculates the required number of traversal levels.
+	 * 
+	 * @param _tmult The size of the each cell along the T-axis.
+	 * @param _xmult The size of the each cell along the X-axis.
+	 * @param _tmax The size of the array along the T-axis.
+	 * @param _xmax The size of the array along the X-axis.
+	 * @return The required number of traversal levels.
+	 */
 	protected int calcDsz( int _tmult , int _xmult , int _tmax , int _xmax )
 	{
 		int dsz = 0;

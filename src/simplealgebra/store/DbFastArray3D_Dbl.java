@@ -114,7 +114,17 @@ public class DbFastArray3D_Dbl {
 	
 	
 	
-	
+	/**
+	 * Constructs the array.
+	 * 
+	 * @param _graph The graph in which the array exists.
+	 * @param _tmult The size of the each cell along the T-axis.
+	 * @param _xmult The size of the each cell along the X-axis.
+	 * @param _ymult The size of the each cell along the Y-axis.
+	 * @param _tmax The size of the array along the T-axis.
+	 * @param _xmax The size of the array along the X-axis.
+	 * @param _ymax The size of the array along the Y-axis.
+	 */
 	public DbFastArray3D_Dbl( final HyperGraph _graph , int _tmult , int _xmult , int _ymult ,
 			int _tmax , int _xmax , int _ymax )
 	{
@@ -340,6 +350,17 @@ public class DbFastArray3D_Dbl {
 	}
 	
 	
+	/**
+	 * Calculates the required number of traversal levels.
+	 * 
+	 * @param _tmult The size of the each cell along the T-axis.
+	 * @param _xmult The size of the each cell along the X-axis.
+	 * @param _ymult The size of the each cell along the Y-axis.
+	 * @param _tmax The size of the array along the T-axis.
+	 * @param _xmax The size of the array along the X-axis.
+	 * @param _ymax The size of the array along the Y-axis.
+	 * @return The required number of traversal levels.
+	 */
 	protected int calcDsz( int _tmult , int _xmult , int _ymult , int _tmax , int _xmax , int _ymax )
 	{
 		int dsz = 0;
