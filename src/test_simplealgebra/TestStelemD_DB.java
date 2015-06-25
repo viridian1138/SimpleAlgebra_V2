@@ -1868,7 +1868,7 @@ public class TestStelemD_DB extends TestCase {
 		
 		
 		iterArray = new DbFastArray4D_Dbl( graph ,
-				4 , 4 , 4 , 4 ,
+				8 , 8 , 8 , 8 ,
 				NUM_T_ITER , NUM_X_ITER , NUM_Y_ITER , NUM_Z_ITER );
 		
 		

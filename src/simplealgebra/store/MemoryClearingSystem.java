@@ -29,6 +29,7 @@ package simplealgebra.store;
 
 
 import org.hypergraphdb.HyperGraph;
+import org.hypergraphdb.cache.SimpLRU;
 
 
 
@@ -44,9 +45,13 @@ public class MemoryClearingSystem {
 
 	/**
 	 * Initializes the memory clearing system.
+	 * 
+	 * @param graph The graph from which to clear memory.
 	 */
-	public static void initMemoryClearing()
+	public static void initMemoryClearing( HyperGraph graph )
 	{
+		graph.getCache().setIncidenceCache(
+	        	new SimpLRU(0.5f, 0.3f) );
 	}
 	
 	
@@ -62,7 +67,8 @@ public class MemoryClearingSystem {
 		final long totalMem10 = totalMemory / 5L;
 		if( freeMemory <= totalMem10 )
 		{
-			graph.getCache().close();
+			// graph.getCache().close();
+			( (SimpLRU)( graph.getCache().getIncidenceCache() ) ).evict();
 		}
 		
 	}

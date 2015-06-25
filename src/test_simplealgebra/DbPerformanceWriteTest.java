@@ -25,6 +25,9 @@
 package test_simplealgebra;
 
 
+import org.hypergraphdb.cache.LRUCache;
+import org.hypergraphdb.cache.SimpLRU;
+
 import java.util.Random;
 
 import junit.framework.Assert;
@@ -34,6 +37,7 @@ import org.hypergraphdb.HGHandle;
 import org.hypergraphdb.HGPersistentHandle;
 import org.hypergraphdb.HyperGraph;
 import org.hypergraphdb.IncidenceSet;
+import org.hypergraphdb.cache.HGCache;
 
 import simplealgebra.store.MemoryClearingSystem;
 import simplealgebra.store.TypeSystemInit;
@@ -101,17 +105,13 @@ public class DbPerformanceWriteTest extends TestCase {
 		
 		
 
-		String databaseLocation = "mydbM";
+		String databaseLocation = "mydbV";
 		HyperGraph graph;
 		
 		graph = new HyperGraph( databaseLocation );
 
 		
 		TypeSystemInit.initType( graph );
-		
-		MemoryClearingSystem.initMemoryClearing();
-		
-		// graph.getCache().setIncidenceCache( new SimpleWeakCache<HGPersistentHandle,IncidenceSet>() );
 		
 		
 		

@@ -143,6 +143,8 @@ public class TypeSystemInit {
 		CovariantDerivativeFactoryType.initType( graph );
 		MaterialDerivativeFactoryType.initType( graph );
 		
+		MemoryClearingSystem.initMemoryClearing( graph );
+		
 	}
 
 	
