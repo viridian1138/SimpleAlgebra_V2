@@ -35,6 +35,7 @@ import org.hypergraphdb.HyperGraph;
 
 import simplealgebra.store.DbFastArray2D_Dbl;
 import simplealgebra.store.MemoryClearingSystem;
+import simplealgebra.store.SegmentedTransactionManager;
 import simplealgebra.store.TypeSystemInit;
 
 
@@ -70,6 +71,9 @@ public class DbFastArrayTestDbl extends TestCase {
 
 		
 		TypeSystemInit.initType( graph );
+		
+		
+		SegmentedTransactionManager.beginSegmentedTransaction( graph );
 		
 		
 		
@@ -130,6 +134,10 @@ public class DbFastArrayTestDbl extends TestCase {
 		
 		
 		db.close();
+		
+		
+		SegmentedTransactionManager.commitSegmentedTransaction( graph );
+		
 		
 		graph.close();
 		

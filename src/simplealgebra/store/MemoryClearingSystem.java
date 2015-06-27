@@ -67,8 +67,9 @@ public class MemoryClearingSystem {
 		final long totalMem10 = totalMemory / 5L;
 		if( freeMemory <= totalMem10 )
 		{
-			// graph.getCache().close();
+			SegmentedTransactionManager.suspendSegmentedTransaction( graph );
 			( (SimpLRU)( graph.getCache().getIncidenceCache() ) ).evict();
+			SegmentedTransactionManager.restartSegmentedTransaction( graph );
 		}
 		
 	}

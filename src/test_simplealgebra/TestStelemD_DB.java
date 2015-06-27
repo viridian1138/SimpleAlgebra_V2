@@ -52,6 +52,7 @@ import simplealgebra.ga.GeometricAlgebraMultivectorElemFactory;
 import simplealgebra.stelem.Nelem;
 import simplealgebra.stelem.Stelem;
 import simplealgebra.store.DbFastArray4D_Dbl;
+import simplealgebra.store.SegmentedTransactionManager;
 import simplealgebra.store.TypeSystemInit;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SymbolicElem;
@@ -1859,12 +1860,16 @@ public class TestStelemD_DB extends TestCase {
 	public void testStelemSimple() throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
 		
-		String databaseLocation = "mydbG";
+		String databaseLocation = "mydbJ";
 		HyperGraph graph;
 		
 		graph = new HyperGraph( databaseLocation );
 		
 		TypeSystemInit.initType( graph );
+		
+		
+		SegmentedTransactionManager.beginSegmentedTransaction( graph );
+		
 		
 		
 		iterArray = new DbFastArray4D_Dbl( graph ,
@@ -2096,6 +2101,10 @@ public class TestStelemD_DB extends TestCase {
 		
 		
 		iterArray.close();
+		
+		
+		SegmentedTransactionManager.commitSegmentedTransaction( graph );
+		
 		
 		graph.close();
 		

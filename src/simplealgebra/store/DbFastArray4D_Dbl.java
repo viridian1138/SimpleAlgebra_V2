@@ -168,11 +168,11 @@ public class DbFastArray4D_Dbl {
 			hnd = new double[ tmult * xmult * ymult * zmult ];
 		}
 		
-		graph.getTransactionManager().beginTransaction();
+		//graph.getTransactionManager().beginTransaction();
 		
 		hndl = graph.add( hnd ).getPersistent();
 		
-		graph.getTransactionManager().commit();
+		//graph.getTransactionManager().commit();
 		
 		//graph.getCache().close();
 		MemoryClearingSystem.handleCheckClear( graph );
@@ -237,9 +237,9 @@ public class DbFastArray4D_Dbl {
 		
 		for( int cnt = 0 ; cnt < ( dsz - 1 ) ; cnt++ )
 		{
-			graph.getTransactionManager().beginTransaction();
+			//graph.getTransactionManager().beginTransaction();
 			HGHandle[] obj = graph.get( cur );
-			graph.getTransactionManager().commit();
+			//graph.getTransactionManager().commit();
 			//graph.getCache().close();
 			MemoryClearingSystem.handleCheckClear( graph );
 			cur = obj[ ( indext[ cnt ] ) * ( xmult * ymult * zmult ) + ( indexx[ cnt ] ) * ( ymult * zmult ) + ( indexy[ cnt ] ) * ( zmult ) + indexz[ cnt ] ];
@@ -251,9 +251,9 @@ public class DbFastArray4D_Dbl {
 		}
 		
 		
-		graph.getTransactionManager().beginTransaction();
+		//graph.getTransactionManager().beginTransaction();
 		double[] obj = graph.get( cur );
-		graph.getTransactionManager().commit();
+		//graph.getTransactionManager().commit();
 		// graph.getCache().close();
 		oprev = obj;
 		return( obj[ ( indext[ dsz - 1 ] ) * ( xmult * ymult * zmult ) + ( indexx[ dsz - 1 ] ) * ( ymult * zmult ) + ( indexy[ dsz - 1 ] ) * ( zmult ) + indexz[ dsz - 1 ] ] );
@@ -317,7 +317,7 @@ public class DbFastArray4D_Dbl {
 		
 		for( int cnt = 0 ; cnt < ( dsz - 1 ) ; cnt++ )
 		{
-			graph.getTransactionManager().beginTransaction();
+			//graph.getTransactionManager().beginTransaction();
 			HGHandle[] obj = graph.get( cur );
 			HGHandle acur = obj[ ( indext[ cnt ] ) * ( xmult * ymult * zmult ) + ( indexx[ cnt ] ) * ( ymult * zmult ) + ( indexy[ cnt ] ) * ( zmult ) + indexz[ cnt ] ];
 			if( acur == null )
@@ -347,15 +347,15 @@ public class DbFastArray4D_Dbl {
 			{
 				cur = acur;
 			}
-			graph.getTransactionManager().commit();
+			//graph.getTransactionManager().commit();
 			//graph.getCache().close();
 			MemoryClearingSystem.handleCheckClear( graph );
 		}
 		
 		
-		graph.getTransactionManager().beginTransaction();
+		//graph.getTransactionManager().beginTransaction();
 		double[] obj = graph.get( cur );
-		graph.getTransactionManager().commit();
+		//graph.getTransactionManager().commit();
 		
 		obj[ ( indext[ dsz - 1 ] ) * ( xmult * ymult * zmult ) + ( indexx[ dsz - 1 ] ) * ( ymult * zmult ) + ( indexy[ dsz - 1 ] ) * ( zmult ) + ( indexz[ dsz - 1 ] ) ] = val;
 		

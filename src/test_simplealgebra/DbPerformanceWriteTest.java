@@ -40,6 +40,7 @@ import org.hypergraphdb.IncidenceSet;
 import org.hypergraphdb.cache.HGCache;
 
 import simplealgebra.store.MemoryClearingSystem;
+import simplealgebra.store.SegmentedTransactionManager;
 import simplealgebra.store.TypeSystemInit;
 
 
@@ -105,7 +106,7 @@ public class DbPerformanceWriteTest extends TestCase {
 		
 		
 
-		String databaseLocation = "mydbV";
+		String databaseLocation = "mydbL";
 		HyperGraph graph;
 		
 		graph = new HyperGraph( databaseLocation );
@@ -113,6 +114,8 @@ public class DbPerformanceWriteTest extends TestCase {
 		
 		TypeSystemInit.initType( graph );
 		
+		
+		SegmentedTransactionManager.beginSegmentedTransaction( graph );
 		
 		
 		HGHandle[] hgs = new HGHandle[ T_SZ ];
@@ -128,11 +131,11 @@ public class DbPerformanceWriteTest extends TestCase {
 				System.out.println( "/// " + t );
 			}
 			
-			graph.getTransactionManager().beginTransaction();
+			// graph.getTransactionManager().beginTransaction();
 			
 			hgs[ t ] = graph.add( createRow( rand ) ).getPersistent();
 			
-			graph.getTransactionManager().commit();
+			// graph.getTransactionManager().commit();
 			
 			//if( ( t % 2 ) == 0 )
 			//{
@@ -168,11 +171,11 @@ public class DbPerformanceWriteTest extends TestCase {
 			
 			int rowNum = rand.nextInt( T_SZ );
 			
-			graph.getTransactionManager().beginTransaction();
+			// graph.getTransactionManager().beginTransaction();
 			
 			double[][] row = graph.get( hgs[ rowNum ] );
 			
-			graph.getTransactionManager().commit();
+			// graph.getTransactionManager().commit();
 			
 			//if( ( count % 2 ) == 0 )
 			//{
@@ -196,6 +199,7 @@ public class DbPerformanceWriteTest extends TestCase {
 		
 		
 		
+		SegmentedTransactionManager.commitSegmentedTransaction( graph );
 		
 		graph.close();
 		

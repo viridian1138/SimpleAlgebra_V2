@@ -34,6 +34,7 @@ import org.hypergraphdb.HyperGraph;
 
 import simplealgebra.NotInvertibleException;
 import simplealgebra.store.BaseDbArray_SingleWrite;
+import simplealgebra.store.SegmentedTransactionManager;
 import simplealgebra.store.TypeSystemInit;
 
 
@@ -168,6 +169,8 @@ public class TestBaseDbArrayIndependence extends TestCase {
 		
 		TypeSystemInit.initType( graph );
 		
+		SegmentedTransactionManager.beginSegmentedTransaction( graph );
+		
 		
 		BaseDbArray_SingleWrite<Double> dbA = new BaseDbArray_SingleWrite<Double>( graph );
 		
@@ -226,6 +229,7 @@ public class TestBaseDbArrayIndependence extends TestCase {
 		
 		
 
+		SegmentedTransactionManager.commitSegmentedTransaction( graph );
 		
 		graph.close();
 		

@@ -54,6 +54,7 @@ import simplealgebra.ga.GeometricAlgebraOrd;
 import simplealgebra.stelem.Nelem;
 import simplealgebra.stelem.Stelem;
 import simplealgebra.store.DbFastArray2D_Dbl;
+import simplealgebra.store.SegmentedTransactionManager;
 import simplealgebra.store.TypeSystemInit;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SymbolicElem;
@@ -1664,6 +1665,9 @@ public class TestStelemB_DB extends TestCase {
 		TypeSystemInit.initType( graph );
 		
 		
+		SegmentedTransactionManager.beginSegmentedTransaction( graph );
+		
+		
 		iterArray = new DbFastArray2D_Dbl( graph , 4 , 4 , NUM_T_ITER , NUM_X_ITER );
 		
 		
@@ -1885,6 +1889,10 @@ public class TestStelemB_DB extends TestCase {
 		
 		
 		iterArray.close();
+		
+		
+		SegmentedTransactionManager.commitSegmentedTransaction( graph );
+		
 		
 		graph.close();
 		
