@@ -34,6 +34,7 @@ import simplealgebra.ComplexElemFactory;
 import simplealgebra.DoubleElem;
 import simplealgebra.DoubleElemFactory;
 import simplealgebra.store.DbElem;
+import simplealgebra.store.SegmentedTransactionManager;
 import simplealgebra.store.TypeSystemInit;
 
 
@@ -68,6 +69,9 @@ public class TestDbElemDbl extends TestCase {
 		TypeSystemInit.initType( graph );
 		
 		
+		SegmentedTransactionManager.beginSegmentedTransaction( graph );
+		
+		
 		
 		
 		final DbElem<DoubleElem,DoubleElemFactory> da = 
@@ -91,6 +95,8 @@ public class TestDbElemDbl extends TestCase {
 		Assert.assertEquals( dc.query().getVal() , 3.3333333 , 1E-5 );
 		
 		
+		
+		SegmentedTransactionManager.commitSegmentedTransaction( graph );
 		
 		graph.close();
 		
@@ -116,6 +122,9 @@ public class TestDbElemDbl extends TestCase {
 		graph = new HyperGraph( databaseLocation );
 				
 		TypeSystemInit.initType( graph );
+		
+		
+		SegmentedTransactionManager.beginSegmentedTransaction( graph );
 				
 				
 				
@@ -150,7 +159,11 @@ public class TestDbElemDbl extends TestCase {
 		Assert.assertEquals( dc.query().getIm().getVal() , 6.6666666 , 1E-5 );
 				
 				
-				
+			
+		
+		SegmentedTransactionManager.commitSegmentedTransaction( graph );
+		
+		
 		graph.close();
 				
 		// System.out.println( "Done..." ); 

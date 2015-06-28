@@ -89,6 +89,7 @@ public class TypeSystemInit {
 		ComplexElemFactoryType.initType( graph );
 		DbElemType.initType( graph );
 		DbElemFactoryType.initType( graph );
+		RelPayloadType.initType( graph );
 		
 		BigFixedPointElemType.initType( graph );
 		BigFixedPointElemFactoryType.initType( graph );

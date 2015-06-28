@@ -38,13 +38,14 @@ import simplealgebra.DoubleElem;
 import simplealgebra.DoubleElemFactory;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.store.BaseDbArray_SingleWrite;
+import simplealgebra.store.SegmentedTransactionManager;
 import simplealgebra.store.TypeSystemInit;
 import simplealgebra.bigfixedpoint.BigFixedPointElem;
 import simplealgebra.bigfixedpoint.BigFixedPointElemFactory;
 import simplealgebra.bigfixedpoint.Precision;
 
 
-/**
+/**  
  * Tests use of BaseDbArray_SingleWrite.
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
@@ -168,12 +169,15 @@ public class TestBaseDbArrayBasics extends TestCase {
 		
 		// System.out.println( "Started..." ); 
 		
-		String databaseLocation = "mydb";
+		String databaseLocation = "mydbE";
 		HyperGraph graph;
 		
 		graph = new HyperGraph( databaseLocation );
 		
 		TypeSystemInit.initType( graph );
+		
+		
+		SegmentedTransactionManager.beginSegmentedTransaction( graph );
 		
 		
 		BaseDbArray_SingleWrite<Double> db = new BaseDbArray_SingleWrite<Double>( graph );
@@ -200,7 +204,11 @@ public class TestBaseDbArrayBasics extends TestCase {
 		
 		Assert.assertEquals( 3.6333333 , db.query( genC2() ) , 1E-5 );
 		
+		
+		
+		SegmentedTransactionManager.commitSegmentedTransaction( graph );
 
+		
 		
 		graph.close();
 		
@@ -229,6 +237,10 @@ public class TestBaseDbArrayBasics extends TestCase {
 		TypeSystemInit.initType( graph );
 		
 		
+		SegmentedTransactionManager.beginSegmentedTransaction( graph );
+		
+		
+		
 		BaseDbArray_SingleWrite<DoubleElem> db = new BaseDbArray_SingleWrite<DoubleElem>( graph );
 		
 		
@@ -254,6 +266,9 @@ public class TestBaseDbArrayBasics extends TestCase {
 		Assert.assertEquals( 3.6333333 , db.query( genC2() ).getVal() , 1E-5 );
 		
 
+		
+		SegmentedTransactionManager.commitSegmentedTransaction( graph );
+		
 		
 		graph.close();
 		
@@ -281,10 +296,18 @@ public class TestBaseDbArrayBasics extends TestCase {
 		TypeSystemInit.initType( graph );
 		
 		
+		SegmentedTransactionManager.beginSegmentedTransaction( graph );
+		
+		
+		
 		HGHandle hndl = graph.add( new DoubleElemFactory() );
 		
 		
 		DoubleElemFactory d = graph.get( hndl );
+		
+		
+		
+		SegmentedTransactionManager.commitSegmentedTransaction( graph );
 		
 		
 		graph.close();
@@ -292,7 +315,25 @@ public class TestBaseDbArrayBasics extends TestCase {
 	}
 	
 	
-	
+	/**
+	 * Returns the number <math display="inline">
+     * <mrow>
+     *   <msup>
+     *           <mn>10</mn>
+     *         <mn>151</mn>
+     *   </msup>
+     * </mrow>
+     * </math>.
+	 * 
+	 * @return The value <math display="inline">
+     * <mrow>
+     *   <msup>
+     *           <mn>10</mn>
+     *         <mn>151</mn>
+     *   </msup>
+     * </mrow>
+     * </math>.
+	 */
 	public static BigInteger genPrecVal()
 	{
 		final BigInteger ten = BigInteger.valueOf( 10 );
@@ -304,12 +345,44 @@ public class TestBaseDbArrayBasics extends TestCase {
 		return( vl );
 	}
 	
-	
+	/**
+	 * Constant containing the value <math display="inline">
+     * <mrow>
+     *   <msup>
+     *           <mn>10</mn>
+     *         <mn>151</mn>
+     *   </msup>
+     * </mrow>
+     * </math>.
+	 */
 	public static final BigInteger lrgPrec = genPrecVal();
 	
+	/**
+	 * Constant containing the square of lrgPrec, or <math display="inline">
+     * <mrow>
+     *   <msup>
+     *           <mn>10</mn>
+     *         <mn>302</mn>
+     *   </msup>
+     * </mrow>
+     * </math>.
+	 */
 	public static final BigInteger lrgPrecSq = lrgPrec.multiply( lrgPrec );
 	
 	
+	/**
+	 * Defines a precision of lrgPrec, or one part in <math display="inline">
+     * <mrow>
+     *   <msup>
+     *           <mn>10</mn>
+     *         <mn>151</mn>
+     *   </msup>
+     * </mrow>
+     * </math>.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	public static class LrgPrec extends Precision
 	{
 
@@ -328,7 +401,7 @@ public class TestBaseDbArrayBasics extends TestCase {
 	
 	
 	/**
-	 * Tests the ability to store basic types.
+	 * Tests the ability to store a tensor of complex numbers.
 	 * 
 	 * @throws Throwable
 	 */
@@ -343,6 +416,10 @@ public class TestBaseDbArrayBasics extends TestCase {
 		graph = new HyperGraph( databaseLocation );
 		
 		TypeSystemInit.initType( graph );
+		
+		
+		SegmentedTransactionManager.beginSegmentedTransaction( graph );
+		
 		
 		
 		{
@@ -387,6 +464,9 @@ public class TestBaseDbArrayBasics extends TestCase {
 			
 		}
 		
+		
+		
+		SegmentedTransactionManager.commitSegmentedTransaction( graph );
 		
 		
 		graph.close();

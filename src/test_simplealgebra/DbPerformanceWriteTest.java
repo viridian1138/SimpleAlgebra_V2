@@ -25,19 +25,13 @@
 package test_simplealgebra;
 
 
-import org.hypergraphdb.cache.LRUCache;
-import org.hypergraphdb.cache.SimpLRU;
-
 import java.util.Random;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
 
 import org.hypergraphdb.HGHandle;
-import org.hypergraphdb.HGPersistentHandle;
 import org.hypergraphdb.HyperGraph;
-import org.hypergraphdb.IncidenceSet;
-import org.hypergraphdb.cache.HGCache;
 
 import simplealgebra.store.MemoryClearingSystem;
 import simplealgebra.store.SegmentedTransactionManager;
@@ -46,7 +40,7 @@ import simplealgebra.store.TypeSystemInit;
 
 
 /**
- * Tests HypergraphDB.
+ * Tests HypergraphDB execution for storing large arrays.
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

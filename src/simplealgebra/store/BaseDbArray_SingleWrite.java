@@ -120,12 +120,14 @@ public class BaseDbArray_SingleWrite<T extends Object> {
 					throw( new RuntimeException( "Internal Error In Abstract Db Array" ) );
 				}
 			}
+			MemoryClearingSystem.handleCheckClear( graph );
 		}
 		
 		if( ret != null )
 		{
 			cacheMemory.put( arb , ret );
 		}
+		MemoryClearingSystem.handleCheckClear( graph );
 		return( ret );
 	}
 	
@@ -151,6 +153,8 @@ public class BaseDbArray_SingleWrite<T extends Object> {
 		graph.add( hga );
 		
 		cacheMemory.put( arb , val );
+		
+		MemoryClearingSystem.handleCheckClear( graph );
 	}
 	
 

@@ -38,6 +38,7 @@ import simplealgebra.SquareMatrixElem;
 import simplealgebra.SquareMatrixElemFactory;
 import simplealgebra.store.DbElem;
 import simplealgebra.store.DbElemFactory;
+import simplealgebra.store.SegmentedTransactionManager;
 import simplealgebra.store.TypeSystemInit;
 
 
@@ -93,7 +94,13 @@ public class TestDbElemBasics extends TestCase {
 	
 	
 	
-	
+	/**
+	 * Generates a random matrix of matrices.
+	 * 
+	 * @param seed The random number seed.
+	 * @param se2 The factory for the enclosed type.
+	 * @return The random matrix.
+	 */
 	protected SquareMatrixElem<TestDimensionFour, 
 		SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory>, 
 		SquareMatrixElemFactory<TestDimensionFour, DoubleElem, DoubleElemFactory>> generateMat2( final long seed ,
@@ -144,6 +151,9 @@ public class TestDbElemBasics extends TestCase {
 		TypeSystemInit.initType( graph );
 		
 		
+		SegmentedTransactionManager.beginSegmentedTransaction( graph );
+		
+		
 		
 		final TestDimensionFour td = new TestDimensionFour();
 		
@@ -189,6 +199,8 @@ public class TestDbElemBasics extends TestCase {
 	
 		
 		
+		SegmentedTransactionManager.commitSegmentedTransaction( graph );
+		
 		graph.close();
 		
 		// System.out.println( "Done..." ); 
@@ -215,12 +227,20 @@ public class TestDbElemBasics extends TestCase {
 		
 		TypeSystemInit.initType( graph );
 		
+		
+		SegmentedTransactionManager.beginSegmentedTransaction( graph );
+		
+		
+		
 		DoubleElem d1 = new DoubleElem( 5.1 );
 		
 		
 		final  DbElem<DoubleElem,DoubleElemFactory>
 			hh = new DbElem<DoubleElem,DoubleElemFactory>( d1 , graph );
 		
+		
+		
+		SegmentedTransactionManager.commitSegmentedTransaction( graph );
 		
 		graph.close();
 		

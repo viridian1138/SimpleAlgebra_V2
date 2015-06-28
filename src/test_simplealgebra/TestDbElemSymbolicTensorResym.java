@@ -35,6 +35,7 @@ import simplealgebra.NotInvertibleException;
 import simplealgebra.et.EinsteinTensorElem;
 import simplealgebra.et.EinsteinTensorElemFactory;
 import simplealgebra.et.SymbolicTensorResym;
+import simplealgebra.store.SegmentedTransactionManager;
 import simplealgebra.store.TypeSystemInit;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
@@ -55,7 +56,11 @@ public class TestDbElemSymbolicTensorResym extends TestCase {
 	
 	
 	
-	
+	/**
+	 * Generates a test expression that contains a SymbolicTensorResym.
+	 * 
+	 * @return The test expression.
+	 */
 	protected SymbolicTensorResym<String, TestDimensionFour, DoubleElem, DoubleElemFactory> genSymA()
 	{
 		final DoubleElemFactory de = new DoubleElemFactory();
@@ -99,6 +104,9 @@ public class TestDbElemSymbolicTensorResym extends TestCase {
 		TypeSystemInit.initType( graph );
 		
 		
+		SegmentedTransactionManager.beginSegmentedTransaction( graph );
+		
+		
 		HGHandle hndl = graph.add( genSymA() );
 		
 		// HGHandle hndl2 = graph.add( genSymFac() );
@@ -127,6 +135,9 @@ public class TestDbElemSymbolicTensorResym extends TestCase {
 //		
 //		
 //		Assert.assertTrue( cnt == 2 );
+		
+		
+		SegmentedTransactionManager.commitSegmentedTransaction( graph );
 		
 		
 		graph.close();

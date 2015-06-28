@@ -41,7 +41,7 @@ import simplealgebra.store.TypeSystemInit;
 
 
 /**
- * Tests HypergraphDB.
+ * Tests HypergraphDB execution for DbFastArray2D_Dbl.
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
@@ -51,6 +51,9 @@ import simplealgebra.store.TypeSystemInit;
 public class DbFastArrayTestDbl extends TestCase {
 	
 
+	/**
+	 * The size of the array along the "T" axis.
+	 */
 	static final int T_SZ = 10000;
 	
 	

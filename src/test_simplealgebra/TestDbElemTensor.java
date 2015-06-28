@@ -41,6 +41,7 @@ import simplealgebra.DoubleElemFactory;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.et.EinsteinTensorElem;
 import simplealgebra.et.EinsteinTensorElemFactory;
+import simplealgebra.store.SegmentedTransactionManager;
 import simplealgebra.store.TypeSystemInit;
 
 
@@ -221,7 +222,11 @@ public class TestDbElemTensor extends TestCase {
 	}
 	
 	
-	
+	/**
+	 * Generates a rank-2 tensor of complex numbers.
+	 * 
+	 * @return The rank-2 tensor of complex numbers.
+	 */
 	protected EinsteinTensorElem<String,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 		genTensorA()
 		{
@@ -251,6 +256,11 @@ public class TestDbElemTensor extends TestCase {
 	
 	
 	
+	/**
+	 * Generates a factory for a tensor of complex numbers.
+	 * 
+	 * @return The tensor of complex numbers.
+	 */
 	EinsteinTensorElemFactory<String,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 		genTensorFac()
 	{
@@ -282,6 +292,9 @@ public class TestDbElemTensor extends TestCase {
 		TypeSystemInit.initType( graph );
 		
 		
+		SegmentedTransactionManager.beginSegmentedTransaction( graph );
+		
+		
 		HGHandle hndl = graph.add( genTensorA() );
 		
 		HGHandle hndl2 = graph.add( genTensorFac() );
@@ -309,6 +322,9 @@ public class TestDbElemTensor extends TestCase {
 		
 		
 		Assert.assertTrue( cnt == 25 );
+		
+		
+		SegmentedTransactionManager.commitSegmentedTransaction( graph );
 		
 		
 		graph.close();

@@ -43,6 +43,7 @@ import simplealgebra.NotInvertibleException;
 import simplealgebra.ga.GeometricAlgebraMultivectorElem;
 import simplealgebra.ga.GeometricAlgebraMultivectorElemFactory;
 import simplealgebra.ga.GeometricAlgebraOrd;
+import simplealgebra.store.SegmentedTransactionManager;
 import simplealgebra.store.TypeSystemInit;
 
 
@@ -61,7 +62,11 @@ public class TestDbElemMultivector extends TestCase {
 	
 	
 	
-	
+	/**
+	 * Generates a random 4-D multivector of complex numbers.
+	 * 
+	 * @return The random multivector of complex numbers.
+	 */
 	protected GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,
 		ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 		genMvecA()
@@ -91,7 +96,11 @@ public class TestDbElemMultivector extends TestCase {
 		}
 	
 	
-	
+	/**
+	 * Returns a factory for a 4-D multivector of complex numbers.
+	 * 
+	 * @return The factory.
+	 */
 	GeometricAlgebraMultivectorElemFactory<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,
 		ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 		genMvecFac()
@@ -127,6 +136,9 @@ public class TestDbElemMultivector extends TestCase {
 		TypeSystemInit.initType( graph );
 		
 		
+		SegmentedTransactionManager.beginSegmentedTransaction( graph );
+		
+		
 		HGHandle hndl = graph.add( genMvecA() );
 		
 		HGHandle hndl2 = graph.add( genMvecFac() );
@@ -156,6 +168,9 @@ public class TestDbElemMultivector extends TestCase {
 		
 		
 		Assert.assertTrue( cnt == 2 );
+		
+		
+		SegmentedTransactionManager.commitSegmentedTransaction( graph );
 		
 		
 		graph.close();

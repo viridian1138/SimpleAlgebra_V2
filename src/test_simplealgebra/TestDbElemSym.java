@@ -32,6 +32,7 @@ import org.hypergraphdb.HyperGraph;
 import simplealgebra.DoubleElem;
 import simplealgebra.DoubleElemFactory;
 import simplealgebra.NotInvertibleException;
+import simplealgebra.store.SegmentedTransactionManager;
 import simplealgebra.store.TypeSystemInit;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicIdentity;
@@ -52,7 +53,11 @@ public class TestDbElemSym extends TestCase {
 	
 	
 	
-	
+	/**
+	 * Generates a test symbolic expression to evaluate persistence/retrieval.
+	 * 
+	 * @return The test symbolic expression.
+	 */
 	protected SymbolicElem<DoubleElem,DoubleElemFactory> genSymA()
 	{
 		final DoubleElemFactory de = new DoubleElemFactory();
@@ -84,6 +89,9 @@ public class TestDbElemSym extends TestCase {
 		TypeSystemInit.initType( graph );
 		
 		
+		SegmentedTransactionManager.beginSegmentedTransaction( graph );
+		
+		
 		HGHandle hndl = graph.add( genSymA() );
 		
 		// HGHandle hndl2 = graph.add( genSymFac() );
@@ -112,6 +120,9 @@ public class TestDbElemSym extends TestCase {
 //		
 //		
 //		Assert.assertTrue( cnt == 2 );
+		
+		
+		SegmentedTransactionManager.commitSegmentedTransaction( graph );
 		
 		
 		graph.close();

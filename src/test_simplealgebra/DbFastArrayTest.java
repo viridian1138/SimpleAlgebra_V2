@@ -35,12 +35,13 @@ import org.hypergraphdb.HyperGraph;
 
 import simplealgebra.store.DbFastArray2D;
 import simplealgebra.store.MemoryClearingSystem;
+import simplealgebra.store.SegmentedTransactionManager;
 import simplealgebra.store.TypeSystemInit;
 
 
 
 /**
- * Tests HypergraphDB.
+ * Tests HypergraphDB execution for DbFastArray2D.
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
@@ -50,12 +51,15 @@ import simplealgebra.store.TypeSystemInit;
 public class DbFastArrayTest extends TestCase {
 	
 	
+	/**
+	 * The size of the array along the "T" axis.
+	 */
 	static final int T_SZ = 100;
 
 	
 	
 	/**
-	 * Test Hypergraph execution
+	 * Tests Hypergraph execution
 	 */
 	public void testFastArray2D() throws Throwable
 	{
@@ -70,6 +74,9 @@ public class DbFastArrayTest extends TestCase {
 
 		
 		TypeSystemInit.initType( graph );
+		
+		
+		SegmentedTransactionManager.beginSegmentedTransaction( graph );
 		
 		
 		
@@ -129,6 +136,10 @@ public class DbFastArrayTest extends TestCase {
 		
 		
 		db.close();
+		
+		
+		SegmentedTransactionManager.commitSegmentedTransaction( graph );
+		
 		
 		graph.close();
 		
