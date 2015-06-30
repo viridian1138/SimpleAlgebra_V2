@@ -42,6 +42,17 @@ import org.hypergraphdb.cache.SimpLRU;
  */
 public class MemoryClearingSystem {
 	
+	/**
+	 * Maximum number of checks before the transaction is suspended
+	 * to prevent performance impacts from excessively long transaction logs.
+	 */
+	private static final int MAX_TRANSACTION_CNT = 100;
+	
+	/**
+	 * Count of number of checks since last transaction suspend.
+	 */
+	private static int transactionCnt = 0;
+	
 
 	/**
 	 * Initializes the memory clearing system.
@@ -52,6 +63,7 @@ public class MemoryClearingSystem {
 	{
 		graph.getCache().setIncidenceCache(
 	        	new SimpLRU(0.5f, 0.3f) );
+		transactionCnt = 0;
 	}
 	
 	
@@ -65,11 +77,23 @@ public class MemoryClearingSystem {
 		final long freeMemory = Runtime.getRuntime().freeMemory();
 		final long totalMemory = Runtime.getRuntime().totalMemory();
 		final long totalMem10 = totalMemory / 5L;
+		transactionCnt++;
 		if( freeMemory <= totalMem10 )
 		{
 			SegmentedTransactionManager.suspendSegmentedTransaction( graph );
 			( (SimpLRU)( graph.getCache().getIncidenceCache() ) ).evict();
 			SegmentedTransactionManager.restartSegmentedTransaction( graph );
+			transactionCnt = 0;
+		}
+		else
+		{
+			if( transactionCnt > MAX_TRANSACTION_CNT )
+			{
+				System.out.println( "Commit..." );
+				SegmentedTransactionManager.suspendSegmentedTransaction( graph );
+				SegmentedTransactionManager.restartSegmentedTransaction( graph );
+				transactionCnt = 0;
+			}
 		}
 		
 	}
