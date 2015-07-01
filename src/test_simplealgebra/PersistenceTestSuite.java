@@ -55,6 +55,7 @@ public class PersistenceTestSuite extends TestSuite {
 		s.addTestSuite( TestDbElemBasics.class );
 		s.addTestSuite( TestDbElemSym.class );
 		s.addTestSuite( TestDbElemSymbolicTensorResym.class );
+		s.addTestSuite( TestQueryIterable.class );
 		return( s );
 	}
 	
