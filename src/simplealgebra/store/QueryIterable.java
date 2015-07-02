@@ -26,6 +26,7 @@
 
 package simplealgebra.store;
 
+import java.util.Collection;
 import java.util.Iterator;
 
 import org.hypergraphdb.HGHandle;
@@ -35,12 +36,13 @@ import org.hypergraphdb.query.HGQueryCondition;
 
 /**
  * An iterable that encapsulates a HyperGraph query.  This makes the query useable
- * by classes that recognize the Iterable interface.
+ * by classes that recognize the Iterable interface.  The class also implements the full
+ * Collection interface, but doesn't support most of the Collection methods.
  * 
  * @author thorngreen
  *
  */
-public class QueryIterable<T extends Object> implements Iterable<T> {
+public class QueryIterable<T extends Object> implements Collection<T> {
 
 	/**
 	 * The graph over which to query.
@@ -112,6 +114,95 @@ public class QueryIterable<T extends Object> implements Iterable<T> {
 		HGSearchResult<HGHandle> rs = graph.find( condition );
 		return( new QueryIterator( rs ) );
 	}
+
+
+	@Override
+	public int size() {
+		int cnt = 0;
+		Iterator<T> it = iterator();
+		while( it.hasNext() )
+		{
+			T ob = it.next();
+			cnt++;
+		}
+		return( cnt );
+	}
+
+
+	@Override
+	public boolean isEmpty() {
+		return( !( iterator().hasNext() ) );
+	}
+
+
+	@Override
+	public boolean contains(Object o) {
+		Iterator<T> it = iterator();
+		while( it.hasNext() )
+		{
+			T ob = it.next();
+			if( ob.equals( o ) )
+			{
+				return( true );
+			}
+		}
+		return( false );
+	}
+
+
+	@Override
+	public Object[] toArray() {
+		throw( new RuntimeException( "Not Supported" ) );
+	}
+
+
+	@Override
+	public <T> T[] toArray(T[] a) {
+		throw( new RuntimeException( "Not Supported" ) );
+	}
+
+
+	@Override
+	public boolean add(T e) {
+		throw( new RuntimeException( "Not Supported" ) );
+	}
+
+
+	@Override
+	public boolean remove(Object o) {
+		throw( new RuntimeException( "Not Supported" ) );
+	}
+
+
+	@Override
+	public boolean containsAll(Collection<?> c) {
+		throw( new RuntimeException( "Not Supported" ) );
+	}
+
+
+	@Override
+	public boolean addAll(Collection<? extends T> c) {
+		throw( new RuntimeException( "Not Supported" ) );
+	}
+
+
+	@Override
+	public boolean removeAll(Collection<?> c) {
+		throw( new RuntimeException( "Not Supported" ) );
+	}
+
+
+	@Override
+	public boolean retainAll(Collection<?> c) {
+		throw( new RuntimeException( "Not Supported" ) );
+	}
+
+
+	@Override
+	public void clear() {
+		throw( new RuntimeException( "Not Supported" ) );
+	}
+	
 
 	
 }
