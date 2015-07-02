@@ -35,6 +35,7 @@ import org.hypergraphdb.query.HGQueryCondition;
 
 import simplealgebra.DoubleElem;
 import simplealgebra.store.DaqHg;
+import simplealgebra.store.DaqHgArrayListResultHandler;
 import simplealgebra.store.DaqHgContext;
 import simplealgebra.store.QueryIterable;
 import simplealgebra.store.SegmentedTransactionManager;
@@ -106,10 +107,13 @@ public class TestDaqHgDbl extends TestCase {
 		
 		
 		ArrayList<DoubleElem> resultList = new ArrayList<DoubleElem>();
+		
+				
+		DaqHgArrayListResultHandler<DoubleElem> resultHandler = new DaqHgArrayListResultHandler<DoubleElem>();
+		resultHandler.setResultList( resultList );
 
 		
-		
-		dd.processDaqHg( "test_simplealgebra/testQueryDbl.drl" , context , resultList );
+		dd.processDaqHg( "test_simplealgebra/testQueryDbl.drl" , context , resultHandler );
 		
 		
 		Assert.assertTrue( resultList.size() == 2 );
