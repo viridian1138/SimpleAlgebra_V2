@@ -57,7 +57,7 @@ public class DaqHg<T extends Object>
 {
 
 	public void processDaqHg( String drlPath , 
-			DaqHgContext<T> context , ArrayList<T> resultList )
+			DaqHgContext<T> context , DaqHgResultHandler<T> resultHandler )
 	{
 		OptimizerFactory.setDefaultOptimizer( OptimizerFactory.SAFE_REFLECTIVE );
 		
@@ -71,7 +71,7 @@ public class DaqHg<T extends Object>
 		
 		StatefulKnowledgeSession session = knowledgeBase.newStatefulKnowledgeSession();
 		
-		context.setResultList( resultList );
+		context.setResultHandler( resultHandler );
 		
 		session.insert( context );
 				

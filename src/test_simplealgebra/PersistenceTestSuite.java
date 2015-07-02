@@ -24,7 +24,6 @@
 
 package test_simplealgebra;
 
-import test_simplealgebra.TestDaqHgDbl;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import junit.textui.TestRunner;
@@ -58,6 +57,7 @@ public class PersistenceTestSuite extends TestSuite {
 		s.addTestSuite( TestDbElemSymbolicTensorResym.class );
 		s.addTestSuite( TestQueryIterable.class );
 		s.addTestSuite( TestDaqHgDbl.class );
+		s.addTestSuite( TestDaqHgCompound.class );
 		return( s );
 	}
 	

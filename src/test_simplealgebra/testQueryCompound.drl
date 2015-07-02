@@ -22,21 +22,24 @@ package test_simplealgebra
 
 
 
-import simplealgebra.store.DaqHgContext;
-import simplealgebra.DoubleElem;
+import test_simplealgebra.TestDaqHgCompound;
+import simplealgebra.ga.GeometricAlgebraMultivectorElem;
+import simplealgebra.et.EinsteinTensorElem;
 
 
 
 
 
 
-// Simple query to select all DoubleElem instances with a value greater than 3.0
-rule "Select DoubleElems"
+// Compound query that performs a join between a query of multivectors and a query of tensors.
+rule "Select Join Elems"
      when
-          n0 : DaqHgContext( )
-          d0 : DoubleElem( val > 3 ) from n0.getDefaultPrimitiveQuery()
+          n0 : TestDaqHgCompound.CompoundQueryContext( )
+          d0 : GeometricAlgebraMultivectorElem( ) from n0.getDefaultPrimitiveQuery()
+          d1 : EinsteinTensorElem( ) from n0.getCompoundPrimitiveQuery()
+          eval( n0.isGeometricClose( d0 , d1 ) )
      then
-          n0.getResultHandler().handle( d0 );
+          n0.getResultHandler().handle( n0.genResult( d0 , d1 ) );
 end
 
 

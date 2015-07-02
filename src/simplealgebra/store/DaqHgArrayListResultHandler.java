@@ -30,43 +30,42 @@
 
 package simplealgebra.store;
 
+import java.util.ArrayList;
+
 
 
 
 /**
- * Stores the contest for a DaqHg (Drools As a Query language for HyperGraphDB) query.
+ * Abstract class for handling DaqHg (Drools As a Query language for HyperGraphDB) query results.
  * 
  * @author thorngreen
  *
  * @param <T> The type of the objects in the result set for the query.
  */
-public class DaqHgContext<T extends Object> 
+public class DaqHgArrayListResultHandler<T extends Object> extends DaqHgResultHandler<T>
 {
 
-	
-	protected DaqHgResultHandler<T> resultHandler;
-	
-	
-	protected QueryIterable<?> defaultPrimitiveQuery;
-
+	/**
+	 * The result set for the query.
+	 */
+	protected ArrayList<T> resultList;
 	
 	
-	public DaqHgResultHandler<T> getResultHandler() {
-		return resultHandler;
+	public ArrayList<T> getResultList() {
+		return resultList;
 	}
 
-	public void setResultHandler(DaqHgResultHandler<T> resultHandler) {
-		this.resultHandler = resultHandler;
+
+	public void setResultList(ArrayList<T> resultList) {
+		this.resultList = resultList;
 	}
 
-	public QueryIterable<?> getDefaultPrimitiveQuery() {
-		return defaultPrimitiveQuery;
-	}
 
-	public void setDefaultPrimitiveQuery(QueryIterable<?> defaultPrimitiveQuery) {
-		this.defaultPrimitiveQuery = defaultPrimitiveQuery;
+	@Override
+	public void handle( T result )
+	{
+		resultList.add( result );
 	}
-
 	
 	
 }
