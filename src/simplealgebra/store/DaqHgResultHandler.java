@@ -36,6 +36,8 @@ package simplealgebra.store;
 /**
  * Abstract class for handling DaqHg (Drools As a Query language for HyperGraphDB) query results.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  * @param <T> The type of the objects in the result set for the query.

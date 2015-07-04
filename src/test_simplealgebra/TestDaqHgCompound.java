@@ -70,23 +70,49 @@ public class TestDaqHgCompound extends TestCase {
 	public static class CompoundQueryResult
 	{
 		
+		/**
+		 * The multivector portion of the compound result.
+		 */
 		protected GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory> gaResult;
 		
+		/**
+		 * The tensor portion of the compound result.
+		 */
 		protected EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> tensorResult;
 
+		/**
+		 * Gets the multivector portion of the compound result.
+		 * 
+		 * @return The multivector portion of the compound result.
+		 */
 		public GeometricAlgebraMultivectorElem<TestDimensionTwo, GeometricAlgebraOrd<TestDimensionTwo>, DoubleElem, DoubleElemFactory> getGaResult() {
 			return gaResult;
 		}
 
+		/**
+		 * Sets the multivector portion of the compound result.
+		 * 
+		 * @param gaResult The multivector portion of the compound result.
+		 */
 		public void setGaResult(
 				GeometricAlgebraMultivectorElem<TestDimensionTwo, GeometricAlgebraOrd<TestDimensionTwo>, DoubleElem, DoubleElemFactory> gaResult) {
 			this.gaResult = gaResult;
 		}
 
+		/**
+		 * Gets the tensor portion of the compound result.
+		 * 
+		 * @return The tensor portion of the compound result.
+		 */
 		public EinsteinTensorElem<String, DoubleElem, DoubleElemFactory> getTensorResult() {
 			return tensorResult;
 		}
 
+		/**
+		 * Sets the tensor portion of the compound result.
+		 * 
+		 * @param tensorResult The tensor portion of the compound result.
+		 */
 		public void setTensorResult(
 				EinsteinTensorElem<String, DoubleElem, DoubleElemFactory> tensorResult) {
 			this.tensorResult = tensorResult;
@@ -106,18 +132,39 @@ public class TestDaqHgCompound extends TestCase {
 	 */
 	public static class CompoundQueryContext extends DaqHgContext<CompoundQueryResult>
 	{
+		
+		/**
+		 * The compound query for tensors.
+		 */
 		protected QueryIterable<EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>> compoundPrimitiveQuery;
 
+		/**
+		 * Gets the tensor portion of the compound query.
+		 * 
+		 * @return The tensor portion of the compound query.
+		 */
 		public QueryIterable<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>> getCompoundPrimitiveQuery() {
 			return compoundPrimitiveQuery;
 		}
 
+		/**
+		 * Sets the tensor portion of the compound query.
+		 * 
+		 * @param compoundPrimitiveQuery The tensor portion of the compound query.
+		 */
 		public void setCompoundPrimitiveQuery(
 				QueryIterable<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>> compoundPrimitiveQuery) {
 			this.compoundPrimitiveQuery = compoundPrimitiveQuery;
 		}
 		
 		
+		/**
+		 * Returns true if the tensor and the multivector are close to each other, false otherwise.
+		 * 
+		 * @param gaResult The multivector to check.
+		 * @param tensorResult The tensor to check.
+		 * @return True if the tensor and the multivector are close to each other, false otherwise.
+		 */
 		public boolean isGeometricClose(
 				GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory> gaResult,
 				EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> tensorResult
@@ -134,6 +181,13 @@ public class TestDaqHgCompound extends TestCase {
 		}
 		
 		
+		/**
+		 * Generates a compound query result containing both the multivector from the multivector query and the tensor from the tensor query.
+		 * 
+		 * @param gaResult The multivector query result.
+		 * @param tensorResult The tensor query result.
+		 * @return The compound query result.
+		 */
 		public CompoundQueryResult genResult(
 				GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory> gaResult,
 				EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> tensorResult
@@ -150,7 +204,13 @@ public class TestDaqHgCompound extends TestCase {
 	
 	
 	
-	
+	/**
+	 * Sets the ordinates of a 2-D multivector.
+	 * 
+	 * @param el The multivector on which to set the ordinates.
+	 * @param xVal The X-ordinate to set.
+	 * @param yVal The Y-ordinate to set.
+	 */
 	protected void setOrdinateValues( GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory> el,
 				double xVal , double yVal )
 	{
@@ -170,7 +230,13 @@ public class TestDaqHgCompound extends TestCase {
 	
 	
 	
-	
+	/**
+	 * Sets the ordinates of a rank-one tensor.
+	 * 
+	 * @param el The tensor on which to set the ordinates.
+	 * @param xVal The X-ordinate to set.
+	 * @param yVal The Y-ordinate to set.
+	 */
 	protected void setOrdinateValues( EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> el,
 			double xVal , double yVal )
 {

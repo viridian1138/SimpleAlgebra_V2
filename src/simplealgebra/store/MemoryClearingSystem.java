@@ -37,6 +37,8 @@ import org.hypergraphdb.cache.SimpLRU;
 /**
  * Class for automatically clearing unused Hypergraph memory.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  */

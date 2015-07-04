@@ -38,6 +38,8 @@ import java.util.ArrayList;
 /**
  * Abstract class for handling DaqHg (Drools As a Query language for HyperGraphDB) query results.
  * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
  * @author thorngreen
  *
  * @param <T> The type of the objects in the result set for the query.
@@ -50,12 +52,20 @@ public class DaqHgArrayListResultHandler<T extends Object> extends DaqHgResultHa
 	 */
 	protected ArrayList<T> resultList;
 	
-	
+	/**
+	 * Gets the result set for the query.
+	 * 
+	 * @return The result set for the query.
+	 */
 	public ArrayList<T> getResultList() {
 		return resultList;
 	}
 
-
+	/**
+	 * Sets the result set for the query.
+	 * 
+	 * @param resultList The result set for the query.
+	 */
 	public void setResultList(ArrayList<T> resultList) {
 		this.resultList = resultList;
 	}

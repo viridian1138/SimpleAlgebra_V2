@@ -30,24 +30,22 @@
 
 package simplealgebra.store;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.Map;
-
 import org.kie.api.io.ResourceType;
+import org.kie.internal.KnowledgeBase;
 import org.kie.internal.KnowledgeBaseFactory;
 import org.kie.internal.builder.KnowledgeBuilder;
 import org.kie.internal.builder.KnowledgeBuilderFactory;
 import org.kie.internal.io.ResourceFactory;
 import org.kie.internal.runtime.StatefulKnowledgeSession;
 import org.mvel2.optimizers.OptimizerFactory;
-import org.kie.internal.KnowledgeBase;
 
 
 
 
 /**
  * Executes a DaqHg (Drools As a Query language for HyperGraphDB) query.
+ * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
  * @author thorngreen
  *
@@ -56,6 +54,13 @@ import org.kie.internal.KnowledgeBase;
 public class DaqHg<T extends Object> 
 {
 
+	/**
+	 * Executes a DaqHg (Drools As a Query language for HyperGraphDB) query.
+	 * 
+	 * @param drlPath The path to the Drools query description.
+	 * @param context The context for the query execution.
+	 * @param resultHandler The handler for the query results.
+	 */
 	public void processDaqHg( String drlPath , 
 			DaqHgContext<T> context , DaqHgResultHandler<T> resultHandler )
 	{

@@ -34,7 +34,9 @@ package simplealgebra.store;
 
 
 /**
- * Stores the contest for a DaqHg (Drools As a Query language for HyperGraphDB) query.
+ * Stores the context for a DaqHg (Drools As a Query language for HyperGraphDB) query.
+ * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
  * @author thorngreen
  *
@@ -43,26 +45,49 @@ package simplealgebra.store;
 public class DaqHgContext<T extends Object> 
 {
 
-	
+	/**
+	 * The result handler for the query.
+	 */
 	protected DaqHgResultHandler<T> resultHandler;
 	
-	
+	/**
+	 * The default primitive query.
+	 */
 	protected QueryIterable<?> defaultPrimitiveQuery;
 
 	
-	
+	/**
+	 * Gets the result handle for the query.
+	 * 
+	 * @return The result handle for the query.
+	 */
 	public DaqHgResultHandler<T> getResultHandler() {
 		return resultHandler;
 	}
 
+	/**
+	 * Sets the result handler for the query.
+	 * 
+	 * @param resultHandler The result handle for the query.
+	 */
 	public void setResultHandler(DaqHgResultHandler<T> resultHandler) {
 		this.resultHandler = resultHandler;
 	}
 
+	/**
+	 * Gets the default primitive query.
+	 * 
+	 * @return The default primitive query.
+	 */
 	public QueryIterable<?> getDefaultPrimitiveQuery() {
 		return defaultPrimitiveQuery;
 	}
 
+	/**
+	 * Stores the default primitive query.
+	 * 
+	 * @param defaultPrimitiveQuery The default primitive query.
+	 */
 	public void setDefaultPrimitiveQuery(QueryIterable<?> defaultPrimitiveQuery) {
 		this.defaultPrimitiveQuery = defaultPrimitiveQuery;
 	}

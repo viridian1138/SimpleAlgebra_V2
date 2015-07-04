@@ -42,7 +42,7 @@ import org.hypergraphdb.query.HGQueryCondition;
  * @author thorngreen
  *
  */
-public class QueryIterable<T extends Object> implements Collection<T> {
+public class QueryIterable<T extends Object> implements Collection<T>, Iterable<T> {
 
 	/**
 	 * The graph over which to query.
