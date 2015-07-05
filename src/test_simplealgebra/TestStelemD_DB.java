@@ -52,6 +52,7 @@ import simplealgebra.ga.GeometricAlgebraMultivectorElemFactory;
 import simplealgebra.stelem.Nelem;
 import simplealgebra.stelem.Stelem;
 import simplealgebra.store.DbFastArray4D_Dbl;
+import simplealgebra.store.DbFastArray4D_Param;
 import simplealgebra.store.SegmentedTransactionManager;
 import simplealgebra.store.TypeSystemInit;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
@@ -1871,10 +1872,18 @@ public class TestStelemD_DB extends TestCase {
 		SegmentedTransactionManager.beginSegmentedTransaction( graph );
 		
 		
+		final DbFastArray4D_Param dparam = new DbFastArray4D_Param();
+		dparam.setGraph( graph );
+		dparam.setTmult( 8 );
+		dparam.setXmult( 8 );
+		dparam.setYmult( 8 );
+		dparam.setZmult( 8 );
+		dparam.setTmax( NUM_T_ITER );
+		dparam.setXmax( NUM_X_ITER );
+		dparam.setYmax( NUM_Y_ITER );
+		dparam.setZmax( NUM_Z_ITER );
 		
-		iterArray = new DbFastArray4D_Dbl( graph ,
-				8 , 8 , 8 , 8 ,
-				NUM_T_ITER , NUM_X_ITER , NUM_Y_ITER , NUM_Z_ITER );
+		iterArray = new DbFastArray4D_Dbl( dparam );
 		
 		
 		final Random rand = new Random( 3344 );
