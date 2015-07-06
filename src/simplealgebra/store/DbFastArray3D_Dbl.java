@@ -125,17 +125,16 @@ public class DbFastArray3D_Dbl {
 	 * @param _xmax The size of the array along the X-axis.
 	 * @param _ymax The size of the array along the Y-axis.
 	 */
-	public DbFastArray3D_Dbl( final HyperGraph _graph , int _tmult , int _xmult , int _ymult ,
-			int _tmax , int _xmax , int _ymax )
+	public DbFastArray3D_Dbl( final DbFastArray3D_Param _param )
 	{
-		graph = _graph;
-		tmult = _tmult;
-		xmult = _xmult;
-		ymult = _ymult;
-		tmax = _tmax;
-		xmax = _xmax;
-		ymax = _ymax;
-		dsz = calcDsz( _tmult , _xmult , _ymult , _tmax , _xmax , _ymax );
+		graph = _param.getGraph();
+		tmult = _param.getTmult();
+		xmult = _param.getXmult();
+		ymult = _param.getYmult();
+		tmax = _param.getTmax();
+		xmax = _param.getXmax();
+		ymax = _param.getYmax();
+		dsz = calcDsz( _param );
 		
 		Object hnd = null;
 		
@@ -353,17 +352,18 @@ public class DbFastArray3D_Dbl {
 	/**
 	 * Calculates the required number of traversal levels.
 	 * 
-	 * @param _tmult The size of the each cell along the T-axis.
-	 * @param _xmult The size of the each cell along the X-axis.
-	 * @param _ymult The size of the each cell along the Y-axis.
-	 * @param _tmax The size of the array along the T-axis.
-	 * @param _xmax The size of the array along the X-axis.
-	 * @param _ymax The size of the array along the Y-axis.
+	 * @param _param The input parameter for the array constructor.
 	 * @return The required number of traversal levels.
 	 */
-	protected int calcDsz( int _tmult , int _xmult , int _ymult , int _tmax , int _xmax , int _ymax )
+	protected int calcDsz( final DbFastArray3D_Param _param )
 	{
 		int dsz = 0;
+		int _tmult = _param.getTmult();
+		int _xmult = _param.getXmult();
+		int _ymult = _param.getYmult();
+		int _tmax = _param.getTmax();
+		int _xmax = _param.getXmax();
+		int _ymax = _param.getYmax();
 		while( ( _tmax > _tmult ) || ( _xmax > _xmult ) || ( _ymax > _ymult ) )
 		{
 			_tmax = _tmax / _tmult;

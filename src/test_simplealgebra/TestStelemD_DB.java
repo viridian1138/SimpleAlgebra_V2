@@ -1874,10 +1874,10 @@ public class TestStelemD_DB extends TestCase {
 		
 		final DbFastArray4D_Param dparam = new DbFastArray4D_Param();
 		dparam.setGraph( graph );
-		dparam.setTmult( 8 );
-		dparam.setXmult( 8 );
-		dparam.setYmult( 8 );
-		dparam.setZmult( 8 );
+		dparam.setTmult( 20 );
+		dparam.setXmult( 20 );
+		dparam.setYmult( 20 );
+		dparam.setZmult( 20 );
 		dparam.setTmax( NUM_T_ITER );
 		dparam.setXmax( NUM_X_ITER );
 		dparam.setYmax( NUM_Y_ITER );
