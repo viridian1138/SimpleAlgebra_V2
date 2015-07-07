@@ -91,7 +91,7 @@ public class MemoryClearingSystem {
 		{
 			if( transactionCnt > MAX_TRANSACTION_CNT )
 			{
-				System.out.println( "Commit..." );
+				// System.out.println( "Commit..." );
 				SegmentedTransactionManager.suspendSegmentedTransaction( graph );
 				SegmentedTransactionManager.restartSegmentedTransaction( graph );
 				transactionCnt = 0;

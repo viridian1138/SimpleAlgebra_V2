@@ -170,6 +170,17 @@ public class TestStelemC_DB extends TestCase {
 	
 	
 	
+	protected static final int TMULT = 8;
+	
+	
+	protected static final int XMULT = 8;
+	
+	
+	protected static final int YMULT = 8;
+	
+	
+	
+	
 	/**
 	 * Temp step size in the T-direction.
 	 */
@@ -1656,54 +1667,95 @@ public class TestStelemC_DB extends TestCase {
 	protected void performIterationT( final int tval , final StelemNewton newton , final HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace2 ) 
 			throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
+		int xcnt = 0;
+		int ycnt = 0;
+		int ystrt = 0;
+		int xstrt = 0;
+		int ydn = YMULT - 1;
+		int xdn = XMULT - 1;
+		for( int acnt = 0 ; acnt < ( NUM_X_ITER * NUM_Y_ITER ) ; acnt++ )
+		{	
 		
-		for( int xcnt = 0 ; xcnt < NUM_X_ITER ; xcnt++ )
-		{
-			for( int ycnt = 0 ; ycnt < NUM_Y_ITER ; ycnt++ )
+			// System.out.println( ">> " + tval + " / " + xcnt + " / " + ycnt );
+			fillTempArray( tval , xcnt , ycnt );
+			clearSpatialAssertArray();
+	
+			
+			final double ival = TestStelemC_DB.getUpdateValue();
+			
+			
+		
+			
+			DoubleElem err = newton.eval( implicitSpace2 );
+	
+	
+			final double val = TestStelemC_DB.getUpdateValue();
+			
+			if( ( xcnt == 12 ) && ( ycnt == 5 ) )
 			{
-				//System.out.println( ">> " + tval + " / " + xcnt + " / " + ycnt );
-				fillTempArray( tval , xcnt , ycnt );
-				clearSpatialAssertArray();
-	
-			
-				final double ival = TestStelemC_DB.getUpdateValue();
-			
-			
-		
-			
-				DoubleElem err = newton.eval( implicitSpace2 );
-	
-	
-				final double val = TestStelemC_DB.getUpdateValue();
-			
-				if( ( xcnt == 12 ) && ( ycnt == 5 ) )
-				{
-					System.out.println( "******************" );
-					System.out.println( " ( " + xcnt + " , " + ycnt + " ) " );
-					System.out.println( ival );
-					System.out.println( val );
-					System.out.println( "## " + ( err.getVal() ) );
-				}
-				
-				
-				Assert.assertTrue( spatialAssertArray[ 0 ][ 0 ][ 0 ] == 0 );
-				
-				Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ] > 0 );
-				
-				Assert.assertTrue( spatialAssertArray[ 2 ][ 1 ][ 1 ] > 0 );
-				Assert.assertTrue( spatialAssertArray[ 1 ][ 2 ][ 1 ] > 0 );
-				Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 2 ] > 0 );
-				
-				Assert.assertTrue( spatialAssertArray[ 0 ][ 1 ][ 1 ] > 0 );
-				Assert.assertTrue( spatialAssertArray[ 1 ][ 0 ][ 1 ] > 0 );
-				Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 0 ] > 0 );
-			
-			
-				Assert.assertTrue( Math.abs( err.getVal() ) < ( 0.01 * Math.abs( val ) + 0.01 ) );
-			
-		
-				iterArray.set( tval + 1 , xcnt , ycnt , val );
+				System.out.println( "******************" );
+				System.out.println( " ( " + xcnt + " , " + ycnt + " ) " );
+				System.out.println( ival );
+				System.out.println( val );
+				System.out.println( "## " + ( err.getVal() ) );
 			}
+				
+				
+			Assert.assertTrue( spatialAssertArray[ 0 ][ 0 ][ 0 ] == 0 );
+				
+			Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ] > 0 );
+				
+			Assert.assertTrue( spatialAssertArray[ 2 ][ 1 ][ 1 ] > 0 );
+			Assert.assertTrue( spatialAssertArray[ 1 ][ 2 ][ 1 ] > 0 );
+			Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 2 ] > 0 );
+				
+			Assert.assertTrue( spatialAssertArray[ 0 ][ 1 ][ 1 ] > 0 );
+			Assert.assertTrue( spatialAssertArray[ 1 ][ 0 ][ 1 ] > 0 );
+			Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 0 ] > 0 );
+			
+			
+			Assert.assertTrue( Math.abs( err.getVal() ) < ( 0.01 * Math.abs( val ) + 0.01 ) );
+			
+		
+			iterArray.set( tval + 1 , xcnt , ycnt , val );
+			
+			
+			if( ( ydn > 0 ) && ( ycnt < ( NUM_Y_ITER - 1 ) ) )
+			{
+				ycnt++;
+				ydn--;
+			}
+			else
+			{
+				if( ( xdn > 0 ) && ( xcnt < ( NUM_X_ITER - 1 ) ) )
+				{
+					xcnt++;
+					xdn--;
+					ycnt = ystrt;
+					ydn = YMULT - 1;
+				}
+				else
+				{
+					if( ycnt < ( NUM_Y_ITER - 1 ) )
+					{
+						ycnt++;
+						ystrt = ycnt;
+						ydn = YMULT - 1;
+						xcnt = xstrt;
+						xdn = XMULT - 1;
+					}
+					else
+					{
+						ycnt = 0;
+						ystrt = 0;
+						ydn = YMULT - 1;
+						xcnt++;
+						xstrt = xcnt;
+						xdn = XMULT - 1;
+					}
+				}
+			}
+			
 					
 		}
 		
@@ -1775,9 +1827,9 @@ public class TestStelemC_DB extends TestCase {
 		
 		final DbFastArray3D_Param dparam = new DbFastArray3D_Param();
 		dparam.setGraph( graph );
-		dparam.setTmult( 8 );
-		dparam.setXmult( 8 );
-		dparam.setYmult( 8 );
+		dparam.setTmult( TMULT );
+		dparam.setXmult( XMULT );
+		dparam.setYmult( YMULT );
 		dparam.setTmax( NUM_T_ITER );
 		dparam.setXmax( NUM_X_ITER );
 		dparam.setYmax( NUM_Y_ITER );

@@ -177,6 +177,20 @@ public class TestStelemD_DB extends TestCase {
 	
 	
 	
+	protected static final int TMULT = 20;
+	
+	
+	protected static final int XMULT = 20;
+	
+	
+	protected static final int YMULT = 20;
+	
+	
+	protected static final int ZMULT = 20;
+	
+	
+	
+	
 	
 	/**
 	 * Temp step size in the T-direction.
@@ -1749,60 +1763,131 @@ public class TestStelemD_DB extends TestCase {
 	protected void performIterationT( final int tval , final StelemNewton newton , final HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace2 ) 
 			throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
-		
-		for( int xcnt = 0 ; xcnt < NUM_X_ITER ; xcnt++ )
+		int xcnt = 0;
+		int ycnt = 0;
+		int zcnt = 0;
+		int zstrt = 0;
+		int ystrt = 0;
+		int xstrt = 0;
+		int zdn = ZMULT - 1;
+		int ydn = YMULT - 1;
+		int xdn = XMULT - 1;
+		for( int acnt = 0 ; acnt < ( NUM_X_ITER * NUM_Y_ITER * NUM_Z_ITER ) ; acnt++ )
 		{
-			for( int ycnt = 0 ; ycnt < NUM_Y_ITER ; ycnt++ )
+			
+			System.out.println( ">> " + tval + " / " + xcnt + " / " + ycnt + " / " + zcnt );
+			fillTempArray( tval , xcnt , ycnt , zcnt );
+			clearSpatialAssertArray();
+	
+			
+			final double ival = TestStelemD_DB.getUpdateValue();
+			
+			
+		
+			
+			DoubleElem err = newton.eval( implicitSpace2 );
+	
+	
+			final double val = TestStelemD_DB.getUpdateValue();
+			
+			if( ( xcnt == 12 ) && ( ycnt == 5 ) && ( zcnt == 5 ) )
 			{
-				for( int zcnt = 0 ; zcnt < NUM_Z_ITER ; zcnt++ )
-				{
-					System.out.println( ">> " + tval + " / " + xcnt + " / " + ycnt + " / " + zcnt );
-					fillTempArray( tval , xcnt , ycnt , zcnt );
-					clearSpatialAssertArray();
-	
-			
-					final double ival = TestStelemD_DB.getUpdateValue();
-			
-			
-		
-			
-					DoubleElem err = newton.eval( implicitSpace2 );
-	
-	
-					final double val = TestStelemD_DB.getUpdateValue();
-			
-					if( ( xcnt == 12 ) && ( ycnt == 5 ) && ( zcnt == 5 ) )
-					{
-						System.out.println( "******************" );
-						System.out.println( " ( " + xcnt + " , " + ycnt + " , " + zcnt + " ) " );
-						System.out.println( ival );
-						System.out.println( val );
-						System.out.println( "## " + ( err.getVal() ) );
-					}
-					
-					
-					Assert.assertTrue( spatialAssertArray[ 0 ][ 0 ][ 0 ][ 0 ] == 0 );
-					
-					Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 1 ] > 0 );
-					
-					Assert.assertTrue( spatialAssertArray[ 2 ][ 1 ][ 1 ][ 1 ] > 0 );
-					Assert.assertTrue( spatialAssertArray[ 1 ][ 2 ][ 1 ][ 1 ] > 0 );
-					Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 2 ][ 1 ] > 0 );
-					Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 2 ] > 0 );
-					
-					Assert.assertTrue( spatialAssertArray[ 0 ][ 1 ][ 1 ][ 1 ] > 0 );
-					Assert.assertTrue( spatialAssertArray[ 1 ][ 0 ][ 1 ][ 1 ] > 0 );
-					Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 0 ][ 1 ] > 0 );
-					Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 0 ] > 0 );
-			
-			
-					Assert.assertTrue( Math.abs( err.getVal() ) < ( 0.01 * Math.abs( val ) + 0.01 ) );
-			
-		
-					iterArray.set( tval + 1 , xcnt , ycnt , zcnt , val );
-				}
-				
+				System.out.println( "******************" );
+				System.out.println( " ( " + xcnt + " , " + ycnt + " , " + zcnt + " ) " );
+				System.out.println( ival );
+				System.out.println( val );
+				System.out.println( "## " + ( err.getVal() ) );
 			}
+					
+					
+			Assert.assertTrue( spatialAssertArray[ 0 ][ 0 ][ 0 ][ 0 ] == 0 );
+					
+			Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 1 ] > 0 );
+					
+			Assert.assertTrue( spatialAssertArray[ 2 ][ 1 ][ 1 ][ 1 ] > 0 );
+			Assert.assertTrue( spatialAssertArray[ 1 ][ 2 ][ 1 ][ 1 ] > 0 );
+			Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 2 ][ 1 ] > 0 );
+			Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 2 ] > 0 );
+					
+			Assert.assertTrue( spatialAssertArray[ 0 ][ 1 ][ 1 ][ 1 ] > 0 );
+			Assert.assertTrue( spatialAssertArray[ 1 ][ 0 ][ 1 ][ 1 ] > 0 );
+			Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 0 ][ 1 ] > 0 );
+			Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 0 ] > 0 );
+			
+			
+			Assert.assertTrue( Math.abs( err.getVal() ) < ( 0.01 * Math.abs( val ) + 0.01 ) );
+			
+		
+			iterArray.set( tval + 1 , xcnt , ycnt , zcnt , val );
+			
+			
+			if( ( zdn > 0 ) && ( zcnt < ( NUM_Z_ITER - 1 ) ) )
+			{
+				zcnt++;
+				zdn--;
+			}
+			else
+			{
+				if( ( ydn > 0 ) && ( ycnt < ( NUM_Y_ITER - 1 ) ) )
+				{
+					ycnt++;
+					ydn--;
+					zcnt = zstrt;
+					zdn = ZMULT - 1;
+				}
+				else
+				{
+					if( ( xdn > 0 ) && ( xcnt < ( NUM_X_ITER - 1 ) ) )
+					{
+						xcnt++;
+						xdn--;
+						ycnt = ystrt;
+						ydn = YMULT - 1;
+						zcnt = zstrt;
+						zdn = ZMULT - 1;
+					}
+					else
+					{
+						if( zcnt < ( NUM_Z_ITER - 1 ) )
+						{
+							zcnt++;
+							zstrt = zcnt;
+							zdn = ZMULT - 1;
+							ycnt = ystrt;
+							ydn = YMULT - 1;
+							xcnt = xstrt;
+							xdn = XMULT - 1;
+						}
+						else
+						{
+							if( ycnt < ( NUM_Y_ITER - 1 ) )
+							{
+								zcnt = 0;
+								zstrt = 0;
+								zdn = ZMULT - 1;
+								ycnt++;
+								ystrt = ycnt;
+								ydn = YMULT - 1;
+								xcnt = xstrt;
+								xdn = XMULT - 1;
+							}
+							else
+							{
+								zcnt = 0;
+								zstrt = 0;
+								zdn = ZMULT - 1;
+								ycnt = 0;
+								ystrt = 0;
+								ydn = YMULT - 1;
+								xcnt++;
+								xstrt = xcnt;
+								xdn = XMULT - 1;
+							}
+						}
+					}
+				}
+			}
+			
 					
 		}
 	}
@@ -1874,10 +1959,10 @@ public class TestStelemD_DB extends TestCase {
 		
 		final DbFastArray4D_Param dparam = new DbFastArray4D_Param();
 		dparam.setGraph( graph );
-		dparam.setTmult( 20 );
-		dparam.setXmult( 20 );
-		dparam.setYmult( 20 );
-		dparam.setZmult( 20 );
+		dparam.setTmult( TMULT );
+		dparam.setXmult( XMULT );
+		dparam.setYmult( YMULT );
+		dparam.setZmult( ZMULT );
 		dparam.setTmax( NUM_T_ITER );
 		dparam.setXmax( NUM_X_ITER );
 		dparam.setYmax( NUM_Y_ITER );
