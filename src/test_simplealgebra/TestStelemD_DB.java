@@ -177,16 +177,16 @@ public class TestStelemD_DB extends TestCase {
 	
 	
 	
-	protected static final int TMULT = 20;
+	protected static final int TMULT = 8; // 20;
 	
 	
-	protected static final int XMULT = 20;
+	protected static final int XMULT = 8; // 20;
 	
 	
-	protected static final int YMULT = 20;
+	protected static final int YMULT = 8; // 20;
 	
 	
-	protected static final int ZMULT = 20;
+	protected static final int ZMULT = 8; // 20;
 	
 	
 	

@@ -129,6 +129,32 @@ public class DbFastArray4D_Dbl {
 	
 	
 	
+	protected boolean altArrs = false;
+	
+	
+	
+	protected int[] indextA;
+	
+	protected int[] indextB;
+	
+	protected int[] indexxA;
+	
+	protected int[] indexxB;
+	
+	protected int[] indexyA;
+	
+	protected int[] indexyB;
+	
+	protected int[] indexzA;
+	
+	protected int[] indexzB;
+	
+	protected HGHandle argCache[];
+	
+	
+	
+	
+	
 	/**
 	 * Constructs the array.
 	 * 
@@ -167,7 +193,51 @@ public class DbFastArray4D_Dbl {
 		//graph.getCache().close();
 		MemoryClearingSystem.handleCheckClear( graph );
 		
+		
+		indextA = createDszIntArray();
+		
+		indextB = createDszIntArray();
+		
+		indexxA = createDszIntArray();
+		
+		indexxB = createDszIntArray();
+		
+		indexyA = createDszIntArray();
+		
+		indexyB = createDszIntArray();
+		
+		indexzA = createDszIntArray();
+		
+		indexzB = createDszIntArray();
+		
+		argCache = new HGHandle[ dsz ];
+		
 	}
+	
+	
+	
+	protected boolean indicesMatch( int index )
+	{
+		return( ( indextA[ index ] == indextB[ index ] ) && 
+				( indexxA[ index ] == indexxB[ index ] ) && 
+				( indexyA[ index ] == indexyB[ index ] ) && 
+				( indexzA[ index ] == indexzB[ index ] ) );
+	}
+	
+	
+	
+	protected int[] createDszIntArray()
+	{
+		int[] aa = new int[ dsz ];
+		for( int cnt = 0 ; cnt < dsz ; cnt++ )
+		{
+			aa[ cnt ] = -1000000;
+		}
+		return( aa );
+	}
+	
+	
+	
 	
 	
 	/**
@@ -205,10 +275,11 @@ public class DbFastArray4D_Dbl {
 		yprev = y;
 		zprev = z;
 		
-		final int[] indext = new int[ dsz ];
-		final int[] indexx = new int[ dsz ];
-		final int[] indexy = new int[ dsz ];
-		final int[] indexz = new int[ dsz ];
+		altArrs = !altArrs;
+		final int[] indext = altArrs ? indextA : indextB;
+		final int[] indexx = altArrs ? indexxA : indexxB;
+		final int[] indexy = altArrs ? indexyA : indexyB;
+		final int[] indexz = altArrs ? indexzA : indexzB;
 		for( int cnt = 0 ; cnt < dsz ; cnt++ )
 		{
 			indext[ ( dsz - 1 ) - cnt ] = t % tmult; 
@@ -223,20 +294,30 @@ public class DbFastArray4D_Dbl {
 		
 		
 		HGHandle cur = hndl;
+		boolean matchUp = true;
 		
 		
 		for( int cnt = 0 ; cnt < ( dsz - 1 ) ; cnt++ )
 		{
-			//graph.getTransactionManager().beginTransaction();
-			HGHandle[] obj = graph.get( cur );
-			//graph.getTransactionManager().commit();
-			//graph.getCache().close();
-			MemoryClearingSystem.handleCheckClear( graph );
-			cur = obj[ ( indext[ cnt ] ) * ( xmult * ymult * zmult ) + ( indexx[ cnt ] ) * ( ymult * zmult ) + ( indexy[ cnt ] ) * ( zmult ) + indexz[ cnt ] ];
-			if( cur == null )
+			if( matchUp && indicesMatch( cnt ) && ( argCache[ cnt ] != null ) )
 			{
-				oprev = null;
-				return( 0.0 );
+				cur = argCache[ cnt ];
+			}
+			else
+			{
+				matchUp = false;
+				//graph.getTransactionManager().beginTransaction();
+				HGHandle[] obj = graph.get( cur );
+				//graph.getTransactionManager().commit();
+				//graph.getCache().close();
+				MemoryClearingSystem.handleCheckClear( graph );
+				cur = obj[ ( indext[ cnt ] ) * ( xmult * ymult * zmult ) + ( indexx[ cnt ] ) * ( ymult * zmult ) + ( indexy[ cnt ] ) * ( zmult ) + indexz[ cnt ] ];
+				argCache[ cnt ] = cur;
+				if( cur == null )
+				{
+					oprev = null;
+					return( 0.0 );
+				}
 			}
 		}
 		
@@ -285,10 +366,11 @@ public class DbFastArray4D_Dbl {
 		yprev = y;
 		zprev = z;
 		
-		final int[] indext = new int[ dsz ];
-		final int[] indexx = new int[ dsz ];
-		final int[] indexy = new int[ dsz ];
-		final int[] indexz = new int[ dsz ];
+		altArrs = !altArrs;
+		final int[] indext = altArrs ? indextA : indextB;
+		final int[] indexx = altArrs ? indexxA : indexxB;
+		final int[] indexy = altArrs ? indexyA : indexyB;
+		final int[] indexz = altArrs ? indexzA : indexzB;
 		for( int cnt = 0 ; cnt < dsz ; cnt++ )
 		{
 			indext[ ( dsz - 1 ) - cnt ] = t % tmult; 
@@ -303,43 +385,53 @@ public class DbFastArray4D_Dbl {
 		
 		
 		HGHandle cur = hndl;
+		boolean matchUp = true;
 		
 		
 		for( int cnt = 0 ; cnt < ( dsz - 1 ) ; cnt++ )
 		{
-			//graph.getTransactionManager().beginTransaction();
-			HGHandle[] obj = graph.get( cur );
-			HGHandle acur = obj[ ( indext[ cnt ] ) * ( xmult * ymult * zmult ) + ( indexx[ cnt ] ) * ( ymult * zmult ) + ( indexy[ cnt ] ) * ( zmult ) + indexz[ cnt ] ];
-			if( acur == null )
+			if( matchUp && indicesMatch( cnt ) && ( argCache[ cnt ] != null ) )
 			{
-				if( cnt != ( dsz - 2 ) )
-				{
-					HGHandle[] hnd = new HGHandle[ tmult * xmult * ymult * zmult ];
-				
-					HGHandle hndd = graph.add( hnd ).getPersistent();
-					obj[ ( indext[ cnt ] ) * ( xmult * ymult * zmult ) + ( indexx[ cnt ] ) * ( ymult * zmult ) + ( indexy[ cnt ] ) * ( zmult ) + ( indexz[ cnt ] ) ] = hndd;
-					graph.update( obj );
-				
-					cur = hndd;
-				}
-				else
-				{
-					double[] hnd = new double[ tmult * xmult * ymult * zmult ];
-				
-					HGHandle hndd = graph.add( hnd ).getPersistent();
-					obj[ ( indext[ cnt ] ) * ( xmult * ymult * zmult ) + ( indexx[ cnt ] ) * ( ymult * zmult ) + ( indexy[ cnt ] ) * ( zmult ) + ( indexz[ cnt ] ) ] = hndd;
-					graph.update( obj );
-				
-					cur = hndd;
-				}
+				cur = argCache[ cnt ];
 			}
 			else
 			{
-				cur = acur;
+				matchUp = false;
+				//graph.getTransactionManager().beginTransaction();
+				HGHandle[] obj = graph.get( cur );
+				HGHandle acur = obj[ ( indext[ cnt ] ) * ( xmult * ymult * zmult ) + ( indexx[ cnt ] ) * ( ymult * zmult ) + ( indexy[ cnt ] ) * ( zmult ) + indexz[ cnt ] ];
+				if( acur == null )
+				{
+					if( cnt != ( dsz - 2 ) )
+					{
+						HGHandle[] hnd = new HGHandle[ tmult * xmult * ymult * zmult ];
+				
+						HGHandle hndd = graph.add( hnd ).getPersistent();
+						obj[ ( indext[ cnt ] ) * ( xmult * ymult * zmult ) + ( indexx[ cnt ] ) * ( ymult * zmult ) + ( indexy[ cnt ] ) * ( zmult ) + ( indexz[ cnt ] ) ] = hndd;
+						graph.update( obj );
+				
+						cur = hndd;
+					}
+					else
+					{
+						double[] hnd = new double[ tmult * xmult * ymult * zmult ];
+				
+						HGHandle hndd = graph.add( hnd ).getPersistent();
+						obj[ ( indext[ cnt ] ) * ( xmult * ymult * zmult ) + ( indexx[ cnt ] ) * ( ymult * zmult ) + ( indexy[ cnt ] ) * ( zmult ) + ( indexz[ cnt ] ) ] = hndd;
+						graph.update( obj );
+				
+						cur = hndd;
+					}
+				}
+				else
+				{
+					cur = acur;
+				}
+				argCache[ cnt ] = cur;
+				//graph.getTransactionManager().commit();
+				//graph.getCache().close();
+				MemoryClearingSystem.handleCheckClear( graph );
 			}
-			//graph.getTransactionManager().commit();
-			//graph.getCache().close();
-			MemoryClearingSystem.handleCheckClear( graph );
 		}
 		
 		
