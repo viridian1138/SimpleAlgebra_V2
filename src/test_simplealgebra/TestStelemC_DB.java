@@ -34,7 +34,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Random;
 
+import org.hypergraphdb.HGConfiguration;
 import org.hypergraphdb.HyperGraph;
+import org.hypergraphdb.storage.bje.BJEConfig;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
@@ -1817,7 +1819,16 @@ public class TestStelemC_DB extends TestCase {
 		String databaseLocation = "mydbH";
 		HyperGraph graph;
 		
-		graph = new HyperGraph( databaseLocation );
+		
+		graph = new HyperGraph( );
+		HGConfiguration config = new HGConfiguration();
+		BJEConfig bjeConfig = (BJEConfig)( config.getStoreImplementation().getConfiguration() );
+		// System.out.println( "Initial Cache Size : " + ( bjeConfig.getEnvironmentConfig().getCacheSize() ) );
+		bjeConfig.getEnvironmentConfig().setCacheSize( /* 500 */ 200 * 1024 * 2014 );
+		bjeConfig.getDatabaseConfig().setTransactional( false );
+		graph.setConfig( config );
+		graph.open( databaseLocation );
+		
 		
 		TypeSystemInit.initType( graph );
 		

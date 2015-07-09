@@ -34,7 +34,9 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Random;
 
+import org.hypergraphdb.HGConfiguration;
 import org.hypergraphdb.HyperGraph;
+import org.hypergraphdb.storage.bje.BJEConfig;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
@@ -1772,10 +1774,17 @@ public class TestStelemD_DB extends TestCase {
 		int zdn = ZMULT - 1;
 		int ydn = YMULT - 1;
 		int xdn = XMULT - 1;
+		long atm = System.currentTimeMillis();
+		long atm2 = System.currentTimeMillis();
 		for( int acnt = 0 ; acnt < ( NUM_X_ITER * NUM_Y_ITER * NUM_Z_ITER ) ; acnt++ )
 		{
 			
-			System.out.println( ">> " + tval + " / " + xcnt + " / " + ycnt + " / " + zcnt );
+			atm2 = System.currentTimeMillis();
+			if( atm2 - atm >= 1000 )
+			{
+				System.out.println( ">> " + tval + " / " + xcnt + " / " + ycnt + " / " + zcnt );
+				atm = atm2;
+			}
 			fillTempArray( tval , xcnt , ycnt , zcnt );
 			clearSpatialAssertArray();
 	
@@ -1949,7 +1958,16 @@ public class TestStelemD_DB extends TestCase {
 		String databaseLocation = "mydbJ";
 		HyperGraph graph;
 		
-		graph = new HyperGraph( databaseLocation );
+		
+		graph = new HyperGraph( );
+		HGConfiguration config = new HGConfiguration();
+		BJEConfig bjeConfig = (BJEConfig)( config.getStoreImplementation().getConfiguration() );
+		// System.out.println( "Initial Cache Size : " + ( bjeConfig.getEnvironmentConfig().getCacheSize() ) );
+		bjeConfig.getEnvironmentConfig().setCacheSize( /* 500 */ 200 * 1024 * 2014 );
+		bjeConfig.getDatabaseConfig().setTransactional( false );
+		graph.setConfig( config );
+		graph.open( databaseLocation );
+		
 		
 		TypeSystemInit.initType( graph );
 		
