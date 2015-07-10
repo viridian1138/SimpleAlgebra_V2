@@ -334,7 +334,7 @@ public class DbFastArray2D<T extends Object> {
 	protected int calcDsz( int _tmult , int _xmult , int _tmax , int _xmax )
 	{
 		int dsz = 0;
-		while( ( _tmax > _tmult ) || ( _xmax > _xmult ) )
+		while( ( _tmax >= _tmult ) || ( _xmax >= _xmult ) )
 		{
 			_tmax = _tmax / _tmult;
 			_xmax = _xmax / _xmult;

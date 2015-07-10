@@ -481,7 +481,7 @@ public class DbFastArray4D_Dbl {
 		int _xmax = _param.getXmax();
 		int _ymax = _param.getYmax();
 		int _zmax = _param.getZmax();
-		while( ( _tmax > _tmult ) || ( _xmax > _xmult ) || ( _ymax > _ymult ) || ( _zmax > _zmult ) )
+		while( ( _tmax >= _tmult ) || ( _xmax >= _xmult ) || ( _ymax >= _ymult ) || ( _zmax >= _zmult ) )
 		{
 			_tmax = _tmax / _tmult;
 			_xmax = _xmax / _xmult;

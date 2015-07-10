@@ -301,7 +301,7 @@ public class DbFastArray1D_Dbl {
 	protected int calcDsz( int _tmult , int _tmax )
 	{
 		int dsz = 0;
-		while( ( _tmax > _tmult ) )
+		while( ( _tmax >= _tmult ) )
 		{
 			_tmax = _tmax / _tmult;
 			dsz++;
