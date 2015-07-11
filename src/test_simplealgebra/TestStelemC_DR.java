@@ -109,7 +109,7 @@ import simplealgebra.ddx.*;
  *
  * in dimensions (x, y, t) where "c" is an arbitrary constant.
  * 
- * Uses an external-database iteration array to test the ability to support datasets larger than available RAM.
+ * Uses a direct-access file iteration array to test the ability to support datasets larger than available RAM.
  *
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
@@ -166,13 +166,19 @@ public class TestStelemC_DR extends TestCase {
 	
 	
 	
-	
+	/**
+	 * The T-Axis cell size.
+	 */
 	protected static final int TMULT = 8;
 	
-	
+	/**
+	 * The X-Axis cell size.
+	 */
 	protected static final int XMULT = 8;
 	
-	
+	/**
+	 * The Y-Axis cell size.
+	 */
 	protected static final int YMULT = 8;
 	
 	

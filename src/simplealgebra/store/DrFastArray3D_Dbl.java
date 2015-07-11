@@ -32,7 +32,7 @@ import java.io.RandomAccessFile;
 
 
 /**
- * DB entity resembling a dense 3-D array (i.e voxel array) of doubles.  Basic layout of schema is octree-inspired.
+ * Direct access entity resembling a dense 3-D array (i.e voxel array) of doubles.  Basic layout of schema is inspired by image block virtual memory systems.
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
@@ -82,28 +82,49 @@ public class DrFastArray3D_Dbl {
 	
 	
 	
-	
+	/**
+	 * The size of a double-precision number in bytes.
+	 */
 	static final int SZ_DBL = 8;
 	
 	
 	
 
 	
-	
+	/**
+	 * Boolean indicating whether the "A" or "B" array is in use.
+	 */
 	protected boolean altArrs = false;
 	
 	
-	
+	/**
+	 * T-Axis indices for the "A" array.
+	 */
 	protected int[] indextA;
 	
+	/**
+	 * T-Axis indices for the "B" array.
+	 */
 	protected int[] indextB;
 	
+	/**
+	 * X-Axis indices for the "A" array.
+	 */
 	protected int[] indexxA;
 	
+	/**
+	 * X-Axis indices for the "B" array.
+	 */
 	protected int[] indexxB;
 	
+	/**
+	 * Y-Axis indices for the "A" array.
+	 */
 	protected int[] indexyA;
 	
+	/**
+	 * Y-Axis indices for the "B" array.
+	 */
 	protected int[] indexyB;
 	
 	
@@ -116,6 +137,7 @@ public class DrFastArray3D_Dbl {
 	 * Constructs the array.
 	 * 
 	 * @param _param The input parameter.
+	 * @param path The path at which to put the array image on disk.
 	 */
 	public DrFastArray3D_Dbl( final DbFastArray3D_Param _param , String path ) throws Throwable
 	{
@@ -194,7 +216,11 @@ public class DrFastArray3D_Dbl {
 	
 
 	
-	
+	/**
+	 * Allocates an int array of size dsz for use in a cache.
+	 * 
+	 * @return The allocated array.
+	 */
 	protected int[] createDszIntArray()
 	{
 		int[] aa = new int[ dsz ];
@@ -312,10 +338,10 @@ public class DrFastArray3D_Dbl {
 	
 	
 	/**
-	 * Calculates the required number of traversal levels.
+	 * Calculates the required number of block index levels.
 	 * 
 	 * @param _param The input parameter for the array constructor.
-	 * @return The required number of traversal levels.
+	 * @return The required number of block index levels.
 	 */
 	protected int calcDsz( final DbFastArray3D_Param _param )
 	{

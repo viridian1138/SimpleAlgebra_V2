@@ -171,13 +171,19 @@ public class TestStelemC_DB extends TestCase {
 	
 	
 	
-	
+	/**
+	 * The T-Axis cell size.
+	 */
 	protected static final int TMULT = 8;
 	
-	
+	/**
+	 * The X-Axis cell size.
+	 */
 	protected static final int XMULT = 8;
 	
-	
+	/**
+	 * The Y-Axis cell size.
+	 */
 	protected static final int YMULT = 8;
 	
 	

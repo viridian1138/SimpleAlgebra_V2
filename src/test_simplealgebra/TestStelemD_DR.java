@@ -107,7 +107,7 @@ import simplealgebra.ddx.*;
  *
  * in dimensions (x, y, z, t) where "c" is an arbitrary constant.
  * 
- * Uses an external-database iteration array to test the ability to support datasets larger than available RAM.
+ * Uses a direct-access file iteration array to test the ability to support datasets larger than available RAM.
  *
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
@@ -156,34 +156,42 @@ public class TestStelemD_DR extends TestCase {
 	/**
 	 * The number of discretizations on the T-Axis over which to iterate.
 	 */
-	protected static final int NUM_T_ITER = 50; // 400;
+	protected static final int NUM_T_ITER = 200; // 400;
 	
 	/**
 	 * The number of discretizations on the X-Axis over which to iterate.
 	 */
-	protected static final int NUM_X_ITER = 50; // 200;
+	protected static final int NUM_X_ITER = 200;
 	
 	/**
 	 * The number of discretizations on the Y-Axis over which to iterate.
 	 */
-	protected static final int NUM_Y_ITER = 50; // 200;
+	protected static final int NUM_Y_ITER = 200;
 	
 	/**
 	 * The number of discretizations on the Z-Axis over which to iterate.
 	 */
-	protected static final int NUM_Z_ITER = 50; // 200;
+	protected static final int NUM_Z_ITER = 200;
 	
 	
-	
+	/**
+	 * The T-Axis cell size.
+	 */
 	protected static final int TMULT = 8; // 20;
 	
-	
+	/**
+	 * The X-Axis cell size.
+	 */
 	protected static final int XMULT = 8; // 20;
 	
-	
+	/**
+	 * The Y-Axis cell size.
+	 */
 	protected static final int YMULT = 8; // 20;
 	
-	
+	/**
+	 * The Z-Axis cell size.
+	 */
 	protected static final int ZMULT = 8; // 20;
 	
 	

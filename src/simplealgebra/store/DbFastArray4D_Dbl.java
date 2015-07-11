@@ -128,27 +128,56 @@ public class DbFastArray4D_Dbl {
 	boolean writeBack = false;
 	
 	
-	
+	/**
+	 * Boolean indicating whether the "A" or "B" array is in use.
+	 */
 	protected boolean altArrs = false;
 	
 	
-	
+	/**
+	 * T-Axis indices for the "A" array.
+	 */
 	protected int[] indextA;
 	
+	/**
+	 * T-Axis indices for the "B" array.
+	 */
 	protected int[] indextB;
 	
+	/**
+	 * X-Axis indices for the "A" array.
+	 */
 	protected int[] indexxA;
 	
+	/**
+	 * X-Axis indices for the "B" array.
+	 */
 	protected int[] indexxB;
 	
+	/**
+	 * Y-Axis indices for the "A" array.
+	 */
 	protected int[] indexyA;
 	
+	/**
+	 * Y-Axis indices for the "B" array.
+	 */
 	protected int[] indexyB;
 	
+	/**
+	 * Z-Axis indices for the "A" array.
+	 */
 	protected int[] indexzA;
 	
+	/**
+	 * Z-Axis indices for the "B" array.
+	 */
 	protected int[] indexzB;
 	
+	
+	/**
+	 * The cached set of HyperGraph traversals used to reach the last entry that was accessed.
+	 */
 	protected HGHandle argCache[];
 	
 	
@@ -216,6 +245,12 @@ public class DbFastArray4D_Dbl {
 	
 	
 	
+	/**
+	 * Returns whether the "A" and "B" indices match at a particular index.
+	 * 
+	 * @param index The index to check.
+	 * @return Whether the indices at the index match.
+	 */
 	protected boolean indicesMatch( int index )
 	{
 		return( ( indextA[ index ] == indextB[ index ] ) && 
@@ -226,6 +261,11 @@ public class DbFastArray4D_Dbl {
 	
 	
 	
+	/**
+	 * Allocates an int array of size dsz for use in a cache.
+	 * 
+	 * @return The allocated array.
+	 */
 	protected int[] createDszIntArray()
 	{
 		int[] aa = new int[ dsz ];
