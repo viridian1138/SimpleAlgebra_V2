@@ -602,6 +602,71 @@ public class TestStelemD_DB extends TestCase {
 	
 	
 	/**
+	 * Fills the temp array with elements from the iter array, assuming a shift by one in Z.
+	 * This should be faster because a temp array shift is much faster than refreshing from the DB.
+	 * 
+	 * @param tcnt The T-Axis index for the center in the iter array.
+	 * @param xcnt The X-Axis index for the center in the iter array.
+	 * @param ycnt The Y-Axis index for the center in the iter array.
+	 * @param zcnt The Z-Axis index for the center in the iter array.
+	 */
+	protected static void fillTempArrayShiftZ( final int tcnt , final int xcnt , final int ycnt , final int zcnt )
+	{
+		for( int ta = 0 ; ta < 2 * NSTPT + 1 ; ta++ )
+		{
+			for( int xa = 0 ; xa < 2 * NSTPX + 1 ; xa++ )
+			{
+				for( int ya = 0 ; ya < 2 * NSTPY + 1 ; ya++ )
+				{
+					for( int za = 0 ; za < 2 * NSTPZ ; za++ )
+					{
+						tempArray[ ta ][ xa ][ ya ][ za ] = tempArray[ ta ][ xa ][ ya ][ za + 1 ]; 
+					}
+				}
+			}
+		}
+		
+		final TempArrayFillInnerParam param = new TempArrayFillInnerParam();
+		
+		param.setTcnt( tcnt );
+		param.setXcnt( xcnt );
+		param.setYcnt( ycnt );
+		param.setZcnt( zcnt );
+		param.setZa( NSTPZ );
+		
+		for( int ta = -NSTPT ; ta < NSTPT + 1 ; ta++ )
+		{
+			param.setTa( ta );
+			for( int xa = -NSTPX ; xa < NSTPX + 1 ; xa++ )
+			{
+				param.setXa( xa );
+				for( int ya = -NSTPY ; ya < NSTPY + 1 ; ya++ )
+				{
+					param.setYa( ya );
+					fillTempArrayInner( param ); 
+				}
+			}
+		}
+		
+		
+		// Overlay initial seed for iterations.
+		for( int xa = 0 ; xa < NSTPX * 2 + 1 ; xa++ )
+		{
+			for( int ya = 0 ; ya < NSTPY * 2 + 1 ; ya++ )
+			{
+				for( int za = 0 ; za < NSTPZ * 2 + 1 ; za++ )
+				{
+					tempArray[ NSTPT * 2 ][ xa ][ ya ][ za ] = tempArray[ NSTPT * 2 - 1 ][ xa ][ ya ][ za ];
+				}
+			}
+		}
+		
+	}
+	
+	
+	
+	
+	/**
 	 * Test array used to verify that the entire temp array has been filled.
 	 */
 	private static int[][][][] spatialAssertArray = new int[ NSTPT * 2 + 1 ][ NSTPX * 2 + 1 ][ NSTPY * 2 + 1 ][ NSTPZ * 2 + 1 ];
@@ -1782,6 +1847,7 @@ public class TestStelemD_DB extends TestCase {
 		int zdn = ZMULT - 1;
 		int ydn = YMULT - 1;
 		int xdn = XMULT - 1;
+		boolean zMoveOnly = false;
 		long atm = System.currentTimeMillis();
 		long atm2 = System.currentTimeMillis();
 		for( int acnt = 0 ; acnt < ( NUM_X_ITER * NUM_Y_ITER * NUM_Z_ITER ) ; acnt++ )
@@ -1793,7 +1859,16 @@ public class TestStelemD_DB extends TestCase {
 				System.out.println( ">> " + tval + " / " + xcnt + " / " + ycnt + " / " + zcnt );
 				atm = atm2;
 			}
-			fillTempArray( tval , xcnt , ycnt , zcnt );
+			
+			if( zMoveOnly )
+			{
+				fillTempArrayShiftZ( tval , xcnt , ycnt , zcnt );
+			}
+			else
+			{
+				fillTempArray( tval , xcnt , ycnt , zcnt );
+			}
+			
 			clearSpatialAssertArray();
 	
 			
@@ -1838,8 +1913,10 @@ public class TestStelemD_DB extends TestCase {
 			iterArray.set( tval + 1 , xcnt , ycnt , zcnt , val );
 			
 			
+			zMoveOnly = false;
 			if( ( zdn > 0 ) && ( zcnt < ( NUM_Z_ITER - 1 ) ) )
 			{
+				zMoveOnly = true;
 				zcnt++;
 				zdn--;
 			}

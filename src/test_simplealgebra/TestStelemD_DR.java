@@ -51,8 +51,6 @@ import simplealgebra.stelem.Nelem;
 import simplealgebra.stelem.Stelem;
 import simplealgebra.store.DrFastArray4D_Dbl;
 import simplealgebra.store.DbFastArray4D_Param;
-import simplealgebra.store.SegmentedTransactionManager;
-import simplealgebra.store.TypeSystemInit;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
@@ -156,43 +154,43 @@ public class TestStelemD_DR extends TestCase {
 	/**
 	 * The number of discretizations on the T-Axis over which to iterate.
 	 */
-	protected static final int NUM_T_ITER = 200; // 400;
+	protected static final int NUM_T_ITER = 40; // 200; // 400;
 	
 	/**
 	 * The number of discretizations on the X-Axis over which to iterate.
 	 */
-	protected static final int NUM_X_ITER = 200;
+	protected static final int NUM_X_ITER = 40; // 200;
 	
 	/**
 	 * The number of discretizations on the Y-Axis over which to iterate.
 	 */
-	protected static final int NUM_Y_ITER = 200;
+	protected static final int NUM_Y_ITER = 40; // 200;
 	
 	/**
 	 * The number of discretizations on the Z-Axis over which to iterate.
 	 */
-	protected static final int NUM_Z_ITER = 200;
+	protected static final int NUM_Z_ITER = 40; // 200;
 	
 	
 	/**
 	 * The T-Axis cell size.
 	 */
-	protected static final int TMULT = 8; // 20;
+	protected static final int TMULT = 8;
 	
 	/**
 	 * The X-Axis cell size.
 	 */
-	protected static final int XMULT = 8; // 20;
+	protected static final int XMULT = 8;
 	
 	/**
 	 * The Y-Axis cell size.
 	 */
-	protected static final int YMULT = 8; // 20;
+	protected static final int YMULT = 8;
 	
 	/**
 	 * The Z-Axis cell size.
 	 */
-	protected static final int ZMULT = 8; // 20;
+	protected static final int ZMULT = 8;
 	
 	
 	
@@ -575,6 +573,71 @@ public class TestStelemD_DR extends TestCase {
 						param.setZa( za );
 						fillTempArrayInner( param ); 
 					}
+				}
+			}
+		}
+		
+		
+		// Overlay initial seed for iterations.
+		for( int xa = 0 ; xa < NSTPX * 2 + 1 ; xa++ )
+		{
+			for( int ya = 0 ; ya < NSTPY * 2 + 1 ; ya++ )
+			{
+				for( int za = 0 ; za < NSTPZ * 2 + 1 ; za++ )
+				{
+					tempArray[ NSTPT * 2 ][ xa ][ ya ][ za ] = tempArray[ NSTPT * 2 - 1 ][ xa ][ ya ][ za ];
+				}
+			}
+		}
+		
+	}
+	
+	
+	
+	
+	/**
+	 * Fills the temp array with elements from the iter array, assuming a shift by one in Z.
+	 * This should be faster because a temp array shift is much faster than refreshing from the file store.
+	 * 
+	 * @param tcnt The T-Axis index for the center in the iter array.
+	 * @param xcnt The X-Axis index for the center in the iter array.
+	 * @param ycnt The Y-Axis index for the center in the iter array.
+	 * @param zcnt The Z-Axis index for the center in the iter array.
+	 */
+	protected static void fillTempArrayShiftZ( final int tcnt , final int xcnt , final int ycnt , final int zcnt ) throws Throwable
+	{
+		for( int ta = 0 ; ta < 2 * NSTPT + 1 ; ta++ )
+		{
+			for( int xa = 0 ; xa < 2 * NSTPX + 1 ; xa++ )
+			{
+				for( int ya = 0 ; ya < 2 * NSTPY + 1 ; ya++ )
+				{
+					for( int za = 0 ; za < 2 * NSTPZ ; za++ )
+					{
+						tempArray[ ta ][ xa ][ ya ][ za ] = tempArray[ ta ][ xa ][ ya ][ za + 1 ]; 
+					}
+				}
+			}
+		}
+		
+		final TempArrayFillInnerParam param = new TempArrayFillInnerParam();
+		
+		param.setTcnt( tcnt );
+		param.setXcnt( xcnt );
+		param.setYcnt( ycnt );
+		param.setZcnt( zcnt );
+		param.setZa( NSTPZ );
+		
+		for( int ta = -NSTPT ; ta < NSTPT + 1 ; ta++ )
+		{
+			param.setTa( ta );
+			for( int xa = -NSTPX ; xa < NSTPX + 1 ; xa++ )
+			{
+				param.setXa( xa );
+				for( int ya = -NSTPY ; ya < NSTPY + 1 ; ya++ )
+				{
+					param.setYa( ya );
+					fillTempArrayInner( param ); 
 				}
 			}
 		}
@@ -1778,6 +1841,7 @@ public class TestStelemD_DR extends TestCase {
 		int zdn = ZMULT - 1;
 		int ydn = YMULT - 1;
 		int xdn = XMULT - 1;
+		boolean zMoveOnly = false;
 		long atm = System.currentTimeMillis();
 		long atm2 = System.currentTimeMillis();
 		for( int acnt = 0 ; acnt < ( NUM_X_ITER * NUM_Y_ITER * NUM_Z_ITER ) ; acnt++ )
@@ -1789,7 +1853,16 @@ public class TestStelemD_DR extends TestCase {
 				System.out.println( ">> " + tval + " / " + xcnt + " / " + ycnt + " / " + zcnt );
 				atm = atm2;
 			}
-			fillTempArray( tval , xcnt , ycnt , zcnt );
+			
+			if( zMoveOnly )
+			{
+				fillTempArrayShiftZ( tval , xcnt , ycnt , zcnt );
+			}
+			else
+			{
+				fillTempArray( tval , xcnt , ycnt , zcnt );
+			}
+			
 			clearSpatialAssertArray();
 	
 			
@@ -1834,8 +1907,10 @@ public class TestStelemD_DR extends TestCase {
 			iterArray.set( tval + 1 , xcnt , ycnt , zcnt , val );
 			
 			
+			zMoveOnly = false;
 			if( ( zdn > 0 ) && ( zcnt < ( NUM_Z_ITER - 1 ) ) )
 			{
+				zMoveOnly = true;
 				zcnt++;
 				zdn--;
 			}

@@ -55,7 +55,6 @@ import simplealgebra.stelem.Nelem;
 import simplealgebra.stelem.Stelem;
 import simplealgebra.store.DbFastArray3D_Dbl;
 import simplealgebra.store.DbFastArray3D_Param;
-import simplealgebra.store.DbFastArray4D_Param;
 import simplealgebra.store.SegmentedTransactionManager;
 import simplealgebra.store.TypeSystemInit;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
@@ -509,6 +508,63 @@ public class TestStelemC_DB extends TestCase {
 				tempArray[ NSTPT * 2 ][ xa ][ ya ] = tempArray[ NSTPT * 2 - 1 ][ xa ][ ya ];
 			}
 		}
+	}
+	
+	
+	
+	
+	/**
+	 * Fills the temp array with elements from the iter array, assuming a shift by one in Y.
+	 * This should be faster because a temp array shift is much faster than refreshing from the DB.
+	 * 
+	 * @param tcnt The T-Axis index for the center in the iter array.
+	 * @param xcnt The X-Axis index for the center in the iter array.
+	 * @param ycnt The Y-Axis index for the center in the iter array.
+	 */
+	protected static void fillTempArrayShiftY( final int tcnt , final int xcnt , final int ycnt )
+	{
+		for( int ta = 0 ; ta < 2 * NSTPT + 1 ; ta++ )
+		{
+			for( int xa = 0 ; xa < 2 * NSTPX + 1 ; xa++ )
+			{
+				for( int ya = 0 ; ya < 2 * NSTPY ; ya++ )
+				{
+					tempArray[ ta ][ xa ][ ya ] = tempArray[ ta ][ xa ][ ya + 1 ]; 
+				}
+			}
+		}
+		
+		final TempArrayFillInnerParam param = new TempArrayFillInnerParam();
+		
+		param.setTcnt( tcnt );
+		param.setXcnt( xcnt );
+		param.setYcnt( ycnt );
+		param.setYa( NSTPY );
+		
+		for( int ta = -NSTPT ; ta < NSTPT + 1 ; ta++ )
+		{
+			param.setTa( ta );
+			for( int xa = -NSTPX ; xa < NSTPX + 1 ; xa++ )
+			{
+				param.setXa( xa );
+				for( int ya = -NSTPY ; ya < NSTPY + 1 ; ya++ )
+				{
+					param.setYa( ya );
+					fillTempArrayInner( param ); 
+				}
+			}
+		}
+		
+		
+		// Overlay initial seed for iterations.
+		for( int xa = 0 ; xa < NSTPX * 2 + 1 ; xa++ )
+		{
+			for( int ya = 0 ; ya < NSTPY * 2 + 1 ; ya++ )
+			{
+				tempArray[ NSTPT * 2 ][ xa ][ ya ] = tempArray[ NSTPT * 2 - 1 ][ xa ][ ya ];
+			}
+		}
+		
 	}
 	
 	
@@ -1681,11 +1737,21 @@ public class TestStelemC_DB extends TestCase {
 		int xstrt = 0;
 		int ydn = YMULT - 1;
 		int xdn = XMULT - 1;
+		boolean yMoveOnly = false;
 		for( int acnt = 0 ; acnt < ( NUM_X_ITER * NUM_Y_ITER ) ; acnt++ )
 		{	
 		
 			// System.out.println( ">> " + tval + " / " + xcnt + " / " + ycnt );
-			fillTempArray( tval , xcnt , ycnt );
+			
+			if( yMoveOnly )
+			{
+				fillTempArrayShiftY( tval , xcnt , ycnt );
+			}
+			else
+			{
+				fillTempArray( tval , xcnt , ycnt );
+			}
+			
 			clearSpatialAssertArray();
 	
 			
@@ -1728,8 +1794,10 @@ public class TestStelemC_DB extends TestCase {
 			iterArray.set( tval + 1 , xcnt , ycnt , val );
 			
 			
+			yMoveOnly = false;
 			if( ( ydn > 0 ) && ( ycnt < ( NUM_Y_ITER - 1 ) ) )
 			{
+				yMoveOnly = true;
 				ycnt++;
 				ydn--;
 			}
