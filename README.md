@@ -116,6 +116,10 @@ Java
 
 ...https://www.librarything.com/work/187039/book/15763004
 
+Gauss's Theorem
+
+...https://en.wikipedia.org/wiki/Divergence_theorem
+
 General Relativity
 
 ...https://www.librarything.com/work/80799/book/117994174
@@ -248,6 +252,14 @@ Symbolic Ring
 Vector Algebra
 
 ...See Geometric Algebra (superset of Vector Algebra)
+
+Volume Rendering
+
+...https://en.wikipedia.org/wiki/Volume_rendering
+
+Voxel
+
+...https://en.wikipedia.org/wiki/Voxel
 
 
 
