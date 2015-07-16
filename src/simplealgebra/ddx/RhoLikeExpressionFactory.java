@@ -41,7 +41,7 @@ import simplealgebra.symbolic.SymbolicElemFactory;
 
 
 /**
- * Generates a rho-like expression.
+ * Generates a <math display="inline"><mrow><mi>&rho;</mi></mrow></math>-like expression.
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
@@ -63,10 +63,10 @@ public class RhoLikeExpressionFactory<U extends NumDimensions, A extends Ord<U>,
 	/**
 	 * Constructs the factory.
 	 * 
-	 * @param _epsilon Symbolic elem for epsilon.
-	 * @param _phi Symbolic elem for phi.
-	 * @param _delDotA Symbolic elem for del dot A.
-	 * @param _tDerivative Symbolic elem for the derivative with respect to T.
+	 * @param _epsilon Symbolic elem for <math display="inline"><mrow><mi>&epsilon;</mi></mrow></math>.
+	 * @param _phi Symbolic elem for <math display="inline"><mrow><mi>&phi;</mi></mrow></math>.
+	 * @param _delDotA Symbolic elem for <math display="inline"><mrow><mo>&nabla;</mo><mo>&CenterDot;</mo><mi>A</mi></mrow></math>.
+	 * @param _tDerivative Symbolic elem for the partial derivative with respect to T.
 	 * @param _del Directional Derivative operator.
 	 */
 	public RhoLikeExpressionFactory( 
@@ -91,9 +91,9 @@ public class RhoLikeExpressionFactory<U extends NumDimensions, A extends Ord<U>,
 	
 	
 	/**
-	 * Generates a rho-like expression.
+	 * Generates a <math display="inline"><mrow><mi>&rho;</mi></mrow></math>-like expression.
 	 * 
-	 * @return The rho-like expression.
+	 * @return The <math display="inline"><mrow><mi>&rho;</mi></mrow></math>-like expression.
 	 * @throws NotInvertibleException
 	 */
 	public SymbolicElem<GeometricAlgebraMultivectorElem<U,A,SymbolicElem<R,S>,SymbolicElemFactory<R,S>>
@@ -129,25 +129,25 @@ public class RhoLikeExpressionFactory<U extends NumDimensions, A extends Ord<U>,
 
 	
 	/**
-	 * Symbolic elem for epsilon.
+	 * Symbolic elem for <math display="inline"><mrow><mi>&epsilon;</mi></mrow></math>.
 	 */
 	private SymbolicElem<GeometricAlgebraMultivectorElem<U,A,SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,
 		GeometricAlgebraMultivectorElemFactory<U,A,SymbolicElem<R,S>,SymbolicElemFactory<R,S>>> epsilon;
 	
 	/**
-	 * Symbolic elem for phi.
+	 * Symbolic elem for <math display="inline"><mrow><mi>&phi;</mi></mrow></math>.
 	 */
 	private SymbolicElem<GeometricAlgebraMultivectorElem<U,A,SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,
 		GeometricAlgebraMultivectorElemFactory<U,A,SymbolicElem<R,S>,SymbolicElemFactory<R,S>>> phi;
 	
 	/**
-	 * Symbolic elem for del dot A.
+	 * Symbolic elem for <math display="inline"><mrow><mo>&nabla;</mo><mo>&CenterDot;</mo><mi>A</mi></mrow></math>.
 	 */
 	private SymbolicElem<GeometricAlgebraMultivectorElem<U,A,SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,
 		GeometricAlgebraMultivectorElemFactory<U,A,SymbolicElem<R,S>,SymbolicElemFactory<R,S>>> delDotA;
 	
 	/**
-	 * Symbolic elem for the derivative with respect to T.
+	 * Symbolic elem for the partial derivative with respect to T.
 	 */
 	private SymbolicElem<GeometricAlgebraMultivectorElem<U,A,SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,
 		GeometricAlgebraMultivectorElemFactory<U,A,SymbolicElem<R,S>,SymbolicElemFactory<R,S>>> tDerivative;
