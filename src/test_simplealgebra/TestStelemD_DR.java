@@ -220,6 +220,14 @@ public class TestStelemD_DR extends TestCase {
 	protected static final int NSTPZ = 1;
 	
 	
+	/**
+	 * Indicates whether predictor-corrector should be used while iterating.
+	 * 
+	 * See https://en.wikipedia.org/wiki/Predictor%E2%80%93corrector_method
+	 */
+	protected static final boolean USE_PREDICTOR_CORRECTOR = true;
+	
+	
 	
 	/**
 	 * Result array over which to iterate.
@@ -284,6 +292,34 @@ public class TestStelemD_DR extends TestCase {
 		return( tempArray[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] );
 	}
 	
+	
+	/**
+	 * Returns the predictor-correction value of the iterations
+	 * from the temp array.
+	 * 
+	 * @return The value in the temp array.
+	 */
+	protected static double getCorrectionValue()
+	{
+		return( tempArray[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ][ NSTPZ ] );
+	}
+	
+	
+	/**
+	 * Applies a predictor-corrector process to the temp array.
+	 * 
+	 * See https://en.wikipedia.org/wiki/Predictor%E2%80%93corrector_method
+	 */
+	protected static void applyPredictorCorrector()
+	{
+		final double slopePrev = tempArray[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ][ NSTPZ ]
+				- tempArray[ NSTPT * 2 - 2 ][ NSTPX ][ NSTPY ][ NSTPZ ];
+		final double slopeNew = tempArray[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ]
+				- tempArray[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ][ NSTPZ ];
+		final double avgSlope = ( slopePrev + slopeNew ) / 2.0;
+		tempArray[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ][ NSTPZ ] = 
+				tempArray[ NSTPT * 2 - 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] + avgSlope;
+	}
 	
 	
 	
@@ -1872,6 +1908,14 @@ public class TestStelemD_DR extends TestCase {
 		
 			
 			DoubleElem err = newton.eval( implicitSpace2 );
+			
+			
+			if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
+			{
+				applyPredictorCorrector();
+				
+				err = newton.eval( implicitSpace2 );
+			}
 	
 	
 			final double val = TestStelemD_DR.getUpdateValue();
@@ -1903,6 +1947,10 @@ public class TestStelemD_DR extends TestCase {
 			
 			Assert.assertTrue( Math.abs( err.getVal() ) < ( 0.01 * Math.abs( val ) + 0.01 ) );
 			
+			if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
+			{
+				iterArray.set( tval , xcnt , ycnt , zcnt , getCorrectionValue() );	
+			}
 		
 			iterArray.set( tval + 1 , xcnt , ycnt , zcnt , val );
 			

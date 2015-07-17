@@ -55,8 +55,6 @@ import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicReduction;
 import simplealgebra.ddx.*;
-import simplealgebra.et.EinsteinTensorElem;
-import simplealgebra.et.EinsteinTensorElemFactory;
 import simplealgebra.ga.*;
 
 
@@ -473,6 +471,14 @@ public class TestDiracA extends TestCase {
 	protected static final int NSTPZ = 1;
 	
 	
+	/**
+	 * Indicates whether predictor-corrector should be used while iterating.
+	 * 
+	 * See https://en.wikipedia.org/wiki/Predictor%E2%80%93corrector_method
+	 */
+	protected static final boolean USE_PREDICTOR_CORRECTOR = true;
+	
+	
 	
 	
 	
@@ -572,6 +578,66 @@ public class TestDiracA extends TestCase {
 		GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>
 			ret = new GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>( da , new TestDimensionFour() , new SpacetimeAlgebraOrd<TestDimensionFour>() );
 		return( ret );
+	}
+	
+	
+	/**
+	 * Returns the predictor-correction value of the iterations
+	 * from the temp array.
+	 * 
+	 * @return The value in the temp array.
+	 */
+	protected static GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> getCorrectionValue()
+	{
+		GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> va
+			= (GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>)( tempArray[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ][ NSTPZ ] );
+		if( va != null )
+		{
+			return( va );
+		}
+		DoubleElemFactory da = new DoubleElemFactory();
+		GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>
+			ret = new GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>( da , new TestDimensionFour() , new SpacetimeAlgebraOrd<TestDimensionFour>() );
+		return( ret );
+	}
+	
+	
+	/**
+	 * Applies a predictor-corrector process to the temp array.
+	 * 
+	 * See https://en.wikipedia.org/wiki/Predictor%E2%80%93corrector_method
+	 */
+	protected static void applyPredictorCorrector()
+	{
+		GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> vam2
+			= (GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>)( tempArray[ NSTPT * 2 - 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] );
+		GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> vam1
+			= (GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>)( tempArray[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ][ NSTPZ ] );
+		GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> vam
+			= (GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>)( tempArray[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] );
+		if( vam2 == null )
+		{
+			DoubleElemFactory da = new DoubleElemFactory();
+			vam2 = new GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>( da , new TestDimensionFour() , new SpacetimeAlgebraOrd<TestDimensionFour>() );
+		}
+		if( vam1 == null )
+		{
+			DoubleElemFactory da = new DoubleElemFactory();
+			vam1 = new GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>( da , new TestDimensionFour() , new SpacetimeAlgebraOrd<TestDimensionFour>() );
+		}
+		if( vam == null )
+		{
+			DoubleElemFactory da = new DoubleElemFactory();
+			vam = new GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>( da , new TestDimensionFour() , new SpacetimeAlgebraOrd<TestDimensionFour>() );
+		}
+		final GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> slopePrev 
+			= vam1.add( vam2.negate() );
+		final GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> slopeNew 
+			= vam.add( vam1.negate() );
+		final GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> avgSlope 
+			= ( slopePrev.add( slopeNew ) ).divideBy( BigInteger.valueOf( 2 ) );
+		tempArray[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ][ NSTPZ ] = 
+				vam2.add( avgSlope );
 	}
 	
 	
@@ -2768,6 +2834,14 @@ protected void performIterationT( final int tval , final StelemDescent descent ,
 		
 				GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem, DoubleElemFactory> 
 					err = descent.eval( implicitSpace2 );
+				
+				
+				if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
+				{
+					applyPredictorCorrector();
+					
+					err = descent.eval( implicitSpace2 );
+				}
 
 
 				final GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem, DoubleElemFactory> 
@@ -2804,6 +2878,11 @@ protected void performIterationT( final int tval , final StelemDescent descent ,
 				// System.out.println( calcMagnitudeSq( err ) );
 				Assert.assertTrue( Math.abs( Math.sqrt( calcMagnitudeSq( err ) ) ) < ( 0.01 * Math.abs( Math.sqrt( calcMagnitudeSq( val ) ) ) + 0.01 ) );
 		
+				if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
+				{
+					iterArray[ tval ][ xcnt ][ ycnt ][ zcnt ] =
+						getCorrectionValue();	
+				}
 	
 				iterArray[ tval + 1 ][ xcnt ][ ycnt ][ zcnt ] = val;
 			}

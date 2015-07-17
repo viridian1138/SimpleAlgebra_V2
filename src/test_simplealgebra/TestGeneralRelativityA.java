@@ -57,7 +57,6 @@ import simplealgebra.symbolic.SymbolicReduction;
 import simplealgebra.ddx.*;
 import simplealgebra.ga.*;
 import simplealgebra.et.*;
-import test_simplealgebra.TestDiracA.StelemDescent;
 
 
 
@@ -297,6 +296,14 @@ public class TestGeneralRelativityA extends TestCase {
 	 */
 	protected static final int NSTPZ = 2;
 	
+
+	/**
+	 * Indicates whether predictor-corrector should be used while iterating.
+	 * 
+	 * See https://en.wikipedia.org/wiki/Predictor%E2%80%93corrector_method
+	 */
+	protected static final boolean USE_PREDICTOR_CORRECTOR = true;
+	
 	
 	
 	
@@ -399,6 +406,82 @@ public class TestGeneralRelativityA extends TestCase {
 		EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>
 			ret = new EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>( da , contravariantIndices  , covariantIndices );
 		return( ret );
+	}
+	
+	
+	/**
+	 * Returns the predictor-correction value of the iterations
+	 * from the temp array.
+	 * 
+	 * @return The value in the temp array.
+	 */
+	protected static EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> getCorrectionValue()
+	{
+		EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> va
+			= (EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>)( tempArray[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ][ NSTPZ ] );
+		if( va != null )
+		{
+			return( va );
+		}
+		DoubleElemFactory da = new DoubleElemFactory();
+		final ArrayList<String> contravariantIndices = new ArrayList<String>();
+		final ArrayList<String> covariantIndices = new ArrayList<String>();
+		covariantIndices.add( "u" );
+		covariantIndices.add( "v" );
+		EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>
+			ret = new EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>( da , contravariantIndices  , covariantIndices );
+		return( ret );
+	}
+	
+	
+	/**
+	 * Applies a predictor-corrector process to the temp array.
+	 * 
+	 * See https://en.wikipedia.org/wiki/Predictor%E2%80%93corrector_method
+	 */
+	protected static void applyPredictorCorrector()
+	{
+		EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> vam2
+			= (EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>)( tempArray[ NSTPT * 2 - 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] );
+		EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> vam1
+			= (EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>)( tempArray[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ][ NSTPZ ] );
+		EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> vam
+			= (EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>)( tempArray[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] );
+		if( vam2 == null )
+		{
+			DoubleElemFactory da = new DoubleElemFactory();
+			final ArrayList<String> contravariantIndices = new ArrayList<String>();
+			final ArrayList<String> covariantIndices = new ArrayList<String>();
+			covariantIndices.add( "u" );
+			covariantIndices.add( "v" );
+			vam2 = new EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>( da , contravariantIndices  , covariantIndices );
+		}
+		if( vam1 == null )
+		{
+			DoubleElemFactory da = new DoubleElemFactory();
+			final ArrayList<String> contravariantIndices = new ArrayList<String>();
+			final ArrayList<String> covariantIndices = new ArrayList<String>();
+			covariantIndices.add( "u" );
+			covariantIndices.add( "v" );
+			vam1 = new EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>( da , contravariantIndices  , covariantIndices );
+		}
+		if( vam == null )
+		{
+			DoubleElemFactory da = new DoubleElemFactory();
+			final ArrayList<String> contravariantIndices = new ArrayList<String>();
+			final ArrayList<String> covariantIndices = new ArrayList<String>();
+			covariantIndices.add( "u" );
+			covariantIndices.add( "v" );
+			vam = new EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>( da , contravariantIndices  , covariantIndices );
+		}
+		final EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> slopePrev 
+			= vam1.add( vam2.negate() );
+		final EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> slopeNew 
+			= vam.add( vam1.negate() );
+		final EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> avgSlope 
+			= ( slopePrev.add( slopeNew ) ).divideBy( BigInteger.valueOf( 2 ) );
+		tempArray[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ][ NSTPZ ] = 
+				vam2.add( avgSlope );
 	}
 	
 	
@@ -2805,6 +2888,14 @@ protected void performIterationT( final int tval , final StelemDescent descent ,
 	
 		
 				EinsteinTensorElem<String,DoubleElem, DoubleElemFactory> err = descent.eval( implicitSpace2 );
+				
+				
+				if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
+				{
+					applyPredictorCorrector();
+					
+					err = descent.eval( implicitSpace2 );
+				}
 
 
 				final EinsteinTensorElem<String,DoubleElem, DoubleElemFactory> 
@@ -2842,6 +2933,11 @@ protected void performIterationT( final int tval , final StelemDescent descent ,
 				System.out.println( calcMagnitudeSq( err ) );
 				// Assert.assertTrue( Math.abs( Math.sqrt( calcMagnitudeSq( err ) ) ) < ( 0.01 * Math.abs( Math.sqrt( calcMagnitudeSq( val ) ) ) + 0.01 ) );
 		
+				if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
+				{
+					iterArray[ tval ][ xcnt ][ ycnt ][ zcnt ] =
+						getCorrectionValue();	
+				}
 	
 				iterArray[ tval + 1 ][ xcnt ][ ycnt ][ zcnt ] = val;
 			}

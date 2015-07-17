@@ -124,6 +124,7 @@ public class TestStelemA extends TestCase {
 	protected static final int NSTPX = 1;
 	
 	
+	
 	/**
 	 * Temporary array in which to generate Newton-Raphson solutions.
 	 * <p>0 = T

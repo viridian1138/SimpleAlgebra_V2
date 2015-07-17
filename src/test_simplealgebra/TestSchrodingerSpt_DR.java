@@ -274,6 +274,14 @@ public class TestSchrodingerSpt_DR extends TestCase {
 	protected static final int NSTPZ = 1;
 	
 	
+	/**
+	 * Indicates whether predictor-corrector should be used while iterating.
+	 * 
+	 * See https://en.wikipedia.org/wiki/Predictor%E2%80%93corrector_method
+	 */
+	protected static final boolean USE_PREDICTOR_CORRECTOR = true;
+	
+	
 	
 	
 	/**
@@ -365,6 +373,54 @@ public class TestSchrodingerSpt_DR extends TestCase {
 	protected static double getUpdateValueIm()
 	{
 		return( tempArrayIm[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] );
+	}
+	
+	
+	/**
+	 * Returns real component of the predictor-correction value of the iterations
+	 * from the temp array.
+	 * 
+	 * @return The real value in the temp array.
+	 */
+	protected static double getCorrectionValueRe()
+	{
+		return( tempArrayRe[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ][ NSTPZ ] );
+	}
+	
+	
+	/**
+	 * Returns the imaginary component of the predictor-correction value of the iterations
+	 * from the temp array.
+	 * 
+	 * @return The imaginary value in the temp array.
+	 */
+	protected static double getCorrectionValueIm()
+	{
+		return( tempArrayIm[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ][ NSTPZ ] );
+	}
+	
+	
+	/**
+	 * Applies a predictor-corrector process to the temp array.
+	 * 
+	 * See https://en.wikipedia.org/wiki/Predictor%E2%80%93corrector_method
+	 */
+	protected static void applyPredictorCorrector()
+	{
+		final double slopePrevRe = tempArrayRe[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ][ NSTPZ ]
+				- tempArrayRe[ NSTPT * 2 - 2 ][ NSTPX ][ NSTPY ][ NSTPZ ];
+		final double slopePrevIm = tempArrayIm[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ][ NSTPZ ]
+				- tempArrayIm[ NSTPT * 2 - 2 ][ NSTPX ][ NSTPY ][ NSTPZ ];
+		final double slopeNewRe = tempArrayRe[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ]
+				- tempArrayRe[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ][ NSTPZ ];
+		final double slopeNewIm = tempArrayIm[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ]
+				- tempArrayIm[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ][ NSTPZ ];
+		final double avgSlopeRe = ( slopePrevRe + slopeNewRe ) / 2.0;
+		final double avgSlopeIm = ( slopePrevIm + slopeNewIm ) / 2.0;
+		tempArrayRe[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ][ NSTPZ ] = 
+				tempArrayRe[ NSTPT * 2 - 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] + avgSlopeRe;
+		tempArrayIm[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ][ NSTPZ ] = 
+				tempArrayIm[ NSTPT * 2 - 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] + avgSlopeIm;
 	}
 	
 	
@@ -2010,6 +2066,14 @@ public class TestSchrodingerSpt_DR extends TestCase {
 		
 			
 			ComplexElem<DoubleElem, DoubleElemFactory> err = newton.eval( implicitSpace2 );
+			
+			
+			if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
+			{
+				applyPredictorCorrector();
+				
+				err = newton.eval( implicitSpace2 );
+			}
 	
 	
 			final ComplexElem<DoubleElem,DoubleElemFactory> val =
@@ -2045,6 +2109,11 @@ public class TestSchrodingerSpt_DR extends TestCase {
 			
 			Assert.assertTrue( Math.abs( Math.sqrt( expectationValue( err ) ) ) < ( 0.01 * Math.abs( Math.sqrt( expectationValue( val ) ) ) + 0.01 ) );
 			
+			if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
+			{
+				iterArrayRe.set( tval , xcnt , ycnt , zcnt , getCorrectionValueRe() );	
+				iterArrayIm.set( tval , xcnt , ycnt , zcnt , getCorrectionValueIm() );
+			}
 		
 			iterArrayRe.set( tval + 1 , xcnt , ycnt , zcnt , val.getRe().getVal() );
 			iterArrayIm.set( tval + 1 , xcnt , ycnt , zcnt , val.getIm().getVal() );

@@ -50,6 +50,7 @@ import simplealgebra.ddx.PartialDerivativeOp;
 import simplealgebra.ga.GeometricAlgebraMultivectorElem;
 import simplealgebra.ga.GeometricAlgebraMultivectorElemFactory;
 import simplealgebra.ga.GeometricAlgebraOrd;
+import simplealgebra.ga.SpacetimeAlgebraOrd;
 import simplealgebra.stelem.Nelem;
 import simplealgebra.stelem.Stelem;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
@@ -58,9 +59,7 @@ import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicReduction;
 import simplealgebra.ga.*;
 import simplealgebra.ddx.*;
-import simplealgebra.et.EinsteinTensorElem;
-import test_simplealgebra.TestGeneralRelativityA.TempArrayFillInnerParam;
-import test_simplealgebra.TestStelemD.StelemNewton;
+
 
 
 
@@ -213,6 +212,14 @@ public class TestCWave3DCplx extends TestCase {
 	protected static final int NSTPZ = 1;
 	
 	
+	/**
+	 * Indicates whether predictor-corrector should be used while iterating.
+	 * 
+	 * See https://en.wikipedia.org/wiki/Predictor%E2%80%93corrector_method
+	 */
+	protected static final boolean USE_PREDICTOR_CORRECTOR = true;
+	
+	
 	
 	
 	
@@ -277,6 +284,42 @@ public class TestCWave3DCplx extends TestCase {
 	protected static ComplexElem<DoubleElem,DoubleElemFactory> getUpdateValue()
 	{
 		return( (ComplexElem<DoubleElem,DoubleElemFactory>)(tempArray[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ]) );
+	}
+	
+	
+	/**
+	 * Returns the predictor-correction value of the iterations
+	 * from the temp array.
+	 * 
+	 * @return The value in the temp array.
+	 */
+	protected static ComplexElem<DoubleElem,DoubleElemFactory> getCorrectionValue()
+	{
+		return( (ComplexElem<DoubleElem,DoubleElemFactory>)(tempArray[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ][ NSTPZ ]) );
+	}
+	
+	
+	/**
+	 * Applies a predictor-corrector process to the temp array.
+	 * 
+	 * See https://en.wikipedia.org/wiki/Predictor%E2%80%93corrector_method
+	 */
+	protected static void applyPredictorCorrector()
+	{
+		ComplexElem<DoubleElem,DoubleElemFactory> vam2
+			= (ComplexElem<DoubleElem,DoubleElemFactory>)( tempArray[ NSTPT * 2 - 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] );
+		ComplexElem<DoubleElem,DoubleElemFactory> vam1
+			= (ComplexElem<DoubleElem,DoubleElemFactory>)( tempArray[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ][ NSTPZ ] );
+		ComplexElem<DoubleElem,DoubleElemFactory> vam
+			= (ComplexElem<DoubleElem,DoubleElemFactory>)( tempArray[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] );
+		final ComplexElem<DoubleElem,DoubleElemFactory> slopePrev 
+			= vam1.add( vam2.negate() );
+		final ComplexElem<DoubleElem,DoubleElemFactory> slopeNew 
+			= vam.add( vam1.negate() );
+		final ComplexElem<DoubleElem,DoubleElemFactory> avgSlope 
+			= ( slopePrev.add( slopeNew ) ).divideBy( BigInteger.valueOf( 2 ) );
+		tempArray[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ][ NSTPZ ] = 
+				vam2.add( avgSlope );
 	}
 	
 	
@@ -1780,6 +1823,14 @@ public class TestCWave3DCplx extends TestCase {
 		
 			
 					ComplexElem<DoubleElem,DoubleElemFactory> err = newton.eval( implicitSpace2 );
+					
+					
+					if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
+					{
+						applyPredictorCorrector();
+						
+						err = newton.eval( implicitSpace2 );
+					}
 	
 	
 					final ComplexElem<DoubleElem,DoubleElemFactory> vala = TestCWave3DCplx.getUpdateValue();
@@ -1813,6 +1864,11 @@ public class TestCWave3DCplx extends TestCase {
 			
 					Assert.assertTrue( Math.abs( Math.sqrt( expectationValue( err ) ) ) < ( 0.01 * Math.abs( Math.sqrt( expectationValue( vala ) ) ) + 0.01 ) );
 			
+					if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
+					{
+						iterArray[ tval ][ xcnt ][ ycnt ][ zcnt ] =
+							getCorrectionValue();	
+					}
 		
 					iterArray[ tval + 1 ][ xcnt ][ ycnt ][ zcnt ] = vala;
 				}

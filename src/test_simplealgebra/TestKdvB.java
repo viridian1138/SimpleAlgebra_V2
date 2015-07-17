@@ -52,8 +52,7 @@ import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicReduction;
 import simplealgebra.ddx.*;
-import test_simplealgebra.TestBurgersB.TempArrayFillInnerParam;
-import test_simplealgebra.TestStelemD.StelemNewton;
+
 
 
 
@@ -167,6 +166,14 @@ public class TestKdvB extends TestCase {
 	protected static final int NSTPX = 2;
 	
 	
+	/**
+	 * Indicates whether predictor-corrector should be used while iterating.
+	 * 
+	 * See https://en.wikipedia.org/wiki/Predictor%E2%80%93corrector_method
+	 */
+	protected static final boolean USE_PREDICTOR_CORRECTOR = true;
+	
+	
 	
 	/**
 	 * Result array over which to iterate.
@@ -205,6 +212,35 @@ public class TestKdvB extends TestCase {
 	protected static double getUpdateValue()
 	{
 		return( tempArray[ NSTPT * 2 ][ NSTPX ] );
+	}
+	
+	
+	/**
+	 * Returns the predictor-correction value of the iterations
+	 * from the temp array.
+	 * 
+	 * @return The value in the temp array.
+	 */
+	protected static double getCorrectionValue()
+	{
+		return( tempArray[ NSTPT * 2 - 1 ][ NSTPX ] );
+	}
+	
+	
+	/**
+	 * Applies a predictor-corrector process to the temp array.
+	 * 
+	 * See https://en.wikipedia.org/wiki/Predictor%E2%80%93corrector_method
+	 */
+	protected static void applyPredictorCorrector()
+	{
+		final double slopePrev = tempArray[ NSTPT * 2 - 1 ][ NSTPX ]
+				- tempArray[ NSTPT * 2 - 2 ][ NSTPX ];
+		final double slopeNew = tempArray[ NSTPT * 2 ][ NSTPX ]
+				- tempArray[ NSTPT * 2 - 1 ][ NSTPX ];
+		final double avgSlope = ( slopePrev + slopeNew ) / 2.0;
+		tempArray[ NSTPT * 2 - 1 ][ NSTPX ] = 
+				tempArray[ NSTPT * 2 - 2 ][ NSTPX ] + avgSlope;
 	}
 	
 	
@@ -1521,6 +1557,14 @@ public class TestKdvB extends TestCase {
 					
 						
 						DoubleElem err = newton.eval( implicitSpace2 );
+						
+						
+						if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
+						{
+							applyPredictorCorrector();
+							
+							err = newton.eval( implicitSpace2 );
+						}
 				
 				
 						final double val = TestKdvB.getUpdateValue();
@@ -1548,6 +1592,11 @@ public class TestKdvB extends TestCase {
 						
 						Assert.assertTrue( Math.abs( err.getVal() ) < ( 0.01 * Math.abs( val ) + 0.01 ) );
 						
+						if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
+						{
+							iterArray[ tval ][ xcnt ] =
+								getCorrectionValue();	
+						}
 					
 						iterArray[ tval + 1 ][ xcnt ] = val;
 								
