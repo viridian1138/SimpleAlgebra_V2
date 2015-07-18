@@ -444,6 +444,22 @@ public class TestDiracA extends TestCase {
 	protected static final int NUM_Z_ITER = 10;
 	
 	
+	/**
+	 * The halfway iteration point in X.
+	 */
+	protected static final int HALF_X = NUM_X_ITER / 2;
+	
+	/**
+	 * The halfway iteration point in Y.
+	 */
+	protected static final int HALF_Y = NUM_Y_ITER / 2;
+	
+	/**
+	 * The halfway iteration point in Z.
+	 */
+	protected static final int HALF_Z = NUM_Z_ITER / 2;
+	
+	
 	
 	
 	
@@ -2757,7 +2773,7 @@ protected void initIterArray( final double d1 )
 		// {
 		//	iterArray[ tcnt ][ xcnt ] = rand.nextDouble();
 		// }
-		iterArray[ tcnt ][ 5 ][ 5 ][ 5 ] = genDiffEnt( 10000.0 * ( d1 * d1 ) );
+		iterArray[ tcnt ][ HALF_X ][ HALF_Y ][ HALF_Z ] = genDiffEnt( 10000.0 * ( d1 * d1 ) );
 	}
 	
 	
@@ -2849,7 +2865,7 @@ protected void performIterationT( final int tval , final StelemDescent descent ,
 				
 				
 		
-				if( ( xcnt == 5 ) && ( ycnt == 5 ) && ( zcnt == 5 ) )
+				if( ( xcnt == HALF_X ) && ( ycnt == HALF_Y ) && ( zcnt == HALF_Z ) )
 				{
 					System.out.println( "******************" );
 					System.out.println( " ( " + xcnt + " , " + ycnt + " , " + zcnt + " ) " );
@@ -3172,7 +3188,7 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 		}
 		
 		// System.out.println( "==============================" ); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		// System.out.println( iterArray[ NUM_T_ITER - 1 ][ 10 ][ 5 ][ 5 ] ); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		// System.out.println( iterArray[ NUM_T_ITER - 1 ][ HALF_X ][ HALF_Y ][ HALF_Z ] ); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		// Assert.assertTrue( Math.abs( val - ( -1.450868 ) ) < 0.01 ); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		
 	}

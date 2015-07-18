@@ -52,6 +52,22 @@ public class TestRawFileWriter extends TestCase {
 	protected class TstRawFileWriter extends RawFileWriter
 	{
 
+		/**
+		 * Boolean indicating whether to subract a center value.
+		 */
+		protected static final boolean USE_CENTER = true;
+		
+		/**
+		 * The center value to potentially be subtracted.
+		 */
+		protected static final double CENTER_VALUE = 0.0;
+		
+		/**
+		 * Boolean indicating whether to output the absolute value of the input quantities.
+		 */
+		protected static final boolean USE_ABSOLUTE_VALUE = true;
+		
+		
 		
 		/**
 		 * The number of discretizations on the T-Axis.
@@ -136,7 +152,10 @@ public class TestRawFileWriter extends TestCase {
 		@Override
 		protected double getVal( int t, int x, int y, int z)
 				throws Throwable {
-			return( iterArray.get(t, x, y, z) );
+			final double d0 = iterArray.get(t, x, y, z);
+			final double d1 = USE_CENTER ? d0 - CENTER_VALUE : d0;
+			final double d2 = USE_ABSOLUTE_VALUE ? Math.abs( d1 ) : d1;
+			return( d2 );
 		}
 
 		@Override
@@ -202,7 +221,7 @@ public class TestRawFileWriter extends TestCase {
 		
 		// System.out.println( "Started..." ); 
 		
-		String filePath = "outRaw";
+		String filePath = "outRaw.raw";
 		
 		TstRawFileWriter writer = new TstRawFileWriter();
 		

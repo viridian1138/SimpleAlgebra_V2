@@ -155,6 +155,13 @@ public class TestBurgersB extends TestCase {
 	
 	
 	/**
+	 * The halfway iteration point in X.
+	 */
+	protected static final int HALF_X = NUM_X_ITER / 2;
+
+	
+	
+	/**
 	 * Temp step size in the T-direction.
 	 */
 	protected static final int NSTPT = 1;
@@ -1509,7 +1516,7 @@ public class TestBurgersB extends TestCase {
 			// {
 			//	iterArray[ tcnt ][ xcnt ] = rand.nextDouble();
 			// }
-			iterArray[ tcnt ][ 12 ] = 10000.0 * ( d1 * d1 );
+			iterArray[ tcnt ][ HALF_X ] = 10000.0 * ( d1 * d1 );
 		}
 	}
 	
@@ -1561,7 +1568,7 @@ public class TestBurgersB extends TestCase {
 	
 			final double val = TestBurgersB.getUpdateValue();
 			
-			if( xcnt == 12 )
+			if( xcnt == HALF_X )
 			{
 				System.out.println( "******************" );
 				System.out.println( xcnt );
@@ -1766,7 +1773,7 @@ public class TestBurgersB extends TestCase {
 		}
 		
 		System.out.println( "==============================" );
-		System.out.println( iterArray[ NUM_T_ITER - 1 ][ 10 ] );
+		System.out.println( iterArray[ NUM_T_ITER - 1 ][ HALF_X ] );
 		// Assert.assertTrue( Math.abs( val - ( -1.450868 ) ) < 0.01 ); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		
 	}

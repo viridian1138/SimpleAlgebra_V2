@@ -163,6 +163,17 @@ public class TestStelemC_DR extends TestCase {
 	protected static final int NUM_Y_ITER = 10;
 	
 	
+	/**
+	 * The halfway iteration point in X.
+	 */
+	protected static final int HALF_X = NUM_X_ITER / 2;
+	
+	/**
+	 * The halfway iteration point in Y.
+	 */
+	protected static final int HALF_Y = NUM_Y_ITER / 2;
+	
+	
 	
 	/**
 	 * The T-Axis cell size.
@@ -1743,7 +1754,7 @@ public class TestStelemC_DR extends TestCase {
 			// {
 			//	iterArray[ tcnt ][ xcnt ] = rand.nextDouble();
 			// }
-			iterArray.set( tcnt , 12 , 5 , 10000.0 * ( d1 * d1 ) );
+			iterArray.set( tcnt , HALF_X , HALF_Y , 10000.0 * ( d1 * d1 ) );
 		}
 	}
 	
@@ -1804,7 +1815,7 @@ public class TestStelemC_DR extends TestCase {
 	
 			final double val = TestStelemC_DR.getUpdateValue();
 			
-			if( ( xcnt == 12 ) && ( ycnt == 5 ) )
+			if( ( xcnt == HALF_X ) && ( ycnt == HALF_Y ) )
 			{
 				System.out.println( "******************" );
 				System.out.println( " ( " + xcnt + " , " + ycnt + " ) " );
@@ -2165,7 +2176,7 @@ public class TestStelemC_DR extends TestCase {
 		}
 		
 		System.out.println( "==============================" );
-		System.out.println( iterArray.get( NUM_T_ITER - 1 , 10 , 5 ) );
+		System.out.println( iterArray.get( NUM_T_ITER - 1 , HALF_X , HALF_Y ) );
 		// Assert.assertTrue( Math.abs( val - ( -1.450868 ) ) < 0.01 ); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		
 		

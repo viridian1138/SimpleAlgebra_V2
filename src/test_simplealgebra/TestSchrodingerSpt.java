@@ -218,6 +218,22 @@ public class TestSchrodingerSpt extends TestCase {
 	protected static final int NUM_Z_ITER = 10;
 	
 	
+	/**
+	 * The halfway iteration point in X.
+	 */
+	protected static final int HALF_X = NUM_X_ITER / 2;
+	
+	/**
+	 * The halfway iteration point in Y.
+	 */
+	protected static final int HALF_Y = NUM_Y_ITER / 2;
+	
+	/**
+	 * The halfway iteration point in Z.
+	 */
+	protected static final int HALF_Z = NUM_Z_ITER / 2;
+	
+	
 	
 	
 	/**
@@ -1958,7 +1974,7 @@ public class TestSchrodingerSpt extends TestCase {
 									new DoubleElem( TestSchrodingerSpt.getUpdateValueIm() ) );
 			
 					
-					if( ( xcnt == 12 ) && ( ycnt == 5 ) && ( zcnt == 5 ) )
+					if( ( xcnt == HALF_X ) && ( ycnt == HALF_Y ) && ( zcnt == HALF_Z ) )
 					{
 						System.out.println( "******************" );
 						System.out.println( " ( " + xcnt + " , " + ycnt + " , " + zcnt + " ) " );
@@ -2018,7 +2034,7 @@ public class TestSchrodingerSpt extends TestCase {
 			// {
 			//	iterArray[ tcnt ][ xcnt ] = rand.nextDouble();
 			// }
-			iterArrayRe[ tcnt ][ 12 ][ 5 ][ 5 ] = 10000.0 * ( d1 * d1 );
+			iterArrayRe[ tcnt ][ HALF_X ][ HALF_Y ][ HALF_Z ] = 10000.0 * ( d1 * d1 );
 		}
 	}
 	
@@ -2326,7 +2342,7 @@ public class TestSchrodingerSpt extends TestCase {
 		
 		
 		// System.out.println( "==============================" ); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		// System.out.println( iterArray[ NUM_T_ITER - 1 ][ 10 ][ 5 ][ 5 ] ); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		// System.out.println( iterArray[ NUM_T_ITER - 1 ][ HALF_X ][ HALF_Y ][ HALF_Z ] ); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		// Assert.assertTrue( Math.abs( val - ( -1.450868 ) ) < 0.01 ); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		
 	}

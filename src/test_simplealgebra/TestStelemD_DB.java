@@ -179,6 +179,23 @@ public class TestStelemD_DB extends TestCase {
 	
 	
 	/**
+	 * The halfway iteration point in X.
+	 */
+	protected static final int HALF_X = NUM_X_ITER / 2;
+	
+	/**
+	 * The halfway iteration point in Y.
+	 */
+	protected static final int HALF_Y = NUM_Y_ITER / 2;
+	
+	/**
+	 * The halfway iteration point in Z.
+	 */
+	protected static final int HALF_Z = NUM_Z_ITER / 2;
+	
+	
+	
+	/**
 	 * The T-Axis cell size.
 	 */
 	protected static final int TMULT = 8; // 20;
@@ -1853,7 +1870,7 @@ public class TestStelemD_DB extends TestCase {
 			// {
 			//	iterArray[ tcnt ][ xcnt ] = rand.nextDouble();
 			// }
-			iterArray.set( tcnt , 12 , 5 , 5 , 10000.0 * ( d1 * d1 ) );
+			iterArray.set( tcnt , HALF_X , HALF_Y , HALF_Z , 10000.0 * ( d1 * d1 ) );
 		}
 	}
 	
@@ -1927,7 +1944,7 @@ public class TestStelemD_DB extends TestCase {
 	
 			final double val = TestStelemD_DB.getUpdateValue();
 			
-			if( ( xcnt == 12 ) && ( ycnt == 5 ) && ( zcnt == 5 ) )
+			if( ( xcnt == HALF_X ) && ( ycnt == HALF_Y ) && ( zcnt == HALF_Z ) )
 			{
 				System.out.println( "******************" );
 				System.out.println( " ( " + xcnt + " , " + ycnt + " , " + zcnt + " ) " );
@@ -2342,7 +2359,7 @@ public class TestStelemD_DB extends TestCase {
 		}
 		
 		System.out.println( "==============================" );
-		System.out.println( iterArray.get( NUM_T_ITER - 1 , 10 , 5 , 5 ) );
+		System.out.println( iterArray.get( NUM_T_ITER - 1 , HALF_X , HALF_Y , HALF_Z ) );
 		// Assert.assertTrue( Math.abs( val - ( -1.450868 ) ) < 0.01 ); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		
 		

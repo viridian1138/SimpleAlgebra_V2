@@ -270,6 +270,22 @@ public class TestGeneralRelativityA extends TestCase {
 	protected static final int NUM_Z_ITER = 12;
 	
 	
+	/**
+	 * The halfway iteration point in X.
+	 */
+	protected static final int HALF_X = NUM_X_ITER / 2;
+	
+	/**
+	 * The halfway iteration point in Y.
+	 */
+	protected static final int HALF_Y = NUM_Y_ITER / 2;
+	
+	/**
+	 * The halfway iteration point in Z.
+	 */
+	protected static final int HALF_Z = NUM_Z_ITER / 2;
+	
+	
 	
 	
 	
@@ -2811,7 +2827,7 @@ protected void initIterArray()
 	
 	for( int tcnt = 0 ; tcnt < 2 ; tcnt++ )
 	{	
-		iterArray[ tcnt ][ 6 ][ 6 ][ 6 ] = genDiffEnt( );
+		iterArray[ tcnt ][ HALF_X ][ HALF_Y ][ HALF_Z ] = genDiffEnt( );
 	}
 	
 }
@@ -2903,7 +2919,7 @@ protected void performIterationT( final int tval , final StelemDescent descent ,
 				
 				
 		
-				if( ( xcnt == 6 ) && ( ycnt == 6 ) && ( zcnt == 6 ) )
+				if( ( xcnt == HALF_X ) && ( ycnt == HALF_Y ) && ( zcnt == HALF_Z ) )
 				{
 					System.out.println( "******************" );
 					System.out.println( " ( " + xcnt + " , " + ycnt + " , " + zcnt + " ) " );
@@ -3194,7 +3210,7 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 		}
 		
 		// System.out.println( "==============================" ); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		// System.out.println( iterArray[ NUM_T_ITER - 1 ][ 10 ][ 6 ][ 6 ] ); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		// System.out.println( iterArray[ NUM_T_ITER - 1 ][ HALF_X ][ HALF_Y ][ HALF_Z ] ); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		// Assert.assertTrue( Math.abs( val - ( -1.450868 ) ) < 0.01 ); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		
 	}

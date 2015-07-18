@@ -160,6 +160,18 @@ public class TestStelemC extends TestCase {
 	
 	
 	
+	/**
+	 * The halfway iteration point in X.
+	 */
+	protected static final int HALF_X = NUM_X_ITER / 2;
+	
+	/**
+	 * The halfway iteration point in Y.
+	 */
+	protected static final int HALF_Y = NUM_Y_ITER / 2;
+	
+	
+	
 	
 	/**
 	 * Temp step size in the T-direction.
@@ -1664,7 +1676,7 @@ public class TestStelemC extends TestCase {
 			// {
 			//	iterArray[ tcnt ][ xcnt ] = rand.nextDouble();
 			// }
-			iterArray[ tcnt ][ 12 ][ 5 ] = 10000.0 * ( d1 * d1 );
+			iterArray[ tcnt ][ HALF_X ][ HALF_Y ] = 10000.0 * ( d1 * d1 );
 		}
 	}
 	
@@ -1710,7 +1722,7 @@ public class TestStelemC extends TestCase {
 	
 				final double val = TestStelemC.getUpdateValue();
 			
-				if( ( xcnt == 12 ) && ( ycnt == 5 ) )
+				if( ( xcnt == HALF_X ) && ( ycnt == HALF_Y ) )
 				{
 					System.out.println( "******************" );
 					System.out.println( " ( " + xcnt + " , " + ycnt + " ) " );
@@ -2017,7 +2029,7 @@ public class TestStelemC extends TestCase {
 		}
 		
 		System.out.println( "==============================" );
-		System.out.println( iterArray[ NUM_T_ITER - 1 ][ 10 ][ 5 ] );
+		System.out.println( iterArray[ NUM_T_ITER - 1 ][ HALF_X ][ HALF_Y ] );
 		// Assert.assertTrue( Math.abs( val - ( -1.450868 ) ) < 0.01 ); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		
 	}
