@@ -188,6 +188,22 @@ public class TestStelemD_DR extends TestCase {
 	protected static final int HALF_Z = NUM_Z_ITER / 2;
 	
 	
+	/**
+	 * The initial condition radius in X.
+	 */
+	protected static final double RAD_X = NUM_X_ITER / 10.0;
+	
+	/**
+	 * The initial condition radius in Y.
+	 */
+	protected static final double RAD_Y = NUM_Y_ITER / 10.0;
+	
+	/**
+	 * The initial condition radius in Z.
+	 */
+	protected static final double RAD_Z = NUM_Z_ITER / 10.0;
+	
+	
 	
 	/**
 	 * The T-Axis cell size.
@@ -1857,14 +1873,41 @@ public class TestStelemD_DR extends TestCase {
 	 */
 	protected void initIterArray( final double d1 ) throws Throwable
 	{
+		System.out.println( "Setting Initial Conditions..." );
+		long atm = System.currentTimeMillis();
+		long atm2 = System.currentTimeMillis();
 		for( int tcnt = 0 ; tcnt < 2 ; tcnt++ )
 		{
-			// for( int xcnt = 0 ; xcnt < NUM_X_ITER ; xcnt++ )
-			// {
-			//	iterArray[ tcnt ][ xcnt ] = rand.nextDouble();
-			// }
-			iterArray.set( tcnt , HALF_X , HALF_Y , HALF_Z , 10000.0 * ( d1 * d1 ) );
+			System.out.println( "Initial - " + tcnt );
+			for( int acnt = 0 ; acnt < NUM_X_ITER * NUM_Y_ITER * NUM_Z_ITER ; acnt++ )
+			{
+				atm2 = System.currentTimeMillis();
+				if( atm2 - atm >= 1000 )
+				{
+					System.out.println( ">> " + acnt );
+					atm = atm2;
+				}
+				
+				int ac = acnt;
+				final int z = ac % NUM_Z_ITER;
+				ac = ac / NUM_Z_ITER;
+				final int y = ac % NUM_Y_ITER;
+				ac = ac / NUM_Y_ITER;
+				final int x = ac % NUM_X_ITER;
+				final double dx = ( x - HALF_X ) / RAD_X;
+				final double dy = ( x - HALF_Y ) / RAD_Y;
+				final double dz = ( x - HALF_Z ) / RAD_Z;
+				if( dx * dx + dy * dy + dz * dz < 1.0 )
+				{
+					iterArray.set( tcnt , x , y , z , 10000.0 * ( d1 * d1 ) );
+				}
+				else
+				{
+					iterArray.set( tcnt , x , y , z , 0.0 );
+				}
+			}
 		}
+		System.out.println( "Initial Conditions Set..." );
 	}
 	
 	

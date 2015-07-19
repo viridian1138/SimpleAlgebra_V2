@@ -161,6 +161,13 @@ public class TestStelemB_DB extends TestCase {
 	protected static final int HALF_X = NUM_X_ITER / 2;
 	
 	
+	/**
+	 * The initial condition radius in X.
+	 */
+	protected static final double RAD_X = NUM_X_ITER / 10.0;
+	
+	
+	
 	
 	/**
 	 * Temp step size in the T-direction.
@@ -1573,14 +1580,35 @@ public class TestStelemB_DB extends TestCase {
 	 */
 	protected void initIterArray( final double d1 )
 	{
+		System.out.println( "Setting Initial Conditions..." );
+		long atm = System.currentTimeMillis();
+		long atm2 = System.currentTimeMillis();
 		for( int tcnt = 0 ; tcnt < 2 ; tcnt++ )
 		{
-			// for( int xcnt = 0 ; xcnt < NUM_X_ITER ; xcnt++ )
-			// {
-			//	iterArray[ tcnt ][ xcnt ] = rand.nextDouble();
-			// }
-			iterArray.set( tcnt , HALF_X , 10000.0 * ( d1 * d1 ) );
+			System.out.println( "Initial - " + tcnt );
+			for( int acnt = 0 ; acnt < NUM_X_ITER ; acnt++ )
+			{
+				atm2 = System.currentTimeMillis();
+				if( atm2 - atm >= 1000 )
+				{
+					System.out.println( ">> " + acnt );
+					atm = atm2;
+				}
+				
+				int ac = acnt;
+				final int x = ac % NUM_X_ITER;
+				final double dx = ( x - HALF_X ) / RAD_X;
+				if( dx * dx < 1.0 )
+				{
+					iterArray.set( tcnt , x , 10000.0 * ( d1 * d1 ) );
+				}
+				else
+				{
+					iterArray.set( tcnt , x , 0.0 );
+				}
+			}
 		}
+		System.out.println( "Initial Conditions Set..." );
 	}
 	
 	

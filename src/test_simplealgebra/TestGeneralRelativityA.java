@@ -286,6 +286,22 @@ public class TestGeneralRelativityA extends TestCase {
 	protected static final int HALF_Z = NUM_Z_ITER / 2;
 	
 	
+	/**
+	 * The initial condition radius in X.
+	 */
+	protected static final double RAD_X = NUM_X_ITER / 10.0;
+	
+	/**
+	 * The initial condition radius in Y.
+	 */
+	protected static final double RAD_Y = NUM_Y_ITER / 10.0;
+	
+	/**
+	 * The initial condition radius in Z.
+	 */
+	protected static final double RAD_Z = NUM_Z_ITER / 10.0;
+	
+	
 	
 	
 	
@@ -2809,27 +2825,41 @@ protected class TestMetricTensorFactory extends MetricTensorInvertingFactory<Str
  */
 protected void initIterArray()
 {
-	
+	System.out.println( "Setting Initial Conditions..." );
+	long atm = System.currentTimeMillis();
+	long atm2 = System.currentTimeMillis();
 	for( int tcnt = 0 ; tcnt < 2 ; tcnt++ )
 	{
-		for( int xcnt = 0 ; xcnt < NUM_X_ITER ; xcnt++ )
+		System.out.println( "Initial - " + tcnt );
+		for( int acnt = 0 ; acnt < NUM_X_ITER * NUM_Y_ITER * NUM_Z_ITER ; acnt++ )
 		{
-			for( int ycnt = 0 ; ycnt < NUM_Y_ITER ; ycnt++ )
+			atm2 = System.currentTimeMillis();
+			if( atm2 - atm >= 1000 )
 			{
-				for( int zcnt = 0 ; zcnt < NUM_Z_ITER ; zcnt++ )
-				{
-					iterArray[ tcnt ][ xcnt ][ ycnt ][ zcnt ] = genDiffAll( );
-				}
+				System.out.println( ">> " + acnt );
+				atm = atm2;
+			}
+			
+			int ac = acnt;
+			final int z = ac % NUM_Z_ITER;
+			ac = ac / NUM_Z_ITER;
+			final int y = ac % NUM_Y_ITER;
+			ac = ac / NUM_Y_ITER;
+			final int x = ac % NUM_X_ITER;
+			final double dx = ( x - HALF_X ) / RAD_X;
+			final double dy = ( x - HALF_Y ) / RAD_Y;
+			final double dz = ( x - HALF_Z ) / RAD_Z;
+			if( dx * dx + dy * dy + dz * dz < 1.0 )
+			{
+				iterArray[ tcnt ][ x ][ y ][ z ] = genDiffEnt();
+			}
+			else
+			{
+				iterArray[ tcnt ][ x ][ y ][ z ] = genDiffAll();
 			}
 		}
 	}
-	
-	
-	for( int tcnt = 0 ; tcnt < 2 ; tcnt++ )
-	{	
-		iterArray[ tcnt ][ HALF_X ][ HALF_Y ][ HALF_Z ] = genDiffEnt( );
-	}
-	
+	System.out.println( "Initial Conditions Set..." );
 }
 
 
