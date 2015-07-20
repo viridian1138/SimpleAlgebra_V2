@@ -59,6 +59,8 @@ import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicReduction;
 import simplealgebra.ga.*;
 import simplealgebra.ddx.*;
+import test_simplealgebra.TestStelemD_DR.IncrementManager;
+import test_simplealgebra.TestStelemD_DR.TempArrayFillInnerParam;
 
 
 
@@ -776,7 +778,7 @@ public class TestSchrodingerSpt_DR extends TestCase {
 	 * @param ycnt The Y-Axis index for the center in the iter array.
 	 * @param zcnt The Z-Axis index for the center in the iter array.
 	 */
-	protected static void fillTempArrayShiftZ( final int tcnt , final int xcnt , final int ycnt , final int zcnt ) throws Throwable
+	protected static void fillTempArrayShiftZup( final int tcnt , final int xcnt , final int ycnt , final int zcnt ) throws Throwable
 	{
 		for( int ta = 0 ; ta < 2 * NSTPT + 1 ; ta++ )
 		{
@@ -810,6 +812,290 @@ public class TestSchrodingerSpt_DR extends TestCase {
 				for( int ya = -NSTPY ; ya < NSTPY + 1 ; ya++ )
 				{
 					param.setYa( ya );
+					fillTempArrayInner( param ); 
+				}
+			}
+		}
+		
+		
+		// Overlay initial seed for iterations.
+		for( int xa = 0 ; xa < NSTPX * 2 + 1 ; xa++ )
+		{
+			for( int ya = 0 ; ya < NSTPY * 2 + 1 ; ya++ )
+			{
+				for( int za = 0 ; za < NSTPZ * 2 + 1 ; za++ )
+				{
+					tempArrayRe[ NSTPT * 2 ][ xa ][ ya ][ za ] = tempArrayRe[ NSTPT * 2 - 1 ][ xa ][ ya ][ za ];
+					tempArrayIm[ NSTPT * 2 ][ xa ][ ya ][ za ] = tempArrayIm[ NSTPT * 2 - 1 ][ xa ][ ya ][ za ];
+				}
+			}
+		}
+		
+	}
+	
+	
+	
+	
+	/**
+	 * Fills the temp array with elements from the iter array, assuming a shift by one in Z.
+	 * This should be faster because a temp array shift is much faster than refreshing from the file store.
+	 * 
+	 * @param tcnt The T-Axis index for the center in the iter array.
+	 * @param xcnt The X-Axis index for the center in the iter array.
+	 * @param ycnt The Y-Axis index for the center in the iter array.
+	 * @param zcnt The Z-Axis index for the center in the iter array.
+	 */
+	protected static void fillTempArrayShiftZdown( final int tcnt , final int xcnt , final int ycnt , final int zcnt ) throws Throwable
+	{
+		for( int ta = 0 ; ta < 2 * NSTPT + 1 ; ta++ )
+		{
+			for( int xa = 0 ; xa < 2 * NSTPX + 1 ; xa++ )
+			{
+				for( int ya = 0 ; ya < 2 * NSTPY + 1 ; ya++ )
+				{
+					for( int za = 1 ; za < 2 * NSTPZ + 1 ; za++ )
+					{
+						tempArrayRe[ ta ][ xa ][ ya ][ za ] = tempArrayRe[ ta ][ xa ][ ya ][ za - 1 ]; 
+						tempArrayIm[ ta ][ xa ][ ya ][ za ] = tempArrayIm[ ta ][ xa ][ ya ][ za - 1 ]; 
+					}
+				}
+			}
+		}
+		
+		final TempArrayFillInnerParam param = new TempArrayFillInnerParam();
+		
+		param.setTcnt( tcnt );
+		param.setXcnt( xcnt );
+		param.setYcnt( ycnt );
+		param.setZcnt( zcnt );
+		param.setZa( 0 );
+		
+		for( int ta = -NSTPT ; ta < NSTPT + 1 ; ta++ )
+		{
+			param.setTa( ta );
+			for( int xa = -NSTPX ; xa < NSTPX + 1 ; xa++ )
+			{
+				param.setXa( xa );
+				for( int ya = -NSTPY ; ya < NSTPY + 1 ; ya++ )
+				{
+					param.setYa( ya );
+					fillTempArrayInner( param ); 
+				}
+			}
+		}
+		
+		
+		// Overlay initial seed for iterations.
+		for( int xa = 0 ; xa < NSTPX * 2 + 1 ; xa++ )
+		{
+			for( int ya = 0 ; ya < NSTPY * 2 + 1 ; ya++ )
+			{
+				for( int za = 0 ; za < NSTPZ * 2 + 1 ; za++ )
+				{
+					tempArrayRe[ NSTPT * 2 ][ xa ][ ya ][ za ] = tempArrayRe[ NSTPT * 2 - 1 ][ xa ][ ya ][ za ];
+					tempArrayIm[ NSTPT * 2 ][ xa ][ ya ][ za ] = tempArrayIm[ NSTPT * 2 - 1 ][ xa ][ ya ][ za ];
+				}
+			}
+		}
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	/**
+	 * Fills the temp array with elements from the iter array, assuming a shift by one in Y.
+	 * This should be faster because a temp array shift is much faster than refreshing from the file store.
+	 * 
+	 * @param tcnt The T-Axis index for the center in the iter array.
+	 * @param xcnt The X-Axis index for the center in the iter array.
+	 * @param ycnt The Y-Axis index for the center in the iter array.
+	 * @param zcnt The Z-Axis index for the center in the iter array.
+	 */
+	protected static void fillTempArrayShiftYup( final int tcnt , final int xcnt , final int ycnt , final int zcnt ) throws Throwable
+	{
+		for( int ta = 0 ; ta < 2 * NSTPT + 1 ; ta++ )
+		{
+			for( int xa = 0 ; xa < 2 * NSTPX + 1 ; xa++ )
+			{
+				for( int ya = 0 ; ya < 2 * NSTPY ; ya++ )
+				{
+					for( int za = 0 ; za < 2 * NSTPZ + 1 ; za++ )
+					{
+						tempArrayRe[ ta ][ xa ][ ya ][ za ] = tempArrayRe[ ta ][ xa ][ ya + 1 ][ za ]; 
+						tempArrayIm[ ta ][ xa ][ ya ][ za ] = tempArrayIm[ ta ][ xa ][ ya + 1 ][ za ];
+					}
+				}
+			}
+		}
+		
+		final TempArrayFillInnerParam param = new TempArrayFillInnerParam();
+		
+		param.setTcnt( tcnt );
+		param.setXcnt( xcnt );
+		param.setYcnt( ycnt );
+		param.setZcnt( zcnt );
+		param.setYa( NSTPY );
+		
+		for( int ta = -NSTPT ; ta < NSTPT + 1 ; ta++ )
+		{
+			param.setTa( ta );
+			for( int xa = -NSTPX ; xa < NSTPX + 1 ; xa++ )
+			{
+				param.setXa( xa );
+				for( int za = -NSTPZ ; za < NSTPZ + 1 ; za++ )
+				{
+					param.setZa( za );
+					fillTempArrayInner( param ); 
+				}
+			}
+		}
+		
+		
+		// Overlay initial seed for iterations.
+		for( int xa = 0 ; xa < NSTPX * 2 + 1 ; xa++ )
+		{
+			for( int ya = 0 ; ya < NSTPY * 2 + 1 ; ya++ )
+			{
+				for( int za = 0 ; za < NSTPZ * 2 + 1 ; za++ )
+				{
+					tempArrayRe[ NSTPT * 2 ][ xa ][ ya ][ za ] = tempArrayRe[ NSTPT * 2 - 1 ][ xa ][ ya ][ za ];
+					tempArrayIm[ NSTPT * 2 ][ xa ][ ya ][ za ] = tempArrayIm[ NSTPT * 2 - 1 ][ xa ][ ya ][ za ];
+				}
+			}
+		}
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/**
+	 * Fills the temp array with elements from the iter array, assuming a shift by one in Y.
+	 * This should be faster because a temp array shift is much faster than refreshing from the file store.
+	 * 
+	 * @param tcnt The T-Axis index for the center in the iter array.
+	 * @param xcnt The X-Axis index for the center in the iter array.
+	 * @param ycnt The Y-Axis index for the center in the iter array.
+	 * @param zcnt The Z-Axis index for the center in the iter array.
+	 */
+	protected static void fillTempArrayShiftYdown( final int tcnt , final int xcnt , final int ycnt , final int zcnt ) throws Throwable
+	{
+		for( int ta = 0 ; ta < 2 * NSTPT + 1 ; ta++ )
+		{
+			for( int xa = 0 ; xa < 2 * NSTPX + 1 ; xa++ )
+			{
+				for( int ya = 1 ; ya < 2 * NSTPY + 1 ; ya++ )
+				{
+					for( int za = 0 ; za < 2 * NSTPZ + 1 ; za++ )
+					{
+						tempArrayRe[ ta ][ xa ][ ya ][ za ] = tempArrayRe[ ta ][ xa ][ ya - 1 ][ za ]; 
+						tempArrayIm[ ta ][ xa ][ ya ][ za ] = tempArrayIm[ ta ][ xa ][ ya - 1 ][ za ]; 
+					}
+				}
+			}
+		}
+		
+		final TempArrayFillInnerParam param = new TempArrayFillInnerParam();
+		
+		param.setTcnt( tcnt );
+		param.setXcnt( xcnt );
+		param.setYcnt( ycnt );
+		param.setZcnt( zcnt );
+		param.setYa( 0 );
+		
+		for( int ta = -NSTPT ; ta < NSTPT + 1 ; ta++ )
+		{
+			param.setTa( ta );
+			for( int xa = -NSTPX ; xa < NSTPX + 1 ; xa++ )
+			{
+				param.setXa( xa );
+				for( int za = -NSTPZ ; za < NSTPZ + 1 ; za++ )
+				{
+					param.setZa( za );
+					fillTempArrayInner( param ); 
+				}
+			}
+		}
+		
+		
+		// Overlay initial seed for iterations.
+		for( int xa = 0 ; xa < NSTPX * 2 + 1 ; xa++ )
+		{
+			for( int ya = 0 ; ya < NSTPY * 2 + 1 ; ya++ )
+			{
+				for( int za = 0 ; za < NSTPZ * 2 + 1 ; za++ )
+				{
+					tempArrayRe[ NSTPT * 2 ][ xa ][ ya ][ za ] = tempArrayRe[ NSTPT * 2 - 1 ][ xa ][ ya ][ za ];
+					tempArrayIm[ NSTPT * 2 ][ xa ][ ya ][ za ] = tempArrayIm[ NSTPT * 2 - 1 ][ xa ][ ya ][ za ];
+				}
+			}
+		}
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/**
+	 * Fills the temp array with elements from the iter array, assuming a shift by one in X.
+	 * This should be faster because a temp array shift is much faster than refreshing from the file store.
+	 * 
+	 * @param tcnt The T-Axis index for the center in the iter array.
+	 * @param xcnt The X-Axis index for the center in the iter array.
+	 * @param ycnt The Y-Axis index for the center in the iter array.
+	 * @param zcnt The Z-Axis index for the center in the iter array.
+	 */
+	protected static void fillTempArrayShiftXup( final int tcnt , final int xcnt , final int ycnt , final int zcnt ) throws Throwable
+	{
+		for( int ta = 0 ; ta < 2 * NSTPT + 1 ; ta++ )
+		{
+			for( int xa = 0 ; xa < 2 * NSTPX ; xa++ )
+			{
+				for( int ya = 0 ; ya < 2 * NSTPY + 1 ; ya++ )
+				{
+					for( int za = 0 ; za < 2 * NSTPZ + 1 ; za++ )
+					{
+						tempArrayRe[ ta ][ xa ][ ya ][ za ] = tempArrayRe[ ta ][ xa + 1 ][ ya ][ za ]; 
+						tempArrayIm[ ta ][ xa ][ ya ][ za ] = tempArrayIm[ ta ][ xa + 1 ][ ya ][ za ]; 
+					}
+				}
+			}
+		}
+		
+		final TempArrayFillInnerParam param = new TempArrayFillInnerParam();
+		
+		param.setTcnt( tcnt );
+		param.setXcnt( xcnt );
+		param.setYcnt( ycnt );
+		param.setZcnt( zcnt );
+		param.setXa( NSTPX );
+		
+		for( int ta = -NSTPT ; ta < NSTPT + 1 ; ta++ )
+		{
+			param.setTa( ta );
+			for( int ya = -NSTPY ; ya < NSTPY + 1 ; ya++ )
+			{
+				param.setYa( ya );
+				for( int za = -NSTPZ ; za < NSTPZ + 1 ; za++ )
+				{
+					param.setZa( za );
 					fillTempArrayInner( param ); 
 				}
 			}
@@ -2046,6 +2332,216 @@ public class TestSchrodingerSpt_DR extends TestCase {
 	
 	
 	
+	protected class IncrementManager
+	{
+		int xcnt = 0;
+		int ycnt = 0;
+		int zcnt = 0;
+		int zstrt = 0;
+		int ystrt = 0;
+		int xstrt = 0;
+		int zdn = ZMULT - 1;
+		int ydn = YMULT - 1;
+		int xdn = XMULT - 1;
+		boolean xMoveOnly = false;
+		boolean yMoveOnly = false;
+		boolean zMoveOnly = false;
+		boolean zMoveUp = true;
+		boolean yMoveUp = true;
+		
+		
+		
+		
+		protected void handleSwatchIncrement()
+		{
+			yMoveUp = true;
+			zMoveUp = true;
+			if( ( zstrt + ( ZMULT - 1 ) ) < ( NUM_Z_ITER - 1 ) )
+			{
+				zcnt = zstrt + ZMULT;
+				zstrt = zcnt;
+				zdn = ZMULT - 1;
+				ycnt = ystrt;
+				ydn = YMULT - 1;
+				xcnt = xstrt;
+				xdn = XMULT - 1;
+			}
+			else
+			{
+				if( ( ycnt + ( YMULT - 1 ) ) < ( NUM_Y_ITER - 1 ) )
+				{
+					zcnt = 0;
+					zstrt = 0;
+					zdn = ZMULT - 1;
+					ycnt = ystrt + YMULT;
+					ystrt = ycnt;
+					ydn = YMULT - 1;
+					xcnt = xstrt;
+					xdn = XMULT - 1;
+				}
+				else
+				{
+					zcnt = 0;
+					zstrt = 0;
+					zdn = ZMULT - 1;
+					ycnt = 0;
+					ystrt = 0;
+					ydn = YMULT - 1;
+					xcnt = xstrt + XMULT;
+					xstrt = xcnt;
+					xdn = XMULT - 1;
+				}
+			}
+		}
+		
+		
+		
+		
+		protected void handleIncrementXa()
+		{
+			
+			if( ( xdn > 0 ) && ( xcnt < ( NUM_X_ITER - 1 ) ) )
+			{
+				xMoveOnly = true;
+				xcnt++;
+				xdn--;
+				yMoveUp = !yMoveUp;
+				ydn = YMULT - 1;
+				zMoveUp = !zMoveUp;
+				zdn = ZMULT - 1;
+			}
+			else
+			{
+				handleSwatchIncrement();
+			}
+			
+		}
+		
+		
+		
+		protected void handleIncrementYa()
+		{
+			if( yMoveUp )
+			{
+				if( ( ydn > 0 ) && ( ycnt < ( NUM_Y_ITER - 1 ) ) )
+				{
+					yMoveOnly = true;
+					ycnt++;
+					ydn--;
+					zMoveUp = !zMoveUp;
+					zdn = ZMULT - 1;
+				}
+				else
+				{
+					handleIncrementXa();
+				}
+			}
+			else
+			{
+				if( ( ydn > 0 ) && ( ycnt > ystrt ) )
+				{
+					yMoveOnly = true;
+					ycnt--;
+					ydn--;
+					zMoveUp = !zMoveUp;
+					zdn = ZMULT - 1;
+				}
+				else
+				{
+					handleIncrementXa();
+				}
+			}
+		}
+		
+		
+		
+		
+		public void handleIncrementZa()
+		{
+			zMoveOnly = false;
+			yMoveOnly = false;
+			xMoveOnly = false;
+			if( zMoveUp )
+			{
+				if( ( zdn > 0 ) && ( zcnt < ( NUM_Z_ITER - 1 ) ) )
+				{
+					zMoveOnly = true;
+					zcnt++;
+					zdn--;
+				}
+				else
+				{
+					handleIncrementYa();
+				}
+			}
+			else
+			{
+				if( ( zdn > 0 ) && ( zcnt > zstrt ) )
+				{
+					zMoveOnly = true;
+					zcnt--;
+					zdn--;
+				}
+				else
+				{
+					handleIncrementYa();
+				}
+			}
+		}
+		
+		
+		
+		public void performTempArrayFill( final int tval ) throws Throwable
+		{
+			if( zMoveOnly )
+			{
+				if( zMoveUp )
+				{
+					fillTempArrayShiftZup( tval , xcnt , ycnt , zcnt );
+				}
+				else
+				{
+					fillTempArrayShiftZdown( tval , xcnt , ycnt , zcnt );
+				}
+			}
+			else
+			{
+				if( yMoveOnly )
+				{
+					if( yMoveUp )
+					{
+						fillTempArrayShiftYup( tval , xcnt , ycnt , zcnt );
+					}
+					else
+					{
+						fillTempArrayShiftYdown( tval , xcnt , ycnt , zcnt );
+					}
+				}
+				else
+				{
+					if( xMoveOnly )
+					{
+						fillTempArrayShiftXup( tval , xcnt , ycnt , zcnt );
+					}
+					else
+					{
+						fillTempArray( tval , xcnt , ycnt , zcnt );
+					}
+				}
+			}
+		}
+		
+		
+		
+	}
+	
+	
+	
+	protected final IncrementManager im = new IncrementManager();
+	
+	
+	
+	
 	/**
 	 * Performs descent iterations for one value of T.
 	 * 
@@ -2058,16 +2554,20 @@ public class TestSchrodingerSpt_DR extends TestCase {
 	protected void performIterationT( final int tval , final StelemNewton newton , final HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace2 ) 
 			throws Throwable
 	{
-		int xcnt = 0;
-		int ycnt = 0;
-		int zcnt = 0;
-		int zstrt = 0;
-		int ystrt = 0;
-		int xstrt = 0;
-		int zdn = ZMULT - 1;
-		int ydn = YMULT - 1;
-		int xdn = XMULT - 1;
-		boolean zMoveOnly = false;
+		im.xcnt = 0;
+		im.ycnt = 0;
+		im.zcnt = 0;
+		im.zstrt = 0;
+		im.ystrt = 0;
+		im.xstrt = 0;
+		im.zdn = ZMULT - 1;
+		im.ydn = YMULT - 1;
+		im.xdn = XMULT - 1;
+		im.yMoveUp = true;
+		im.zMoveUp = true;
+		im.xMoveOnly = false;
+		im.yMoveOnly = false;
+		im.zMoveOnly = false;
 		long atm = System.currentTimeMillis();
 		long atm2 = System.currentTimeMillis();
 		for( int acnt = 0 ; acnt < ( NUM_X_ITER * NUM_Y_ITER * NUM_Z_ITER ) ; acnt++ )
@@ -2076,18 +2576,13 @@ public class TestSchrodingerSpt_DR extends TestCase {
 			atm2 = System.currentTimeMillis();
 			if( atm2 - atm >= 1000 )
 			{
-				System.out.println( ">> " + tval + " / " + xcnt + " / " + ycnt + " / " + zcnt );
+				System.out.println( ">> " + tval + " / " + im.xcnt + " / " + im.ycnt + " / " + im.zcnt );
 				atm = atm2;
 			}
 			
-			if( zMoveOnly )
-			{
-				fillTempArrayShiftZ( tval , xcnt , ycnt , zcnt );
-			}
-			else
-			{
-				fillTempArray( tval , xcnt , ycnt , zcnt );
-			}
+			
+			im.performTempArrayFill( tval );
+			
 			
 			clearSpatialAssertArray();
 	
@@ -2115,10 +2610,10 @@ public class TestSchrodingerSpt_DR extends TestCase {
 							new DoubleElem( TestSchrodingerSpt_DR.getUpdateValueIm() ) );
 			
 					
-			if( ( xcnt == HALF_X ) && ( ycnt == HALF_Y ) && ( zcnt == HALF_Z ) )
+			if( ( im.xcnt == HALF_X ) && ( im.ycnt == HALF_Y ) && ( im.zcnt == HALF_Z ) )
 			{
 				System.out.println( "******************" );
-				System.out.println( " ( " + xcnt + " , " + ycnt + " , " + zcnt + " ) " );
+				System.out.println( " ( " + im.xcnt + " , " + im.ycnt + " , " + im.zcnt + " ) " );
 				System.out.println( expectationValue( ival ) );
 				System.out.println( expectationValue( val ) );
 				System.out.println( "## " + ( expectationValue( err ) ) );
@@ -2144,83 +2639,15 @@ public class TestSchrodingerSpt_DR extends TestCase {
 			
 			if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
 			{
-				iterArrayRe.set( tval , xcnt , ycnt , zcnt , getCorrectionValueRe() );	
-				iterArrayIm.set( tval , xcnt , ycnt , zcnt , getCorrectionValueIm() );
+				iterArrayRe.set( tval , im.xcnt , im.ycnt , im.zcnt , getCorrectionValueRe() );	
+				iterArrayIm.set( tval , im.xcnt , im.ycnt , im.zcnt , getCorrectionValueIm() );
 			}
 		
-			iterArrayRe.set( tval + 1 , xcnt , ycnt , zcnt , val.getRe().getVal() );
-			iterArrayIm.set( tval + 1 , xcnt , ycnt , zcnt , val.getIm().getVal() );
+			iterArrayRe.set( tval + 1 , im.xcnt , im.ycnt , im.zcnt , val.getRe().getVal() );
+			iterArrayIm.set( tval + 1 , im.xcnt , im.ycnt , im.zcnt , val.getIm().getVal() );
 			
 			
-			zMoveOnly = false;
-			if( ( zdn > 0 ) && ( zcnt < ( NUM_Z_ITER - 1 ) ) )
-			{
-				zMoveOnly = true;
-				zcnt++;
-				zdn--;
-			}
-			else
-			{
-				if( ( ydn > 0 ) && ( ycnt < ( NUM_Y_ITER - 1 ) ) )
-				{
-					ycnt++;
-					ydn--;
-					zcnt = zstrt;
-					zdn = ZMULT - 1;
-				}
-				else
-				{
-					if( ( xdn > 0 ) && ( xcnt < ( NUM_X_ITER - 1 ) ) )
-					{
-						xcnt++;
-						xdn--;
-						ycnt = ystrt;
-						ydn = YMULT - 1;
-						zcnt = zstrt;
-						zdn = ZMULT - 1;
-					}
-					else
-					{
-						if( zcnt < ( NUM_Z_ITER - 1 ) )
-						{
-							zcnt++;
-							zstrt = zcnt;
-							zdn = ZMULT - 1;
-							ycnt = ystrt;
-							ydn = YMULT - 1;
-							xcnt = xstrt;
-							xdn = XMULT - 1;
-						}
-						else
-						{
-							if( ycnt < ( NUM_Y_ITER - 1 ) )
-							{
-								zcnt = 0;
-								zstrt = 0;
-								zdn = ZMULT - 1;
-								ycnt++;
-								ystrt = ycnt;
-								ydn = YMULT - 1;
-								xcnt = xstrt;
-								xdn = XMULT - 1;
-							}
-							else
-							{
-								zcnt = 0;
-								zstrt = 0;
-								zdn = ZMULT - 1;
-								ycnt = 0;
-								ystrt = 0;
-								ydn = YMULT - 1;
-								xcnt++;
-								xstrt = xcnt;
-								xdn = XMULT - 1;
-							}
-						}
-					}
-				}
-			}
-				
+			im.handleIncrementZa();
 			
 		}
 	}
@@ -2257,8 +2684,8 @@ public class TestSchrodingerSpt_DR extends TestCase {
 				ac = ac / NUM_Y_ITER;
 				final int x = ac % NUM_X_ITER;
 				final double dx = ( x - HALF_X ) / RAD_X;
-				final double dy = ( x - HALF_Y ) / RAD_Y;
-				final double dz = ( x - HALF_Z ) / RAD_Z;
+				final double dy = ( y - HALF_Y ) / RAD_Y;
+				final double dz = ( z - HALF_Z ) / RAD_Z;
 				if( dx * dx + dy * dy + dz * dz < 1.0 )
 				{
 					iterArrayRe.set( tcnt , x , y , z , 10000.0 * ( d1 * d1 ) );

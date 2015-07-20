@@ -1702,7 +1702,7 @@ public class TestStelemC extends TestCase {
 				ac = ac / NUM_Y_ITER;
 				final int x = ac % NUM_X_ITER;
 				final double dx = ( x - HALF_X ) / RAD_X;
-				final double dy = ( x - HALF_Y ) / RAD_Y;
+				final double dy = ( y - HALF_Y ) / RAD_Y;
 				if( dx * dx + dy * dy < 1.0 )
 				{
 					iterArray[ tcnt ][ x ][ y ] = 10000.0 * ( d1 * d1 );
