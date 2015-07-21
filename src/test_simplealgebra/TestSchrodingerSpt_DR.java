@@ -715,6 +715,28 @@ public class TestSchrodingerSpt_DR extends TestCase {
 	
 	
 	
+	
+	/**
+	 * Overlays an initial seed value into the temp array that serves as the starting point for Newton-Raphson iterations.
+	 */
+	protected static void overlayInitialSeedForIterations()
+	{
+		for( int xa = 0 ; xa < NSTPX * 2 + 1 ; xa++ )
+		{
+			for( int ya = 0 ; ya < NSTPY * 2 + 1 ; ya++ )
+			{
+				for( int za = 0 ; za < NSTPZ * 2 + 1 ; za++ )
+				{
+					tempArrayRe[ NSTPT * 2 ][ xa ][ ya ][ za ] = tempArrayRe[ NSTPT * 2 - 1 ][ xa ][ ya ][ za ];
+					tempArrayIm[ NSTPT * 2 ][ xa ][ ya ][ za ] = tempArrayIm[ NSTPT * 2 - 1 ][ xa ][ ya ][ za ];
+				}
+			}
+		}
+	}
+	
+	
+	
+	
 	/**
 	 * Fills the temp array with elements from the iter array.
 	 * 
@@ -732,7 +754,7 @@ public class TestSchrodingerSpt_DR extends TestCase {
 		param.setYcnt( ycnt );
 		param.setZcnt( zcnt );
 		
-		for( int ta = -NSTPT ; ta < NSTPT + 1 ; ta++ )
+		for( int ta = -NSTPT ; ta < NSTPT ; ta++ )
 		{
 			param.setTa( ta );
 			for( int xa = -NSTPX ; xa < NSTPX + 1 ; xa++ )
@@ -751,18 +773,7 @@ public class TestSchrodingerSpt_DR extends TestCase {
 		}
 		
 		
-		// Overlay initial seed for iterations.
-		for( int xa = 0 ; xa < NSTPX * 2 + 1 ; xa++ )
-		{
-			for( int ya = 0 ; ya < NSTPY * 2 + 1 ; ya++ )
-			{
-				for( int za = 0 ; za < NSTPZ * 2 + 1 ; za++ )
-				{
-					tempArrayRe[ NSTPT * 2 ][ xa ][ ya ][ za ] = tempArrayRe[ NSTPT * 2 - 1 ][ xa ][ ya ][ za ];
-					tempArrayIm[ NSTPT * 2 ][ xa ][ ya ][ za ] = tempArrayIm[ NSTPT * 2 - 1 ][ xa ][ ya ][ za ];
-				}
-			}
-		}
+		overlayInitialSeedForIterations();
 		
 	}
 	
@@ -803,7 +814,7 @@ public class TestSchrodingerSpt_DR extends TestCase {
 		param.setZcnt( zcnt );
 		param.setZa( NSTPZ );
 		
-		for( int ta = -NSTPT ; ta < NSTPT + 1 ; ta++ )
+		for( int ta = -NSTPT ; ta < NSTPT ; ta++ )
 		{
 			param.setTa( ta );
 			for( int xa = -NSTPX ; xa < NSTPX + 1 ; xa++ )
@@ -818,18 +829,7 @@ public class TestSchrodingerSpt_DR extends TestCase {
 		}
 		
 		
-		// Overlay initial seed for iterations.
-		for( int xa = 0 ; xa < NSTPX * 2 + 1 ; xa++ )
-		{
-			for( int ya = 0 ; ya < NSTPY * 2 + 1 ; ya++ )
-			{
-				for( int za = 0 ; za < NSTPZ * 2 + 1 ; za++ )
-				{
-					tempArrayRe[ NSTPT * 2 ][ xa ][ ya ][ za ] = tempArrayRe[ NSTPT * 2 - 1 ][ xa ][ ya ][ za ];
-					tempArrayIm[ NSTPT * 2 ][ xa ][ ya ][ za ] = tempArrayIm[ NSTPT * 2 - 1 ][ xa ][ ya ][ za ];
-				}
-			}
-		}
+		overlayInitialSeedForIterations();
 		
 	}
 	
@@ -853,7 +853,7 @@ public class TestSchrodingerSpt_DR extends TestCase {
 			{
 				for( int ya = 0 ; ya < 2 * NSTPY + 1 ; ya++ )
 				{
-					for( int za = 1 ; za < 2 * NSTPZ + 1 ; za++ )
+					for( int za = 2 * NSTPZ ; za > 0 ; za-- )
 					{
 						tempArrayRe[ ta ][ xa ][ ya ][ za ] = tempArrayRe[ ta ][ xa ][ ya ][ za - 1 ]; 
 						tempArrayIm[ ta ][ xa ][ ya ][ za ] = tempArrayIm[ ta ][ xa ][ ya ][ za - 1 ]; 
@@ -870,7 +870,7 @@ public class TestSchrodingerSpt_DR extends TestCase {
 		param.setZcnt( zcnt );
 		param.setZa( 0 );
 		
-		for( int ta = -NSTPT ; ta < NSTPT + 1 ; ta++ )
+		for( int ta = -NSTPT ; ta < NSTPT ; ta++ )
 		{
 			param.setTa( ta );
 			for( int xa = -NSTPX ; xa < NSTPX + 1 ; xa++ )
@@ -885,18 +885,7 @@ public class TestSchrodingerSpt_DR extends TestCase {
 		}
 		
 		
-		// Overlay initial seed for iterations.
-		for( int xa = 0 ; xa < NSTPX * 2 + 1 ; xa++ )
-		{
-			for( int ya = 0 ; ya < NSTPY * 2 + 1 ; ya++ )
-			{
-				for( int za = 0 ; za < NSTPZ * 2 + 1 ; za++ )
-				{
-					tempArrayRe[ NSTPT * 2 ][ xa ][ ya ][ za ] = tempArrayRe[ NSTPT * 2 - 1 ][ xa ][ ya ][ za ];
-					tempArrayIm[ NSTPT * 2 ][ xa ][ ya ][ za ] = tempArrayIm[ NSTPT * 2 - 1 ][ xa ][ ya ][ za ];
-				}
-			}
-		}
+		overlayInitialSeedForIterations();
 		
 	}
 	
@@ -941,7 +930,7 @@ public class TestSchrodingerSpt_DR extends TestCase {
 		param.setZcnt( zcnt );
 		param.setYa( NSTPY );
 		
-		for( int ta = -NSTPT ; ta < NSTPT + 1 ; ta++ )
+		for( int ta = -NSTPT ; ta < NSTPT ; ta++ )
 		{
 			param.setTa( ta );
 			for( int xa = -NSTPX ; xa < NSTPX + 1 ; xa++ )
@@ -956,18 +945,7 @@ public class TestSchrodingerSpt_DR extends TestCase {
 		}
 		
 		
-		// Overlay initial seed for iterations.
-		for( int xa = 0 ; xa < NSTPX * 2 + 1 ; xa++ )
-		{
-			for( int ya = 0 ; ya < NSTPY * 2 + 1 ; ya++ )
-			{
-				for( int za = 0 ; za < NSTPZ * 2 + 1 ; za++ )
-				{
-					tempArrayRe[ NSTPT * 2 ][ xa ][ ya ][ za ] = tempArrayRe[ NSTPT * 2 - 1 ][ xa ][ ya ][ za ];
-					tempArrayIm[ NSTPT * 2 ][ xa ][ ya ][ za ] = tempArrayIm[ NSTPT * 2 - 1 ][ xa ][ ya ][ za ];
-				}
-			}
-		}
+		overlayInitialSeedForIterations();
 		
 	}
 	
@@ -994,7 +972,7 @@ public class TestSchrodingerSpt_DR extends TestCase {
 		{
 			for( int xa = 0 ; xa < 2 * NSTPX + 1 ; xa++ )
 			{
-				for( int ya = 1 ; ya < 2 * NSTPY + 1 ; ya++ )
+				for( int ya = 2 * NSTPY ; ya > 0 ; ya-- )
 				{
 					for( int za = 0 ; za < 2 * NSTPZ + 1 ; za++ )
 					{
@@ -1013,7 +991,7 @@ public class TestSchrodingerSpt_DR extends TestCase {
 		param.setZcnt( zcnt );
 		param.setYa( 0 );
 		
-		for( int ta = -NSTPT ; ta < NSTPT + 1 ; ta++ )
+		for( int ta = -NSTPT ; ta < NSTPT ; ta++ )
 		{
 			param.setTa( ta );
 			for( int xa = -NSTPX ; xa < NSTPX + 1 ; xa++ )
@@ -1028,18 +1006,7 @@ public class TestSchrodingerSpt_DR extends TestCase {
 		}
 		
 		
-		// Overlay initial seed for iterations.
-		for( int xa = 0 ; xa < NSTPX * 2 + 1 ; xa++ )
-		{
-			for( int ya = 0 ; ya < NSTPY * 2 + 1 ; ya++ )
-			{
-				for( int za = 0 ; za < NSTPZ * 2 + 1 ; za++ )
-				{
-					tempArrayRe[ NSTPT * 2 ][ xa ][ ya ][ za ] = tempArrayRe[ NSTPT * 2 - 1 ][ xa ][ ya ][ za ];
-					tempArrayIm[ NSTPT * 2 ][ xa ][ ya ][ za ] = tempArrayIm[ NSTPT * 2 - 1 ][ xa ][ ya ][ za ];
-				}
-			}
-		}
+		overlayInitialSeedForIterations();
 		
 	}
 	
@@ -1087,7 +1054,7 @@ public class TestSchrodingerSpt_DR extends TestCase {
 		param.setZcnt( zcnt );
 		param.setXa( NSTPX );
 		
-		for( int ta = -NSTPT ; ta < NSTPT + 1 ; ta++ )
+		for( int ta = -NSTPT ; ta < NSTPT ; ta++ )
 		{
 			param.setTa( ta );
 			for( int ya = -NSTPY ; ya < NSTPY + 1 ; ya++ )
@@ -1102,18 +1069,7 @@ public class TestSchrodingerSpt_DR extends TestCase {
 		}
 		
 		
-		// Overlay initial seed for iterations.
-		for( int xa = 0 ; xa < NSTPX * 2 + 1 ; xa++ )
-		{
-			for( int ya = 0 ; ya < NSTPY * 2 + 1 ; ya++ )
-			{
-				for( int za = 0 ; za < NSTPZ * 2 + 1 ; za++ )
-				{
-					tempArrayRe[ NSTPT * 2 ][ xa ][ ya ][ za ] = tempArrayRe[ NSTPT * 2 - 1 ][ xa ][ ya ][ za ];
-					tempArrayIm[ NSTPT * 2 ][ xa ][ ya ][ za ] = tempArrayIm[ NSTPT * 2 - 1 ][ xa ][ ya ][ za ];
-				}
-			}
-		}
+		overlayInitialSeedForIterations();
 		
 	}
 	
