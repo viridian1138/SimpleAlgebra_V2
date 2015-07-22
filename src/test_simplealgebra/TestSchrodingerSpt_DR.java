@@ -2287,27 +2287,91 @@ public class TestSchrodingerSpt_DR extends TestCase {
 	
 	
 	
-	
+	/**
+	 * Increments through the discretized space with cache-locality.
+	 * 
+	 * This documentation should be viewed using Firefox version 33.1.1 or above.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
 	protected class IncrementManager
 	{
+		/**
+		 * The current discretized X-coordinate.
+		 */
 		int xcnt = 0;
+		
+		/**
+		 * The current discretized Y-coordinate.
+		 */
 		int ycnt = 0;
+		
+		/**
+		 * The current discretized Z-coordinate.
+		 */
 		int zcnt = 0;
+		
+		/**
+		 * The Z-coordinate of the start of the swatch.
+		 */
 		int zstrt = 0;
+		
+		/**
+		 * The Y-coordinate of the start of the swatch.
+		 */
 		int ystrt = 0;
+		
+		/**
+		 * The X-coordinate of the start of the swatch.
+		 */
 		int xstrt = 0;
+		
+		/**
+		 * The number of Z-coordinates to count down to the boundary a standard-size swatch.
+		 */
 		int zdn = ZMULT - 1;
+		
+		/**
+		 * The number of Y-coordinates to count down to the boundary a standard-size swatch.
+		 */
 		int ydn = YMULT - 1;
+		
+		/**
+		 * The number of X-coordinates to count down to the boundary a standard-size swatch.
+		 */
 		int xdn = XMULT - 1;
+		
+		/**
+		 * Indicates that the current increment is only in the X-direction.
+		 */
 		boolean xMoveOnly = false;
+		
+		/**
+		 * Indicates that the current increment is only in the Y-direction.
+		 */
 		boolean yMoveOnly = false;
+		
+		/**
+		 * Indicates that the current increment is only in the Z-direction.
+		 */
 		boolean zMoveOnly = false;
+		
+		/**
+		 * Indicates whether the Z-Axis increment is up or down.
+		 */
 		boolean zMoveUp = true;
+		
+		/**
+		 * Indicates whether the Y-Axis increment is up or down.
+		 */
 		boolean yMoveUp = true;
 		
 		
 		
-		
+		/**
+		 * Increments to the next swatch.
+		 */
 		protected void handleSwatchIncrement()
 		{
 			yMoveUp = true;
