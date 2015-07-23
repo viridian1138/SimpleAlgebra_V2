@@ -41,7 +41,55 @@ import simplealgebra.symbolic.SymbolicElemFactory;
 
 
 /**
- * Generates a <math display="inline"><mrow><mi>&rho;</mi></mrow></math>-like expression.
+ * Generates a <math display="inline"><mrow><mi>&rho;</mi></mrow></math>-like expression based on
+ * <math display="inline">
+ * <mrow>
+ * <mi>&rho;</mi>
+ * <mo>=</mo>
+ * <mi>&epsilon;</mi>
+ * <mo>&nabla;</mo>
+ * <mo>&bull;</mo>
+ * <mfenced open="(" close=")" separators=",">
+ *   <mrow>
+ *     <mo>-</mo>
+ *     <mfrac>
+ *       <mrow>
+ *         <mo>&PartialD;</mo>
+ *         <mi>A</mi>
+ *       </mrow>
+ *       <mrow>
+ *         <mo>&PartialD;</mo>
+ *         <mi>t</mi>
+ *       </mrow>
+ *     </mfrac>
+ *     <mo>-</mo>
+ *     <mo>&nabla;</mo>
+ *     <mi>&phi;</mi>
+ *   </mrow>
+ * </mfenced>
+ * <mo>&asymp;</mo>
+ * <mo>-</mo>
+ *  <mfrac>
+ *    <mrow>
+ *      <mo>&PartialD;</mo>
+ *    </mrow>
+ *    <mrow>
+ *      <mo>&PartialD;</mo>
+ *      <mi>t</mi>
+ *    </mrow>
+ *  </mfrac>
+ *  <mo>&nabla;</mo>
+ *  <mo>&bull;</mo>
+ *  <mi>A</mi>
+ *  <mo>-</mo>
+ *  <mo>&nabla;</mo>
+ *  <mo>&bull;</mo>
+ *  <mo>&nabla;</mo>
+ *  <mi>&phi;</mi>
+ * </mrow>
+ * </math>
+ * 
+ * This relies on the assumption that Fubini's theorem holds.
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

@@ -2274,7 +2274,10 @@ public class TestStelemD_DR extends TestCase {
 		
 		
 		
-		
+		/**
+		 * Handles the increment from the X-Axis.  At the point the increment
+		 * reaches a swatch boundary, other axes are potentially incremented.
+		 */
 		protected void handleIncrementXa()
 		{
 			
@@ -2297,6 +2300,10 @@ public class TestStelemD_DR extends TestCase {
 		
 		
 		
+		/**
+		 * Handles the increment from the Y-Axis.  At the point the increment
+		 * reaches a swatch boundary, other axes are potentially incremented.
+		 */
 		protected void handleIncrementYa()
 		{
 			if( yMoveUp )
@@ -2333,7 +2340,10 @@ public class TestStelemD_DR extends TestCase {
 		
 		
 		
-		
+		/**
+		 * Handles the base increment from the Z-Axis.  At the point the increment
+		 * reaches a swatch boundary, other axes are potentially incremented.
+		 */
 		public void handleIncrementZa()
 		{
 			zMoveOnly = false;
@@ -2369,6 +2379,13 @@ public class TestStelemD_DR extends TestCase {
 		
 		
 		
+		/**
+		 * Performs the temp array fill for the most recently calculated increment.  Selects a
+		 * cache-efficient algorithm for performing the fill.
+		 * 
+		 * @param tval The current T-Axis iteration value.
+		 * @throws Throwable
+		 */
 		public void performTempArrayFill( final int tval ) throws Throwable
 		{
 			if( zMoveOnly )
@@ -2415,6 +2432,9 @@ public class TestStelemD_DR extends TestCase {
 	
 	
 	
+	/**
+	 * Instance of the IncrementManager used by the performIterationT() method.
+	 */
 	protected final IncrementManager im = new IncrementManager();
 	
 	
