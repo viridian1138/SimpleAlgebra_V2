@@ -68,6 +68,9 @@ import simplealgebra.symbolic.SymbolicElemFactory;
  *   </mrow>
  * </mfenced>
  * <mo>&asymp;</mo>
+ * <mi>&epsilon;</mi>
+ * <mfenced open="(" close=")" separators=",">
+ *   <mrow>
  * <mo>-</mo>
  *  <mfrac>
  *    <mrow>
@@ -86,6 +89,8 @@ import simplealgebra.symbolic.SymbolicElemFactory;
  *  <mo>&bull;</mo>
  *  <mo>&nabla;</mo>
  *  <mi>&phi;</mi>
+ *   </mrow>
+ *  </mfenced>
  * </mrow>
  * </math>
  * 

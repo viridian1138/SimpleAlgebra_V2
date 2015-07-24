@@ -2166,72 +2166,72 @@ public class TestStelemD_DB extends TestCase {
 		/**
 		 * The current discretized X-coordinate.
 		 */
-		int xcnt = 0;
+		protected int xcnt = 0;
 		
 		/**
 		 * The current discretized Y-coordinate.
 		 */
-		int ycnt = 0;
+		protected int ycnt = 0;
 		
 		/**
 		 * The current discretized Z-coordinate.
 		 */
-		int zcnt = 0;
+		protected int zcnt = 0;
 		
 		/**
 		 * The Z-coordinate of the start of the swatch.
 		 */
-		int zstrt = 0;
+		protected int zstrt = 0;
 		
 		/**
 		 * The Y-coordinate of the start of the swatch.
 		 */
-		int ystrt = 0;
+		protected int ystrt = 0;
 		
 		/**
 		 * The X-coordinate of the start of the swatch.
 		 */
-		int xstrt = 0;
+		protected int xstrt = 0;
 		
 		/**
 		 * The number of Z-coordinates to count down to the boundary a standard-size swatch.
 		 */
-		int zdn = ZMULT - 1;
+		protected int zdn = ZMULT - 1;
 		
 		/**
 		 * The number of Y-coordinates to count down to the boundary a standard-size swatch.
 		 */
-		int ydn = YMULT - 1;
+		protected int ydn = YMULT - 1;
 		
 		/**
 		 * The number of X-coordinates to count down to the boundary a standard-size swatch.
 		 */
-		int xdn = XMULT - 1;
+		protected int xdn = XMULT - 1;
 		
 		/**
 		 * Indicates that the current increment is only in the X-direction.
 		 */
-		boolean xMoveOnly = false;
+		protected boolean xMoveOnly = false;
 		
 		/**
 		 * Indicates that the current increment is only in the Y-direction.
 		 */
-		boolean yMoveOnly = false;
+		protected boolean yMoveOnly = false;
 		
 		/**
 		 * Indicates that the current increment is only in the Z-direction.
 		 */
-		boolean zMoveOnly = false;
+		protected boolean zMoveOnly = false;
 		
 		/**
 		 * Indicates whether the Z-Axis increment is up or down.
 		 */
-		boolean zMoveUp = true;
+		protected boolean zMoveUp = true;
 		
 		/**
 		 * Indicates whether the Y-Axis increment is up or down.
 		 */
-		boolean yMoveUp = true;
+		protected boolean yMoveUp = true;
 		
 		
 		
@@ -2436,6 +2436,62 @@ public class TestStelemD_DB extends TestCase {
 		
 		
 		
+		/**
+		 * Restarts the inctrements upon a new T-Axis iteration.
+		 */
+		public void restartIncrements()
+		{
+			xcnt = 0;
+			ycnt = 0;
+			zcnt = 0;
+			zstrt = 0;
+			ystrt = 0;
+			xstrt = 0;
+			zdn = ZMULT - 1;
+			ydn = YMULT - 1;
+			xdn = XMULT - 1;
+			yMoveUp = true;
+			zMoveUp = true;
+			xMoveOnly = false;
+			yMoveOnly = false;
+			zMoveOnly = false;
+		}
+		
+		
+		
+		/**
+		 * Gets the current discretized X-coordinate.
+		 * 
+		 * @return The current discretized X-coordinate.
+		 */
+		public int getXcnt() {
+			return xcnt;
+		}
+
+
+
+		/**
+		 * Gets the current discretized Y-coordinate.
+		 * 
+		 * @return The current discretized Y-coordinate.
+		 */
+		public int getYcnt() {
+			return ycnt;
+		}
+
+
+
+		/**
+		 * Gets the current discretized Z-coordinate.
+		 * 
+		 * @return The current discretized Z-coordinate.
+		 */
+		public int getZcnt() {
+			return zcnt;
+		}
+		
+		
+		
 	}
 	
 	
@@ -2460,20 +2516,7 @@ public class TestStelemD_DB extends TestCase {
 	protected void performIterationT( final int tval , final StelemNewton newton , final HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace2 ) 
 			throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
-		im.xcnt = 0;
-		im.ycnt = 0;
-		im.zcnt = 0;
-		im.zstrt = 0;
-		im.ystrt = 0;
-		im.xstrt = 0;
-		im.zdn = ZMULT - 1;
-		im.ydn = YMULT - 1;
-		im.xdn = XMULT - 1;
-		im.yMoveUp = true;
-		im.zMoveUp = true;
-		im.xMoveOnly = false;
-		im.yMoveOnly = false;
-		im.zMoveOnly = false;
+		im.restartIncrements();
 		long atm = System.currentTimeMillis();
 		long atm2 = System.currentTimeMillis();
 		for( int acnt = 0 ; acnt < ( NUM_X_ITER * NUM_Y_ITER * NUM_Z_ITER ) ; acnt++ )
@@ -2482,7 +2525,7 @@ public class TestStelemD_DB extends TestCase {
 			atm2 = System.currentTimeMillis();
 			if( atm2 - atm >= 1000 )
 			{
-				System.out.println( ">> " + tval + " / " + im.xcnt + " / " + im.ycnt + " / " + im.zcnt );
+				System.out.println( ">> " + tval + " / " + im.getXcnt() + " / " + im.getYcnt() + " / " + im.getZcnt() );
 				atm = atm2;
 			}
 			
@@ -2511,10 +2554,10 @@ public class TestStelemD_DB extends TestCase {
 	
 			final double val = TestStelemD_DB.getUpdateValue();
 			
-			if( ( im.xcnt == HALF_X ) && ( im.ycnt == HALF_Y ) && ( im.zcnt == HALF_Z ) )
+			if( ( im.getXcnt() == HALF_X ) && ( im.getYcnt() == HALF_Y ) && ( im.getZcnt() == HALF_Z ) )
 			{
 				System.out.println( "******************" );
-				System.out.println( " ( " + im.xcnt + " , " + im.ycnt + " , " + im.zcnt + " ) " );
+				System.out.println( " ( " + im.getXcnt() + " , " + im.getYcnt() + " , " + im.getZcnt() + " ) " );
 				System.out.println( ival );
 				System.out.println( val );
 				System.out.println( "## " + ( err.getVal() ) );
@@ -2540,10 +2583,10 @@ public class TestStelemD_DB extends TestCase {
 			
 			if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
 			{
-				iterArray.set( tval , im.xcnt , im.ycnt , im.zcnt , getCorrectionValue() );
+				iterArray.set( tval , im.getXcnt() , im.getYcnt() , im.getZcnt() , getCorrectionValue() );
 			}
 		
-			iterArray.set( tval + 1 , im.xcnt , im.ycnt , im.zcnt , val );
+			iterArray.set( tval + 1 , im.getXcnt() , im.getYcnt() , im.getZcnt() , val );
 			
 			
 			im.handleIncrementZa();
