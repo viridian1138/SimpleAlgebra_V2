@@ -63,6 +63,8 @@ import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicReduction;
 import simplealgebra.ga.*;
 import simplealgebra.ddx.*;
+import test_simplealgebra.TestStelemC_DR.IncrementManager;
+import test_simplealgebra.TestStelemC_DR.TempArrayFillInnerParam;
 
 
 
@@ -130,25 +132,14 @@ public class TestStelemC_DB extends TestCase {
 	
 	
 	/**
-	 * Size of the T-Axis discretization.
+	 * The total measurement size along the X-Axis.
 	 */
-	protected static final DoubleElem T_HH = new DoubleElem( 0.0025 );
+	protected static final double TOTAL_X_AXIS_SIZE = 0.1;
 	
 	/**
-	 * Size of the X-Axis discretization.
+	 * The total measurement size along the Y-Axis.
 	 */
-	protected static final DoubleElem X_HH = new DoubleElem( 0.01 );
-	
-	/**
-	 * Size of the Y-Axis discretization.
-	 */
-	protected static final DoubleElem Y_HH = new DoubleElem( 0.01 );
-	
-	/**
-	 * Discretization sizes arrayed by coordinate index.
-	 */
-	protected static final DoubleElem[] HH = { T_HH , X_HH , Y_HH };
-	
+	protected static final double TOTAL_Y_AXIS_SIZE = 0.1;
 	
 	
 	
@@ -167,6 +158,34 @@ public class TestStelemC_DB extends TestCase {
 	 * The number of discretizations on the Y-Axis over which to iterate.
 	 */
 	protected static final int NUM_Y_ITER = 10;
+	
+	
+	
+	
+	/**
+	 * Size of the T-Axis discretization.
+	 */
+	protected static final DoubleElem T_HH = new DoubleElem( 0.0025 );
+	
+	/**
+	 * Size of the X-Axis discretization.
+	 */
+	protected static final DoubleElem X_HH = new DoubleElem( TOTAL_X_AXIS_SIZE / NUM_X_ITER /* 0.01 */ );
+	
+	/**
+	 * Size of the Y-Axis discretization.
+	 */
+	protected static final DoubleElem Y_HH = new DoubleElem( TOTAL_Y_AXIS_SIZE / NUM_Y_ITER /* 0.01 */ );
+	
+	/**
+	 * Discretization sizes arrayed by coordinate index.
+	 */
+	protected static final DoubleElem[] HH = { T_HH , X_HH , Y_HH };
+	
+	
+	
+	
+	
 	
 	
 	/**
@@ -532,6 +551,25 @@ public class TestStelemC_DB extends TestCase {
 	
 	
 	
+	
+	/**
+	 * Overlays an initial seed value into the temp array that serves as the starting point for Newton-Raphson iterations.
+	 */
+	protected static void overlayInitialSeedForIterations()
+	{
+		// Overlay initial seed for iterations.
+		for( int xa = 0 ; xa < NSTPX * 2 + 1 ; xa++ )
+		{
+			for( int ya = 0 ; ya < NSTPY * 2 + 1 ; ya++ )
+			{
+				tempArray[ NSTPT * 2 ][ xa ][ ya ] = tempArray[ NSTPT * 2 - 1 ][ xa ][ ya ];
+			}
+		}
+	}
+	
+	
+	
+	
 	/**
 	 * Fills the temp array with elements from the iter array.
 	 * 
@@ -561,14 +599,9 @@ public class TestStelemC_DB extends TestCase {
 			}
 		}
 		
-		// Overlay initial seed for iterations.
-		for( int xa = 0 ; xa < NSTPX * 2 + 1 ; xa++ )
-		{
-			for( int ya = 0 ; ya < NSTPY * 2 + 1 ; ya++ )
-			{
-				tempArray[ NSTPT * 2 ][ xa ][ ya ] = tempArray[ NSTPT * 2 - 1 ][ xa ][ ya ];
-			}
-		}
+		
+		overlayInitialSeedForIterations();
+		
 	}
 	
 	
@@ -576,13 +609,13 @@ public class TestStelemC_DB extends TestCase {
 	
 	/**
 	 * Fills the temp array with elements from the iter array, assuming a shift by one in Y.
-	 * This should be faster because a temp array shift is much faster than refreshing from the DB.
+	 * This should be faster because a temp array shift is much faster than refreshing from the file store.
 	 * 
 	 * @param tcnt The T-Axis index for the center in the iter array.
 	 * @param xcnt The X-Axis index for the center in the iter array.
 	 * @param ycnt The Y-Axis index for the center in the iter array.
 	 */
-	protected static void fillTempArrayShiftY( final int tcnt , final int xcnt , final int ycnt )
+	protected static void fillTempArrayShiftYup( final int tcnt , final int xcnt , final int ycnt )
 	{
 		for( int ta = 0 ; ta < 2 * NSTPT + 1 ; ta++ )
 		{
@@ -602,29 +635,110 @@ public class TestStelemC_DB extends TestCase {
 		param.setYcnt( ycnt );
 		param.setYa( NSTPY );
 		
-		for( int ta = -NSTPT ; ta < NSTPT + 1 ; ta++ )
+		for( int ta = -NSTPT ; ta < NSTPT ; ta++ )
 		{
 			param.setTa( ta );
 			for( int xa = -NSTPX ; xa < NSTPX + 1 ; xa++ )
 			{
 				param.setXa( xa );
-				for( int ya = -NSTPY ; ya < NSTPY + 1 ; ya++ )
+				fillTempArrayInner( param ); 
+			}
+		}
+		
+		
+		overlayInitialSeedForIterations();
+		
+	}
+	
+	
+	
+	
+	/**
+	 * Fills the temp array with elements from the iter array, assuming a shift by one in Y.
+	 * This should be faster because a temp array shift is much faster than refreshing from the file store.
+	 * 
+	 * @param tcnt The T-Axis index for the center in the iter array.
+	 * @param xcnt The X-Axis index for the center in the iter array.
+	 * @param ycnt The Y-Axis index for the center in the iter array.
+	 */
+	protected static void fillTempArrayShiftYdown( final int tcnt , final int xcnt , final int ycnt )
+	{
+		for( int ta = 0 ; ta < 2 * NSTPT + 1 ; ta++ )
+		{
+			for( int xa = 0 ; xa < 2 * NSTPX + 1 ; xa++ )
+			{
+				for( int ya = 2 * NSTPY ; ya > 0 ; ya-- )
 				{
-					param.setYa( ya );
-					fillTempArrayInner( param ); 
+					tempArray[ ta ][ xa ][ ya ] = tempArray[ ta ][ xa ][ ya - 1 ]; 
 				}
 			}
 		}
 		
+		final TempArrayFillInnerParam param = new TempArrayFillInnerParam();
 		
-		// Overlay initial seed for iterations.
-		for( int xa = 0 ; xa < NSTPX * 2 + 1 ; xa++ )
+		param.setTcnt( tcnt );
+		param.setXcnt( xcnt );
+		param.setYcnt( ycnt );
+		param.setYa( 0 );
+		
+		for( int ta = -NSTPT ; ta < NSTPT ; ta++ )
 		{
-			for( int ya = 0 ; ya < NSTPY * 2 + 1 ; ya++ )
+			param.setTa( ta );
+			for( int xa = -NSTPX ; xa < NSTPX + 1 ; xa++ )
 			{
-				tempArray[ NSTPT * 2 ][ xa ][ ya ] = tempArray[ NSTPT * 2 - 1 ][ xa ][ ya ];
+				param.setXa( xa );
+				fillTempArrayInner( param ); 
 			}
 		}
+		
+		
+		overlayInitialSeedForIterations();
+		
+	}
+	
+	
+	
+	
+	/**
+	 * Fills the temp array with elements from the iter array, assuming a shift by one in X.
+	 * This should be faster because a temp array shift is much faster than refreshing from the file store.
+	 * 
+	 * @param tcnt The T-Axis index for the center in the iter array.
+	 * @param xcnt The X-Axis index for the center in the iter array.
+	 * @param ycnt The Y-Axis index for the center in the iter array.
+	 */
+	protected static void fillTempArrayShiftXup( final int tcnt , final int xcnt , final int ycnt )
+	{
+		for( int ta = 0 ; ta < 2 * NSTPT + 1 ; ta++ )
+		{
+			for( int xa = 0 ; xa < 2 * NSTPX ; xa++ )
+			{
+				for( int ya = 0 ; ya < 2 * NSTPY + 1 ; ya++ )
+				{
+					tempArray[ ta ][ xa ][ ya ] = tempArray[ ta ][ xa + 1 ][ ya ]; 
+				}
+			}
+		}
+		
+		final TempArrayFillInnerParam param = new TempArrayFillInnerParam();
+		
+		param.setTcnt( tcnt );
+		param.setXcnt( xcnt );
+		param.setYcnt( ycnt );
+		param.setXa( NSTPX );
+		
+		for( int ta = -NSTPT ; ta < NSTPT ; ta++ )
+		{
+			param.setTa( ta );
+			for( int ya = -NSTPY ; ya < NSTPY + 1 ; ya++ )
+			{
+				param.setYa( ya );
+				fillTempArrayInner( param ); 
+			}
+		}
+		
+		
+		overlayInitialSeedForIterations();
 		
 	}
 	
@@ -1804,6 +1918,244 @@ public class TestStelemC_DB extends TestCase {
 	
 	
 	
+	
+	/**
+	 * Increments through the discretized space with cache-locality.
+	 * 
+	 * This documentation should be viewed using Firefox version 33.1.1 or above.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
+	protected class IncrementManager
+	{
+		/**
+		 * The current discretized X-coordinate.
+		 */
+		protected int xcnt = 0;
+		
+		/**
+		 * The current discretized Y-coordinate.
+		 */
+		protected int ycnt = 0;
+		
+		/**
+		 * The Y-coordinate of the start of the swatch.
+		 */
+		protected int ystrt = 0;
+		
+		/**
+		 * The X-coordinate of the start of the swatch.
+		 */
+		protected int xstrt = 0;
+		
+		/**
+		 * The number of Y-coordinates to count down to the boundary a standard-size swatch.
+		 */
+		protected int ydn = YMULT - 1;
+		
+		/**
+		 * The number of X-coordinates to count down to the boundary a standard-size swatch.
+		 */
+		protected int xdn = XMULT - 1;
+		
+		/**
+		 * Indicates that the current increment is only in the X-direction.
+		 */
+		protected boolean xMoveOnly = false;
+		
+		/**
+		 * Indicates that the current increment is only in the Y-direction.
+		 */
+		protected boolean yMoveOnly = false;
+		
+		/**
+		 * Indicates whether the Y-Axis increment is up or down.
+		 */
+		protected boolean yMoveUp = true;
+		
+		
+		
+		/**
+		 * Increments to the next swatch.
+		 */
+		protected void handleSwatchIncrement()
+		{
+			yMoveUp = true;
+			if( ( ycnt + ( YMULT - 1 ) ) < ( NUM_Y_ITER - 1 ) )
+			{
+				ycnt = ystrt + YMULT;
+				ystrt = ycnt;
+				ydn = YMULT - 1;
+				xcnt = xstrt;
+				xdn = XMULT - 1;
+			}
+			else
+			{
+				ycnt = 0;
+				ystrt = 0;
+				ydn = YMULT - 1;
+				xcnt = xstrt + XMULT;
+				xstrt = xcnt;
+				xdn = XMULT - 1;
+			}
+		}
+		
+		
+		
+		/**
+		 * Handles the increment from the X-Axis.  At the point the increment
+		 * reaches a swatch boundary, other axes are potentially incremented.
+		 */
+		protected void handleIncrementXa()
+		{
+			
+			if( ( xdn > 0 ) && ( xcnt < ( NUM_X_ITER - 1 ) ) )
+			{
+				xMoveOnly = true;
+				xcnt++;
+				xdn--;
+				yMoveUp = !yMoveUp;
+				ydn = YMULT - 1;
+			}
+			else
+			{
+				handleSwatchIncrement();
+			}
+			
+		}
+		
+		
+		
+		/**
+		 * Handles the base increment from the Y-Axis.  At the point the increment
+		 * reaches a swatch boundary, other axes are potentially incremented.
+		 */
+		public void handleIncrementYa()
+		{
+			if( yMoveUp )
+			{
+				if( ( ydn > 0 ) && ( ycnt < ( NUM_Y_ITER - 1 ) ) )
+				{
+					yMoveOnly = true;
+					ycnt++;
+					ydn--;
+				}
+				else
+				{
+					handleIncrementXa();
+				}
+			}
+			else
+			{
+				if( ( ydn > 0 ) && ( ycnt > ystrt ) )
+				{
+					yMoveOnly = true;
+					ycnt--;
+					ydn--;
+				}
+				else
+				{
+					handleIncrementXa();
+				}
+			}
+		}
+		
+		
+		
+		
+		/**
+		 * Performs the temp array fill for the most recently calculated increment.  Selects a
+		 * cache-efficient algorithm for performing the fill.
+		 * 
+		 * @param tval The current T-Axis iteration value.
+		 * @throws Throwable
+		 */
+		public void performTempArrayFill( final int tval )
+		{
+			
+			if( yMoveOnly )
+			{
+				if( yMoveUp )
+				{
+					fillTempArrayShiftYup( tval , xcnt , ycnt );
+				}
+				else
+				{
+					fillTempArrayShiftYdown( tval , xcnt , ycnt );
+				}
+			}
+			else
+			{
+				if( xMoveOnly )
+				{
+					fillTempArrayShiftXup( tval , xcnt , ycnt );
+				}
+				else
+				{
+					fillTempArray( tval , xcnt , ycnt );
+				}
+			}
+			
+		}
+		
+		
+		
+		/**
+		 * Restarts the inctrements upon a new T-Axis iteration.
+		 */
+		public void restartIncrements()
+		{
+			xcnt = 0;
+			ycnt = 0;
+			ystrt = 0;
+			xstrt = 0;
+			ydn = YMULT - 1;
+			xdn = XMULT - 1;
+			yMoveUp = true;
+			xMoveOnly = false;
+			yMoveOnly = false;
+		}
+		
+		
+		
+		/**
+		 * Gets the current discretized X-coordinate.
+		 * 
+		 * @return The current discretized X-coordinate.
+		 */
+		public int getXcnt() {
+			return xcnt;
+		}
+
+
+
+		/**
+		 * Gets the current discretized Y-coordinate.
+		 * 
+		 * @return The current discretized Y-coordinate.
+		 */
+		public int getYcnt() {
+			return ycnt;
+		}
+
+		
+		
+		
+	}
+	
+	
+	
+	/**
+	 * Instance of the IncrementManager used by the performIterationT() method.
+	 */
+	protected final IncrementManager im = new IncrementManager();
+	
+	
+	
+	
+	
+	
 	/**
 	 * Performs descent iterations for one value of T.
 	 * 
@@ -1816,26 +2168,22 @@ public class TestStelemC_DB extends TestCase {
 	protected void performIterationT( final int tval , final StelemNewton newton , final HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace2 ) 
 			throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
-		int xcnt = 0;
-		int ycnt = 0;
-		int ystrt = 0;
-		int xstrt = 0;
-		int ydn = YMULT - 1;
-		int xdn = XMULT - 1;
-		boolean yMoveOnly = false;
+		im.restartIncrements();
+		long atm = System.currentTimeMillis();
+		long atm2 = System.currentTimeMillis();
 		for( int acnt = 0 ; acnt < ( NUM_X_ITER * NUM_Y_ITER ) ; acnt++ )
 		{	
 		
-			// System.out.println( ">> " + tval + " / " + xcnt + " / " + ycnt );
+			atm2 = System.currentTimeMillis();
+			if( atm2 - atm >= 1000 )
+			{
+				System.out.println( ">> " + tval + " / " + im.getXcnt() + " / " + im.getYcnt() );
+				atm = atm2;
+			}
 			
-			if( yMoveOnly )
-			{
-				fillTempArrayShiftY( tval , xcnt , ycnt );
-			}
-			else
-			{
-				fillTempArray( tval , xcnt , ycnt );
-			}
+			
+			im.performTempArrayFill( tval );
+			
 			
 			clearSpatialAssertArray();
 	
@@ -1858,10 +2206,10 @@ public class TestStelemC_DB extends TestCase {
 	
 			final double val = TestStelemC_DB.getUpdateValue();
 			
-			if( ( xcnt == HALF_X ) && ( ycnt == HALF_Y ) )
+			if( ( im.getXcnt() == HALF_X ) && ( im.getYcnt() == HALF_Y ) )
 			{
 				System.out.println( "******************" );
-				System.out.println( " ( " + xcnt + " , " + ycnt + " ) " );
+				System.out.println( " ( " + im.getXcnt() + " , " + im.getYcnt() + " ) " );
 				System.out.println( ival );
 				System.out.println( val );
 				System.out.println( "## " + ( err.getVal() ) );
@@ -1885,50 +2233,14 @@ public class TestStelemC_DB extends TestCase {
 			
 			if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
 			{
-				iterArray.set( tval , xcnt , ycnt , getCorrectionValue() );	
+				iterArray.set( tval , im.getXcnt() , im.getYcnt() , getCorrectionValue() );	
 			}
 		
-			iterArray.set( tval + 1 , xcnt , ycnt , val );
+			iterArray.set( tval + 1 , im.getXcnt() , im.getYcnt() , val );
 			
 			
-			yMoveOnly = false;
-			if( ( ydn > 0 ) && ( ycnt < ( NUM_Y_ITER - 1 ) ) )
-			{
-				yMoveOnly = true;
-				ycnt++;
-				ydn--;
-			}
-			else
-			{
-				if( ( xdn > 0 ) && ( xcnt < ( NUM_X_ITER - 1 ) ) )
-				{
-					xcnt++;
-					xdn--;
-					ycnt = ystrt;
-					ydn = YMULT - 1;
-				}
-				else
-				{
-					if( ycnt < ( NUM_Y_ITER - 1 ) )
-					{
-						ycnt++;
-						ystrt = ycnt;
-						ydn = YMULT - 1;
-						xcnt = xstrt;
-						xdn = XMULT - 1;
-					}
-					else
-					{
-						ycnt = 0;
-						ystrt = 0;
-						ydn = YMULT - 1;
-						xcnt++;
-						xstrt = xcnt;
-						xdn = XMULT - 1;
-					}
-				}
-			}
 			
+			im.handleIncrementYa();
 					
 		}
 		
@@ -1986,6 +2298,17 @@ public class TestStelemC_DB extends TestCase {
 	 */	
 	public void testStelemSimple() throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
+		final double cmx = Math.min( X_HH.getVal() , Y_HH.getVal() ) / ( T_HH.getVal() );
+		final double cmxRatio = cmx / C.getVal();
+		if( cmxRatio < 1.0 )
+		{
+			System.out.println( "WARNING: cmxRatio " + cmxRatio );
+		}
+		else
+		{
+			System.out.println( "cmxRatio " + cmxRatio );
+		}
+		
 		
 		String databaseLocation = "mydbH";
 		HyperGraph graph;

@@ -119,21 +119,11 @@ public class TestStelemB extends TestCase {
 	
 	
 	
-	/**
-	 * Size of the T-Axis discretization.
-	 */
-	protected static final DoubleElem T_HH = new DoubleElem( 0.0025 );
 	
 	/**
-	 * Size of the X-Axis discretization.
+	 * The total measurement size along the X-Axis.
 	 */
-	protected static final DoubleElem X_HH = new DoubleElem( 0.01 );
-	
-	/**
-	 * Discretization sizes arrayed by coordinate index.
-	 */
-	protected static final DoubleElem[] HH = { T_HH , X_HH };
-	
+	protected static final double TOTAL_X_AXIS_SIZE = 0.1;
 	
 	
 	/**
@@ -146,6 +136,25 @@ public class TestStelemB extends TestCase {
 	 * The number of discretizations on the T-Axis over which to iterate.
 	 */
 	protected static final int NUM_T_ITER = 400;
+	
+	
+	
+	
+	/**
+	 * Size of the T-Axis discretization.
+	 */
+	protected static final DoubleElem T_HH = new DoubleElem( 0.0025 );
+	
+	/**
+	 * Size of the X-Axis discretization.
+	 */
+	protected static final DoubleElem X_HH = new DoubleElem( TOTAL_X_AXIS_SIZE / NUM_X_ITER /* 0.01 */ );
+	
+	/**
+	 * Discretization sizes arrayed by coordinate index.
+	 */
+	protected static final DoubleElem[] HH = { T_HH , X_HH };
+	
 	
 	
 	/**

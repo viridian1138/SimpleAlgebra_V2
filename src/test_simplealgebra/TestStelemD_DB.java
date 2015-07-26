@@ -129,33 +129,20 @@ public class TestStelemD_DB extends TestCase {
 	protected static final DoubleElem C = new DoubleElem( 0.05 );
 	
 	
+	/**
+	 * The total measurement size along the X-Axis.
+	 */
+	protected static final double TOTAL_X_AXIS_SIZE = 0.1;
 	
 	/**
-	 * Size of the T-Axis discretization.
+	 * The total measurement size along the Y-Axis.
 	 */
-	protected static final DoubleElem T_HH = new DoubleElem( 0.0025 );
+	protected static final double TOTAL_Y_AXIS_SIZE = 0.1;
 	
 	/**
-	 * Size of the X-Axis discretization.
+	 * The total measurement size along the Z-Axis.
 	 */
-	protected static final DoubleElem X_HH = new DoubleElem( 0.01 );
-	
-	/**
-	 * Size of the Y-Axis discretization.
-	 */
-	protected static final DoubleElem Y_HH = new DoubleElem( 0.01 );
-	
-	/**
-	 * Size of the Z-Axis discretization.
-	 */
-	protected static final DoubleElem Z_HH = new DoubleElem( 0.01 );
-	
-	/**
-	 * Discretization sizes arrayed by coordinate index.
-	 */
-	protected static final DoubleElem[] HH = { T_HH , X_HH , Y_HH , Z_HH };
-	
-	
+	protected static final double TOTAL_Z_AXIS_SIZE = 0.1;
 	
 	
 	
@@ -178,6 +165,34 @@ public class TestStelemD_DB extends TestCase {
 	 * The number of discretizations on the Z-Axis over which to iterate.
 	 */
 	protected static final int NUM_Z_ITER = 200;
+	
+	
+	
+	/**
+	 * Size of the T-Axis discretization.
+	 */
+	protected static final DoubleElem T_HH = new DoubleElem( 0.0025 );
+	
+	/**
+	 * Size of the X-Axis discretization.
+	 */
+	protected static final DoubleElem X_HH = new DoubleElem( TOTAL_X_AXIS_SIZE / NUM_X_ITER /* 0.01 */ );
+	
+	/**
+	 * Size of the Y-Axis discretization.
+	 */
+	protected static final DoubleElem Y_HH = new DoubleElem( TOTAL_Y_AXIS_SIZE / NUM_Y_ITER /* 0.01 */ );
+	
+	/**
+	 * Size of the Z-Axis discretization.
+	 */
+	protected static final DoubleElem Z_HH = new DoubleElem( TOTAL_Z_AXIS_SIZE / NUM_Z_ITER /* 0.01 */ );
+	
+	/**
+	 * Discretization sizes arrayed by coordinate index.
+	 */
+	protected static final DoubleElem[] HH = { T_HH , X_HH , Y_HH , Z_HH };
+	
 	
 	
 	/**
@@ -2647,6 +2662,17 @@ public class TestStelemD_DB extends TestCase {
 	 */
 	public void testStelemSimple() throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
+		final double cmx = Math.min( X_HH.getVal() , Math.min( Y_HH.getVal() , Z_HH.getVal() ) ) / ( T_HH.getVal() );
+		final double cmxRatio = cmx / C.getVal();
+		if( cmxRatio < 1.0 )
+		{
+			System.out.println( "WARNING: cmxRatio " + cmxRatio );
+		}
+		else
+		{
+			System.out.println( "cmxRatio " + cmxRatio );
+		}
+		
 		
 		String databaseLocation = "mydbJ";
 		HyperGraph graph;

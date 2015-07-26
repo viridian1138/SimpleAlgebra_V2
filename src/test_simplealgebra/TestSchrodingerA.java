@@ -164,33 +164,21 @@ public class TestSchrodingerA extends TestCase {
 	
 	
 	
-	/**
-	 * Size of the T-Axis discretization.
-	 */
-	protected static final ComplexElem<DoubleElem,DoubleElemFactory> T_HH = genFromConst( 0.0025 );
 	
 	/**
-	 * Size of the X-Axis discretization.
+	 * The total measurement size along the X-Axis.
 	 */
-	protected static final ComplexElem<DoubleElem,DoubleElemFactory> X_HH = genFromConst( 0.01 );
+	protected static final double TOTAL_X_AXIS_SIZE = 0.1;
 	
 	/**
-	 * Size of the Y-Axis discretization.
+	 * The total measurement size along the Y-Axis.
 	 */
-	protected static final ComplexElem<DoubleElem,DoubleElemFactory> Y_HH = genFromConst( 0.01 );
+	protected static final double TOTAL_Y_AXIS_SIZE = 0.1;
 	
 	/**
-	 * Size of the Z-Axis discretization.
+	 * The total measurement size along the Z-Axis.
 	 */
-	protected static final ComplexElem<DoubleElem,DoubleElemFactory> Z_HH = genFromConst( 0.01 );
-	
-	/**
-	 * Discretization sizes arrayed by coordinate index.
-	 */
-	protected static final ComplexElem[] HH = { T_HH , X_HH , Y_HH , Z_HH };
-	
-	
-	
+	protected static final double TOTAL_Z_AXIS_SIZE = 0.1;
 	
 	
 	/**
@@ -213,6 +201,34 @@ public class TestSchrodingerA extends TestCase {
 	 */
 	protected static final int NUM_Z_ITER = 10;
 	
+	
+	
+	/**
+	 * Size of the T-Axis discretization.
+	 */
+	protected static final ComplexElem<DoubleElem,DoubleElemFactory> T_HH = genFromConst( 0.0025 );
+	
+	/**
+	 * Size of the X-Axis discretization.
+	 */
+	protected static final ComplexElem<DoubleElem,DoubleElemFactory> X_HH = genFromConst( TOTAL_X_AXIS_SIZE / NUM_X_ITER /* 0.01 */ );
+	
+	/**
+	 * Size of the Y-Axis discretization.
+	 */
+	protected static final ComplexElem<DoubleElem,DoubleElemFactory> Y_HH = genFromConst( TOTAL_Y_AXIS_SIZE / NUM_Y_ITER /* 0.01 */ );
+	
+	/**
+	 * Size of the Z-Axis discretization.
+	 */
+	protected static final ComplexElem<DoubleElem,DoubleElemFactory> Z_HH = genFromConst( TOTAL_Z_AXIS_SIZE / NUM_Z_ITER /* 0.01 */ );
+	
+	/**
+	 * Discretization sizes arrayed by coordinate index.
+	 */
+	protected static final ComplexElem[] HH = { T_HH , X_HH , Y_HH , Z_HH };
+	
+
 	
 	/**
 	 * The halfway iteration point in X.
