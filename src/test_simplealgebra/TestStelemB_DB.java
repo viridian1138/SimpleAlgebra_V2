@@ -1748,6 +1748,16 @@ public class TestStelemB_DB extends TestCase {
 	 */	
 	public void testStelemSimple() throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
+		final double cmx = X_HH.getVal() / ( T_HH.getVal() );
+		final double cmxRatio = cmx / C.getVal();
+		if( cmxRatio < 1.0 )
+		{
+			System.out.println( "WARNING: cmxRatio " + cmxRatio );
+		}
+		else
+		{
+			System.out.println( "cmxRatio " + cmxRatio );
+		}
 		
 		String databaseLocation = "mydbC";
 		HyperGraph graph;

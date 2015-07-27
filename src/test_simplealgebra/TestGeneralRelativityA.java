@@ -2987,6 +2987,24 @@ protected void performIterationT( final int tval , final StelemDescent descent ,
 				Assert.assertTrue( spatialAssertArray[ 1 ][ 0 ][ 1 ][ 1 ] > 0 );
 				Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 0 ][ 1 ] > 0 );
 				Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 0 ] > 0 ); */
+				
+				// for( int xc = 0 ; xc < 2 * NSTPX - 1 ; xc++ )
+				// {
+				//	for( int yc = 0 ; yc < 2 * NSTPY - 1 ; yc++ )
+				//	{
+				//		for( int zc = 0 ; zc < 2 * NSTPZ - 1 ; zc++ )
+				//		{
+				//			if( ( xc == NSTPX ) && ( yc == NSTPY ) && ( zc == NSTPZ ) )
+				//			{
+				//				Assert.assertTrue( spatialAssertArray[ NSTPT * 2 ][ xc ][ yc ][ zc ] > 0 );
+				//			}
+				//			else
+				//			{
+				//				Assert.assertTrue( spatialAssertArray[ NSTPT * 2 ][ xc ][ yc ][ zc ] == 0 );
+				//			}
+				//		}
+				//	}
+				// }
 		
 		
 				System.out.println( "***  " + xcnt + "  " + ycnt + "  " + zcnt );
@@ -3050,6 +3068,17 @@ protected void performIterationT( final int tval , final StelemDescent descent ,
  */
 public void testStelemSimple() throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
+	    final double cmx = Math.min( X_HH.getVal() , Math.min( Y_HH.getVal() , Z_HH.getVal() ) ) / ( T_HH.getVal() );
+	    final double cmxRatio = cmx / C.getVal();
+	    if( cmxRatio < 1.0 )
+	    {
+		    System.out.println( "WARNING: cmxRatio " + cmxRatio );
+	    }
+	    else
+	    {
+		    System.out.println( "cmxRatio " + cmxRatio );
+	    }
+	
 		final Random rand = new Random( 3344 );
 		
 		final double d1 = Math.sqrt( calcMagnitudeSq( X_HH ) + calcMagnitudeSq( Y_HH ) + calcMagnitudeSq( Z_HH ) );

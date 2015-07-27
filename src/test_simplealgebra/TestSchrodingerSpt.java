@@ -2028,6 +2028,24 @@ public class TestSchrodingerSpt extends TestCase {
 					Assert.assertTrue( spatialAssertArray[ 1 ][ 0 ][ 1 ][ 1 ] > 0 );
 					Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 0 ][ 1 ] > 0 );
 					Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 0 ] > 0 );
+					
+					// for( int xc = 0 ; xc < 2 * NSTPX - 1 ; xc++ )
+					// {
+					//	for( int yc = 0 ; yc < 2 * NSTPY - 1 ; yc++ )
+					//	{
+					//		for( int zc = 0 ; zc < 2 * NSTPZ - 1 ; zc++ )
+					//		{
+					//			if( ( xc == NSTPX ) && ( yc == NSTPY ) && ( zc == NSTPZ ) )
+					//			{
+					//				Assert.assertTrue( spatialAssertArray[ NSTPT * 2 ][ xc ][ yc ][ zc ] > 0 );
+					//			}
+					//			else
+					//			{
+					//				Assert.assertTrue( spatialAssertArray[ NSTPT * 2 ][ xc ][ yc ][ zc ] == 0 );
+					//			}
+					//		}
+					//	}
+					// }
 			
 			
 					Assert.assertTrue( Math.abs( Math.sqrt( expectationValue( err ) ) ) < ( 0.01 * Math.abs( Math.sqrt( expectationValue( val ) ) ) + 0.01 ) );
@@ -2162,6 +2180,17 @@ public class TestSchrodingerSpt extends TestCase {
 	 */	
 	public void testStelemSimple() throws Throwable
 	{
+		final double cmx = Math.min( X_HH.getRe().getVal() , Math.min( Y_HH.getRe().getVal() , Z_HH.getRe().getVal() ) ) / ( T_HH.getRe().getVal() );
+		final double cmxRatio = cmx / C.getRe().getVal();
+		if( cmxRatio < 1.0 )
+		{
+			System.out.println( "WARNING: cmxRatio " + cmxRatio );
+		}
+		else
+		{
+			System.out.println( "cmxRatio " + cmxRatio );
+		}
+		
 		final Random rand = new Random( 3344 );
 		
 		final double d1 = Math.sqrt( X_HH.getRe().getVal() * X_HH.getRe().getVal() + Y_HH.getRe().getVal() * Y_HH.getRe().getVal() + Z_HH.getRe().getVal() * Z_HH.getRe().getVal() );

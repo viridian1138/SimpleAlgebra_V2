@@ -679,7 +679,7 @@ public class TestStelemC_DB extends TestCase {
 		param.setTcnt( tcnt );
 		param.setXcnt( xcnt );
 		param.setYcnt( ycnt );
-		param.setYa( 0 );
+		param.setYa( -NSTPY );
 		
 		for( int ta = -NSTPT ; ta < NSTPT ; ta++ )
 		{

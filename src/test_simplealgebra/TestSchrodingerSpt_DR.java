@@ -881,7 +881,7 @@ public class TestSchrodingerSpt_DR extends TestCase {
 		param.setXcnt( xcnt );
 		param.setYcnt( ycnt );
 		param.setZcnt( zcnt );
-		param.setZa( 0 );
+		param.setZa( -NSTPZ );
 		
 		for( int ta = -NSTPT ; ta < NSTPT ; ta++ )
 		{
@@ -1002,7 +1002,7 @@ public class TestSchrodingerSpt_DR extends TestCase {
 		param.setXcnt( xcnt );
 		param.setYcnt( ycnt );
 		param.setZcnt( zcnt );
-		param.setYa( 0 );
+		param.setYa( -NSTPY );
 		
 		for( int ta = -NSTPT ; ta < NSTPT ; ta++ )
 		{
@@ -2729,6 +2729,24 @@ public class TestSchrodingerSpt_DR extends TestCase {
 			Assert.assertTrue( spatialAssertArray[ 1 ][ 0 ][ 1 ][ 1 ] > 0 );
 			Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 0 ][ 1 ] > 0 );
 			Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 0 ] > 0 );
+			
+			// for( int xc = 0 ; xc < 2 * NSTPX - 1 ; xc++ )
+			// {
+			//	for( int yc = 0 ; yc < 2 * NSTPY - 1 ; yc++ )
+			//	{
+			//		for( int zc = 0 ; zc < 2 * NSTPZ - 1 ; zc++ )
+			//		{
+			//			if( ( xc == NSTPX ) && ( yc == NSTPY ) && ( zc == NSTPZ ) )
+			//			{
+			//				Assert.assertTrue( spatialAssertArray[ NSTPT * 2 ][ xc ][ yc ][ zc ] > 0 );
+			//			}
+			//			else
+			//			{
+			//				Assert.assertTrue( spatialAssertArray[ NSTPT * 2 ][ xc ][ yc ][ zc ] == 0 );
+			//			}
+			//		}
+			//	}
+			// }
 			
 			
 			Assert.assertTrue( Math.abs( Math.sqrt( expectationValue( err ) ) ) < ( 0.01 * Math.abs( Math.sqrt( expectationValue( val ) ) ) + 0.01 ) );

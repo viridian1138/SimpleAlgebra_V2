@@ -1857,6 +1857,18 @@ public class TestStelemC extends TestCase {
 	 */	
 	public void testStelemSimple() throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
+		final double cmx = Math.min( X_HH.getVal() , Y_HH.getVal() ) / ( T_HH.getVal() );
+		final double cmxRatio = cmx / C.getVal();
+		if( cmxRatio < 1.0 )
+		{
+			System.out.println( "WARNING: cmxRatio " + cmxRatio );
+		}
+		else
+		{
+			System.out.println( "cmxRatio " + cmxRatio );
+		}
+		
+		
 		final Random rand = new Random( 3344 );
 		
 		final double d1 = Math.sqrt( X_HH.getVal() * X_HH.getVal() + Y_HH.getVal() * Y_HH.getVal() );
