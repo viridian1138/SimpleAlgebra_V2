@@ -1632,6 +1632,18 @@ public class TestKdvB extends TestCase {
 						// Assert.assertTrue( spatialAssertArray[ 0 ][ 1 ] > 0 );
 						// Assert.assertTrue( spatialAssertArray[ 1 ][ 0 ] > 0 );
 						
+						// for( int xc = 0 ; xc < 2 * NSTPX - 1 ; xc++ )
+					    // {
+						//	if( ( xc == NSTPX ) )
+						//	{
+						//		Assert.assertTrue( spatialAssertArray[ NSTPT * 2 ][ xc ] > 0 );
+						//	}
+						//	else
+						//	{
+						//		Assert.assertTrue( spatialAssertArray[ NSTPT * 2 ][ xc ] == 0 );
+						//	}
+						// }
+						
 						
 						Assert.assertTrue( Math.abs( err.getVal() ) < ( 0.01 * Math.abs( val ) + 0.01 ) );
 						
