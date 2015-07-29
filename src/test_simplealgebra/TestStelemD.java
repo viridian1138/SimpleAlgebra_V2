@@ -55,6 +55,7 @@ import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicReduction;
 import simplealgebra.ga.*;
 import simplealgebra.ddx.*;
+import test_simplealgebra.TestStelemD_DR.IncrementManager;
 
 
 
@@ -619,7 +620,7 @@ public class TestStelemD extends TestCase {
 		param.setYcnt( ycnt );
 		param.setZcnt( zcnt );
 		
-		for( int ta = -NSTPT ; ta < NSTPT + 1 ; ta++ )
+		for( int ta = -NSTPT ; ta < NSTPT ; ta++ )
 		{
 			param.setTa( ta );
 			for( int xa = -NSTPX ; xa < NSTPX + 1 ; xa++ )
@@ -1838,7 +1839,131 @@ public class TestStelemD extends TestCase {
 	
 	
 	
+	/**
+	 * Increments through the discretized space with cache-locality.
+	 * 
+	 * This documentation should be viewed using Firefox version 33.1.1 or above.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
+	protected class IncrementManager
+	{
+		/**
+		 * The current discretized X-coordinate.
+		 */
+		protected int xcnt = 0;
+		
+		/**
+		 * The current discretized Y-coordinate.
+		 */
+		protected int ycnt = 0;
+		
+		/**
+		 * The current discretized Z-coordinate.
+		 */
+		protected int zcnt = 0;
+		
+		
+		/**
+		 * Handles the base increment from the X-Axis.  At the point the increment
+		 * reaches a swatch boundary, other axes are potentially incremented.
+		 */
+		public void handleIncrementXa()
+		{
+			ycnt = 0;
+			xcnt++;
+		}
+		
+		
+		/**
+		 * Handles the base increment from the Y-Axis.  At the point the increment
+		 * reaches a swatch boundary, other axes are potentially incremented.
+		 */
+		public void handleIncrementYa()
+		{
+			zcnt = 0;
+			if( ycnt < ( NUM_Y_ITER - 1 ) )
+			{
+				ycnt++;
+			}
+			else
+			{
+				handleIncrementXa();
+			}
+		}
+		
+		
+		/**
+		 * Handles the base increment from the Z-Axis.  At the point the increment
+		 * reaches a swatch boundary, other axes are potentially incremented.
+		 */
+		public void handleIncrementZa()
+		{
+			if( zcnt < ( NUM_Z_ITER - 1 ) )
+			{
+				zcnt++;
+			}
+			else
+			{
+				handleIncrementYa();
+			}
+		}
+		
+		
+		/**
+		 * Restarts the inctrements upon a new T-Axis iteration.
+		 */
+		public void restartIncrements()
+		{
+			xcnt = 0;
+			ycnt = 0;
+			zcnt = 0;
+		}
+		
+		
+		
+		/**
+		 * Gets the current discretized X-coordinate.
+		 * 
+		 * @return The current discretized X-coordinate.
+		 */
+		public int getXcnt() {
+			return xcnt;
+		}
+
+
+
+		/**
+		 * Gets the current discretized Y-coordinate.
+		 * 
+		 * @return The current discretized Y-coordinate.
+		 */
+		public int getYcnt() {
+			return ycnt;
+		}
+
+
+
+		/**
+		 * Gets the current discretized Z-coordinate.
+		 * 
+		 * @return The current discretized Z-coordinate.
+		 */
+		public int getZcnt() {
+			return zcnt;
+		}
+		
+
+		
+	}
+
 	
+	
+	/**
+	 * Instance of the IncrementManager used by the performIterationT() method.
+	 */
+	protected final IncrementManager im = new IncrementManager();
 	
 	
 	
@@ -1854,90 +1979,88 @@ public class TestStelemD extends TestCase {
 	protected void performIterationT( final int tval , final StelemNewton newton , final HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace2 ) 
 			throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
-		
-		for( int xcnt = 0 ; xcnt < NUM_X_ITER ; xcnt++ )
+		im.restartIncrements();
+		for( int acnt = 0 ; acnt < ( NUM_X_ITER * NUM_Y_ITER * NUM_Z_ITER ) ; acnt++ )
 		{
-			for( int ycnt = 0 ; ycnt < NUM_Y_ITER ; ycnt++ )
+			
+			fillTempArray( tval , im.getXcnt() , im.getYcnt() , im.getZcnt() );
+			clearSpatialAssertArray();
+	
+			
+			final double ival = TestStelemD.getUpdateValue();
+			
+			
+		
+			
+			DoubleElem err = newton.eval( implicitSpace2 );
+					
+					
+			if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
 			{
-				for( int zcnt = 0 ; zcnt < NUM_Z_ITER ; zcnt++ )
-				{
-					fillTempArray( tval , xcnt , ycnt , zcnt );
-					clearSpatialAssertArray();
-	
-			
-					final double ival = TestStelemD.getUpdateValue();
-			
-			
-		
-			
-					DoubleElem err = newton.eval( implicitSpace2 );
-					
-					
-					if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
-					{
-						applyPredictorCorrector();
+				applyPredictorCorrector();
 						
-						err = newton.eval( implicitSpace2 );
-					}
-	
-	
-					final double val = TestStelemD.getUpdateValue();
-			
-					if( ( xcnt == HALF_X ) && ( ycnt == HALF_Y ) && ( zcnt == HALF_Z ) )
-					{
-						System.out.println( "******************" );
-						System.out.println( " ( " + xcnt + " , " + ycnt + " , " + zcnt + " ) " );
-						System.out.println( ival );
-						System.out.println( val );
-						System.out.println( "## " + ( err.getVal() ) );
-					}
-					
-					
-					Assert.assertTrue( spatialAssertArray[ 0 ][ 0 ][ 0 ][ 0 ] == 0 );
-					
-					Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 1 ] > 0 );
-					
-					Assert.assertTrue( spatialAssertArray[ 2 ][ 1 ][ 1 ][ 1 ] > 0 );
-					Assert.assertTrue( spatialAssertArray[ 1 ][ 2 ][ 1 ][ 1 ] > 0 );
-					Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 2 ][ 1 ] > 0 );
-					Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 2 ] > 0 );
-					
-					Assert.assertTrue( spatialAssertArray[ 0 ][ 1 ][ 1 ][ 1 ] > 0 );
-					Assert.assertTrue( spatialAssertArray[ 1 ][ 0 ][ 1 ][ 1 ] > 0 );
-					Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 0 ][ 1 ] > 0 );
-					Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 0 ] > 0 );
-					
-					// for( int xc = 0 ; xc < 2 * NSTPX - 1 ; xc++ )
-					// {
-					//	for( int yc = 0 ; yc < 2 * NSTPY - 1 ; yc++ )
-					//	{
-					//		for( int zc = 0 ; zc < 2 * NSTPZ - 1 ; zc++ )
-					//		{
-					//			if( ( xc == NSTPX ) && ( yc == NSTPY ) && ( zc == NSTPZ ) )
-					//			{
-					//				Assert.assertTrue( spatialAssertArray[ NSTPT * 2 ][ xc ][ yc ][ zc ] > 0 );
-					//			}
-					//			else
-					//			{
-					//				Assert.assertTrue( spatialAssertArray[ NSTPT * 2 ][ xc ][ yc ][ zc ] == 0 );
-					//			}
-					//		}
-					//	}
-					// }
-			
-			
-					Assert.assertTrue( Math.abs( err.getVal() ) < ( 0.01 * Math.abs( val ) + 0.01 ) );
-			
-					if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
-					{
-						iterArray[ tval ][ xcnt ][ ycnt ][ zcnt ] =
-							getCorrectionValue();	
-					}
-		
-					iterArray[ tval + 1 ][ xcnt ][ ycnt ][ zcnt ] = val;
-				}
-				
+				err = newton.eval( implicitSpace2 );
 			}
+	
+	
+			final double val = TestStelemD.getUpdateValue();
+			
+			if( ( im.getXcnt() == HALF_X ) && ( im.getYcnt() == HALF_Y ) && ( im.getZcnt() == HALF_Z ) )
+			{
+				System.out.println( "******************" );
+				System.out.println( " ( " + im.getXcnt() + " , " + im.getYcnt() + " , " + im.getZcnt() + " ) " );
+				System.out.println( ival );
+				System.out.println( val );
+				System.out.println( "## " + ( err.getVal() ) );
+			}
+					
+					
+			Assert.assertTrue( spatialAssertArray[ 0 ][ 0 ][ 0 ][ 0 ] == 0 );
+					
+			Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 1 ] > 0 );
+					
+			Assert.assertTrue( spatialAssertArray[ 2 ][ 1 ][ 1 ][ 1 ] > 0 );
+			Assert.assertTrue( spatialAssertArray[ 1 ][ 2 ][ 1 ][ 1 ] > 0 );
+			Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 2 ][ 1 ] > 0 );
+			Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 2 ] > 0 );
+					
+			Assert.assertTrue( spatialAssertArray[ 0 ][ 1 ][ 1 ][ 1 ] > 0 );
+			Assert.assertTrue( spatialAssertArray[ 1 ][ 0 ][ 1 ][ 1 ] > 0 );
+			Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 0 ][ 1 ] > 0 );
+			Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 0 ] > 0 );
+					
+			// for( int xc = 0 ; xc < 2 * NSTPX - 1 ; xc++ )
+			// {
+			//	for( int yc = 0 ; yc < 2 * NSTPY - 1 ; yc++ )
+			//	{
+			//		for( int zc = 0 ; zc < 2 * NSTPZ - 1 ; zc++ )
+			//		{
+			//			if( ( xc == NSTPX ) && ( yc == NSTPY ) && ( zc == NSTPZ ) )
+			//			{
+			//				Assert.assertTrue( spatialAssertArray[ NSTPT * 2 ][ xc ][ yc ][ zc ] > 0 );
+			//			}
+			//			else
+			//			{
+			//				Assert.assertTrue( spatialAssertArray[ NSTPT * 2 ][ xc ][ yc ][ zc ] == 0 );
+			//			}
+			//		}
+			//	}
+			// }
+			
+			
+			Assert.assertTrue( Math.abs( err.getVal() ) < ( 0.01 * Math.abs( val ) + 0.01 ) );
+			
+			if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
+			{
+				iterArray[ tval ][ im.getXcnt() ][ im.getYcnt() ][ im.getZcnt() ] =
+					getCorrectionValue();	
+			}
+		
+			iterArray[ tval + 1 ][ im.getXcnt() ][ im.getYcnt() ][ im.getZcnt() ] = val;
+				
+			
+			
+			im.handleIncrementZa();
 					
 		}
 	}

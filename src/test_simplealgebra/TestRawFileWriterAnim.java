@@ -127,6 +127,8 @@ public class TestRawFileWriterAnim extends TestCase {
 		
 		/**
 		 * Constructs the writer.
+		 * 
+		 * @param _tval The T-Axis value at which to perform the write.
 		 * @throws Throwable
 		 */
 		public TstRawFileWriterAnim( final int _tval ) throws Throwable
