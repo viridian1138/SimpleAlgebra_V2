@@ -2666,7 +2666,7 @@ public class TestSchrodingerSpt_DR extends TestCase {
 		im.restartIncrements();
 		long atm = System.currentTimeMillis();
 		long atm2 = System.currentTimeMillis();
-		for( int acnt = 0 ; acnt < ( NUM_X_ITER * NUM_Y_ITER * NUM_Z_ITER ) ; acnt++ )
+		for( long acnt = 0 ; acnt < ( ( (long) NUM_X_ITER ) * NUM_Y_ITER * NUM_Z_ITER ) ; acnt++ )
 		{
 			
 			atm2 = System.currentTimeMillis();
@@ -2782,7 +2782,7 @@ public class TestSchrodingerSpt_DR extends TestCase {
 		for( int tcnt = 0 ; tcnt < 2 ; tcnt++ )
 		{
 			System.out.println( "Initial - " + tcnt );
-			for( int acnt = 0 ; acnt < NUM_X_ITER * NUM_Y_ITER * NUM_Z_ITER ; acnt++ )
+			for( long acnt = 0 ; acnt < ( (long) NUM_X_ITER ) * NUM_Y_ITER * NUM_Z_ITER ; acnt++ )
 			{
 				atm2 = System.currentTimeMillis();
 				if( atm2 - atm >= 1000 )
@@ -2791,12 +2791,12 @@ public class TestSchrodingerSpt_DR extends TestCase {
 					atm = atm2;
 				}
 				
-				int ac = acnt;
-				final int z = ac % NUM_Z_ITER;
+				long ac = acnt;
+				final int z = (int)( ac % NUM_Z_ITER );
 				ac = ac / NUM_Z_ITER;
-				final int y = ac % NUM_Y_ITER;
+				final int y = (int)( ac % NUM_Y_ITER );
 				ac = ac / NUM_Y_ITER;
-				final int x = ac % NUM_X_ITER;
+				final int x = (int)( ac % NUM_X_ITER );
 				final double dx = ( x - HALF_X ) / RAD_X;
 				final double dy = ( y - HALF_Y ) / RAD_Y;
 				final double dz = ( z - HALF_Z ) / RAD_Z;

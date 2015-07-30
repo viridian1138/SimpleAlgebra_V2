@@ -1887,7 +1887,7 @@ public class TestStelemC_DB extends TestCase {
 		for( int tcnt = 0 ; tcnt < 2 ; tcnt++ )
 		{
 			System.out.println( "Initial - " + tcnt );
-			for( int acnt = 0 ; acnt < NUM_X_ITER * NUM_Y_ITER ; acnt++ )
+			for( long acnt = 0 ; acnt < ( (long) NUM_X_ITER ) * NUM_Y_ITER ; acnt++ )
 			{
 				atm2 = System.currentTimeMillis();
 				if( atm2 - atm >= 1000 )
@@ -1896,10 +1896,10 @@ public class TestStelemC_DB extends TestCase {
 					atm = atm2;
 				}
 				
-				int ac = acnt;
-				final int y = ac % NUM_Y_ITER;
+				long ac = acnt;
+				final int y = (int)( ac % NUM_Y_ITER );
 				ac = ac / NUM_Y_ITER;
-				final int x = ac % NUM_X_ITER;
+				final int x = (int)( ac % NUM_X_ITER );
 				final double dx = ( x - HALF_X ) / RAD_X;
 				final double dy = ( y - HALF_Y ) / RAD_Y;
 				if( dx * dx + dy * dy < 1.0 )
@@ -2171,7 +2171,7 @@ public class TestStelemC_DB extends TestCase {
 		im.restartIncrements();
 		long atm = System.currentTimeMillis();
 		long atm2 = System.currentTimeMillis();
-		for( int acnt = 0 ; acnt < ( NUM_X_ITER * NUM_Y_ITER ) ; acnt++ )
+		for( long acnt = 0 ; acnt < ( ( (long) NUM_X_ITER ) * NUM_Y_ITER ) ; acnt++ )
 		{	
 		
 			atm2 = System.currentTimeMillis();

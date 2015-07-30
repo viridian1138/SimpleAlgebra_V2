@@ -56,6 +56,7 @@ import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicReduction;
 import simplealgebra.ddx.*;
 import simplealgebra.ga.*;
+import test_simplealgebra.TestStelemD.IncrementManager;
 
 
 
@@ -963,7 +964,7 @@ public class TestDiracA extends TestCase {
 		param.setYcnt( ycnt );
 		param.setZcnt( zcnt );
 		
-		for( int ta = -NSTPT ; ta < NSTPT + 1 ; ta++ )
+		for( int ta = -NSTPT ; ta < NSTPT ; ta++ )
 		{
 			param.setTa( ta );
 			for( int xa = -NSTPX ; xa < NSTPX + 1 ; xa++ )
@@ -980,6 +981,20 @@ public class TestDiracA extends TestCase {
 				}
 			}
 		}
+		
+		
+		// Overlay initial seed for iterations.
+		for( int xa = 0 ; xa < NSTPX * 2 + 1 ; xa++ )
+		{
+			for( int ya = 0 ; ya < NSTPY * 2 + 1 ; ya++ )
+			{
+				for( int za = 0 ; za < NSTPZ * 2 + 1 ; za++ )
+				{
+					tempArray[ NSTPT * 2 ][ xa ][ ya ][ za ] = tempArray[ NSTPT * 2 - 1 ][ xa ][ ya ][ za ];
+				}
+			}
+		}
+		
 	}
 	
 	
@@ -2788,7 +2803,7 @@ protected void initIterArray( final double d1 )
 	for( int tcnt = 0 ; tcnt < 2 ; tcnt++ )
 	{
 		System.out.println( "Initial - " + tcnt );
-		for( int acnt = 0 ; acnt < NUM_X_ITER * NUM_Y_ITER * NUM_Z_ITER ; acnt++ )
+		for( long acnt = 0 ; acnt < ( (long) NUM_X_ITER ) * NUM_Y_ITER * NUM_Z_ITER ; acnt++ )
 		{
 			atm2 = System.currentTimeMillis();
 			if( atm2 - atm >= 1000 )
@@ -2797,12 +2812,12 @@ protected void initIterArray( final double d1 )
 				atm = atm2;
 			}
 			
-			int ac = acnt;
-			final int z = ac % NUM_Z_ITER;
+			long ac = acnt;
+			final int z = (int)( ac % NUM_Z_ITER );
 			ac = ac / NUM_Z_ITER;
-			final int y = ac % NUM_Y_ITER;
+			final int y = (int)( ac % NUM_Y_ITER );
 			ac = ac / NUM_Y_ITER;
-			final int x = ac % NUM_X_ITER;
+			final int x = (int)( ac % NUM_X_ITER );
 			final double dx = ( x - HALF_X ) / RAD_X;
 			final double dy = ( y - HALF_Y ) / RAD_Y;
 			final double dz = ( z - HALF_Z ) / RAD_Z;
@@ -2845,6 +2860,132 @@ protected void initTempArray()
 
 
 
+/**
+ * Increments through the discretized space with cache-locality.
+ * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
+ * @author thorngreen
+ *
+ */
+protected class IncrementManager
+{
+	/**
+	 * The current discretized X-coordinate.
+	 */
+	protected int xcnt = 0;
+	
+	/**
+	 * The current discretized Y-coordinate.
+	 */
+	protected int ycnt = 0;
+	
+	/**
+	 * The current discretized Z-coordinate.
+	 */
+	protected int zcnt = 0;
+	
+	
+	/**
+	 * Handles the base increment from the X-Axis.  At the point the increment
+	 * reaches a swatch boundary, other axes are potentially incremented.
+	 */
+	public void handleIncrementXa()
+	{
+		ycnt = 0;
+		xcnt++;
+	}
+	
+	
+	/**
+	 * Handles the base increment from the Y-Axis.  At the point the increment
+	 * reaches a swatch boundary, other axes are potentially incremented.
+	 */
+	public void handleIncrementYa()
+	{
+		zcnt = 0;
+		if( ycnt < ( NUM_Y_ITER - 1 ) )
+		{
+			ycnt++;
+		}
+		else
+		{
+			handleIncrementXa();
+		}
+	}
+	
+	
+	/**
+	 * Handles the base increment from the Z-Axis.  At the point the increment
+	 * reaches a swatch boundary, other axes are potentially incremented.
+	 */
+	public void handleIncrementZa()
+	{
+		if( zcnt < ( NUM_Z_ITER - 1 ) )
+		{
+			zcnt++;
+		}
+		else
+		{
+			handleIncrementYa();
+		}
+	}
+	
+	
+	/**
+	 * Restarts the inctrements upon a new T-Axis iteration.
+	 */
+	public void restartIncrements()
+	{
+		xcnt = 0;
+		ycnt = 0;
+		zcnt = 0;
+	}
+	
+	
+	
+	/**
+	 * Gets the current discretized X-coordinate.
+	 * 
+	 * @return The current discretized X-coordinate.
+	 */
+	public int getXcnt() {
+		return xcnt;
+	}
+
+
+
+	/**
+	 * Gets the current discretized Y-coordinate.
+	 * 
+	 * @return The current discretized Y-coordinate.
+	 */
+	public int getYcnt() {
+		return ycnt;
+	}
+
+
+
+	/**
+	 * Gets the current discretized Z-coordinate.
+	 * 
+	 * @return The current discretized Z-coordinate.
+	 */
+	public int getZcnt() {
+		return zcnt;
+	}
+	
+
+	
+}
+
+
+
+/**
+ * Instance of the IncrementManager used by the performIterationT() method.
+ */
+protected final IncrementManager im = new IncrementManager();
+
 
 
 /**
@@ -2859,109 +3000,95 @@ protected void initTempArray()
 protected void performIterationT( final int tval , final StelemDescent descent , final HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace2 ) 
 		throws NotInvertibleException, MultiplicativeDistributionRequiredException
 {
-	for( int xcnt = 0 ; xcnt < NUM_X_ITER ; xcnt++ )
+	im.restartIncrements();
+	for( long acnt = 0 ; acnt < ( ( (long) NUM_X_ITER ) * NUM_Y_ITER * NUM_Z_ITER ) ; acnt++ )
 	{
-		for( int ycnt = 0 ; ycnt < NUM_Y_ITER ; ycnt++ )
-		{
-			for( int zcnt = 0 ; zcnt < NUM_Z_ITER ; zcnt++ )
-			{
-				iterArray[ tval + 1 ][ xcnt ][ ycnt ][ zcnt ] = iterArray[ tval ][ xcnt ][ ycnt ][ zcnt ];
-			}
-		}
-	}
-	
-	for( int xcnt = 0 ; xcnt < NUM_X_ITER ; xcnt++ )
-	{
-		for( int ycnt = 0 ; ycnt < NUM_Y_ITER ; ycnt++ )
-		{
-			for( int zcnt = 0 ; zcnt < NUM_Z_ITER ; zcnt++ )
-			{
-				// System.out.println( "iter... " + xcnt + " " + ycnt + " " + zcnt );
+		// System.out.println( "iter... " + xcnt + " " + ycnt + " " + zcnt );
 				
-				fillTempArray( tval , xcnt , ycnt , zcnt );
-				clearSpatialAssertArray();
+		fillTempArray( tval , im.getXcnt() , im.getYcnt() , im.getZcnt() );
+		clearSpatialAssertArray();
 
 		
-				final GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem, DoubleElemFactory> 
-					ival = TestDiracA.getUpdateValue();
+		final GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem, DoubleElemFactory> 
+			ival = TestDiracA.getUpdateValue();
 		
 		
 	
 		
-				GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem, DoubleElemFactory> 
-					err = descent.eval( implicitSpace2 );
+		GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem, DoubleElemFactory> 
+			err = descent.eval( implicitSpace2 );
 				
 				
-				if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
-				{
-					applyPredictorCorrector();
+		if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
+		{
+			applyPredictorCorrector();
 					
-					err = descent.eval( implicitSpace2 );
-				}
-
-
-				final GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem, DoubleElemFactory> 
-					val = TestDiracA.getUpdateValue();
-				
-				
-		
-				if( ( xcnt == HALF_X ) && ( ycnt == HALF_Y ) && ( zcnt == HALF_Z ) )
-				{
-					System.out.println( "******************" );
-					System.out.println( " ( " + xcnt + " , " + ycnt + " , " + zcnt + " ) " );
-					System.out.println( Math.sqrt( calcMagnitudeSq( ival ) ) );
-					System.out.println( Math.sqrt( calcMagnitudeSq( val ) ) );
-					System.out.println( "## " + ( Math.sqrt( calcMagnitudeSq( err ) ) ) );
-				}
-				
-				
-				Assert.assertTrue( spatialAssertArray[ 0 ][ 0 ][ 0 ][ 0 ] == 0 );
-				
-				Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 1 ] > 0 );
-				
-				Assert.assertTrue( spatialAssertArray[ 2 ][ 1 ][ 1 ][ 1 ] > 0 );
-				Assert.assertTrue( spatialAssertArray[ 1 ][ 2 ][ 1 ][ 1 ] > 0 );
-				Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 2 ][ 1 ] > 0 );
-				Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 2 ] > 0 );
-				
-				Assert.assertTrue( spatialAssertArray[ 0 ][ 1 ][ 1 ][ 1 ] > 0 );
-				Assert.assertTrue( spatialAssertArray[ 1 ][ 0 ][ 1 ][ 1 ] > 0 );
-				Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 0 ][ 1 ] > 0 );
-				Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 0 ] > 0 );
-				
-				// for( int xc = 0 ; xc < 2 * NSTPX - 1 ; xc++ )
-				// {
-				//	for( int yc = 0 ; yc < 2 * NSTPY - 1 ; yc++ )
-				//	{
-				//		for( int zc = 0 ; zc < 2 * NSTPZ - 1 ; zc++ )
-				//		{
-				//			if( ( xc == NSTPX ) && ( yc == NSTPY ) && ( zc == NSTPZ ) )
-				//			{
-				//				Assert.assertTrue( spatialAssertArray[ NSTPT * 2 ][ xc ][ yc ][ zc ] > 0 );
-				//			}
-				//			else
-				//			{
-				//				Assert.assertTrue( spatialAssertArray[ NSTPT * 2 ][ xc ][ yc ][ zc ] == 0 );
-				//			}
-				//		}
-				//	}
-				// }
-		
-		
-				// System.out.println( calcMagnitudeSq( val ) );
-				// System.out.println( calcMagnitudeSq( err ) );
-				Assert.assertTrue( Math.abs( Math.sqrt( calcMagnitudeSq( err ) ) ) < ( 0.01 * Math.abs( Math.sqrt( calcMagnitudeSq( val ) ) ) + 0.01 ) );
-		
-				if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
-				{
-					iterArray[ tval ][ xcnt ][ ycnt ][ zcnt ] =
-						getCorrectionValue();	
-				}
-	
-				iterArray[ tval + 1 ][ xcnt ][ ycnt ][ zcnt ] = val;
-			}
-			
+			err = descent.eval( implicitSpace2 );
 		}
+
+
+		final GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem, DoubleElemFactory> 
+			val = TestDiracA.getUpdateValue();
+				
+				
+		
+		if( ( im.getXcnt() == HALF_X ) && ( im.getYcnt() == HALF_Y ) && ( im.getZcnt() == HALF_Z ) )
+		{
+			System.out.println( "******************" );
+			System.out.println( " ( " + im.getXcnt() + " , " + im.getYcnt() + " , " + im.getZcnt() + " ) " );
+			System.out.println( Math.sqrt( calcMagnitudeSq( ival ) ) );
+			System.out.println( Math.sqrt( calcMagnitudeSq( val ) ) );
+			System.out.println( "## " + ( Math.sqrt( calcMagnitudeSq( err ) ) ) );
+		}
+				
+				
+		Assert.assertTrue( spatialAssertArray[ 0 ][ 0 ][ 0 ][ 0 ] == 0 );
+				
+		Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 1 ] > 0 );
+				
+		Assert.assertTrue( spatialAssertArray[ 2 ][ 1 ][ 1 ][ 1 ] > 0 );
+		Assert.assertTrue( spatialAssertArray[ 1 ][ 2 ][ 1 ][ 1 ] > 0 );
+		Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 2 ][ 1 ] > 0 );
+		Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 2 ] > 0 );
+				
+		Assert.assertTrue( spatialAssertArray[ 0 ][ 1 ][ 1 ][ 1 ] > 0 );
+		Assert.assertTrue( spatialAssertArray[ 1 ][ 0 ][ 1 ][ 1 ] > 0 );
+		Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 0 ][ 1 ] > 0 );
+		Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 0 ] > 0 );
+				
+		// for( int xc = 0 ; xc < 2 * NSTPX - 1 ; xc++ )
+		// {
+		//	for( int yc = 0 ; yc < 2 * NSTPY - 1 ; yc++ )
+		//	{
+		//		for( int zc = 0 ; zc < 2 * NSTPZ - 1 ; zc++ )
+		//		{
+		//			if( ( xc == NSTPX ) && ( yc == NSTPY ) && ( zc == NSTPZ ) )
+		//			{
+		//				Assert.assertTrue( spatialAssertArray[ NSTPT * 2 ][ xc ][ yc ][ zc ] > 0 );
+		//			}
+		//			else
+		//			{
+		//				Assert.assertTrue( spatialAssertArray[ NSTPT * 2 ][ xc ][ yc ][ zc ] == 0 );
+		//			}
+		//		}
+		//	}
+		// }
+		
+		
+		// System.out.println( calcMagnitudeSq( val ) );
+		// System.out.println( calcMagnitudeSq( err ) );
+		Assert.assertTrue( Math.abs( Math.sqrt( calcMagnitudeSq( err ) ) ) < ( 0.01 * Math.abs( Math.sqrt( calcMagnitudeSq( val ) ) ) + 0.01 ) );
+		
+		if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
+		{
+			iterArray[ tval ][ im.getXcnt() ][ im.getYcnt() ][ im.getZcnt() ] =
+				getCorrectionValue();	
+		}
+	
+		iterArray[ tval + 1 ][ im.getXcnt() ][ im.getYcnt() ][ im.getZcnt() ] = val;
+			
+		
+		im.handleIncrementZa();
 				
 	}
 }

@@ -1537,7 +1537,7 @@ public class TestKdvB extends TestCase {
 		for( int tcnt = 0 ; tcnt < 2 ; tcnt++ )
 		{
 			System.out.println( "Initial - " + tcnt );
-			for( int acnt = 0 ; acnt < NUM_X_ITER ; acnt++ )
+			for( long acnt = 0 ; acnt < NUM_X_ITER ; acnt++ )
 			{
 				atm2 = System.currentTimeMillis();
 				if( atm2 - atm >= 1000 )
@@ -1546,8 +1546,8 @@ public class TestKdvB extends TestCase {
 					atm = atm2;
 				}
 				
-				int ac = acnt;
-				final int x = ac % NUM_X_ITER;
+				long ac = acnt;
+				final int x = (int)( ac % NUM_X_ITER );
 				final double dx = ( x - HALF_X ) / RAD_X;
 				if( dx * dx < 1.0 )
 				{
