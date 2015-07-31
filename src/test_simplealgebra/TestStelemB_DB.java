@@ -251,6 +251,18 @@ public class TestStelemB_DB extends TestCase {
 	
 	
 	/**
+	 * Resets the predictor-correction value of the iterations
+	 * from the temp array.
+	 * 
+	 * @param in The value to which to reset.
+	 */
+	protected static void resetCorrectionValue( final double in )
+	{
+		tempArray[ NSTPT * 2 - 1 ][ NSTPX ] = in;
+	}
+	
+	
+	/**
 	 * Applies a predictor-corrector process to the temp array.
 	 * 
 	 * See https://en.wikipedia.org/wiki/Predictor%E2%80%93corrector_method
@@ -1634,6 +1646,7 @@ public class TestStelemB_DB extends TestCase {
 	protected void performIterationT( final int tval , final StelemNewton newton , final HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace2 ) 
 			throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
+		double tmpCorrectionValue = 0.0;
 		for( int xcnt = 0 ; xcnt < NUM_X_ITER ; xcnt++ )
 		{
 			fillTempArray( tval , xcnt );
@@ -1654,6 +1667,7 @@ public class TestStelemB_DB extends TestCase {
 			
 			if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
 			{
+				tmpCorrectionValue = getCorrectionValue();
 				applyPredictorCorrector();
 				
 				err = newton.eval( implicitSpace2 );
@@ -1699,7 +1713,7 @@ public class TestStelemB_DB extends TestCase {
 			
 			if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
 			{
-				iterArray.set( tval , xcnt , getCorrectionValue() );	
+				resetCorrectionValue( tmpCorrectionValue );	
 			}
 		
 			iterArray.set( tval + 1 , xcnt , val );

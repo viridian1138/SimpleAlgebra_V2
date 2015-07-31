@@ -331,6 +331,18 @@ public class TestStelemD extends TestCase {
 	
 	
 	/**
+	 * Resets the predictor-correction value of the iterations
+	 * from the temp array.
+	 * 
+	 * @param in The value to which to reset.
+	 */
+	protected static void resetCorrectionValue( final double in )
+	{
+		tempArray[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ][ NSTPZ ] = in;
+	}
+	
+	
+	/**
 	 * Applies a predictor-corrector process to the temp array.
 	 * 
 	 * See https://en.wikipedia.org/wiki/Predictor%E2%80%93corrector_method
@@ -1979,6 +1991,7 @@ public class TestStelemD extends TestCase {
 	protected void performIterationT( final int tval , final StelemNewton newton , final HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace2 ) 
 			throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
+		double tmpCorrectionValue = 0.0;
 		im.restartIncrements();
 		for( long acnt = 0 ; acnt < ( ( (long) NUM_X_ITER ) * NUM_Y_ITER * NUM_Z_ITER ) ; acnt++ )
 		{
@@ -1997,6 +2010,7 @@ public class TestStelemD extends TestCase {
 					
 			if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
 			{
+				tmpCorrectionValue = getCorrectionValue();
 				applyPredictorCorrector();
 						
 				err = newton.eval( implicitSpace2 );
@@ -2052,8 +2066,7 @@ public class TestStelemD extends TestCase {
 			
 			if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
 			{
-				iterArray[ tval ][ im.getXcnt() ][ im.getYcnt() ][ im.getZcnt() ] =
-					getCorrectionValue();	
+				resetCorrectionValue( tmpCorrectionValue );
 			}
 		
 			iterArray[ tval + 1 ][ im.getXcnt() ][ im.getYcnt() ][ im.getZcnt() ] = val;

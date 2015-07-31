@@ -57,6 +57,7 @@ import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicReduction;
 import simplealgebra.ga.*;
 import simplealgebra.ddx.*;
+import test_simplealgebra.TestStelemD.IncrementManager;
 
 
 
@@ -418,6 +419,30 @@ public class TestSchrodingerA extends TestCase {
 	
 	
 	/**
+	 * Resets the real component of the predictor-correction value of the iterations
+	 * from the temp array.
+	 * 
+	 * @param in The value to which to reset.
+	 */
+	protected static void resetCorrectionValueRe( final double in )
+	{
+		tempArrayRe[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ][ NSTPZ ] = in;
+	}
+	
+	
+	/**
+	 * Resets the imaginery component of the predictor-correction value of the iterations
+	 * from the temp array.
+	 * 
+	 * @param in The value to which to reset.
+	 */
+	protected static void resetCorrectionValueIm( final double in )
+	{
+		tempArrayIm[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ][ NSTPZ ] = in;
+	}
+	
+	
+	/**
 	 * Applies a predictor-corrector process to the temp array.
 	 * 
 	 * See https://en.wikipedia.org/wiki/Predictor%E2%80%93corrector_method
@@ -732,6 +757,21 @@ public class TestSchrodingerA extends TestCase {
 				}
 			}
 		}
+		
+		
+		// Overlay initial seed for iterations.
+		for( int xa = 0 ; xa < NSTPX * 2 + 1 ; xa++ )
+		{
+			for( int ya = 0 ; ya < NSTPY * 2 + 1 ; ya++ )
+			{
+				for( int za = 0 ; za < NSTPZ * 2 + 1 ; za++ )
+				{
+					tempArrayRe[ NSTPT * 2 ][ xa ][ ya ][ za ] = tempArrayRe[ NSTPT * 2 - 1 ][ xa ][ ya ][ za ];
+					tempArrayIm[ NSTPT * 2 ][ xa ][ ya ][ za ] = tempArrayIm[ NSTPT * 2 - 1 ][ xa ][ ya ][ za ];
+				}
+			}
+		}
+				
 	}
 	
 	
@@ -1906,6 +1946,132 @@ public class TestSchrodingerA extends TestCase {
 	
 	
 	
+	/**
+	 * Increments through the discretized space with cache-locality.
+	 * 
+	 * This documentation should be viewed using Firefox version 33.1.1 or above.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
+	protected class IncrementManager
+	{
+		/**
+		 * The current discretized X-coordinate.
+		 */
+		protected int xcnt = 0;
+		
+		/**
+		 * The current discretized Y-coordinate.
+		 */
+		protected int ycnt = 0;
+		
+		/**
+		 * The current discretized Z-coordinate.
+		 */
+		protected int zcnt = 0;
+		
+		
+		/**
+		 * Handles the base increment from the X-Axis.  At the point the increment
+		 * reaches a swatch boundary, other axes are potentially incremented.
+		 */
+		public void handleIncrementXa()
+		{
+			ycnt = 0;
+			xcnt++;
+		}
+		
+		
+		/**
+		 * Handles the base increment from the Y-Axis.  At the point the increment
+		 * reaches a swatch boundary, other axes are potentially incremented.
+		 */
+		public void handleIncrementYa()
+		{
+			zcnt = 0;
+			if( ycnt < ( NUM_Y_ITER - 1 ) )
+			{
+				ycnt++;
+			}
+			else
+			{
+				handleIncrementXa();
+			}
+		}
+		
+		
+		/**
+		 * Handles the base increment from the Z-Axis.  At the point the increment
+		 * reaches a swatch boundary, other axes are potentially incremented.
+		 */
+		public void handleIncrementZa()
+		{
+			if( zcnt < ( NUM_Z_ITER - 1 ) )
+			{
+				zcnt++;
+			}
+			else
+			{
+				handleIncrementYa();
+			}
+		}
+		
+		
+		/**
+		 * Restarts the inctrements upon a new T-Axis iteration.
+		 */
+		public void restartIncrements()
+		{
+			xcnt = 0;
+			ycnt = 0;
+			zcnt = 0;
+		}
+		
+		
+		
+		/**
+		 * Gets the current discretized X-coordinate.
+		 * 
+		 * @return The current discretized X-coordinate.
+		 */
+		public int getXcnt() {
+			return xcnt;
+		}
+
+
+
+		/**
+		 * Gets the current discretized Y-coordinate.
+		 * 
+		 * @return The current discretized Y-coordinate.
+		 */
+		public int getYcnt() {
+			return ycnt;
+		}
+
+
+
+		/**
+		 * Gets the current discretized Z-coordinate.
+		 * 
+		 * @return The current discretized Z-coordinate.
+		 */
+		public int getZcnt() {
+			return zcnt;
+		}
+		
+
+		
+	}
+
+	
+	
+	/**
+	 * Instance of the IncrementManager used by the performIterationT() method.
+	 */
+	protected final IncrementManager im = new IncrementManager();
+	
 	
 	
 	/**
@@ -1920,111 +2086,100 @@ public class TestSchrodingerA extends TestCase {
 	protected void performIterationT( final int tval , final StelemNewton newton , final HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace2 ) 
 			throws Throwable
 	{
-		for( int xcnt = 0 ; xcnt < NUM_X_ITER ; xcnt++ )
+		double tmpCorrectionValueRe = 0.0;
+		double tmpCorrectionValueIm = 0.0;
+		im.restartIncrements();
+		for( long acnt = 0 ; acnt < ( ( (long) NUM_X_ITER ) * NUM_Y_ITER * NUM_Z_ITER ) ; acnt++ )
 		{
-			for( int ycnt = 0 ; ycnt < NUM_Y_ITER ; ycnt++ )
-			{
-				for( int zcnt = 0 ; zcnt < NUM_Z_ITER ; zcnt++ )
-				{
-					iterArrayRe[ tval + 1 ][ xcnt ][ ycnt ][ zcnt ] = iterArrayRe[ tval ][ xcnt ][ ycnt ][ zcnt ];
-					iterArrayIm[ tval + 1 ][ xcnt ][ ycnt ][ zcnt ] = iterArrayIm[ tval ][ xcnt ][ ycnt ][ zcnt ];
-				}
-			}
-		}
-		
-		for( int xcnt = 0 ; xcnt < NUM_X_ITER ; xcnt++ )
-		{
-			for( int ycnt = 0 ; ycnt < NUM_Y_ITER ; ycnt++ )
-			{
-				for( int zcnt = 0 ; zcnt < NUM_Z_ITER ; zcnt++ )
-				{
-					fillTempArray( tval , xcnt , ycnt , zcnt );
-					clearSpatialAssertArray();
+			fillTempArray( tval , im.getXcnt() , im.getYcnt() , im.getZcnt() );
+			clearSpatialAssertArray();
 	
 			
-					final ComplexElem<DoubleElem,DoubleElemFactory> ival =
-							new ComplexElem<DoubleElem,DoubleElemFactory>(
-									new DoubleElem( TestSchrodingerA.getUpdateValueRe() ) , 
-									new DoubleElem( TestSchrodingerA.getUpdateValueIm() ) );
+			final ComplexElem<DoubleElem,DoubleElemFactory> ival =
+					new ComplexElem<DoubleElem,DoubleElemFactory>(
+							new DoubleElem( TestSchrodingerA.getUpdateValueRe() ) , 
+							new DoubleElem( TestSchrodingerA.getUpdateValueIm() ) );
 		
 			
-					ComplexElem<DoubleElem, DoubleElemFactory> err = newton.eval( implicitSpace2 );
+			ComplexElem<DoubleElem, DoubleElemFactory> err = newton.eval( implicitSpace2 );
 					
 					
-					if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
-					{
-						applyPredictorCorrector();
+			if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
+			{
+				tmpCorrectionValueRe = getCorrectionValueRe();
+				tmpCorrectionValueIm = getCorrectionValueIm();
+				applyPredictorCorrector();
 						
-						err = newton.eval( implicitSpace2 );
-					}
+				err = newton.eval( implicitSpace2 );
+			}
 	
 	
-					final ComplexElem<DoubleElem,DoubleElemFactory> val =
-							new ComplexElem<DoubleElem,DoubleElemFactory>(
-									new DoubleElem( TestSchrodingerA.getUpdateValueRe() ) , 
-									new DoubleElem( TestSchrodingerA.getUpdateValueIm() ) );
+			final ComplexElem<DoubleElem,DoubleElemFactory> val =
+					new ComplexElem<DoubleElem,DoubleElemFactory>(
+							new DoubleElem( TestSchrodingerA.getUpdateValueRe() ) , 
+							new DoubleElem( TestSchrodingerA.getUpdateValueIm() ) );
 					
 			
-					if( ( xcnt == HALF_X ) && ( ycnt == HALF_Y ) && ( zcnt == HALF_Z ) )
-					{
-						System.out.println( "******************" );
-						System.out.println( " ( " + xcnt + " , " + ycnt + " , " + zcnt + " ) " );
-						System.out.println( expectationValue( ival ) );
-						System.out.println( expectationValue( val ) );
-						System.out.println( "## " + ( expectationValue( err ) ) );
-					}
-					
-					
-					Assert.assertTrue( spatialAssertArray[ 0 ][ 0 ][ 0 ][ 0 ] == 0 );
-					
-					Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 1 ] > 0 );
-					
-					Assert.assertTrue( spatialAssertArray[ 2 ][ 1 ][ 1 ][ 1 ] > 0 );
-					Assert.assertTrue( spatialAssertArray[ 1 ][ 2 ][ 1 ][ 1 ] > 0 );
-					Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 2 ][ 1 ] > 0 );
-					Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 2 ] > 0 );
-					
-					Assert.assertTrue( spatialAssertArray[ 0 ][ 1 ][ 1 ][ 1 ] > 0 );
-					Assert.assertTrue( spatialAssertArray[ 1 ][ 0 ][ 1 ][ 1 ] > 0 );
-					Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 0 ][ 1 ] > 0 );
-					Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 0 ] > 0 );
-					
-					// for( int xc = 0 ; xc < 2 * NSTPX - 1 ; xc++ )
-					// {
-					//	for( int yc = 0 ; yc < 2 * NSTPY - 1 ; yc++ )
-					//	{
-					//		for( int zc = 0 ; zc < 2 * NSTPZ - 1 ; zc++ )
-					//		{
-					//			if( ( xc == NSTPX ) && ( yc == NSTPY ) && ( zc == NSTPZ ) )
-					//			{
-					//				Assert.assertTrue( spatialAssertArray[ NSTPT * 2 ][ xc ][ yc ][ zc ] > 0 );
-					//			}
-					//			else
-					//			{
-					//				Assert.assertTrue( spatialAssertArray[ NSTPT * 2 ][ xc ][ yc ][ zc ] == 0 );
-					//			}
-					//		}
-					//	}
-					// }
-			
-			
-					Assert.assertTrue( Math.abs( Math.sqrt( expectationValue( err ) ) ) < ( 0.01 * Math.abs( Math.sqrt( expectationValue( val ) ) ) + 0.01 ) );
-			
-					if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
-					{
-						iterArrayRe[ tval ][ xcnt ][ ycnt ][ zcnt ] =
-							getCorrectionValueRe();	
-						iterArrayIm[ tval ][ xcnt ][ ycnt ][ zcnt ] =
-							getCorrectionValueIm();
-					}
-		
-					iterArrayRe[ tval + 1 ][ xcnt ][ ycnt ][ zcnt ] = val.getRe().getVal();
-					iterArrayIm[ tval + 1 ][ xcnt ][ ycnt ][ zcnt ] = val.getIm().getVal();
-				}
-				
+			if( ( im.getXcnt() == HALF_X ) && ( im.getYcnt() == HALF_Y ) && ( im.getZcnt() == HALF_Z ) )
+			{
+				System.out.println( "******************" );
+				System.out.println( " ( " + im.getXcnt() + " , " + im.getYcnt() + " , " + im.getZcnt() + " ) " );
+				System.out.println( expectationValue( ival ) );
+				System.out.println( expectationValue( val ) );
+				System.out.println( "## " + ( expectationValue( err ) ) );
 			}
 					
+					
+			Assert.assertTrue( spatialAssertArray[ 0 ][ 0 ][ 0 ][ 0 ] == 0 );
+					
+			Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 1 ] > 0 );
+					
+			Assert.assertTrue( spatialAssertArray[ 2 ][ 1 ][ 1 ][ 1 ] > 0 );
+			Assert.assertTrue( spatialAssertArray[ 1 ][ 2 ][ 1 ][ 1 ] > 0 );
+			Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 2 ][ 1 ] > 0 );
+			Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 2 ] > 0 );
+					
+			Assert.assertTrue( spatialAssertArray[ 0 ][ 1 ][ 1 ][ 1 ] > 0 );
+			Assert.assertTrue( spatialAssertArray[ 1 ][ 0 ][ 1 ][ 1 ] > 0 );
+			Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 0 ][ 1 ] > 0 );
+			Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 0 ] > 0 );
+					
+			// for( int xc = 0 ; xc < 2 * NSTPX - 1 ; xc++ )
+			// {
+			//	for( int yc = 0 ; yc < 2 * NSTPY - 1 ; yc++ )
+			//	{
+			//		for( int zc = 0 ; zc < 2 * NSTPZ - 1 ; zc++ )
+			//		{
+			//			if( ( xc == NSTPX ) && ( yc == NSTPY ) && ( zc == NSTPZ ) )
+			//			{
+			//				Assert.assertTrue( spatialAssertArray[ NSTPT * 2 ][ xc ][ yc ][ zc ] > 0 );
+			//			}
+			//			else
+			//			{
+			//				Assert.assertTrue( spatialAssertArray[ NSTPT * 2 ][ xc ][ yc ][ zc ] == 0 );
+			//			}
+			//		}
+			//	}
+			// }
+			
+			
+			Assert.assertTrue( Math.abs( Math.sqrt( expectationValue( err ) ) ) < ( 0.01 * Math.abs( Math.sqrt( expectationValue( val ) ) ) + 0.01 ) );
+			
+			if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
+			{
+				resetCorrectionValueRe( tmpCorrectionValueRe );
+				resetCorrectionValueIm( tmpCorrectionValueIm );
+			}
+		
+			iterArrayRe[ tval + 1 ][ im.getXcnt() ][ im.getYcnt() ][ im.getZcnt() ] = val.getRe().getVal();
+			iterArrayIm[ tval + 1 ][ im.getXcnt() ][ im.getYcnt() ][ im.getZcnt() ] = val.getIm().getVal();
+			
+			
+			
+			im.handleIncrementZa();
+			
 		}
+				
 	}
 	
 	

@@ -250,6 +250,18 @@ public class TestKdvB extends TestCase {
 	
 	
 	/**
+	 * Resets the predictor-correction value of the iterations
+	 * from the temp array.
+	 * 
+	 * @param in The value to which to reset.
+	 */
+	protected static void resetCorrectionValue( final double in )
+	{
+		tempArray[ NSTPT * 2 - 1 ][ NSTPX ] = in;
+	}
+	
+	
+	/**
 	 * Applies a predictor-corrector process to the temp array.
 	 * 
 	 * See https://en.wikipedia.org/wiki/Predictor%E2%80%93corrector_method
@@ -1577,85 +1589,86 @@ public class TestKdvB extends TestCase {
 	protected void performIterationT( final int tval , final StelemNewton newton , final HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace2 ) 
 			throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
+		double tmpCorrectionValue = 0.0;
 		// System.out.println( "//// " + tval );
 		
-					for( int xcnt = 0 ; xcnt < NUM_X_ITER ; xcnt++ )
-					{
-						iterArray[ tval + 1 ][ xcnt ] = iterArray[ tval ][ xcnt ];
-					}
+		for( int xcnt = 0 ; xcnt < NUM_X_ITER ; xcnt++ )
+		{
+			iterArray[ tval + 1 ][ xcnt ] = iterArray[ tval ][ xcnt ];
+		}
 					
-					for( int xcnt = 0 ; xcnt < NUM_X_ITER ; xcnt++ )
-					{
-						fillTempArray( tval , xcnt );
-						clearSpatialAssertArray();
+		for( int xcnt = 0 ; xcnt < NUM_X_ITER ; xcnt++ )
+		{
+			fillTempArray( tval , xcnt );
+			clearSpatialAssertArray();
 						
 										
 						
 						
 						
 						
-						final double ival = TestKdvB.getUpdateValue();
+			final double ival = TestKdvB.getUpdateValue();
 						
 						
 					
 						
-						DoubleElem err = newton.eval( implicitSpace2 );
+			DoubleElem err = newton.eval( implicitSpace2 );
 						
 						
-						if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
-						{
-							applyPredictorCorrector();
+			if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
+			{
+				tmpCorrectionValue = getCorrectionValue();
+				applyPredictorCorrector();
 							
-							err = newton.eval( implicitSpace2 );
-						}
+				err = newton.eval( implicitSpace2 );
+			}
 				
 				
-						final double val = TestKdvB.getUpdateValue();
+			final double val = TestKdvB.getUpdateValue();
 						
-						if( xcnt == HALF_X )
-						{
-							System.out.println( "******************" );
-							System.out.println( xcnt );
-							System.out.println( ival );
-							System.out.println( val );
-							System.out.println( "## " + ( err.getVal() ) );
-						}
-						
-						
-						// Assert.assertTrue( spatialAssertArray[ 0 ][ 0 ] == 0 );
-						
-						// Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ] > 0 );
-						
-						// Assert.assertTrue( spatialAssertArray[ 2 ][ 1 ] > 0 );
-						// Assert.assertTrue( spatialAssertArray[ 1 ][ 2 ] > 0 );
-						
-						// Assert.assertTrue( spatialAssertArray[ 0 ][ 1 ] > 0 );
-						// Assert.assertTrue( spatialAssertArray[ 1 ][ 0 ] > 0 );
-						
-						// for( int xc = 0 ; xc < 2 * NSTPX - 1 ; xc++ )
-					    // {
-						//	if( ( xc == NSTPX ) )
-						//	{
-						//		Assert.assertTrue( spatialAssertArray[ NSTPT * 2 ][ xc ] > 0 );
-						//	}
-						//	else
-						//	{
-						//		Assert.assertTrue( spatialAssertArray[ NSTPT * 2 ][ xc ] == 0 );
-						//	}
-						// }
+			if( xcnt == HALF_X )
+			{
+				System.out.println( "******************" );
+				System.out.println( xcnt );
+				System.out.println( ival );
+				System.out.println( val );
+				System.out.println( "## " + ( err.getVal() ) );
+			}
 						
 						
-						Assert.assertTrue( Math.abs( err.getVal() ) < ( 0.01 * Math.abs( val ) + 0.01 ) );
+			// Assert.assertTrue( spatialAssertArray[ 0 ][ 0 ] == 0 );
 						
-						if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
-						{
-							iterArray[ tval ][ xcnt ] =
-								getCorrectionValue();	
-						}
+			// Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ] > 0 );
+						
+			// Assert.assertTrue( spatialAssertArray[ 2 ][ 1 ] > 0 );
+			// Assert.assertTrue( spatialAssertArray[ 1 ][ 2 ] > 0 );
+						
+			// Assert.assertTrue( spatialAssertArray[ 0 ][ 1 ] > 0 );
+			// Assert.assertTrue( spatialAssertArray[ 1 ][ 0 ] > 0 );
+						
+			// for( int xc = 0 ; xc < 2 * NSTPX - 1 ; xc++ )
+			// {
+			//	if( ( xc == NSTPX ) )
+			//	{
+			//		Assert.assertTrue( spatialAssertArray[ NSTPT * 2 ][ xc ] > 0 );
+			//	}
+			//	else
+			//	{
+			//		Assert.assertTrue( spatialAssertArray[ NSTPT * 2 ][ xc ] == 0 );
+			//	}
+			// }
+						
+						
+			Assert.assertTrue( Math.abs( err.getVal() ) < ( 0.01 * Math.abs( val ) + 0.01 ) );
+						
+			if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
+			{
+				resetCorrectionValue( tmpCorrectionValue );
+			}
 					
-						iterArray[ tval + 1 ][ xcnt ] = val;
+			iterArray[ tval + 1 ][ xcnt ] = val;
 								
-					}
+		}
 	}
 	
 	

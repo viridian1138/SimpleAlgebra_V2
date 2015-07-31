@@ -449,6 +449,30 @@ public class TestSchrodingerSpt_DR extends TestCase {
 	
 	
 	/**
+	 * Resets the real component of the predictor-correction value of the iterations
+	 * from the temp array.
+	 * 
+	 * @param in The value to which to reset.
+	 */
+	protected static void resetCorrectionValueRe( final double in )
+	{
+		tempArrayRe[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ][ NSTPZ ] = in;
+	}
+	
+	
+	/**
+	 * Resets the imaginery component of the predictor-correction value of the iterations
+	 * from the temp array.
+	 * 
+	 * @param in The value to which to reset.
+	 */
+	protected static void resetCorrectionValueIm( final double in )
+	{
+		tempArrayIm[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ][ NSTPZ ] = in;
+	}
+	
+	
+	/**
 	 * Applies a predictor-corrector process to the temp array.
 	 * 
 	 * See https://en.wikipedia.org/wiki/Predictor%E2%80%93corrector_method
@@ -2663,6 +2687,8 @@ public class TestSchrodingerSpt_DR extends TestCase {
 	protected void performIterationT( final int tval , final StelemNewton newton , final HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace2 ) 
 			throws Throwable
 	{
+		double tmpCorrectionValueRe = 0.0;
+		double tmpCorrectionValueIm = 0.0;
 		im.restartIncrements();
 		long atm = System.currentTimeMillis();
 		long atm2 = System.currentTimeMillis();
@@ -2694,6 +2720,8 @@ public class TestSchrodingerSpt_DR extends TestCase {
 			
 			if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
 			{
+				tmpCorrectionValueRe = getCorrectionValueRe();
+				tmpCorrectionValueIm = getCorrectionValueIm();
 				applyPredictorCorrector();
 				
 				err = newton.eval( implicitSpace2 );
@@ -2753,8 +2781,8 @@ public class TestSchrodingerSpt_DR extends TestCase {
 			
 			if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
 			{
-				iterArrayRe.set( tval , im.getXcnt() , im.getYcnt() , im.getZcnt() , getCorrectionValueRe() );	
-				iterArrayIm.set( tval , im.getXcnt() , im.getYcnt() , im.getZcnt() , getCorrectionValueIm() );
+				resetCorrectionValueRe( tmpCorrectionValueRe );
+				resetCorrectionValueIm( tmpCorrectionValueIm );
 			}
 		
 			iterArrayRe.set( tval + 1 , im.getXcnt() , im.getYcnt() , im.getZcnt() , val.getRe().getVal() );
