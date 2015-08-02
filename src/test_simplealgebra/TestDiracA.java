@@ -523,7 +523,7 @@ public class TestDiracA extends TestCase {
 	 * 
 	 * See https://en.wikipedia.org/wiki/Predictor%E2%80%93corrector_method
 	 */
-	protected static final boolean USE_PREDICTOR_CORRECTOR = true;
+	// protected static final boolean USE_PREDICTOR_CORRECTOR = true;
 	
 	
 	
@@ -3012,7 +3012,7 @@ protected final IncrementManager im = new IncrementManager();
 protected void performIterationT( final int tval , final StelemDescent descent , final HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace2 ) 
 		throws NotInvertibleException, MultiplicativeDistributionRequiredException
 {
-	GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> tmpCorrectionValue = null;
+	//GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> tmpCorrectionValue = null;
 	im.restartIncrements();
 	for( long acnt = 0 ; acnt < ( ( (long) NUM_X_ITER ) * NUM_Y_ITER * NUM_Z_ITER ) ; acnt++ )
 	{
@@ -3032,13 +3032,13 @@ protected void performIterationT( final int tval , final StelemDescent descent ,
 			err = descent.eval( implicitSpace2 );
 				
 				
-		if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
-		{
-			tmpCorrectionValue = getCorrectionValue();
-			applyPredictorCorrector();
-					
-			err = descent.eval( implicitSpace2 );
-		}
+		//if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
+		//{
+		//	tmpCorrectionValue = getCorrectionValue();
+		//	applyPredictorCorrector();
+		//			
+		//	err = descent.eval( implicitSpace2 );
+		//}
 
 
 		final GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem, DoubleElemFactory> 
@@ -3093,10 +3093,10 @@ protected void performIterationT( final int tval , final StelemDescent descent ,
 		// System.out.println( calcMagnitudeSq( err ) );
 		Assert.assertTrue( Math.abs( Math.sqrt( calcMagnitudeSq( err ) ) ) < ( 0.01 * Math.abs( Math.sqrt( calcMagnitudeSq( val ) ) ) + 0.01 ) );
 		
-		if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
-		{
-			resetCorrectionValue( tmpCorrectionValue );	
-		}
+		//if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
+		//{
+		//	resetCorrectionValue( tmpCorrectionValue );	
+		//}
 	
 		iterArray[ tval + 1 ][ im.getXcnt() ][ im.getYcnt() ][ im.getZcnt() ] = val;
 			

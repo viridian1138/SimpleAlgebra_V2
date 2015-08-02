@@ -327,7 +327,7 @@ public class TestSchrodingerSpt_DR extends TestCase {
 	 * 
 	 * See https://en.wikipedia.org/wiki/Predictor%E2%80%93corrector_method
 	 */
-	protected static final boolean USE_PREDICTOR_CORRECTOR = true;
+	// protected static final boolean USE_PREDICTOR_CORRECTOR = true;
 	
 	
 	
@@ -2687,8 +2687,8 @@ public class TestSchrodingerSpt_DR extends TestCase {
 	protected void performIterationT( final int tval , final StelemNewton newton , final HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace2 ) 
 			throws Throwable
 	{
-		double tmpCorrectionValueRe = 0.0;
-		double tmpCorrectionValueIm = 0.0;
+		//double tmpCorrectionValueRe = 0.0;
+		//double tmpCorrectionValueIm = 0.0;
 		im.restartIncrements();
 		long atm = System.currentTimeMillis();
 		long atm2 = System.currentTimeMillis();
@@ -2718,14 +2718,14 @@ public class TestSchrodingerSpt_DR extends TestCase {
 			ComplexElem<DoubleElem, DoubleElemFactory> err = newton.eval( implicitSpace2 );
 			
 			
-			if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
-			{
-				tmpCorrectionValueRe = getCorrectionValueRe();
-				tmpCorrectionValueIm = getCorrectionValueIm();
-				applyPredictorCorrector();
-				
-				err = newton.eval( implicitSpace2 );
-			}
+			//if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
+			//{
+			//	tmpCorrectionValueRe = getCorrectionValueRe();
+			//	tmpCorrectionValueIm = getCorrectionValueIm();
+			//	applyPredictorCorrector();
+			//	
+			//	err = newton.eval( implicitSpace2 );
+			//}
 	
 	
 			final ComplexElem<DoubleElem,DoubleElemFactory> val =
@@ -2779,11 +2779,11 @@ public class TestSchrodingerSpt_DR extends TestCase {
 			
 			Assert.assertTrue( Math.abs( Math.sqrt( expectationValue( err ) ) ) < ( 0.01 * Math.abs( Math.sqrt( expectationValue( val ) ) ) + 0.01 ) );
 			
-			if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
-			{
-				resetCorrectionValueRe( tmpCorrectionValueRe );
-				resetCorrectionValueIm( tmpCorrectionValueIm );
-			}
+			//if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
+			//{
+			//	resetCorrectionValueRe( tmpCorrectionValueRe );
+			//	resetCorrectionValueIm( tmpCorrectionValueIm );
+			//}
 		
 			iterArrayRe.set( tval + 1 , im.getXcnt() , im.getYcnt() , im.getZcnt() , val.getRe().getVal() );
 			iterArrayIm.set( tval + 1 , im.getXcnt() , im.getYcnt() , im.getZcnt() , val.getIm().getVal() );

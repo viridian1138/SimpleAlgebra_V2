@@ -265,7 +265,7 @@ public class TestCWave3DCplx extends TestCase {
 	 * 
 	 * See https://en.wikipedia.org/wiki/Predictor%E2%80%93corrector_method
 	 */
-	protected static final boolean USE_PREDICTOR_CORRECTOR = true;
+	// protected static final boolean USE_PREDICTOR_CORRECTOR = true;
 	
 	
 	
@@ -2001,7 +2001,7 @@ public class TestCWave3DCplx extends TestCase {
 	protected void performIterationT( final int tval , final StelemNewton newton , final HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace2 ) 
 			throws Throwable
 	{
-		ComplexElem<DoubleElem,DoubleElemFactory> tmpCorrectionValue = null;
+		//ComplexElem<DoubleElem,DoubleElemFactory> tmpCorrectionValue = null;
 		im.restartIncrements();
 		for( long acnt = 0 ; acnt < ( ( (long) NUM_X_ITER ) * NUM_Y_ITER * NUM_Z_ITER ) ; acnt++ )
 		{
@@ -2016,13 +2016,13 @@ public class TestCWave3DCplx extends TestCase {
 			ComplexElem<DoubleElem,DoubleElemFactory> err = newton.eval( implicitSpace2 );
 					
 					
-			if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
-			{
-				tmpCorrectionValue = getCorrectionValue();
-				applyPredictorCorrector();
-						
-				err = newton.eval( implicitSpace2 );
-			}
+			//if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
+			//{
+			//	tmpCorrectionValue = getCorrectionValue();
+			//	applyPredictorCorrector();
+			//			
+			//	err = newton.eval( implicitSpace2 );
+			//}
 	
 	
 			final ComplexElem<DoubleElem,DoubleElemFactory> vala = TestCWave3DCplx.getUpdateValue();
@@ -2074,10 +2074,10 @@ public class TestCWave3DCplx extends TestCase {
 			
 			Assert.assertTrue( Math.abs( Math.sqrt( expectationValue( err ) ) ) < ( 0.01 * Math.abs( Math.sqrt( expectationValue( vala ) ) ) + 0.01 ) );
 			
-			if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
-			{
-				resetCorrectionValue( tmpCorrectionValue );
-			}
+			//if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
+			//{
+			//	resetCorrectionValue( tmpCorrectionValue );
+			//}
 		
 			iterArray[ tval + 1 ][ im.getXcnt() ][ im.getYcnt() ][ im.getZcnt() ] = vala;
 					

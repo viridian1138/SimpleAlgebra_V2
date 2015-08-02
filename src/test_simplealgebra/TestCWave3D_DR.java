@@ -274,7 +274,7 @@ public class TestCWave3D_DR extends TestCase {
 	 * 
 	 * See https://en.wikipedia.org/wiki/Predictor%E2%80%93corrector_method
 	 */
-	protected static final boolean USE_PREDICTOR_CORRECTOR = false; // true;
+	// protected static final boolean USE_PREDICTOR_CORRECTOR = false; // true;
 	
 	
 	
@@ -2496,7 +2496,7 @@ public class TestCWave3D_DR extends TestCase {
 	protected void performIterationT( final int tval , final StelemNewton newton , final HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace2 ) 
 			throws NotInvertibleException, MultiplicativeDistributionRequiredException, Throwable
 	{
-		// double tmpCorrectionValue = 0.0;
+		//double tmpCorrectionValue = 0.0;
 		im.restartIncrements();
 		long atm = System.currentTimeMillis();
 		long atm2 = System.currentTimeMillis();
