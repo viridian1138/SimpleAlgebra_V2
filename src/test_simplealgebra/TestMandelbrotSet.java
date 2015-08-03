@@ -33,10 +33,12 @@
 
 package test_simplealgebra;
 
+import java.io.BufferedOutputStream;
+import java.io.DataOutputStream;
+import java.io.FileOutputStream;
 import java.math.BigInteger;
 
 import junit.framework.TestCase;
-
 import simplealgebra.ComplexElem;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.bigfixedpoint.BigFixedPointElem;
@@ -308,8 +310,12 @@ public class TestMandelbrotSet extends TestCase {
 	 * 
 	 * @throws NotInvertibleException
 	 */
-	public void testMandelbrot() throws NotInvertibleException
+	public void testMandelbrot() throws NotInvertibleException, Throwable
 	{
+		String filePath = "outRaw5.raw";
+		
+		DataOutputStream dout = new DataOutputStream( new BufferedOutputStream( new FileOutputStream( filePath ) ) );
+		
 		final BigInteger n2 = N.divide( BigInteger.valueOf( 2 ) );
 		final BigFixedPointElem<LrgPrecision> zoomInverse = ZOOM.invertLeft();
 		
@@ -333,8 +339,13 @@ public class TestMandelbrotSet extends TestCase {
 				System.out.print( y );
 				System.out.print( " " );
 				System.out.println( escapeTime );
+				
+				dout.writeLong( escapeTime.longValue() );
 			}
 		}
+		
+		
+		dout.close();
 		
 	}
 	
