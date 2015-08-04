@@ -25,6 +25,7 @@
 
 package simplealgebra;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 
 import simplealgebra.symbolic.SymbolicAbsoluteValue;
@@ -74,6 +75,12 @@ public class DoubleElemFactory extends ElemFactory<DoubleElem, DoubleElemFactory
 	public boolean isNestedMultAssociative()
 	{
 		return( true );
+	}
+	
+	@Override
+	public DoubleElemFactory cloneThread( final BigInteger threadIndex )
+	{
+		return( this );
 	}
 	
 	

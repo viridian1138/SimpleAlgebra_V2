@@ -24,6 +24,7 @@
 
 package simplealgebra;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 
 import simplealgebra.symbolic.SymbolicElem;
@@ -119,6 +120,18 @@ public class ComplexElemFactory<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 	public boolean isNestedMultAssociative()
 	{
 		return( fac.isMultAssociative() );
+	}
+	
+	
+	@Override
+	public ComplexElemFactory<R,S> cloneThread( final BigInteger threadIndex )
+	{
+		S sfac = fac.cloneThread(threadIndex);
+		if( fac != sfac )
+		{
+			return( new ComplexElemFactory<R,S>( sfac ) );
+		}
+		return( this );
 	}
 	
 	

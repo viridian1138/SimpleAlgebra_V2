@@ -152,6 +152,19 @@ public class SquareMatrixElemFactory<U extends NumDimensions, R extends Elem<R,?
 	}
 	
 	
+	@Override
+	public SquareMatrixElemFactory<U,R,S> cloneThread( final BigInteger threadIndex )
+	{
+		S sfac = fac.cloneThread(threadIndex);
+		if( fac != sfac )
+		{
+			// The NumDimensions dim is presumed to be immutable.
+			return( new SquareMatrixElemFactory<U,R,S>( sfac , dim ) );
+		}
+		return( this );
+	}
+	
+	
 	/**
 	 * Returns the factory for the enclosed type.
 	 * 
