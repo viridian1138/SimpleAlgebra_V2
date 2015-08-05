@@ -109,6 +109,18 @@ public class EinsteinTensorElemFactory<Z extends Object, R extends Elem<R,?>, S 
 	}
 	
 	
+	@Override
+	public EinsteinTensorElemFactory<Z,R,S> cloneThread( final BigInteger threadIndex )
+	{
+		S sfac = fac.cloneThread( threadIndex );
+		if( fac != sfac )
+		{
+			return( new EinsteinTensorElemFactory<Z,R,S>( sfac ) );
+		}
+		return( this );
+	}
+	
+	
 	/**
 	 * The factory for the enclosed type.
 	 */

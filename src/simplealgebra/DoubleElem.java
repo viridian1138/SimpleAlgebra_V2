@@ -84,6 +84,12 @@ public class DoubleElem extends Elem<DoubleElem, DoubleElemFactory> {
 		final DoubleElem de = new DoubleElem( d / val.doubleValue() );
 		return( de );
 	}
+	
+	@Override
+	public DoubleElem cloneThread( final BigInteger threadIndex )
+	{
+		return( this );
+	}
 
 	@Override
 	public DoubleElemFactory getFac() {

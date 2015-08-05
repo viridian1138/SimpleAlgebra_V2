@@ -24,6 +24,7 @@
 
 package simplealgebra.meas;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 
 import simplealgebra.AbsoluteValue;
@@ -115,6 +116,18 @@ public class ValueWithUncertaintyElemFactory<R extends Elem<R,?>, S extends Elem
 	public boolean isNestedMultAssociative()
 	{
 		return( fac.isNestedMultAssociative() );
+	}
+	
+	
+	@Override
+	public ValueWithUncertaintyElemFactory<R,S> cloneThread( final BigInteger threadIndex )
+	{
+		S sfac = fac.cloneThread(threadIndex);
+		if( fac != sfac )
+		{
+			return( new ValueWithUncertaintyElemFactory<R,S>( sfac ) );
+		}
+		return( this );
 	}
 	
 	

@@ -119,6 +119,14 @@ public class BigFixedPointElemFactory<T extends Precision> extends ElemFactory<B
 	
 	
 	@Override
+	public BigFixedPointElemFactory<T> cloneThread( final BigInteger threadIndex )
+	{
+		// The precision _prec is presumed to be immutable.
+		return( this );
+	}
+	
+	
+	@Override
 	public SymbolicElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> handleSymbolicOptionalOp( Object id , 
 			ArrayList<SymbolicElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>>> args )  throws NotInvertibleException
 	{

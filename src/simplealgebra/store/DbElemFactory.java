@@ -24,6 +24,7 @@
 
 package simplealgebra.store;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 
 import org.hypergraphdb.HyperGraph;
@@ -123,6 +124,18 @@ public class DbElemFactory<R extends Elem<R,?>, S extends ElemFactory<R,S>> exte
 	public S getFac()
 	{
 		return( fac );
+	}
+	
+	
+	@Override
+	public DbElemFactory<R,S> cloneThread( final BigInteger threadIndex )
+	{
+		S sfac = fac.cloneThread(threadIndex);
+		if( fac != sfac )
+		{
+			return( new DbElemFactory<R,S>( sfac , graph ) );
+		}
+		return( this );
 	}
 	
 	

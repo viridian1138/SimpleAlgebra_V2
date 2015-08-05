@@ -26,6 +26,8 @@
 
 package simplealgebra.symbolic;
 
+import java.math.BigInteger;
+
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 
@@ -84,6 +86,18 @@ public class SymbolicElemFactory<R extends Elem<R,?>, S extends ElemFactory<R,S>
 	public boolean isNestedMultAssociative()
 	{
 		return( fac.isNestedMultAssociative() );
+	}
+	
+	
+	@Override
+	public SymbolicElemFactory<R,S> cloneThread( final BigInteger threadIndex )
+	{
+		S sfac = fac.cloneThread(threadIndex);
+		if( fac != sfac )
+		{
+			return( new SymbolicElemFactory<R,S>( sfac ) );
+		}
+		return( this );
 	}
 	
 	

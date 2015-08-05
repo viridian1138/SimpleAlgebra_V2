@@ -189,6 +189,21 @@ public class GeometricAlgebraMultivectorElemFactory<U extends NumDimensions, A e
 	}
 	
 	
+	
+	@Override
+	public GeometricAlgebraMultivectorElemFactory<U,A,R,S> cloneThread( final BigInteger threadIndex )
+	{
+		S sfac = fac.cloneThread(threadIndex);
+		if( fac != sfac )
+		{
+			// // The NumDimensions dim and Ord ord are presumed to be immutable.
+			return( new GeometricAlgebraMultivectorElemFactory<U,A,R,S>( sfac , dim , ord ) );
+		}
+		return( this );
+	}
+	
+	
+	
 	/**
 	 * The factory for the enclosed type.
 	 */

@@ -149,12 +149,9 @@ public abstract class ElemFactory<T extends Elem<T,?>, R extends ElemFactory<T,R
 	 * 6u14.  See https://bugs.openjdk.java.net/browse/JDK-6348370
 	 * 
 	 * @param threadIndex The index of the thread for which to clone.
-	 * @return The thread-cloned object, of the same object if immutable.
+	 * @return The thread-cloned object, or the same object if immutable.
 	 */
-	public R cloneThread( final BigInteger threadIndex )
-	{
-		throw( new RuntimeException( "Not Supported." ) );
-	}
+	public abstract R cloneThread( final BigInteger threadIndex );
 	
 	
 }
