@@ -336,6 +336,19 @@ public class ComplexElem<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 	public ComplexElemFactory<R, S> getFac() {
 		return( new ComplexElemFactory<R,S>( (S)( re.getFac() ) ) );
 	}
+	
+	
+	@Override
+	public ComplexElem<R,S> cloneThread( final BigInteger threadIndex )
+	{
+		final R re2 = re.cloneThread(threadIndex);
+		final R im2 = im.cloneThread(threadIndex);
+		if( ( re2 != re ) || ( im2 != im ) )
+		{
+			return( new ComplexElem<R,S>( re2 , im2 ) );
+		}
+		return( this );
+	}
 
 	
 	/**

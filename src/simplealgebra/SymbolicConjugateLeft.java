@@ -34,6 +34,7 @@ import simplealgebra.symbolic.PrecedenceComparator;
 import simplealgebra.symbolic.SymbolicElem;
 
 import java.io.*;
+import java.math.BigInteger;
 
 /**
  * Symbolic elem for the left-side conjugate of a complex number defined as satisfying: <math display="block">
@@ -141,6 +142,19 @@ public class SymbolicConjugateLeft<R extends Elem<R,?>, S extends ElemFactory<R,
 	public boolean exposesDerivatives()
 	{
 		return( elem.exposesDerivatives() );
+	}
+	
+	
+	@Override
+	public SymbolicConjugateLeft<R,S> cloneThread( final BigInteger threadIndex )
+	{
+		final ComplexElemFactory<R,S> facs = this.getFac().getFac().cloneThread(threadIndex);
+		final SymbolicElem<ComplexElem<R,S>,ComplexElemFactory<R,S>> elems = elem.cloneThread(threadIndex);
+		if( ( facs != this.getFac().getFac() ) || ( elems != elem ) )
+		{
+			return( new SymbolicConjugateLeft<R,S>( elems , facs ) );
+		}
+		return( this );
 	}
 
 	

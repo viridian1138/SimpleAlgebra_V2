@@ -27,6 +27,7 @@
 package simplealgebra;
 
 import java.io.PrintStream;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -90,6 +91,19 @@ public class SymbolicTranspose<U extends NumDimensions, R extends Elem<R,?>, S e
 	public boolean exposesDerivatives()
 	{
 		return( elem.exposesDerivatives() );
+	}
+	
+	
+	@Override
+	public SymbolicTranspose<U,R,S> cloneThread( final BigInteger threadIndex )
+	{
+		final SquareMatrixElemFactory<U,R,S> facs = this.getFac().getFac().cloneThread(threadIndex);
+		final SymbolicElem<SquareMatrixElem<U,R,S>,SquareMatrixElemFactory<U,R,S>> elems = elem.cloneThread(threadIndex);
+		if( ( facs != this.getFac().getFac() ) || ( elems != elem ) )
+		{
+			return( new SymbolicTranspose<U,R,S>( elems , facs ) );
+		}
+		return( this );
 	}
 
 	

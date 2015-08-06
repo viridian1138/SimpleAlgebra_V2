@@ -27,6 +27,7 @@
 package simplealgebra;
 
 import java.io.PrintStream;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -139,6 +140,20 @@ public class SymbolicConjugateRight<R extends Elem<R,?>, S extends ElemFactory<R
 	{
 		return( elem.exposesDerivatives() );
 	}
+	
+	
+	@Override
+	public SymbolicConjugateRight<R,S> cloneThread( final BigInteger threadIndex )
+	{
+		final ComplexElemFactory<R,S> facs = this.getFac().getFac().cloneThread(threadIndex);
+		final SymbolicElem<ComplexElem<R,S>,ComplexElemFactory<R,S>> elems = elem.cloneThread(threadIndex);
+		if( ( facs != this.getFac().getFac() ) || ( elems != elem ) )
+		{
+			return( new SymbolicConjugateRight<R,S>( elems , facs ) );
+		}
+		return( this );
+	}
+	
 	
 	@Override
 	public void writeString( PrintStream ps ) {

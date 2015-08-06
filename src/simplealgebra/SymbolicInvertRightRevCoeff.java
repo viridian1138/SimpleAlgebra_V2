@@ -25,6 +25,7 @@
 package simplealgebra;
 
 import java.io.PrintStream;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -87,6 +88,20 @@ public class SymbolicInvertRightRevCoeff<U extends NumDimensions, R extends Elem
 	{
 		return( elem.exposesDerivatives() );
 	}
+	
+	
+	@Override
+	public SymbolicInvertRightRevCoeff<U,R,S> cloneThread( final BigInteger threadIndex )
+	{
+		final SquareMatrixElemFactory<U,R,S> facs = this.getFac().getFac().cloneThread(threadIndex);
+		final SymbolicElem<SquareMatrixElem<U,R,S>,SquareMatrixElemFactory<U,R,S>> elems = elem.cloneThread(threadIndex);
+		if( ( facs != this.getFac().getFac() ) || ( elems != elem ) )
+		{
+			return( new SymbolicInvertRightRevCoeff<U,R,S>( elems , facs ) );
+		}
+		return( this );
+	}
+	
 
 	@Override
 	public void writeString( PrintStream ps ) {

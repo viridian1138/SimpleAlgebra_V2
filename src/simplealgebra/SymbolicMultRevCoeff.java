@@ -25,6 +25,7 @@
 package simplealgebra;
 
 import java.io.PrintStream;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -97,7 +98,22 @@ public class SymbolicMultRevCoeff<U extends NumDimensions, R extends Elem<R,?>, 
 	{
 		return( elemB.exposesDerivatives() );
 	}
+	
+	
+	@Override
+	public SymbolicMultRevCoeff<U,R,S> cloneThread( final BigInteger threadIndex )
+	{
+		final SquareMatrixElemFactory<U,R,S> facs = this.getFac().getFac().cloneThread(threadIndex);
+		final SymbolicElem<SquareMatrixElem<U,R,S>,SquareMatrixElemFactory<U,R,S>> elemsA = elemA.cloneThread(threadIndex);
+		final SymbolicElem<SquareMatrixElem<U,R,S>,SquareMatrixElemFactory<U,R,S>> elemsB = elemB.cloneThread(threadIndex);
+		if( ( facs != this.getFac().getFac() ) || ( elemsA != elemA ) || ( elemsB != elemB ) )
+		{
+			return( new SymbolicMultRevCoeff<U,R,S>( elemsA , elemsB , facs ) );
+		}
+		return( this );
+	}
 
+	
 	@Override
 	public void writeString( PrintStream ps ) {
 		ps.print( "multRevCoeff( " );
