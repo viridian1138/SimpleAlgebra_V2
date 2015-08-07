@@ -1787,6 +1787,30 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	
 	
 	
+	@Override 
+	public SquareMatrixElem<U,R,S> cloneThread( final BigInteger threadIndex )
+	{
+		// The NumDimensions dim is presumed to be immutable.
+		SquareMatrixElem<U,R,S> ret = new SquareMatrixElem<U,R,S>( fac.cloneThread( threadIndex ) , dim );
+		Iterator<BigInteger> rowi = rowMap.keySet().iterator();
+		while( rowi.hasNext() )
+		{
+			BigInteger row = rowi.next();
+			HashMap<BigInteger,R> subMap = rowMap.get( row );
+			Iterator<BigInteger> coli = subMap.keySet().iterator();
+			while( coli.hasNext() )
+			{
+				BigInteger col = coli.next();
+				R vali = subMap.get( col );
+				ret.setVal(row, col, vali );
+			}
+		}
+		return( ret );
+	}
+	
+	
+	
+	
 	@Override
 	public void validate() throws RuntimeException
 	{

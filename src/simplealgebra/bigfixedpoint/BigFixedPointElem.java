@@ -124,6 +124,13 @@ public class BigFixedPointElem<T extends Precision> extends Elem<BigFixedPointEl
 	}
 	
 	@Override
+	public BigFixedPointElem<T> cloneThread( final BigInteger threadId )
+	{
+		// It is presumed that the Precision prec is immutable.
+		return( this );
+	}
+	
+	@Override
 	public BigFixedPointElem<T> handleOptionalOp( Object id , ArrayList<BigFixedPointElem<T>> args ) throws NotInvertibleException
 	{
 		if( id instanceof AbsoluteValue )

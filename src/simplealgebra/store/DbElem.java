@@ -142,6 +142,19 @@ public class DbElem<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 	
 	
 	
+	@Override
+	public DbElem<R,S> cloneThread( final BigInteger threadIndex )
+	{
+		// The HyperGraph graph and the HGHandle hbase are assumed to be thread-safe.
+		final S sfac = fac.cloneThread(threadIndex);
+		if( fac != sfac )
+		{
+			return( new DbElem<R,S>( hbase , sfac , graph ) );
+		}
+		return( this );
+	}
+	
+	
 
 	/**
 	 * @return the graph

@@ -27,6 +27,7 @@
 package simplealgebra.ga;
 
 import java.io.PrintStream;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -129,6 +130,23 @@ public class SymbolicDot<U extends NumDimensions, A extends Ord<U>, R extends El
 	{
 		return( elemB.exposesDerivatives() );
 	}
+	
+	
+	@Override
+	public SymbolicDot<U,A,R,S> cloneThread( final BigInteger threadIndex )
+	{
+		final SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> elemA2
+			= elemA.cloneThread(threadIndex);
+		final SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> elemB2
+			= elemB.cloneThread(threadIndex);
+		final GeometricAlgebraMultivectorElemFactory<U,A, R, S> facs = this.getFac().getFac().cloneThread(threadIndex);
+		if( ( elemA2 != elemA ) || ( elemB2 != elemB ) || ( facs != this.getFac().getFac() ) )
+		{
+			return( new SymbolicDot<U,A,R,S>( elemA2 , elemB2 , facs ) );
+		}
+		return( this );
+	}
+	
 	
 	@Override
 	public void writeString( PrintStream ps ) {

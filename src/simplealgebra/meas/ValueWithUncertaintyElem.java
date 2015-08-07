@@ -137,6 +137,21 @@ public class ValueWithUncertaintyElem<R extends Elem<R,?>, S extends ElemFactory
 	public ValueWithUncertaintyElemFactory<R, S> getFac() {
 		return( new ValueWithUncertaintyElemFactory<R,S>( (S)( value.getFac() ) ) );
 	}
+	
+	
+	
+	@Override
+	public ValueWithUncertaintyElem<R, S> cloneThread( final BigInteger threadIndex )
+	{
+		final R val2 = value.cloneThread(threadIndex);
+		final R unc2 = uncertainty.cloneThread(threadIndex);
+		if( ( value != val2 ) || ( uncertainty != unc2 ) )
+		{
+			return( new ValueWithUncertaintyElem<R, S>( val2 , unc2 ) );
+		}
+		return( this );
+	}
+	
 
 	
 	/**

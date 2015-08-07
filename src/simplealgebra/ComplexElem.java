@@ -41,8 +41,8 @@ import simplealgebra.ga.GeometricAlgebraOrd;
  * 
  * @author thorngreen
  *
- * @param <R>
- * @param <S>
+ * @param <R> The enclosed elem type.
+ * @param <S> The factory for the enclosed elem type.
  */
 public class ComplexElem<R extends Elem<R,?>, S extends ElemFactory<R,S>> 
 	extends MutableElem<R,ComplexElem<R,S>,ComplexElemFactory<R,S>>
