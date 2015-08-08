@@ -25,6 +25,7 @@
 package simplealgebra.et;
 
 import java.io.PrintStream;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -116,6 +117,21 @@ public class SymbolicTensorResym<Z extends Object, U extends NumDimensions, R ex
 	{
 		return( elem.exposesDerivatives() );
 	}
+	
+	
+	@Override
+	public SymbolicTensorResym<Z,U,R,S> cloneThread( final BigInteger threadIndex )
+	{
+		// The NumDimensions dim is presumed to be immutable.
+		final SymbolicElem<EinsteinTensorElem<Z,R,S>,EinsteinTensorElemFactory<Z,R,S>> elems = elem.cloneThread(threadIndex);
+		final EinsteinTensorElemFactory<Z,R,S> facs = this.getFac().getFac().cloneThread(threadIndex);
+		if( ( elems != elem ) || ( facs != this.getFac().getFac() ) )
+		{
+			return( new SymbolicTensorResym<Z,U,R,S>( elems , facs , reSym , dim ) );
+		}
+		return( this );
+	}
+	
 
 	@Override
 	public void writeString( PrintStream ps ) {

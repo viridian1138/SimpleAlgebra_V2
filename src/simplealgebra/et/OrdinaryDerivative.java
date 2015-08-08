@@ -139,6 +139,20 @@ public class OrdinaryDerivative<Z extends Object, U extends NumDimensions, R ext
 		return( ret );
 	}
 	
+	
+	@Override
+	public OrdinaryDerivative<Z,U,R,S,K> cloneThread( final BigInteger threadIndex )
+	{
+		// It is presumed that the Z index and the NumDimensions dim are immutable.
+		final DirectionalDerivativePartialFactory<R,S,K> dfacs = dfac.cloneThread( threadIndex );
+		final EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>> facs = this.getFac().getFac().cloneThread( threadIndex );
+		if( ( dfacs != dfac ) || ( facs != this.getFac().getFac() ) )
+		{
+			return( new OrdinaryDerivative<Z,U,R,S,K>( facs , index , dim , dfacs ) );
+		}
+		return( this );
+	}
+	
 
 	@Override
 	public void writeString( PrintStream ps ) {

@@ -156,7 +156,7 @@ public class TestMandelbrotSet extends TestCase {
 	 * @author thorngreen
 	 *
 	 */
-	protected static final class LrgPrecision extends Precision
+	protected static final class LrgPrecision extends Precision<LrgPrecision>
 	{
 		@Override
 		public BigInteger getVal()

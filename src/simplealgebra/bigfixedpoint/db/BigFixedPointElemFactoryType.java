@@ -49,7 +49,7 @@ import simplealgebra.bigfixedpoint.Precision;
  * @author thorngreen
  *
  */
-public class BigFixedPointElemFactoryType<T extends Precision> extends HGAtomTypeBase {
+public class BigFixedPointElemFactoryType<T extends Precision<T>> extends HGAtomTypeBase {
 
 	
 	/**

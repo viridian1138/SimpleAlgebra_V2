@@ -25,6 +25,7 @@
 package simplealgebra.et;
 
 import java.io.PrintStream;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -78,6 +79,18 @@ public class SymbolicRegenCovar<Z extends Object, R extends Elem<R,?>, S extends
 	{
 		return( elem.evalPartialDerivative( withRespectTo , implicitSpace ).regenCovar( newCovar ) );
 	}
+	
+	
+	@Override
+	public SymbolicRegenCovar<Z,R,S> cloneThread( final BigInteger threadIndex )
+	{
+		final SymbolicElem<EinsteinTensorElem<Z,R,S>,EinsteinTensorElemFactory<Z,R,S>> elems = elem.cloneThread(threadIndex);
+		final EinsteinTensorElemFactory<Z,R,S> facs = fac.cloneThread(threadIndex);
+		// The indices inside the array list are presumed to be immutable.
+		final ArrayList<Z> covars = (ArrayList<Z>)( newCovar.clone() );
+		return( new SymbolicRegenCovar<Z,R,S>( elems , facs , covars ) );
+	}
+	
 
 	@Override
 	public void writeString( PrintStream ps ) {

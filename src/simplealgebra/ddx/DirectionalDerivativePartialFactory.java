@@ -57,6 +57,20 @@ public abstract class DirectionalDerivativePartialFactory<R extends Elem<R,?>, S
 	 * @return A partial derivative expression corresponding to the index.
 	 */
 	public abstract SymbolicElem<R,S> getPartial( BigInteger basisIndex );
+	
+	/**
+	 * Produces a clone of the object for threading.  Note that for
+	 * OpenJDK thread-safety for BigInteger requires at least version
+	 * 6u14.  See https://bugs.openjdk.java.net/browse/JDK-6348370
+	 * 
+	 * @param threadIndex The index of the thread for which to clone.
+	 * @return The thread-cloned object, or the same object if immutable.
+	 */
+	public DirectionalDerivativePartialFactory<R,S,K> cloneThread( final BigInteger threadIndex )
+	{
+		throw( new RuntimeException( "Not Supported.  Override cloneThread() method to add support." ) );
+	}
 
+	
 }
 

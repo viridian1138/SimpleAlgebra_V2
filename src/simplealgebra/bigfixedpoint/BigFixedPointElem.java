@@ -44,7 +44,7 @@ import simplealgebra.NotInvertibleException;
  *
  * @param <T> The precision of the elem.
  */
-public class BigFixedPointElem<T extends Precision> extends Elem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> {
+public class BigFixedPointElem<T extends Precision<T>> extends Elem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> {
 	
 	/**
 	 * Constructs the elem.
@@ -124,9 +124,13 @@ public class BigFixedPointElem<T extends Precision> extends Elem<BigFixedPointEl
 	}
 	
 	@Override
-	public BigFixedPointElem<T> cloneThread( final BigInteger threadId )
+	public BigFixedPointElem<T> cloneThread( final BigInteger threadIndex )
 	{
-		// It is presumed that the Precision prec is immutable.
+		final T precs = prec.cloneThread( threadIndex );
+		if( precs != prec )
+		{
+			return( new BigFixedPointElem<T>( val , precs ) );
+		}
 		return( this );
 	}
 	

@@ -46,7 +46,7 @@ import simplealgebra.symbolic.SymbolicElem;
  *
  * @param <T> The precision of the BigFixedPointElem.
  */
-public class BigFixedPointElemFactory<T extends Precision> extends ElemFactory<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> {
+public class BigFixedPointElemFactory<T extends Precision<T>> extends ElemFactory<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> {
 	
 	/**
 	 * Constructs the factory.
@@ -121,7 +121,11 @@ public class BigFixedPointElemFactory<T extends Precision> extends ElemFactory<B
 	@Override
 	public BigFixedPointElemFactory<T> cloneThread( final BigInteger threadIndex )
 	{
-		// The precision _prec is presumed to be immutable.
+		final T precs = prec.cloneThread( threadIndex );
+		if( precs != prec )
+		{
+			return( new BigFixedPointElemFactory<T>( precs ) );
+		}
 		return( this );
 	}
 	

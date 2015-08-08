@@ -383,7 +383,7 @@ public class TestBaseDbArrayBasics extends TestCase {
 	 * @author thorngreen
 	 *
 	 */
-	public static class LrgPrec extends Precision
+	public static class LrgPrec extends Precision<LrgPrec>
 	{
 
 		@Override

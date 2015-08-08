@@ -1104,6 +1104,28 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	
 	
 	@Override
+	public EinsteinTensorElem<Z, R, S> cloneThread( final BigInteger threadIndex )
+	{
+		final S facs = this.getFac().getFac().cloneThread(threadIndex);
+		// The indices in each array list are presumed to be immutable.
+		final ArrayList<Z> contravars = (ArrayList<Z>)( contravariantIndices.clone() );
+		final ArrayList<Z> covars = (ArrayList<Z>)( covariantIndices.clone() );
+		final EinsteinTensorElem<Z, R, S> ret = new EinsteinTensorElem<Z, R, S>( facs , contravars , covars );
+		Iterator<ArrayList<BigInteger>> it = map.keySet().iterator();
+		while( it.hasNext() )
+		{
+			final ArrayList<BigInteger> key = it.next();
+			final R val = map.get( key );
+			final R vals = val.cloneThread(threadIndex);
+			final ArrayList<BigInteger> keys = (ArrayList<BigInteger>)( key.clone() );
+			ret.setVal(keys, vals);
+		}
+		return( ret );
+	}
+	
+	
+	
+	@Override
 	public void validate() throws RuntimeException
 	{
 		final int TST_SZ = contravariantIndices.size() + covariantIndices.size();

@@ -33,14 +33,14 @@ package simplealgebra.bigfixedpoint;
 import java.math.BigInteger;
 
 /**
- * The precision of a BigFixedPointElem.
+ * The precision of a BigFixedPointElem.  Subclasses of Precision are usually immutable.
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
  * @author thorngreen
  *
  */
-public abstract class Precision {
+public abstract class Precision<T extends Precision<T>> {
 	
 	/**
 	 * Returns the BigInteger for the unit value.
@@ -55,6 +55,24 @@ public abstract class Precision {
 	 * @return The BigInteger for the square of the unit value.
 	 */
 	public abstract BigInteger getValSquared();
+	
+	/**
+	 * Produces a clone of the object for threading.  Note that for
+	 * OpenJDK thread-safety for BigInteger requires at least version
+	 * 6u14.  See https://bugs.openjdk.java.net/browse/JDK-6348370
+	 * 
+	 * Subclasses of Precision are presumed to be immutable.  Override
+	 * this method to implement a Precision that is not immutable.
+	 * 
+	 * @param threadIndex The index of the thread for which to clone.
+	 * @return The thread-cloned object, or the same object if immutable.
+	 */
+	public T cloneThread( final BigInteger threadIndex )
+	{
+		// Subclasses of Precision are presumed to be immutable.  Override this method to implement a Precision that is not immutable.
+		return( (T) this );
+	}
 
+	
 }
 

@@ -25,6 +25,7 @@
 package simplealgebra.et;
 
 import java.io.PrintStream;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -87,6 +88,20 @@ public class SymbolicIndexReduction<Z extends Object, R extends Elem<R,?>, S ext
 	{
 		return( elem.exposesDerivatives() );
 	}
+	
+	
+	@Override
+	public SymbolicIndexReduction<Z,R,S> cloneThread( final BigInteger threadIndex )
+	{
+		final SymbolicElem<EinsteinTensorElem<Z,R,S>,EinsteinTensorElemFactory<Z,R,S>> 
+			elems = elem.cloneThread( threadIndex );
+		final EinsteinTensorElemFactory<Z,R,S> facs = this.getFac().getFac().cloneThread( threadIndex );
+		// Indices within the hash sets are presumed to be immutable.
+		final HashSet<Z> contravars = (HashSet<Z>)( contravariantReduce.clone() );
+		final HashSet<Z> covars = (HashSet<Z>)( covariantReduce.clone() );
+		return( new SymbolicIndexReduction<Z,R,S>( elems , facs , contravars , covars ) );
+	}
+	
 
 	@Override
 	public void writeString( PrintStream ps ) {
