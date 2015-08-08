@@ -27,6 +27,7 @@
 package simplealgebra.ga;
 
 import java.io.PrintStream;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -130,6 +131,23 @@ public class SymbolicWedge<U extends NumDimensions, A extends Ord<U>, R extends 
 		return( elemB.exposesDerivatives() );
 	}
 
+	
+	@Override
+	public SymbolicWedge<U,A,R,S> cloneThread( final BigInteger threadIndex )
+	{
+		final SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>>
+			elemAs = elemA.cloneThread(threadIndex);
+		final SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>>
+			elemBs = elemB.cloneThread(threadIndex);
+		final GeometricAlgebraMultivectorElemFactory<U,A, R, S>
+			facs = this.getFac().getFac().cloneThread(threadIndex);
+		if( ( elemAs != elemA ) || ( elemBs != elemB ) || ( facs != this.getFac().getFac() ) )
+		{
+			return( new SymbolicWedge<U,A,R,S>( elemAs , elemBs , facs ) );
+		}
+		return( this );
+	}
+	
 	
 	@Override
 	public void writeString( PrintStream ps ) {

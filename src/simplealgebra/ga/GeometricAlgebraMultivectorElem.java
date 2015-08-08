@@ -1105,6 +1105,26 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 	
 	
 	@Override
+	public GeometricAlgebraMultivectorElem<U,A, R, S> cloneThread( final BigInteger threadIndex )
+	{
+		// The NumDimensions dim and the Ord ord are presumed to be immutable.
+		final S facs = fac.cloneThread( threadIndex );
+		final GeometricAlgebraMultivectorElem<U,A, R, S> ret 
+			= new GeometricAlgebraMultivectorElem<U,A, R, S>( facs , dim , ord );
+		Iterator<HashSet<BigInteger>> it = map.keySet().iterator();
+		while( it.hasNext() )
+		{
+			final HashSet<BigInteger> key = it.next();
+			final R val = map.get( key );
+			final HashSet<BigInteger> keyClone = ( HashSet<BigInteger> )( key.clone() );
+			ret.setVal( keyClone , val.cloneThread(threadIndex) );
+		}
+		return( ret );
+	}
+	
+	
+	
+	@Override
 	public GeometricAlgebraMultivectorElem<U,A, R, S> handleOptionalOp( Object id , ArrayList<GeometricAlgebraMultivectorElem<U,A, R, S>> args )  throws NotInvertibleException
 	{
 		if( id instanceof GeometricAlgebraMultivectorElem.GeometricAlgebraMultivectorCmd )

@@ -27,6 +27,7 @@
 package simplealgebra.ga;
 
 import java.io.PrintStream;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -125,6 +126,21 @@ public class SymbolicReverseLeft<U extends NumDimensions, A extends Ord<U>, R ex
 	public boolean exposesDerivatives()
 	{
 		return( elemA.exposesDerivatives() );
+	}
+	
+	
+	@Override
+	public SymbolicReverseLeft<U,A,R,S> cloneThread( final BigInteger threadIndex )
+	{
+		final SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>>
+			elemAs = elemA.cloneThread(threadIndex);
+		final GeometricAlgebraMultivectorElemFactory<U,A, R, S>
+			facs = this.getFac().getFac().cloneThread(threadIndex);
+		if( ( elemAs != elemA ) || ( facs != this.getFac().getFac() ) )
+		{
+			return( new SymbolicReverseLeft<U,A,R,S>( elemAs , facs ) );
+		}
+		return( this );
 	}
 
 	
