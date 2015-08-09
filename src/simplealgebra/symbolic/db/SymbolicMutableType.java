@@ -54,7 +54,7 @@ import simplealgebra.symbolic.SymbolicMutable;
  * @param <U> The enclosed mutable elem.
  * @param <R> The factory for the enclosed mutable elem.
  */
-public class SymbolicMutableType<T extends Elem<T,?>, U extends MutableElem<T,U,?>, R extends ElemFactory<U,R> > extends HGAtomTypeBase {
+public class SymbolicMutableType<T extends Elem<T,?>, U extends MutableElem<T,U,?>, R extends ElemFactory<U,R>, M extends Mutator<U> > extends HGAtomTypeBase {
 
 	
 	/**
@@ -69,7 +69,7 @@ public class SymbolicMutableType<T extends Elem<T,?>, U extends MutableElem<T,U,
 			IncidenceSetRef incidenceSet) {
 		HGHandle[] layout = graph.getStore().getLink( handle );
 		SymbolicElem<U,R> elemA = graph.get( layout[ 0 ] );
-		Mutator<U> elemB = graph.get( layout[ 1 ] );
+		M elemB = graph.get( layout[ 1 ] );
 		R fac = graph.get( layout[ 2 ] );
 		if( elemA == null )
 			throw( new RuntimeException( "Failed" ) );
@@ -77,7 +77,7 @@ public class SymbolicMutableType<T extends Elem<T,?>, U extends MutableElem<T,U,
 			throw( new RuntimeException( "Failed" ) );
 		if( fac == null )
 			throw( new RuntimeException( "Failed" ) );
-		return( new SymbolicMutable<T,U,R>( elemA , elemB , fac ) );
+		return( new SymbolicMutable<T,U,R,M>( elemA , elemB , fac ) );
 	}
 
 	@Override
@@ -88,7 +88,7 @@ public class SymbolicMutableType<T extends Elem<T,?>, U extends MutableElem<T,U,
 	
 	@Override
 	public HGPersistentHandle store(Object instance) {
-		SymbolicMutable<T,U,R> oid = (SymbolicMutable<T,U,R>)( instance );
+		SymbolicMutable<T,U,R,M> oid = (SymbolicMutable<T,U,R,M>)( instance );
 		HGHandle elemAHandle = hg.assertAtom(graph, oid.getElemA() );
 		HGHandle elemBHandle = hg.assertAtom(graph, oid.getElemB() );
 		HGHandle facHandle = hg.assertAtom(graph, oid.getFac().getFac() );
@@ -105,7 +105,7 @@ public class SymbolicMutableType<T extends Elem<T,?>, U extends MutableElem<T,U,
 	 */
 	public static void initType( HyperGraph graph )
 	{
-		SymbolicMutableType<?,?,?> type = new SymbolicMutableType();
+		SymbolicMutableType<?,?,?,?> type = new SymbolicMutableType();
 		HGPersistentHandle typeHandle = graph.getHandleFactory().makeHandle();
 		graph.getTypeSystem().addPredefinedType( typeHandle , type , SymbolicMutable.class );
 	}

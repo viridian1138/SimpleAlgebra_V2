@@ -28,6 +28,7 @@
 package simplealgebra.symbolic;
 
 import java.io.PrintStream;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -109,6 +110,20 @@ public class SymbolicInvertLeft<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 	{
 		return( elem.exposesDerivatives() );
 	}
+	
+	
+	@Override
+	public SymbolicInvertLeft<R,S> cloneThread( final BigInteger threadIndex )
+	{
+		final SymbolicElem<R,S> elems = elem.cloneThread( threadIndex );
+		final S facs = this.getFac().getFac().cloneThread(threadIndex);
+		if( ( elems != elem ) || ( facs != fac ) )
+		{
+			return( new SymbolicInvertLeft<R,S>( elems , facs ) );
+		}
+		return( this );
+	}
+	
 
 	@Override
 	public void writeString( PrintStream ps ) {

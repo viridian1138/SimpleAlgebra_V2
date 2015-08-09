@@ -27,6 +27,7 @@
 package simplealgebra.symbolic;
 
 import java.io.PrintStream;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -88,7 +89,7 @@ public class SymbolicIdentity<R extends Elem<R,?>, S extends ElemFactory<R,S>> e
 	
 	@Override
 	public SymbolicElem<R, S> mult(SymbolicElem<R, S> b) {
-		// This simplification has a parallel implementation in the "Mult Ident A" rules in 
+		// This simplification has a parallel implementation in the "MultRightMutatorType Ident A" rules in 
 		// distributeSimplify.drl and distributeSimplify2.drl
 		return( b );
 	}
@@ -124,6 +125,19 @@ public class SymbolicIdentity<R extends Elem<R,?>, S extends ElemFactory<R,S>> e
 	{
 		return( true );
 	}
+	
+	
+	@Override
+	public SymbolicIdentity<R,S> cloneThread( final BigInteger threadIndex )
+	{
+		final S facs = this.getFac().getFac().cloneThread(threadIndex);
+		if( facs != fac )
+		{
+			return( new SymbolicIdentity<R,S>( facs ) );
+		}
+		return( this );
+	}
+	
 
 	@Override
 	public void writeString( PrintStream ps ) {

@@ -88,6 +88,11 @@ public class TestDiracBraKetNotation extends TestCase {
 		public String writeString() {
 			return( "conjugateLeft[]" );
 		}
+
+		@Override
+		public Mutator<ComplexElem<R, S>> cloneThread(BigInteger threadIndex) {
+			return( this );
+		}
 		
 	}
 	
@@ -120,6 +125,11 @@ public class TestDiracBraKetNotation extends TestCase {
 	@Override
 	public String writeString() {
 		return( "conjugateRight[]" );
+	}
+
+	@Override
+	public Mutator<ComplexElem<R, S>> cloneThread(BigInteger threadIndex) {
+		return( this );
 	}
 	
 }

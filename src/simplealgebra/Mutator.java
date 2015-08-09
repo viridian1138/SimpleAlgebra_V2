@@ -25,17 +25,21 @@
 
 package simplealgebra;
 
+import java.math.BigInteger;
+
 
 
 
 /**
  * A function that mutates an elem. into another elem. of the same type.
+ * Subclasses of Mutator are usually immutable.
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
  * @author thorngreen
  *
  * @param <T> The type of the argument and return.
+ * @param <R> The type of the Mutator.
  */
 public interface Mutator<T extends Elem<T,?>> {
 
@@ -61,6 +65,17 @@ public interface Mutator<T extends Elem<T,?>> {
 	 * @return A string representation of the elem.
 	 */
 	public String writeString();
+	
+	/**
+	 * Produces a clone of the object for threading.  Note that for
+	 * OpenJDK thread-safety for BigInteger requires at least version
+	 * 6u14.  See https://bugs.openjdk.java.net/browse/JDK-6348370
+	 * 
+	 * @param threadIndex The index of the thread for which to clone.
+	 * @return The thread-cloned object, or the same object if immutable.
+	 */
+	public Mutator<T> cloneThread( final BigInteger threadIndex );
+
 	
 }
 

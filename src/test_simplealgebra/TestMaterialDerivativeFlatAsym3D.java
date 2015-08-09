@@ -1337,6 +1337,12 @@ public class TestMaterialDerivativeFlatAsym3D extends TestCase
 		public String writeString() {
 			return( "Sym2" );
 		}
+
+		@Override
+		public Mutator<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> cloneThread(
+				BigInteger threadIndex) {
+			return( this );
+		}
 		
 	}
 	

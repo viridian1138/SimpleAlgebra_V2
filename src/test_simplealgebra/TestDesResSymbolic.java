@@ -995,6 +995,12 @@ public class TestDesResSymbolic extends TestCase
 						throws NotInvertibleException {
 					return( in.mult( d2Msqrt ) );
 				}
+
+				@Override
+				public Mutator<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> cloneThread(
+						BigInteger threadIndex) {
+					throw( new RuntimeException( "Not Supported" ) );
+				}
 				
 			} );
 		

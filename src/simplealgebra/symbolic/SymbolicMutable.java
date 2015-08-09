@@ -38,6 +38,7 @@ import simplealgebra.Mutator;
 import simplealgebra.NotInvertibleException;
 
 import java.io.*;
+import java.math.BigInteger;
 
 /**
  * A symbolic elem. "A" that takes in another elem. "B" and mutates each enclosed
@@ -51,7 +52,7 @@ import java.io.*;
  * @param <U> The enclosed mutable elem.
  * @param <R> The factory for the enclosed mutable elem.
  */
-public class SymbolicMutable<T extends Elem<T,?>, U extends MutableElem<T,U,?>, R extends ElemFactory<U,R> > extends SymbolicElem<U,R> 
+public class SymbolicMutable<T extends Elem<T,?>, U extends MutableElem<T,U,?>, R extends ElemFactory<U,R>, M extends Mutator<U> > extends SymbolicElem<U,R> 
 {
 	
 	/**
@@ -62,7 +63,7 @@ public class SymbolicMutable<T extends Elem<T,?>, U extends MutableElem<T,U,?>, 
 	/**
 	 * The mutator for the enclosed elem.
 	 */
-	private Mutator<U> elemB;
+	private M elemB;
 
 	
 	/**
@@ -72,7 +73,7 @@ public class SymbolicMutable<T extends Elem<T,?>, U extends MutableElem<T,U,?>, 
 	 * @param _elemB The mutator for the enclosed elem.
 	 * @param _fac The factory for the enclosed elem.
 	 */
-	public SymbolicMutable( SymbolicElem<U,R> _elemA , Mutator<U> _elemB , R _fac )
+	public SymbolicMutable( SymbolicElem<U,R> _elemA , M _elemB , R _fac )
 	{
 		super( _fac );
 		elemA = _elemA;
@@ -87,7 +88,7 @@ public class SymbolicMutable<T extends Elem<T,?>, U extends MutableElem<T,U,?>, 
 	 * @param _fac The factory for the enclosed elem.
 	 * @param ds The Drools session.
 	 */
-	public SymbolicMutable( SymbolicElem<U,R> _elemA , Mutator<U> _elemB , R _fac , DroolsSession ds )
+	public SymbolicMutable( SymbolicElem<U,R> _elemA , M _elemB , R _fac , DroolsSession ds )
 	{
 		this( _elemA , _elemB , _fac );
 		ds.insert( this );
@@ -112,6 +113,21 @@ public class SymbolicMutable<T extends Elem<T,?>, U extends MutableElem<T,U,?>, 
 	{
 		return( ( elemA.exposesDerivatives() ) || ( elemB.exposesDerivatives() ) );
 	}
+	
+	
+	@Override
+	public SymbolicMutable<T,U,R,M> cloneThread( final BigInteger threadIndex )
+	{
+		final SymbolicElem<U,R> elemAs = elemA.cloneThread( threadIndex );
+		final M elemBs = (M)( elemB.cloneThread( threadIndex ) );
+		final R facs = this.getFac().getFac().cloneThread( threadIndex );
+		if( ( elemAs != elemA ) || ( elemBs != elemB ) || ( facs != this.getFac().getFac() ) )
+		{
+			return( new SymbolicMutable<T,U,R,M>( elemAs , elemBs , facs ) );
+		}
+		return( this );
+	}
+	
 
 	@Override
 	public void writeString( PrintStream ps ) {
@@ -137,7 +153,7 @@ public class SymbolicMutable<T extends Elem<T,?>, U extends MutableElem<T,U,?>, 
 	 * 
 	 * @return The mutator for the enclosed elem.
 	 */
-	public Mutator<U> getElemB() {
+	public M getElemB() {
 		return elemB;
 	}
 

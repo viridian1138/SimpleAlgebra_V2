@@ -36,6 +36,7 @@ import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
 
 import java.io.*;
+import java.math.BigInteger;
 
 /**
  * A symbolic elem for negation.
@@ -91,6 +92,20 @@ public class SymbolicNegate<R extends Elem<R,?>, S extends ElemFactory<R,S>> ext
 	{
 		return( elem.exposesDerivatives() );
 	}
+	
+	
+	@Override
+	public SymbolicNegate<R,S> cloneThread( final BigInteger threadIndex )
+	{
+		final SymbolicElem<R,S> elems = elem.cloneThread( threadIndex );
+		final S facs = this.getFac().getFac().cloneThread(threadIndex);
+		if( ( elems != elem ) || ( facs != fac ) )
+		{
+			return( new SymbolicNegate<R,S>( elems , facs ) );
+		}
+		return( this );
+	}
+	
 
 	@Override
 	public void writeString( PrintStream ps ) {

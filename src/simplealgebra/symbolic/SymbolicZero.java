@@ -102,6 +102,18 @@ public class SymbolicZero<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 		return( true );
 	}
 	
+	
+	@Override
+	public SymbolicZero<R,S> cloneThread( final BigInteger threadIndex )
+	{
+		final S facs = this.getFac().getFac().cloneThread(threadIndex);
+		if( facs != fac )
+		{
+			return( new SymbolicZero<R,S>( facs ) );
+		}
+		return( this );
+	}
+	
 
 	@Override
 	public void writeString( PrintStream ps ) {
@@ -162,7 +174,7 @@ public class SymbolicZero<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 
 	@Override
 	public SymbolicElem<R, S> mult(SymbolicElem<R, S> b) {
-		// This simplification has a parallel implementation in the "Mult Zero A" rules in 
+		// This simplification has a parallel implementation in the "MultRightMutatorType Zero A" rules in 
 		// distributeSimplify.drl and distributeSimplify2.drl
 		return( this );
 	}

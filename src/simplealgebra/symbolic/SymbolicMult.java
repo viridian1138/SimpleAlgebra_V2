@@ -27,6 +27,7 @@
 package simplealgebra.symbolic;
 
 import java.io.PrintStream;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
@@ -229,6 +230,21 @@ public class SymbolicMult<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 	{
 		return( elemB.exposesDerivatives() );
 	}
+	
+	
+	@Override
+	public SymbolicMult<R,S> cloneThread( final BigInteger threadIndex )
+	{
+		final SymbolicElem<R,S> elemAs = elemA.cloneThread( threadIndex );
+		final SymbolicElem<R,S> elemBs = elemB.cloneThread( threadIndex );
+		final S facs = this.getFac().getFac().cloneThread(threadIndex);
+		if( ( elemAs != elemA ) || ( elemBs != elemB ) || ( facs != fac ) )
+		{
+			return( new SymbolicMult<R,S>( elemAs , elemBs , facs ) );
+		}
+		return( this );
+	}
+	
 	
 	@Override
 	public void writeString( PrintStream ps ) {

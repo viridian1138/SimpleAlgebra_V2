@@ -27,6 +27,7 @@
 package simplealgebra.symbolic;
 
 import java.io.PrintStream;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -77,7 +78,18 @@ public class SymbolicPlaceholder<R extends Elem<R,?>, S extends ElemFactory<R,S>
 	{
 		return( elem.exposesDerivatives() );
 	}
+	
+	
+	@Override
+	public SymbolicPlaceholder<R,S> cloneThread( final BigInteger threadIndex )
+	{
+		// Node is presumed to not be thread-safe due to the presence of the setter for elem.
+		final SymbolicElem<R,S> elems = elem.cloneThread(threadIndex);
+		final S facs = this.getFac().getFac().cloneThread(threadIndex);
+		return( new SymbolicPlaceholder<R,S>( elems , facs ) );
+	}
 
+	
 	@Override
 	public void writeString( PrintStream ps ) {
 		ps.print( "placeholder( " );

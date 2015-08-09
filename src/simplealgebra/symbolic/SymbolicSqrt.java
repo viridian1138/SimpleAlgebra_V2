@@ -27,6 +27,7 @@
 package simplealgebra.symbolic;
 
 import java.io.PrintStream;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 
@@ -93,7 +94,21 @@ public class SymbolicSqrt<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 	{
 		return( elem.exposesDerivatives() );
 	}
+	
+	
+	@Override
+	public SymbolicSqrt<R,S> cloneThread( final BigInteger threadIndex )
+	{
+		final SymbolicElem<R,S> elems = elem.cloneThread( threadIndex );
+		final S facs = this.getFac().getFac().cloneThread(threadIndex);
+		if( ( elems != elem ) || ( facs != fac ) )
+		{
+			return( new SymbolicSqrt<R,S>( elems , facs ) );
+		}
+		return( this );
+	}
 
+	
 	@Override
 	public void writeString( PrintStream ps ) {
 		ps.print( "sqrt( " );

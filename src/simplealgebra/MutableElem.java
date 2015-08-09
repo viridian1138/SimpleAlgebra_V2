@@ -26,6 +26,8 @@
 
 package simplealgebra;
 
+import java.math.BigInteger;
+
 
 /**
  * An elem. for which the enclosed elems can be mutated by a Mutator instance.
@@ -53,11 +55,6 @@ public abstract class MutableElem<T extends Elem<T,?>, U extends MutableElem<T,U
 	{
 		final Mutator<U> ret = new Mutator<U>()
 		{
-
-			@Override
-			public U mutate(U in) throws NotInvertibleException {
-				return( in.mutate( elem ) );
-			}
 			
 			@Override
 			public boolean exposesDerivatives()
@@ -68,6 +65,21 @@ public abstract class MutableElem<T extends Elem<T,?>, U extends MutableElem<T,U
 			@Override
 			public String writeString() {
 				return( "mutateElem[ " + elem.writeString() + " ]" );
+			}
+
+			@Override
+			public Mutator<U> cloneThread(BigInteger threadIndex) {
+				final Mutator<T> elems = elem.cloneThread( threadIndex );
+				if( elems != elem )
+				{
+					return( MutableElem.this.createElemMutator( elems ) );
+				}
+				return( this );
+			}
+
+			@Override
+			public U mutate(U in) throws NotInvertibleException {
+				return( in.mutate( elem ) );
 			}
 			
 		};

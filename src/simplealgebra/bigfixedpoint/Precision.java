@@ -39,6 +39,7 @@ import java.math.BigInteger;
  * 
  * @author thorngreen
  *
+ * @param <T> The type of the Precision.
  */
 public abstract class Precision<T extends Precision<T>> {
 	

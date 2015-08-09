@@ -26,6 +26,8 @@
 
 package simplealgebra;
 
+import java.math.BigInteger;
+
 import simplealgebra.symbolic.SymbolicElem;
 
 
@@ -65,6 +67,17 @@ public class MultRightMutator<T extends Elem<T,?>> implements Mutator<T> {
 			return( ( (SymbolicElem) elem ).exposesDerivatives() );
 		}
 		return( false );
+	}
+	
+	@Override
+	public MultRightMutator<T> cloneThread( final BigInteger threadIndex )
+	{
+		final T elems = elem.cloneThread(threadIndex);
+		if( elems != elem )
+		{
+			return( new MultRightMutator<T>( elems , name ) );
+		}
+		return( this );
 	}
 
 	@Override

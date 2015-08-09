@@ -102,6 +102,19 @@ public class SymbolicDivideBy<R extends Elem<R,?>, S extends ElemFactory<R,S>> e
 	{
 		return( elem.exposesDerivatives() );
 	}
+	
+	
+	@Override
+	public SymbolicDivideBy<R,S> cloneThread( final BigInteger threadIndex )
+	{
+		final SymbolicElem<R,S> elems = elem.cloneThread( threadIndex );
+		final S facs = this.getFac().getFac().cloneThread(threadIndex);
+		if( ( elems != elem ) || ( facs != fac ) )
+		{
+			return( new SymbolicDivideBy<R,S>( elems , facs , ival ) );
+		}
+		return( this );
+	}
 
 	
 	@Override

@@ -39,6 +39,7 @@ import simplealgebra.NotInvertibleException;
 import simplealgebra.ddx.PartialDerivativeOp;
 
 import java.io.*;
+import java.math.BigInteger;
 
 
 /**
@@ -210,6 +211,19 @@ public class SymbolicReduction<R extends Elem<R,?>, S extends ElemFactory<R,S>> 
 			( (SymbolicElem) elem ).isPartialDerivativeZero( );
 		}
 		return( true );
+	}
+	
+	
+	@Override
+	public SymbolicReduction<R,S> cloneThread( final BigInteger threadIndex )
+	{
+		final R elems = elem.cloneThread( threadIndex );
+		final S facs = this.getFac().getFac().cloneThread(threadIndex);
+		if( ( elems != elem ) || ( facs != fac ) )
+		{
+			return( new SymbolicReduction<R,S>( elems , facs ) );
+		}
+		return( this );
 	}
 	
 	

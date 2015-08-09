@@ -26,6 +26,8 @@
 
 package simplealgebra;
 
+import java.math.BigInteger;
+
 
 /**
  * Mutator for left-side multiplication.
@@ -59,6 +61,17 @@ public class MultLeftMutator<T extends Elem<T,?>> implements Mutator<T> {
 	public boolean exposesDerivatives()
 	{
 		return( false );
+	}
+	
+	@Override
+	public MultLeftMutator<T> cloneThread( final BigInteger threadIndex )
+	{
+		final T elems = elem.cloneThread(threadIndex);
+		if( elems != elem )
+		{
+			return( new MultLeftMutator<T>( elems , name ) );
+		}
+		return( this );
 	}
 
 	@Override
