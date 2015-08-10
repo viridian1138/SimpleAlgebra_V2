@@ -1449,6 +1449,24 @@ public class TestMaterialDerivativeSymbolic extends TestCase
 			return( new SimpleMetric( param ) );
 		}
 		
+		
+		@Override
+		public TestMetricTensorFactory cloneThread( final BigInteger threadIndex )
+		{
+			final EinsteinTensorElemFactory<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>
+				facs = fac.cloneThread(threadIndex);
+			final SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>
+				csqs = cSquared.cloneThread(threadIndex);
+			final SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>
+				t2uxs = t_2Ux.cloneThread(threadIndex);
+			if( ( facs != fac ) || ( csqs != cSquared ) || ( t2uxs != t_2Ux ) )
+			{
+				return( new TestMetricTensorFactory( facs , csqs , t2uxs ) );
+			}
+			return( this );
+		}
+		
+		
 		/**
 		 * The factory for the enclosed type.
 		 */
@@ -1587,6 +1605,19 @@ public class TestMaterialDerivativeSymbolic extends TestCase
 			return( new V3_Elem( fac ) 
 						/* createSymbolicZero( fac ) */ );
 		}
+		
+		
+		@Override
+		public FlowFac cloneThread( final BigInteger threadIndex )
+		{
+			final ComplexElemFactory<DoubleElem,DoubleElemFactory> facs = fac.cloneThread(threadIndex);
+			if( facs != fac )
+			{
+				return( new FlowFac( facs ) );
+			}
+			return( this );
+		}
+	
 		
 	}
 	

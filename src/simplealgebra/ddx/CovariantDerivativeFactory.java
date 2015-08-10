@@ -27,6 +27,7 @@
 package simplealgebra.ddx;
 
 import java.io.PrintStream;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -227,6 +228,38 @@ public class CovariantDerivativeFactory<Z extends Object, U extends NumDimension
 			throws NotInvertibleException, MultiplicativeDistributionRequiredException {
 		return( this.genTerms( implicitSpace ).eval( implicitSpace ) );
 	}
+	
+	
+	
+	@Override
+	public CovariantDerivativeFactory<Z,U,R,S,K> cloneThread( final BigInteger threadIndex )
+	{
+		final CovariantDerivativeFactoryParam<Z,U,R,S,K> param = new CovariantDerivativeFactoryParam<Z,U,R,S,K>();
+
+		// The NumDimensions dim and the indices are presumed to be immutable.
+		param.setFac( this.getFac().getFac().cloneThread(threadIndex) );
+		param.setTensorWithRespectTo( tensorWithRespectTo.cloneThread(threadIndex) );
+		param.setDerivativeIndex(derivativeIndex);
+		param.setCoordVecFac( coordVecFac.cloneThread(threadIndex) );
+		param.setTemp( temp.cloneThread(threadIndex) );
+		param.setMetric( metric.cloneThread(threadIndex) );
+		param.setDim( odfac.getDim() );
+		param.setDfac( odfac.getDfac().cloneThread(threadIndex) );
+		param.setRemap( remap.cloneThread(threadIndex) );	
+		
+		if( ( param.getFac() != this.getFac().getFac() ) || 
+				( param.getTensorWithRespectTo() != tensorWithRespectTo ) || 
+				( param.getCoordVecFac() != coordVecFac ) || 
+				( param.getTemp() != temp ) || 
+				( param.getMetric() != metric ) || 
+				( param.getDfac() != odfac.getDfac() ) || 
+				( param.getRemap() != remap ) )
+		{
+			return( new CovariantDerivativeFactory<Z,U,R,S,K>( param ) );
+		}
+		return( this );
+	}
+	
 	
 
 	@Override

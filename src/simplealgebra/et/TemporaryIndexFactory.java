@@ -28,6 +28,8 @@
 
 package simplealgebra.et;
 
+import java.math.BigInteger;
+
 
 
 /**
@@ -47,6 +49,21 @@ public abstract class TemporaryIndexFactory<Z extends Object> {
 	 * @return The new temporary index.
 	 */
 	public abstract Z getTemp();
+	
+	
+	/**
+	 * Produces a clone of the object for threading.  Note that for
+	 * OpenJDK thread-safety for BigInteger requires at least version
+	 * 6u14.  See https://bugs.openjdk.java.net/browse/JDK-6348370
+	 * 
+	 * @param threadIndex The index of the thread for which to clone.
+	 * @return The thread-cloned object, or the same object if immutable.
+	 */
+	public TemporaryIndexFactory<Z> cloneThread( final BigInteger threadIndex )
+	{
+		throw( new RuntimeException( "Not Supported" ) );
+	}
+	
 
 }
 

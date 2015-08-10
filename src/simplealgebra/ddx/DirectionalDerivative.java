@@ -161,6 +161,22 @@ public class DirectionalDerivative<U extends NumDimensions, A extends Ord<U>, R 
 		ps.print( "directionalDerivative" );
 	}
 	
+	
+	@Override
+	public DirectionalDerivative<U,A,R,S,K> cloneThread( final BigInteger threadIndex )
+	{
+		// The NumDimensions dim and Ord ord are presumed to be immutable.
+		final GeometricAlgebraMultivectorElemFactory<U,A, SymbolicElem<R, S>, 
+			SymbolicElemFactory<R, S>> sfac = this.getFac().getFac().cloneThread(threadIndex);
+		final DirectionalDerivativePartialFactory<R,S,K> dfacs = dfac.cloneThread(threadIndex);
+		if( ( sfac != this.getFac().getFac() ) || ( dfacs != dfac ) )
+		{
+			return( new DirectionalDerivative<U,A,R,S,K>( sfac , dim , ord , dfacs ) );
+		}
+		return( this );
+	}
+	
+	
 	@Override
 	public void writeMathML(
 			PrecedenceComparator<GeometricAlgebraMultivectorElem<U, A, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, GeometricAlgebraMultivectorElemFactory<U, A, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> pc,

@@ -51,6 +51,7 @@ import simplealgebra.symbolic.SymbolicReduction;
 import simplealgebra.et.*;
 import simplealgebra.symbolic.*;
 import simplealgebra.ddx.*;
+import test_simplealgebra.TestConnectionCoefficient.TestMetricTensorFactory;
 
 
 
@@ -564,6 +565,14 @@ public class TestEinsteinTensor extends TestCase {
 			
 			return( seval );
 		}
+		
+		
+		@Override
+		public TestMetricTensorFactory cloneThread( final BigInteger threadIndex )
+		{
+			return( this );
+		}
+		
 		
 	}
 	

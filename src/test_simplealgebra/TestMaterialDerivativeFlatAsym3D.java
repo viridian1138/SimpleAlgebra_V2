@@ -69,6 +69,8 @@ import simplealgebra.symbolic.SymbolicMult;
 import simplealgebra.symbolic.SymbolicOps;
 import simplealgebra.symbolic.SymbolicSqrt;
 import simplealgebra.symbolic.SymbolicZero;
+import test_simplealgebra.TestMaterialDerivativeFlatAsym4D.TestMetricTensorFactory;
+
 
 
 
@@ -1078,6 +1080,13 @@ public class TestMaterialDerivativeFlatAsym3D extends TestCase
 			
 			return( seval );
 		}
+		
+		
+		@Override
+		public TestMetricTensorFactory cloneThread( final BigInteger threadIndex )
+		{
+			return( this );
+		}
 				
 		
 	}
@@ -1191,6 +1200,19 @@ public class TestMaterialDerivativeFlatAsym3D extends TestCase
 			
 			
 		}
+		
+		
+		@Override
+		public FlowFac cloneThread( final BigInteger threadIndex )
+		{
+			final ComplexElemFactory<DoubleElem,DoubleElemFactory> facs = fac.cloneThread(threadIndex);
+			if( facs != fac )
+			{
+				return( new FlowFac( facs ) );
+			}
+			return( this );
+		}
+		
 		
 	}
 	
@@ -1306,6 +1328,12 @@ public class TestMaterialDerivativeFlatAsym3D extends TestCase
 						( remap , ge , SymbolicTensorResym.ResymType.RESYM_ANTISYMMETRIC , td );
 			
 			return( el );
+		}
+		
+		@Override
+		public SymRemap cloneThread( final BigInteger threadIndex )
+		{
+			return( this );
 		}
 		
 	}

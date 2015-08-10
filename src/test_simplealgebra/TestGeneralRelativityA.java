@@ -57,6 +57,7 @@ import simplealgebra.symbolic.SymbolicReduction;
 import simplealgebra.ddx.*;
 import simplealgebra.ga.*;
 import simplealgebra.et.*;
+import test_simplealgebra.TestConnectionCoefficient.TestMetricTensorFactory;
 import test_simplealgebra.TestStelemD.IncrementManager;
 
 
@@ -2853,6 +2854,13 @@ protected class TestMetricTensorFactory extends MetricTensorInvertingFactory<Str
 		
 		return( seval );
 		
+	}
+	
+	
+	@Override
+	public TestMetricTensorFactory cloneThread( final BigInteger threadIndex )
+	{
+		return( this );
 	}
 
 	

@@ -74,6 +74,7 @@ import simplealgebra.symbolic.SymbolicZero;
 
 
 
+
 /**
  * Tests the ability to generate the asymmetric terms of
  * a material derivative in 4-D over a flat metric.
@@ -1318,6 +1319,13 @@ public class TestMaterialDerivativeFlatAsym4D extends TestCase
 			
 			return( seval );
 		}
+		
+		
+		@Override
+		public TestMetricTensorFactory cloneThread( final BigInteger threadIndex )
+		{
+			return( this );
+		}
 				
 		
 	}
@@ -1459,6 +1467,19 @@ public class TestMaterialDerivativeFlatAsym4D extends TestCase
 			
 		}
 		
+		
+		@Override
+		public FlowFac cloneThread( final BigInteger threadIndex )
+		{
+			final ComplexElemFactory<DoubleElem,DoubleElemFactory> facs = fac.cloneThread(threadIndex);
+			if( facs != fac )
+			{
+				return( new FlowFac( facs ) );
+			}
+			return( this );
+		}
+		
+		
 	}
 	
 	
@@ -1575,6 +1596,12 @@ public class TestMaterialDerivativeFlatAsym4D extends TestCase
 						( remap , ge , SymbolicTensorResym.ResymType.RESYM_ANTISYMMETRIC , td );
 			
 			return( el );
+		}
+		
+		@Override
+		public SymRemap cloneThread( final BigInteger threadIndex )
+		{
+			return( this );
 		}
 		
 	}

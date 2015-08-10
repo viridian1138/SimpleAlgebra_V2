@@ -26,6 +26,8 @@
 
 package simplealgebra.ddx;
 
+import java.math.BigInteger;
+
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.et.EinsteinTensorElem;
@@ -55,6 +57,21 @@ public abstract class CoordinateSystemFactory<Z extends Object, R extends Elem<R
 	 */
 	public abstract SymbolicElem<EinsteinTensorElem<Z,SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,
 		EinsteinTensorElemFactory<Z,SymbolicElem<R,S>,SymbolicElemFactory<R,S>>> genCoord( Z index );
+	
+	
+	/**
+	 * Produces a clone of the object for threading.  Note that for
+	 * OpenJDK thread-safety for BigInteger requires at least version
+	 * 6u14.  See https://bugs.openjdk.java.net/browse/JDK-6348370
+	 * 
+	 * @param threadIndex The index of the thread for which to clone.
+	 * @return The thread-cloned object, or the same object if immutable.
+	 */
+	public CoordinateSystemFactory<Z,R,S> cloneThread( final BigInteger threadIndex )
+	{
+		throw( new RuntimeException( "Not Supported" ) );
+	}
+	
 
 }
 

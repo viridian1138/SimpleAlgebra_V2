@@ -58,6 +58,7 @@ import simplealgebra.symbolic.SymbolicMult;
 import simplealgebra.symbolic.SymbolicOps;
 import simplealgebra.symbolic.SymbolicReduction;
 import simplealgebra.symbolic.SymbolicSqrt;
+import test_simplealgebra.TestConnectionCoefficient.TestMetricTensorFactory;
 
 
 
@@ -591,6 +592,14 @@ public class TestCovariantDerivativeSingleCurve extends TestCase {
 			
 			return( seval );
 		}
+		
+		
+		@Override
+		public TestMetricTensorFactory cloneThread( final BigInteger threadIndex )
+		{
+			return( this );
+		}
+		
 		
 	}
 	

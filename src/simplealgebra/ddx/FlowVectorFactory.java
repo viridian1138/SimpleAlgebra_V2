@@ -64,6 +64,19 @@ public abstract class FlowVectorFactory<R extends Elem<R,?>, S extends ElemFacto
 	{
 		return( false );
 	}
+	
+	/**
+	 * Produces a clone of the object for threading.  Note that for
+	 * OpenJDK thread-safety for BigInteger requires at least version
+	 * 6u14.  See https://bugs.openjdk.java.net/browse/JDK-6348370
+	 * 
+	 * @param threadIndex The index of the thread for which to clone.
+	 * @return The thread-cloned object, or the same object if immutable.
+	 */
+	public FlowVectorFactory<R,S,K> cloneThread( final BigInteger threadIndex )
+	{
+		throw( new RuntimeException( "Not Supported" ) );
+	}
 
 	
 }

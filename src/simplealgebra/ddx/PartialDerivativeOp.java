@@ -27,6 +27,7 @@
 package simplealgebra.ddx;
 
 import java.io.PrintStream;
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -86,6 +87,17 @@ public class PartialDerivativeOp<R extends Elem<R,?>, S extends ElemFactory<R,S>
 	public R evalDerivative( SymbolicElem<R,S> in , HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
 		return( in.evalPartialDerivative( withRespectTo , implicitSpace ) );
 	}	
+	
+	
+	@Override
+	public PartialDerivativeOp<R,S,K> cloneThread( final BigInteger threadIndex )
+	{
+		// The indices of the ArrayList are presumed to be immutable.
+		final S facs = this.getFac().getFac().cloneThread(threadIndex);
+		final ArrayList<K> wrts = (ArrayList<K>)( withRespectTo.clone() );
+		return( new PartialDerivativeOp<R,S,K>( facs , wrts ) );
+	}
+	
 
 	@Override
 	public void writeString( PrintStream ps ) {

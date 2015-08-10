@@ -576,6 +576,14 @@ public class TestConnectionCoefficient extends TestCase {
 			return( seval );
 		}
 		
+		
+		@Override
+		public TestMetricTensorFactory cloneThread( final BigInteger threadIndex )
+		{
+			return( this );
+		}
+		
+		
 	}
 	
 	

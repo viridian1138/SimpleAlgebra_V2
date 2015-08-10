@@ -69,6 +69,7 @@ import simplealgebra.symbolic.SymbolicMult;
 import simplealgebra.symbolic.SymbolicOps;
 import simplealgebra.symbolic.SymbolicSqrt;
 import simplealgebra.symbolic.SymbolicZero;
+import test_simplealgebra.TestMaterialDerivativeSymbolic.TestMetricTensorFactory;
 
 
 
@@ -1586,6 +1587,24 @@ public class TestMaterialDerivativeAsym4D extends TestCase
 			return( sm );
 		}
 		
+		
+		@Override
+		public TestMetricTensorFactory cloneThread( final BigInteger threadIndex )
+		{
+			final EinsteinTensorElemFactory<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>
+				facs = fac.cloneThread(threadIndex);
+			final SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>
+				csqs = cSquared.cloneThread(threadIndex);
+			final SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>
+				t2uxs = t_2Ux.cloneThread(threadIndex);
+			if( ( facs != fac ) || ( csqs != cSquared ) || ( t2uxs != t_2Ux ) )
+			{
+				return( new TestMetricTensorFactory( facs , csqs , t2uxs ) );
+			}
+			return( this );
+		}
+		
+		
 		/**
 		 * The factory for the enclosed type.
 		 */
@@ -1741,6 +1760,19 @@ public class TestMaterialDerivativeAsym4D extends TestCase
 			
 		}
 		
+		
+		@Override
+		public FlowFac cloneThread( final BigInteger threadIndex )
+		{
+			final ComplexElemFactory<DoubleElem,DoubleElemFactory> facs = fac.cloneThread(threadIndex);
+			if( facs != fac )
+			{
+				return( new FlowFac( facs ) );
+			}
+			return( this );
+		}
+		
+		
 	}
 	
 	
@@ -1857,6 +1889,12 @@ public class TestMaterialDerivativeAsym4D extends TestCase
 						( remap , ge , SymbolicTensorResym.ResymType.RESYM_ANTISYMMETRIC , td );
 			
 			return( el );
+		}
+		
+		@Override
+		public SymRemap cloneThread( final BigInteger threadIndex )
+		{
+			return( this );
 		}
 		
 	}

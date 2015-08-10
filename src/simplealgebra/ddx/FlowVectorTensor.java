@@ -127,6 +127,22 @@ public class FlowVectorTensor<Z extends Object, U extends NumDimensions, R exten
 	{
 		return( dfac.exposesDerivatives() );
 	}
+	
+	
+	@Override
+	public FlowVectorTensor<Z,U,R,S,K> cloneThread( final BigInteger threadIndex )
+	{
+		// The Z index amd the NumDimensions dim are presumed to be immutable.
+		final EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, 
+			SymbolicElemFactory<R, S>> facs = this.getFac().getFac().cloneThread(threadIndex);
+		final FlowVectorFactory<R,S,K> dfacs = dfac.cloneThread(threadIndex);
+		if( ( facs != this.getFac().getFac() ) || ( dfacs != dfac ) )
+		{
+			return( new FlowVectorTensor<Z,U,R,S,K>( facs , index , dim , dfacs ) );
+		}
+		return( this );
+	}
+	
 
 	@Override
 	public void writeString(PrintStream ps) {

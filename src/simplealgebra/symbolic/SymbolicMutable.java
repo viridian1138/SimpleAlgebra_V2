@@ -51,6 +51,7 @@ import java.math.BigInteger;
  * @param <T> The enclosed type inside the enclosed mutable elem.
  * @param <U> The enclosed mutable elem.
  * @param <R> The factory for the enclosed mutable elem.
+ * @param <M> The input Mutator.
  */
 public class SymbolicMutable<T extends Elem<T,?>, U extends MutableElem<T,U,?>, R extends ElemFactory<U,R>, M extends Mutator<U> > extends SymbolicElem<U,R> 
 {
