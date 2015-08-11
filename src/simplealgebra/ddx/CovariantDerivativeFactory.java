@@ -245,7 +245,10 @@ public class CovariantDerivativeFactory<Z extends Object, U extends NumDimension
 		param.setMetric( metric.cloneThread(threadIndex) );
 		param.setDim( odfac.getDim() );
 		param.setDfac( odfac.getDfac().cloneThread(threadIndex) );
-		param.setRemap( remap.cloneThread(threadIndex) );	
+		if( remap != null )
+		{
+			param.setRemap( remap.cloneThread(threadIndex) );
+		}
 		
 		if( ( param.getFac() != this.getFac().getFac() ) || 
 				( param.getTensorWithRespectTo() != tensorWithRespectTo ) || 

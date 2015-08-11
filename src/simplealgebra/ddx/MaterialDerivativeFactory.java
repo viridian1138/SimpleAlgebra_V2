@@ -27,6 +27,7 @@
 package simplealgebra.ddx;
 
 import java.io.PrintStream;
+import java.math.BigInteger;
 import java.util.HashMap;
 
 import simplealgebra.Elem;
@@ -179,6 +180,44 @@ public class MaterialDerivativeFactory<Z extends Object, U extends NumDimensions
 			throws NotInvertibleException, MultiplicativeDistributionRequiredException {
 		return( this.genTerms( implicitSpace ).eval( implicitSpace ) );
 	}
+	
+	
+	
+	@Override
+	public MaterialDerivativeFactory<Z,U,R,S,K> cloneThread( final BigInteger threadIndex )
+	{
+		final MaterialDerivativeFactoryParam<Z,U,R,S,K> param = new MaterialDerivativeFactoryParam();
+		
+		// The NumDimensions dim and the indices are presumed to be immutable.
+		param.setFac( this.getFac().getFac().cloneThread(threadIndex) );
+		param.setTensorWithRespectTo( tensorWithRespectTo.cloneThread(threadIndex) );
+		param.setCoordVecFac( cofac.getCoordVecFac().cloneThread(threadIndex) );
+		param.setTemp( cofac.getTemp().cloneThread(threadIndex) );
+		param.setMetric( cofac.getMetric().cloneThread(threadIndex) );
+		param.setDim( dim );
+		param.setDfac( cofac.getOdfac().getDfac().cloneThread(threadIndex) );
+		param.setFlfac( flfac.cloneThread(threadIndex) );
+		param.setDerivT( derivT.cloneThread(threadIndex) );
+		if( cofac.getRemap() != null )
+		{
+			param.setRemap( cofac.getRemap().cloneThread(threadIndex) );
+		}
+		
+		if( ( param.getFac() != this.getFac().getFac() ) || 
+				( param.getTensorWithRespectTo() != tensorWithRespectTo ) || 
+				( param.getCoordVecFac() != cofac.getCoordVecFac() ) || 
+				( param.getTemp() != cofac.getTemp() ) || 
+				( param.getMetric() != cofac.getMetric() ) || 
+				( param.getDfac() != cofac.getOdfac().getDfac() ) ||
+				( param.getFlfac() != flfac ) ||
+				( param.getDerivT() != derivT ) ||
+				( param.getRemap() != cofac.getRemap() ) )
+		{
+			return( new MaterialDerivativeFactory<Z,U,R,S,K>( param ) );
+		}
+		return( this );
+	}
+	
 	
 
 	@Override
