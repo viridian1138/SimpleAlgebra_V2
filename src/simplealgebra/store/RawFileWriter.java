@@ -125,12 +125,12 @@ public abstract class RawFileWriter
 	
 	
 	/**
-	 * Writes the data to a file.
+	 * Writes double data to a file.
 	 * 
 	 * @param pathName The path to the file.
 	 * @throws Throwable
 	 */
-	public void write( String pathName ) throws Throwable
+	public void writeDouble( String pathName ) throws Throwable
 	{
 		final int T_STRT = getTStrt();
 		final int T_END = getTEnd();
@@ -166,6 +166,52 @@ public abstract class RawFileWriter
 		ds.close();
 		
 	}
+	
+	
+	
+	/**
+	 * Writes float data to a file.
+	 * 
+	 * @param pathName The path to the file.
+	 * @throws Throwable
+	 */
+	public void writeFloat( String pathName ) throws Throwable
+	{
+		final int T_STRT = getTStrt();
+		final int T_END = getTEnd();
+		
+		final int Z_STRT = getZStrt();
+		final int Z_END = getZEnd();
+		
+		final int Y_STRT = getYStrt();
+		final int Y_END = getYEnd();
+		
+		final int X_STRT = getXStrt();
+		final int X_END = getXEnd();
+		
+		
+		FileOutputStream fo = new FileOutputStream( pathName );
+		BufferedOutputStream bo = new BufferedOutputStream( fo , bufferSize() );
+		DataOutputStream ds = new DataOutputStream( bo );
+		
+		for( int t = T_STRT ; t < T_END ; t++ )
+		{
+			for( int z = Z_STRT ; z < Z_END ; z++ )
+			{
+				for( int y = Y_STRT ; y < Y_END ; y++ )
+				{
+					for( int x = X_STRT ; x < X_END ; x++ )
+					{
+						ds.writeFloat( (float)( getVal( t , x , y , z ) ) );
+					}
+				}
+			}
+		}
+		
+		ds.close();
+		
+	}
+	
 	
 	
 }

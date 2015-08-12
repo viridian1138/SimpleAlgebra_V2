@@ -208,9 +208,17 @@ public class TestRawFileWriterAnim extends TestCase {
 		
 		
 		@Override
-		public void write( String pathName ) throws Throwable
+		public void writeDouble( String pathName ) throws Throwable
 		{
-			super.write( pathName );
+			super.writeDouble( pathName );
+			iterArray.close();
+		}
+		
+		
+		@Override
+		public void writeFloat( String pathName ) throws Throwable
+		{
+			super.writeFloat( pathName );
 			iterArray.close();
 		}
 		
@@ -242,7 +250,7 @@ public class TestRawFileWriterAnim extends TestCase {
 		
 			TstRawFileWriterAnim writer = new TstRawFileWriterAnim( tval );
 		
-			writer.write( filePath );
+			writer.writeDouble( filePath );
 		}
 		
 	}
