@@ -377,6 +377,20 @@ public class DrFastArray4D_Dbl {
 	}
 	
 	
+	
+	/**
+	 * Flushes the contents of the previous array writes.
+	 * 
+	 * @param path The file path to the array.  Must match the original file path given to the constructor.
+	 * @throws Throwable
+	 */
+	public void flush( final String path ) throws Throwable
+	{
+		file.close();
+		file = new RandomAccessFile( path , "rw" );
+	}
+	
+	
 	/**
 	 * Calculates the required number of block index levels.
 	 * 

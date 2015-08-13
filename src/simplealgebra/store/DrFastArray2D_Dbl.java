@@ -32,13 +32,13 @@ import java.io.RandomAccessFile;
 
 
 /**
- * Direct access entity resembling a dense 3-D array (i.e voxel array) of doubles.  Basic layout of schema is inspired by image block virtual memory systems.
+ * Direct access entity resembling a dense 2-D array of doubles.  Basic layout of schema is inspired by image block virtual memory systems.
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
  * @author thorngreen
  */
-public class DrFastArray3D_Dbl {
+public class DrFastArray2D_Dbl {
 	
 	/**
 	 * The graph in which the array exists.
@@ -56,11 +56,6 @@ public class DrFastArray3D_Dbl {
 	int xmult;
 	
 	/**
-	 * The size of each cell along the Y-axis.
-	 */
-	int ymult;
-	
-	/**
 	 * The size of the array along the T-axis.
 	 */
 	int tmax;
@@ -69,11 +64,6 @@ public class DrFastArray3D_Dbl {
 	 * The size of the array along the X-axis.
 	 */
 	int xmax;
-	
-	/**
-	 * The size of the array along the Y-axis.
-	 */
-	int ymax;
 	
 	/**
 	 * The number of octree-like levels in the structure.
@@ -117,16 +107,6 @@ public class DrFastArray3D_Dbl {
 	 */
 	protected int[] indexxB;
 	
-	/**
-	 * Y-Axis indices for the "A" array.
-	 */
-	protected int[] indexyA;
-	
-	/**
-	 * Y-Axis indices for the "B" array.
-	 */
-	protected int[] indexyB;
-	
 	
 	
 
@@ -136,56 +116,54 @@ public class DrFastArray3D_Dbl {
 	/**
 	 * Constructs the array.
 	 * 
-	 * @param _param The input parameter.
-	 * @param path The path at which to put the array image on disk.
+	 * @param _tmult The size of the each cell along the T-axis.
+	 * @param _xmult The size of the each cell along the X-axis.
+	 * @param _tmax The size of the array along the T-axis.
+	 * @param _xmax The size of the array along the X-axis.
+	 * @param _path The path at which to put the array image on disk.
 	 */
-	public DrFastArray3D_Dbl( final DbFastArray3D_Param _param , String path ) throws Throwable
+	public DrFastArray2D_Dbl( int _tmult , int _xmult , int _tmax , int _xmax , String path ) throws Throwable
 	{
+		tmult = _tmult;
+		xmult = _xmult;
+		tmax = _tmax;
+		xmax = _xmax;
+		
 		file = new RandomAccessFile( path , "rw" );
 		
-		tmult = _param.getTmult();
-		xmult = _param.getXmult();
-		ymult = _param.getYmult();
-		tmax = _param.getTmax();
-		xmax = _param.getXmax();
-		ymax = _param.getYmax();
-		dsz = calcDsz( _param );
+		
+		dsz = calcDsz( _tmult , _xmult , _tmax , _xmax );
 		
 		
 		int[] maxIndicest = createDszIntArray();
 		
 		int[] maxIndicesx = createDszIntArray();
 		
-		int[] maxIndicesy = createDszIntArray();
-		
 		
 		
 		int t = tmax;
 		int x = xmax;
-		int y = ymax;
 		
 		
 		for( int cnt = 0 ; cnt < dsz ; cnt++ )
 		{
 			maxIndicest[ ( dsz - 1 ) - cnt ] = t % tmult; 
 			maxIndicesx[ ( dsz - 1 ) - cnt ] = x % xmult; 
-			maxIndicesy[ ( dsz - 1 ) - cnt ] = y % ymult;
 			t = t / tmult;
 			x = x / xmult;
-			y = y / ymult;
 		}
 		
 		
-		long index = ( maxIndicest[ dsz - 1 ] ) * ( xmult * ymult ) + ( maxIndicesx[ dsz - 1 ] ) * ( ymult ) + maxIndicesy[ dsz - 1 ];
+		long index = ( maxIndicest[ dsz - 1 ] ) * ( xmult ) + maxIndicesx[ dsz - 1 ];
 		
-		final long num_cell = tmult * xmult * ymult;
+		final long num_cell = tmult * xmult;
 		
 		long num_mult = num_cell;
 		
 		
 		for( int cnt = 0 ; cnt < ( dsz - 1 ) ; cnt++ )
 		{
-			long ind2 = ( maxIndicest[ ( dsz - 2 ) - cnt ] ) * ( xmult * ymult ) + ( maxIndicesx[ ( dsz - 2 ) - cnt ] ) * ( ymult ) + maxIndicesy[ ( dsz - 2 ) - cnt ];
+			long ind2 = ( maxIndicest[ ( dsz - 2 ) - cnt ] ) * ( xmult ) + maxIndicesx[ ( dsz - 2 ) - cnt ];
 			index += num_mult * ind2;
 			
 			num_mult *= num_cell;
@@ -205,10 +183,6 @@ public class DrFastArray3D_Dbl {
 		indexxA = createDszIntArray();
 		
 		indexxB = createDszIntArray();
-		
-		indexyA = createDszIntArray();
-		
-		indexyB = createDszIntArray();
 	
 		
 	}
@@ -240,36 +214,32 @@ public class DrFastArray3D_Dbl {
 	 * 
 	 * @param t The "T" index of the array.
 	 * @param x The "X" index of the array.
-	 * @param y The "Y" index of the array.
 	 * @return The value at the 3-D index, or zero if no value exists.
 	 */
-	public double get( int t , int x , int y ) throws Throwable
+	public double get( int t , int x ) throws Throwable
 	{	
 		altArrs = !altArrs;
 		final int[] indext = altArrs ? indextA : indextB;
 		final int[] indexx = altArrs ? indexxA : indexxB;
-		final int[] indexy = altArrs ? indexyA : indexyB;
 		for( int cnt = 0 ; cnt < dsz ; cnt++ )
 		{
 			indext[ ( dsz - 1 ) - cnt ] = t % tmult; 
 			indexx[ ( dsz - 1 ) - cnt ] = x % xmult; 
-			indexy[ ( dsz - 1 ) - cnt ] = y % ymult;
 			t = t / tmult;
 			x = x / xmult;
-			y = y / ymult;
 		}
 		
 		
-		long index = ( indext[ dsz - 1 ] ) * ( xmult * ymult ) + ( indexx[ dsz - 1 ] ) * ( ymult ) + indexy[ dsz - 1 ];
+		long index = ( indext[ dsz - 1 ] ) * ( xmult ) + indexx[ dsz - 1 ];
 		
-		final long num_cell = tmult * xmult * ymult;
+		final long num_cell = tmult * xmult;
 		
 		long num_mult = num_cell;
 		
 		
 		for( int cnt = 0 ; cnt < ( dsz - 1 ) ; cnt++ )
 		{
-			long ind2 = ( indext[ ( dsz - 2 ) - cnt ] ) * ( xmult * ymult ) + ( indexx[ ( dsz - 2 ) - cnt ] ) * ( ymult ) + indexy[ ( dsz - 2 ) - cnt ];
+			long ind2 = ( indext[ ( dsz - 2 ) - cnt ] ) * ( xmult ) + indexx[ ( dsz - 2 ) - cnt ];
 			index += num_mult * ind2;
 			
 			num_mult *= num_cell;
@@ -286,37 +256,33 @@ public class DrFastArray3D_Dbl {
 	 * 
 	 * @param t The "T" index of the array.
 	 * @param x The "X" index of the array.
-	 * @param y The "Y" index of the array.
 	 * @param val The value to be set at the index.
 	 */
-	public void set( int t , int x , int y , double val ) throws Throwable
+	public void set( int t , int x , double val ) throws Throwable
 	{
 		
 		altArrs = !altArrs;
 		final int[] indext = altArrs ? indextA : indextB;
 		final int[] indexx = altArrs ? indexxA : indexxB;
-		final int[] indexy = altArrs ? indexyA : indexyB;
 		for( int cnt = 0 ; cnt < dsz ; cnt++ )
 		{
 			indext[ ( dsz - 1 ) - cnt ] = t % tmult; 
 			indexx[ ( dsz - 1 ) - cnt ] = x % xmult; 
-			indexy[ ( dsz - 1 ) - cnt ] = y % ymult;
 			t = t / tmult;
 			x = x / xmult;
-			y = y / ymult;
 		}
 		
 		
-		long index = ( indext[ dsz - 1 ] ) * ( xmult * ymult ) + ( indexx[ dsz - 1 ] ) * ( ymult ) + indexy[ dsz - 1 ];
+		long index = ( indext[ dsz - 1 ] ) * ( xmult ) + indexx[ dsz - 1 ];
 		
-		final long num_cell = tmult * xmult * ymult;
+		final long num_cell = tmult * xmult;
 		
 		long num_mult = num_cell;
 		
 		
 		for( int cnt = 0 ; cnt < ( dsz - 1 ) ; cnt++ )
 		{
-			long ind2 = ( indext[ ( dsz - 2 ) - cnt ] ) * ( xmult * ymult ) + ( indexx[ ( dsz - 2 ) - cnt ] ) * ( ymult ) + indexy[ ( dsz - 2 ) - cnt ];
+			long ind2 = ( indext[ ( dsz - 2 ) - cnt ] ) * ( xmult ) + indexx[ ( dsz - 2 ) - cnt ];
 			index += num_mult * ind2;
 			
 			num_mult *= num_cell;
@@ -353,23 +319,19 @@ public class DrFastArray3D_Dbl {
 	/**
 	 * Calculates the required number of block index levels.
 	 * 
-	 * @param _param The input parameter for the array constructor.
+	 * @param _tmult The size of the each cell along the T-axis.
+	 * @param _xmult The size of the each cell along the X-axis.
+	 * @param _tmax The size of the array along the T-axis.
+	 * @param _xmax The size of the array along the X-axis.
 	 * @return The required number of block index levels.
 	 */
-	protected int calcDsz( final DbFastArray3D_Param _param )
+	protected int calcDsz( int _tmult , int _xmult , int _tmax , int _xmax )
 	{
 		int dsz = 0;
-		int _tmult = _param.getTmult();
-		int _xmult = _param.getXmult();
-		int _ymult = _param.getYmult();
-		int _tmax = _param.getTmax();
-		int _xmax = _param.getXmax();
-		int _ymax = _param.getYmax();
-		while( ( _tmax >= _tmult ) || ( _xmax >= _xmult ) || ( _ymax >= _ymult ) )
+		while( ( _tmax >= _tmult ) || ( _xmax >= _xmult ) )
 		{
 			_tmax = _tmax / _tmult;
 			_xmax = _xmax / _xmult;
-			_ymax = _ymax / _ymult;
 			dsz++;
 		}
 		return( dsz + 1 );
