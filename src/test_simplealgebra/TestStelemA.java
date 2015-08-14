@@ -47,6 +47,7 @@ import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicReduction;
+import test_simplealgebra.TestBurgersB.StelemNewton;
 
 
 
@@ -1228,6 +1229,23 @@ public class TestStelemA extends TestCase {
 		protected void performIterationUpdate( DoubleElem iterationOffset )
 		{
 			TestStelemA.performIterationUpdate( iterationOffset );
+		}
+		
+		/**
+		 * Copies an instance for cloneThread();
+		 * 
+		 * @param in The instance to copy.
+		 * @param threadIndex The index of the thread for which to clone.
+		 */
+		protected StelemNewton( final StelemNewton in , final BigInteger threadIndex )
+		{
+			super( in , threadIndex );
+		}
+		
+		@Override
+		public StelemNewton cloneThread( final BigInteger threadIndex )
+		{
+			throw( new RuntimeException( "Not Supported" ) );
 		}
 		
 	}

@@ -57,6 +57,7 @@ import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicReduction;
 import simplealgebra.ga.*;
 import simplealgebra.ddx.*;
+import test_simplealgebra.TestBurgersB.StelemNewton;
 
 
 
@@ -2120,6 +2121,23 @@ public class TestStelemD_DR extends TestCase {
 		protected void performIterationUpdate( DoubleElem iterationOffset )
 		{
 			TestStelemD_DR.performIterationUpdate( iterationOffset );
+		}
+		
+		/**
+		 * Copies an instance for cloneThread();
+		 * 
+		 * @param in The instance to copy.
+		 * @param threadIndex The index of the thread for which to clone.
+		 */
+		protected StelemNewton( final StelemNewton in , final BigInteger threadIndex )
+		{
+			super( in , threadIndex );
+		}
+		
+		@Override
+		public StelemNewton cloneThread( final BigInteger threadIndex )
+		{
+			throw( new RuntimeException( "Not Supported" ) );
 		}
 		
 	}

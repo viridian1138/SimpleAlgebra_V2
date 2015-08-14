@@ -29,6 +29,7 @@
 
 package simplealgebra.algo;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
@@ -244,6 +245,43 @@ public abstract class NewtonRaphsonSingleElem<R extends Elem<R,?>, S extends Ele
 		
 		return( ev );
 	}
+	
+	
+	
+	/**
+	 * Copies an instance for cloneThread();
+	 * 
+	 * @param in The instance to copy.
+	 * @param threadIndex The index of the thread for which to clone.
+	 */
+	protected NewtonRaphsonSingleElem( NewtonRaphsonSingleElem<R,S> in , final BigInteger threadIndex )
+	{
+		function = in.function.cloneThread( threadIndex );
+		if( in.lastValue != null )
+		{
+			lastValue = in.lastValue.cloneThread( threadIndex );
+		}
+		
+		implicitSpace = (HashMap<? extends Elem<?,?>,? extends Elem<?,?>>)( new HashMap() );
+		
+		Iterator<? extends Elem<?,?>> it = in.implicitSpace.keySet().iterator();
+		
+		while( it.hasNext() )
+		{
+			final Elem<?,?> ikey = it.next();
+			final Elem<?,?> ival = in.implicitSpace.get( ikey );
+			( (HashMap) implicitSpace ).put( ikey.cloneThread(threadIndex) , ival.cloneThread(threadIndex) );
+		}
+		
+		eval = in.eval.cloneThread( threadIndex );
+		
+		partialEval = in.partialEval.cloneThread( threadIndex );
+		
+	}
+	
+	
+	
+	public abstract NewtonRaphsonSingleElem<R,S> cloneThread( final BigInteger threadIndex );
 	
 	
 	

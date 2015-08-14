@@ -34,6 +34,9 @@
 package test_simplealgebra;
 
 
+import java.io.BufferedOutputStream;
+import java.io.DataOutputStream;
+import java.io.FileOutputStream;
 import java.math.BigInteger;
 
 import junit.framework.TestCase;
@@ -313,7 +316,7 @@ public class TestMandelbrotSet_Ncore extends TestCase {
 	
 	
 	
-	protected static final String filePath = "outDr";
+	protected static final String filePath = "outRaw5.raw";
 	
 	
 	/**
@@ -337,19 +340,8 @@ public class TestMandelbrotSet_Ncore extends TestCase {
 	{
 		final int numCores = CpuInfo.NUM_CPU_CORES;
 		final Runnable[] runn = new Runnable[ numCores ];
-		final DrFastArray2D_Dbl[] arrayWriters = new DrFastArray2D_Dbl[ numCores ];
-		
-		try
-		{
-		for( int cnt = 0 ; cnt < numCores ; cnt++ )
-		{
-			arrayWriters[ cnt ] = new DrFastArray2D_Dbl( XMULT , YMULT , N_INT , N_INT , filePath );
-		}
-		}
-		catch( Throwable ex )
-		{
-			ex.printStackTrace( System.out );
-		}
+		final DataOutputStream dout = new DataOutputStream( new BufferedOutputStream( new FileOutputStream( filePath ) ) );
+		final long[] tempOutput = new long[ N_INT ];
 		
 		
 		final BigInteger n2 = N.divide( BigInteger.valueOf( 2 ) );
@@ -387,7 +379,7 @@ public class TestMandelbrotSet_Ncore extends TestCase {
 								System.out.print( " " );
 								System.out.println( escapeTime );
 							
-								arrayWriters[ core ].set( x , yy , escapeTime.longValue() );
+								tempOutput[ x ] =  escapeTime.longValue();
 							}
 						}
 						catch( Error ex  ) { ex.printStackTrace( System.out ); }
@@ -397,8 +389,7 @@ public class TestMandelbrotSet_Ncore extends TestCase {
 						{
 							b[ core ] = true;
 							this.notify();
-						}
-						
+						}			
 					}
 				};
 			}
@@ -407,12 +398,19 @@ public class TestMandelbrotSet_Ncore extends TestCase {
 			CpuInfo.start( runn );
 			CpuInfo.wait( runn , b );
 			
+			
+			for( int cnt = 0 ; cnt < N_INT ; cnt++ )
+			{
+				dout.writeLong( tempOutput[ cnt ] );
+			}
+			
+			
 		}
 		
 		
 		for( int cnt = 0 ; cnt < numCores ; cnt++ )
 		{
-			arrayWriters[ cnt ].close();
+			dout.close();
 		}
 		
 	}
