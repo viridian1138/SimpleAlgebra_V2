@@ -29,8 +29,10 @@
 
 package simplealgebra.algo;
 
+import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
@@ -225,8 +227,70 @@ public abstract class DescentAlgorithmMultiElemInputParam<U extends NumDimension
 	public void setDim(U dim) {
 		this.dim = dim;
 	}
+	
+	
+	
+	public DescentAlgorithmMultiElemInputParam( )
+	{
+		
+	}
 
 	
+	
+	/**
+	 * Produces a clone of the object for threading.  Note that for
+	 * OpenJDK thread-safety for BigInteger requires at least version
+	 * 6u14.  See https://bugs.openjdk.java.net/browse/JDK-6348370
+	 * 
+	 * @param threadIndex The index of the thread for which to clone.
+	 * @return The thread-cloned object, or the same object if immutable.
+	 */
+	public abstract DescentAlgorithmMultiElemInputParam<U,R,S> cloneThread( final BigInteger threadIndex );
+	
+	
+	
+	/**
+	 * 
+	 * @param in
+	 * @param threadIndex
+	 */
+	protected DescentAlgorithmMultiElemInputParam( final DescentAlgorithmMultiElemInputParam<U,R,S> in , final BigInteger threadIndex )
+	{
+		functions = in.functions.cloneThread(threadIndex);
+		
+		withRespectTos = (ArrayList<ArrayList<? extends Elem<?,?>>>)( new ArrayList() );
+		Iterator<ArrayList<? extends Elem<?,?>>> ita = in.withRespectTos.iterator();
+		while( ita.hasNext() )
+		{
+			final ArrayList<? extends Elem<?,?>> va = ita.next();
+			final ArrayList<? extends Elem<?,?>> vaa = (ArrayList<? extends Elem<?,?>>)( new ArrayList() );
+			Iterator<Elem<?,?>> itb = (Iterator<Elem<?, ?>>) va.iterator();
+			while( itb.hasNext() )
+			{
+				final Elem ela = itb.next();
+				( (ArrayList<Elem>) vaa ).add( ela );
+			}
+			( (ArrayList) withRespectTos ).add( vaa );
+		}
+		
+		
+		implicitSpaceFirstLevel = (HashMap<? extends Elem<?,?>,? extends Elem<?,?>>)( new HashMap() );
+		
+		Iterator<? extends Elem<?,?>> it = in.implicitSpaceFirstLevel.keySet().iterator();
+		
+		while( it.hasNext() )
+		{
+			final Elem<?,?> ikey = it.next();
+			final Elem<?,?> ival = in.implicitSpaceFirstLevel.get( ikey );
+			( (HashMap) implicitSpaceFirstLevel ).put( ikey.cloneThread(threadIndex) , ival.cloneThread(threadIndex) );
+		}
+		
+		sfac = in.sfac.cloneThread(threadIndex);
+		
+		// The NumDimensions dim is presumed to be immutable.
+		dim = in.dim;
+		
+	}
 	
 	
 	

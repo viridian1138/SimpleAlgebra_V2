@@ -312,6 +312,19 @@ public class NewtonRaphsonMultiElemNoBacktrack<U extends NumDimensions, R extend
 		return( evalJacobian );
 	}
 	
+	
+	@Override
+	public NewtonRaphsonMultiElemNoBacktrack<U,R,S> cloneThread( BigInteger threadIndex )
+	{
+		try {
+			return( new NewtonRaphsonMultiElemNoBacktrack<U,R,S>( param.cloneThread(threadIndex) ) );
+		}
+		catch( Throwable ex )
+		{
+			throw( new RuntimeException( ex ) );
+		}
+	}
+	
 
 }
 

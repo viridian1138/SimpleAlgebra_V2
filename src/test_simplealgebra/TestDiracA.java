@@ -56,6 +56,7 @@ import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicReduction;
 import simplealgebra.ddx.*;
 import simplealgebra.ga.*;
+import test_simplealgebra.TestGeneralRelativityA.StelemDescent.StelemDescentEnt;
 import test_simplealgebra.TestStelemD.IncrementManager;
 
 
@@ -2486,6 +2487,26 @@ protected void applyAdd(
 			{
 				return( StelemDescent.this.evalIterationImproved(lastValue, nextValue) );
 			}
+			
+			
+			public StelemDescentEnt()
+			{
+				super();
+			}
+			
+			
+			protected StelemDescentEnt( StelemDescentEnt in , final BigInteger threadIndex )
+			{
+				super( in , threadIndex );
+			}
+			
+			
+			@Override
+			public StelemDescentEnt cloneThread( final BigInteger threadIndex )
+			{
+				return( new StelemDescentEnt( this , threadIndex ) );
+			}
+			
 			
 		};
 		

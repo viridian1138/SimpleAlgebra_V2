@@ -364,6 +364,21 @@ public class NewtonRaphsonMultiElemSimpleBacktrack<U extends NumDimensions, R ex
 		return( evalJacobian );
 	}
 	
+	
+	
+	@Override
+	public NewtonRaphsonMultiElemSimpleBacktrack<U,R,S> cloneThread( BigInteger threadIndex )
+	{
+		try {
+			return( new NewtonRaphsonMultiElemSimpleBacktrack<U,R,S>( param.cloneThread(threadIndex) ) );
+		}
+		catch( Throwable ex )
+		{
+			throw( new RuntimeException( ex ) );
+		}
+	}
+	
+	
 
 }
 

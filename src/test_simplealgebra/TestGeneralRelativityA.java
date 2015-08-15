@@ -2359,6 +2359,26 @@ protected void applyAdd(
 				return( StelemDescent.this.evalIterationImproved(lastValue, nextValue) );
 			}
 			
+			
+			public StelemDescentEnt()
+			{
+				super();
+			}
+			
+			
+			protected StelemDescentEnt( StelemDescentEnt in , final BigInteger threadIndex )
+			{
+				super( in , threadIndex );
+			}
+			
+			
+			@Override
+			public StelemDescentEnt cloneThread( final BigInteger threadIndex )
+			{
+				return( new StelemDescentEnt( this , threadIndex ) );
+			}
+			
+			
 		};
 		
 
