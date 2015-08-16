@@ -256,6 +256,48 @@ public abstract class RawFileWriter
 	
 	
 	
+	/**
+	 * Calculates the maximum absolute value in the dataset.
+	 * 
+	 * @throws Throwable
+	 */
+	public double calcMaxAbs( ) throws Throwable
+	{
+		final int T_STRT = getTStrt();
+		final int T_END = getTEnd();
+		
+		final int Z_STRT = getZStrt();
+		final int Z_END = getZEnd();
+		
+		final int Y_STRT = getYStrt();
+		final int Y_END = getYEnd();
+		
+		final int X_STRT = getXStrt();
+		final int X_END = getXEnd();
+		
+		
+		double dd = Math.abs( getVal( T_STRT , X_STRT , Y_STRT , Z_STRT ) );
+		
+		
+		for( int t = T_STRT ; t < T_END ; t++ )
+		{
+			for( int z = Z_STRT ; z < Z_END ; z++ )
+			{
+				for( int y = Y_STRT ; y < Y_END ; y++ )
+				{
+					for( int x = X_STRT ; x < X_END ; x++ )
+					{
+						dd = Math.max( dd , Math.abs( getVal( t , x , y , z ) ) );
+					}
+				}
+			}
+		}
+		
+		return( dd );
+	}
+	
+	
+	
 	
 	
 }
