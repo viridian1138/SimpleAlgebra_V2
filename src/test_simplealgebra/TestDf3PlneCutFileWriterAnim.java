@@ -242,7 +242,7 @@ public class TestDf3PlneCutFileWriterAnim extends TestCase {
 		
 		
 		protected final double DOT_PRODUCT_MIN_COSINE =
-			Math.cos( Math.toRadians( 30.0 ) );
+			Math.cos( Math.toRadians( 60.0 ) );
 		
 		
 		
