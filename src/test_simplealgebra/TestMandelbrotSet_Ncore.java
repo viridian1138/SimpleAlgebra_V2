@@ -359,6 +359,7 @@ public class TestMandelbrotSet_Ncore extends TestCase {
 				final int core = ccnt;
 				runn[ core ] = new Runnable()
 				{
+					@Override
 					public void run()
 					{
 						try

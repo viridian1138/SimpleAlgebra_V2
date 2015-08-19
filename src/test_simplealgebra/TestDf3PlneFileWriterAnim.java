@@ -29,6 +29,7 @@ import java.io.DataOutputStream;
 import java.io.FileOutputStream;
 
 import junit.framework.TestCase;
+import simplealgebra.constants.CpuInfo;
 import simplealgebra.store.DbFastArray4D_Param;
 import simplealgebra.store.DrFastArray4D_Dbl;
 import simplealgebra.store.RawFileWriter;
@@ -324,6 +325,10 @@ public class TestDf3PlneFileWriterAnim extends TestCase {
 	 */
 	public void testDf3FileWriter() throws Throwable
 	{
+		final int numCores = CpuInfo.NUM_CPU_CORES;
+		final Runnable[] runn = new Runnable[ numCores ];
+		final boolean[] b = CpuInfo.createBool( false );
+		
 		final int T_MAX = 200;
 		
 		final int T_OFFSET = 0;
@@ -336,26 +341,55 @@ public class TestDf3PlneFileWriterAnim extends TestCase {
 		
 		// System.out.println( "Started..." ); 
 		
-		for( int cnt = 0 ; cnt < T_MAX ; cnt++ )
+		// System.out.println( "Started..." ); 
+		for( int ccnt = 0 ; ccnt < numCores ; ccnt++ )
 		{
-			System.out.println( cnt );
+			final int core = ccnt;
+			runn[ core ] = new Runnable()
+			{
+				@Override
+				public void run()
+				{
+					try
+					{
+						for( int cnt = core ; cnt < T_MAX ; cnt = cnt + numCores )
+						{
+							System.out.println( cnt );
 			
-			final int tval = cnt + T_OFFSET;
+							final int tval = cnt + T_OFFSET;
 			
-			String filePathPl = FILE_PATH_PREFIX_PL + cnt + ".df3";
+							String filePathPl = FILE_PATH_PREFIX_PL + cnt + ".df3";
 			
-			String filePathNe = FILE_PATH_PREFIX_NE + cnt + ".df3";
+							String filePathNe = FILE_PATH_PREFIX_NE + cnt + ".df3";
 		
-			TstDf3FileWriterAnim writer = new TstDf3FileWriterAnim( tval );
+							TstDf3FileWriterAnim writer = new TstDf3FileWriterAnim( tval );
 		
-			writer.writeDf3( filePathPl , filePathNe );
+							writer.writeDf3( filePathPl , filePathNe );
+						}
+					}
+					catch( Error ex  ) { ex.printStackTrace( System.out ); }
+					catch( Throwable ex ) { ex.printStackTrace( System.out ); }
+							
+					synchronized( this )
+					{
+						b[ core ] = true;
+						this.notify();
+					}
+							
+				}
+			};
 		}
-		
+				
+				
+		CpuInfo.start( runn );
+		CpuInfo.wait( runn , b );
+				
+				
 	}
-	
+			
 
 	
-
+	
 	
 }
 
