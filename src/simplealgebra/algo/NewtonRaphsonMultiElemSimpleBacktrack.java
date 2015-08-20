@@ -366,16 +366,42 @@ public class NewtonRaphsonMultiElemSimpleBacktrack<U extends NumDimensions, R ex
 	
 	
 	
+	protected NewtonRaphsonMultiElemSimpleBacktrack( NewtonRaphsonMultiElemSimpleBacktrack<U,R,S> in , final BigInteger threadIndex )
+	{
+		functions = in.functions.cloneThread(threadIndex);
+		
+		if( in.lastValues != null )
+		{
+			lastValues = in.lastValues.cloneThread(threadIndex);
+		}
+		
+		Iterator<? extends Elem<?,?>> it = in.implicitSpace.keySet().iterator();
+		
+		while( it.hasNext() )
+		{
+			final Elem<?,?> ikey = it.next();
+			final Elem<?,?> ival = in.implicitSpace.get( ikey );
+			( (HashMap) implicitSpace ).put( ikey.cloneThread(threadIndex) , ival.cloneThread(threadIndex) );
+		}
+		
+		evals = in.evals.cloneThread(threadIndex);
+		
+		partialEvalJacobian = in.partialEvalJacobian.cloneThread(threadIndex);
+		
+		// It is presumed that the NumDimensions dim is immutable.
+		dim = in.dim;
+		
+		sfac = in.sfac.cloneThread(threadIndex);
+		
+		param = in.param.cloneThread(threadIndex);
+	}
+	
+	
+	
 	@Override
 	public NewtonRaphsonMultiElemSimpleBacktrack<U,R,S> cloneThread( BigInteger threadIndex )
 	{
-		try {
-			return( new NewtonRaphsonMultiElemSimpleBacktrack<U,R,S>( param.cloneThread(threadIndex) ) );
-		}
-		catch( Throwable ex )
-		{
-			throw( new RuntimeException( ex ) );
-		}
+		return( new NewtonRaphsonMultiElemSimpleBacktrack<U,R,S>( this , threadIndex ) );
 	}
 	
 	

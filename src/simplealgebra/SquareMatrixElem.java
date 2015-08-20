@@ -1568,7 +1568,7 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	/**
 	 * Copies a column vector into a Geometric Algebra multivector.
 	 * 
-	 * @param row The column from which to copy the elements.
+	 * @param column The column from which to copy the elements.
 	 * @param out The multivector into which the matrix elements are copied.
 	 */
 	public void columnVectorToGeometricAlgebra( BigInteger column , GeometricAlgebraMultivectorElem<U,?,R,?> out )
@@ -1610,7 +1610,7 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	/**
 	 * Copies a column vector into a tensor of rank one.
 	 * 
-	 * @param row The column from which to copy the elements.
+	 * @param column The column from which to copy the elements.
 	 * @param out The tensor into which the matrix elements are copied.
 	 */
 	public void columnVectorToRankOneTensor( BigInteger column , EinsteinTensorElem<?,R,?> out )

@@ -39,7 +39,6 @@ import java.math.BigInteger;
  * @author thorngreen
  *
  * @param <T> The type of the argument and return.
- * @param <R> The type of the Mutator.
  */
 public interface Mutator<T extends Elem<T,?>> {
 

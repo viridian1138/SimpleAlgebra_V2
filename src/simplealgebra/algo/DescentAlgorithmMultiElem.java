@@ -66,6 +66,7 @@ public abstract class DescentAlgorithmMultiElem<U extends NumDimensions, R exten
 	 */
 	public abstract GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,R,S> eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpaceInitialGuess ) throws NotInvertibleException, MultiplicativeDistributionRequiredException;
 	
+	
 	/**
 	 * Produces a clone of the object for threading.  Note that for
 	 * OpenJDK thread-safety for BigInteger requires at least version
