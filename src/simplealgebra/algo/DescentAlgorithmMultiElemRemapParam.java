@@ -102,7 +102,7 @@ public class DescentAlgorithmMultiElemRemapParam<U extends NumDimensions, A exte
 	/**
 	 * Gets the implicit space for the initial eval.
 	 * 
-	 * @param withRespectTosI The implicit space for the initial eval.
+	 * @return The implicit space for the initial eval.
 	 */
 	public HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> getImplicitSpaceFirstLevel() {
 		return implicitSpaceFirstLevel;
@@ -111,7 +111,7 @@ public class DescentAlgorithmMultiElemRemapParam<U extends NumDimensions, A exte
 	/**
 	 * Sets the implicit space for the initial eval.
 	 * 
-	 * @return The implicit space for the initial eval.
+	 * @param implicitSpaceFirstLevel The implicit space for the initial eval.
 	 */
 	public void setImplicitSpaceFirstLevel(
 			HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpaceFirstLevel) {

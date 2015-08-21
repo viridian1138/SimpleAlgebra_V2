@@ -2241,6 +2241,12 @@ protected void applyAdd(
 			return( TestGeneralRelativityA.getUpdateValue( ) );
 		}
 		
+		@Override
+		public StelemDescent cloneThread( final BigInteger threadIndex )
+		{
+			throw( new RuntimeException( "Not Supported" ) );
+		}
+		
 		
 		/**
 		 * Returns whether convergence-wise the new function value should be accepted as an improvement over the old function value.

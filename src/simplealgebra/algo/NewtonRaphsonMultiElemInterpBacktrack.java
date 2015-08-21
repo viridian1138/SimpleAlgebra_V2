@@ -377,6 +377,12 @@ public class NewtonRaphsonMultiElemInterpBacktrack<U extends NumDimensions, R ex
 	}
 	
 	
+	/**
+	 * Copies an instance for cloneThread();
+	 * 
+	 * @param in The instance to copy.
+	 * @param threadIndex The index of the thread for which to clone.
+	 */
 	protected NewtonRaphsonMultiElemInterpBacktrack( NewtonRaphsonMultiElemInterpBacktrack<U,R,S> in , final BigInteger threadIndex )
 	{
 		functions = in.functions.cloneThread(threadIndex);

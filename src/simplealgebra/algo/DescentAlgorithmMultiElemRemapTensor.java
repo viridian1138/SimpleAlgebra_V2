@@ -349,16 +349,16 @@ public abstract class DescentAlgorithmMultiElemRemapTensor<Z extends Object, R e
 	 * 
 	 * @param value The new value.
 	 */
-	protected void setIterationValueInternal( GeometricAlgebraMultivectorElem<Adim,GeometricAlgebraOrd<Adim>,R,S> iterationOffset )
+	protected void setIterationValueInternal( GeometricAlgebraMultivectorElem<Adim,GeometricAlgebraOrd<Adim>,R,S> value )
 	{
 		EinsteinTensorElem<Z,R,S> ret =
 				new EinsteinTensorElem<Z,R,S>( fac , contravariantIndices , covariantIndices );
 		
-		Iterator<HashSet<BigInteger>> it = iterationOffset.getKeyIterator();
+		Iterator<HashSet<BigInteger>> it = value.getKeyIterator();
 		while( it.hasNext() )
 		{
 			HashSet<BigInteger> key = it.next();
-			ret.setVal( outMapOffset.get( key ) , iterationOffset.get( key ) );
+			ret.setVal( outMapOffset.get( key ) , value.get( key ) );
 		}
 		
 		setIterationValue( ret );
@@ -370,7 +370,7 @@ public abstract class DescentAlgorithmMultiElemRemapTensor<Z extends Object, R e
 	 * 
 	 * @param value The new value.
 	 */
-	protected abstract void setIterationValue( EinsteinTensorElem<Z,R,S> iterationOffset );
+	protected abstract void setIterationValue( EinsteinTensorElem<Z,R,S> value );
 	
 	
 	
@@ -396,6 +396,103 @@ public abstract class DescentAlgorithmMultiElemRemapTensor<Z extends Object, R e
 		
 		return( ret );
 	}
+	
+	
+	/**
+	 * Copies an instance for cloneThread();
+	 * 
+	 * @param in The instance to copy.
+	 * @param threadIndex The index of the thread for which to clone.
+	 */
+	public DescentAlgorithmMultiElemRemapTensor( final DescentAlgorithmMultiElemRemapTensor<Z,R,S> in , final BigInteger threadIndex )
+	{
+
+		
+		inMapFun = new HashMap<ArrayList<BigInteger>,BigInteger>();
+		{
+			Iterator<ArrayList<BigInteger>> it = inMapFun.keySet().iterator();
+			while( it.hasNext() )
+			{
+				final ArrayList<BigInteger> ikey = (ArrayList<BigInteger>)( it.next() );
+				final BigInteger ival = inMapFun.get( ikey );
+				inMapFun.put( (ArrayList<BigInteger>)( ikey.clone() ) , ival );
+			}
+		}
+		
+		
+		
+		outMapFun = new HashMap<HashSet<BigInteger>,ArrayList<BigInteger>>();
+		{
+			final Iterator<HashSet<BigInteger>> it = in.outMapFun.keySet().iterator();
+			while( it.hasNext() )
+			{
+				final HashSet<BigInteger> ikey = it.next();
+				final ArrayList<BigInteger> ival = in.outMapFun.get( ikey );
+				outMapFun.put( (HashSet<BigInteger>)( ikey.clone() ) , (ArrayList<BigInteger>)( ival.clone() ) );
+			}
+		}
+		
+		
+		
+		
+			
+		inMapOffset = new HashMap<ArrayList<BigInteger>,HashSet<BigInteger>>();
+		{
+			final Iterator<ArrayList<BigInteger>> it = inMapOffset.keySet().iterator();
+			while( it.hasNext() )
+			{
+				final ArrayList<BigInteger> ikey = it.next();
+				final HashSet<BigInteger> ival = in.inMapOffset.get( ikey );
+				inMapOffset.put( (ArrayList<BigInteger>)( ikey.clone() ) , (HashSet<BigInteger>)( ival.clone() ) );
+			}
+ 		}
+		
+		
+		
+		
+		outMapOffset = new HashMap<HashSet<BigInteger>,ArrayList<BigInteger>>();
+		{
+			final Iterator<HashSet<BigInteger>> it = in.outMapOffset.keySet().iterator();
+			while( it.hasNext() )
+			{
+				final HashSet<BigInteger> ikey = it.next();
+				final ArrayList<BigInteger> ival = in.outMapOffset.get( ikey );
+				outMapOffset.put( (HashSet<BigInteger>)( ikey.clone() ) , (ArrayList<BigInteger>)( ival.clone() ) );
+			}
+		}
+		
+		
+		
+		descent = in.descent.cloneThread(threadIndex);
+		
+		
+		// The Z indices are presumed to be immutable.
+		contravariantIndices = (ArrayList<Z>)( in.contravariantIndices.clone() );
+		
+		
+		// The Z indices are presumed to be immutable.
+		covariantIndices = (ArrayList<Z>)( in.covariantIndices.clone() );
+		
+		
+		odim = in.odim;
+		
+		fac = in.fac.cloneThread(threadIndex);
+		
+		
+	}
+	
+	
+	/**
+	 * Produces a clone of the object for threading.  Note that for
+	 * OpenJDK thread-safety for BigInteger requires at least version
+	 * 6u14.  See https://bugs.openjdk.java.net/browse/JDK-6348370
+	 * 
+	 * @param threadIndex The index of the thread for which to clone.
+	 * @return The thread-cloned object, or the same object if immutable.
+	 */
+	public abstract DescentAlgorithmMultiElemRemapTensor<Z,R,S> cloneThread( final BigInteger threadIndex );
+	
+	
 	
 	
 	/**

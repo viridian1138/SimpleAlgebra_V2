@@ -250,9 +250,10 @@ public abstract class DescentAlgorithmMultiElemInputParam<U extends NumDimension
 	
 	
 	/**
+	 * Copies an instance for cloneThread();
 	 * 
-	 * @param in
-	 * @param threadIndex
+	 * @param in The instance to copy.
+	 * @param threadIndex The index of the thread for which to clone.
 	 */
 	protected DescentAlgorithmMultiElemInputParam( final DescentAlgorithmMultiElemInputParam<U,R,S> in , final BigInteger threadIndex )
 	{

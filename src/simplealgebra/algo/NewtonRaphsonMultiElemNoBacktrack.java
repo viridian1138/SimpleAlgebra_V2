@@ -314,6 +314,12 @@ public class NewtonRaphsonMultiElemNoBacktrack<U extends NumDimensions, R extend
 	
 	
 	
+	/**
+	 * Copies an instance for cloneThread();
+	 * 
+	 * @param in The instance to copy.
+	 * @param threadIndex The index of the thread for which to clone.
+	 */
 	protected NewtonRaphsonMultiElemNoBacktrack( NewtonRaphsonMultiElemNoBacktrack<U,R,S> in , final BigInteger threadIndex )
 	{
 		
