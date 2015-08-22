@@ -46,9 +46,7 @@ import simplealgebra.MultRightMutator;
  * 
  * @author thorngreen
  *
- * @param <U> The number of dimensions in the matrix.
- * @param <R> The enclosed type.
- * @param <S> The factory for the enclosed type.
+ * @param <T> The mutation type.
  */
 public class MultRightMutatorType<T extends Elem<T,?>> extends HGAtomTypeBase {
 

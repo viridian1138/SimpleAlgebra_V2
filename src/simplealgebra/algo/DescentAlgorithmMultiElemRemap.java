@@ -398,6 +398,106 @@ public abstract class DescentAlgorithmMultiElemRemap<U extends NumDimensions, A 
 	}
 	
 	
+	
+	
+	/**
+	 * Copies an instance for cloneThread();
+	 * 
+	 * @param in The instance to copy.
+	 * @param threadIndex The index of the thread for which to clone.
+	 */
+	public DescentAlgorithmMultiElemRemap( final DescentAlgorithmMultiElemRemap<U,A,R,S> in , final BigInteger threadIndex )
+	{
+
+		
+		inMapFun = new HashMap<HashSet<BigInteger>,BigInteger>();
+		{
+			Iterator<HashSet<BigInteger>> it = in.inMapFun.keySet().iterator();
+			while( it.hasNext() )
+			{
+				final HashSet<BigInteger> ikey = (HashSet<BigInteger>)( it.next() );
+				final BigInteger ival = in.inMapFun.get( ikey );
+				inMapFun.put( (HashSet<BigInteger>)( ikey.clone() ) , ival );
+			}
+		}
+		
+		
+		
+		outMapFun = new HashMap<HashSet<BigInteger>,HashSet<BigInteger>>();
+		{
+			final Iterator<HashSet<BigInteger>> it = in.outMapFun.keySet().iterator();
+			while( it.hasNext() )
+			{
+				final HashSet<BigInteger> ikey = it.next();
+				final HashSet<BigInteger> ival = in.outMapFun.get( ikey );
+				outMapFun.put( (HashSet<BigInteger>)( ikey.clone() ) , (HashSet<BigInteger>)( ival.clone() ) );
+			}
+		}
+		
+		
+		
+		
+			
+		inMapOffset = new HashMap<HashSet<BigInteger>,HashSet<BigInteger>>();
+		{
+			final Iterator<HashSet<BigInteger>> it = in.inMapOffset.keySet().iterator();
+			while( it.hasNext() )
+			{
+				final HashSet<BigInteger> ikey = it.next();
+				final HashSet<BigInteger> ival = in.inMapOffset.get( ikey );
+				inMapOffset.put( (HashSet<BigInteger>)( ikey.clone() ) , (HashSet<BigInteger>)( ival.clone() ) );
+			}
+ 		}
+		
+		
+		
+		
+		outMapOffset = new HashMap<HashSet<BigInteger>,HashSet<BigInteger>>();
+		{
+			final Iterator<HashSet<BigInteger>> it = in.outMapOffset.keySet().iterator();
+			while( it.hasNext() )
+			{
+				final HashSet<BigInteger> ikey = it.next();
+				final HashSet<BigInteger> ival = in.outMapOffset.get( ikey );
+				outMapOffset.put( (HashSet<BigInteger>)( ikey.clone() ) , (HashSet<BigInteger>)( ival.clone() ) );
+			}
+		}
+		
+		
+		
+		descent = in.descent.cloneThread(threadIndex);
+		
+		
+		// The NumDimensions idim is presumed to be immutable.
+		idim = in.idim;
+		
+		
+		// The Ord iord is presumed to be immutable.
+		iord = in.iord;
+		
+		
+		odim = in.odim;
+		
+		fac = in.fac.cloneThread(threadIndex);
+				
+	}
+	
+	
+	
+	/**
+	 * Produces a clone of the object for threading.  Note that for
+	 * OpenJDK thread-safety for BigInteger requires at least version
+	 * 6u14.  See https://bugs.openjdk.java.net/browse/JDK-6348370
+	 * 
+	 * @param threadIndex The index of the thread for which to clone.
+	 * @return The thread-cloned object, or the same object if immutable.
+	 */
+	public abstract DescentAlgorithmMultiElemRemap<U,A,R,S> cloneThread( final BigInteger threadIndex );
+	
+	
+	
+	
+	
 	/**
 	 * Gets the current value of the iteration.
 	 * 

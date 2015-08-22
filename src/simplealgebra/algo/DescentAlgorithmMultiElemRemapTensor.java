@@ -410,11 +410,11 @@ public abstract class DescentAlgorithmMultiElemRemapTensor<Z extends Object, R e
 		
 		inMapFun = new HashMap<ArrayList<BigInteger>,BigInteger>();
 		{
-			Iterator<ArrayList<BigInteger>> it = inMapFun.keySet().iterator();
+			Iterator<ArrayList<BigInteger>> it = in.inMapFun.keySet().iterator();
 			while( it.hasNext() )
 			{
 				final ArrayList<BigInteger> ikey = (ArrayList<BigInteger>)( it.next() );
-				final BigInteger ival = inMapFun.get( ikey );
+				final BigInteger ival = in.inMapFun.get( ikey );
 				inMapFun.put( (ArrayList<BigInteger>)( ikey.clone() ) , ival );
 			}
 		}
@@ -438,7 +438,7 @@ public abstract class DescentAlgorithmMultiElemRemapTensor<Z extends Object, R e
 			
 		inMapOffset = new HashMap<ArrayList<BigInteger>,HashSet<BigInteger>>();
 		{
-			final Iterator<ArrayList<BigInteger>> it = inMapOffset.keySet().iterator();
+			final Iterator<ArrayList<BigInteger>> it = in.inMapOffset.keySet().iterator();
 			while( it.hasNext() )
 			{
 				final ArrayList<BigInteger> ikey = it.next();

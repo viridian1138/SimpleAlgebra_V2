@@ -33,6 +33,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
@@ -171,6 +172,78 @@ public class DescentAlgorithmMultiElemRemapParam<U extends NumDimensions, A exte
 	 */
 	public void setOrd(A ord) {
 		this.ord = ord;
+	}
+	
+	
+	
+	/**
+	 * Produces a clone of the object for threading.  Note that for
+	 * OpenJDK thread-safety for BigInteger requires at least version
+	 * 6u14.  See https://bugs.openjdk.java.net/browse/JDK-6348370
+	 * 
+	 * @param threadIndex The index of the thread for which to clone.
+	 * @return The thread-cloned object, or the same object if immutable.
+	 */
+	public DescentAlgorithmMultiElemRemapParam<U,A,R,S>
+		cloneThread( final BigInteger threadIndex )
+	{
+		final DescentAlgorithmMultiElemRemapParam<U,A,R,S> ret = new DescentAlgorithmMultiElemRemapParam<U,A,R,S>();
+		
+		
+		ret.functions = functions.cloneThread(threadIndex);
+		
+		
+		
+		
+		ret.withRespectTosI = ( HashMap<HashSet<BigInteger>,ArrayList<? extends Elem<?,?>>> )( new HashMap() );
+		
+		{
+			Iterator<HashSet<BigInteger>> it = withRespectTosI.keySet().iterator();
+			
+			while( it.hasNext() )
+			{
+				final HashSet<BigInteger> ikey = it.next();
+				final ArrayList<? extends Elem<?,?>> ival = withRespectTosI.get( ikey );
+				final ArrayList<? extends Elem<?,?>> ivalc = (ArrayList<? extends Elem<?,?>>)( new ArrayList() );
+				final Iterator<Elem> ita = (Iterator<Elem>)( ival.iterator() );
+				while( ita.hasNext() )
+				{
+					( (ArrayList) ivalc ).add( ita.next().cloneThread(threadIndex) );
+				}
+				( (HashMap) ( ret.withRespectTosI ) ).put( ikey.clone() , ivalc );
+			}
+		}
+		
+		
+		
+		
+		ret.implicitSpaceFirstLevel = (HashMap<? extends Elem<?,?>,? extends Elem<?,?>>)( new HashMap() );
+		
+		{
+			Iterator<? extends Elem<?,?>> it = implicitSpaceFirstLevel.keySet().iterator();
+		
+			while( it.hasNext() )
+			{
+				final Elem<?,?> ikey = it.next();
+				final Elem<?,?> ival = implicitSpaceFirstLevel.get( ikey );
+				( (HashMap) ( ret.implicitSpaceFirstLevel ) ).put( ikey.cloneThread(threadIndex) , ival.cloneThread(threadIndex) );
+			}
+		}
+		
+		
+		
+		ret.sfac = sfac.cloneThread(threadIndex);
+		
+		
+		// The NumDimensions dim is presumed to be immutable.
+		ret.dim = dim;
+		
+		// The Ord ord is presumed to be immutable.
+		ret.ord = ord;
+		
+
+		return( ret );
+		
 	}
 
 	
