@@ -122,14 +122,14 @@ public class DrFastArray2D_Dbl {
 	 * @param _xmax The size of the array along the X-axis.
 	 * @param _path The path at which to put the array image on disk.
 	 */
-	public DrFastArray2D_Dbl( int _tmult , int _xmult , int _tmax , int _xmax , String path ) throws Throwable
+	public DrFastArray2D_Dbl( int _tmult , int _xmult , int _tmax , int _xmax , String _path ) throws Throwable
 	{
 		tmult = _tmult;
 		xmult = _xmult;
 		tmax = _tmax;
 		xmax = _xmax;
 		
-		file = new RandomAccessFile( path , "rw" );
+		file = new RandomAccessFile( _path , "rw" );
 		
 		
 		dsz = calcDsz( _tmult , _xmult , _tmax , _xmax );

@@ -906,7 +906,7 @@ public class TestStelemA extends TestCase {
 		 * @param implicitSpacesIn The input implicit space containing the discretized approximation function.
 		 * @param node The ordinate over which to take the derivative.
 		 * @param numDerivatives The number of derivatives to apply.
-		 * @param hh The size of the discretization.
+		 * @param h The size of the discretization.
 		 * @param implicitSpacesOut The output implicit space containing the discretized approximation function with the derivatives applied.
 		 * @throws MultiplicativeDistributionRequiredException 
 		 * @throws NotInvertibleException 
@@ -1306,8 +1306,6 @@ public class TestStelemA extends TestCase {
 	 *
 	 * in dimensions (x, t) where "c" is an arbitrary constant.
 	 *
-	 * 
-	 * @author thorngreen
 	 *
 	 */	
 	public void testStelemSimple() throws NotInvertibleException, MultiplicativeDistributionRequiredException

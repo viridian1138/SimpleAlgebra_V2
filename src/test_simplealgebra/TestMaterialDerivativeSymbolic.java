@@ -1209,7 +1209,7 @@ public class TestMaterialDerivativeSymbolic extends TestCase
 		/**
 		 * Sets the second tensor index of the metric.
 		 * 
-		 * @param index0 The second tensor index of the metric.
+		 * @param index1 The second tensor index of the metric.
 		 */
 		public void setIndex1(Object index1) {
 			this.index1 = index1;

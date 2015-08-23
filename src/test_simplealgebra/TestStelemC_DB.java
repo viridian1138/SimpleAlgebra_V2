@@ -410,7 +410,7 @@ public class TestStelemC_DB extends TestCase {
 		/**
 		 * Sets the X-Axis index for the center in the iter array.
 		 * 
-		 * @param tcnt The X-Axis index for the center in the iter array.
+		 * @param xcnt The X-Axis index for the center in the iter array.
 		 */
 		public void setXcnt(int xcnt) {
 			this.xcnt = xcnt;
@@ -430,7 +430,7 @@ public class TestStelemC_DB extends TestCase {
 		/**
 		 * Sets the Y-Axis index for the center in the iter array.
 		 * 
-		 * @param tcnt The Y-Axis index for the center in the iter array.
+		 * @param ycnt The Y-Axis index for the center in the iter array.
 		 */
 		public void setYcnt(int ycnt) {
 			this.ycnt = ycnt;
@@ -471,7 +471,7 @@ public class TestStelemC_DB extends TestCase {
 		/**
 		 * Sets the X-Axis iteration of the array fill.
 		 * 
-		 * @param ta The X-Axis iteration of the array fill.
+		 * @param xa The X-Axis iteration of the array fill.
 		 */
 		public void setXa(int xa) {
 			this.xa = xa;
@@ -491,7 +491,7 @@ public class TestStelemC_DB extends TestCase {
 		/**
 		 * Sets the Y-Axis iteration of the array fill.
 		 * 
-		 * @param ta The Y-Axis iteration of the array fill.
+		 * @param ya The Y-Axis iteration of the array fill.
 		 */
 		public void setYa(int ya) {
 			this.ya = ya;
@@ -2339,8 +2339,6 @@ public class TestStelemC_DB extends TestCase {
 	 *
 	 * in dimensions (x, y, t) where "c" is an arbitrary constant.
 	 *
-	 * 
-	 * @author thorngreen
 	 *
 	 */	
 	public void testStelemSimple() throws NotInvertibleException, MultiplicativeDistributionRequiredException

@@ -311,7 +311,7 @@ public class TestDoubleInvertRight extends TestCase {
 		/**
 		 * Sets the i coordinate of the second level of nesting.
 		 * 
-		 * @param i The i coordinate of the second level of nesting.
+		 * @param i2 The i coordinate of the second level of nesting.
 		 */
 		public void setI2(int i2) {
 			this.i2 = i2;
@@ -329,7 +329,7 @@ public class TestDoubleInvertRight extends TestCase {
 		/**
 		 * Sets the j coordinate of the second level of nesting.
 		 * 
-		 * @param j The j coordinate of the second level of nesting.
+		 * @param j2 The j coordinate of the second level of nesting.
 		 */
 		public void setJ2(int j2) {
 			this.j2 = j2;

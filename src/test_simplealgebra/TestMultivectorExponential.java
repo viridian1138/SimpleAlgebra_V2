@@ -62,7 +62,7 @@ public class TestMultivectorExponential extends TestCase {
 	
 	
 	/**
-	 * Test method for {@link simplealgebra.Elem#exp()}.
+	 * Test method for {@link simplealgebra.Elem#exp(int)}.
 	 */
 	public void testMultivectorExponential() throws NotInvertibleException
 	{
@@ -88,7 +88,7 @@ public class TestMultivectorExponential extends TestCase {
 	
 	
 	/**
-	 * Test method for {@link simplealgebra.Elem#exp()}.
+	 * Test method for {@link simplealgebra.Elem#exp(int)}.
 	 */
 	public void testMultivectorExponentialBivec() throws NotInvertibleException
 	{

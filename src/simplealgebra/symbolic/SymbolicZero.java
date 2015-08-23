@@ -140,7 +140,7 @@ public class SymbolicZero<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 	/**
 	 * Returns true iff. the parameter equals this element.
 	 * 
-	 * @param The parameter to check.
+	 * @param b The parameter to check.
 	 * @return True iff. the parameter equals this element.
 	 */
 	public boolean symbolicEquals( SymbolicElem<R, S> b )

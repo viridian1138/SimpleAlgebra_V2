@@ -310,7 +310,7 @@ public class TestInvertNestedRightNTwo extends TestCase {
 		/**
 		 * Sets the i coordinate of the second level of nesting.
 		 * 
-		 * @param i The i coordinate of the second level of nesting.
+		 * @param i2 The i coordinate of the second level of nesting.
 		 */
 		public void setI2(int i2) {
 			this.i2 = i2;
@@ -328,7 +328,7 @@ public class TestInvertNestedRightNTwo extends TestCase {
 		/**
 		 * Sets the j coordinate of the second level of nesting.
 		 * 
-		 * @param j The j coordinate of the second level of nesting.
+		 * @param j2 The j coordinate of the second level of nesting.
 		 */
 		public void setJ2(int j2) {
 			this.j2 = j2;
@@ -336,18 +336,18 @@ public class TestInvertNestedRightNTwo extends TestCase {
 		
 		
 		/**
-		 * Gets the original matrix.
+		 * Gets the matrix that should equal the identity matrix.
 		 * 
-		 * @return The original matrix.
+		 * @return The matrix that should equal the identity matrix.
 		 */
 		public SquareMatrixElem<TestDimensionFour, SquareMatrixElem<TestDimensionFour, SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory>, SquareMatrixElemFactory<TestDimensionFour, DoubleElem, DoubleElemFactory>>, SquareMatrixElemFactory<TestDimensionFour, SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory>, SquareMatrixElemFactory<TestDimensionFour, DoubleElem, DoubleElemFactory>>> getShouldBeIdent() {
 			return shouldBeIdent;
 		}
 		
 		/**
-		 * Sets the original matrix.
+		 * Sets the matrix that should equal the identity matrix.
 		 * 
-		 * @param mat The original matrix.
+		 * @param shouldBeIdent The matrix that should equal the identity matrix.
 		 */
 		public void setShouldBeIdent(
 				SquareMatrixElem<TestDimensionFour, SquareMatrixElem<TestDimensionFour, SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory>, SquareMatrixElemFactory<TestDimensionFour, DoubleElem, DoubleElemFactory>>, SquareMatrixElemFactory<TestDimensionFour, SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory>, SquareMatrixElemFactory<TestDimensionFour, DoubleElem, DoubleElemFactory>>> shouldBeIdent) {

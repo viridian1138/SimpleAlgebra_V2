@@ -323,7 +323,7 @@ public class TestStelemB extends TestCase {
 		/**
 		 * Sets the X-Axis index for the center in the iter array.
 		 * 
-		 * @param tcnt The X-Axis index for the center in the iter array.
+		 * @param xcnt The X-Axis index for the center in the iter array.
 		 */
 		public void setXcnt(int xcnt) {
 			this.xcnt = xcnt;
@@ -364,7 +364,7 @@ public class TestStelemB extends TestCase {
 		/**
 		 * Sets the X-Axis iteration of the array fill.
 		 * 
-		 * @param ta The X-Axis iteration of the array fill.
+		 * @param xa The X-Axis iteration of the array fill.
 		 */
 		public void setXa(int xa) {
 			this.xa = xa;
@@ -1775,8 +1775,6 @@ public class TestStelemB extends TestCase {
 	 *
 	 * in dimensions (x, t) where "c" is an arbitrary constant.
 	 *
-	 * 
-	 * @author thorngreen
 	 *
 	 */	
 	public void testStelemSimple() throws NotInvertibleException, MultiplicativeDistributionRequiredException

@@ -143,22 +143,22 @@ public class TestCWave3D_DR extends TestCase {
 	/**
 	 * The number of discretizations on the T-Axis over which to iterate.
 	 */
-	protected static final int NUM_T_ITER = 40; // 200; // 400;
+	protected static final int NUM_T_ITER = 200; // 200; // 400;
 	
 	/**
 	 * The number of discretizations on the X-Axis over which to iterate.
 	 */
-	protected static final int NUM_X_ITER = 20; // 200;
+	protected static final int NUM_X_ITER = 200; // 200;
 	
 	/**
 	 * The number of discretizations on the Y-Axis over which to iterate.
 	 */
-	protected static final int NUM_Y_ITER = 20; // 200;
+	protected static final int NUM_Y_ITER = 200; // 200;
 	
 	/**
 	 * The number of discretizations on the Z-Axis over which to iterate.
 	 */
-	protected static final int NUM_Z_ITER = 20; // 200;
+	protected static final int NUM_Z_ITER = 200; // 200;
 	
 	
 	
@@ -435,7 +435,7 @@ public class TestCWave3D_DR extends TestCase {
 		/**
 		 * Sets the X-Axis index for the center in the iter array.
 		 * 
-		 * @param tcnt The X-Axis index for the center in the iter array.
+		 * @param xcnt The X-Axis index for the center in the iter array.
 		 */
 		public void setXcnt(int xcnt) {
 			this.xcnt = xcnt;
@@ -455,7 +455,7 @@ public class TestCWave3D_DR extends TestCase {
 		/**
 		 * Sets the Y-Axis index for the center in the iter array.
 		 * 
-		 * @param tcnt The Y-Axis index for the center in the iter array.
+		 * @param ycnt The Y-Axis index for the center in the iter array.
 		 */
 		public void setYcnt(int ycnt) {
 			this.ycnt = ycnt;
@@ -475,7 +475,7 @@ public class TestCWave3D_DR extends TestCase {
 		/**
 		 * Sets the Z-Axis index for the center in the iter array.
 		 * 
-		 * @param tcnt The Z-Axis index for the center in the iter array.
+		 * @param zcnt The Z-Axis index for the center in the iter array.
 		 */
 		public void setZcnt(int zcnt) {
 			this.zcnt = zcnt;
@@ -515,7 +515,7 @@ public class TestCWave3D_DR extends TestCase {
 		/**
 		 * Sets the X-Axis iteration of the array fill.
 		 * 
-		 * @param ta The X-Axis iteration of the array fill.
+		 * @param xa The X-Axis iteration of the array fill.
 		 */
 		public void setXa(int xa) {
 			this.xa = xa;
@@ -535,7 +535,7 @@ public class TestCWave3D_DR extends TestCase {
 		/**
 		 * Sets the Y-Axis iteration of the array fill.
 		 * 
-		 * @param ta The Y-Axis iteration of the array fill.
+		 * @param ya The Y-Axis iteration of the array fill.
 		 */
 		public void setYa(int ya) {
 			this.ya = ya;
@@ -555,7 +555,7 @@ public class TestCWave3D_DR extends TestCase {
 		/**
 		 * Sets the Z-Axis iteration of the array fill.
 		 * 
-		 * @param ta The Z-Axis iteration of the array fill.
+		 * @param za The Z-Axis iteration of the array fill.
 		 */
 		public void setZa(int za) {
 			this.za = za;
@@ -2648,7 +2648,7 @@ public class TestCWave3D_DR extends TestCase {
 				final double dz = ( z - HALF_Z ) / RAD_Z;
 				if( dx * dx + dy * dy + dz * dz < 1.0 )
 				{
-					iterArray.set( tcnt , x , y , z , 0.95 * CINT );
+					iterArray.set( tcnt , x , y , z , 1.005 /* 0.95 */ * CINT );
 				}
 				else
 				{
@@ -2706,8 +2706,6 @@ public class TestCWave3D_DR extends TestCase {
 	 *
 	 * in dimensions (x, y, z, t).
 	 *
-	 * 
-	 * @author thorngreen
 	 *
 	 */
 	public void testStelemSimple() throws NotInvertibleException, MultiplicativeDistributionRequiredException, Throwable

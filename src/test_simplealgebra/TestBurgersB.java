@@ -324,7 +324,7 @@ public class TestBurgersB extends TestCase {
 		/**
 		 * Sets the X-Axis index for the center in the iter array.
 		 * 
-		 * @param tcnt The X-Axis index for the center in the iter array.
+		 * @param xcnt The X-Axis index for the center in the iter array.
 		 */
 		public void setXcnt(int xcnt) {
 			this.xcnt = xcnt;
@@ -365,7 +365,7 @@ public class TestBurgersB extends TestCase {
 		/**
 		 * Sets the X-Axis iteration of the array fill.
 		 * 
-		 * @param ta The X-Axis iteration of the array fill.
+		 * @param xa The X-Axis iteration of the array fill.
 		 */
 		public void setXa(int xa) {
 			this.xa = xa;

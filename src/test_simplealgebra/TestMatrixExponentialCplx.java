@@ -58,7 +58,7 @@ public class TestMatrixExponentialCplx extends TestCase {
 	
 	
 	/**
-	 * Test method for {@link simplealgebra.Elem#exp()}.
+	 * Test method for {@link simplealgebra.Elem#exp(int)}.
 	 */
 	public void testMatrixExponential1( ) throws NotInvertibleException {
 		
@@ -103,7 +103,7 @@ public class TestMatrixExponentialCplx extends TestCase {
 	
 
 	/**
-	 * Test method for {@link simplealgebra.Elem#exp()}.
+	 * Test method for {@link simplealgebra.Elem#exp(int)}.
 	 */
 	public void testMatrixExponential2( ) throws NotInvertibleException {
 		
@@ -148,7 +148,7 @@ public class TestMatrixExponentialCplx extends TestCase {
 	
 	
 	/**
-	 * Test method for {@link simplealgebra.Elem#exp()}.
+	 * Test method for {@link simplealgebra.Elem#exp(int)}.
 	 */
 	public void testMatrixExponential3( ) throws NotInvertibleException {
 		

@@ -77,9 +77,9 @@ public class TestPhasorWithUncertainty extends TestCase {
 	
 	
 	/**
-	 * Based on typical resistors where the actual resistance is within 5% of the stated value.
-	 * @param val
-	 * @return
+	 * Returns the input value with a 5% uncertainty.  Based on typical resistors where the actual resistance is within 5% of the stated value.
+	 * @param val The input value.
+	 * @return The input value with a 5% uncertainty.
 	 */
 	private ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory> valueWithFivePercentError( double val )
 	{
@@ -89,9 +89,9 @@ public class TestPhasorWithUncertainty extends TestCase {
 	
 	
 	/**
-	 * Based on typical voltimeters where the voltage is known to within 0.1 volts.
-	 * @param val
-	 * @return
+	 * Returns the input value with an uncertainty of 0.1.  Based on typical voltimeters where the voltage is known to within 0.1 volts.
+	 * @param val The input value.
+	 * @return The input value with an uncertainty of 0.1.
 	 */
 	private ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory> valueWithOneTenthError( double val )
 	{

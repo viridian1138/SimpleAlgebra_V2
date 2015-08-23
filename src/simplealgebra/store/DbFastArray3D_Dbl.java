@@ -161,13 +161,7 @@ public class DbFastArray3D_Dbl {
 	/**
 	 * Constructs the array.
 	 * 
-	 * @param _graph The graph in which the array exists.
-	 * @param _tmult The size of the each cell along the T-axis.
-	 * @param _xmult The size of the each cell along the X-axis.
-	 * @param _ymult The size of the each cell along the Y-axis.
-	 * @param _tmax The size of the array along the T-axis.
-	 * @param _xmax The size of the array along the X-axis.
-	 * @param _ymax The size of the array along the Y-axis.
+	 * @param _param The input parameters describing the dimensions of the array.
 	 */
 	public DbFastArray3D_Dbl( final DbFastArray3D_Param _param )
 	{
