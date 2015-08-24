@@ -29,6 +29,7 @@ package simplealgebra.stelem;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
@@ -81,6 +82,25 @@ public abstract class Nelem<R extends Elem<R,?>, S extends ElemFactory<R,S>, K e
 	@Override
 	public R evalPartialDerivative(ArrayList<? extends Elem<?, ?>> withRespectTo, HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws MultiplicativeDistributionRequiredException, NotInvertibleException {
 		throw( new RuntimeException( "NotSupported" ) );
+	}
+	
+	
+	/**
+	 * Copies the Nelem for threading.
+	 * @param in The Nelem to copy.
+	 * @param threadIndex The thread index.
+	 */
+	protected Nelem( Nelem<R,S,K> in , final BigInteger threadIndex )
+	{
+		super( in.getFac().getFac().cloneThread(threadIndex) );
+		coord = new HashMap<K,BigInteger>();
+		final Iterator<K> it = in.coord.keySet().iterator();
+		while( it.hasNext() )
+		{
+			final K ikey = it.next();
+			final BigInteger ival = in.coord.get( ikey );
+			coord.put( (K)( ikey.cloneThread(threadIndex) ) , ival );
+		}
 	}
 
 	
