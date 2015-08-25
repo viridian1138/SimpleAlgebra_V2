@@ -58,7 +58,6 @@ import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicReduction;
 import simplealgebra.ga.*;
 import simplealgebra.ddx.*;
-import test_simplealgebra.TestBurgersB.StelemNewton;
 
 
 
@@ -1725,7 +1724,28 @@ public class TestStelemD_DR_Ncore extends TestCase {
 			
 			return( ret );
 		}
+		
+		
+		/**
+		 * Copies the AStelem for threading.
+		 * @param in The AStelem to be copied.
+		 * @param threadIndex The thread index.
+		 */
+		protected AStelem( AStelem in , final BigInteger threadIndex )
+		{
+			super( in , threadIndex );
+		}
+		
+		
+		
+		@Override
+		public AStelem cloneThread( final BigInteger threadIndex )
+		{
+			return( new AStelem( this , threadIndex ) );
+		}
 
+		
+		
 		@Override
 		public void writeString( PrintStream ps ) {
 			throw( new RuntimeException( "NotSupported" ) );
@@ -2397,9 +2417,19 @@ public class TestStelemD_DR_Ncore extends TestCase {
 		
 		
 		/**
+		 * Returns whether the iterations are done.
+		 * @return True iff. the iterations are complete.
+		 */
+		public boolean isDone()
+		{
+			return( xstrt >= NUM_X_ITER );
+		}
+		
+		
+		/**
 		 * Increments to the next swatch.
 		 */
-		protected void handleSwatchIncrement()
+		public void handleSwatchIncrementSingle()
 		{
 			yMoveUp = true;
 			zMoveUp = true;
@@ -2415,7 +2445,7 @@ public class TestStelemD_DR_Ncore extends TestCase {
 			}
 			else
 			{
-				if( ( ycnt + ( YMULT - 1 ) ) < ( NUM_Y_ITER - 1 ) )
+				if( ( ystrt + ( YMULT - 1 ) ) < ( NUM_Y_ITER - 1 ) )
 				{
 					zcnt = 0;
 					zstrt = 0;
@@ -2438,6 +2468,19 @@ public class TestStelemD_DR_Ncore extends TestCase {
 					xstrt = xcnt;
 					xdn = XMULT - 1;
 				}
+			}
+		}
+		
+		
+		
+		/**
+		 * Increments to the next thread-swatch.
+		 */
+		protected void handleSwatchIncrement()
+		{
+			for( int cnt = 0 ; cnt < NUM_CPU_CORES ; cnt++ )
+			{
+				handleSwatchIncrementSingle();
 			}
 		}
 		
@@ -2666,7 +2709,12 @@ public class TestStelemD_DR_Ncore extends TestCase {
 		IncrementManager[] ima = new IncrementManager[ NUM_CPU_CORES ];
 		for( int cnt = 0 ; cnt < NUM_CPU_CORES ; cnt++ )
 		{
-			ima[ cnt ] = new IncrementManager( cnt );
+			final IncrementManager im = new IncrementManager( cnt );
+			ima[ cnt ] = im;
+			for( int acnt = 0 ; acnt < cnt ; acnt++ )
+			{
+				im.handleSwatchIncrementSingle();
+			}
 		}
 		return( ima );
 	}
@@ -2712,7 +2760,7 @@ public class TestStelemD_DR_Ncore extends TestCase {
 						im.restartIncrements();
 						long atm = System.currentTimeMillis();
 						long atm2 = System.currentTimeMillis();
-						for( long acnt = 0 ; acnt < ( ( (long) NUM_X_ITER ) * NUM_Y_ITER * NUM_Z_ITER ) ; acnt++ )
+						while( !( im.isDone() ) )
 						{
 			
 							atm2 = System.currentTimeMillis();
@@ -2886,7 +2934,7 @@ public class TestStelemD_DR_Ncore extends TestCase {
 		}
 		
 		
-		String databaseLocation = "mydbJ";
+		String databaseLocation = "mydbK";
 		
 		
 		

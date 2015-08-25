@@ -2299,7 +2299,7 @@ public class TestStelemD_DB extends TestCase {
 			}
 			else
 			{
-				if( ( ycnt + ( YMULT - 1 ) ) < ( NUM_Y_ITER - 1 ) )
+				if( ( ystrt + ( YMULT - 1 ) ) < ( NUM_Y_ITER - 1 ) )
 				{
 					zcnt = 0;
 					zstrt = 0;

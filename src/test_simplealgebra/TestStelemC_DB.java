@@ -2012,7 +2012,7 @@ public class TestStelemC_DB extends TestCase {
 		protected void handleSwatchIncrement()
 		{
 			yMoveUp = true;
-			if( ( ycnt + ( YMULT - 1 ) ) < ( NUM_Y_ITER - 1 ) )
+			if( ( ystrt + ( YMULT - 1 ) ) < ( NUM_Y_ITER - 1 ) )
 			{
 				ycnt = ystrt + YMULT;
 				ystrt = ycnt;

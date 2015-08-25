@@ -86,6 +86,24 @@ public abstract class Stelem<R extends Elem<R,?>, S extends ElemFactory<R,S>, K 
 	
 	
 	/**
+	 * Copies the Stelem for threading.
+	 * @param in The Stelem to be copied.
+	 * @param threadIndex The thread index.
+	 */
+	protected Stelem( final Stelem<R,S,K> in , final BigInteger threadIndex )
+	{
+		super( in.getFac().getFac().cloneThread(threadIndex) );
+		Iterator<K> it = in.partialMap.keySet().iterator();
+		while( it.hasNext() )
+		{
+			final K ikey = it.next();
+			final BigInteger ival = in.partialMap.get( ikey );
+			partialMap.put( (K)( ikey.cloneThread(threadIndex) ) , ival );
+		}
+	}
+	
+	
+	/**
 	 * Returns the result of adding the partial derivatives in the parameter.
 	 * 
 	 * @param withRespectTo The partial derivatives to be added.
