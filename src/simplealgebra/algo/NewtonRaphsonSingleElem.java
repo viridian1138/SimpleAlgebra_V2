@@ -262,15 +262,18 @@ public abstract class NewtonRaphsonSingleElem<R extends Elem<R,?>, S extends Ele
 			lastValue = in.lastValue.cloneThread( threadIndex );
 		}
 		
-		implicitSpace = (HashMap<? extends Elem<?,?>,? extends Elem<?,?>>)( new HashMap() );
-		
-		Iterator<? extends Elem<?,?>> it = in.implicitSpace.keySet().iterator();
-		
-		while( it.hasNext() )
+		if( in.implicitSpace != null )
 		{
-			final Elem<?,?> ikey = it.next();
-			final Elem<?,?> ival = in.implicitSpace.get( ikey );
-			( (HashMap) implicitSpace ).put( ikey.cloneThread(threadIndex) , ival.cloneThread(threadIndex) );
+			implicitSpace = (HashMap<? extends Elem<?,?>,? extends Elem<?,?>>)( new HashMap() );
+		
+			Iterator<? extends Elem<?,?>> it = in.implicitSpace.keySet().iterator();
+		
+			while( it.hasNext() )
+			{
+				final Elem<?,?> ikey = it.next();
+				final Elem<?,?> ival = in.implicitSpace.get( ikey );
+				( (HashMap) implicitSpace ).put( ikey.cloneThread(threadIndex) , ival.cloneThread(threadIndex) );
+			}
 		}
 		
 		eval = in.eval.cloneThread( threadIndex );

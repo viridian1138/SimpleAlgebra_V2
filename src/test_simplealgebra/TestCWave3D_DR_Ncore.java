@@ -58,7 +58,6 @@ import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicReduction;
 import simplealgebra.ga.*;
 import simplealgebra.ddx.*;
-import test_simplealgebra.TestStelemD_DR_Ncore.IncrementManager;
 
 
 
@@ -1162,6 +1161,12 @@ public class TestCWave3D_DR_Ncore extends TestCase {
 				MultiplicativeDistributionRequiredException {
 			throw( new RuntimeException( "NotSupported" ) );
 		}
+		
+		@Override
+		public Ordinate cloneThread( final BigInteger threadIndex )
+		{
+			return( this );
+		}
 
 		@Override
 		public void writeString( PrintStream ps ) {
@@ -1416,17 +1421,6 @@ public class TestCWave3D_DR_Ncore extends TestCase {
 		
 		
 		/**
-		 * Constructs the elem.
-		 * 
-		 * @param _fac The factory for the enclosed type.
-		 * @param _coord Map taking implicit space terms representing ordinates to discrete ordinates of type BigInteger.
-		 */
-		public BNelem(DoubleElemFactory _fac, HashMap<Ordinate, BigInteger> _coord) {
-			this(_fac, _coord, 0);
-		}
-		
-		
-		/**
 		 * Column indices in the discretized space.
 		 */
 		protected final int[] cols = new int[ 4 ];
@@ -1557,6 +1551,11 @@ public class TestCWave3D_DR_Ncore extends TestCase {
 	{
 
 		/**
+		 * The thread index for the elem.
+		 */
+		protected int threadIndex;
+		
+		/**
 		 * Constructs the elem.
 		 * 
 		 * @param _fac The factory for the enclosed type.
@@ -1564,13 +1563,14 @@ public class TestCWave3D_DR_Ncore extends TestCase {
 		 */
 		public CNelem(SymbolicElemFactory<DoubleElem,DoubleElemFactory> _fac, HashMap<Ordinate, BigInteger> _coord) {
 			super(_fac, _coord);
+			threadIndex = 0;
 		}
 
 		@Override
 		public SymbolicElem<DoubleElem,DoubleElemFactory> eval(HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace)
 				throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
-			return( new BNelem( fac.getFac() , coord ) );
+			return( new BNelem( fac.getFac() , coord , threadIndex ) );
 		}
 		
 		
@@ -1584,6 +1584,27 @@ public class TestCWave3D_DR_Ncore extends TestCase {
 			CNelem wrt = (CNelem)( it.next() );
 			final boolean cond = this.symbolicEquals( wrt );
 			return( cond ? fac.identity() : fac.zero() );
+		}
+		
+		
+		/**
+		 * Copies the CNelem for threading.
+		 * 
+		 * @param in The CNelem to be copied.
+		 * @param threadIndex The thread index.
+		 */
+		public CNelem( final CNelem in , final BigInteger _threadIndex )
+		{
+			super( in , _threadIndex );
+			final int threadInd = _threadIndex.intValue();
+			threadIndex = threadInd;
+		}
+		
+		
+		@Override
+		public CNelem cloneThread( final BigInteger threadIndex )
+		{
+			return( new CNelem( this , threadIndex ) );
 		}
 		
 
@@ -2679,10 +2700,6 @@ public class TestCWave3D_DR_Ncore extends TestCase {
 		{
 			final IncrementManager im = new IncrementManager( cnt );
 			ima[ cnt ] = im;
-			for( int acnt = 0 ; acnt < cnt ; acnt++ )
-			{
-				im.handleSwatchIncrementSingle();
-			}
 		}
 		return( ima );
 	}
@@ -2728,6 +2745,11 @@ public class TestCWave3D_DR_Ncore extends TestCase {
 					{
 						//double tmpCorrectionValue = 0.0;
 						im.restartIncrements();
+						for( int acnt = 0 ; acnt < core ; acnt++ )
+						{
+							im.handleSwatchIncrementSingle();
+						}
+						
 						long atm = System.currentTimeMillis();
 						long atm2 = System.currentTimeMillis();
 						while( !( im.isDone() ) )
