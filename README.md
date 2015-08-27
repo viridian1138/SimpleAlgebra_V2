@@ -200,6 +200,12 @@ Noncommutative Ring
 
 ...See Abstract Algebra
 
+Numerical Relativity
+
+...https://en.wikipedia.org/wiki/Numerical_relativity
+
+...http://www.sciencedirect.com/science/article/pii/S0377042799001697
+
 Ricci Scalar
 
 ...http://en.wikipedia.org/wiki/Scalar_curvature
