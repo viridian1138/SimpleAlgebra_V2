@@ -206,6 +206,8 @@ Numerical Relativity
 
 ...http://www.sciencedirect.com/science/article/pii/S0377042799001697
 
+...http://www.tddft.org/programs/octopus/wiki/images/6/63/Numerical_Relativity_Introduction_Hilditch.pdf
+
 Ricci Scalar
 
 ...http://en.wikipedia.org/wiki/Scalar_curvature
