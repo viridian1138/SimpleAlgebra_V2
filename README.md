@@ -204,11 +204,17 @@ Numerical Relativity
 
 ...https://en.wikipedia.org/wiki/Numerical_relativity
 
+...https://en.wikipedia.org/wiki/ADM_formalism
+
 ...http://www.sciencedirect.com/science/article/pii/S0377042799001697
 
 ...http://www.tddft.org/programs/octopus/wiki/images/6/63/Numerical_Relativity_Introduction_Hilditch.pdf
 
 ...http://www.ima.umn.edu/~arnold//papers/enumath.pdf
+
+...http://jacobi.luc.edu/ADM.pdf
+
+...https://books.google.com/books?id=C0_HROt5D8YC&pg=PA12&lpg=PA12&dq=adm+decomposition&source=bl&ots=f2_zDMWhul&sig=gam87QlnTWYPogSYChe0XTZDTv0&hl=en&sa=X&sqi=2&ved=0CEUQ6AEwBWoVChMI4OGU7frKxwIVjFOSCh0A9gQr#v=onepage&q=adm%20decomposition&f=false
 
 Ricci Scalar
 
