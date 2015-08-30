@@ -360,7 +360,15 @@ public class TestGeneralRelativityAdm extends TestCase {
 	/**
 	 * Result array over which to iterate.
 	 */
-	protected static final EinsteinTensorElem[][][][] iterArray = new EinsteinTensorElem[ NUM_T_ITER ][ NUM_X_ITER ][ NUM_Y_ITER ][ NUM_Z_ITER ];
+	protected static final EinsteinTensorElem[][][][] iterArrayMetric = new EinsteinTensorElem[ NUM_T_ITER ][ NUM_X_ITER ][ NUM_Y_ITER ][ NUM_Z_ITER ];
+	
+
+	/**
+	 * Result array over which to iterate.
+	 */
+	protected static final EinsteinTensorElem[][][][] iterArrayConjugateMomentum = new EinsteinTensorElem[ NUM_T_ITER ][ NUM_X_ITER ][ NUM_Y_ITER ][ NUM_Z_ITER ];
+	
+	
 	
 	
 	
@@ -393,7 +401,16 @@ public class TestGeneralRelativityAdm extends TestCase {
 	 * <p>2 = Y
 	 * <p>3 = Z
 	 */
-	private static EinsteinTensorElem[][][][] tempArray = new EinsteinTensorElem[ NSTPT * 2 + 1 ][ NSTPX * 2 + 1 ][ NSTPY * 2 + 1 ][ NSTPZ * 2 + 1 ];
+	private static EinsteinTensorElem[][][][] tempArrayMetric = new EinsteinTensorElem[ NSTPT * 2 + 1 ][ NSTPX * 2 + 1 ][ NSTPY * 2 + 1 ][ NSTPZ * 2 + 1 ];
+	
+	/**
+	 * Temporary array in which to generate descent algorithm solutions.
+	 * <p>0 = T
+	 * <p>1 = X
+	 * <p>2 = Y
+	 * <p>3 = Z
+	 */
+	private static EinsteinTensorElem[][][][] tempArrayConjugateMomentum = new EinsteinTensorElem[ NSTPT * 2 + 1 ][ NSTPX * 2 + 1 ][ NSTPY * 2 + 1 ][ NSTPZ * 2 + 1 ];
 	
 	
 	
@@ -408,13 +425,13 @@ public class TestGeneralRelativityAdm extends TestCase {
 	protected static void performIterationUpdate( EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> dbl )
 	{
 		EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> va
-			= (EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>)( tempArray[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] );
+			= (EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>)( tempArrayMetric[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] ); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		if( va == null )
 		{
-			tempArray[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] = dbl;
+			tempArrayMetric[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] = dbl; // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			return;
 		}
-		tempArray[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] = va.add( dbl );
+		tempArrayMetric[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] = va.add( dbl ); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	}
 	
 	
@@ -427,8 +444,8 @@ public class TestGeneralRelativityAdm extends TestCase {
 	protected static void setIterationValue( EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> dbl )
 	{
 		EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> va
-			= (EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>)( tempArray[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] );
-		tempArray[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] = dbl;
+			= (EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>)( tempArrayMetric[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] ); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		tempArrayMetric[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] = dbl; // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	}
 	
 	
@@ -442,7 +459,7 @@ public class TestGeneralRelativityAdm extends TestCase {
 	protected static EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> getUpdateValue()
 	{
 		EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> va
-			= (EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>)( tempArray[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] );
+			= (EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>)( tempArrayMetric[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] ); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		if( va != null )
 		{
 			return( va );
@@ -467,7 +484,7 @@ public class TestGeneralRelativityAdm extends TestCase {
 	protected static EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> getCorrectionValue()
 	{
 		EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> va
-			= (EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>)( tempArray[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ][ NSTPZ ] );
+			= (EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>)( tempArrayMetric[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ][ NSTPZ ] ); // !!!!!!!!!!!!!!!!!!!!!!!!!!!
 		if( va != null )
 		{
 			return( va );
@@ -491,61 +508,11 @@ public class TestGeneralRelativityAdm extends TestCase {
 	 */
 	protected static void resetCorrectionValue( final EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> in )
 	{
-		tempArray[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ][ NSTPZ ] = in;
+		tempArrayMetric[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ][ NSTPZ ] = in; // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	}
 	
 	
-	/**
-	 * Applies a predictor-corrector process to the temp array.
-	 * 
-	 * See https://en.wikipedia.org/wiki/Predictor%E2%80%93corrector_method
-	 */
-	protected static void applyPredictorCorrector()
-	{
-		EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> vam2
-			= (EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>)( tempArray[ NSTPT * 2 - 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] );
-		EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> vam1
-			= (EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>)( tempArray[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ][ NSTPZ ] );
-		EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> vam
-			= (EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>)( tempArray[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] );
-		if( vam2 == null )
-		{
-			DoubleElemFactory da = new DoubleElemFactory();
-			final ArrayList<String> contravariantIndices = new ArrayList<String>();
-			final ArrayList<String> covariantIndices = new ArrayList<String>();
-			covariantIndices.add( "u" );
-			covariantIndices.add( "v" );
-			vam2 = new EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>( da , contravariantIndices  , covariantIndices );
-		}
-		if( vam1 == null )
-		{
-			DoubleElemFactory da = new DoubleElemFactory();
-			final ArrayList<String> contravariantIndices = new ArrayList<String>();
-			final ArrayList<String> covariantIndices = new ArrayList<String>();
-			covariantIndices.add( "u" );
-			covariantIndices.add( "v" );
-			vam1 = new EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>( da , contravariantIndices  , covariantIndices );
-		}
-		if( vam == null )
-		{
-			DoubleElemFactory da = new DoubleElemFactory();
-			final ArrayList<String> contravariantIndices = new ArrayList<String>();
-			final ArrayList<String> covariantIndices = new ArrayList<String>();
-			covariantIndices.add( "u" );
-			covariantIndices.add( "v" );
-			vam = new EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>( da , contravariantIndices  , covariantIndices );
-		}
-		final EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> slopePrev 
-			= vam1.add( vam2.negate() );
-		final EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> slopeNew 
-			= vam.add( vam1.negate() );
-		final EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> avgSlope 
-			= ( slopePrev.add( slopeNew ) ).divideBy( BigInteger.valueOf( 2 ) );
-		tempArray[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ][ NSTPZ ] = 
-				vam2.add( avgSlope );
-	}
-	
-	
+
 	
 	
 	/**
@@ -788,27 +755,35 @@ public class TestGeneralRelativityAdm extends TestCase {
 		final int xv = xcnt + xa;
 		final int yv = ycnt + ya;
 		final int zv = zcnt + za;
-		EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> av = null;
+		EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> avmet = null;
+		EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> avmom = null;
 		if( ( tv >= 0 )  && ( xv >= 0 ) && ( yv >= 0 ) && ( zv >= 0 ) &&
 			( tv < NUM_T_ITER ) && ( xv < NUM_X_ITER ) && ( yv < NUM_Y_ITER ) && ( zv < NUM_Z_ITER )  )
 		{
 			if( ta != NSTPT )
 			{
-				av = iterArray[ tv ][ xv ][ yv ][ zv ];
+				avmet = iterArrayMetric[ tv ][ xv ][ yv ][ zv ];
+				avmom = iterArrayConjugateMomentum[ tv ][ xv ][ yv ][ zv ];
 			}
 			else
 			{
 				if( ( xa == 0 ) && ( ya == 0 ) && ( za == 0 ) )
 				{
-					av = iterArray[ tv ][ xv ][ yv ][ zv ];
+					avmet = iterArrayMetric[ tv ][ xv ][ yv ][ zv ];
+					avmom = iterArrayConjugateMomentum[ tv ][ xv ][ yv ][ zv ];
 				}
 			}
 		}
-		if( av == null )
+		if( avmet == null )
 		{
-			av = genDiffAll();
+			avmet = genDiffAll();
 		}
-		tempArray[ ta + NSTPT ][ xa + NSTPX ][ ya + NSTPY ][ za + NSTPZ ] = av;
+		if( avmom == null )
+		{
+			avmom = genDiffAll();
+		}
+		tempArrayMetric[ ta + NSTPT ][ xa + NSTPX ][ ya + NSTPY ][ za + NSTPZ ] = avmet;
+		tempArrayConjugateMomentum[ ta + NSTPT ][ xa + NSTPX ][ ya + NSTPY ][ za + NSTPZ ] = avmom;
 		
 	}
 	
@@ -858,7 +833,8 @@ public class TestGeneralRelativityAdm extends TestCase {
 			{
 				for( int za = 0 ; za < NSTPZ * 2 + 1 ; za++ )
 				{
-					tempArray[ NSTPT * 2 ][ xa ][ ya ][ za ] = tempArray[ NSTPT * 2 - 1 ][ xa ][ ya ][ za ];
+					tempArrayMetric[ NSTPT * 2 ][ xa ][ ya ][ za ] = tempArrayMetric[ NSTPT * 2 - 1 ][ xa ][ ya ][ za ];
+					tempArrayConjugateMomentum[ NSTPT * 2 ][ xa ][ ya ][ za ] = tempArrayConjugateMomentum[ NSTPT * 2 - 1 ][ xa ][ ya ][ za ];
 				}
 			}
 		}
@@ -1408,6 +1384,7 @@ private class CoeffNode
 
 
 
+
 	/**
 	 * Elem representing the discretized equivalent
 	 * of one component of the tensor constrained by the differential equation.
@@ -1415,7 +1392,7 @@ private class CoeffNode
 	 * @author thorngreen
 	 *
 	 */
-	private class BNelem extends Nelem<DoubleElem,DoubleElemFactory,Ordinate>
+	private class BNelemMetric extends Nelem<DoubleElem,DoubleElemFactory,Ordinate>
 	{
 		/**
 		 * The index of the component of the tensor.
@@ -1430,7 +1407,7 @@ private class CoeffNode
 		 * @param _coord Map taking implicit space terms representing ordinates to discrete ordinates of type BigInteger.
 		 * @param _index The index of the component of the tensor.
 		 */
-		public BNelem(DoubleElemFactory _fac, HashMap<Ordinate, BigInteger> _coord , ArrayList<BigInteger> _index ) {
+		public BNelemMetric(DoubleElemFactory _fac, HashMap<Ordinate, BigInteger> _coord , ArrayList<BigInteger> _index ) {
 			super(_fac, _coord);
 			index = _index;
 		}
@@ -1477,7 +1454,7 @@ private class CoeffNode
 			Assert.assertTrue( assertCols[ 3 ] );
 			DoubleElem ret = null;
 			EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> val = 
-					TestGeneralRelativityAdm.tempArray[ cols[ 0 ] ][ cols[ 1 ] ][ cols[ 2 ] ][ cols[ 3 ] ];
+					TestGeneralRelativityAdm.tempArrayMetric[ cols[ 0 ] ][ cols[ 1 ] ][ cols[ 2 ] ][ cols[ 3 ] ];
 			if( val == null )
 			{
 				ret = fac.zero();
@@ -1525,9 +1502,9 @@ private class CoeffNode
 		@Override
 		public boolean symbolicEquals( SymbolicElem<DoubleElem,DoubleElemFactory> b )
 		{
-			if( b instanceof BNelem )
+			if( b instanceof BNelemMetric )
 			{
-				BNelem bn = (BNelem) b;
+				BNelemMetric bn = (BNelemMetric) b;
 				if( coord.keySet().size() != bn.coord.keySet().size() )
 				{
 					return( false );
@@ -1555,6 +1532,162 @@ private class CoeffNode
 	}
 	
 	
+
+	
+	
+
+
+
+	/**
+	 * Elem representing the discretized equivalent
+	 * of one component of the tensor constrained by the differential equation.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
+	private class BNelemConjugateMomentum extends Nelem<DoubleElem,DoubleElemFactory,Ordinate>
+	{
+		/**
+		 * The index of the component of the tensor.
+		 */
+		protected ArrayList<BigInteger> index;
+		
+
+		/**
+		 * Constructs the elem.
+		 * 
+		 * @param _fac The factory for the enclosed type.
+		 * @param _coord Map taking implicit space terms representing ordinates to discrete ordinates of type BigInteger.
+		 * @param _index The index of the component of the tensor.
+		 */
+		public BNelemConjugateMomentum(DoubleElemFactory _fac, HashMap<Ordinate, BigInteger> _coord , ArrayList<BigInteger> _index ) {
+			super(_fac, _coord);
+			index = _index;
+		}
+		
+		
+		/**
+		 * Column indices in the discretized space.
+		 */
+		protected final int[] cols = new int[ 4 ];
+		
+		/**
+		 * Assertion booleans used to verify that all
+		 * column indices have been initialized.
+		 */
+		protected final boolean[] assertCols = new boolean[ 4 ];
+		
+
+		@Override
+		public DoubleElem eval(HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace)
+				throws NotInvertibleException,
+				MultiplicativeDistributionRequiredException {
+			cols[ 0 ] = 0;
+			cols[ 1 ] = 0;
+			cols[ 2 ] = 0;
+			cols[ 3 ] = 0;
+			assertCols[ 0 ] = false;
+			assertCols[ 1 ] = false;
+			assertCols[ 2 ] = false;
+			assertCols[ 3 ] = false;
+			Assert.assertTrue( coord.keySet().size() == 4 );
+			Iterator<Ordinate> it = coord.keySet().iterator();
+			while( it.hasNext() )
+			{
+				Ordinate keyCoord = it.next();
+				BigInteger coordVal = coord.get( keyCoord );
+				final int offset = keyCoord.getCol() == 3 ? NSTPZ : keyCoord.getCol() == 2 ? NSTPY : keyCoord.getCol() == 1 ? NSTPX : NSTPT;
+				cols[ keyCoord.getCol() ] = coordVal.intValue() + offset;
+				assertCols[ keyCoord.getCol() ] = true;
+			}
+			( spatialAssertArray[ cols[ 0 ] ][ cols[ 1 ] ][ cols[ 2 ] ][ cols[ 3 ] ] )++;
+			Assert.assertTrue( assertCols[ 0 ] );
+			Assert.assertTrue( assertCols[ 1 ] );
+			Assert.assertTrue( assertCols[ 2 ] );
+			Assert.assertTrue( assertCols[ 3 ] );
+			DoubleElem ret = null;
+			EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> val = 
+					TestGeneralRelativityAdm.tempArrayConjugateMomentum[ cols[ 0 ] ][ cols[ 1 ] ][ cols[ 2 ] ][ cols[ 3 ] ];
+			if( val == null )
+			{
+				ret = fac.zero();
+			}
+			else
+			{
+				DoubleElem valA = val.getVal( index );
+				if( valA == null )
+				{
+					ret = fac.zero();
+				}
+				else
+				{
+					ret = valA;
+				}
+			}
+			return( ret );
+		}
+
+		@Override
+		public void writeString( PrintStream ps ) {
+			String s0 = "bn";
+			Iterator<Ordinate> it = coord.keySet().iterator();
+			while( it.hasNext() )
+			{
+				Ordinate key = it.next();
+				BigInteger val = coord.get( key );
+				s0 = s0 + "[";
+				s0 = s0 + key.getCol();
+				s0 = s0 + ",";
+				s0 = s0 + val.intValue();
+				s0 = s0 + "]";
+			}
+			s0 = s0 + "{";
+			Iterator<BigInteger> ita = index.iterator();
+			while( ita.hasNext() )
+			{
+				BigInteger b = ita.next();
+				s0 = s0 + b + ",";
+			}
+			s0 = s0 + "}()";
+			ps.print( s0 );
+		}
+		
+		@Override
+		public boolean symbolicEquals( SymbolicElem<DoubleElem,DoubleElemFactory> b )
+		{
+			if( b instanceof BNelemConjugateMomentum )
+			{
+				BNelemConjugateMomentum bn = (BNelemConjugateMomentum) b;
+				if( coord.keySet().size() != bn.coord.keySet().size() )
+				{
+					return( false );
+				}
+				Iterator<Ordinate> it = coord.keySet().iterator();
+				while( it.hasNext() )
+				{
+					Ordinate key = it.next();
+					BigInteger ka = coord.get( key );
+					BigInteger kb = bn.coord.get( key );
+					if( ( ka == null ) || ( kb == null ) )
+					{
+						return( false );
+					}
+					if( !( ka.equals( kb ) ) )
+					{
+						return( false );
+					}
+				}
+				return( true );
+			}
+			return( false );
+		}
+		
+	}
+	
+		
+	
+	
+	
 	
 
 /**
@@ -1568,7 +1701,7 @@ private class CoeffNode
  * @author thorngreen
  *
  */	
-private class CNelem extends Nelem<SymbolicElem<DoubleElem,DoubleElemFactory>,
+private class CNelemMetric extends Nelem<SymbolicElem<DoubleElem,DoubleElemFactory>,
 	SymbolicElemFactory<DoubleElem,DoubleElemFactory>,Ordinate>
 {
 	/**
@@ -1583,7 +1716,7 @@ private class CNelem extends Nelem<SymbolicElem<DoubleElem,DoubleElemFactory>,
 	 * @param _coord Map taking implicit space terms representing ordinates to discrete ordinates of type BigInteger.
 	 * @param _index The index of the component of the tensor.
 	 */
-	public CNelem(SymbolicElemFactory<DoubleElem,DoubleElemFactory> _fac, 
+	public CNelemMetric(SymbolicElemFactory<DoubleElem,DoubleElemFactory> _fac, 
 			HashMap<Ordinate, BigInteger> _coord , ArrayList<BigInteger> _index ) {
 		super(_fac, _coord);
 		index = _index;
@@ -1593,7 +1726,7 @@ private class CNelem extends Nelem<SymbolicElem<DoubleElem,DoubleElemFactory>,
 	public SymbolicElem<DoubleElem,DoubleElemFactory> eval(HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace)
 			throws NotInvertibleException,
 			MultiplicativeDistributionRequiredException {
-		return( new BNelem( fac.getFac() , coord , index ) );
+		return( new BNelemMetric( fac.getFac() , coord , index ) );
 	}
 	
 	
@@ -1604,7 +1737,7 @@ private class CNelem extends Nelem<SymbolicElem<DoubleElem,DoubleElemFactory>,
 			return( fac.zero() );
 		}
 		Iterator<? extends Elem<?,?>> it = withRespectTo.iterator();
-		CNelem wrt = (CNelem)( it.next() );
+		CNelemMetric wrt = (CNelemMetric)( it.next() );
 		// final boolean cond = this.symbolicDEval( wrt );
 		final boolean cond = this.symbolicEquals( wrt );
 		return( cond ? fac.identity() : fac.zero() );
@@ -1667,9 +1800,9 @@ private class CNelem extends Nelem<SymbolicElem<DoubleElem,DoubleElemFactory>,
 	public boolean symbolicEquals( 
 			SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> b )
 	{
-		if( b instanceof CNelem )
+		if( b instanceof CNelemMetric )
 		{
-			CNelem bn = (CNelem) b;
+			CNelemMetric bn = (CNelemMetric) b;
 			if( !( index.equals( bn.index ) ) )
 			{
 				return( false );
@@ -1703,13 +1836,164 @@ private class CNelem extends Nelem<SymbolicElem<DoubleElem,DoubleElemFactory>,
 	
 
 
+
+
+/**
+* Elem representing the symbolic expression for 
+* the discretized equivalent
+* of one component of the tensor constrained by the differential equation.
+* The partial derivatives of this elem generate
+* the slopes for producing descent algorithm iterations (e.g. the Jacobian slopes),
+* as opposed to partial derivatives for the underlying differential equation.
+* 
+* @author thorngreen
+*
+*/	
+private class CNelemConjugateMomentum extends Nelem<SymbolicElem<DoubleElem,DoubleElemFactory>,
+SymbolicElemFactory<DoubleElem,DoubleElemFactory>,Ordinate>
+{
+/**
+ * The index of the component of the tensor.
+ */
+protected ArrayList<BigInteger> index;
+
+/**
+ * Constructs the elem.
+ * 
+ * @param _fac The factory for the enclosed type.
+ * @param _coord Map taking implicit space terms representing ordinates to discrete ordinates of type BigInteger.
+ * @param _index The index of the component of the tensor.
+ */
+public CNelemConjugateMomentum(SymbolicElemFactory<DoubleElem,DoubleElemFactory> _fac, 
+		HashMap<Ordinate, BigInteger> _coord , ArrayList<BigInteger> _index ) {
+	super(_fac, _coord);
+	index = _index;
+}
+
+@Override
+public SymbolicElem<DoubleElem,DoubleElemFactory> eval(HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace)
+		throws NotInvertibleException,
+		MultiplicativeDistributionRequiredException {
+	return( new BNelemConjugateMomentum( fac.getFac() , coord , index ) );
+}
+
+
+@Override
+public SymbolicElem<DoubleElem,DoubleElemFactory> evalPartialDerivative(ArrayList<? extends Elem<?, ?>> withRespectTo, HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws MultiplicativeDistributionRequiredException, NotInvertibleException {
+	if( withRespectTo.size() > 1 )
+	{
+		return( fac.zero() );
+	}
+	Iterator<? extends Elem<?,?>> it = withRespectTo.iterator();
+	CNelemConjugateMomentum wrt = (CNelemConjugateMomentum)( it.next() );
+	// final boolean cond = this.symbolicDEval( wrt );
+	final boolean cond = this.symbolicEquals( wrt );
+	return( cond ? fac.identity() : fac.zero() );
+}
+
+
+@Override
+public void writeString( PrintStream ps ) {
+	String s0 = "cn";
+	Iterator<Ordinate> it = coord.keySet().iterator();
+	while( it.hasNext() )
+	{
+		Ordinate key = it.next();
+		BigInteger val = coord.get( key );
+		s0 = s0 + "[";
+		s0 = s0 + key.getCol();
+		s0 = s0 + ",";
+		s0 = s0 + val.intValue();
+		s0 = s0 + "]";
+	}
+	s0 = s0 + "()";
+	ps.print( s0 );
+}
+
+
+//
+//protected boolean symbolicDEval( 
+//		SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> b )
+//{
+//	if( b instanceof CNelem )
+//	{
+//		CNelem bn = (CNelem) b;
+//		if( coord.keySet().size() != bn.coord.keySet().size() )
+//		{
+//			return( false );
+//		}
+//		Iterator<Ordinate> it = coord.keySet().iterator();
+//		while( it.hasNext() )
+//		{
+//			Ordinate key = it.next();
+//			BigInteger ka = coord.get( key );
+//			BigInteger kb = bn.coord.get( key );
+//			if( ( ka == null ) || ( kb == null ) )
+//			{
+//				return( false );
+//			}
+//			if( !( ka.equals( kb ) ) )
+//			{
+//				return( false );
+//			}
+//		}
+//		return( true );
+//	}
+//	return( false );
+//}
+//
+
+
+@Override
+public boolean symbolicEquals( 
+		SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> b )
+{
+	if( b instanceof CNelemConjugateMomentum )
+	{
+		CNelemConjugateMomentum bn = (CNelemConjugateMomentum) b;
+		if( !( index.equals( bn.index ) ) )
+		{
+			return( false );
+		}
+		if( coord.keySet().size() != bn.coord.keySet().size() )
+		{
+			return( false );
+		}
+		Iterator<Ordinate> it = coord.keySet().iterator();
+		while( it.hasNext() )
+		{
+			Ordinate key = it.next();
+			BigInteger ka = coord.get( key );
+			BigInteger kb = bn.coord.get( key );
+			if( ( ka == null ) || ( kb == null ) )
+			{
+				return( false );
+			}
+			if( !( ka.equals( kb ) ) )
+			{
+				return( false );
+			}
+		}
+		return( true );
+	}
+	return( false );
+}
+
+}
+
+
+
+
+
+
+
 /**
  * An elem defining a partial derivative that is evaluated over the discretized space of the test.
  * 
  * @author thorngreen
  *
  */	
-private class AStelem extends Stelem<SymbolicElem<DoubleElem,DoubleElemFactory>,
+private class AStelemMetric extends Stelem<SymbolicElem<DoubleElem,DoubleElemFactory>,
 	SymbolicElemFactory<DoubleElem,DoubleElemFactory>,Ordinate>
 {	
 
@@ -1725,15 +2009,15 @@ protected ArrayList<BigInteger> index;
  * @param _fac The factory for the enclosed type.
  * @param _index The index of the tensor component represented by the elem.
  */
-public AStelem( SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> _fac,
+public AStelemMetric( SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> _fac,
 		ArrayList<BigInteger> _index ) {
 	super(_fac);
 	index = _index;
 }
 
 @Override
-public AStelem cloneInstance() {
-	AStelem cl = new AStelem( fac , index );
+public AStelemMetric cloneInstance() {
+	AStelemMetric cl = new AStelemMetric( fac , index );
 	Iterator<Ordinate> it = partialMap.keySet().iterator();
 	while( it.hasNext() )
 	{
@@ -1798,8 +2082,8 @@ public SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFacto
 		{
 			HashMap<Ordinate, BigInteger> spaceAe = it.next();
 			CoeffNode coeff = spacesA.get( spaceAe );
-			final CNelem an0 = 
-					new CNelem( fac.getFac() , spaceAe , index );
+			final CNelemMetric an0 = 
+					new CNelemMetric( fac.getFac() , spaceAe , index );
 			SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>
 				an1 = an0.mult( 
 						new StelemReduction2L( coeff.getNumer() , fac.getFac() ) );
@@ -1816,7 +2100,7 @@ public SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFacto
 
 @Override
 public void writeString( PrintStream ps ) {
-	ps.print( "Astelem" );
+	ps.print( "AstelemMetric" );
 }
 
 
@@ -2245,6 +2529,560 @@ protected void applyAdd(
 
 
 }
+
+
+
+
+
+
+
+
+/**
+ * An elem defining a partial derivative that is evaluated over the discretized space of the test.
+ * 
+ * @author thorngreen
+ *
+ */	
+private class AStelemConjugateMomentum extends Stelem<SymbolicElem<DoubleElem,DoubleElemFactory>,
+	SymbolicElemFactory<DoubleElem,DoubleElemFactory>,Ordinate>
+{	
+
+/**
+ * The index of the tensor component represented by the elem.
+ */
+protected ArrayList<BigInteger> index;
+
+
+/**
+ * Constructs the elem.
+ * 
+ * @param _fac The factory for the enclosed type.
+ * @param _index The index of the tensor component represented by the elem.
+ */
+public AStelemConjugateMomentum( SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> _fac,
+		ArrayList<BigInteger> _index ) {
+	super(_fac);
+	index = _index;
+}
+
+@Override
+public AStelemConjugateMomentum cloneInstance() {
+	AStelemConjugateMomentum cl = new AStelemConjugateMomentum( fac , index );
+	Iterator<Ordinate> it = partialMap.keySet().iterator();
+	while( it.hasNext() )
+	{
+		Ordinate key = it.next();
+		cl.partialMap.put(key, partialMap.get(key) );
+	}
+	return( cl );
+}
+
+@Override
+public SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> eval(
+		HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace)
+		throws NotInvertibleException,
+		MultiplicativeDistributionRequiredException {
+	
+	
+	HashMap<Ordinate,Ordinate> imp = (HashMap<Ordinate,Ordinate>) implicitSpace;
+	
+	
+	HashMap<HashMap<Ordinate, BigInteger>,CoeffNode> spacesA = new HashMap<HashMap<Ordinate, BigInteger>,CoeffNode>();
+	
+	
+	{
+		CoeffNode cf = new CoeffNode( fac.getFac().identity() , fac.getFac().identity() );
+		HashMap<Ordinate, BigInteger> key = new HashMap<Ordinate, BigInteger>();
+		Iterator<Ordinate> it = imp.keySet().iterator();
+		while( it.hasNext() )
+		{
+			Ordinate ae = it.next();
+			BigInteger valA = BigInteger.valueOf( imp.get( ae ).getCol() );
+			key.put( ae , valA );
+		}
+		spacesA.put( key , cf );
+	}
+	
+	
+	{
+		Iterator<Ordinate> it = partialMap.keySet().iterator();
+		while( it.hasNext() )
+		{
+			HashMap<HashMap<Ordinate, BigInteger>,CoeffNode> spacesB = new HashMap<HashMap<Ordinate, BigInteger>,CoeffNode>();
+			final Ordinate ae = it.next();
+			final BigInteger numDerivs = partialMap.get( ae );
+			/* final boolean tmpChk = ( ae.getCol() == 0 ) && ( numDerivs.intValue() > 1 );
+			if( tmpChk )
+			{
+				System.out.print( "** " + ( ae.getCol() ) );
+				System.out.print(  " >> " + ( numDerivs.intValue() ) + " // " + index );
+			} */
+			applyDerivativeAction( spacesA , ae , numDerivs.intValue() , HH[ ae.getCol() ] , spacesB );
+			spacesA = spacesB;
+		}
+	}
+	
+	
+	SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> ret = fac.zero();
+	
+	
+	{
+		Iterator<HashMap<Ordinate, BigInteger>> it = spacesA.keySet().iterator();
+		while( it.hasNext() )
+		{
+			HashMap<Ordinate, BigInteger> spaceAe = it.next();
+			CoeffNode coeff = spacesA.get( spaceAe );
+			final CNelemConjugateMomentum an0 = 
+					new CNelemConjugateMomentum( fac.getFac() , spaceAe , index );
+			SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>
+				an1 = an0.mult( 
+						new StelemReduction2L( coeff.getNumer() , fac.getFac() ) );
+			SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> 
+				an2 = an1.mult( 
+						( new StelemReduction2L( coeff.getDenom() , fac.getFac() ) ).invertLeft() );
+			ret = ret.add( an2 );
+		}
+	}  
+	
+	
+	return( ret );
+}
+
+@Override
+public void writeString( PrintStream ps ) {
+	ps.print( "AstelemConjugateMomentum" );
+}
+
+
+        /**
+         * Applies a discretized approximation of a derivative using the following rules where "N"
+		 * is the number of derivatives and "h" is the size of the discretization:
+		 * <P>
+		 * <P> N = 0 -- Zero derivatives have been taken so simply return the original value of  the elem.
+		 * <P>
+		 * <P> N = 1 -- Use the first derivative formula <math display="inline">
+         * <mrow>
+         *   <mfrac>
+         *     <mrow>
+         *       <mi>F</mi><mo>&ApplyFunction;</mo>
+         *       <mfenced open="(" close=")" separators=",">
+         *         <mrow>
+         *           <mi>x</mi>
+         *           <mo>+</mo>
+         *           <mi>h</mi>
+         *         </mrow>
+         *       </mfenced>
+         *       <mo>-</mo>
+         *       <mi>F</mi><mo>&ApplyFunction;</mo>
+         *       <mfenced open="(" close=")" separators=",">
+         *         <mrow>
+         *           <mi>x</mi>
+         *           <mo>-</mo>
+         *           <mi>h</mi>
+         *         </mrow>
+         *       </mfenced>
+         *     </mrow>
+         *     <mrow>
+         *       <mn>2</mn>
+         *       <mi>h</mi>
+         *     </mrow>
+         *   </mfrac>
+         * </mrow>
+         * </math>
+		 * <P>
+		 * <P> (See http://en.wikipedia.org/wiki/Numerical_differentiation)
+		 * <P>
+		 * <P> N = 2 -- Use the second derivative formula <math display="inline">
+         * <mrow>
+         *   <mfrac>
+         *     <mrow>
+         *       <mi>F</mi><mo>&ApplyFunction;</mo>
+         *       <mfenced open="(" close=")" separators=",">
+         *         <mrow>
+         *           <mi>x</mi>
+         *           <mo>+</mo>
+         *           <mn>2</mn>
+         *           <mi>h</mi>
+         *         </mrow>
+         *       </mfenced>
+         *       <mo>-</mo>
+         *       <mn>2</mn>
+         *       <mi>F</mi><mo>&ApplyFunction;</mo>
+         *       <mfenced open="(" close=")" separators=",">
+         *         <mrow>
+         *           <mi>x</mi>
+         *         </mrow>
+         *       </mfenced>
+         *       <mo>+</mo>
+         *       <mi>F</mi><mo>&ApplyFunction;</mo>
+         *       <mfenced open="(" close=")" separators=",">
+         *         <mrow>
+         *           <mi>x</mi>
+         *           <mo>-</mo>
+         *           <mn>2</mn>
+         *           <mi>h</mi>
+         *         </mrow>
+         *       </mfenced>
+         *     </mrow>
+         *     <mrow>
+         *       <mn>4</mn>
+         *       <msup>
+         *               <mi>h</mi>
+         *             <mn>2</mn>
+         *       </msup>
+         *     </mrow>
+         *   </mfrac>
+         * </mrow>
+         * </math>
+		 * <P>
+		 * <P> (See http://en.wikipedia.org/wiki/Second_derivative)
+		 * <P>
+		 * <P> N = 3 -- Use the third derivative formula <math display="inline">
+         * <mrow>
+         *   <mfrac>
+         *     <mrow>
+         *       <mo>-</mo>
+         *       <mi>F</mi><mo>&ApplyFunction;</mo>
+         *       <mfenced open="(" close=")" separators=",">
+         *         <mrow>
+         *           <mi>x</mi>
+         *           <mo>-</mo>
+         *           <mn>2</mn>
+         *           <mi>h</mi>
+         *         </mrow>
+         *       </mfenced>
+         *       <mo>+</mo>
+         *       <mn>2</mn>
+         *       <mi>F</mi><mo>&ApplyFunction;</mo>
+         *       <mfenced open="(" close=")" separators=",">
+         *         <mrow>
+         *           <mi>x</mi>
+         *           <mo>-</mo>
+         *           <mi>h</mi>
+         *         </mrow>
+         *       </mfenced>
+         *       <mo>-</mo>
+         *       <mn>2</mn>
+         *       <mi>F</mi><mo>&ApplyFunction;</mo>
+         *       <mfenced open="(" close=")" separators=",">
+         *         <mrow>
+         *           <mi>x</mi>
+         *           <mo>-</mo>
+         *           <mi>h</mi>
+         *         </mrow>
+         *       </mfenced>
+         *       <mo>+</mo>
+         *       <mi>F</mi><mo>&ApplyFunction;</mo>
+         *       <mfenced open="(" close=")" separators=",">
+         *         <mrow>
+         *           <mi>x</mi>
+         *           <mo>+</mo>
+         *           <mn>2</mn>
+         *           <mi>h</mi>
+         *         </mrow>
+         *       </mfenced>
+         *     </mrow>
+         *     <mrow>
+         *       <mn>2</mn>
+         *       <msup>
+         *               <mi>h</mi>
+         *             <mn>3</mn>
+         *       </msup>
+         *     </mrow>
+         *   </mfrac>
+         * </mrow>
+         * </math>
+		 * <P>
+		 * <P> (See http://www.geometrictools.com/Documentation/FiniteDifferences.pdf)
+		 * <P>
+		 * <P> N > 3 -- Combine results from smaller values of N to build an approximation of a higher-order derivative.
+         * 
+         * @param implicitSpacesIn The input implicit space containing the discretized approximation function.
+         * @param node The ordinate over which to take the derivative.
+         * @param numDerivatives The number of derivatives to apply.
+         * @param hh The size of the discretization.
+         * @param implicitSpacesOut The output implicit space containing the discretized approximation function with the derivatives applied.
+         * @throws MultiplicativeDistributionRequiredException 
+         * @throws NotInvertibleException 
+         */
+protected void applyDerivativeAction( HashMap<HashMap<Ordinate, BigInteger>,CoeffNode> implicitSpacesIn , 
+		Ordinate node , final int numDerivatives , DoubleElem hh ,
+		HashMap<HashMap<Ordinate, BigInteger>,CoeffNode> implicitSpacesOut ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+{
+	if( numDerivatives > 3 )
+	{
+		HashMap<HashMap<Ordinate, BigInteger>,CoeffNode> implicitSpacesMid = new HashMap<HashMap<Ordinate, BigInteger>,CoeffNode>();
+		applyDerivativeAction(implicitSpacesIn, node, 3, hh, implicitSpacesMid);
+		applyDerivativeAction(implicitSpacesMid, node, numDerivatives-3, hh, implicitSpacesOut);
+	}
+	
+	Iterator<HashMap<Ordinate, BigInteger>> it = implicitSpacesIn.keySet().iterator();
+	while( it.hasNext() )
+	{
+		final HashMap<Ordinate, BigInteger> implicitSpace = it.next();
+		final CoeffNode coeffNodeIn = implicitSpacesIn.get( implicitSpace );
+		
+		switch( numDerivatives )
+		{
+		
+		case 0:
+			{
+				applyAdd( implicitSpace , coeffNodeIn , implicitSpacesOut );
+			}
+			break;
+		
+		case 1:
+			{
+				applyDerivativeAction1( 
+						implicitSpace , coeffNodeIn ,
+						node , hh ,
+						implicitSpacesOut );
+			}
+			break;
+			
+		case 2:
+			{
+				applyDerivativeAction2( 
+						implicitSpace , coeffNodeIn ,
+						node , hh ,
+						implicitSpacesOut );
+			}
+			break;
+			
+		case 3:
+			{
+				applyDerivativeAction3( 
+					implicitSpace , coeffNodeIn ,
+					node , hh ,
+					implicitSpacesOut );
+			}
+			break;
+			
+		}
+	}
+}
+
+
+
+
+
+/**
+ * Applies a discretized approximation of a first derivative.
+ * 
+ * @param implicitSpace The input implicit space containing the discretized approximation function.
+ * @param coeffNodeIn The discretized coefficient onto which to apply the derivative.
+ * @param node The ordinate over which to take the derivative.
+ * @param hh The size of the discretization.
+ * @param implicitSpacesOut The output implicit space containing the discretized approximation function with the derivatives applied.
+ * @throws NotInvertibleException
+ * @throws MultiplicativeDistributionRequiredException
+ */
+protected void applyDerivativeAction1( 
+		final HashMap<Ordinate, BigInteger> implicitSpace , final CoeffNode coeffNodeIn ,
+		Ordinate node , DoubleElem hh ,
+		HashMap<HashMap<Ordinate, BigInteger>,CoeffNode> implicitSpacesOut ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+{
+	final HashMap<Ordinate, BigInteger> implicitSpaceOutM1 = new HashMap<Ordinate, BigInteger>();
+	final HashMap<Ordinate, BigInteger> implicitSpaceOutP1 = new HashMap<Ordinate, BigInteger>();
+	
+	Iterator<Ordinate> itA = implicitSpace.keySet().iterator();
+	while( itA.hasNext() )
+	{
+		Ordinate ae = itA.next();
+		final BigInteger valAe = implicitSpace.get( ae );
+		if( node.symbolicEquals( ae ) )
+		{
+			final BigInteger valAeM1 = valAe.subtract( BigInteger.ONE );
+			final BigInteger valAeP1 = valAe.add( BigInteger.ONE );
+			implicitSpaceOutM1.put( ae , valAeM1 );
+			implicitSpaceOutP1.put( ae , valAeP1 );
+		}
+		else
+		{
+			implicitSpaceOutM1.put( ae , valAe );
+			implicitSpaceOutP1.put( ae , valAe );
+		}
+	}
+	
+	final CoeffNode coeffNodeOutM1 = new CoeffNode(  coeffNodeIn.getNumer().negate() , 
+			coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( genFromConstDbl( 2.0 ) ), hh.getFac() ) ) );
+	final CoeffNode coeffNodeOutP1 = new CoeffNode( coeffNodeIn.getNumer() , 
+			coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( genFromConstDbl( 2.0 ) ), hh.getFac() ) ) );
+	
+	applyAdd( implicitSpaceOutM1 , coeffNodeOutM1 , implicitSpacesOut );
+	applyAdd( implicitSpaceOutP1 , coeffNodeOutP1 , implicitSpacesOut );
+}
+
+
+
+
+/**
+ * Applies a discretized approximation of a second derivative.
+ * 
+ * @param implicitSpace The input implicit space containing the discretized approximation function.
+ * @param coeffNodeIn The discretized coefficient onto which to apply the derivative.
+ * @param node The ordinate over which to take the derivative.
+ * @param hh The size of the discretization.
+ * @param implicitSpacesOut The output implicit space containing the discretized approximation function with the derivatives applied.
+ * @throws NotInvertibleException
+ * @throws MultiplicativeDistributionRequiredException
+ */
+protected void applyDerivativeAction2( 
+		final HashMap<Ordinate, BigInteger> implicitSpace , final CoeffNode coeffNodeIn ,
+		Ordinate node , DoubleElem hh ,
+		HashMap<HashMap<Ordinate, BigInteger>,CoeffNode> implicitSpacesOut ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+{
+	final HashMap<Ordinate, BigInteger> implicitSpaceOutM2 = new HashMap<Ordinate, BigInteger>();
+	final HashMap<Ordinate, BigInteger> implicitSpaceOutP2 = new HashMap<Ordinate, BigInteger>();
+	
+	Iterator<Ordinate> itA = implicitSpace.keySet().iterator();
+	while( itA.hasNext() )
+	{
+		Ordinate ae = itA.next();
+		final BigInteger valAe = implicitSpace.get( ae );
+		if( node.symbolicEquals( ae ) )
+		{
+			final BigInteger valAeM2 = valAe.subtract( BigInteger.valueOf( 2 ) );
+			final BigInteger valAeP2 = valAe.add( BigInteger.valueOf( 2 ) );
+			implicitSpaceOutM2.put( ae , valAeM2 );
+			implicitSpaceOutP2.put( ae , valAeP2 );
+		}
+		else
+		{
+			implicitSpaceOutM2.put( ae , valAe );
+			implicitSpaceOutP2.put( ae , valAe );
+		}
+	}
+	
+	final CoeffNode coeffNodeOutM2 = new CoeffNode(  coeffNodeIn.getNumer() , 
+			coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( hh ).mult( genFromConstDbl( 4.0 ) ) , hh.getFac() ) ) );
+	final CoeffNode coeffNodeOut = new CoeffNode(  coeffNodeIn.getNumer().negate() , 
+			coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( hh ).mult( genFromConstDbl( 2.0 ) ) , hh.getFac() ) ) );
+	final CoeffNode coeffNodeOutP2 = new CoeffNode( coeffNodeIn.getNumer() , 
+			coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( hh ).mult( genFromConstDbl( 4.0 ) ) , hh.getFac() ) ) );
+	
+	applyAdd( implicitSpaceOutM2 , coeffNodeOutM2 , implicitSpacesOut );
+	applyAdd( implicitSpace , coeffNodeOut , implicitSpacesOut );
+	applyAdd( implicitSpaceOutP2 , coeffNodeOutP2 , implicitSpacesOut );
+}
+
+
+
+
+
+
+/**
+ * Applies a discretized approximation of a third derivative.
+ * 
+ * @param implicitSpace The input implicit space containing the discretized approximation function.
+ * @param coeffNodeIn The discretized coefficient onto which to apply the derivative.
+ * @param node The ordinate over which to take the derivative.
+ * @param hh The size of the discretization.
+ * @param implicitSpacesOut The output implicit space containing the discretized approximation function with the derivatives applied.
+ * @throws NotInvertibleException
+ * @throws MultiplicativeDistributionRequiredException
+ */
+protected void applyDerivativeAction3( 
+		final HashMap<Ordinate, BigInteger> implicitSpace , final CoeffNode coeffNodeIn ,
+		Ordinate node , DoubleElem hh ,
+		HashMap<HashMap<Ordinate, BigInteger>,CoeffNode> implicitSpacesOut ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+{
+	final HashMap<Ordinate, BigInteger> implicitSpaceOutM1 = new HashMap<Ordinate, BigInteger>();
+	final HashMap<Ordinate, BigInteger> implicitSpaceOutP1 = new HashMap<Ordinate, BigInteger>();
+	final HashMap<Ordinate, BigInteger> implicitSpaceOutM2 = new HashMap<Ordinate, BigInteger>();
+	final HashMap<Ordinate, BigInteger> implicitSpaceOutP2 = new HashMap<Ordinate, BigInteger>();
+	
+	Iterator<Ordinate> itA = implicitSpace.keySet().iterator();
+	while( itA.hasNext() )
+	{
+		Ordinate ae = itA.next();
+		final BigInteger valAe = implicitSpace.get( ae );
+		if( node.symbolicEquals( ae ) )
+		{
+			final BigInteger valAeM1 = valAe.subtract( BigInteger.ONE );
+			final BigInteger valAeP1 = valAe.add( BigInteger.ONE );
+			final BigInteger valAeM2 = valAe.subtract( BigInteger.valueOf( 2 ) );
+			final BigInteger valAeP2 = valAe.add( BigInteger.valueOf( 2 ) );
+			implicitSpaceOutM1.put( ae , valAeM1 );
+			implicitSpaceOutP1.put( ae , valAeP1 );
+			implicitSpaceOutM2.put( ae , valAeM2 );
+			implicitSpaceOutP2.put( ae , valAeP2 );
+		}
+		else
+		{
+			implicitSpaceOutM1.put( ae , valAe );
+			implicitSpaceOutP1.put( ae , valAe );
+			implicitSpaceOutM2.put( ae , valAe );
+			implicitSpaceOutP2.put( ae , valAe );
+		}
+	}
+	
+	final CoeffNode coeffNodeOutM1 = new CoeffNode(  coeffNodeIn.getNumer().mult( new SymbolicConst( genFromConstDbl( 2.0 ) , hh.getFac() ) ) , 
+			coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( hh.mult( hh.mult( genFromConstDbl( 2.0 ) ) ) ), hh.getFac() ) ) );
+	final CoeffNode coeffNodeOutP1 = new CoeffNode( coeffNodeIn.getNumer().negate().mult( new SymbolicConst( genFromConstDbl( 2.0 ) , hh.getFac() ) ) , 
+			coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( hh.mult( hh.mult( genFromConstDbl( 2.0 ) ) ) ), hh.getFac() ) ) );
+	final CoeffNode coeffNodeOutM2 = new CoeffNode(  coeffNodeIn.getNumer().negate() , 
+			coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( hh.mult( hh.mult( genFromConstDbl( 2.0 ) ) ) ), hh.getFac() ) ) );
+	final CoeffNode coeffNodeOutP2 = new CoeffNode( coeffNodeIn.getNumer() , 
+			coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( hh.mult( hh.mult( genFromConstDbl( 2.0 ) ) ) ), hh.getFac() ) ) );
+	
+	applyAdd( implicitSpaceOutM1 , coeffNodeOutM1 , implicitSpacesOut );
+	applyAdd( implicitSpaceOutP1 , coeffNodeOutP1 , implicitSpacesOut );
+	applyAdd( implicitSpaceOutM2 , coeffNodeOutM2 , implicitSpacesOut );
+	applyAdd( implicitSpaceOutP2 , coeffNodeOutP2 , implicitSpacesOut );
+}
+
+
+
+
+
+/**
+ * Adds a coefficient times the input implicit space to the output implicit space.
+ * 
+ * @param implicitSpace The input implicit space.
+ * @param node The coefficient.
+ * @param implicitSpacesOut The output implicit space.
+ * @throws MultiplicativeDistributionRequiredException 
+ * @throws NotInvertibleException 
+ */
+protected void applyAdd( 
+		HashMap<Ordinate, BigInteger> implicitSpace , CoeffNode node ,
+		HashMap<HashMap<Ordinate, BigInteger>,CoeffNode> implicitSpacesOut ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+{
+	CoeffNode prev = implicitSpacesOut.get( implicitSpace );
+	
+	if( prev == null )
+	{
+		implicitSpacesOut.put( implicitSpace , node );
+		return;
+	}
+	
+	if( ( prev.getDenom().eval( null ).getVal() == node.getDenom().eval( null ).getVal() ) &&
+		( prev.getDenom().eval( null ).getVal() == node.getDenom().eval( null ).getVal() ) ) 
+	{
+		SymbolicElem<DoubleElem,DoubleElemFactory> outN = node.getNumer().add( prev.getNumer() );
+		CoeffNode nxt = new CoeffNode( outN , prev.getDenom() );
+		implicitSpacesOut.put( implicitSpace , nxt );
+		return;
+	}
+	
+	
+	SymbolicElem<DoubleElem,DoubleElemFactory> outDenom = prev.getDenom().mult( node.getDenom() );
+	
+	SymbolicElem<DoubleElem,DoubleElemFactory> outNumer = ( node.getDenom().mult( prev.getNumer() ) ).add( prev.getDenom().mult( node.getNumer() ) );
+	
+	CoeffNode nxt = new CoeffNode( outNumer , outDenom );
+	
+	implicitSpacesOut.put( implicitSpace , nxt );
+}
+
+
+
+}
+	
+	
+
+
 	
 	
 	
@@ -2934,7 +3772,7 @@ protected class TestMetricTensorFactory4 extends MetricTensorInvertingFactory<St
 			final ArrayList<BigInteger> ab = new ArrayList<BigInteger>();
 			ab.add( BigInteger.valueOf( acnt / TestDimensionFour.FOUR ) );
 			ab.add( BigInteger.valueOf( acnt % TestDimensionFour.FOUR ) );
-			final AStelem as = new AStelem( se2A  , ab );
+			final AStelemMetric as = new AStelemMetric( se2A  , ab );
 			g0.setVal( ab , as );
 		}
 		
@@ -3026,7 +3864,7 @@ protected class TestMetricTensorFactory3 extends MetricTensorInvertingFactory<St
 				final ArrayList<BigInteger> ab = new ArrayList<BigInteger>();
 				ab.add( BigInteger.valueOf( acnt / TestDimensionFour.FOUR ) );
 				ab.add( BigInteger.valueOf( acnt % TestDimensionFour.FOUR ) );
-				final AStelem as = new AStelem( se2A  , ab );
+				final AStelemMetric as = new AStelemMetric( se2A  , ab );
 				g0.setVal( ab , as );
 			}
 		}
@@ -3090,11 +3928,13 @@ protected void initIterArray()
 			final double dz = ( z - HALF_Z ) / RAD_Z;
 			if( dx * dx + dy * dy + dz * dz < 1.0 )
 			{
-				iterArray[ tcnt ][ x ][ y ][ z ] = genDiffEnt();
+				iterArrayMetric[ tcnt ][ x ][ y ][ z ] = genDiffEnt();
+				iterArrayConjugateMomentum[ tcnt ][ x ][ y ][ z ] = genDiffEnt();
 			}
 			else
 			{
-				iterArray[ tcnt ][ x ][ y ][ z ] = genDiffAll();
+				iterArrayMetric[ tcnt ][ x ][ y ][ z ] = genDiffAll();
+				iterArrayConjugateMomentum[ tcnt ][ x ][ y ][ z ] = genDiffAll();
 			}
 		}
 	}
@@ -3118,7 +3958,8 @@ protected void initTempArray()
 			{
 				for( int zcnt = 0 ; zcnt < 2 ; zcnt++ )
 				{
-					tempArray[ tcnt ][ xcnt ][ ycnt ][ zcnt ] = genDiffAll( );
+					tempArrayMetric[ tcnt ][ xcnt ][ ycnt ][ zcnt ] = genDiffAll( );
+					tempArrayConjugateMomentum[ tcnt ][ xcnt ][ ycnt ][ zcnt ] = genDiffAll( );
 				}
 			}
 		}
@@ -3354,7 +4195,7 @@ protected void performIterationT( final int tval , final StelemDescent descent ,
 		//	resetCorrectionValue( tmpCorrectionValue );
 		//}
 	
-		iterArray[ tval + 1 ][ im.getXcnt() ][ im.getYcnt() ][ im.getZcnt() ] = val;
+		iterArrayMetric[ tval + 1 ][ im.getXcnt() ][ im.getYcnt() ][ im.getZcnt() ] = val; // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			
 		
 		
@@ -3656,10 +4497,10 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 					index.add( BigInteger.valueOf( acnt / TestDimensionFour.FOUR ) );
 					index.add( BigInteger.valueOf( acnt % TestDimensionFour.FOUR ) );
 				
-					ArrayList<CNelem> ce = new ArrayList<CNelem>();
-					ce.add( new CNelem( seA , coord , index ) );
+//					ArrayList<CNelem> ce = new ArrayList<CNelem>(); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//					ce.add( new CNelem( seA , coord , index ) ); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 				
-					wrt3.put( index , ce );
+//					wrt3.put( index , ce ); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 				}
 			}
 		}
