@@ -59,7 +59,7 @@ import simplealgebra.ddx.*;
 import simplealgebra.ga.*;
 import simplealgebra.et.*;
 import test_simplealgebra.TestConnectionCoefficient.TestMetricTensorFactory;
-import test_simplealgebra.TestStelemD.IncrementManager;
+
 
 
 
@@ -422,17 +422,26 @@ public class TestGeneralRelativityAdm extends TestCase {
 	 * 
 	 * @param dbl The change to apply to the temp array.
 	 */
-	protected static void performIterationUpdate( EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> dbl )
+	protected static void performIterationUpdateMetric( DoubleElem dbl , ArrayList<BigInteger> tensorIndex )
 	{
 		EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> va
-			= (EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>)( tempArrayMetric[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] ); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			= (EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>)( tempArrayMetric[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] );
 		if( va == null )
 		{
-			tempArrayMetric[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] = dbl; // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			final DoubleElemFactory de = new DoubleElemFactory();
+			final ArrayList<String> contravariantIndices = new ArrayList<String>();
+			final ArrayList<String> covariantIndices = new ArrayList<String>();
+			covariantIndices.add( "i" );
+			covariantIndices.add( "j" );
+			final EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>
+				et = new EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>( de , contravariantIndices , covariantIndices );
+			et.setVal( tensorIndex , dbl );			
+			tempArrayMetric[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] = et;
 			return;
 		}
-		tempArrayMetric[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] = va.add( dbl ); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		va.setVal( tensorIndex, va.getVal( tensorIndex ).add( dbl ) );
 	}
+	
 	
 	
 	/**
@@ -441,11 +450,82 @@ public class TestGeneralRelativityAdm extends TestCase {
 	 * 
 	 * @param dbl The change to apply to the temp array.
 	 */
-	protected static void setIterationValue( EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> dbl )
+	protected static void performIterationUpdateConjugateMomentum( DoubleElem dbl , ArrayList<BigInteger> tensorIndex )
 	{
 		EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> va
-			= (EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>)( tempArrayMetric[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] ); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		tempArrayMetric[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] = dbl; // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			= (EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>)( tempArrayConjugateMomentum[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] );
+		if( va == null )
+		{
+			final DoubleElemFactory de = new DoubleElemFactory();
+			final ArrayList<String> contravariantIndices = new ArrayList<String>();
+			final ArrayList<String> covariantIndices = new ArrayList<String>();
+			contravariantIndices.add( "i" );
+			contravariantIndices.add( "j" );
+			final EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>
+				et = new EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>( de , contravariantIndices , covariantIndices );
+			et.setVal( tensorIndex , dbl );
+			tempArrayConjugateMomentum[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] = et;
+			return;
+		}
+		va.setVal( tensorIndex, va.getVal( tensorIndex ).add( dbl ) );
+	}
+	
+	
+	
+	/**
+	 * Given a change calculated by a descent algorithm iteration,
+	 * applies the change to the temp array.
+	 * 
+	 * @param dbl The change to apply to the temp array.
+	 */
+	protected static void setIterationValueMetric( EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> dbl )
+	{
+		EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> va
+			= (EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>)( tempArrayMetric[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] );
+		tempArrayMetric[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] = dbl;
+	}
+	
+	
+	
+	
+	/**
+	 * Given a change calculated by a descent algorithm iteration,
+	 * applies the change to the temp array.
+	 * 
+	 * @param dbl The change to apply to the temp array.
+	 */
+	protected static void setIterationValueConjugateMomentum( EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> dbl )
+	{
+		EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> va
+			= (EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>)( tempArrayConjugateMomentum[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] );
+		tempArrayConjugateMomentum[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] = dbl;
+	}
+	
+	
+	
+	
+	/**
+	 * Returns the result of the descent algorithm iterations
+	 * from the temp array.
+	 * 
+	 * @return The value in the temp array.
+	 */
+	protected static DoubleElem getUpdateValueMetric( final ArrayList<BigInteger> index )
+	{
+		EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> va
+			= (EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>)( tempArrayMetric[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] );
+		if( va != null )
+		{
+			DoubleElem ret = va.getVal( index );
+			if( ret != null )
+			{
+				return( ret );
+			}
+			DoubleElemFactory da = new DoubleElemFactory();
+			return( da.zero() );
+		}
+		DoubleElemFactory da = new DoubleElemFactory();
+		return( da.zero() );
 	}
 	
 	
@@ -456,10 +536,36 @@ public class TestGeneralRelativityAdm extends TestCase {
 	 * 
 	 * @return The value in the temp array.
 	 */
-	protected static EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> getUpdateValue()
+	protected static DoubleElem getUpdateValueConjugateMomentum( final ArrayList<BigInteger> index )
 	{
 		EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> va
-			= (EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>)( tempArrayMetric[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] ); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			= (EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>)( tempArrayConjugateMomentum[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] );
+		if( va != null )
+		{
+			DoubleElem ret = va.getVal( index );
+			if( ret != null )
+			{
+				return( ret );
+			}
+			DoubleElemFactory da = new DoubleElemFactory();
+			return( da.zero() );
+		}
+		DoubleElemFactory da = new DoubleElemFactory();
+		return( da.zero() );
+	}
+	
+	
+	
+	/**
+	 * Returns the predictor-correction value of the iterations
+	 * from the temp array.
+	 * 
+	 * @return The value in the temp array.
+	 */
+	protected static EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> getCorrectionValueMetric()
+	{
+		EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> va
+			= (EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>)( tempArrayMetric[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ][ NSTPZ ] );
 		if( va != null )
 		{
 			return( va );
@@ -475,16 +581,17 @@ public class TestGeneralRelativityAdm extends TestCase {
 	}
 	
 	
+	
 	/**
 	 * Returns the predictor-correction value of the iterations
 	 * from the temp array.
 	 * 
 	 * @return The value in the temp array.
 	 */
-	protected static EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> getCorrectionValue()
+	protected static EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> getCorrectionValueConjugateMomentum()
 	{
 		EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> va
-			= (EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>)( tempArrayMetric[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ][ NSTPZ ] ); // !!!!!!!!!!!!!!!!!!!!!!!!!!!
+			= (EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>)( tempArrayConjugateMomentum[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ][ NSTPZ ] );
 		if( va != null )
 		{
 			return( va );
@@ -497,6 +604,19 @@ public class TestGeneralRelativityAdm extends TestCase {
 		EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>
 			ret = new EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>( da , contravariantIndices  , covariantIndices );
 		return( ret );
+	}
+	
+	
+	
+	/**
+	 * Resets the predictor-correction value of the iterations
+	 * from the temp array.
+	 * 
+	 * @param in The value to which to reset.
+	 */
+	protected static void resetCorrectionValueMetric( final EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> in )
+	{
+		tempArrayMetric[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ][ NSTPZ ] = in;
 	}
 	
 	
@@ -506,9 +626,9 @@ public class TestGeneralRelativityAdm extends TestCase {
 	 * 
 	 * @param in The value to which to reset.
 	 */
-	protected static void resetCorrectionValue( final EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> in )
+	protected static void resetCorrectionValueConjugateMomentum( final EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> in )
 	{
-		tempArrayMetric[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ][ NSTPZ ] = in; // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		tempArrayConjugateMomentum[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ][ NSTPZ ] = in;
 	}
 	
 	
@@ -3085,36 +3205,44 @@ protected void applyAdd(
 
 	
 	
-	
 	/**
-	 * descent algorithm evaluator for the test.
+	 * Newton-Raphson evaluator for the test.
 	 * 
 	 * @author thorngreen
 	 *
 	 */
-	protected class StelemDescent extends DescentAlgorithmMultiElemRemapTensorDiag<String,DoubleElem,DoubleElemFactory>
+	protected class StelemNewtonMetric extends NewtonRaphsonSingleElem<DoubleElem,DoubleElemFactory>
 	{
-
+		
+		/**
+		 * The tensor index at which to perform the eval.
+		 */
+		protected ArrayList<BigInteger> tensorIndex;
+		
 		
 		/**
 		 * Constructs the evaluator.
 		 * 
-		 * @param param Input parameters for the remap.
+		 * @param _function The function over which to evaluate Netwon-Raphson.
+		 * @param _withRespectTo The variable over which to evaluate the derivative of the function.
+		 * @param implicitSpaceFirstLevel The initial implicit space over which to take the function and its derivative.
 		 * @throws NotInvertibleException
 		 * @throws MultiplicativeDistributionRequiredException
 		 */
-		public StelemDescent(
-				final DescentAlgorithmMultiElemRemapTensorParam<String,DoubleElem,DoubleElemFactory> param )
+		public StelemNewtonMetric(
+				final DescentAlgorithmMultiElemRemapTensorParam<String,DoubleElem,DoubleElemFactory> param ,
+				ArrayList<BigInteger> _tensorIndex)
 				throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
-			super( param );
-			
+			super( param.getFunctions().getVal( _tensorIndex ), param.getWithRespectTosI().get( _tensorIndex ) , 
+					param.getImplicitSpaceFirstLevel() );
+			tensorIndex = _tensorIndex;
 			// System.out.println( "**" );
 			// System.out.println( this.partialEval.writeString() );
 		}
-
+		
 		/**
-		 * The iteration count for descent algorithm iterations.
+		 * The iteration count for Newton-Raphson iterations.
 		 */
 		protected int intCnt = 0;
 
@@ -3125,198 +3253,116 @@ protected void applyAdd(
 		}
 		
 		@Override
-		public EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpaceInitialGuess ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+		public DoubleElem eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpaceInitialGuess ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 		{
 			intCnt = 0;
-			
-			// System.out.println( this.partialEval.writeString() ); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-			
 			return( super.eval(implicitSpaceInitialGuess) );
 		}
 		
 		@Override
-		protected void performIterationUpdate( EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> iterationOffset )
+		protected void performIterationUpdate( DoubleElem iterationOffset )
 		{
-			TestGeneralRelativityAdm.performIterationUpdate( iterationOffset );
+			TestGeneralRelativityAdm.performIterationUpdateMetric( iterationOffset , tensorIndex );
+		}
+		
+		/**
+		 * Copies an instance for cloneThread();
+		 * 
+		 * @param in The instance to copy.
+		 * @param threadIndex The index of the thread for which to clone.
+		 */
+		protected StelemNewtonMetric( final StelemNewtonMetric in , final BigInteger threadIndex )
+		{
+			super( in , threadIndex );
 		}
 		
 		@Override
-		protected void setIterationValue( EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> iterationOffset )
-		{
-			TestGeneralRelativityAdm.setIterationValue( iterationOffset );
-		}
-		
-		@Override
-		protected EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> getIterationValue( )
-		{
-			return( TestGeneralRelativityAdm.getUpdateValue( ) );
-		}
-		
-		@Override
-		public StelemDescent cloneThread( final BigInteger threadIndex )
+		public StelemNewtonMetric cloneThread( final BigInteger threadIndex )
 		{
 			throw( new RuntimeException( "Not Supported" ) );
 		}
 		
-		
-		/**
-		 * Returns whether convergence-wise the new function value should be accepted as an improvement over the old function value.
-		 * 
-		 * @param lastValue The old function value.
-		 * @param nextValue The new function value.
-		 * @return True iff. the new function value should be accepted as an improvement over the old function value.
-		 */
-		protected boolean evalIterationImproved(
-				GeometricAlgebraMultivectorElem<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim, GeometricAlgebraOrd<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim>, DoubleElem, DoubleElemFactory> lastValue,
-				GeometricAlgebraMultivectorElem<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim, GeometricAlgebraOrd<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim>, DoubleElem, DoubleElemFactory> nextValue ) 
-		{
-			DoubleElem lastTotal = new DoubleElem( 0.0 );
-			DoubleElem nextTotal = new DoubleElem( 0.0 );
-			
-			Iterator<HashSet<BigInteger>> it = lastValue.getKeyIterator();
-			while( it.hasNext() )
-			{
-				DoubleElem v = lastValue.get( it.next() );
-				lastTotal = lastTotal.add( v.mult( v ) );
-			}
-			
-			it = nextValue.getKeyIterator();
-			while( it.hasNext() )
-			{
-				DoubleElem v = nextValue.get( it.next() );
-				nextTotal = nextTotal.add( v.mult( v ) );
-			}
-			
-			final double ntv = nextTotal.getVal();
-			final double ptv = lastTotal.getVal();
-			// System.out.println( ntv + " --- " + ptv );
-			if( ntv < ptv )
-			{
-				return( true );
-			}
-			if( ( ntv - ptv ) < ( 1E-7 * ptv ) )
-			{
-				return( true );
-			}
-			return( false );
-		}
+	}
 	
+	
+	
+	
+	
+	/**
+	 * Newton-Raphson evaluator for the test.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
+	protected class StelemNewtonConjugateMomentum extends NewtonRaphsonSingleElem<DoubleElem,DoubleElemFactory>
+	{
+
+		/**
+		 * The tensor index at which to perform the eval.
+		 */
+		protected ArrayList<BigInteger> tensorIndex;
 		
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//		@Override
-//		protected EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> 
-//			evalPartialDerivative() throws NotInvertibleException, MultiplicativeDistributionRequiredException
-//		{
-//			EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>
-//				ev = super.evalPartialDerivative();
-//			for( int acnt = 0 ; acnt < 16 ; acnt++ )
-//			{
-//				final DoubleElem dd = new DoubleElem( 1E-6 * ( 2.0 * rand.nextDouble() ) );
-//				final HashSet<BigInteger> hs = new HashSet<BigInteger>();
-//				if( ( acnt & 1 ) != 0 ) hs.add( BigInteger.ZERO );
-//				if( ( acnt & 2 ) != 0 ) hs.add( BigInteger.ONE );
-//				if( ( acnt & 4 ) != 0 ) hs.add( BigInteger.valueOf( 2 ) );
-//				if( ( acnt & 8 ) != 0 ) hs.add( BigInteger.valueOf( 3 ) );
-//				DoubleElem dda = ev.getVal( hs );
-//				ev.setVal( hs , dd.add( dda ) );
-//			}
-//			return( ev );
-//		}
-//		
 		
 		/**
-		 * The internal multivariate descent algorithm.
+		 * Constructs the evaluator.
 		 * 
-		 * @author thorngreen
-		 *
+		 * @param _function The function over which to evaluate Netwon-Raphson.
+		 * @param _withRespectTo The variable over which to evaluate the derivative of the function.
+		 * @param implicitSpaceFirstLevel The initial implicit space over which to take the function and its derivative.
+		 * @throws NotInvertibleException
+		 * @throws MultiplicativeDistributionRequiredException
 		 */
-		protected class StelemDescentEnt extends DescentAlgorithmMultiElemInputParam<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim, DoubleElem, DoubleElemFactory>
-		{
-
-			@Override
-			protected void performIterationUpdate(
-					GeometricAlgebraMultivectorElem<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim, GeometricAlgebraOrd<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim>, DoubleElem, DoubleElemFactory> iterationOffset) {
-				StelemDescent.this.performIterationUpdateInternal( iterationOffset );
-			}
-			
-			@Override
-			protected void setIterationValue(
-					GeometricAlgebraMultivectorElem<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim, GeometricAlgebraOrd<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim>, DoubleElem, DoubleElemFactory> iterationOffset) {
-				StelemDescent.this.setIterationValueInternal( iterationOffset );
-			}
-			
-			@Override
-			protected GeometricAlgebraMultivectorElem<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim, GeometricAlgebraOrd<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim>, DoubleElem, DoubleElemFactory> getIterationValue() 
-			{
-				return( StelemDescent.this.getIterationValueInternal( ) );
-			}
-
-			@Override
-			protected boolean iterationsDone() {
-				return( StelemDescent.this.iterationsDone() );
-			}
-			
-			@Override
-			protected boolean useSimplification()
-			{
-				return( StelemDescent.this.useSimplification() );
-			}
-			
-			@Override
-			protected int getMaxIterationsBacktrack() {
-				return( StelemDescent.this.getMaxIterationsBacktrack() );
-			}
-			
-			@Override
-			protected boolean evalIterationImproved(
-					GeometricAlgebraMultivectorElem<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim, GeometricAlgebraOrd<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim>, DoubleElem, DoubleElemFactory> lastValue,
-					GeometricAlgebraMultivectorElem<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim, GeometricAlgebraOrd<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim>, DoubleElem, DoubleElemFactory> nextValue ) 
-			{
-				return( StelemDescent.this.evalIterationImproved(lastValue, nextValue) );
-			}
-			
-			
-			public StelemDescentEnt()
-			{
-				super();
-			}
-			
-			
-			protected StelemDescentEnt( StelemDescentEnt in , final BigInteger threadIndex )
-			{
-				super( in , threadIndex );
-			}
-			
-			
-			@Override
-			public StelemDescentEnt cloneThread( final BigInteger threadIndex )
-			{
-				return( new StelemDescentEnt( this , threadIndex ) );
-			}
-			
-			
-		};
-		
-
-		@Override
-		protected DescentAlgorithmMultiElem<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim, DoubleElem, DoubleElemFactory> genDescent(
-				GeometricAlgebraMultivectorElem<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim, GeometricAlgebraOrd<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim>, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> _functions,
-				ArrayList<ArrayList<? extends Elem<?, ?>>> _withRespectTos,
-				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpaceFirstLevel,
-				SymbolicElemFactory<DoubleElem, DoubleElemFactory> _sfac,
-				simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim _dim)
+		public StelemNewtonConjugateMomentum(
+				final DescentAlgorithmMultiElemRemapTensorParam<String,DoubleElem,DoubleElemFactory> param , 
+				ArrayList<BigInteger> _tensorIndex)
 				throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
-			
-			final StelemDescentEnt sa = new StelemDescentEnt();
-			sa.setFunctions( _functions );
-			sa.setWithRespectTos( _withRespectTos );
-			sa.setImplicitSpaceFirstLevel( implicitSpaceFirstLevel );
-			sa.setSfac( _sfac );
-			sa.setDim( _dim );
-			
-			return( new NewtonRaphsonMultiElemInterpBacktrack<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim, DoubleElem, DoubleElemFactory>( sa ) );
+			super( param.getFunctions().getVal( _tensorIndex ) , param.getWithRespectTosI().get( _tensorIndex ) , 
+					param.getImplicitSpaceFirstLevel() );
+			tensorIndex = _tensorIndex;
+			// System.out.println( "**" );
+			// System.out.println( this.partialEval.writeString() );
+		}
+		
+		/**
+		 * The iteration count for Newton-Raphson iterations.
+		 */
+		protected int intCnt = 0;
+
+		@Override
+		protected boolean iterationsDone() {
+			intCnt++;
+			return( intCnt > 20 );
+		}
+		
+		@Override
+		public DoubleElem eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpaceInitialGuess ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+		{
+			intCnt = 0;
+			return( super.eval(implicitSpaceInitialGuess) );
+		}
+		
+		@Override
+		protected void performIterationUpdate( DoubleElem iterationOffset )
+		{
+			TestGeneralRelativityAdm.performIterationUpdateConjugateMomentum( iterationOffset , tensorIndex );
+		}
+		
+		/**
+		 * Copies an instance for cloneThread();
+		 * 
+		 * @param in The instance to copy.
+		 * @param threadIndex The index of the thread for which to clone.
+		 */
+		protected StelemNewtonConjugateMomentum( final StelemNewtonConjugateMomentum in , final BigInteger threadIndex )
+		{
+			super( in , threadIndex );
+		}
+		
+		@Override
+		public StelemNewtonConjugateMomentum cloneThread( final BigInteger threadIndex )
+		{
+			throw( new RuntimeException( "Not Supported" ) );
 		}
 		
 	}
@@ -4105,7 +4151,9 @@ protected final IncrementManager im = new IncrementManager();
  * @throws NotInvertibleException
  * @throws MultiplicativeDistributionRequiredException
  */
-protected void performIterationT( final int tval , final StelemDescent descent , final HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace2 ) 
+protected void performIterationT( final int tval , final StelemNewtonMetric[] descentMetric ,
+		final StelemNewtonConjugateMomentum[] descentConjugateMomentum ,
+		final HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace2 ) 
 		throws NotInvertibleException, MultiplicativeDistributionRequiredException
 {
 	//EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> tmpCorrectionValue = null;
@@ -4114,89 +4162,190 @@ protected void performIterationT( final int tval , final StelemDescent descent ,
 	{
 		
 		System.out.println( "iter... " + im.getXcnt() + " " + im.getYcnt() + " " + im.getZcnt() );
-				
-		fillTempArray( tval , im.getXcnt() , im.getYcnt() , im.getZcnt() );
-		clearSpatialAssertArray();
-
-		
-		final EinsteinTensorElem<String,DoubleElem, DoubleElemFactory> 
-			ival = TestGeneralRelativityAdm.getUpdateValue();
 		
 		
-	
-		
-		EinsteinTensorElem<String,DoubleElem, DoubleElemFactory> err = descent.eval( implicitSpace2 );
-				
-				
-		//if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
-		//{
-		//	tmpCorrectionValue = getCorrectionValue();
-		//	applyPredictorCorrector();
-		//			
-		//	err = descent.eval( implicitSpace2 );
-		//}
-
-
-		final EinsteinTensorElem<String,DoubleElem, DoubleElemFactory> 
-			val = TestGeneralRelativityAdm.getUpdateValue();
-				
-				
-		
-		if( ( im.getXcnt() == HALF_X ) && ( im.getYcnt() == HALF_Y ) && ( im.getZcnt() == HALF_Z ) )
+		for( int bcnt = 0 ; bcnt < 9 ; bcnt++ )
 		{
-			System.out.println( "******************" );
-			System.out.println( " ( " + im.getXcnt() + " , " + im.getYcnt() + " , " + im.getZcnt() + " ) " );
-			System.out.println( Math.sqrt( calcMagnitudeSq( ival ) ) );
-			System.out.println( Math.sqrt( calcMagnitudeSq( val ) ) );
-			System.out.println( "## " + ( Math.sqrt( calcMagnitudeSq( err ) ) ) );
-		}
-				
-				
-		/* Assert.assertTrue( spatialAssertArray[ 0 ][ 0 ][ 0 ][ 0 ] == 0 );
-				
-		Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 1 ] > 0 );
-				
-		Assert.assertTrue( spatialAssertArray[ 2 ][ 1 ][ 1 ][ 1 ] > 0 );
-		Assert.assertTrue( spatialAssertArray[ 1 ][ 2 ][ 1 ][ 1 ] > 0 );
-		Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 2 ][ 1 ] > 0 );
-		Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 2 ] > 0 );
-				
-		Assert.assertTrue( spatialAssertArray[ 0 ][ 1 ][ 1 ][ 1 ] > 0 );
-		Assert.assertTrue( spatialAssertArray[ 1 ][ 0 ][ 1 ][ 1 ] > 0 );
-		Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 0 ][ 1 ] > 0 );
-		Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 0 ] > 0 ); */
-				
-		// for( int xc = 0 ; xc < 2 * NSTPX - 1 ; xc++ )
-		// {
-		//	for( int yc = 0 ; yc < 2 * NSTPY - 1 ; yc++ )
-		//	{
-		//		for( int zc = 0 ; zc < 2 * NSTPZ - 1 ; zc++ )
-		//		{
-		//			if( ( xc == NSTPX ) && ( yc == NSTPY ) && ( zc == NSTPZ ) )
-		//			{
-		//				Assert.assertTrue( spatialAssertArray[ NSTPT * 2 ][ xc ][ yc ][ zc ] > 0 );
-		//			}
-		//			else
-		//			{
-		//				Assert.assertTrue( spatialAssertArray[ NSTPT * 2 ][ xc ][ yc ][ zc ] == 0 );
-		//			}
-		//		}
-		//	}
-		// }
-		
-		
-		System.out.println( "***  " + im.getXcnt() + "  " + im.getYcnt() + "  " + im.getZcnt() );
-		System.out.println( calcMagnitudeSq( val ) );
-		System.out.println( calcMagnitudeSq( err ) );
-		// Assert.assertTrue( Math.abs( Math.sqrt( calcMagnitudeSq( err ) ) ) < ( 0.01 * Math.abs( Math.sqrt( calcMagnitudeSq( val ) ) ) + 0.01 ) );
-		
-		//if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
-		//{
-		//	resetCorrectionValue( tmpCorrectionValue );
-		//}
-	
-		iterArrayMetric[ tval + 1 ][ im.getXcnt() ][ im.getYcnt() ][ im.getZcnt() ] = val; // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			final ArrayList<BigInteger> index = new ArrayList<BigInteger>();
+			index.add( BigInteger.valueOf( ( bcnt / 3 ) + 1 ) );
+			index.add( BigInteger.valueOf( ( bcnt % 3 ) + 1 ) );
 			
+			fillTempArray( tval , im.getXcnt() , im.getYcnt() , im.getZcnt() );
+			clearSpatialAssertArray();
+
+			
+			final DoubleElem 
+				ival = TestGeneralRelativityAdm.getUpdateValueMetric( index );
+			
+			
+			
+			DoubleElem err = descentMetric[ bcnt ].eval( implicitSpace2 );
+					
+					
+			//if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
+			//{
+			//	tmpCorrectionValue = getCorrectionValue();
+			//	applyPredictorCorrector();
+			//			
+			//	err = descent.eval( implicitSpace2 );
+			//}
+
+
+			final DoubleElem 
+				val = TestGeneralRelativityAdm.getUpdateValueMetric( index );
+					
+					
+			
+			if( ( im.getXcnt() == HALF_X ) && ( im.getYcnt() == HALF_Y ) && ( im.getZcnt() == HALF_Z ) )
+			{
+				System.out.println( "******************" );
+				System.out.println( " ( " + im.getXcnt() + " , " + im.getYcnt() + " , " + im.getZcnt() + " ) " );
+				System.out.println( Math.sqrt( calcMagnitudeSq( ival ) ) );
+				System.out.println( Math.sqrt( calcMagnitudeSq( val ) ) );
+				System.out.println( "## " + ( Math.sqrt( calcMagnitudeSq( err ) ) ) );
+			}
+					
+					
+			/* Assert.assertTrue( spatialAssertArray[ 0 ][ 0 ][ 0 ][ 0 ] == 0 );
+					
+			Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 1 ] > 0 );
+					
+			Assert.assertTrue( spatialAssertArray[ 2 ][ 1 ][ 1 ][ 1 ] > 0 );
+			Assert.assertTrue( spatialAssertArray[ 1 ][ 2 ][ 1 ][ 1 ] > 0 );
+			Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 2 ][ 1 ] > 0 );
+			Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 2 ] > 0 );
+					
+			Assert.assertTrue( spatialAssertArray[ 0 ][ 1 ][ 1 ][ 1 ] > 0 );
+			Assert.assertTrue( spatialAssertArray[ 1 ][ 0 ][ 1 ][ 1 ] > 0 );
+			Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 0 ][ 1 ] > 0 );
+			Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 0 ] > 0 ); */
+					
+			// for( int xc = 0 ; xc < 2 * NSTPX - 1 ; xc++ )
+			// {
+			//	for( int yc = 0 ; yc < 2 * NSTPY - 1 ; yc++ )
+			//	{
+			//		for( int zc = 0 ; zc < 2 * NSTPZ - 1 ; zc++ )
+			//		{
+			//			if( ( xc == NSTPX ) && ( yc == NSTPY ) && ( zc == NSTPZ ) )
+			//			{
+			//				Assert.assertTrue( spatialAssertArray[ NSTPT * 2 ][ xc ][ yc ][ zc ] > 0 );
+			//			}
+			//			else
+			//			{
+			//				Assert.assertTrue( spatialAssertArray[ NSTPT * 2 ][ xc ][ yc ][ zc ] == 0 );
+			//			}
+			//		}
+			//	}
+			// }
+			
+			
+			System.out.println( "***  " + im.getXcnt() + "  " + im.getYcnt() + "  " + im.getZcnt() );
+			System.out.println( calcMagnitudeSq( val ) );
+			System.out.println( calcMagnitudeSq( err ) );
+			// Assert.assertTrue( Math.abs( Math.sqrt( calcMagnitudeSq( err ) ) ) < ( 0.01 * Math.abs( Math.sqrt( calcMagnitudeSq( val ) ) ) + 0.01 ) );
+			
+			//if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
+			//{
+			//	resetCorrectionValue( tmpCorrectionValue );
+			//}
+		
+			( iterArrayMetric[ tval + 1 ][ im.getXcnt() ][ im.getYcnt() ][ im.getZcnt() ] ).setVal( index , val );
+				
+			
+		}
+		
+		
+		
+		for( int bcnt = 0 ; bcnt < 16 ; bcnt++ )
+		{
+			final ArrayList<BigInteger> index = new ArrayList<BigInteger>();
+			index.add( BigInteger.valueOf( bcnt / TestDimensionFour.FOUR ) );
+			index.add( BigInteger.valueOf( bcnt % TestDimensionFour.FOUR ) );
+			
+			fillTempArray( tval , im.getXcnt() , im.getYcnt() , im.getZcnt() );
+			clearSpatialAssertArray();
+
+			
+			final DoubleElem 
+				ival = TestGeneralRelativityAdm.getUpdateValueConjugateMomentum( index );
+			
+			
+			
+			DoubleElem err = descentConjugateMomentum[ bcnt ].eval( implicitSpace2 );
+					
+					
+			//if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
+			//{
+			//	tmpCorrectionValue = getCorrectionValue();
+			//	applyPredictorCorrector();
+			//			
+			//	err = descent.eval( implicitSpace2 );
+			//}
+
+
+			final DoubleElem 
+				val = TestGeneralRelativityAdm.getUpdateValueConjugateMomentum( index );
+					
+					
+			
+			if( ( im.getXcnt() == HALF_X ) && ( im.getYcnt() == HALF_Y ) && ( im.getZcnt() == HALF_Z ) )
+			{
+				System.out.println( "******************" );
+				System.out.println( " ( " + im.getXcnt() + " , " + im.getYcnt() + " , " + im.getZcnt() + " ) " );
+				System.out.println( Math.sqrt( calcMagnitudeSq( ival ) ) );
+				System.out.println( Math.sqrt( calcMagnitudeSq( val ) ) );
+				System.out.println( "## " + ( Math.sqrt( calcMagnitudeSq( err ) ) ) );
+			}
+					
+					
+			/* Assert.assertTrue( spatialAssertArray[ 0 ][ 0 ][ 0 ][ 0 ] == 0 );
+					
+			Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 1 ] > 0 );
+					
+			Assert.assertTrue( spatialAssertArray[ 2 ][ 1 ][ 1 ][ 1 ] > 0 );
+			Assert.assertTrue( spatialAssertArray[ 1 ][ 2 ][ 1 ][ 1 ] > 0 );
+			Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 2 ][ 1 ] > 0 );
+			Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 2 ] > 0 );
+					
+			Assert.assertTrue( spatialAssertArray[ 0 ][ 1 ][ 1 ][ 1 ] > 0 );
+			Assert.assertTrue( spatialAssertArray[ 1 ][ 0 ][ 1 ][ 1 ] > 0 );
+			Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 0 ][ 1 ] > 0 );
+			Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 0 ] > 0 ); */
+					
+			// for( int xc = 0 ; xc < 2 * NSTPX - 1 ; xc++ )
+			// {
+			//	for( int yc = 0 ; yc < 2 * NSTPY - 1 ; yc++ )
+			//	{
+			//		for( int zc = 0 ; zc < 2 * NSTPZ - 1 ; zc++ )
+			//		{
+			//			if( ( xc == NSTPX ) && ( yc == NSTPY ) && ( zc == NSTPZ ) )
+			//			{
+			//				Assert.assertTrue( spatialAssertArray[ NSTPT * 2 ][ xc ][ yc ][ zc ] > 0 );
+			//			}
+			//			else
+			//			{
+			//				Assert.assertTrue( spatialAssertArray[ NSTPT * 2 ][ xc ][ yc ][ zc ] == 0 );
+			//			}
+			//		}
+			//	}
+			// }
+			
+			
+			System.out.println( "***  " + im.getXcnt() + "  " + im.getYcnt() + "  " + im.getZcnt() );
+			System.out.println( calcMagnitudeSq( val ) );
+			System.out.println( calcMagnitudeSq( err ) );
+			// Assert.assertTrue( Math.abs( Math.sqrt( calcMagnitudeSq( err ) ) ) < ( 0.01 * Math.abs( Math.sqrt( calcMagnitudeSq( val ) ) ) + 0.01 ) );
+			
+			//if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
+			//{
+			//	resetCorrectionValue( tmpCorrectionValue );
+			//}
+		
+			( iterArrayConjugateMomentum[ tval + 1 ][ im.getXcnt() ][ im.getYcnt() ][ im.getZcnt() ] ).setVal( index , val );
+				
+			
+		}
+		
 		
 		
 		im.handleIncrementZa();
@@ -4412,11 +4561,23 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 				SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
 				SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
 				Ordinate> 
-				et = new EinsteinTensorFactory<String,TestDimensionFour,
+				etMetric = new EinsteinTensorFactory<String,TestDimensionFour,
 					SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
 					SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
 					Ordinate>
-					( ge , metricZ4 , ttf , odf4 );
+					( ge , metricZ4 , ttf , odf4 ); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		
+		
+		EinsteinTensorFactory<String,TestDimensionFour,
+				SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
+				SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
+				Ordinate> 
+				etConjugateMomentum = new EinsteinTensorFactory<String,TestDimensionFour,
+					SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
+					SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
+					Ordinate>
+					( ge , metricZ4 , ttf , odf4 ); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		
 		
 		
 		System.out.println( "Reached #1..." );
@@ -4427,17 +4588,28 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 			String,
 			SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>, 
 			SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>
-				curv = et.getEinsteinTensor( "u" , "v" ).eval( null /* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */ );
+				curvMetric = etMetric.getEinsteinTensor( "u" , "v" ).eval( null /* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */ );
+		
+		final EinsteinTensorElem<
+			String,
+			SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>, 
+			SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>
+				curvConjugateMomentum = etConjugateMomentum.getEinsteinTensor( "u" , "v" ).eval( null /* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */ );
 	
 		
 		System.out.println( "Reached #2..." );
 		
 		
 		final EinsteinTensorElem<String,SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>
-				mg1 = curv;
+				mg1Metric = curvMetric;
+		
+		final EinsteinTensorElem<String,SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>
+				mg1ConjugateMomentum = curvConjugateMomentum;
 		
 		
-		VEvalElem3 m1 = new VEvalElem3( se2 , se2A , de2 , mg1 );
+		VEvalElem3 m1Metric = new VEvalElem3( se2 , se2A , de2 , mg1Metric );
+		
+		VEvalElem3 m1ConjugateMomentum = new VEvalElem3( se2 , se2A , de2 , mg1ConjugateMomentum );
 		
 		
 		System.out.println( "Reached #3..." );
@@ -4462,7 +4634,10 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 		
 		
 		final SymbolicElem<SymbolicElem<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>> 
-			s0 = m1.eval( implicitSpace2 );
+			s0Metric = m1Metric.eval( implicitSpace2 );
+		
+		final SymbolicElem<SymbolicElem<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>> 
+			s0ConjugateMomentum = m1ConjugateMomentum.eval( implicitSpace2 );
 		
 		
 		
@@ -4470,7 +4645,10 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 		
 		
 		final EinsteinTensorElem<String, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> 
-			s00 = ( (VEvalElem2)( s0 ) ).dval;
+			s00Metric = ( (VEvalElem2)( s0Metric ) ).dval;
+		
+		final EinsteinTensorElem<String, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> 
+			s00ConjugateMomentum = ( (VEvalElem2)( s0ConjugateMomentum ) ).dval;
 		
 		
 		System.out.println( "Reached #6..." );
@@ -4481,27 +4659,48 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 		// System.out.println( s );
 		
 		
-		final HashMap<ArrayList<BigInteger>, ArrayList<? extends Elem<?, ?>>> wrt3 = new HashMap<ArrayList<BigInteger>, ArrayList<? extends Elem<?, ?>>>();
+		final HashMap<ArrayList<BigInteger>, ArrayList<? extends Elem<?, ?>>> wrt3Metric = new HashMap<ArrayList<BigInteger>, ArrayList<? extends Elem<?, ?>>>();
+		{
+			for( int acnt = 0 ; acnt < 9 ; acnt++ )
+			{
+				final HashMap<Ordinate, BigInteger> coord = new HashMap<Ordinate, BigInteger>();
+				coord.put( new Ordinate( de2 , TV ) , BigInteger.valueOf( 1 ) );
+				coord.put( new Ordinate( de2 , XV ) , BigInteger.valueOf( 0 ) );
+				coord.put( new Ordinate( de2 , YV ) , BigInteger.valueOf( 0 ) );
+				coord.put( new Ordinate( de2 , ZV ) , BigInteger.valueOf( 0 ) );
+				
+				final ArrayList<BigInteger> index = new ArrayList<BigInteger>();
+				index.add( BigInteger.valueOf( ( acnt / 3 ) + 1 ) );
+				index.add( BigInteger.valueOf( ( acnt % 3 ) + 1 ) );
+				
+				ArrayList<CNelemMetric> ce = new ArrayList<CNelemMetric>();
+				ce.add( new CNelemMetric( seA , coord , index ) );
+				
+				wrt3Metric.put( index , ce );
+			}
+		}
+		
+		
+		
+		
+		final HashMap<ArrayList<BigInteger>, ArrayList<? extends Elem<?, ?>>> wrt3ConjugateMomentum = new HashMap<ArrayList<BigInteger>, ArrayList<? extends Elem<?, ?>>>();
 		{
 			for( int acnt = 0 ; acnt < 16 ; acnt++ )
 			{
-				if( ( acnt % TestDimensionFour.FOUR ) == ( acnt / TestDimensionFour.FOUR ) )
-				{
-					final HashMap<Ordinate, BigInteger> coord = new HashMap<Ordinate, BigInteger>();
-					coord.put( new Ordinate( de2 , TV ) , BigInteger.valueOf( 1 ) );
-					coord.put( new Ordinate( de2 , XV ) , BigInteger.valueOf( 0 ) );
-					coord.put( new Ordinate( de2 , YV ) , BigInteger.valueOf( 0 ) );
-					coord.put( new Ordinate( de2 , ZV ) , BigInteger.valueOf( 0 ) );
+				final HashMap<Ordinate, BigInteger> coord = new HashMap<Ordinate, BigInteger>();
+				coord.put( new Ordinate( de2 , TV ) , BigInteger.valueOf( 1 ) );
+				coord.put( new Ordinate( de2 , XV ) , BigInteger.valueOf( 0 ) );
+				coord.put( new Ordinate( de2 , YV ) , BigInteger.valueOf( 0 ) );
+				coord.put( new Ordinate( de2 , ZV ) , BigInteger.valueOf( 0 ) );
 				
-					final ArrayList<BigInteger> index = new ArrayList<BigInteger>();
-					index.add( BigInteger.valueOf( acnt / TestDimensionFour.FOUR ) );
-					index.add( BigInteger.valueOf( acnt % TestDimensionFour.FOUR ) );
+				final ArrayList<BigInteger> index = new ArrayList<BigInteger>();
+				index.add( BigInteger.valueOf( acnt / TestDimensionFour.FOUR ) );
+				index.add( BigInteger.valueOf( acnt % TestDimensionFour.FOUR ) );
 				
-//					ArrayList<CNelem> ce = new ArrayList<CNelem>(); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-//					ce.add( new CNelem( seA , coord , index ) ); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+				ArrayList<CNelemConjugateMomentum> ce = new ArrayList<CNelemConjugateMomentum>();
+				ce.add( new CNelemConjugateMomentum( seA , coord , index ) );
 				
-//					wrt3.put( index , ce ); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-				}
+				wrt3ConjugateMomentum.put( index , ce );
 			}
 		}
 		
@@ -4511,23 +4710,53 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 		
 		
 		final DescentAlgorithmMultiElemRemapTensorParam<String, DoubleElem, DoubleElemFactory>
-			param = new DescentAlgorithmMultiElemRemapTensorParam<String, DoubleElem, DoubleElemFactory>();
+			paramMetric = new DescentAlgorithmMultiElemRemapTensorParam<String, DoubleElem, DoubleElemFactory>();
+		
+		final DescentAlgorithmMultiElemRemapTensorParam<String, DoubleElem, DoubleElemFactory>
+			paramConjugateMomentum = new DescentAlgorithmMultiElemRemapTensorParam<String, DoubleElem, DoubleElemFactory>();
 		
 		
-		param.setFunctions( s00 );
-		param.setWithRespectTosI( wrt3 );
-		param.setImplicitSpaceFirstLevel( implicitSpace2 );
-		param.setSfac( se2A );
-		param.setContravariantIndices( contravariantIndices );
-		param.setCovariantIndices( covariantIndices );
+		paramMetric.setFunctions( s00Metric );
+		paramMetric.setWithRespectTosI( wrt3Metric );
+		paramMetric.setImplicitSpaceFirstLevel( implicitSpace2 );
+		paramMetric.setSfac( se2A );
+		paramMetric.setContravariantIndices( contravariantIndices );
+		paramMetric.setCovariantIndices( covariantIndices );
+		
+		paramConjugateMomentum.setFunctions( s00ConjugateMomentum );
+		paramConjugateMomentum.setWithRespectTosI( wrt3ConjugateMomentum );
+		paramConjugateMomentum.setImplicitSpaceFirstLevel( implicitSpace2 );
+		paramConjugateMomentum.setSfac( se2A );
+		paramConjugateMomentum.setContravariantIndices( contravariantIndices );
+		paramConjugateMomentum.setCovariantIndices( covariantIndices );
 		
 		
-		StelemDescent descent = new StelemDescent( param );
+		StelemNewtonMetric[] descentMetric = new StelemNewtonMetric[ 9 ];
+		
+		StelemNewtonConjugateMomentum[] descentConjugateMomentum = new StelemNewtonConjugateMomentum[ 16 ];
+		
+		
+		for( int acnt = 0 ; acnt < 9 ; acnt++ )
+		{
+			final ArrayList<BigInteger> index = new ArrayList<BigInteger>();
+			index.add( BigInteger.valueOf( ( acnt / 3 ) + 1 ) );
+			index.add( BigInteger.valueOf( ( acnt % 3 ) + 1 ) );
+			descentMetric[ acnt ] = new StelemNewtonMetric( paramMetric , index );
+		}
+		
+		
+		for( int acnt = 0 ; acnt < 16 ; acnt++ )
+		{
+			final ArrayList<BigInteger> index = new ArrayList<BigInteger>();
+			index.add( BigInteger.valueOf( acnt / TestDimensionFour.FOUR ) );
+			index.add( BigInteger.valueOf( acnt % TestDimensionFour.FOUR ) );
+			descentConjugateMomentum[ acnt ] = new StelemNewtonConjugateMomentum( paramConjugateMomentum  , index );
+		}
 		
 		
 		for( int tval = 1 ; tval < ( NUM_T_ITER - 1 ) ; tval++ )
 		{
-			performIterationT( tval , descent , implicitSpace2 );
+			performIterationT( tval , descentMetric , descentConjugateMomentum , implicitSpace2 );
 		}
 		
 		// System.out.println( "==============================" ); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
