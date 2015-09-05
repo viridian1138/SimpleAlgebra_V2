@@ -240,20 +240,16 @@ public class TestMetricDeterminant extends TestCase
 		};
 		
 		
+		final RankTwoDeterminantFactory<Object, TestDimensionFour, SymbolicElem<DoubleElem,DoubleElemFactory>, SymbolicElemFactory<DoubleElem,DoubleElemFactory>> detF =
+				new RankTwoDeterminantFactory<Object, TestDimensionFour, SymbolicElem<DoubleElem,DoubleElemFactory>, SymbolicElemFactory<DoubleElem,DoubleElemFactory>>( td );
+		
+		
 		EinsteinTensorElem<Object, SymbolicElem<DoubleElem,DoubleElemFactory>, SymbolicElemFactory<DoubleElem,DoubleElemFactory>> 
 			metric = scfac.getMetricTensor( true, z0, z1, td.getVal() );
 		
 		
-		SquareMatrixElem<TestDimensionFour, SymbolicElem<DoubleElem,DoubleElemFactory>, SymbolicElemFactory<DoubleElem,DoubleElemFactory>>
-			matrix = new SquareMatrixElem<TestDimensionFour, SymbolicElem<DoubleElem,DoubleElemFactory>, SymbolicElemFactory<DoubleElem,DoubleElemFactory>>(ye, td  );
-		
-		
-		metric.rankTwoTensorToSquareMatrix( matrix );
-		
-		
-		
 		SymbolicElem<DoubleElem,DoubleElemFactory> det
-			= matrix.determinant().negate();
+			= detF.getDeterminantComponent( metric ).negate();
 		
 		
 		

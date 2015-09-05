@@ -52,6 +52,7 @@ import simplealgebra.ddx.PartialDerivativeOp;
 import simplealgebra.et.EinsteinTensorElem;
 import simplealgebra.et.EinsteinTensorElemFactory;
 import simplealgebra.et.EmFieldTensorFactory;
+import simplealgebra.et.RankTwoDeterminantFactory;
 import simplealgebra.et.SimpleCurveMetricTensorFactory;
 import simplealgebra.et.VectorPotentialFactory;
 import simplealgebra.symbolic.*;
@@ -892,21 +893,19 @@ public class TestDesResSymbolic extends TestCase
 		
 		
 		
+		final RankTwoDeterminantFactory<Object, TestDimensionFour, SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>> detF =
+				new RankTwoDeterminantFactory<Object, TestDimensionFour, SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>( td );
+		
+		
 		
 		EinsteinTensorElem<Object, SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>> 
 			metric = scfac.getMetricTensor( true, z0, z1, td.getVal() );
 		
 		
-		SquareMatrixElem<TestDimensionFour, SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>
-			matrix = new SquareMatrixElem<TestDimensionFour, SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>(ye, td  );
-		
-		
-		metric.rankTwoTensorToSquareMatrix( matrix );
-		
 		
 		
 		SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> det
-			= matrix.determinant().negate();
+			= detF.getDeterminantComponent( metric ).negate();
 		
 		
 		
