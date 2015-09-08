@@ -3766,16 +3766,28 @@ public void writeString( PrintStream ps ) {
  * @author thorngreen
  *
  */
-protected class TestConjugateMomentumTensorFactory4 extends MetricTensorInvertingFactory<String, TestDimensionFour,
+protected class TestConjugateMomentumTensorFactory4 extends RankTwoNonMetricFactory<String,
 	SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>,SymbolicElemFactory<DoubleElem, DoubleElemFactory>>,
 	SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>,SymbolicElemFactory<DoubleElem, DoubleElemFactory>>
 	>
 {
+	
+	
+	public TestConjugateMomentumTensorFactory4( TemporaryIndexFactory<String> _ifac , MetricTensorFactory<String, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> _metricTensor )
+	{
+		super( _ifac , _metricTensor );
+	}
+	
 
 	@Override
 	public SymbolicElem<EinsteinTensorElem<String, SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>>, EinsteinTensorElemFactory<String, SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>>> getMetricTensor(
 			boolean icovariantIndices, String index0, String index1) 
 	{	
+		if( !icovariantIndices )
+		{
+			return( genIndexRaise( index0 , index1 ) );
+		}
+		
 		final TestDimensionFour td = new TestDimensionFour();
 		final DoubleElemFactory de = new DoubleElemFactory();
 		
@@ -3822,12 +3834,6 @@ protected class TestConjugateMomentumTensorFactory4 extends MetricTensorInvertin
 			g0.setVal( ab , as );
 		}
 		
-
-		if( !icovariantIndices )
-		{
-			g0 = genMatrixInverseLeft( td , se3A , g0 );
-		}
-		
 		
 		final SymbolicMetricTensor seval = new SymbolicMetricTensor( ge , g0 );
 		
@@ -3840,6 +3846,13 @@ protected class TestConjugateMomentumTensorFactory4 extends MetricTensorInvertin
 	@Override
 	public TestConjugateMomentumTensorFactory4 cloneThread( final BigInteger threadIndex )
 	{
+		final TemporaryIndexFactory<String> cifac = ifac.cloneThread(threadIndex);
+		final MetricTensorFactory<String, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>
+			tm = metricTensor.cloneThread(threadIndex);
+		if( ( cifac != ifac ) || ( metricTensor != tm ) )
+		{
+			return( new TestConjugateMomentumTensorFactory4( cifac , tm ) );
+		}
 		return( this );
 	}
 
@@ -4792,7 +4805,7 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 			metricZ4 = new TestMetricTensorFactory4();
 		
 		final MetricTensorFactory<String, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> 
-			conjugateMomentumZ4 = new TestConjugateMomentumTensorFactory4();
+			conjugateMomentumZ4 = new TestConjugateMomentumTensorFactory4( ttf , metricZ4 );
 		
 		
 	
