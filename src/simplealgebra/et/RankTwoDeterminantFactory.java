@@ -75,9 +75,7 @@ public class RankTwoDeterminantFactory<Z extends Object, U extends NumDimensions
 	{
 		final R det = getDeterminantComponent( in );
 		
-		final EinsteinTensorElem<Z,R,S> ret = new EinsteinTensorElem<Z,R,S>( in.getFac().getFac() , new ArrayList<Z>() , new ArrayList<Z>() );
-		
-		ret.setVal( new ArrayList<BigInteger>() , det );
+		final EinsteinTensorElem<Z,R,S> ret = new EinsteinTensorElem<Z,R,S>( det , in.getFac().getFac() );
 		
 		return( ret );
 	}

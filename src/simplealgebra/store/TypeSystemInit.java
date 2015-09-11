@@ -39,6 +39,7 @@ import simplealgebra.et.db.EinsteinTensorElemFactoryType;
 import simplealgebra.et.db.EinsteinTensorElemType;
 import simplealgebra.et.db.OrdinaryDerivativeType;
 import simplealgebra.et.db.SymbolicIndexReductionType;
+import simplealgebra.et.db.SymbolicRankTwoTraceType;
 import simplealgebra.et.db.SymbolicRegenContravarType;
 import simplealgebra.et.db.SymbolicRegenCovarType;
 import simplealgebra.et.db.SymbolicTensorResymType;
@@ -143,6 +144,7 @@ public class TypeSystemInit {
 		FlowVectorTensorType.initType( graph );
 		CovariantDerivativeFactoryType.initType( graph );
 		MaterialDerivativeFactoryType.initType( graph );
+		SymbolicRankTwoTraceType.initType( graph );
 		
 		MemoryClearingSystem.initMemoryClearing( graph );
 		

@@ -30,6 +30,8 @@ import java.util.ArrayList;
 
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
+import simplealgebra.NotInvertibleException;
+import simplealgebra.symbolic.SymbolicElem;
 
 
 /**
@@ -59,8 +61,7 @@ public class EinsteinTensorElemFactory<Z extends Object, R extends Elem<R,?>, S 
 	
 	@Override
 	public EinsteinTensorElem<Z, R, S> identity() {
-		EinsteinTensorElem<Z, R, S> ret = new EinsteinTensorElem<Z, R, S>( fac , new ArrayList<Z>() , new ArrayList<Z>() );
-		ret.setVal( new ArrayList<BigInteger>(), fac.identity() );
+		EinsteinTensorElem<Z, R, S> ret = new EinsteinTensorElem<Z, R, S>( fac.identity() , fac );
 		return( ret );
 	}
 
@@ -106,6 +107,29 @@ public class EinsteinTensorElemFactory<Z extends Object, R extends Elem<R,?>, S 
 	public boolean isNestedMultAssociative()
 	{
 		return( fac.isMultAssociative() );
+	}
+	
+	
+	@Override
+	public SymbolicElem<EinsteinTensorElem<Z, R, S>, EinsteinTensorElemFactory<Z,R,S>> handleSymbolicOptionalOp( Object id , 
+			ArrayList<SymbolicElem<EinsteinTensorElem<Z, R, S>, EinsteinTensorElemFactory<Z,R,S>>> args )  throws NotInvertibleException
+	{
+		if( id instanceof EinsteinTensorElem.EinsteinTensorCmd )
+		{
+			switch( (EinsteinTensorElem.EinsteinTensorCmd) id )
+			{
+				case RANK_TWO_TRACE:
+				{
+					SymbolicElem<EinsteinTensorElem<Z, R, S>, EinsteinTensorElemFactory<Z,R,S>> argA
+						= args.get( 0 );
+					return( new SymbolicRankTwoTrace<Z,R,S>( argA , argA.getFac().getFac() ) );
+				}
+				// break;
+				
+			}
+		}
+		
+		return( super.handleSymbolicOptionalOp(id, args) );
 	}
 	
 	

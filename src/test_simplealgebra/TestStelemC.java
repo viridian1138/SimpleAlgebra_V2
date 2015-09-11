@@ -2064,9 +2064,7 @@ public class TestStelemC extends TestCase {
 					TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>, 
 					SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>, 
 					SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>
-					( se3 , tdim , ord );
-		
-		g0.setVal( new HashSet<BigInteger>() , as );
+					( as , se3 , tdim , ord );
 		
 		
 		final DDirec ddirec = new DDirec(de, se2);
@@ -2165,9 +2163,7 @@ public class TestStelemC extends TestCase {
 					TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>, 
 					SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>, 
 					SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>
-					( se3 , tdim , ord );
-		
-		gtt.setVal( new HashSet<BigInteger>() , gtt0 );
+					( gtt0 , se3 , tdim , ord );
 		
 		
 		

@@ -172,12 +172,10 @@ public class TestMultivectorExponential extends TestCase {
 		
 		final TestDimensionFive td = new TestDimensionFive();
 		
-		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> el
-			= new GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory>( fac , td , new GeometricAlgebraOrd<TestDimensionFive>() );
-		
 		final double s = 20.0 * ( rand.nextDouble() - 0.5 );
 		
-		el.setVal( new HashSet<BigInteger>() , new DoubleElem( s ) );
+		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> el
+			= new GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory>( new DoubleElem( s ) , fac , td , new GeometricAlgebraOrd<TestDimensionFive>() );
 		
 		final double[] v = new double[ TestDimensionFive.FIVE ];
 		
@@ -245,12 +243,10 @@ public class TestMultivectorExponential extends TestCase {
 		
 		final TestDimensionFive td = new TestDimensionFive();
 		
-		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> el
-			= new GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory>( fac , td , new GeometricAlgebraOrd<TestDimensionFive>() );
-		
 		final double s = 20.0 * ( rand.nextDouble() - 0.5 );
 		
-		el.setVal( new HashSet<BigInteger>() , new DoubleElem( s ) );
+		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> el
+			= new GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory>( new DoubleElem( s ) , fac , td , new GeometricAlgebraOrd<TestDimensionFive>() );
 		
 		final double[] v = new double[ TestDimensionFive.FIVE ];
 		

@@ -62,6 +62,23 @@ import simplealgebra.ga.GeometricAlgebraMultivectorElem;
 public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends ElemFactory<R,S>> 
 	extends MutableElem<R, EinsteinTensorElem<Z,R,S>, EinsteinTensorElemFactory<Z,R,S>>  {
 
+	/**
+	 * Defines enumerated commands for Einstein Tensor elems.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
+	public static enum EinsteinTensorCmd {
+		
+		/**
+		 * An enumerated command for the trace of a rank-two tensor.
+		 * 
+		 * See https://en.wikipedia.org/wiki/Trace_(linear_algebra)
+		 */
+		RANK_TWO_TRACE
+		
+	};
+	
 	
 	/**
 	 * Constructs the elem.
@@ -76,6 +93,19 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 		fac = _fac;
 		contravariantIndices = _contravariantIndices;
 		covariantIndices = _covariantIndices;
+	}
+	
+	
+	/**
+	 * Constructs the elem for a scalar input.
+	 * 
+	 * @param _val The scalar input.
+	 * @param _fac The factory for the nested type.
+	 */
+	public EinsteinTensorElem( R _val , S _fac )
+	{
+		this( _fac  , new ArrayList<Z>() , new ArrayList<Z>() );
+		this.setVal( new ArrayList<BigInteger>() , _val );
 	}
 	
 	
@@ -982,6 +1012,49 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 		
 		return( ret );
 		
+	}
+	
+	
+	/**
+	 * Returns the trace of a rank-two tensor.  This operation should only be performed with a rank-two tensor.
+	 * 
+	 * See https://en.wikipedia.org/wiki/Trace_(linear_algebra)
+	 * 
+	 * @return The trace of the rank-two tensor.
+	 */
+	public EinsteinTensorElem<Z, R, S> rankTwoTrace()
+	{
+		R sum = this.getFac().getFac().zero();
+		final Iterator<ArrayList<BigInteger>> it = map.keySet().iterator();
+		while( it.hasNext() )
+		{
+			final ArrayList<BigInteger> nxt = it.next();
+			if( ( nxt.get( 0 ) ).equals( nxt.get( 1 ) ) )
+			{
+				sum = sum.add( map.get( nxt ) );
+			}
+		}
+		return( new EinsteinTensorElem<Z, R, S>( sum , this.getFac().getFac() ) );
+	}
+	
+	
+	@Override
+	public EinsteinTensorElem<Z, R, S> handleOptionalOp( Object id , ArrayList<EinsteinTensorElem<Z, R, S>> args )  throws NotInvertibleException
+	{
+		if( id instanceof EinsteinTensorElem.EinsteinTensorCmd )
+		{
+			switch( (EinsteinTensorElem.EinsteinTensorCmd) id )
+			{
+				case RANK_TWO_TRACE:
+				{
+					return( rankTwoTrace( ) );
+				}
+				// break;
+				
+			}
+		}
+		
+		return( super.handleOptionalOp(id, args) );
 	}
 
 	

@@ -299,8 +299,7 @@ public class TestDiracA extends TestCase {
 		final DoubleElem dd = new DoubleElem( in );
 		DoubleElemFactory da = new DoubleElemFactory();
 		GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>
-			ret = new GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>( da , new TestDimensionFour()  , new SpacetimeAlgebraOrd<TestDimensionFour>() );
-		ret.setVal( new HashSet<BigInteger>() , dd );
+			ret = new GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>( dd , da , new TestDimensionFour()  , new SpacetimeAlgebraOrd<TestDimensionFour>() );
 		return( ret );
 	}
 	

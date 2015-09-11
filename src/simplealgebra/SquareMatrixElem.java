@@ -95,6 +95,25 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	}
 	
 	
+	/**
+	 * Constructs the elem for a diagonal matrix.
+	 * 
+	 * @param _val The diagonal value.
+	 * @param _fac The factory for the nested elem.
+	 * @param _dim The number of dimensions.
+	 */
+	public SquareMatrixElem( R _val , S _fac , U _dim )
+	{
+		this( _fac , _dim );
+		final BigInteger max = dim.getVal();
+		BigInteger cnt = BigInteger.ZERO;
+		for( cnt = BigInteger.ZERO ; cnt.compareTo(max) < 0 ; cnt = cnt.add( BigInteger.ONE ) )
+		{
+			this.setVal(cnt , cnt , _val );
+		}
+	}
+	
+	
 	@Override
 	public SquareMatrixElem<U, R, S> add(SquareMatrixElem<U, R, S> b) {
 		SquareMatrixElem<U,R,S> ret = new SquareMatrixElem<U,R,S>(fac,dim);

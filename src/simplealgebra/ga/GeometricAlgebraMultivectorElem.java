@@ -110,6 +110,21 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 	}
 	
 	
+	/**
+	 * Constructs the elem for a scalar value.
+	 * 
+	 * @param _val The scalar value.
+	 * @param _fac The factory for the enclosed type.
+	 * @param _dim The number of dimensions for the multivector.
+	 * @param _ord The Ord of the multivector.
+	 */
+	public GeometricAlgebraMultivectorElem( R _val , S _fac , U _dim , A _ord )
+	{
+		this( _fac , _dim , _ord );
+		this.setVal( new HashSet<BigInteger>() , _val );
+	}
+	
+	
 	@Override
 	public GeometricAlgebraMultivectorElem<U,A, R, S> add(GeometricAlgebraMultivectorElem<U,A, R, S> b) {
 		GeometricAlgebraMultivectorElem<U,A,R,S> ret = new GeometricAlgebraMultivectorElem<U,A,R,S>(fac,dim,ord);
