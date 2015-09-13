@@ -4150,6 +4150,7 @@ protected class ShiftVectorFactory3
 		if( !icovariantIndices )
 		{
 			// g0 = genMatrixInverseLeft( td , se3A , g0 ); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			// !!!!!!!!!!!!!!!!!!!!!!!!!!!! must fix !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		}
 		
 		
@@ -4755,10 +4756,7 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 		
 		final DoubleElemFactory de = new DoubleElemFactory();
 		
-		final ArrayList<String> contravariantIndices = new ArrayList<String>();
-		final ArrayList<String> covariantIndices = new ArrayList<String>();
-		covariantIndices.add( "u" );
-		covariantIndices.add( "v" );
+		
 		
 		final EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory> de2 = new EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>( de );
 		
@@ -4937,6 +4935,9 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 			Nj =  shiftVect3.getShiftVector( true , "j" );
 		
 		final SymbolicElem<EinsteinTensorElem<String, SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>>, EinsteinTensorElemFactory<String, SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>>>
+			NnRaised =  shiftVect3.getShiftVector( false , "n" );
+		
+		final SymbolicElem<EinsteinTensorElem<String, SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>>, EinsteinTensorElemFactory<String, SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>>>
 			conjMomentum =  conjugateMomentumZ4.getMetricTensor( true , "m" , "n" );
 		
 		final SymbolicElem<EinsteinTensorElem<String, SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>>, EinsteinTensorElemFactory<String, SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>>>
@@ -4969,6 +4970,12 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 		
 		final SymbolicElem<EinsteinTensorElem<String, SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>>, EinsteinTensorElemFactory<String, SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>>>
 			conjugateMomentumFlipJn =  conjMomentumQj.mult( metrZ4Qn );
+		
+		
+		
+		
+		final SymbolicElem<EinsteinTensorElem<String, SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>>, EinsteinTensorElemFactory<String, SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>>>
+			conjMomentumMultNraisedN =  conjMomentumIj.mult( NnRaised );
 		
 		
 		
@@ -5112,10 +5119,17 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 			SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
 			Ordinate> covNj_i = cp3.gen();
 		
+		final CovariantDerivativeFactoryParam<String,TestDimensionFour,
+			SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
+			SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
+			Ordinate> covMomentumTimesN_n = cp3.gen();
+		
 		covNi_j.setTensorWithRespectTo( Ni );
 		covNj_i.setTensorWithRespectTo( Nj );
+		covMomentumTimesN_n.setTensorWithRespectTo( conjMomentumMultNraisedN );
 		covNi_j.setDerivativeIndex( "j" );
 		covNj_i.setDerivativeIndex( "i" );
+		covMomentumTimesN_n.setDerivativeIndex( "n" );
 		
 		
 		final CovariantDerivativeFactory<String,TestDimensionFour,
@@ -5136,6 +5150,16 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 				SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
 				SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
 				Ordinate>( covNj_i );
+		
+		
+		final CovariantDerivativeFactory<String,TestDimensionFour,
+			SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
+			SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
+			Ordinate>
+			covMomentumN_n = new CovariantDerivativeFactory<String,TestDimensionFour,
+				SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
+				SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
+				Ordinate>( covMomentumTimesN_n );
 		
 	
 		
@@ -5290,7 +5314,21 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 			String,
 			SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>, 
 			SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>
-				curvConjugateMomentum = negNgSqrtMultRicciTermsEt.add( conjMomentumATerms ).add( conjMomentumBTermsNeg );
+				covMomentumN_nEt =  covMomentumN_n.eval( null /* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */ );
+		
+		
+		
+		
+		final EinsteinTensorElem<
+			String,
+			SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>, 
+			SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>
+				curvConjugateMomentum = negNgSqrtMultRicciTermsEt.add( conjMomentumATerms ).add( 
+						conjMomentumBTermsNeg ).add(
+						null /* !!!!!!!!!!!!!!!!!!!!!!!!!!! multiple complex covar terms */).add( 
+						covMomentumN_nEt ).add(
+						null /* !!!!!!!!!!!!!!!!!!!!!!!!!!! covarNi term */ ).add(
+						null /* !!!!!!!!!!!!!!!!!!!!!!!!!!! covarNj term */ );
 	
 		
 
@@ -5417,19 +5455,34 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 			paramConjugateMomentum = new DescentAlgorithmMultiElemRemapTensorParam<String, DoubleElem, DoubleElemFactory>();
 		
 		
-		paramMetric.setFunctions( s00Metric );
-		paramMetric.setWithRespectTosI( wrt3Metric );
-		paramMetric.setImplicitSpaceFirstLevel( implicitSpace2 );
-		paramMetric.setSfac( se2A );
-		paramMetric.setContravariantIndices( contravariantIndices );
-		paramMetric.setCovariantIndices( covariantIndices );
+		{
+			final ArrayList<String> contravariantIndices = new ArrayList<String>();
+			final ArrayList<String> covariantIndices = new ArrayList<String>();
+			covariantIndices.add( "i" );
+			covariantIndices.add( "j" );
+			
+			paramMetric.setFunctions( s00Metric );
+			paramMetric.setWithRespectTosI( wrt3Metric );
+			paramMetric.setImplicitSpaceFirstLevel( implicitSpace2 );
+			paramMetric.setSfac( se2A );
+			paramMetric.setContravariantIndices( contravariantIndices );
+			paramMetric.setCovariantIndices( covariantIndices );
+		}
 		
-		paramConjugateMomentum.setFunctions( s00ConjugateMomentum );
-		paramConjugateMomentum.setWithRespectTosI( wrt3ConjugateMomentum );
-		paramConjugateMomentum.setImplicitSpaceFirstLevel( implicitSpace2 );
-		paramConjugateMomentum.setSfac( se2A );
-		paramConjugateMomentum.setContravariantIndices( contravariantIndices );
-		paramConjugateMomentum.setCovariantIndices( covariantIndices );
+		
+		{
+			final ArrayList<String> contravariantIndices = new ArrayList<String>();
+			final ArrayList<String> covariantIndices = new ArrayList<String>();
+			contravariantIndices.add( "i" );
+			contravariantIndices.add( "j" );
+			
+			paramConjugateMomentum.setFunctions( s00ConjugateMomentum );
+			paramConjugateMomentum.setWithRespectTosI( wrt3ConjugateMomentum );
+			paramConjugateMomentum.setImplicitSpaceFirstLevel( implicitSpace2 );
+			paramConjugateMomentum.setSfac( se2A );
+			paramConjugateMomentum.setContravariantIndices( contravariantIndices );
+			paramConjugateMomentum.setCovariantIndices( covariantIndices );
+		}
 		
 		
 		StelemNewtonMetric[] descentMetric = new StelemNewtonMetric[ 9 ];
