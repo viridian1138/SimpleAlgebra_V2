@@ -31,6 +31,7 @@ import org.hypergraphdb.HyperGraph;
 import simplealgebra.bigfixedpoint.db.BigFixedPointElemFactoryType;
 import simplealgebra.bigfixedpoint.db.BigFixedPointElemType;
 import simplealgebra.ddx.db.CovariantDerivativeFactoryType;
+import simplealgebra.ddx.db.CovariantDerivativeType;
 import simplealgebra.ddx.db.DirectionalDerivativeType;
 import simplealgebra.ddx.db.FlowVectorTensorType;
 import simplealgebra.ddx.db.MaterialDerivativeFactoryType;
@@ -142,6 +143,7 @@ public class TypeSystemInit {
 		PartialDerivativeOpType.initType( graph );
 		DirectionalDerivativeType.initType( graph );
 		FlowVectorTensorType.initType( graph );
+		CovariantDerivativeType.initType( graph );
 		CovariantDerivativeFactoryType.initType( graph );
 		MaterialDerivativeFactoryType.initType( graph );
 		SymbolicRankTwoTraceType.initType( graph );

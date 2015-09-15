@@ -129,7 +129,7 @@ import simplealgebra.symbolic.SymbolicElemFactory;
  * @param <S> The factory for the enclosed type of the tensor.
  * @param <K> The type of the element against which to take partial derivatives.
  */
-public class CovariantDerivativeFactory<Z extends Object, U extends NumDimensions, R extends Elem<R,?>, S extends ElemFactory<R,S>, K extends Elem<?,?>> 
+public class CovariantDerivative<Z extends Object, U extends NumDimensions, R extends Elem<R,?>, S extends ElemFactory<R,S>, K extends Elem<?,?>> 
 		extends DerivativeElem<EinsteinTensorElem<Z,SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,EinsteinTensorElemFactory<Z,SymbolicElem<R,S>,SymbolicElemFactory<R,S>>>
 {
 
@@ -138,11 +138,10 @@ public class CovariantDerivativeFactory<Z extends Object, U extends NumDimension
 	 * 
 	 * @param param The input parameter for the factory.
 	 */
-	public CovariantDerivativeFactory( 
+	public CovariantDerivative( 
 			CovariantDerivativeFactoryParam<Z,U,R,S,K> param )
 	{
 		super( param.getFac() );
-		tensorWithRespectTo = param.getTensorWithRespectTo();
 		derivativeIndex = param.getDerivativeIndex();
 		coordVecFac = param.getCoordVecFac();
 		temp = param.getTemp();
@@ -156,13 +155,16 @@ public class CovariantDerivativeFactory<Z extends Object, U extends NumDimension
 	/**
 	 * Applies the covariant derivative to an expression.
 	 * 
+	 * @param tensorWithRespectTo The tensor upon which to take the derivative.
 	 * @param implicitSpace Implicit parameter space against which to perform the evaluation.
 	 * @return The result of applying the derivative.
 	 * @throws NotInvertibleException
 	 * @throws MultiplicativeDistributionRequiredException
 	 */
 	public SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>
-		genTerms( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException 
+		genTerms( 
+				final SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> tensorWithRespectTo ,
+				final HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException 
 	{
 		final SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>
 			deriv = odfac.getOrdinaryDerivative( tensorWithRespectTo , derivativeIndex );
@@ -222,31 +224,22 @@ public class CovariantDerivativeFactory<Z extends Object, U extends NumDimension
 	
 	
 	@Override
-	public EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>> eval(
-			HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace )
-			throws NotInvertibleException, MultiplicativeDistributionRequiredException {
-		return( this.genTerms( implicitSpace ).eval( implicitSpace ) );
-	}
-	
-	
-	@Override
 	public EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>> evalDerivative(
 			SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> in ,
 			HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace )
 			throws NotInvertibleException, MultiplicativeDistributionRequiredException {
-		throw( new MultiplicativeDistributionRequiredException() );
+		return( this.genTerms( in , implicitSpace ).eval( implicitSpace ) );
 	}
 	
 	
 	
 	@Override
-	public CovariantDerivativeFactory<Z,U,R,S,K> cloneThread( final BigInteger threadIndex )
+	public CovariantDerivative<Z,U,R,S,K> cloneThread( final BigInteger threadIndex )
 	{
 		final CovariantDerivativeFactoryParam<Z,U,R,S,K> param = new CovariantDerivativeFactoryParam<Z,U,R,S,K>();
 
 		// The NumDimensions dim and the indices are presumed to be immutable.
 		param.setFac( this.getFac().getFac().cloneThread(threadIndex) );
-		param.setTensorWithRespectTo( tensorWithRespectTo.cloneThread(threadIndex) );
 		param.setDerivativeIndex(derivativeIndex);
 		param.setCoordVecFac( coordVecFac.cloneThread(threadIndex) );
 		param.setTemp( temp.cloneThread(threadIndex) );
@@ -258,15 +251,14 @@ public class CovariantDerivativeFactory<Z extends Object, U extends NumDimension
 			param.setRemap( remap.cloneThread(threadIndex) );
 		}
 		
-		if( ( param.getFac() != this.getFac().getFac() ) || 
-				( param.getTensorWithRespectTo() != tensorWithRespectTo ) || 
+		if( ( param.getFac() != this.getFac().getFac() ) ||  
 				( param.getCoordVecFac() != coordVecFac ) || 
 				( param.getTemp() != temp ) || 
 				( param.getMetric() != metric ) || 
 				( param.getDfac() != odfac.getDfac() ) || 
 				( param.getRemap() != remap ) )
 		{
-			return( new CovariantDerivativeFactory<Z,U,R,S,K>( param ) );
+			return( new CovariantDerivative<Z,U,R,S,K>( param ) );
 		}
 		return( this );
 	}
@@ -275,7 +267,7 @@ public class CovariantDerivativeFactory<Z extends Object, U extends NumDimension
 
 	@Override
 	public void writeString( PrintStream ps ) {
-		ps.print( "covariantDerivative[ " + derivativeIndex + " ]" );
+		ps.print( "covariantDerivativeOp[ " + derivativeIndex + " ]" );
 	}
 	
 	
@@ -286,37 +278,11 @@ public class CovariantDerivativeFactory<Z extends Object, U extends NumDimension
 		
 		ps.print( "<msub><mo>&nabla;</mo>" );
 		ps.print( "<mi>" + derivativeIndex + "</mi></msub>" );
-		if( pc.parenNeeded( this ,  tensorWithRespectTo , true ) )
-		{
-			ps.print( "<mfenced><mrow>" );
-		}
-		else
-		{
-			ps.print( "<mrow>" );
-		}
-		tensorWithRespectTo.writeMathML(pc, ps);
-		if( pc.parenNeeded( this ,  tensorWithRespectTo , true ) )
-		{
-			ps.print( "</mrow></mfenced>" );
-		}
-		else
-		{
-			ps.print( "</mrow>" );
-		}
 	}
 	
 	
 	
 	
-	
-	/**
-	 * Gets the expression to which to apply the derivative.
-	 * 
-	 * @return The expression to which to apply the derivative.
-	 */
-	public SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> getTensorWithRespectTo() {
-		return tensorWithRespectTo;
-	}
 
 
 
@@ -388,11 +354,6 @@ public class CovariantDerivativeFactory<Z extends Object, U extends NumDimension
 
 
 
-	/**
-	 * The expression to which to apply the derivative.
-	 */
-	private SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> tensorWithRespectTo;
-	
 	/**
 	 * The tensor index of the covariant derivative.
 	 */
