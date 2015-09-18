@@ -1102,6 +1102,17 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	
 	
 	/**
+	 * Removes a basis from the elem.
+	 * 
+	 * @param el The index of the elem to remove.
+	 */
+	public void remove( ArrayList<BigInteger> el )
+	{
+		map.remove( el );
+	}
+	
+	
+	/**
 	 * Returns the list of contravariant indices for the tensor.
 	 * 
 	 * @return The list of contravariant indices for the tensor.

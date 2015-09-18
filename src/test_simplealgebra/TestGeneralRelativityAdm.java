@@ -3955,7 +3955,7 @@ protected class TestConjugateMomentumNegativeDerivativeTensorFactory4 extends Ra
 			
 			final ArrayList<Ordinate> wrtX = new ArrayList<Ordinate>();
 			
-			wrtX.add( new Ordinate( de2 , 0 ) );
+			wrtX.add( new Ordinate( de2 , TV ) );
 			
 			SymbolicElem<
 			SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
@@ -4267,7 +4267,7 @@ protected class TestMetricTensorNegativeDerivativeFactory3 extends MetricTensorI
 				
 				final ArrayList<Ordinate> wrtX = new ArrayList<Ordinate>();
 				
-				wrtX.add( new Ordinate( de2 , 0 ) );
+				wrtX.add( new Ordinate( de2 , TV ) );
 				
 				SymbolicElem<
 				SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
@@ -5621,10 +5621,27 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 			SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>
 				curvMetric = 
 					( twoNgInvSqrtMultParenEt ).add( covNi_ja.eval( null /* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */ ) ).add( 
-							covNj_ia.eval( null /* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */ ) );
+							covNj_ia.eval( null /* !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! */ ) ).add( metricTensorNegativeDerivativeEt );
 		
-					// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-					// add t partial derivative
+		
+		/*
+		 * Clean up a anything that has drifted outside of the expected bounds.
+		 */
+		for( int cntx = 0 ; cntx < 4 ; cntx++ )
+		{
+			final ArrayList<BigInteger> b0 = new ArrayList<BigInteger>();
+			final ArrayList<BigInteger> b1 = new ArrayList<BigInteger>();
+			
+			b0.add( BigInteger.ZERO );
+			b1.add( BigInteger.valueOf( cntx ) );
+			
+			b0.add( BigInteger.valueOf( cntx ) );
+			b1.add( BigInteger.ZERO );
+			
+			curvMetric.remove( b0 );
+			curvMetric.remove( b1 );
+		}
+		
 		
 		
 		
@@ -5816,12 +5833,11 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 			String,
 			SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>, 
 			SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>
-				collectedCovarsEt = ( ( negGSqrtEt ).mult( 
+				collectedCovarsEt = ( negGSqrtEt ).mult( 
 						( multCovTerm1Et
 								).add( 
 						( multCovTerm2Et
-								).negate() ) ) ).add(
-						metricTensorNegativeDerivativeEt );
+								).negate() ) );
 		
 		
 		final EinsteinTensorElem<

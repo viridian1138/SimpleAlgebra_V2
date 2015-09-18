@@ -1218,6 +1218,18 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 		map.put(el, val);
 	}
 	
+	
+	/**
+	 * Removes a basis from the elem.
+	 * 
+	 * @param el The index of the elem to remove.
+	 */
+	public void remove( HashSet<BigInteger> el )
+	{
+		map.remove( el );
+	}
+	
+	
 	/**
 	 * Returns the iterator to the basis vectors of the enclosed elems.
 	 * 

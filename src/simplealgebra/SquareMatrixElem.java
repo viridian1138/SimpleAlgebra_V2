@@ -1585,6 +1585,29 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	
 	
 	/**
+	 * Removes a basis from the elem.
+	 * 
+	 * @param row The row of the elem. to remove.
+	 * @param col The column of the elem. to remove.
+	 */
+	public void remove( BigInteger row , BigInteger col )
+	{
+		HashMap<BigInteger,R> subMap = rowMap.get( row );
+		if( subMap != null )
+		{
+			subMap.remove( col );
+		}
+		
+		subMap = columnMap.get( col );
+		if( subMap != null )
+		{
+			subMap.remove( row );
+		}
+	}
+	
+	
+	
+	/**
 	 * Copies a column vector into a Geometric Algebra multivector.
 	 * 
 	 * @param column The column from which to copy the elements.
