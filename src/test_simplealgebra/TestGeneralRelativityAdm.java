@@ -71,7 +71,7 @@ import simplealgebra.et.*;
 
 
 /**
- * Tests ...
+ * Test for General Relativity as represented by the ADM Formalism.
  * 
  * See http://en.wikipedia.org/wiki/ADM_formalism
  *
@@ -335,13 +335,13 @@ public class TestGeneralRelativityAdm extends TestCase {
 	
 	
 	/**
-	 * Result array over which to iterate.
+	 * Result array over which to iterate for the metric.
 	 */
 	protected static final EinsteinTensorElem[][][][] iterArrayMetric = new EinsteinTensorElem[ NUM_T_ITER ][ NUM_X_ITER ][ NUM_Y_ITER ][ NUM_Z_ITER ];
 	
 
 	/**
-	 * Result array over which to iterate.
+	 * Result array over which to iterate for the conjugate momentum.
 	 */
 	protected static final EinsteinTensorElem[][][][] iterArrayConjugateMomentum = new EinsteinTensorElem[ NUM_T_ITER ][ NUM_X_ITER ][ NUM_Y_ITER ][ NUM_Z_ITER ];
 	
@@ -372,7 +372,7 @@ public class TestGeneralRelativityAdm extends TestCase {
 	
 	
 	/**
-	 * Temporary array in which to generate descent algorithm solutions.
+	 * Temporary array in which to generate descent algorithm solutions for the metric.
 	 * <p>0 = T
 	 * <p>1 = X
 	 * <p>2 = Y
@@ -381,7 +381,7 @@ public class TestGeneralRelativityAdm extends TestCase {
 	private static EinsteinTensorElem[][][][] tempArrayMetric = new EinsteinTensorElem[ NSTPT * 2 + 1 ][ NSTPX * 2 + 1 ][ NSTPY * 2 + 1 ][ NSTPZ * 2 + 1 ];
 	
 	/**
-	 * Temporary array in which to generate descent algorithm solutions.
+	 * Temporary array in which to generate descent algorithm solutions for the conjugate momentum.
 	 * <p>0 = T
 	 * <p>1 = X
 	 * <p>2 = Y
@@ -395,7 +395,7 @@ public class TestGeneralRelativityAdm extends TestCase {
 	
 	/**
 	 * Given a change calculated by a descent algorithm iteration,
-	 * applies the change to the temp array.
+	 * applies the change to the temp array for the metric.
 	 * 
 	 * @param dbl The change to apply to the temp array.
 	 */
@@ -423,7 +423,7 @@ public class TestGeneralRelativityAdm extends TestCase {
 	
 	/**
 	 * Given a change calculated by a descent algorithm iteration,
-	 * applies the change to the temp array.
+	 * applies the change to the temp array for the conjugate momentum.
 	 * 
 	 * @param dbl The change to apply to the temp array.
 	 */
@@ -451,7 +451,7 @@ public class TestGeneralRelativityAdm extends TestCase {
 	
 	/**
 	 * Given a change calculated by a descent algorithm iteration,
-	 * applies the change to the temp array.
+	 * applies the change to the temp array for the metric.
 	 * 
 	 * @param dbl The change to apply to the temp array.
 	 */
@@ -467,7 +467,7 @@ public class TestGeneralRelativityAdm extends TestCase {
 	
 	/**
 	 * Given a change calculated by a descent algorithm iteration,
-	 * applies the change to the temp array.
+	 * applies the change to the temp array for the conjugate momentum.
 	 * 
 	 * @param dbl The change to apply to the temp array.
 	 */
@@ -483,7 +483,7 @@ public class TestGeneralRelativityAdm extends TestCase {
 	
 	/**
 	 * Returns the result of the descent algorithm iterations
-	 * from the temp array.
+	 * from the temp array for the metric.
 	 * 
 	 * @return The value in the temp array.
 	 */
@@ -509,7 +509,7 @@ public class TestGeneralRelativityAdm extends TestCase {
 	
 	/**
 	 * Returns the result of the descent algorithm iterations
-	 * from the temp array.
+	 * from the temp array for the conjugate momentum.
 	 * 
 	 * @return The value in the temp array.
 	 */
@@ -535,7 +535,7 @@ public class TestGeneralRelativityAdm extends TestCase {
 	
 	/**
 	 * Returns the predictor-correction value of the iterations
-	 * from the temp array.
+	 * from the temp array for the metric.
 	 * 
 	 * @return The value in the temp array.
 	 */
@@ -561,7 +561,7 @@ public class TestGeneralRelativityAdm extends TestCase {
 	
 	/**
 	 * Returns the predictor-correction value of the iterations
-	 * from the temp array.
+	 * from the temp array for the conjugate momentum.
 	 * 
 	 * @return The value in the temp array.
 	 */
@@ -587,7 +587,7 @@ public class TestGeneralRelativityAdm extends TestCase {
 	
 	/**
 	 * Resets the predictor-correction value of the iterations
-	 * from the temp array.
+	 * from the temp array for the metric.
 	 * 
 	 * @param in The value to which to reset.
 	 */
@@ -599,7 +599,7 @@ public class TestGeneralRelativityAdm extends TestCase {
 	
 	/**
 	 * Resets the predictor-correction value of the iterations
-	 * from the temp array.
+	 * from the temp array for the conjugate momentum.
 	 * 
 	 * @param in The value to which to reset.
 	 */
@@ -1059,7 +1059,7 @@ private boolean calcEq( EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> 
 
 
 /**
- * Defines a directional derivative for the test.
+ * Defines a directional derivative for the test for 4-D expressions.
  * 
  * @author thorngreen
  *
@@ -1636,7 +1636,7 @@ private class CoeffNode
 
 
 	/**
-	 * Elem representing the discretized equivalent
+	 * Elem representing the discretized equivalent of the conjugate momentum.
 	 * of one component of the tensor constrained by the differential equation.
 	 * 
 	 * @author thorngreen
@@ -1790,7 +1790,7 @@ private class CoeffNode
 /**
  * Elem representing the symbolic expression for 
  * the discretized equivalent
- * of one component of the tensor constrained by the differential equation.
+ * of one component of the metric tensor constrained by the differential equation.
  * The partial derivatives of this elem generate
  * the slopes for producing descent algorithm iterations (e.g. the Jacobian slopes),
  * as opposed to partial derivatives for the underlying differential equation.
@@ -1938,7 +1938,7 @@ private class CNelemMetric extends Nelem<SymbolicElem<DoubleElem,DoubleElemFacto
 /**
 * Elem representing the symbolic expression for 
 * the discretized equivalent
-* of one component of the tensor constrained by the differential equation.
+* of one component of the conjugate momentum tensor constrained by the differential equation.
 * The partial derivatives of this elem generate
 * the slopes for producing descent algorithm iterations (e.g. the Jacobian slopes),
 * as opposed to partial derivatives for the underlying differential equation.
