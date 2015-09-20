@@ -2085,7 +2085,7 @@ public boolean symbolicEquals(
 
 
 /**
- * An elem defining a partial derivative that is evaluated over the discretized space of the test.
+ * An elem defining a partial derivative of the metric that is evaluated over the discretized space of the test.
  * 
  * @author thorngreen
  *
@@ -2635,7 +2635,7 @@ protected void applyAdd(
 
 
 /**
- * An elem defining a partial derivative that is evaluated over the discretized space of the test.
+ * An elem defining a partial derivative of the conjugate momentum that is evaluated over the discretized space of the test.
  * 
  * @author thorngreen
  *
@@ -3183,7 +3183,7 @@ protected void applyAdd(
 	
 	
 	/**
-	 * Newton-Raphson evaluator for the test.
+	 * Newton-Raphson evaluator of the metric for the test.
 	 * 
 	 * @author thorngreen
 	 *
@@ -3266,7 +3266,7 @@ protected void applyAdd(
 	
 	
 	/**
-	 * Newton-Raphson evaluator for the test.
+	 * Newton-Raphson evaluator of the conjugate momentum for the test.
 	 * 
 	 * @author thorngreen
 	 *
@@ -3735,13 +3735,21 @@ public void writeString( PrintStream ps ) {
 
 
 
-
+/**
+ * A factory for index-raised Ricci tensors.
+ * 
+ * @author thorngreen
+ *
+ */
 protected class TestRicciTensorIndexRaisedFactory extends RankTwoNonMetricFactory<String,
 	SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>,SymbolicElemFactory<DoubleElem, DoubleElemFactory>>,
 	SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>,SymbolicElemFactory<DoubleElem, DoubleElemFactory>>
 	>
 {
 	
+	/**
+	 * The factory for Ricci tensors.
+	 */
 	protected RicciTensorFactory<String,TestDimensionFour,
 		SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
 		SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
@@ -3882,7 +3890,7 @@ protected class TestConjugateMomentumTensorFactory4 extends RankTwoNonMetricFact
 
 
 /**
- * Factory for generating an instance of the conjugate momentum
+ * Factory for generating an instance of the index-0 derivative of the conjugate momentum
  * 
  * @author thorngreen
  *
@@ -4016,7 +4024,7 @@ protected class TestConjugateMomentumNegativeDerivativeTensorFactory4 extends Ra
 
 
 /**
- * Factory for generating an instance of the metric tensor.
+ * Factory for generating an instance of the 4-D version of the metric tensor.
  * 
  * @author thorngreen
  *
@@ -4107,7 +4115,7 @@ protected class TestMetricTensorFactory4 extends MetricTensorInvertingFactory<St
 
 
 /**
- * Factory for generating an instance of the metric tensor.
+ * Factory for generating an instance of the 3-D version of the metric tensor.
  * 
  * @author thorngreen
  *
@@ -4204,7 +4212,7 @@ protected class TestMetricTensorFactory3 extends MetricTensorInvertingFactory<St
 
 
 /**
- * Factory for generating an instance of the metric tensor.
+ * Factory for generating an instance of index-0 derivative of the 3-D version of the metric tensor.
  * 
  * @author thorngreen
  *
@@ -4327,7 +4335,12 @@ protected class TestMetricTensorNegativeDerivativeFactory3 extends MetricTensorI
 
 
 
-
+/**
+ * Factory for generating the shift vector of the ADM formalism.
+ * 
+ * @author thorngreen
+ *
+ */
 protected class ShiftVectorFactory3
 {
 	
@@ -4404,7 +4417,12 @@ protected class ShiftVectorFactory3
 
 
 
-
+/**
+ * Factory for generating the lapse scalar of the ADM formalism.
+ * 
+ * @author thorngreen
+ *
+ */
 protected class LapseScalarFactory
 {
 	
@@ -4911,9 +4929,19 @@ protected void performIterationT( final int tval , final StelemNewtonMetric[] de
 
 
 
-
+/**
+ * Abstract class for generating a CovariantDerivativeFactoryParam.
+ * 
+ * @author thorngreen
+ *
+ */
 protected static abstract class CovParamGen
 {
+	/**
+	 * Generates a CovariantDerivativeFactoryParam.
+	 * 
+	 * @return The CovariantDerivativeFactoryParam.
+	 */
 	public abstract CovariantDerivativeFactoryParam<String,TestDimensionFour,
 	SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
 	SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
