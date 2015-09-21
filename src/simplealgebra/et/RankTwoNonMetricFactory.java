@@ -39,19 +39,18 @@ import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 
 /**
- * Factory for raising the indices of a rank-two tensor that is not the metric.
+ * Factory for raising or lowering the indices of a rank-two tensor that is not the metric.
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
  * @author thorngreen
  *
  * @param <Z> Type defining the terms for the contravariant and covariant indices.
- * @param <U> The number of dimensions of the matrix for the rank-two tensor.
  * @param <R> The enclosed type of the tensor.
  * @param <S> The factory for the enclosed type of the tensor.
  */
 public abstract class RankTwoNonMetricFactory<Z extends Object, R extends Elem<R,?>, S extends ElemFactory<R,S>> 
-	extends MetricTensorFactory<Z,R,S> {
+	extends RankTwoTensorFactory<Z,R,S> {
 	
 	
 	/**
@@ -80,10 +79,10 @@ public abstract class RankTwoNonMetricFactory<Z extends Object, R extends Elem<R
 	
 	
 	/**
-	 * Gets the determinant as a tensor.
+	 * Raises the indices of a covariant rank-two tensor.
 	 * 
-	 * @param in The rank-two tensor from which to get the determinant.
-	 * @return The determinant as a tensor.
+	 * @param in The covariant rank-two tensor to be raised.
+	 * @return The raised tensor.
 	 */
 	public SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> genIndexRaise( Z indexI , Z indexJ )
 	{
@@ -91,7 +90,7 @@ public abstract class RankTwoNonMetricFactory<Z extends Object, R extends Elem<R
 		final Z i1 = ifac.getTemp();
 		
 		SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> 
-			tensorToRaise = this.getMetricTensor( true , i0 , i1 );
+			tensorToRaise = this.getTensor( true , i0 , i1 );
 		
 		SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>
 			gA = metricTensor.getMetricTensor( false , indexI , i0 );
@@ -100,6 +99,30 @@ public abstract class RankTwoNonMetricFactory<Z extends Object, R extends Elem<R
 			gB = metricTensor.getMetricTensor( false , indexJ , i1 );
 		
 		return( tensorToRaise.mult( gA ).mult( gB ) );
+	}
+	
+	
+	/**
+	 * Lowers the indices of a contravariant rank-two tensor.
+	 * 
+	 * @param in The contravariant rank-two tensor to be lowered.
+	 * @return The lowered tensor.
+	 */
+	public SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> genIndexLower( Z indexI , Z indexJ )
+	{
+		final Z i0 = ifac.getTemp();
+		final Z i1 = ifac.getTemp();
+		
+		SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> 
+			tensorToLower = this.getTensor( false , i0 , i1 );
+		
+		SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>
+			gA = metricTensor.getMetricTensor( true , indexI , i0 );
+		
+		SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>
+			gB = metricTensor.getMetricTensor( true , indexJ , i1 );
+		
+		return( tensorToLower.mult( gA ).mult( gB ) );
 	}
 	
 	

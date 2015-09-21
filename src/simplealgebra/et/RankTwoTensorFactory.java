@@ -37,7 +37,7 @@ import simplealgebra.symbolic.SymbolicElemFactory;
 
 
 /**
- * Factory for generating metric tensors as defined in General Relativity.
+ * Factory for generating rank-two tensors as defined in General Relativity.
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
@@ -47,34 +47,29 @@ import simplealgebra.symbolic.SymbolicElemFactory;
  * @param <R> The enclosed type of the tensor.
  * @param <S> The factory for the enclosed type of the tensor.
  */
-public abstract class MetricTensorFactory<Z extends Object, R extends Elem<R,?>, S extends ElemFactory<R,S>>
-	extends RankTwoTensorFactory<Z,R,S>
-{
+public abstract class RankTwoTensorFactory<Z extends Object, R extends Elem<R,?>, S extends ElemFactory<R,S>> {
 	
 	/**
-	 * Returns a metric tensor.
+	 * Returns a rank-two tensor.
 	 * 
 	 * @param covariantIndices
-	 * @param index0 The first index of the metric tensor to be created.
-	 * @param index1 The second index of the metric tensor to be created.
+	 * @param index0 The first index of the rank-two tensor to be created.
+	 * @param index1 The second index of the rank-two tensor to be created.
 	 * @return The metric tensor.
 	 */
 	public abstract SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> 
-		getMetricTensor( boolean covariantIndices , Z index0 , Z index1 );
+		getTensor( boolean covariantIndices , Z index0 , Z index1 );
 	
 	
-	
-	@Override
-	public SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> 
-		getTensor( boolean covariantIndices , Z index0 , Z index1 )
-	{
-		return( getMetricTensor( covariantIndices , index0 , index1 ) );
-	}
-	
-	
-	
-	@Override
-	public MetricTensorFactory<Z,R,S> cloneThread( final BigInteger threadIndex )
+	/**
+	 * Produces a clone of the object for threading.  Note that for
+	 * OpenJDK thread-safety for BigInteger requires at least version
+	 * 6u14.  See https://bugs.openjdk.java.net/browse/JDK-6348370
+	 * 
+	 * @param threadIndex The index of the thread for which to clone.
+	 * @return The thread-cloned object, or the same object if immutable.
+	 */
+	public RankTwoTensorFactory<Z,R,S> cloneThread( final BigInteger threadIndex )
 	{
 		throw( new RuntimeException( "Not Supported" ) );
 	}
