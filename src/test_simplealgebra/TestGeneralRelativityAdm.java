@@ -3735,6 +3735,206 @@ public void writeString( PrintStream ps ) {
 
 
 
+
+
+/**
+ * An symbolic elem for a tensor.  Used to represent a non-metric rank-two tensor.
+ * 
+ * @author tgreen
+ *
+ */
+protected class SymbolicRankTwoTensor extends SymbolicElem<EinsteinTensorElem<String, SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>>, EinsteinTensorElemFactory<String, SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>>>	
+{
+
+/**
+ * The tensor to be represented by the symbolic elem.
+ */
+protected EinsteinTensorElem<String,SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>
+	dval = null;
+
+
+/**
+ * Constructs the elem.
+ * 
+ * @param _fac The factory for the enclosed type.
+ * @param _dval The tensor to be represented by the symbolic elem.
+ */
+public SymbolicRankTwoTensor(
+		EinsteinTensorElemFactory<String, SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>> _fac,
+		EinsteinTensorElem<String,SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>
+		_dval ) {
+	super( _fac );
+	dval = _dval;
+}
+
+@Override
+public EinsteinTensorElem<String,SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>
+	eval(
+		HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace)
+		throws NotInvertibleException,
+		MultiplicativeDistributionRequiredException {
+	return( dval );
+}
+
+@Override
+public EinsteinTensorElem<String,SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>
+	evalPartialDerivative(
+		ArrayList<? extends Elem<?, ?>> withRespectTo,
+		HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace)
+		throws NotInvertibleException,
+		MultiplicativeDistributionRequiredException {
+	throw( new RuntimeException( "NotSupported" ) );
+}
+
+@Override
+public void writeString( PrintStream ps ) {
+	Iterator<ArrayList<BigInteger>> it = dval.getKeyIterator();
+	while( it.hasNext() )
+	{
+		final ArrayList<BigInteger> key = it.next();
+		ps.print( "\n" + "** " ); 
+		( dval.getVal( key ) ).writeString( ps );
+	}
+}
+
+}
+
+
+
+
+/**
+ * An symbolic elem for a tensor.  Used to represent a non-metric rank-one tensor.
+ * 
+ * @author tgreen
+ *
+ */
+protected class SymbolicRankOneTensor extends SymbolicElem<EinsteinTensorElem<String, SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>>, EinsteinTensorElemFactory<String, SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>>>	
+{
+
+/**
+ * The tensor to be represented by the symbolic elem.
+ */
+protected EinsteinTensorElem<String,SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>
+	dval = null;
+
+
+/**
+ * Constructs the elem.
+ * 
+ * @param _fac The factory for the enclosed type.
+ * @param _dval The tensor to be represented by the symbolic elem.
+ */
+public SymbolicRankOneTensor(
+		EinsteinTensorElemFactory<String, SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>> _fac,
+		EinsteinTensorElem<String,SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>
+		_dval ) {
+	super( _fac );
+	dval = _dval;
+}
+
+@Override
+public EinsteinTensorElem<String,SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>
+	eval(
+		HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace)
+		throws NotInvertibleException,
+		MultiplicativeDistributionRequiredException {
+	return( dval );
+}
+
+@Override
+public EinsteinTensorElem<String,SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>
+	evalPartialDerivative(
+		ArrayList<? extends Elem<?, ?>> withRespectTo,
+		HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace)
+		throws NotInvertibleException,
+		MultiplicativeDistributionRequiredException {
+	throw( new RuntimeException( "NotSupported" ) );
+}
+
+@Override
+public void writeString( PrintStream ps ) {
+	Iterator<ArrayList<BigInteger>> it = dval.getKeyIterator();
+	while( it.hasNext() )
+	{
+		final ArrayList<BigInteger> key = it.next();
+		ps.print( "\n" + "** " ); 
+		( dval.getVal( key ) ).writeString( ps );
+	}
+}
+
+}
+
+
+
+
+
+/**
+* An symbolic elem for a tensor.  Used to represent a non-metric scalar tensor.
+* 
+* @author tgreen
+*
+*/
+protected class SymbolicScalarTensor extends SymbolicElem<EinsteinTensorElem<String, SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>>, EinsteinTensorElemFactory<String, SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>>>	
+{
+
+/**
+* The tensor to be represented by the symbolic elem.
+*/
+protected EinsteinTensorElem<String,SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>
+	dval = null;
+
+
+/**
+* Constructs the elem.
+* 
+* @param _fac The factory for the enclosed type.
+* @param _dval The tensor to be represented by the symbolic elem.
+*/
+public SymbolicScalarTensor(
+		EinsteinTensorElemFactory<String, SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>> _fac,
+		EinsteinTensorElem<String,SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>
+		_dval ) {
+	super( _fac );
+	dval = _dval;
+}
+
+@Override
+public EinsteinTensorElem<String,SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>
+	eval(
+		HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace)
+		throws NotInvertibleException,
+		MultiplicativeDistributionRequiredException {
+	return( dval );
+}
+
+@Override
+public EinsteinTensorElem<String,SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>
+	evalPartialDerivative(
+		ArrayList<? extends Elem<?, ?>> withRespectTo,
+		HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace)
+		throws NotInvertibleException,
+		MultiplicativeDistributionRequiredException {
+	throw( new RuntimeException( "NotSupported" ) );
+}
+
+@Override
+public void writeString( PrintStream ps ) {
+	Iterator<ArrayList<BigInteger>> it = dval.getKeyIterator();
+	while( it.hasNext() )
+	{
+		final ArrayList<BigInteger> key = it.next();
+		ps.print( "\n" + "** " ); 
+		( dval.getVal( key ) ).writeString( ps );
+	}
+}
+
+}
+
+
+
+
+
+
 /**
  * A factory for index-raised Ricci tensors.
  * 
@@ -3872,7 +4072,7 @@ protected class TestConjugateMomentumTensorFactory4 extends RankTwoNonMetricFact
 		}
 		
 		
-		final SymbolicMetricTensor seval = new SymbolicMetricTensor( ge , g0 );
+		final SymbolicRankTwoTensor seval = new SymbolicRankTwoTensor( ge , g0 );
 		
 		
 		return( seval );
@@ -4008,7 +4208,7 @@ protected class TestConjugateMomentumNegativeDerivativeTensorFactory4 extends Ra
 		}
 		
 		
-		final SymbolicMetricTensor seval = new SymbolicMetricTensor( ge , g0 );
+		final SymbolicRankTwoTensor seval = new SymbolicRankTwoTensor( ge , g0 );
 		
 		
 		return( seval );
@@ -4136,7 +4336,7 @@ protected class TestMetricTensorFactory4 extends MetricTensorInvertingFactory<St
  * @author thorngreen
  *
  */
-protected class TestMetricTensorFactory3 extends MetricTensorInvertingFactory<String, TestDimensionFour,
+protected class TestMetricTensorFactory3 extends MetricTensorInvertingFactoryZn<String, TestDimensionFour,
 	SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>,SymbolicElemFactory<DoubleElem, DoubleElemFactory>>,
 	SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>,SymbolicElemFactory<DoubleElem, DoubleElemFactory>>
 	>
@@ -4338,7 +4538,7 @@ SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>,SymbolicElemFact
 		}
 		
 		
-		final SymbolicMetricTensor seval = new SymbolicMetricTensor( ge , g0 );
+		final SymbolicRankTwoTensor seval = new SymbolicRankTwoTensor( ge , g0 );
 		
 		
 		return( seval );
@@ -4426,11 +4626,11 @@ protected class ShiftVectorFactory3
 		if( !icovariantIndices )
 		{
 			// g0 = genMatrixInverseLeft( td , se3A , g0 ); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-			// !!!!!!!!!!!!!!!!!!!!!!!!!!!! must fix !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+			// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		}
 		
 		
-		final SymbolicMetricTensor seval = new SymbolicMetricTensor( ge , n );
+		final SymbolicRankOneTensor seval = new SymbolicRankOneTensor( ge , n );
 		
 		
 		return( seval );
@@ -4523,7 +4723,7 @@ protected class LapseScalarFactory
 	
 		
 		
-			final SymbolicMetricTensor seval = new SymbolicMetricTensor( ge , n );
+			final SymbolicScalarTensor seval = new SymbolicScalarTensor( ge , n );
 		
 		
 			return( seval );
