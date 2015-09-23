@@ -31,6 +31,7 @@ import simplealgebra.NumDimensions;
 import simplealgebra.SquareMatrixElem;
 import simplealgebra.et.EinsteinTensorElem;
 import simplealgebra.et.MetricTensorInvertingFactory;
+import simplealgebra.et.RankTwoDeterminantFactory;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 
