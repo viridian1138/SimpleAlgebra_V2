@@ -123,7 +123,7 @@ public abstract class MetricTensorInvertingFactoryZn<Z extends Object, U extends
 				final Iterator<ArrayList<BigInteger>> itb = rA.getKeyIterator();
 				while( itb.hasNext() )
 				{
-					final ArrayList<BigInteger> keyA = ita.next();
+					final ArrayList<BigInteger> keyA = itb.next();
 					final ArrayList<BigInteger> keyB = new ArrayList<BigInteger>();
 					keyB.add( keyA.get( 0 ).add( BigInteger.ONE ) );
 					keyB.add( keyA.get( 1 ).add( BigInteger.ONE ) );

@@ -30,6 +30,7 @@ import java.io.PrintStream;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Iterator;
 
 import org.kie.api.definition.rule.Rule;
 import org.kie.api.event.rule.BeforeMatchFiredEvent;
@@ -116,7 +117,7 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 
 	@Override
 	public SymbolicElem<R, S> mult(SymbolicElem<R, S> b) {
-		// This simplification has a parallel implementation in the "Mult Zero B" rules in 
+		// This simplification has a parallel implementation in the "MultRightMutatorType Zero B" rules in 
 		// distributeSimplify.drl and distributeSimplify2.drl
 		return( b.isSymbolicZero() ? b : new SymbolicMult<R,S>( this , b , fac ) );
 	}
@@ -245,7 +246,20 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 			}
 		}
 		
-		return( getFac().getFac().handleSymbolicOptionalOp(id, args) );
+		final ArrayList<SymbolicElem<R, S>> args2 = new ArrayList<SymbolicElem<R, S>>();
+		
+		args2.add( this );
+		
+		if( args != null )
+		{
+			Iterator<SymbolicElem<R, S>> it = args.iterator();
+			while( it.hasNext() )
+			{
+				args2.add( it.next() );
+			}
+		}
+		
+		return( getFac().getFac().handleSymbolicOptionalOp(id, args2) );
 	}
 	
 	
