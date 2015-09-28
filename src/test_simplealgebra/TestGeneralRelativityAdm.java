@@ -6141,6 +6141,12 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 				mg1ConjugateMomentum = curvConjugateMomentum;
 		
 		
+		mg1Metric.validate();
+		
+		mg1ConjugateMomentum.validate();
+		
+		
+		
 		VEvalElem3 m1Metric = new VEvalElem3( se2 , se2A , de2 , mg1Metric );
 		
 		VEvalElem3 m1ConjugateMomentum = new VEvalElem3( se2 , se2A , de2 , mg1ConjugateMomentum );
@@ -6165,6 +6171,14 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 		
 		
 		System.out.println( "Reached #4..." );
+		
+		
+		m1Metric.validate();
+		
+		m1ConjugateMomentum.validate();
+		
+		
+		System.out.println( "Reached #4 Validation..." );
 		
 		
 		final SymbolicElem<SymbolicElem<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>> 

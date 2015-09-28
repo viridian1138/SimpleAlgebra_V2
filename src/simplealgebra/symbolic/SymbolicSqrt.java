@@ -78,8 +78,18 @@ public class SymbolicSqrt<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 	
 	@Override
 	public R eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
-		ArrayList<R> args = new ArrayList<R>();
-		return( elem.eval( implicitSpace ).handleOptionalOp( Sqrt.SQRT , args ) );
+		if( elem instanceof SymbolicElem )
+		{
+			final SymbolicElem<?,?> elemA = (SymbolicElem<?,?>) elem;
+			final SymbolicElemFactory<?,?> elemAfac = (SymbolicElemFactory<?,?>)( this.getFac() );
+			final SymbolicSqrt<?,?> ret = new SymbolicSqrt( elemA , elemAfac.getFac() );
+			return( (R) ret );
+		}
+		else
+		{
+			ArrayList<R> args = new ArrayList<R>();
+			return( elem.eval( implicitSpace ).handleOptionalOp( Sqrt.SQRT , args ) );
+		}
 	}
 	
 	@Override
