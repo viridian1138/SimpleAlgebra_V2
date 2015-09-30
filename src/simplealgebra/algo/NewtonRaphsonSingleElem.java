@@ -128,7 +128,7 @@ public abstract class NewtonRaphsonSingleElem<R extends Elem<R,?>, S extends Ele
 	/**
 	 * Constructs the evaluator.
 	 * 
-	 * @param _function The function over which to evaluate Netwon-Raphson.
+	 * @param _function The function over which to evaluate Newton-Raphson.
 	 * @param _withRespectTo The variable over which to evaluate the derivative of the function.
 	 * @param implicitSpaceFirstLevel The initial implicit space over which to take the function and its derivative.
 	 * @throws NotInvertibleException

@@ -305,7 +305,7 @@ public class TestGeneralRelativityAdm extends TestCase {
 	/**
 	 * Temp step size in the T-direction.
 	 */
-	protected static final int NSTPT = 2;
+	protected static final int NSTPT = 1;
 	
 	
 	/**
@@ -6126,14 +6126,14 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 			String,
 			SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>, 
 			SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>
-				curvConjugateMomentum = conjMomentumNegativeDerivativeEt.add( 
-					conjMomentumATerms ).add( 
-					conjMomentumBTermsNeg ).add(
-					collectedCovarsEt ).add( 
-					covMomentumN_nEt ).add(
-					covNi_rEt.mult( conjMomentumNjEt ) ).add(
-					covNj_rEt.mult( conjMomentumNiEt ) ).add(
-					negNgSqrtMultRicciTermsEt );
+				curvConjugateMomentum = conjMomentumNegativeDerivativeEt; // .add( 
+				//	conjMomentumATerms ).add( 
+				//	conjMomentumBTermsNeg ).add(
+				//	collectedCovarsEt ).add( 
+				//	covMomentumN_nEt ).add(
+				//	covNi_rEt.mult( conjMomentumNjEt ) ).add(
+				//	covNj_rEt.mult( conjMomentumNiEt ) ).add(
+				//	negNgSqrtMultRicciTermsEt );
 	
 		
 

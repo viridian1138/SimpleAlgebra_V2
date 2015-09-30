@@ -82,9 +82,10 @@ public class SymbolicAbsoluteValue<R extends Elem<R,?>, S extends ElemFactory<R,
 	
 	@Override
 	public R eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
-		if( elem instanceof SymbolicElem )
+		final R el = elem.eval( implicitSpace );
+		if( el instanceof SymbolicElem )
 		{
-			final SymbolicElem<?,?> elemA = (SymbolicElem<?,?>) elem;
+			final SymbolicElem<?,?> elemA = (SymbolicElem<?,?>) el;
 			final SymbolicElemFactory<?,?> elemAfac = (SymbolicElemFactory<?,?>)( this.getFac() );
 			final SymbolicAbsoluteValue<?,?> ret = new SymbolicAbsoluteValue( elemA , elemAfac.getFac() );
 			return( (R) ret );
@@ -92,7 +93,7 @@ public class SymbolicAbsoluteValue<R extends Elem<R,?>, S extends ElemFactory<R,
 		else
 		{
 			ArrayList<R> args = new ArrayList<R>();
-			return( elem.eval( implicitSpace ).handleOptionalOp( AbsoluteValue.ABSOLUTE_VALUE , args ) );
+			return( el.handleOptionalOp( AbsoluteValue.ABSOLUTE_VALUE , args ) );
 		}
 	}
 	
