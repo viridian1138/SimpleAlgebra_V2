@@ -1837,10 +1837,23 @@ private class CNelemMetric extends Nelem<SymbolicElem<DoubleElem,DoubleElemFacto
 			return( fac.zero() );
 		}
 		Iterator<? extends Elem<?,?>> it = withRespectTo.iterator();
-		CNelemMetric wrt = (CNelemMetric)( it.next() );
-		// final boolean cond = this.symbolicDEval( wrt );
-		final boolean cond = this.symbolicEquals( wrt );
-		return( cond ? fac.identity() : fac.zero() );
+		Elem<?,?> iwrt = it.next();
+		
+		if( iwrt instanceof CNelemMetric )
+		{
+			CNelemMetric wrt = (CNelemMetric) iwrt;
+			// final boolean cond = this.symbolicDEval( wrt );
+			final boolean cond = this.symbolicEquals( wrt );
+			return( cond ? fac.identity() : fac.zero() );
+		}
+		
+		if( iwrt instanceof CNelemConjugateMomentum )
+		{
+			return( fac.zero() );
+		}
+		
+		throw( new RuntimeException( "Fail." ) );
+		
 	}
 	
 
@@ -1985,10 +1998,22 @@ public SymbolicElem<DoubleElem,DoubleElemFactory> evalPartialDerivative(ArrayLis
 		return( fac.zero() );
 	}
 	Iterator<? extends Elem<?,?>> it = withRespectTo.iterator();
-	CNelemConjugateMomentum wrt = (CNelemConjugateMomentum)( it.next() );
-	// final boolean cond = this.symbolicDEval( wrt );
-	final boolean cond = this.symbolicEquals( wrt );
-	return( cond ? fac.identity() : fac.zero() );
+	Elem<?,?> iwrt = it.next();
+	
+	if( iwrt instanceof CNelemConjugateMomentum )
+	{
+		CNelemConjugateMomentum wrt = (CNelemConjugateMomentum) iwrt;
+		// final boolean cond = this.symbolicDEval( wrt );
+		final boolean cond = this.symbolicEquals( wrt );
+		return( cond ? fac.identity() : fac.zero() );
+	}
+	
+	if( iwrt instanceof CNelemMetric )
+	{
+		return( fac.zero() );
+	}
+	
+	throw( new RuntimeException( "Fail." ) );
 }
 
 
@@ -6126,11 +6151,11 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 			String,
 			SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>, 
 			SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>
-				curvConjugateMomentum = conjMomentumNegativeDerivativeEt; // .add( 
-				//	conjMomentumATerms ).add( 
-				//	conjMomentumBTermsNeg ).add(
-				//	collectedCovarsEt ).add( 
-				//	covMomentumN_nEt ).add(
+				curvConjugateMomentum = conjMomentumNegativeDerivativeEt.add( 
+				conjMomentumATerms ).add( 
+				conjMomentumBTermsNeg ).add(
+				covMomentumN_nEt ); // ).add(
+				// collectedCovarsEt ).add( 
 				//	covNi_rEt.mult( conjMomentumNjEt ) ).add(
 				//	covNj_rEt.mult( conjMomentumNiEt ) ).add(
 				//	negNgSqrtMultRicciTermsEt );
@@ -6211,6 +6236,12 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 		
 		final EinsteinTensorElem<String, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> 
 			s00ConjugateMomentum = ( (VEvalElem2)( s0ConjugateMomentum ) ).dval;
+		
+		
+		s00Metric.validate();
+		
+		
+		s00ConjugateMomentum.validate();
 		
 		
 		System.out.println( "Reached #6..." );
@@ -6313,6 +6344,9 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 		StelemNewtonConjugateMomentum[] descentConjugateMomentum = new StelemNewtonConjugateMomentum[ 16 ];
 		
 		
+		System.out.println( "Reached #8..." );
+		
+		
 		for( int acnt = 0 ; acnt < 9 ; acnt++ )
 		{
 			final ArrayList<BigInteger> index = new ArrayList<BigInteger>();
@@ -6329,6 +6363,10 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 			index.add( BigInteger.valueOf( acnt % TestDimensionFour.FOUR ) );
 			descentConjugateMomentum[ acnt ] = new StelemNewtonConjugateMomentum( paramConjugateMomentum  , index );
 		}
+		
+		
+		System.out.println( "Reached #9..." );
+		
 		
 		
 		for( int tval = 1 ; tval < ( NUM_T_ITER - 1 ) ; tval++ )
