@@ -184,6 +184,24 @@ public class TestGeneralRelativityAdm extends TestCase {
 	
 	
 	/**
+	 * Generates a zero tensor of rank 2.
+	 * @return The zero tensor.
+	 */
+	private static EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> genZero( )
+	{
+		final double CV = C.getVal();
+		DoubleElemFactory da = new DoubleElemFactory();
+		final ArrayList<String> contravariantIndices = new ArrayList<String>();
+		final ArrayList<String> covariantIndices = new ArrayList<String>();
+		covariantIndices.add( "u" );
+		covariantIndices.add( "v" );
+		EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>
+			ret = new EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>( da , contravariantIndices  , covariantIndices );
+		return( ret );
+	}
+	
+	
+	/**
 	 * Returns a tensor equal to the input value.
 	 * @param in The input value.
 	 * @return The generated tensor.
@@ -3287,6 +3305,12 @@ protected void applyAdd(
 			throw( new RuntimeException( "Not Supported" ) );
 		}
 		
+		@Override
+		protected boolean useSimplification()
+		{
+			return( false );
+		}
+		
 	}
 	
 	
@@ -3368,6 +3392,12 @@ protected void applyAdd(
 		public StelemNewtonConjugateMomentum cloneThread( final BigInteger threadIndex )
 		{
 			throw( new RuntimeException( "Not Supported" ) );
+		}
+		
+		@Override
+		protected boolean useSimplification()
+		{
+			return( false );
 		}
 		
 	}
@@ -5103,6 +5133,10 @@ protected void performIterationT( final int tval , final StelemNewtonMetric[] de
 			//	resetCorrectionValue( tmpCorrectionValue );
 			//}
 		
+			if( iterArrayMetric[ tval + 1 ][ im.getXcnt() ][ im.getYcnt() ][ im.getZcnt() ] == null )
+			{
+				iterArrayMetric[ tval + 1 ][ im.getXcnt() ][ im.getYcnt() ][ im.getZcnt() ] = genZero();
+			}
 			( iterArrayMetric[ tval + 1 ][ im.getXcnt() ][ im.getYcnt() ][ im.getZcnt() ] ).setVal( index , val );
 				
 			
@@ -5195,6 +5229,10 @@ protected void performIterationT( final int tval , final StelemNewtonMetric[] de
 			//	resetCorrectionValue( tmpCorrectionValue );
 			//}
 		
+			if( iterArrayConjugateMomentum[ tval + 1 ][ im.getXcnt() ][ im.getYcnt() ][ im.getZcnt() ] == null )
+			{
+				iterArrayConjugateMomentum[ tval + 1 ][ im.getXcnt() ][ im.getYcnt() ][ im.getZcnt() ] = genZero();
+			}
 			( iterArrayConjugateMomentum[ tval + 1 ][ im.getXcnt() ][ im.getYcnt() ][ im.getZcnt() ] ).setVal( index , val );
 				
 			
@@ -6154,11 +6192,11 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 				curvConjugateMomentum = conjMomentumNegativeDerivativeEt.add( 
 				conjMomentumATerms ).add( 
 				conjMomentumBTermsNeg ).add(
-				covMomentumN_nEt ); // ).add(
+				covMomentumN_nEt ).add(
 				// collectedCovarsEt ).add( 
-				//	covNi_rEt.mult( conjMomentumNjEt ) ).add(
-				//	covNj_rEt.mult( conjMomentumNiEt ) ).add(
-				//	negNgSqrtMultRicciTermsEt );
+				covNi_rEt.mult( conjMomentumNjEt ) ).add(
+				covNj_rEt.mult( conjMomentumNiEt ) ); // ).add(
+				// negNgSqrtMultRicciTermsEt );
 	
 		
 

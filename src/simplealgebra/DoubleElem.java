@@ -111,6 +111,23 @@ public class DoubleElem extends Elem<DoubleElem, DoubleElemFactory> {
 			}
 		}
 		
+		if( id instanceof Sqrt )
+		{
+			switch( (Sqrt) id )
+			{
+				case SQRT:
+				{
+					final double dd = Math.sqrt( d );
+					if( Double.isNaN( dd ) || Double.isInfinite( dd ) )
+					{
+						throw( new NotInvertibleException() );
+					}
+					return( new DoubleElem( dd ) );
+				}
+				// break;
+			}
+		}
+		
 		return( super.handleOptionalOp(id, args) );
 	}
 	
