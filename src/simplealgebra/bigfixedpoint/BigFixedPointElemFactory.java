@@ -32,10 +32,14 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 
 import simplealgebra.AbsoluteValue;
+import simplealgebra.DoubleElem;
+import simplealgebra.DoubleElemFactory;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
+import simplealgebra.Sqrt;
 import simplealgebra.symbolic.SymbolicAbsoluteValue;
 import simplealgebra.symbolic.SymbolicElem;
+import simplealgebra.symbolic.SymbolicSqrt;
 
 /**
  * Factory for a BigFixedPointElem.
@@ -146,6 +150,20 @@ public class BigFixedPointElemFactory<T extends Precision<T>> extends ElemFactor
 				}
 				// break;
 				
+			}
+		}
+		
+		if( id instanceof Sqrt )
+		{
+			switch( (Sqrt) id )
+			{
+				case SQRT:
+				{
+					SymbolicElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> arg
+						= args.get( 0 );
+					return( new SymbolicSqrt<BigFixedPointElem<T>, BigFixedPointElemFactory<T>>( arg , arg.getFac().getFac() ) );
+				}
+				// break;
 			}
 		}
 		

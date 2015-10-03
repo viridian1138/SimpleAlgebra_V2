@@ -30,6 +30,7 @@ import java.util.ArrayList;
 
 import simplealgebra.symbolic.SymbolicAbsoluteValue;
 import simplealgebra.symbolic.SymbolicElem;
+import simplealgebra.symbolic.SymbolicSqrt;
 
 
 /**
@@ -100,6 +101,20 @@ public class DoubleElemFactory extends ElemFactory<DoubleElem, DoubleElemFactory
 				}
 				// break;
 				
+			}
+		}
+		
+		if( id instanceof Sqrt )
+		{
+			switch( (Sqrt) id )
+			{
+				case SQRT:
+				{
+					SymbolicElem<DoubleElem, DoubleElemFactory> arg
+						= args.get( 0 );
+					return( new SymbolicSqrt<DoubleElem, DoubleElemFactory>( arg , arg.getFac().getFac() ) );
+				}
+				// break;
 			}
 		}
 		
