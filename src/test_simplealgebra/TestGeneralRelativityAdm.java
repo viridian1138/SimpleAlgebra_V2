@@ -6193,7 +6193,7 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 				conjMomentumATerms ).add( 
 				conjMomentumBTermsNeg ).add(
 				covMomentumN_nEt ).add(
-				// collectedCovarsEt ).add( 
+				collectedCovarsEt ).add( 
 				covNi_rEt.mult( conjMomentumNjEt ) ).add(
 				covNj_rEt.mult( conjMomentumNiEt ) ); // ).add(
 				// negNgSqrtMultRicciTermsEt );
