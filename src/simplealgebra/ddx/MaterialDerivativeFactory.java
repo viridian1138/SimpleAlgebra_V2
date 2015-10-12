@@ -41,6 +41,7 @@ import simplealgebra.et.MetricTensorFactory;
 import simplealgebra.et.TemporaryIndexFactory;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.PrecedenceComparator;
+import simplealgebra.symbolic.SCacheKey;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 
@@ -179,6 +180,17 @@ public class MaterialDerivativeFactory<Z extends Object, U extends NumDimensions
 			HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace )
 			throws NotInvertibleException, MultiplicativeDistributionRequiredException {
 		return( this.genTerms( implicitSpace ).eval( implicitSpace ) );
+	}
+	
+	
+	@Override
+	public EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>> evalDerivativeCached(
+			SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> in,
+			HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace,
+			HashMap<SCacheKey<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>, EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> cache)
+			throws NotInvertibleException,
+			MultiplicativeDistributionRequiredException {
+		return( this.genTerms( implicitSpace ).evalCached( implicitSpace , cache ) );
 	}
 	
 	
@@ -350,6 +362,7 @@ public class MaterialDerivativeFactory<Z extends Object, U extends NumDimensions
 	 * The "t derivative" scalar operator in the material derivative.
 	 */
 	private SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> derivT;
+
 
 }
 

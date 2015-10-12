@@ -97,11 +97,35 @@ public class SymbolicInvertLeft<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 	}
 	
 	@Override
+	public R evalCached( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ,
+			HashMap<SCacheKey<R, S>, R> cache ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
+		final SCacheKey<R,S> key = new SCacheKey<R,S>( this , implicitSpace );
+		final R iret = cache.get( key );
+		if( iret != null )
+		{
+			return( iret );
+		}
+		final R ret = elem.evalCached( implicitSpace , cache ).invertLeft();
+		cache.put( key , ret );
+		return( ret );
+	}
+	
+	@Override
 	public R evalPartialDerivative(ArrayList<? extends Elem<?, ?>> withRespectTo , HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace )
 			throws NotInvertibleException, MultiplicativeDistributionRequiredException {
 		final R aL = elem.invertLeft().eval(implicitSpace);
 		final R ap = elem.evalPartialDerivative(withRespectTo, implicitSpace);
 		final R aR = elem.invertRight().eval(implicitSpace);
+		return( aL.mult( ap ).mult( aR ).negate() );
+	}
+	
+	@Override
+	public R evalPartialDerivativeCached(ArrayList<? extends Elem<?, ?>> withRespectTo , 
+			HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace , HashMap<SCacheKey<R, S>, R> cache )
+			throws NotInvertibleException, MultiplicativeDistributionRequiredException {
+		final R aL = elem.invertLeft().evalCached(implicitSpace, cache);
+		final R ap = elem.evalPartialDerivativeCached(withRespectTo, implicitSpace, cache);
+		final R aR = elem.invertRight().evalCached(implicitSpace, cache);
 		return( aL.mult( ap ).mult( aR ).negate() );
 	}
 	

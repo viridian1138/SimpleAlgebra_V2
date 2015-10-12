@@ -36,6 +36,7 @@ import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.symbolic.DroolsSession;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
+import simplealgebra.symbolic.SCacheKey;
 import simplealgebra.symbolic.SymbolicElem;
 
 
@@ -81,6 +82,17 @@ public abstract class Nelem<R extends Elem<R,?>, S extends ElemFactory<R,S>, K e
 	
 	@Override
 	public R evalPartialDerivative(ArrayList<? extends Elem<?, ?>> withRespectTo, HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws MultiplicativeDistributionRequiredException, NotInvertibleException {
+		throw( new RuntimeException( "NotSupported" ) );
+	}
+	
+	
+	@Override
+	public R evalPartialDerivativeCached(
+			ArrayList<? extends Elem<?, ?>> withRespectTo,
+			HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace,
+			HashMap<SCacheKey<R, S>, R> cache)
+			throws NotInvertibleException,
+			MultiplicativeDistributionRequiredException {
 		throw( new RuntimeException( "NotSupported" ) );
 	}
 	

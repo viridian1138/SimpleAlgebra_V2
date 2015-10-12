@@ -98,6 +98,33 @@ public class SymbolicAbsoluteValue<R extends Elem<R,?>, S extends ElemFactory<R,
 	}
 	
 	@Override
+	public R evalCached( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ,
+			HashMap<SCacheKey<R, S>, R> cache ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
+		final SCacheKey<R,S> key = new SCacheKey<R,S>( this , implicitSpace );
+		final R iret = cache.get( key );
+		if( iret != null )
+		{
+			return( iret );
+		}
+		final R el = elem.eval( implicitSpace );
+		if( el instanceof SymbolicElem )
+		{
+			final SymbolicElem<?,?> elemA = (SymbolicElem<?,?>) el;
+			final SymbolicElemFactory<?,?> elemAfac = (SymbolicElemFactory<?,?>)( this.getFac() );
+			final SymbolicAbsoluteValue<?,?> ret = new SymbolicAbsoluteValue( elemA , elemAfac.getFac() );
+			cache.put(key, (R) ret );
+			return( (R) ret );
+		}
+		else
+		{
+			ArrayList<R> args = new ArrayList<R>();
+			R ret = el.handleOptionalOp( AbsoluteValue.ABSOLUTE_VALUE , args );
+			cache.put(key, ret );
+			return( ret );
+		}
+	}
+	
+	@Override
 	public R evalPartialDerivative( ArrayList<? extends Elem<?,?>> withRespectTo , HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
 		final R absV = this.eval( implicitSpace );
@@ -105,6 +132,17 @@ public class SymbolicAbsoluteValue<R extends Elem<R,?>, S extends ElemFactory<R,
 		final R dv = elem.evalPartialDerivative( withRespectTo , implicitSpace );
 		return( v.mult( absV.invertLeft() ).mult( dv ) );
 	}
+	
+	@Override
+	public R evalPartialDerivativeCached( ArrayList<? extends Elem<?,?>> withRespectTo , 
+			HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace , HashMap<SCacheKey<R, S>, R> cache ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	{
+		final R absV = this.evalCached( implicitSpace , cache );
+		final R v = elem.evalCached( implicitSpace , cache );
+		final R dv = elem.evalPartialDerivativeCached( withRespectTo , implicitSpace , cache );
+		return( v.mult( absV.invertLeft() ).mult( dv ) );
+	}
+	
 	
 	@Override
 	public boolean exposesDerivatives()

@@ -33,6 +33,7 @@ import java.util.HashMap;
 
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.PrecedenceComparator;
+import simplealgebra.symbolic.SCacheKey;
 import simplealgebra.symbolic.SymbolicElem;
 
 /**
@@ -119,6 +120,25 @@ public class SymbolicConjugateRight<R extends Elem<R,?>, S extends ElemFactory<R
 		ArrayList<ComplexElem<R,S>> args = new ArrayList<ComplexElem<R,S>>();
 		return( elem.eval( implicitSpace ).handleOptionalOp( ComplexElem.ComplexCmd.CONJUGATE_RIGHT , args ) );
 	}
+	
+	
+	@Override
+	public ComplexElem<R, S> evalCached(
+			HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace,
+			HashMap<SCacheKey<ComplexElem<R, S>, ComplexElemFactory<R, S>>, ComplexElem<R, S>> cache)
+			throws NotInvertibleException,
+			MultiplicativeDistributionRequiredException {
+		final SCacheKey<ComplexElem<R, S>, ComplexElemFactory<R, S>> key = new SCacheKey<ComplexElem<R, S>, ComplexElemFactory<R, S>>( this , implicitSpace );
+		final ComplexElem<R, S> iret = cache.get( key );
+		if( iret != null )
+		{
+			return( iret );
+		}
+		ArrayList<ComplexElem<R,S>> args = new ArrayList<ComplexElem<R,S>>();
+		final ComplexElem<R, S> ret = elem.evalCached( implicitSpace , cache ).handleOptionalOp( ComplexElem.ComplexCmd.CONJUGATE_RIGHT , args );
+		cache.put( key , ret );
+		return( ret );
+	}
 
 	
 	@Override
@@ -128,6 +148,20 @@ public class SymbolicConjugateRight<R extends Elem<R,?>, S extends ElemFactory<R
 		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TBD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		return null;
 	}
+	
+	
+	@Override
+	public ComplexElem<R, S> evalPartialDerivativeCached(
+			ArrayList<? extends Elem<?, ?>> withRespectTo,
+			HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace,
+			HashMap<SCacheKey<ComplexElem<R, S>, ComplexElemFactory<R, S>>, ComplexElem<R, S>> cache)
+			throws NotInvertibleException,
+			MultiplicativeDistributionRequiredException {
+		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TBD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		return null;
+	}
+	
+	
 	
 	@Override
 	public boolean evalSymbolicConstantApprox()

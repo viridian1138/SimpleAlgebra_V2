@@ -40,6 +40,7 @@ import simplealgebra.NumDimensions;
 import simplealgebra.symbolic.DroolsSession;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.PrecedenceComparator;
+import simplealgebra.symbolic.SCacheKey;
 import simplealgebra.symbolic.SymbolicElem;
 
 
@@ -107,6 +108,29 @@ public class SymbolicWedge<U extends NumDimensions, A extends Ord<U>, R extends 
 		args.add( elemB.eval( implicitSpace ) );
 		return( elemA.eval( implicitSpace ).handleOptionalOp( GeometricAlgebraMultivectorElem.GeometricAlgebraMultivectorCmd.WEDGE , args ) );
 	}
+	
+	
+
+	@Override
+	public GeometricAlgebraMultivectorElem<U, A, R, S> evalCached(
+			HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace,
+			HashMap<SCacheKey<GeometricAlgebraMultivectorElem<U, A, R, S>, GeometricAlgebraMultivectorElemFactory<U, A, R, S>>, GeometricAlgebraMultivectorElem<U, A, R, S>> cache)
+			throws NotInvertibleException,
+			MultiplicativeDistributionRequiredException {
+		final SCacheKey<GeometricAlgebraMultivectorElem<U, A, R, S>, GeometricAlgebraMultivectorElemFactory<U, A, R, S>> key =
+				new SCacheKey<GeometricAlgebraMultivectorElem<U, A, R, S>, GeometricAlgebraMultivectorElemFactory<U, A, R, S>>( this , implicitSpace );
+		final GeometricAlgebraMultivectorElem<U, A, R, S> iret = cache.get( key );
+		if( iret != null )
+		{
+			return( iret );
+		}
+		ArrayList<GeometricAlgebraMultivectorElem<U,A,R,S>> args = new ArrayList<GeometricAlgebraMultivectorElem<U,A,R,S>>();
+		args.add( elemB.evalCached( implicitSpace , cache ) );
+		final GeometricAlgebraMultivectorElem<U, A, R, S> ret = 
+				elemA.evalCached( implicitSpace , cache ).handleOptionalOp( GeometricAlgebraMultivectorElem.GeometricAlgebraMultivectorCmd.WEDGE , args );
+		cache.put(key, ret);
+		return( ret );
+	}
 
 	
 	@Override
@@ -116,6 +140,18 @@ public class SymbolicWedge<U extends NumDimensions, A extends Ord<U>, R extends 
 		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TBD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		return null;
 	}
+	
+	@Override
+	public GeometricAlgebraMultivectorElem<U, A, R, S> evalPartialDerivativeCached(
+			ArrayList<? extends Elem<?, ?>> withRespectTo,
+			HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace,
+			HashMap<SCacheKey<GeometricAlgebraMultivectorElem<U, A, R, S>, GeometricAlgebraMultivectorElemFactory<U, A, R, S>>, GeometricAlgebraMultivectorElem<U, A, R, S>> cache)
+			throws NotInvertibleException,
+			MultiplicativeDistributionRequiredException {
+		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TBD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		return null;
+	}
+	
 	
 	
 	@Override
@@ -239,6 +275,6 @@ public class SymbolicWedge<U extends NumDimensions, A extends Ord<U>, R extends 
 	 * The right argument of the wedge product.
 	 */
 	private SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> elemB;
-	
+
 }
 

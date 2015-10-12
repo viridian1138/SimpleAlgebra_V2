@@ -49,6 +49,7 @@ import simplealgebra.SquareMatrixElem;
 import simplealgebra.SquareMatrixElemFactory;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.PrecedenceComparator;
+import simplealgebra.symbolic.SCacheKey;
 import simplealgebra.symbolic.SymbolicAdd;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
@@ -101,9 +102,28 @@ public class TestMetricDeterminant extends TestCase
 				MultiplicativeDistributionRequiredException {
 			throw( new RuntimeException( "NotSupported" ) );
 		}
+		
+		@Override
+		public DoubleElem evalCached(
+				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace,
+				HashMap<SCacheKey<DoubleElem, DoubleElemFactory>, DoubleElem> cache)
+				throws NotInvertibleException,
+				MultiplicativeDistributionRequiredException {
+			throw( new RuntimeException( "NotSupported" ) );
+		}
 
 		@Override
 		public DoubleElem evalPartialDerivative(ArrayList<? extends Elem<?, ?>> withRespectTo , HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace )
+				throws NotInvertibleException,
+				MultiplicativeDistributionRequiredException {
+			throw( new RuntimeException( "NotSupported" ) );
+		}
+		
+		@Override
+		public DoubleElem evalPartialDerivativeCached(
+				ArrayList<? extends Elem<?, ?>> withRespectTo,
+				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace,
+				HashMap<SCacheKey<DoubleElem, DoubleElemFactory>, DoubleElem> cache)
 				throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
 			throw( new RuntimeException( "NotSupported" ) );
@@ -130,6 +150,7 @@ public class TestMetricDeterminant extends TestCase
 		public void writeString( PrintStream ps ) {
 			ps.print( "cSquared( )" );
 		}
+
 		
 	}
 	
@@ -162,9 +183,28 @@ public class TestMetricDeterminant extends TestCase
 				MultiplicativeDistributionRequiredException {
 			throw( new RuntimeException( "NotSupported" ) );
 		}
+		
+		@Override
+		public DoubleElem evalCached(
+				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace,
+				HashMap<SCacheKey<DoubleElem, DoubleElemFactory>, DoubleElem> cache)
+				throws NotInvertibleException,
+				MultiplicativeDistributionRequiredException {
+			throw( new RuntimeException( "NotSupported" ) );
+		}
 
 		@Override
 		public DoubleElem evalPartialDerivative(ArrayList<? extends Elem<?, ?>> withRespectTo , HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace )
+				throws NotInvertibleException,
+				MultiplicativeDistributionRequiredException {
+			throw( new RuntimeException( "NotSupported" ) );
+		}
+		
+		@Override
+		public DoubleElem evalPartialDerivativeCached(
+				ArrayList<? extends Elem<?, ?>> withRespectTo,
+				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace,
+				HashMap<SCacheKey<DoubleElem, DoubleElemFactory>, DoubleElem> cache)
 				throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
 			throw( new RuntimeException( "NotSupported" ) );

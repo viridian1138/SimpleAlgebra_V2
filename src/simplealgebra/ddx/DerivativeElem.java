@@ -33,6 +33,7 @@ import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
+import simplealgebra.symbolic.SCacheKey;
 import simplealgebra.symbolic.SymbolicElem;
 
 /**
@@ -62,6 +63,19 @@ public abstract class DerivativeElem<R extends Elem<R,?>, S extends ElemFactory<
 	 * 
 	 * @param in The expression to which to apply the derivative.
 	 * @param implicitSpace Implicit parameter space against which to perform the evaluation.
+	 * @param cache The elem cache.
+	 * @return The result of evaluating the derivative.
+	 * @throws NotInvertibleException
+	 * @throws MultiplicativeDistributionRequiredException
+	 */
+	public abstract R evalDerivativeCached( SymbolicElem<R,S> in , 
+			HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace , HashMap<SCacheKey<R, S>, R> cache ) throws NotInvertibleException, MultiplicativeDistributionRequiredException;
+	
+	/**
+	 * Evaluates the derivative on an expression.
+	 * 
+	 * @param in The expression to which to apply the derivative.
+	 * @param implicitSpace Implicit parameter space against which to perform the evaluation.
 	 * @return The result of evaluating the derivative.
 	 * @throws NotInvertibleException
 	 * @throws MultiplicativeDistributionRequiredException
@@ -74,7 +88,20 @@ public abstract class DerivativeElem<R extends Elem<R,?>, S extends ElemFactory<
 	}
 	
 	@Override
+	public R evalCached( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ,
+			HashMap<SCacheKey<R, S>, R> cache ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
+		throw( new MultiplicativeDistributionRequiredException() );
+	}
+	
+	@Override
 	public R evalPartialDerivative( ArrayList<? extends Elem<?,?>> withRespectTo , HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	{
+		throw( new MultiplicativeDistributionRequiredException() );
+	}
+	
+	@Override
+	public R evalPartialDerivativeCached( ArrayList<? extends Elem<?,?>> withRespectTo , 
+			HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace , HashMap<SCacheKey<R, S>, R> cache ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
 		throw( new MultiplicativeDistributionRequiredException() );
 	}

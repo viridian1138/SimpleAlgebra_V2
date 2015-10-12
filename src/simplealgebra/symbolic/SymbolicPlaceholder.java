@@ -64,13 +64,26 @@ public class SymbolicPlaceholder<R extends Elem<R,?>, S extends ElemFactory<R,S>
 	
 	@Override
 	public R eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
-		return( elem.eval( implicitSpace ).negate() );
+		return( elem.eval( implicitSpace ) );
+	}
+	
+	@Override
+	public R evalCached( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ,
+			HashMap<SCacheKey<R, S>, R> cache ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
+		return( elem.evalCached( implicitSpace , cache ) );
 	}
 	
 	@Override
 	public R evalPartialDerivative( ArrayList<? extends Elem<?,?>> withRespectTo , HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
-		return( elem.evalPartialDerivative( withRespectTo , implicitSpace ).negate() );
+		return( elem.evalPartialDerivative( withRespectTo , implicitSpace ) );
+	}
+	
+	@Override
+	public R evalPartialDerivativeCached( ArrayList<? extends Elem<?,?>> withRespectTo , 
+			HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace , HashMap<SCacheKey<R, S>, R> cache ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	{
+		return( elem.evalPartialDerivativeCached( withRespectTo , implicitSpace , cache ) );
 	}
 	
 	@Override

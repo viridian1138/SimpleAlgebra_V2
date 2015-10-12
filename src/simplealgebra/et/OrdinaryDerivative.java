@@ -39,6 +39,7 @@ import simplealgebra.ddx.DerivativeElem;
 import simplealgebra.ddx.DirectionalDerivativePartialFactory;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.PrecedenceComparator;
+import simplealgebra.symbolic.SCacheKey;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 
@@ -136,6 +137,54 @@ public class OrdinaryDerivative<Z extends Object, U extends NumDimensions, R ext
 		final EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>> ret =
 				mul.mult( in.eval( implicitSpace ) );
 		
+		return( ret );
+	}
+	
+	
+	@Override
+	public EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>> evalDerivativeCached(
+			SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> in,
+			HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace,
+			HashMap<SCacheKey<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>, EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> cache)
+			throws NotInvertibleException,
+			MultiplicativeDistributionRequiredException {
+		
+		final SymbolicElemFactory<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, 
+			EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> 
+			facA = in.getFac();
+	
+		final EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>> 
+			facB = facA.getFac();
+	
+		final SymbolicElemFactory<R, S> facC = facB.getFac();
+	
+		final ArrayList<Z> contravariantIndices = new ArrayList<Z>();
+		final ArrayList<Z> covariantIndices = new ArrayList<Z>();
+	
+		covariantIndices.add( index );
+	
+		final EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>> mul = 
+				new EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>( facC , 
+						contravariantIndices , covariantIndices );
+	
+		BigInteger cnt = BigInteger.ZERO;
+	
+		final BigInteger max = dim.getVal();
+	
+		for( cnt = BigInteger.ZERO ; cnt.compareTo(max) < 0 ; cnt = cnt.add( BigInteger.ONE ) )
+		{
+			final ArrayList<BigInteger> key = new ArrayList<BigInteger>();
+			key.add( cnt );
+		
+			SymbolicElem<R,S> val = dfac.getPartial( cnt );
+		
+			mul.setVal(key, val);
+		}
+	
+	
+		final EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>> ret =
+				mul.mult( in.evalCached( implicitSpace , cache ) );
+	
 		return( ret );
 	}
 	

@@ -36,6 +36,7 @@ import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.symbolic.DroolsSession;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
+import simplealgebra.symbolic.SCacheKey;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 
@@ -82,6 +83,18 @@ public abstract class Stelem<R extends Elem<R,?>, S extends ElemFactory<R,S>, K 
 		Stelem<R,S,K> rm = this.cloneInstance();
 		rm.applyPartialDerivative( (ArrayList<K>) withRespectTo );
 		return( rm.eval( implicitSpace ) );
+	}
+	
+	@Override
+	public SymbolicElem<R, S> evalPartialDerivativeCached(
+			ArrayList<? extends Elem<?, ?>> withRespectTo,
+			HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace,
+			HashMap<SCacheKey<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, SymbolicElem<R, S>> cache)
+			throws NotInvertibleException,
+			MultiplicativeDistributionRequiredException {
+		Stelem<R,S,K> rm = this.cloneInstance();
+		rm.applyPartialDerivative( (ArrayList<K>) withRespectTo );
+		return( rm.evalCached( implicitSpace , cache ) );
 	}
 	
 	
@@ -157,6 +170,7 @@ public abstract class Stelem<R extends Elem<R,?>, S extends ElemFactory<R,S>, K 
 	 */
 	protected HashMap<K,BigInteger> partialMap = new HashMap<K,BigInteger>();
 
+	
 }
 
 

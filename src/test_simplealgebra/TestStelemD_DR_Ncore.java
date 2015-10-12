@@ -53,6 +53,7 @@ import simplealgebra.stelem.Stelem;
 import simplealgebra.store.DrFastArray4D_Dbl;
 import simplealgebra.store.DbFastArray4D_Param;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
+import simplealgebra.symbolic.SCacheKey;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicReduction;
@@ -1141,9 +1142,28 @@ public class TestStelemD_DR_Ncore extends TestCase {
 				MultiplicativeDistributionRequiredException {
 			throw( new RuntimeException( "NotSupported" ) );
 		}
+		
+		@Override
+		public DoubleElem evalCached(
+				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace,
+				HashMap<SCacheKey<DoubleElem, DoubleElemFactory>, DoubleElem> cache)
+				throws NotInvertibleException,
+				MultiplicativeDistributionRequiredException {
+			throw( new RuntimeException( "NotSupported" ) );
+		}
 
 		@Override
 		public DoubleElem evalPartialDerivative(ArrayList<? extends Elem<?, ?>> withRespectTo , HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace)
+				throws NotInvertibleException,
+				MultiplicativeDistributionRequiredException {
+			throw( new RuntimeException( "NotSupported" ) );
+		}
+		
+		@Override
+		public DoubleElem evalPartialDerivativeCached(
+				ArrayList<? extends Elem<?, ?>> withRespectTo,
+				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace,
+				HashMap<SCacheKey<DoubleElem, DoubleElemFactory>, DoubleElem> cache)
 				throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
 			throw( new RuntimeException( "NotSupported" ) );
@@ -1448,6 +1468,16 @@ public class TestStelemD_DR_Ncore extends TestCase {
 		}
 		
 		
+		@Override
+		public DoubleElem evalCached(
+				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace,
+				HashMap<SCacheKey<DoubleElem, DoubleElemFactory>, DoubleElem> cache)
+				throws NotInvertibleException,
+				MultiplicativeDistributionRequiredException {
+			return( eval( implicitSpace ) );
+		}
+		
+		
 		/**
 		 * Copies the BNelem for threading.
 		 * 
@@ -1561,6 +1591,25 @@ public class TestStelemD_DR_Ncore extends TestCase {
 		
 		
 		@Override
+		public SymbolicElem<DoubleElem, DoubleElemFactory> evalCached(
+				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace,
+				HashMap<SCacheKey<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElem<DoubleElem, DoubleElemFactory>> cache)
+				throws NotInvertibleException,
+				MultiplicativeDistributionRequiredException {
+			final SCacheKey<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>> key =
+					new SCacheKey<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>( this , implicitSpace );
+			final SymbolicElem<DoubleElem, DoubleElemFactory> iret = cache.get( key );
+			if( iret != null )
+			{
+				return( iret );
+			}
+			final SymbolicElem<DoubleElem, DoubleElemFactory> ret = eval( implicitSpace );
+			cache.put(key, ret);
+			return( ret );
+		}
+		
+		
+		@Override
 		public SymbolicElem<DoubleElem,DoubleElemFactory> evalPartialDerivative(ArrayList<? extends Elem<?, ?>> withRespectTo, HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws MultiplicativeDistributionRequiredException, NotInvertibleException {
 			if( withRespectTo.size() > 1 )
 			{
@@ -1570,6 +1619,13 @@ public class TestStelemD_DR_Ncore extends TestCase {
 			CNelem wrt = (CNelem)( it.next() );
 			final boolean cond = this.symbolicEquals( wrt );
 			return( cond ? fac.identity() : fac.zero() );
+		}
+		
+		
+		@Override
+		public SymbolicElem<DoubleElem,DoubleElemFactory> evalPartialDerivativeCached(ArrayList<? extends Elem<?, ?>> withRespectTo, HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace,
+				HashMap<SCacheKey<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElem<DoubleElem, DoubleElemFactory>> cache ) throws MultiplicativeDistributionRequiredException, NotInvertibleException {
+			return( evalPartialDerivative( withRespectTo , implicitSpace ) );
 		}
 		
 		
@@ -1744,6 +1800,26 @@ public class TestStelemD_DR_Ncore extends TestCase {
 			}
 			
 			
+			return( ret );
+		}
+		
+		
+		@Override
+		public SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>> evalCached(
+				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace,
+				HashMap<SCacheKey<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> cache)
+				throws NotInvertibleException,
+				MultiplicativeDistributionRequiredException {
+			final SCacheKey<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> key =
+					new SCacheKey<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>( this , implicitSpace );
+			final SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>> iret = cache.get( key );
+			if( iret != null )
+			{
+				return( iret );
+			}
+			final SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>> ret =
+					eval( implicitSpace );
+			cache.put(key, ret);
 			return( ret );
 		}
 		

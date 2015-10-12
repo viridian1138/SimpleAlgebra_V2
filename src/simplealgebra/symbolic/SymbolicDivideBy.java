@@ -83,9 +83,30 @@ public class SymbolicDivideBy<R extends Elem<R,?>, S extends ElemFactory<R,S>> e
 	}
 	
 	@Override
+	public R evalCached( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ,
+			HashMap<SCacheKey<R, S>, R> cache ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
+		final SCacheKey<R,S> key = new SCacheKey<R,S>( this , implicitSpace );
+		final R iret = cache.get( key );
+		if( iret != null )
+		{
+			return( iret );
+		}
+		final R ret = elem.evalCached( implicitSpace , cache ).divideBy( ival );
+		cache.put( key , ret );
+		return( ret );
+	}
+	
+	@Override
 	public R evalPartialDerivative( ArrayList<? extends Elem<?,?>> withRespectTo , HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
 		return( elem.evalPartialDerivative( withRespectTo , implicitSpace ).divideBy( ival ) );
+	}
+	
+	@Override
+	public R evalPartialDerivativeCached( ArrayList<? extends Elem<?,?>> withRespectTo , 
+			HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace , HashMap<SCacheKey<R, S>, R> cache ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	{
+		return( elem.evalPartialDerivativeCached( withRespectTo , implicitSpace , cache ).divideBy( ival ) );
 	}
 	
 	

@@ -37,6 +37,7 @@ import simplealgebra.NotInvertibleException;
 import simplealgebra.NumDimensions;
 import simplealgebra.SquareMatrixElem;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
+import simplealgebra.symbolic.SCacheKey;
 import simplealgebra.symbolic.SymbolicElem;
 
 
@@ -91,6 +92,7 @@ public class SymbolicTensorResym<Z extends Object, U extends NumDimensions, R ex
 		dim = _dim;
 	}
 	
+	
 	@Override
 	public EinsteinTensorElem<Z,R,S> eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
 		EinsteinTensorElem<Z,R,S> tmp = elem.eval( implicitSpace );
@@ -106,11 +108,52 @@ public class SymbolicTensorResym<Z extends Object, U extends NumDimensions, R ex
 		return( tmp );
 	}
 	
+	
+	@Override
+	public EinsteinTensorElem<Z, R, S> evalCached(
+			HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace,
+			HashMap<SCacheKey<EinsteinTensorElem<Z, R, S>, EinsteinTensorElemFactory<Z, R, S>>, EinsteinTensorElem<Z, R, S>> cache)
+			throws NotInvertibleException,
+			MultiplicativeDistributionRequiredException {
+		final SCacheKey<EinsteinTensorElem<Z, R, S>, EinsteinTensorElemFactory<Z, R, S>> key =
+				new SCacheKey<EinsteinTensorElem<Z, R, S>, EinsteinTensorElemFactory<Z, R, S>>( this , implicitSpace );
+		final EinsteinTensorElem<Z, R, S> iret = cache.get( key );
+		if( iret != null )
+		{
+			return( iret );
+		}
+		EinsteinTensorElem<Z,R,S> tmp = elem.evalCached( implicitSpace , cache );
+		final SquareMatrixElem<U,R,S> trnsI = new SquareMatrixElem<U,R,S>( tmp.getFac().getFac() , dim );
+		tmp.rankTwoTensorToSquareMatrix( trnsI );
+		final ArrayList<SquareMatrixElem<U,R,S>> args = new ArrayList<SquareMatrixElem<U,R,S>>();
+		final SquareMatrixElem<U,R,S> trnsO = trnsI.handleOptionalOp( SquareMatrixElem.SquareMatrixCmd.TRANSPOSE , args );
+		final EinsteinTensorElem<Z,R,S> tmpT = new EinsteinTensorElem<Z,R,S>( 
+				tmp.getFac().getFac() , tmp.getContravariantIndices() , tmp.getCovariantIndices() );
+		trnsO.toRankTwoTensor( tmpT );
+		tmp = tmp.add( reSym == ResymType.RESYM_SYMMETRIC ? tmpT : tmpT.negate() );
+		tmp = tmp.divideBy( 2 );
+		cache.put(key, tmp);
+		return( tmp );
+	}
+	
+	
 	@Override
 	public EinsteinTensorElem<Z,R,S> evalPartialDerivative( ArrayList<? extends Elem<?,?>> withRespectTo , HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
 		throw( new RuntimeException( "Not Supported" ) );
 	}
+	
+	
+	@Override
+	public EinsteinTensorElem<Z, R, S> evalPartialDerivativeCached(
+			ArrayList<? extends Elem<?, ?>> withRespectTo,
+			HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace,
+			HashMap<SCacheKey<EinsteinTensorElem<Z, R, S>, EinsteinTensorElemFactory<Z, R, S>>, EinsteinTensorElem<Z, R, S>> cache)
+			throws NotInvertibleException,
+			MultiplicativeDistributionRequiredException {
+		throw( new RuntimeException( "Not Supported" ) );
+	}
+	
 	
 	@Override
 	public boolean exposesDerivatives()

@@ -94,10 +94,46 @@ public class SymbolicSqrt<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 	}
 	
 	@Override
+	public R evalCached( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ,
+			HashMap<SCacheKey<R, S>, R> cache ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
+		final SCacheKey<R,S> key = new SCacheKey<R,S>( this , implicitSpace );
+		final R iret = cache.get( key );
+		if( iret != null )
+		{
+			return( iret );
+		}
+		final R el = elem.evalCached( implicitSpace , cache );
+		if( el instanceof SymbolicElem )
+		{
+			final SymbolicElem<?,?> elemA = (SymbolicElem<?,?>) el;
+			final SymbolicElemFactory<?,?> elemAfac = (SymbolicElemFactory<?,?>)( this.getFac() );
+			final SymbolicSqrt<?,?> ret = new SymbolicSqrt( elemA , elemAfac.getFac() );
+			cache.put(key, (R) ret );
+			return( (R) ret );
+		}
+		else
+		{
+			ArrayList<R> args = new ArrayList<R>();
+			R ret = el.handleOptionalOp( Sqrt.SQRT , args );
+			cache.put(key, ret);
+			return( ret );
+		}
+	}
+	
+	@Override
 	public R evalPartialDerivative( ArrayList<? extends Elem<?,?>> withRespectTo , HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
 		final R sqrtV = this.eval( implicitSpace );
 		final R dv = elem.evalPartialDerivative( withRespectTo , implicitSpace );
+		return( ( sqrtV.invertLeft() ).mult( dv ).divideBy( BigInteger.valueOf( 2 ) ) );
+	}
+	
+	@Override
+	public R evalPartialDerivativeCached( ArrayList<? extends Elem<?,?>> withRespectTo , 
+			HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace , HashMap<SCacheKey<R, S>, R> cache ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	{
+		final R sqrtV = this.evalCached( implicitSpace , cache );
+		final R dv = elem.evalPartialDerivativeCached( withRespectTo , implicitSpace , cache );
 		return( ( sqrtV.invertLeft() ).mult( dv ).divideBy( BigInteger.valueOf( 2 ) ) );
 	}
 	

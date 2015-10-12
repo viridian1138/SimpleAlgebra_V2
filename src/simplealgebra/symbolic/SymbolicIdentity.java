@@ -76,10 +76,32 @@ public class SymbolicIdentity<R extends Elem<R,?>, S extends ElemFactory<R,S>> e
 	}
 	
 	@Override
+	public R evalCached( HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace,
+			HashMap<SCacheKey<R, S>, R> cache ) {
+		final SCacheKey<R,S> key = new SCacheKey<R,S>( this , implicitSpace );
+		final R iret = cache.get( key );
+		if( iret != null )
+		{
+			return( iret );
+		}
+		final R ret = fac.identity();
+		cache.put( key , ret );
+		return( ret );
+	}
+	
+	@Override
 	public R evalPartialDerivative( ArrayList<? extends Elem<?,?>> withRespectTo , HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException
 	{
 		return( fac.zero() );
 	}
+	
+	@Override
+	public R evalPartialDerivativeCached( ArrayList<? extends Elem<?, ?>> withRespectTo,
+			HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace, HashMap<SCacheKey<R, S>, R> cache )
+	{
+		return( fac.zero() );
+	}
+	
 	
 	@Override
 	public boolean evalSymbolicConstantApprox()

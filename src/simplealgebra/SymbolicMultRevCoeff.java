@@ -81,11 +81,42 @@ public class SymbolicMultRevCoeff<U extends NumDimensions, R extends Elem<R,?>, 
 	}
 	
 	@Override
+	public SquareMatrixElem<U, R, S> evalCached(
+			HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace,
+			HashMap<SCacheKey<SquareMatrixElem<U, R, S>, SquareMatrixElemFactory<U, R, S>>, SquareMatrixElem<U, R, S>> cache)
+			throws NotInvertibleException,
+			MultiplicativeDistributionRequiredException {
+		final SCacheKey<SquareMatrixElem<U, R, S>, SquareMatrixElemFactory<U, R, S>> key = new SCacheKey<SquareMatrixElem<U, R, S>, SquareMatrixElemFactory<U, R, S>>( this , implicitSpace );
+		final SquareMatrixElem<U, R, S> iret = cache.get( key );
+		if( iret != null )
+		{
+			return( iret );
+		}
+		ArrayList<SquareMatrixElem<U, R, S>> args = new ArrayList<SquareMatrixElem<U, R, S>>();
+		args.add( elemB.eval( implicitSpace ) );
+		final SquareMatrixElem<U, R, S> ret = elemA.evalCached( implicitSpace , cache ).handleOptionalOp( SquareMatrixElem.SquareMatrixCmd.MULT_REV_COEFF , args);
+		cache.put( key , ret );
+		return( ret );
+	}
+	
+	@Override
 	public SquareMatrixElem<U, R, S> evalPartialDerivative(ArrayList<? extends Elem<?, ?>> withRespectTo , HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace )
 			throws NotInvertibleException, MultiplicativeDistributionRequiredException {
 		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TBD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		return null;
 	}
+	
+	@Override
+	public SquareMatrixElem<U, R, S> evalPartialDerivativeCached(
+			ArrayList<? extends Elem<?, ?>> withRespectTo,
+			HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace,
+			HashMap<SCacheKey<SquareMatrixElem<U, R, S>, SquareMatrixElemFactory<U, R, S>>, SquareMatrixElem<U, R, S>> cache)
+			throws NotInvertibleException,
+			MultiplicativeDistributionRequiredException {
+		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TBD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		return null;
+	}
+	
 	
 	@Override
 	public boolean evalSymbolicConstantApprox()

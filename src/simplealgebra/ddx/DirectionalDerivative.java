@@ -40,6 +40,7 @@ import simplealgebra.ga.GeometricAlgebraMultivectorElemFactory;
 import simplealgebra.ga.Ord;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.PrecedenceComparator;
+import simplealgebra.symbolic.SCacheKey;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 
@@ -125,6 +126,50 @@ public class DirectionalDerivative<U extends NumDimensions, A extends Ord<U>, R 
 	
 	
 	@Override
+	public GeometricAlgebraMultivectorElem<U, A, SymbolicElem<R, S>, SymbolicElemFactory<R, S>> evalDerivativeCached(
+			SymbolicElem<GeometricAlgebraMultivectorElem<U, A, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, GeometricAlgebraMultivectorElemFactory<U, A, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> in,
+			HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace,
+			HashMap<SCacheKey<GeometricAlgebraMultivectorElem<U, A, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, GeometricAlgebraMultivectorElemFactory<U, A, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>, GeometricAlgebraMultivectorElem<U, A, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> cache)
+			throws NotInvertibleException,
+			MultiplicativeDistributionRequiredException {
+		
+	final SymbolicElemFactory<GeometricAlgebraMultivectorElem<U,A, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, 
+		GeometricAlgebraMultivectorElemFactory<U,A, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> 
+		facA = in.getFac();
+	
+	final GeometricAlgebraMultivectorElemFactory<U,A, SymbolicElem<R, S>, SymbolicElemFactory<R, S>> 
+		facB = facA.getFac();
+	
+	final SymbolicElemFactory<R, S> facC = facB.getFac();
+	
+	final GeometricAlgebraMultivectorElem<U,A, SymbolicElem<R, S>, SymbolicElemFactory<R, S>> mul = 
+			new GeometricAlgebraMultivectorElem<U,A, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>( facC , dim , ord );
+	
+	BigInteger cnt = BigInteger.ZERO;
+	
+	final BigInteger max = dim.getVal();
+	
+	for( cnt = BigInteger.ZERO ; cnt.compareTo(max) < 0 ; cnt = cnt.add( BigInteger.ONE ) )
+	{
+		final HashSet<BigInteger> key = new HashSet<BigInteger>();
+		key.add( cnt );
+		
+		SymbolicElem<R,S> val = dfac.getPartial( cnt );
+		
+		mul.setVal(key, val);
+	}
+	
+	
+	final GeometricAlgebraMultivectorElem<U,A, SymbolicElem<R, S>, SymbolicElemFactory<R, S>> ret =
+			mul.mult( in.evalCached( implicitSpace , cache ) );
+	
+	return( ret );
+		
+	}
+	
+	
+	
+	@Override
 	public GeometricAlgebraMultivectorElem<U,A, SymbolicElem<R, S>, SymbolicElemFactory<R, S>> eval(
 			HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace )
 			throws NotInvertibleException, MultiplicativeDistributionRequiredException
@@ -154,6 +199,28 @@ public class DirectionalDerivative<U extends NumDimensions, A extends Ord<U>, R 
 			
 			return( mul );
 		}
+	
+	
+	@Override
+	public GeometricAlgebraMultivectorElem<U,A, SymbolicElem<R, S>, SymbolicElemFactory<R, S>> evalCached(
+			HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace , 
+			HashMap<SCacheKey<GeometricAlgebraMultivectorElem<U, A, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, GeometricAlgebraMultivectorElemFactory<U, A, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>, GeometricAlgebraMultivectorElem<U, A, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> cache )
+			throws NotInvertibleException, MultiplicativeDistributionRequiredException
+		{
+	
+			final SCacheKey<GeometricAlgebraMultivectorElem<U, A, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, GeometricAlgebraMultivectorElemFactory<U, A, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> key
+				= new SCacheKey<GeometricAlgebraMultivectorElem<U, A, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, GeometricAlgebraMultivectorElemFactory<U, A, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>( this , implicitSpace );
+			final GeometricAlgebraMultivectorElem<U, A, SymbolicElem<R, S>, SymbolicElemFactory<R, S>> iret = cache.get( key );
+			if( iret != null )
+			{
+				return( iret );
+			}
+			GeometricAlgebraMultivectorElem<U,A, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>
+				ret = eval( implicitSpace );
+			cache.put(key, ret);
+			return( ret );
+		}
+	
 	
 
 	@Override

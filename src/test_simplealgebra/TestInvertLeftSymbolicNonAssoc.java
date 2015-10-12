@@ -44,6 +44,7 @@ import simplealgebra.NotInvertibleException;
 import simplealgebra.et.EinsteinTensorElem;
 import simplealgebra.et.EinsteinTensorElemFactory;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
+import simplealgebra.symbolic.SCacheKey;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicIdentity;
@@ -97,9 +98,28 @@ public class TestInvertLeftSymbolicNonAssoc extends TestCase
 				MultiplicativeDistributionRequiredException {
 			throw( new RuntimeException( "NotSupported" ) );
 		}
+		
+		@Override
+		public EinsteinTensorElem<TestDimensionFour, DoubleElem, DoubleElemFactory> evalCached(
+				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace,
+				HashMap<SCacheKey<EinsteinTensorElem<TestDimensionFour, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<TestDimensionFour, DoubleElem, DoubleElemFactory>>, EinsteinTensorElem<TestDimensionFour, DoubleElem, DoubleElemFactory>> cache)
+				throws NotInvertibleException,
+				MultiplicativeDistributionRequiredException {
+			throw( new RuntimeException( "NotSupported" ) );
+		}
 
 		@Override
 		public EinsteinTensorElem<TestDimensionFour,DoubleElem,DoubleElemFactory> evalPartialDerivative(ArrayList<? extends Elem<?, ?>> withRespectTo , HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace)
+				throws NotInvertibleException,
+				MultiplicativeDistributionRequiredException {
+			throw( new RuntimeException( "NotSupported" ) );
+		}
+		
+		@Override
+		public EinsteinTensorElem<TestDimensionFour, DoubleElem, DoubleElemFactory> evalPartialDerivativeCached(
+				ArrayList<? extends Elem<?, ?>> withRespectTo,
+				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace,
+				HashMap<SCacheKey<EinsteinTensorElem<TestDimensionFour, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<TestDimensionFour, DoubleElem, DoubleElemFactory>>, EinsteinTensorElem<TestDimensionFour, DoubleElem, DoubleElemFactory>> cache)
 				throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
 			throw( new RuntimeException( "NotSupported" ) );
@@ -120,6 +140,7 @@ public class TestInvertLeftSymbolicNonAssoc extends TestCase
 		public void writeString( PrintStream ps ) {
 			ps.print( "a( )" );
 		}
+
 		
 	}
 	

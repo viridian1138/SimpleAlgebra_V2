@@ -38,6 +38,7 @@ import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.symbolic.DroolsSession;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
+import simplealgebra.symbolic.SCacheKey;
 import simplealgebra.symbolic.SymbolicElem;
 
 
@@ -96,11 +97,44 @@ public class SymbolicRankTwoTrace<Z extends Object, R extends Elem<R,?>, S exten
 		ArrayList<EinsteinTensorElem<Z,R,S>> args = new ArrayList<EinsteinTensorElem<Z,R,S>>();
 		return( elemA.eval( implicitSpace ).handleOptionalOp( EinsteinTensorElem.EinsteinTensorCmd.RANK_TWO_TRACE , args ) );
 	}
+	
+	
+	@Override
+	public EinsteinTensorElem<Z, R, S> evalCached(
+			HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace,
+			HashMap<SCacheKey<EinsteinTensorElem<Z, R, S>, EinsteinTensorElemFactory<Z, R, S>>, EinsteinTensorElem<Z, R, S>> cache)
+			throws NotInvertibleException,
+			MultiplicativeDistributionRequiredException {
+		final SCacheKey<EinsteinTensorElem<Z, R, S>, EinsteinTensorElemFactory<Z, R, S>> key =
+				new SCacheKey<EinsteinTensorElem<Z, R, S>, EinsteinTensorElemFactory<Z, R, S>>( this , implicitSpace );
+		final EinsteinTensorElem<Z, R, S> iret = cache.get( key );
+		if( iret != null )
+		{
+			return( iret );
+		}
+		ArrayList<EinsteinTensorElem<Z,R,S>> args = new ArrayList<EinsteinTensorElem<Z,R,S>>();
+		final EinsteinTensorElem<Z, R, S> ret = elemA.evalCached( implicitSpace , cache ).handleOptionalOp( EinsteinTensorElem.EinsteinTensorCmd.RANK_TWO_TRACE , args );
+		cache.put(key, ret);
+		return( ret );
+		
+	}
 
 	
 	@Override
 	public EinsteinTensorElem<Z, R, S> evalPartialDerivative(
 			ArrayList<? extends Elem<?, ?>> withRespectTo , HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException,
+			MultiplicativeDistributionRequiredException {
+		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TBD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		return null;
+	}
+	
+	
+	@Override
+	public EinsteinTensorElem<Z, R, S> evalPartialDerivativeCached(
+			ArrayList<? extends Elem<?, ?>> withRespectTo,
+			HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace,
+			HashMap<SCacheKey<EinsteinTensorElem<Z, R, S>, EinsteinTensorElemFactory<Z, R, S>>, EinsteinTensorElem<Z, R, S>> cache)
+			throws NotInvertibleException,
 			MultiplicativeDistributionRequiredException {
 		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TBD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		return null;

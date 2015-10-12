@@ -103,8 +103,31 @@ public class SymbolicMutable<T extends Elem<T,?>, U extends MutableElem<T,U,?>, 
 	}
 	
 	@Override
+	public U evalCached(
+			HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace,
+			HashMap<SCacheKey<U, R>, U> cache) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
+		final SCacheKey<U,R> key = new SCacheKey<U,R>( this , implicitSpace );
+		final U iret = cache.get( key );
+		if( iret != null )
+		{
+			return( iret );
+		}
+		final U evl = elemA.evalCached( implicitSpace , cache );
+		final U mutr = elemB.mutate( evl );
+		cache.put(key, mutr);
+		return( mutr );
+	}
+	
+	@Override
 	public U evalPartialDerivative(ArrayList<? extends Elem<?, ?>> withRespectTo , HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace )
 			throws NotInvertibleException {
+		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TBD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		return null;
+	}
+	
+	@Override
+	public U evalPartialDerivativeCached( ArrayList<? extends Elem<?, ?>> withRespectTo,
+			HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace, HashMap<SCacheKey<U, R>, U> cache) throws NotInvertibleException {
 		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TBD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		return null;
 	}

@@ -77,6 +77,20 @@ public class SymbolicZero<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 	}
 	
 	@Override
+	public R evalCached( HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace,
+			HashMap<SCacheKey<R, S>, R> cache ) {
+		final SCacheKey<R,S> key = new SCacheKey<R,S>( this , implicitSpace );
+		final R iret = cache.get( key );
+		if( iret != null )
+		{
+			return( iret );
+		}
+		final R ret = fac.zero();
+		cache.put( key , ret );
+		return( ret );
+	}
+	
+	@Override
 	public boolean isSymbolicZero()
 	{
 		return( true );
@@ -87,6 +101,15 @@ public class SymbolicZero<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 	{
 		return( fac.zero() );
 	}
+	
+	@Override
+	public R evalPartialDerivativeCached( ArrayList<? extends Elem<?, ?>> withRespectTo,
+			HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace, HashMap<SCacheKey<R, S>, R> cache )
+	{
+		return( fac.zero() );
+	}
+	
+	
 	
 	
 	@Override

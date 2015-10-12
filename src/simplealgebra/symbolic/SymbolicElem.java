@@ -70,6 +70,19 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 	 */
 	abstract public R eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException;
 	
+
+	/**
+	 * Evaluates the symbolic expression.
+	 * 
+	 * @param implicitSpace The implicit space over which to evaluate the expression.
+	 * @param cache The evaluation cache.
+	 * @return The result of the evaluation.
+	 * @throws NotInvertibleException
+	 * @throws MultiplicativeDistributionRequiredException
+	 */
+	abstract public R evalCached( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace,
+			HashMap<SCacheKey<R,S>,R> cache ) throws NotInvertibleException, MultiplicativeDistributionRequiredException;
+	
 	/**
 	 * Evaluates the partial derivative of the symbolic expression.
 	 * 
@@ -80,6 +93,19 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 	 * @throws MultiplicativeDistributionRequiredException
 	 */
 	abstract public R evalPartialDerivative( ArrayList<? extends Elem<?,?>> withRespectTo , HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException;
+	
+	/**
+	 * Evaluates the partial derivative of the symbolic expression.
+	 * 
+	 * @param withRespectTo The variable over which to evaluate the derivative.
+	 * @param implicitSpace The implicit space over which to evaluate the expression.
+	 * @param cache The evaluation cache.
+	 * @return The result of the evaluation.
+	 * @throws NotInvertibleException
+	 * @throws MultiplicativeDistributionRequiredException
+	 */
+	abstract public R evalPartialDerivativeCached( ArrayList<? extends Elem<?,?>> withRespectTo , 
+			HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace , HashMap<SCacheKey<R,S>,R> cache ) throws NotInvertibleException, MultiplicativeDistributionRequiredException;
 	
 	/**
 	 * Writes a string representation of the elem to a print stream.
