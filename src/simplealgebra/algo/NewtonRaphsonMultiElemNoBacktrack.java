@@ -43,6 +43,7 @@ import simplealgebra.SquareMatrixElem;
 import simplealgebra.ga.GeometricAlgebraMultivectorElem;
 import simplealgebra.ga.GeometricAlgebraOrd;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
+import simplealgebra.symbolic.SCacheKey;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicOps;
@@ -165,18 +166,20 @@ public class NewtonRaphsonMultiElemNoBacktrack<U extends NumDimensions, R extend
 		dim = _param.getDim();
 		sfac = _param.getSfac();
 		param = _param;
-		final boolean useSimplification = _param.useSimplification();
+		final SimplificationType useSimplification = _param.useSimplification();
+		final boolean useCachedEval = _param.useCachedEval();
+		final HashMap<SCacheKey<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, SymbolicElem<R, S>> cache = 
+				useCachedEval ? new HashMap<SCacheKey<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, SymbolicElem<R, S>>() : null;
 		Iterator<HashSet<BigInteger>> ita = functions.getKeyIterator();
 		evals = new GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,SymbolicElem<R,S>,SymbolicElemFactory<R,S>>( 
 				_param.getSfac() , _param.getDim() , new GeometricAlgebraOrd<U>() );
 		while( ita.hasNext() )
 		{
 			final HashSet<BigInteger> key = ita.next();
-			SymbolicElem<R,S> evalF = functions.get( key ).eval( _param.getImplicitSpaceFirstLevel() );
-			if( useSimplification )
-			{
-				evalF = evalF.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY2 , null);
-			}
+			SymbolicElem<R,S> evalF = useCachedEval ? 
+					functions.get( key ).evalCached( _param.getImplicitSpaceFirstLevel() , cache ) :
+					functions.get( key ).eval( _param.getImplicitSpaceFirstLevel() );
+			evalF = handleSimplification( evalF , useSimplification );
 			evals.setVal( key , evalF );
 		}
 		partialEvalJacobian = new SquareMatrixElem<U,SymbolicElem<R,S>,SymbolicElemFactory<R,S>>(
@@ -194,11 +197,10 @@ public class NewtonRaphsonMultiElemNoBacktrack<U extends NumDimensions, R extend
 				final HashSet<BigInteger> key2A = ita.next();
 				final BigInteger key2 = key2A.iterator().next();
 				final SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>> fun = _param.getFunctions().get( key2A );
-				SymbolicElem<R,S> evalP = fun.evalPartialDerivative( withRespectTo , _param.getImplicitSpaceFirstLevel() );
-				if( useSimplification )
-				{
-					evalP = evalP.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY2 , null);
-				}
+				SymbolicElem<R,S> evalP = useCachedEval ?
+						fun.evalPartialDerivativeCached( withRespectTo , _param.getImplicitSpaceFirstLevel() , cache) :
+						fun.evalPartialDerivative( withRespectTo , _param.getImplicitSpaceFirstLevel() );
+				evalP = handleSimplification( evalP , useSimplification );
 				if( !( evalP instanceof SymbolicZero<?,?> ) ) // Allow the matrix to be sparse in instances where the derivative is zero.
 				{
 					partialEvalJacobian.setVal( key2 , key , evalP );

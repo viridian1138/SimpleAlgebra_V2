@@ -2554,8 +2554,13 @@ protected void applyAdd(
 			}
 			
 			@Override
-			protected boolean useSimplification() {
+			protected SimplificationType useSimplification() {
 				return( StelemDescent.this.useSimplification() );
+			}
+			
+			@Override
+			protected boolean useCachedEval() {
+				return( StelemDescent.this.useCachedEval() );
 			}
 			
 			@Override

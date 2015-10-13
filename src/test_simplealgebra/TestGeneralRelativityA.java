@@ -2364,6 +2364,19 @@ protected void applyAdd(
 			}
 			return( false );
 		}
+		
+		
+		@Override
+		public SimplificationType useSimplification()
+		{
+			return( SimplificationType.NONE );
+		}
+		
+		@Override
+		public boolean useCachedEval()
+		{
+			return( true );
+		}
 	
 		
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -2422,9 +2435,15 @@ protected void applyAdd(
 			}
 			
 			@Override
-			protected boolean useSimplification()
+			protected SimplificationType useSimplification()
 			{
 				return( StelemDescent.this.useSimplification() );
+			}
+			
+			@Override
+			protected boolean useCachedEval()
+			{
+				return( StelemDescent.this.useCachedEval() );
 			}
 			
 			@Override
@@ -3692,8 +3711,8 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 		}
 		
 		
-		System.out.println( "S7 I" ); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		System.exit( 0 );
+		// System.out.println( "S7 I" ); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		// System.exit( 0 );
 		
 		
 		System.out.println( "Reached #7..." );
@@ -3712,6 +3731,13 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 		
 		
 		StelemDescent descent = new StelemDescent( param );
+		
+		
+		System.out.println( "S9 I" ); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		System.exit( 0 );
+		
+		
+		System.out.println( "Reached #9..." );
 		
 		
 		for( int tval = 1 ; tval < ( NUM_T_ITER - 1 ) ; tval++ )

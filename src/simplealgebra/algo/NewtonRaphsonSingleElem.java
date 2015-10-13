@@ -140,13 +140,38 @@ public abstract class NewtonRaphsonSingleElem<R extends Elem<R,?>, S extends Ele
 					throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
 		function = _function;
-		eval = function.eval( implicitSpaceFirstLevel );
-		partialEval = function.evalPartialDerivative(_withRespectTo, implicitSpaceFirstLevel );
-		if( useSimplification() )
+		final boolean useCachedEval = useCachedEval();
+		final HashMap<SCacheKey<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, SymbolicElem<R, S>> cache = 
+				useCachedEval ? new HashMap<SCacheKey<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, SymbolicElem<R, S>>() : null;
+		eval = useCachedEval ? function.evalCached( implicitSpaceFirstLevel, cache) 
+				: function.eval( implicitSpaceFirstLevel );
+		partialEval = useCachedEval ? function.evalPartialDerivativeCached(_withRespectTo, implicitSpaceFirstLevel, cache) 
+				: function.evalPartialDerivative(_withRespectTo, implicitSpaceFirstLevel );
+		eval = handleSimplification( eval , useSimplification() );
+		partialEval = handleSimplification( partialEval , useSimplification() );
+	}
+	
+	
+	/**
+	 * Handles the simplification of the elem.
+	 * 
+	 * @param in The elem to be simplified.
+	 * @param smplType The type of simplification to be performed.
+	 * @return The simplified elem.
+	 * @throws NotInvertibleException
+	 */
+	protected SymbolicElem<R,S> handleSimplification( final SymbolicElem<R,S> in , final SimplificationType smplType ) throws NotInvertibleException
+	{
+		switch( smplType )
 		{
-			eval = eval.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY2 , null);
-			partialEval = partialEval.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY2 , null);
+			case NONE:
+				return( in );
+			case DISTRIBUTE_SIMPLIFY:
+				return( in.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null) );
+			case DISTRIBUTE_SIMPLIFY2:
+				return( in.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY2 , null) );
 		}
+		throw( new RuntimeException( "Not Supported" ) );
 	}
 	
 	
@@ -326,14 +351,26 @@ public abstract class NewtonRaphsonSingleElem<R extends Elem<R,?>, S extends Ele
 	
 	
 	/**
-	 * Returns true iff. expression simplification is to be used.  
+	 * Returns the type of simplification to be used.  
 	 * Override this method to turn off expression simplification.
 	 * 
-	 * @return True iff. simplification is to be used.
+	 * @return The type of simplification to be used.
 	 */
-	protected boolean useSimplification()
+	protected SimplificationType useSimplification()
 	{
-		return( true );
+		return( SimplificationType.DISTRIBUTE_SIMPLIFY2 );
+	}
+	
+	
+	/**
+	 * Returns whether cached evals are to be used.
+	 * Override this method to turn on cached evals.
+	 * 
+	 * @return True iff. cached evals are to be used.
+	 */
+	protected boolean useCachedEval()
+	{
+		return( false );
 	}
 	
 	

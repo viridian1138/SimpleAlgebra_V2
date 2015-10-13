@@ -3440,9 +3440,15 @@ protected void applyAdd(
 		}
 		
 		@Override
-		protected boolean useSimplification()
+		protected SimplificationType useSimplification()
 		{
-			return( false );
+			return( SimplificationType.NONE );
+		}
+		
+		@Override
+		protected boolean useCachedEval()
+		{
+			return( true );
 		}
 		
 	}
@@ -3529,9 +3535,15 @@ protected void applyAdd(
 		}
 		
 		@Override
-		protected boolean useSimplification()
+		protected SimplificationType useSimplification()
 		{
-			return( false );
+			return( SimplificationType.NONE );
+		}
+		
+		@Override
+		protected boolean useCachedEval()
+		{
+			return( true );
 		}
 		
 	}
@@ -6719,9 +6731,6 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 		}
 		
 		
-		System.out.println( "S7 I" ); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		System.exit( 0 );
-		
 		
 		System.out.println( "Reached #7..." );
 		
@@ -6787,6 +6796,10 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 			index.add( BigInteger.valueOf( acnt % TestDimensionFour.FOUR ) );
 			descentConjugateMomentum[ acnt ] = new StelemNewtonConjugateMomentum( paramConjugateMomentum  , index );
 		}
+		
+		
+		System.out.println( "S9 I" ); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		System.exit( 0 );
 		
 		
 		System.out.println( "Reached #9..." );

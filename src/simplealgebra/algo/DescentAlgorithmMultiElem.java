@@ -39,6 +39,8 @@ import simplealgebra.NumDimensions;
 import simplealgebra.ga.GeometricAlgebraMultivectorElem;
 import simplealgebra.ga.GeometricAlgebraOrd;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
+import simplealgebra.symbolic.SymbolicElem;
+import simplealgebra.symbolic.SymbolicOps;
 
 
 /**
@@ -76,6 +78,29 @@ public abstract class DescentAlgorithmMultiElem<U extends NumDimensions, R exten
 	 * @return The thread-cloned object, or the same object if immutable.
 	 */
 	public abstract DescentAlgorithmMultiElem<U,R,S> cloneThread( final BigInteger threadIndex );
+	
+	
+	/**
+	 * Handles the simplification of the elem.
+	 * 
+	 * @param in The elem to be simplified.
+	 * @param smplType The type of simplification to be performed.
+	 * @return The simplified elem.
+	 * @throws NotInvertibleException
+	 */
+	protected SymbolicElem<R,S> handleSimplification( final SymbolicElem<R,S> in , final SimplificationType smplType ) throws NotInvertibleException
+	{
+		switch( smplType )
+		{
+			case NONE:
+				return( in );
+			case DISTRIBUTE_SIMPLIFY:
+				return( in.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null) );
+			case DISTRIBUTE_SIMPLIFY2:
+				return( in.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY2 , null) );
+		}
+		throw( new RuntimeException( "Not Supported" ) );
+	}
 	
 
 }

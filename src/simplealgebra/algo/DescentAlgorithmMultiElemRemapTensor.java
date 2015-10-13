@@ -513,14 +513,26 @@ public abstract class DescentAlgorithmMultiElemRemapTensor<Z extends Object, R e
 	
 	
 	/**
-	 * Returns true iff. expression simplification is to be used.  
+	 * Returns the type of simplification to be used.  
 	 * Override this method to turn off expression simplification.
 	 * 
-	 * @return True iff. simplification is to be used.
+	 * @return The type of simplification to be used.
 	 */
-	protected boolean useSimplification()
+	protected SimplificationType useSimplification()
 	{
-		return( false );
+		return( SimplificationType.NONE );
+	}
+	
+	
+	/**
+	 * Returns whether cached evals are to be used.
+	 * Override this method to turn on cached evals.
+	 * 
+	 * @return True iff. cached evals are to be used.
+	 */
+	protected boolean useCachedEval()
+	{
+		return( true );
 	}
 	
 	
