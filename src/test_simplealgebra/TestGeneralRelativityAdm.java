@@ -6798,8 +6798,8 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 		}
 		
 		
-		System.out.println( "S9 I" ); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		System.exit( 0 );
+		// System.out.println( "S9 I" ); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		// System.exit( 0 );
 		
 		
 		System.out.println( "Reached #9..." );
