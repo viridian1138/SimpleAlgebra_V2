@@ -84,6 +84,12 @@ public class DoubleElemFactory extends ElemFactory<DoubleElem, DoubleElemFactory
 		return( this );
 	}
 	
+	@Override
+	public DoubleElemFactory cloneThreadCached( final BigInteger threadIndex , CloneThreadCache<DoubleElem,DoubleElemFactory> cache )
+	{
+		return( this );
+	}
+	
 	
 	@Override
 	public SymbolicElem<DoubleElem, DoubleElemFactory> handleSymbolicOptionalOp( Object id , 
@@ -120,6 +126,7 @@ public class DoubleElemFactory extends ElemFactory<DoubleElem, DoubleElemFactory
 		
 		return( super.handleSymbolicOptionalOp(id, args) );
 	}
+	
 	
 	
 	/**

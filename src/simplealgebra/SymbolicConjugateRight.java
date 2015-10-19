@@ -35,6 +35,7 @@ import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.PrecedenceComparator;
 import simplealgebra.symbolic.SCacheKey;
 import simplealgebra.symbolic.SymbolicElem;
+import simplealgebra.symbolic.SymbolicElemFactory;
 
 /**
  * Symbolic elem for the right-side conjugate of a complex number defined as satisfying: <math display="inline">
@@ -185,6 +186,28 @@ public class SymbolicConjugateRight<R extends Elem<R,?>, S extends ElemFactory<R
 		{
 			return( new SymbolicConjugateRight<R,S>( elems , facs ) );
 		}
+		return( this );
+	}
+	
+	
+	@Override
+	public SymbolicElem<ComplexElem<R, S>, ComplexElemFactory<R, S>> cloneThreadCached(
+			BigInteger threadIndex,
+			CloneThreadCache<SymbolicElem<ComplexElem<R, S>, ComplexElemFactory<R, S>>, SymbolicElemFactory<ComplexElem<R, S>, ComplexElemFactory<R, S>>> cache) {
+		final SymbolicElem<ComplexElem<R, S>, ComplexElemFactory<R, S>> ctmp = cache.get( this );
+		if( ctmp != null )
+		{
+			return( ctmp );
+		}
+		final ComplexElemFactory<R,S> facs = this.getFac().getFac().cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
+		final SymbolicElem<ComplexElem<R,S>,ComplexElemFactory<R,S>> elems = elem.cloneThreadCached(threadIndex, cache);
+		if( ( facs != this.getFac().getFac() ) || ( elems != elem ) )
+		{
+			final SymbolicConjugateRight<R,S> rtmp = new SymbolicConjugateRight<R,S>( elems , facs );
+			cache.put(this, rtmp);
+			return( rtmp );
+		}
+		cache.put(this, this);
 		return( this );
 	}
 	

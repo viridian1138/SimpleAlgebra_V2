@@ -29,10 +29,11 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import simplealgebra.Elem;
-import simplealgebra.ElemFactory;
-import simplealgebra.NotInvertibleException;
-import simplealgebra.symbolic.*;
+import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
+import simplealgebra.symbolic.PrecedenceComparator;
+import simplealgebra.symbolic.SCacheKey;
+import simplealgebra.symbolic.SymbolicElem;
+import simplealgebra.symbolic.SymbolicElemFactory;
 
 
 /**
@@ -141,6 +142,29 @@ public class SymbolicMultRevCoeff<U extends NumDimensions, R extends Elem<R,?>, 
 		{
 			return( new SymbolicMultRevCoeff<U,R,S>( elemsA , elemsB , facs ) );
 		}
+		return( this );
+	}
+	
+	
+	@Override
+	public SymbolicElem<SquareMatrixElem<U, R, S>, SquareMatrixElemFactory<U, R, S>> cloneThreadCached(
+			BigInteger threadIndex,
+			CloneThreadCache<SymbolicElem<SquareMatrixElem<U, R, S>, SquareMatrixElemFactory<U, R, S>>, SymbolicElemFactory<SquareMatrixElem<U, R, S>, SquareMatrixElemFactory<U, R, S>>> cache) {
+		final SymbolicElem<SquareMatrixElem<U, R, S>, SquareMatrixElemFactory<U, R, S>> ctmp = cache.get( this );
+		if( ctmp != null )
+		{
+			return( ctmp );
+		}
+		final SquareMatrixElemFactory<U,R,S> facs = this.getFac().getFac().cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
+		final SymbolicElem<SquareMatrixElem<U,R,S>,SquareMatrixElemFactory<U,R,S>> elemsA = elemA.cloneThreadCached(threadIndex, cache);
+		final SymbolicElem<SquareMatrixElem<U,R,S>,SquareMatrixElemFactory<U,R,S>> elemsB = elemB.cloneThreadCached(threadIndex, cache);
+		if( ( facs != this.getFac().getFac() ) || ( elemsA != elemA ) || ( elemsB != elemB ) )
+		{
+			final SymbolicMultRevCoeff<U,R,S> rtmp = new SymbolicMultRevCoeff<U,R,S>( elemsA , elemsB , facs );
+			cache.put(this, rtmp);
+			return( rtmp );
+		}
+		cache.put(this, this);
 		return( this );
 	}
 

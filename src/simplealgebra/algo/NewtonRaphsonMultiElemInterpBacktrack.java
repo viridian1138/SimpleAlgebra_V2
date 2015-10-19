@@ -162,11 +162,13 @@ public class NewtonRaphsonMultiElemInterpBacktrack<U extends NumDimensions, R ex
 	 * Constructs the evaluator.
 	 * 
 	 * @param _param The input parameters for the evaluator.
+	 * @param cache Cache to be used for symbolic evals if useCachedEval() returns true.
 	 * @throws NotInvertibleException
 	 * @throws MultiplicativeDistributionRequiredException
 	 */
 	public NewtonRaphsonMultiElemInterpBacktrack( 
-			final DescentAlgorithmMultiElemInputParam<U,R,S> _param )
+			final DescentAlgorithmMultiElemInputParam<U,R,S> _param ,
+			final HashMap<SCacheKey<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, SymbolicElem<R, S>> cache )
 					throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
 		functions = _param.getFunctions();
@@ -175,8 +177,6 @@ public class NewtonRaphsonMultiElemInterpBacktrack<U extends NumDimensions, R ex
 		param = _param;
 		final SimplificationType useSimplification = _param.useSimplification();
 		final boolean useCachedEval = _param.useCachedEval();
-		final HashMap<SCacheKey<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, SymbolicElem<R, S>> cache = 
-				useCachedEval ? new HashMap<SCacheKey<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, SymbolicElem<R, S>>() : null;
 		Iterator<HashSet<BigInteger>> ita = functions.getKeyIterator();
 		evals = new GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,SymbolicElem<R,S>,SymbolicElemFactory<R,S>>( 
 				_param.getSfac() , _param.getDim() , new GeometricAlgebraOrd<U>() );

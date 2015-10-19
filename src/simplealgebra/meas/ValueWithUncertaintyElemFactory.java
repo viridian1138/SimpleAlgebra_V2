@@ -28,6 +28,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 
 import simplealgebra.AbsoluteValue;
+import simplealgebra.CloneThreadCache;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
@@ -127,6 +128,26 @@ public class ValueWithUncertaintyElemFactory<R extends Elem<R,?>, S extends Elem
 		{
 			return( new ValueWithUncertaintyElemFactory<R,S>( sfac ) );
 		}
+		return( this );
+	}
+	
+	
+	@Override
+	public ValueWithUncertaintyElemFactory<R,S> cloneThreadCached( final BigInteger threadIndex , final CloneThreadCache<ValueWithUncertaintyElem<R,S>,ValueWithUncertaintyElemFactory<R,S>> cache )
+	{
+		final ValueWithUncertaintyElemFactory<R,S> ctmp = cache.getFac( this );
+		if( ctmp != null )
+		{
+			return( ctmp );
+		}
+		S sfac = fac.cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
+		if( fac != sfac )
+		{
+			final ValueWithUncertaintyElemFactory<R,S> rtmp = new ValueWithUncertaintyElemFactory<R,S>( sfac );
+			cache.putFac(this, rtmp);
+			return( rtmp );
+		}
+		cache.putFac(this, this);
 		return( this );
 	}
 	

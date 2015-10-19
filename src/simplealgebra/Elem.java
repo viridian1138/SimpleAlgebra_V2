@@ -146,6 +146,8 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 	 */
 	public abstract R getFac();
 	
+	
+	
 	/**
 	 * Produces a clone of the object for threading.  Note that for
 	 * OpenJDK thread-safety for BigInteger requires at least version
@@ -155,6 +157,20 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 	 * @return The thread-cloned object, or the same object if immutable.
 	 */
 	public T cloneThread( final BigInteger threadIndex )
+	{
+		throw( new RuntimeException( "Not Supported" ) );
+	}
+	
+	/**
+	 * Produces a cached clone of the object for threading.  Note that for
+	 * OpenJDK thread-safety for BigInteger requires at least version
+	 * 6u14.  See https://bugs.openjdk.java.net/browse/JDK-6348370
+	 * 
+	 * @param threadIndex The index of the thread for which to clone.
+	 * @param cache The instance cache for the cloning.
+	 * @return The thread-cloned object, or the same object if immutable.
+	 */
+	public T cloneThreadCached( final BigInteger threadIndex , final CloneThreadCache<T,R> cache )
 	{
 		throw( new RuntimeException( "Not Supported" ) );
 	}

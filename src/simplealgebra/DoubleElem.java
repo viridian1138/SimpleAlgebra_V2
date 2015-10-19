@@ -25,8 +25,8 @@
 
 package simplealgebra;
 
-import java.util.ArrayList;
 import java.math.BigInteger;
+import java.util.ArrayList;
 
 /**
  * An elem for doubles.
@@ -87,6 +87,12 @@ public class DoubleElem extends Elem<DoubleElem, DoubleElemFactory> {
 	
 	@Override
 	public DoubleElem cloneThread( final BigInteger threadIndex )
+	{
+		return( this );
+	}
+	
+	@Override
+	public DoubleElem cloneThreadCached( final BigInteger threadIndex , CloneThreadCache<DoubleElem,DoubleElemFactory> cache )
 	{
 		return( this );
 	}

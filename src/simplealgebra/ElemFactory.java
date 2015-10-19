@@ -153,6 +153,17 @@ public abstract class ElemFactory<T extends Elem<T,?>, R extends ElemFactory<T,R
 	 */
 	public abstract R cloneThread( final BigInteger threadIndex );
 	
+	/**
+	 * Produces a clone of the object for threading.  Note that for
+	 * OpenJDK thread-safety for BigInteger requires at least version
+	 * 6u14.  See https://bugs.openjdk.java.net/browse/JDK-6348370
+	 * 
+	 * @param threadIndex The index of the thread for which to clone.
+	 * @param cache The instance cache for the cloning.
+	 * @return The thread-cloned object, or the same object if immutable.
+	 */
+	public abstract R cloneThreadCached( final BigInteger threadIndex , final CloneThreadCache<T,R> cache );
+	
 	
 }
 

@@ -2344,7 +2344,7 @@ public class TestSchrodingerSpt_DR extends TestCase {
 				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpaceFirstLevel)
 				throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
-			super(_function, _withRespectTo, implicitSpaceFirstLevel);
+			super(_function, _withRespectTo, implicitSpaceFirstLevel, null);
 			// System.out.println( "**" );
 			// System.out.println( this.partialEval.writeString() );
 		}

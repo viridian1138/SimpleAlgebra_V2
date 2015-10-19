@@ -349,6 +349,27 @@ public class ComplexElem<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 		}
 		return( this );
 	}
+	
+	
+	@Override
+	public ComplexElem<R,S> cloneThreadCached( final BigInteger threadIndex , final CloneThreadCache<ComplexElem<R,S>,ComplexElemFactory<R,S>> cache )
+	{
+		final ComplexElem<R,S> ctmp = cache.get( this );
+		if( ctmp != null )
+		{
+			return( ctmp );
+		}
+		final R re2 = re.cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
+		final R im2 = im.cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
+		if( ( re2 != re ) || ( im2 != im ) )
+		{
+			final ComplexElem<R,S> rtmp = new ComplexElem<R,S>( re2 , im2 );
+			cache.put(this, rtmp);
+			return( rtmp );
+		}
+		cache.put(this, this);
+		return( this );
+	}
 
 	
 	/**

@@ -29,6 +29,8 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import simplealgebra.CloneThreadCache;
+import simplealgebra.ComplexElemFactory;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
@@ -196,9 +198,32 @@ public class GeometricAlgebraMultivectorElemFactory<U extends NumDimensions, A e
 		S sfac = fac.cloneThread(threadIndex);
 		if( fac != sfac )
 		{
-			// // The NumDimensions dim and Ord ord are presumed to be immutable.
+			// The NumDimensions dim and Ord ord are presumed to be immutable.
 			return( new GeometricAlgebraMultivectorElemFactory<U,A,R,S>( sfac , dim , ord ) );
 		}
+		return( this );
+	}
+	
+	
+	
+	@Override
+	public GeometricAlgebraMultivectorElemFactory<U, A, R, S> cloneThreadCached(
+			BigInteger threadIndex,
+			CloneThreadCache<GeometricAlgebraMultivectorElem<U, A, R, S>, GeometricAlgebraMultivectorElemFactory<U, A, R, S>> cache) {
+		final GeometricAlgebraMultivectorElemFactory<U, A, R, S> ctmp = cache.getFac( this );
+		if( ctmp != null )
+		{
+			return( ctmp );
+		}
+		S sfac = fac.cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
+		if( fac != sfac )
+		{
+			// The NumDimensions dim and Ord ord are presumed to be immutable.
+			final GeometricAlgebraMultivectorElemFactory<U, A, R, S> rtmp = new GeometricAlgebraMultivectorElemFactory<U, A, R, S>( sfac , dim , ord );
+			cache.putFac(this, rtmp);
+			return( rtmp );
+		}
+		cache.putFac(this, this);
 		return( this );
 	}
 	
@@ -218,6 +243,7 @@ public class GeometricAlgebraMultivectorElemFactory<U extends NumDimensions, A e
 	 * The ord for the algebra.
 	 */
 	private A ord;
+
 
 }
 

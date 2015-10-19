@@ -42,6 +42,7 @@ import simplealgebra.et.EinsteinTensorElem;
 import simplealgebra.ga.GeometricAlgebraMultivectorElem;
 import simplealgebra.ga.GeometricAlgebraOrd;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
+import simplealgebra.symbolic.SCacheKey;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 
@@ -61,14 +62,16 @@ public abstract class DescentAlgorithmMultiElemRemapTensorDiag<Z extends Object,
 	 * Constructs the remap.
 	 * 
 	 * @param param Input parameters for the remap.
+	 * @param cache Cache to be used for symbolic evals if useCachedEval() returns true.
 	 * @throws NotInvertibleException
 	 * @throws MultiplicativeDistributionRequiredException
 	 */
 	public DescentAlgorithmMultiElemRemapTensorDiag(
-			final DescentAlgorithmMultiElemRemapTensorParam<Z,R,S> param )
+			final DescentAlgorithmMultiElemRemapTensorParam<Z,R,S> param,
+			final HashMap<SCacheKey<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, SymbolicElem<R, S>> cache )
 			throws NotInvertibleException,
 			MultiplicativeDistributionRequiredException {
-		super( param );
+		super( param , cache );
 	}
 	
 	

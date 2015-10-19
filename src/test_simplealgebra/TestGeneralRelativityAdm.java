@@ -3388,11 +3388,12 @@ protected void applyAdd(
 		 */
 		public StelemNewtonMetric(
 				final DescentAlgorithmMultiElemRemapTensorParam<String,DoubleElem,DoubleElemFactory> param ,
-				ArrayList<BigInteger> _tensorIndex)
+				ArrayList<BigInteger> _tensorIndex,
+				HashMap<SCacheKey<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElem<DoubleElem, DoubleElemFactory>> cache )
 				throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
 			super( param.getFunctions().getVal( _tensorIndex ), param.getWithRespectTosI().get( _tensorIndex ) , 
-					param.getImplicitSpaceFirstLevel() );
+					param.getImplicitSpaceFirstLevel(), cache );
 			tensorIndex = _tensorIndex;
 			// System.out.println( "**" );
 			// System.out.println( this.partialEval.writeString() );
@@ -3483,11 +3484,12 @@ protected void applyAdd(
 		 */
 		public StelemNewtonConjugateMomentum(
 				final DescentAlgorithmMultiElemRemapTensorParam<String,DoubleElem,DoubleElemFactory> param , 
-				ArrayList<BigInteger> _tensorIndex)
+				ArrayList<BigInteger> _tensorIndex,
+				HashMap<SCacheKey<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElem<DoubleElem, DoubleElemFactory>> cache )
 				throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
 			super( param.getFunctions().getVal( _tensorIndex ) , param.getWithRespectTosI().get( _tensorIndex ) , 
-					param.getImplicitSpaceFirstLevel() );
+					param.getImplicitSpaceFirstLevel() , cache );
 			tensorIndex = _tensorIndex;
 			// System.out.println( "**" );
 			// System.out.println( this.partialEval.writeString() );
@@ -6780,12 +6782,16 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 		System.out.println( "Reached #8..." );
 		
 		
+		HashMap<SCacheKey<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElem<DoubleElem, DoubleElemFactory>> cache
+			= new HashMap<SCacheKey<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElem<DoubleElem, DoubleElemFactory>>();
+		
+		
 		for( int acnt = 0 ; acnt < 9 ; acnt++ )
 		{
 			final ArrayList<BigInteger> index = new ArrayList<BigInteger>();
 			index.add( BigInteger.valueOf( ( acnt / 3 ) + 1 ) );
 			index.add( BigInteger.valueOf( ( acnt % 3 ) + 1 ) );
-			descentMetric[ acnt ] = new StelemNewtonMetric( paramMetric , index );
+			descentMetric[ acnt ] = new StelemNewtonMetric( paramMetric , index , cache );
 		}
 		
 		
@@ -6794,8 +6800,11 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 			final ArrayList<BigInteger> index = new ArrayList<BigInteger>();
 			index.add( BigInteger.valueOf( acnt / TestDimensionFour.FOUR ) );
 			index.add( BigInteger.valueOf( acnt % TestDimensionFour.FOUR ) );
-			descentConjugateMomentum[ acnt ] = new StelemNewtonConjugateMomentum( paramConjugateMomentum  , index );
+			descentConjugateMomentum[ acnt ] = new StelemNewtonConjugateMomentum( paramConjugateMomentum  , index , cache );
 		}
+		
+		
+		cache = null;
 		
 		
 		// System.out.println( "S9 I" ); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

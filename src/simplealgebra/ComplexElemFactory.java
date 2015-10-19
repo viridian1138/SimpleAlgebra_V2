@@ -135,6 +135,26 @@ public class ComplexElemFactory<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 	}
 	
 	
+	@Override
+	public ComplexElemFactory<R,S> cloneThreadCached( final BigInteger threadIndex , final CloneThreadCache<ComplexElem<R,S>,ComplexElemFactory<R,S>> cache )
+	{
+		final ComplexElemFactory<R,S> ctmp = cache.getFac( this );
+		if( ctmp != null )
+		{
+			return( ctmp );
+		}
+		S sfac = fac.cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
+		if( fac != sfac )
+		{
+			final ComplexElemFactory<R,S> rtmp = new ComplexElemFactory<R,S>( sfac );
+			cache.putFac(this, rtmp);
+			return( rtmp );
+		}
+		cache.putFac(this, this);
+		return( this );
+	}
+	
+	
 	/**
 	 * Gets the factory for enclosed type.
 	 * 

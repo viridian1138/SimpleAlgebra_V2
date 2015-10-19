@@ -35,6 +35,7 @@ import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.PrecedenceComparator;
 import simplealgebra.symbolic.SCacheKey;
 import simplealgebra.symbolic.SymbolicElem;
+import simplealgebra.symbolic.SymbolicElemFactory;
 
 /**
  * Symbolic elem to transpose a square matrix.
@@ -132,6 +133,28 @@ public class SymbolicTranspose<U extends NumDimensions, R extends Elem<R,?>, S e
 		{
 			return( new SymbolicTranspose<U,R,S>( elems , facs ) );
 		}
+		return( this );
+	}
+	
+	
+	@Override
+	public SymbolicElem<SquareMatrixElem<U, R, S>, SquareMatrixElemFactory<U, R, S>> cloneThreadCached(
+			BigInteger threadIndex,
+			CloneThreadCache<SymbolicElem<SquareMatrixElem<U, R, S>, SquareMatrixElemFactory<U, R, S>>, SymbolicElemFactory<SquareMatrixElem<U, R, S>, SquareMatrixElemFactory<U, R, S>>> cache) {
+		final SymbolicElem<SquareMatrixElem<U, R, S>, SquareMatrixElemFactory<U, R, S>> ctmp = cache.get( this );
+		if( ctmp != null )
+		{
+			return( ctmp );
+		}
+		final SquareMatrixElemFactory<U,R,S> facs = this.getFac().getFac().cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
+		final SymbolicElem<SquareMatrixElem<U,R,S>,SquareMatrixElemFactory<U,R,S>> elems = elem.cloneThreadCached(threadIndex, cache);
+		if( ( facs != this.getFac().getFac() ) || ( elems != elem ) )
+		{
+			final SymbolicTranspose<U,R,S> rtmp = new SymbolicTranspose<U,R,S>( elems , facs );
+			cache.put(this, rtmp);
+			return( rtmp );
+		}
+		cache.put(this, this);
 		return( this );
 	}
 

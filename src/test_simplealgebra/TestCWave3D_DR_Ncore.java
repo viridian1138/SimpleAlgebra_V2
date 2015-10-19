@@ -2307,7 +2307,7 @@ public class TestCWave3D_DR_Ncore extends TestCase {
 				final int threadIndex )
 				throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
-			super(_function, _withRespectTo, implicitSpaceFirstLevel);
+			super(_function, _withRespectTo, implicitSpaceFirstLevel, null);
 			// System.out.println( "**" );
 			// System.out.println( this.partialEval.writeString() );
 			threadContext = TestCWave3D_DR_Ncore.iterationThreadContexts[ threadIndex ];

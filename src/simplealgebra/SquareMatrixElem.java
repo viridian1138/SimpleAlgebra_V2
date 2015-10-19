@@ -1843,10 +1843,40 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 			while( coli.hasNext() )
 			{
 				BigInteger col = coli.next();
-				R vali = subMap.get( col );
+				R vali = subMap.get( col ).cloneThread(threadIndex);
 				ret.setVal(row, col, vali );
 			}
 		}
+		return( ret );
+	}
+	
+	
+	
+	@Override 
+	public SquareMatrixElem<U,R,S> cloneThreadCached( final BigInteger threadIndex , final CloneThreadCache<SquareMatrixElem<U,R,S>,SquareMatrixElemFactory<U,R,S>> cache )
+	{
+		final SquareMatrixElem<U,R,S> ctmp = cache.get( this );
+		if( this != null )
+		{
+			return( ctmp );
+		}
+		
+		// The NumDimensions dim is presumed to be immutable.
+		SquareMatrixElem<U,R,S> ret = new SquareMatrixElem<U,R,S>( fac.cloneThreadCached( threadIndex , (CloneThreadCache)( cache.getInnerCache() ) ) , dim );
+		Iterator<BigInteger> rowi = rowMap.keySet().iterator();
+		while( rowi.hasNext() )
+		{
+			BigInteger row = rowi.next();
+			HashMap<BigInteger,R> subMap = rowMap.get( row );
+			Iterator<BigInteger> coli = subMap.keySet().iterator();
+			while( coli.hasNext() )
+			{
+				BigInteger col = coli.next();
+				R vali = subMap.get( col ).cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
+				ret.setVal(row, col, vali );
+			}
+		}
+		cache.put( this, ret);
 		return( ret );
 	}
 	

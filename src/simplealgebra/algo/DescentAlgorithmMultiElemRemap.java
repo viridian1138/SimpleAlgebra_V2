@@ -43,6 +43,7 @@ import simplealgebra.SquareMatrixElem;
 import simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim;
 import simplealgebra.ga.*;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
+import simplealgebra.symbolic.SCacheKey;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 
@@ -95,6 +96,163 @@ public abstract class DescentAlgorithmMultiElemRemap<U extends NumDimensions, A 
 		}
 		
 	};
+	
+	
+	/**
+	 * Encapsulates parameters used in genDescent() calls.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
+	protected class GenDescentParam
+	{
+		
+		
+		
+		/**
+		 * Gets the functions over which to evaluate the descent algorithm.
+		 * 
+		 * @return The functions over which to evaluate the descent algorithm.
+		 */
+		public GeometricAlgebraMultivectorElem<Adim, GeometricAlgebraOrd<Adim>, SymbolicElem<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, SymbolicElemFactory<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> getFunctions() {
+			return functions;
+		}
+
+		/**
+		 * Sets the functions over which to evaluate the descent algorithm.
+		 * 
+		 * @param functions The functions over which to evaluate the descent algorithm.
+		 */
+		public void setFunctions(
+				GeometricAlgebraMultivectorElem<Adim, GeometricAlgebraOrd<Adim>, SymbolicElem<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, SymbolicElemFactory<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> functions) {
+			this.functions = functions;
+		}
+
+		/**
+		 * Gets the set of variables over which to take derivatives.
+		 * 
+		 * @return The set of variables over which to take derivatives.
+		 */
+		public ArrayList<ArrayList<? extends Elem<?, ?>>> getWithRespectTos() {
+			return withRespectTos;
+		}
+
+		/**
+		 * Sets the set of variables over which to take derivatives.
+		 * 
+		 * @param withRespectTos The set of variables over which to take derivatives.
+		 */
+		public void setWithRespectTos(
+				ArrayList<ArrayList<? extends Elem<?, ?>>> withRespectTos) {
+			this.withRespectTos = withRespectTos;
+		}
+
+		/**
+		 * Gets the initial implicit space over which to take the functions and their derivatives.
+		 * 
+		 * @return The initial implicit space over which to take the functions and their derivatives.
+		 */
+		public HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> getImplicitSpaceFirstLevel() {
+			return implicitSpaceFirstLevel;
+		}
+
+		/**
+		 * Sets the initial implicit space over which to take the functions and their derivatives.
+		 * 
+		 * @param implicitSpaceFirstLevel The initial implicit space over which to take the functions and their derivatives.
+		 */
+		public void setImplicitSpaceFirstLevel(
+				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpaceFirstLevel) {
+			this.implicitSpaceFirstLevel = implicitSpaceFirstLevel;
+		}
+
+		/**
+		 * Gets the factory for the enclosed type.
+		 * 
+		 * @return The factory for the enclosed type.
+		 */
+		public SymbolicElemFactory<R, S> getSfac() {
+			return sfac;
+		}
+
+		/**
+		 * Sets the factory for the enclosed type.
+		 * 
+		 * @param sfac The factory for the enclosed type.
+		 */
+		public void setSfac(SymbolicElemFactory<R, S> sfac) {
+			this.sfac = sfac;
+		}
+
+		/**
+		 * Gets the number of dimensions over which to evaluate the descent algorithm.
+		 * 
+		 * @return The number of dimensions over which to evaluate the descent algorithm.
+		 */
+		public Adim getDim() {
+			return dim;
+		}
+
+		/**
+		 * Sets the number of dimensions over which to evaluate the descent algorithm.
+		 * 
+		 * @param dim The number of dimensions over which to evaluate the descent algorithm.
+		 */
+		public void setDim(Adim dim) {
+			this.dim = dim;
+		}
+
+		/**
+		 * Gets the cache to be used for symbolic evals or null if there is no cache.
+		 * 
+		 * @return The cache to be used for symbolic evals or null if there is no cache.
+		 */
+		public HashMap<SCacheKey<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, SymbolicElem<R, S>> getCache() {
+			return cache;
+		}
+
+		/**
+		 * Sets the cache to be used for symbolic evals.
+		 * 
+		 * @param cache The cache to be used for symbolic evals.
+		 */
+		public void setCache(
+				HashMap<SCacheKey<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, SymbolicElem<R, S>> cache) {
+			this.cache = cache;
+		}
+
+		/**
+		 * The functions over which to evaluate the descent algorithm.
+		 */
+		protected GeometricAlgebraMultivectorElem<Adim,GeometricAlgebraOrd<Adim>,SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,
+			SymbolicElemFactory<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>> functions;
+		
+		/**
+		 * The set of variables over which to take derivatives.
+		 */
+		protected ArrayList<ArrayList<? extends Elem<?,?>>> withRespectTos;
+		
+		/**
+		 * The initial implicit space over which to take the functions and their derivatives.
+		 */
+		protected HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpaceFirstLevel;
+				
+		/**
+		 * The factory for the enclosed type.
+		 */
+		protected SymbolicElemFactory<R,S> sfac;
+		
+		/**
+		 * The number of dimensions over which to evaluate the descent algorithm.
+		 */
+		protected Adim dim;
+		
+		/**
+		 * The cache to be used for symbolic evals or null if there is no cache.
+		 */
+		protected HashMap<SCacheKey<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, SymbolicElem<R, S>> cache;
+		
+	}
 	
 	
 	
@@ -214,10 +372,12 @@ public abstract class DescentAlgorithmMultiElemRemap<U extends NumDimensions, A 
 	 * Constructs the remap.
 	 * 
 	 * @param param Input parameter for the remap.
+	 * @param cache Cache to be used for symbolic evals if useCachedEval() returns true.
 	 * @throws NotInvertibleException
 	 * @throws MultiplicativeDistributionRequiredException
 	 */
-	public DescentAlgorithmMultiElemRemap( final DescentAlgorithmMultiElemRemapParam<U,A,R,S> param )
+	public DescentAlgorithmMultiElemRemap( final DescentAlgorithmMultiElemRemapParam<U,A,R,S> param,
+			final HashMap<SCacheKey<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, SymbolicElem<R, S>> cache )
 					throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
 		idim = param.getDim();
@@ -263,8 +423,16 @@ public abstract class DescentAlgorithmMultiElemRemap<U extends NumDimensions, A 
 			wcnt = wcnt.add( BigInteger.ONE );
 		}
 		
+		final GenDescentParam gdp = new GenDescentParam();
 		
-		descent = genDescent( ofun , withRespectTos , param.getImplicitSpaceFirstLevel() , param.getSfac().getFac() , odim );
+		gdp.setFunctions( ofun );
+		gdp.setWithRespectTos( withRespectTos );
+		gdp.setImplicitSpaceFirstLevel( param.getImplicitSpaceFirstLevel() );
+		gdp.setSfac( param.getSfac().getFac() );
+		gdp.setDim( odim );
+		gdp.setCache( cache );
+		
+		descent = genDescent( gdp );
 		
 	}
 	
@@ -297,20 +465,12 @@ public abstract class DescentAlgorithmMultiElemRemap<U extends NumDimensions, A 
 	/**
 	 * Constructs a multivariate descent algorithm.
 	 * 
-	 * @param _functions Input vector of functions.
-	 * @param _withRespectTos Set of variables to take derivatives with respect to.
-	 * @param implicitSpaceFirstLevel Implicit space for the initial eval.
-	 * @param _sfac The enclosed factory.
-	 * @param _dim The number of dimensions over which to evaluate.
+	 * @param param The parameters for the generation.
 	 * @return An instance of multivariate descent algorithm.
 	 * @throws NotInvertibleException
 	 * @throws MultiplicativeDistributionRequiredException
 	 */
-	protected abstract DescentAlgorithmMultiElem<Adim,R,S> genDescent( final GeometricAlgebraMultivectorElem<Adim,GeometricAlgebraOrd<Adim>,SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,
-			SymbolicElemFactory<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>> _functions , 
-			final ArrayList<ArrayList<? extends Elem<?,?>>> _withRespectTos , 
-			final HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpaceFirstLevel ,
-			final SymbolicElemFactory<R,S> _sfac , Adim _dim ) throws NotInvertibleException, MultiplicativeDistributionRequiredException;
+	protected abstract DescentAlgorithmMultiElem<Adim,R,S> genDescent( final GenDescentParam param ) throws NotInvertibleException, MultiplicativeDistributionRequiredException;
 
 	
 	

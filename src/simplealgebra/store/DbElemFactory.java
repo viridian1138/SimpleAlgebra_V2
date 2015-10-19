@@ -29,8 +29,11 @@ import java.util.ArrayList;
 
 import org.hypergraphdb.HyperGraph;
 
+import simplealgebra.CloneThreadCache;
+import simplealgebra.Elem;
+import simplealgebra.ElemFactory;
+import simplealgebra.NotInvertibleException;
 import simplealgebra.symbolic.SymbolicElem;
-import simplealgebra.*;
 
 
 /**
@@ -139,6 +142,26 @@ public class DbElemFactory<R extends Elem<R,?>, S extends ElemFactory<R,S>> exte
 	}
 	
 	
+	@Override
+	public DbElemFactory<R, S> cloneThreadCached(BigInteger threadIndex,
+			CloneThreadCache<DbElem<R, S>, DbElemFactory<R, S>> cache) {
+		final DbElemFactory<R,S> ctmp = cache.getFac( this );
+		if( ctmp != null )
+		{
+			return( ctmp );
+		}
+		S sfac = fac.cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
+		if( fac != sfac )
+		{
+			final DbElemFactory<R,S> rtmp = new DbElemFactory<R,S>( sfac , graph );
+			cache.putFac(this, rtmp);
+			return( rtmp );
+		}
+		cache.putFac(this, this);
+		return( this );
+	}
+	
+	
 	/**
 	 * The factory for the enclosed type.
 	 */
@@ -150,5 +173,6 @@ public class DbElemFactory<R extends Elem<R,?>, S extends ElemFactory<R,S>> exte
 	 */
 	protected HyperGraph graph;
 
+	
 }
 

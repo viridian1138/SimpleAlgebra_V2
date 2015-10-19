@@ -131,18 +131,18 @@ public abstract class NewtonRaphsonSingleElem<R extends Elem<R,?>, S extends Ele
 	 * @param _function The function over which to evaluate Newton-Raphson.
 	 * @param _withRespectTo The variable over which to evaluate the derivative of the function.
 	 * @param implicitSpaceFirstLevel The initial implicit space over which to take the function and its derivative.
+	 * @param cache Cache to be used for symbolic evals if useCachedEval() returns true.
 	 * @throws NotInvertibleException
 	 * @throws MultiplicativeDistributionRequiredException
 	 */
 	public NewtonRaphsonSingleElem( final SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>> _function , 
 			final ArrayList<? extends Elem<?,?>> _withRespectTo , 
-			final HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpaceFirstLevel )
+			final HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpaceFirstLevel,
+			final HashMap<SCacheKey<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, SymbolicElem<R, S>> cache )
 					throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
 		function = _function;
 		final boolean useCachedEval = useCachedEval();
-		final HashMap<SCacheKey<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, SymbolicElem<R, S>> cache = 
-				useCachedEval ? new HashMap<SCacheKey<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, SymbolicElem<R, S>>() : null;
 		eval = useCachedEval ? function.evalCached( implicitSpaceFirstLevel, cache) 
 				: function.eval( implicitSpaceFirstLevel );
 		partialEval = useCachedEval ? function.evalPartialDerivativeCached(_withRespectTo, implicitSpaceFirstLevel, cache) 

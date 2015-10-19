@@ -2264,14 +2264,16 @@ protected void applyAdd(
 		 * Constructs the evaluator.
 		 * 
 		 * @param param Input parameters for the remap.
+		 * @param cache Cache to be used for symbolic evals if useCachedEval() returns true.
 		 * @throws NotInvertibleException
 		 * @throws MultiplicativeDistributionRequiredException
 		 */
 		public StelemDescent(
-				final DescentAlgorithmMultiElemRemapTensorParam<String,DoubleElem,DoubleElemFactory> param )
+				final DescentAlgorithmMultiElemRemapTensorParam<String,DoubleElem,DoubleElemFactory> param,
+				final HashMap<SCacheKey<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElem<DoubleElem, DoubleElemFactory>> cache )
 				throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
-			super( param );
+			super( param , cache );
 			
 			// System.out.println( "**" );
 			// System.out.println( this.partialEval.writeString() );
@@ -2484,22 +2486,18 @@ protected void applyAdd(
 
 		@Override
 		protected DescentAlgorithmMultiElem<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim, DoubleElem, DoubleElemFactory> genDescent(
-				GeometricAlgebraMultivectorElem<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim, GeometricAlgebraOrd<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim>, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> _functions,
-				ArrayList<ArrayList<? extends Elem<?, ?>>> _withRespectTos,
-				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpaceFirstLevel,
-				SymbolicElemFactory<DoubleElem, DoubleElemFactory> _sfac,
-				simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim _dim)
+				final GenDescentParam param )
 				throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
 			
 			final StelemDescentEnt sa = new StelemDescentEnt();
-			sa.setFunctions( _functions );
-			sa.setWithRespectTos( _withRespectTos );
-			sa.setImplicitSpaceFirstLevel( implicitSpaceFirstLevel );
-			sa.setSfac( _sfac );
-			sa.setDim( _dim );
+			sa.setFunctions( param.getFunctions() );
+			sa.setWithRespectTos( param.getWithRespectTos() );
+			sa.setImplicitSpaceFirstLevel( param.getImplicitSpaceFirstLevel() );
+			sa.setSfac( param.getSfac() );
+			sa.setDim( param.getDim() );
 			
-			return( new NewtonRaphsonMultiElemInterpBacktrack<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim, DoubleElem, DoubleElemFactory>( sa ) );
+			return( new NewtonRaphsonMultiElemInterpBacktrack<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim, DoubleElem, DoubleElemFactory>( sa , param.getCache() ) );
 		}
 		
 	}
@@ -3718,6 +3716,10 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 		System.out.println( "Reached #7..." );
 		
 		
+		HashMap<SCacheKey<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElem<DoubleElem, DoubleElemFactory>> cache =
+				new HashMap<SCacheKey<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElem<DoubleElem, DoubleElemFactory>>();
+		
+		
 		final DescentAlgorithmMultiElemRemapTensorParam<String, DoubleElem, DoubleElemFactory>
 			param = new DescentAlgorithmMultiElemRemapTensorParam<String, DoubleElem, DoubleElemFactory>();
 		
@@ -3730,7 +3732,13 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 		param.setCovariantIndices( covariantIndices );
 		
 		
-		StelemDescent descent = new StelemDescent( param );
+		StelemDescent descent = new StelemDescent( param , cache );
+		
+		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! StelemDescent should extend tensor rather than TensorDiag
+		
+		
+		
+		cache = null;
 		
 		
 		System.out.println( "S9 I" ); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!

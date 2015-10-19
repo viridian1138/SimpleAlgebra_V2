@@ -32,6 +32,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 
 import simplealgebra.AbsoluteValue;
+import simplealgebra.CloneThreadCache;
 import simplealgebra.DoubleElem;
 import simplealgebra.DoubleElemFactory;
 import simplealgebra.ElemFactory;
@@ -135,6 +136,27 @@ public class BigFixedPointElemFactory<T extends Precision<T>> extends ElemFactor
 	
 	
 	@Override
+	public BigFixedPointElemFactory<T> cloneThreadCached(
+			BigInteger threadIndex,
+			CloneThreadCache<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> cache) {
+		final BigFixedPointElemFactory<T> ctmp = cache.getFac( this );
+		if( ctmp != null )
+		{
+			return( ctmp );
+		}
+		final T precs = prec.cloneThread( threadIndex );
+		if( precs != prec )
+		{
+			final BigFixedPointElemFactory<T> rtmp = new BigFixedPointElemFactory<T>( precs );
+			cache.putFac(this, rtmp);
+			return( rtmp );
+		}
+		cache.putFac(this, this);
+		return( this );
+	}
+	
+	
+	@Override
 	public SymbolicElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> handleSymbolicOptionalOp( Object id , 
 			ArrayList<SymbolicElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>>> args )  throws NotInvertibleException
 	{
@@ -169,6 +191,8 @@ public class BigFixedPointElemFactory<T extends Precision<T>> extends ElemFactor
 		
 		return( super.handleSymbolicOptionalOp(id, args) );
 	}
+
+
 
 	
 }

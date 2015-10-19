@@ -32,7 +32,6 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 
 import simplealgebra.AbsoluteValue;
-import simplealgebra.DoubleElem;
 import simplealgebra.Elem;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.Sqrt;
@@ -136,6 +135,54 @@ public class BigFixedPointElem<T extends Precision<T>> extends Elem<BigFixedPoin
 		return( this );
 	}
 	
+	
+	/**
+	 * Returns the square root of the elem.
+	 * 
+	 * @return The square root of the elem.
+	 * @throws NotInvertibleException
+	 */
+	protected BigFixedPointElem<T> sqrt() throws NotInvertibleException
+	{
+		final int valc = val.compareTo( BigInteger.ZERO );
+		if( valc < 0 )
+		{
+			throw( new NotInvertibleException() );
+		}
+		if( valc == 0 )
+		{
+			return( this );
+		}
+		
+		BigFixedPointElem<T> strt = new BigFixedPointElem<T>( BigInteger.ONE , prec );
+		BigFixedPointElem<T> end = new BigFixedPointElem<T>( 
+				val.compareTo( prec.getVal() ) > 0 ? val : prec.getVal() , prec );
+		BigFixedPointElem<T> pivot = new BigFixedPointElem<T>( 
+				( strt.getPrecVal().add( end.getPrecVal() ) ).divide( BigInteger.valueOf( 2 ) ) , prec );
+		int pval = pivot.mult( pivot ).getPrecVal().compareTo( this.getPrecVal() );
+		while( pval != 0 )
+		{
+			if( pval > 0 )
+			{
+				end = pivot;
+			}
+			else
+			{
+				strt = pivot;
+			}
+			final BigInteger prevpiv = pivot.getPrecVal();
+			pivot = new BigFixedPointElem<T>( 
+				( strt.getPrecVal().add( end.getPrecVal() ) ).divide( BigInteger.valueOf( 2 ) ) , prec );
+			if( prevpiv.compareTo( pivot.getPrecVal() ) == 0 )
+			{
+				return( pivot );
+			}
+			pval = pivot.mult( pivot ).getPrecVal().compareTo( this.getPrecVal() );
+		}
+		return( pivot );
+	}
+	
+	
 	@Override
 	public BigFixedPointElem<T> handleOptionalOp( Object id , ArrayList<BigFixedPointElem<T>> args ) throws NotInvertibleException
 	{
@@ -157,42 +204,7 @@ public class BigFixedPointElem<T extends Precision<T>> extends Elem<BigFixedPoin
 			{
 				case SQRT:
 				{
-					final int valc = val.compareTo( BigInteger.ZERO );
-					if( valc < 0 )
-					{
-						throw( new NotInvertibleException() );
-					}
-					if( valc == 0 )
-					{
-						return( this );
-					}
-					
-					BigFixedPointElem<T> strt = new BigFixedPointElem<T>( BigInteger.ONE , prec );
-					BigFixedPointElem<T> end = new BigFixedPointElem<T>( 
-							val.compareTo( prec.getVal() ) > 0 ? val : prec.getVal() , prec );
-					BigFixedPointElem<T> pivot = new BigFixedPointElem<T>( 
-							( strt.getPrecVal().add( end.getPrecVal() ) ).divide( BigInteger.valueOf( 2 ) ) , prec );
-					int pval = pivot.mult( pivot ).getPrecVal().compareTo( this.getPrecVal() );
-					while( pval != 0 )
-					{
-						if( pval > 0 )
-						{
-							end = pivot;
-						}
-						else
-						{
-							strt = pivot;
-						}
-						final BigInteger prevpiv = pivot.getPrecVal();
-						pivot = new BigFixedPointElem<T>( 
-							( strt.getPrecVal().add( end.getPrecVal() ) ).divide( BigInteger.valueOf( 2 ) ) , prec );
-						if( prevpiv.compareTo( pivot.getPrecVal() ) == 0 )
-						{
-							return( pivot );
-						}
-						pval = pivot.mult( pivot ).getPrecVal().compareTo( this.getPrecVal() );
-					}
-					return( pivot );
+					return( sqrt() );
 				}
 				// break;
 			}

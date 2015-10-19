@@ -28,6 +28,7 @@ package simplealgebra.symbolic;
 
 import java.math.BigInteger;
 
+import simplealgebra.CloneThreadCache;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 
@@ -101,6 +102,27 @@ public class SymbolicElemFactory<R extends Elem<R,?>, S extends ElemFactory<R,S>
 	}
 	
 	
+	@Override
+	public SymbolicElemFactory<R, S> cloneThreadCached(
+			BigInteger threadIndex,
+			CloneThreadCache<SymbolicElem<R, S>, SymbolicElemFactory<R, S>> cache) {
+		final SymbolicElemFactory<R,S> ctmp = cache.getFac( this );
+		if( ctmp != null )
+		{
+			return( ctmp );
+		}
+		S sfac = fac.cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
+		if( fac != sfac )
+		{
+			final SymbolicElemFactory<R,S> rtmp = new SymbolicElemFactory<R,S>( sfac );
+			cache.putFac(this, rtmp);
+			return( rtmp );
+		}
+		cache.putFac(this, this);
+		return( this );
+	}
+	
+	
 	/**
 	 * Gets the factory for the enclosed type.
 	 * 
@@ -115,6 +137,7 @@ public class SymbolicElemFactory<R extends Elem<R,?>, S extends ElemFactory<R,S>
 	 * The factory for the enclosed type.
 	 */
 	private S fac;
+	
 
 }
 

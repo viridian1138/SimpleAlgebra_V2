@@ -2436,7 +2436,7 @@ protected void applyAdd(
 				final DescentAlgorithmMultiElemRemapParam<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> param )
 				throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
-			super( param );
+			super( param , null );
 			
 			// System.out.println( "**" );
 			// System.out.println( this.partialEval.writeString() );
@@ -2600,20 +2600,16 @@ protected void applyAdd(
 
 		@Override
 		protected DescentAlgorithmMultiElem<simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim, DoubleElem, DoubleElemFactory> genDescent(
-				GeometricAlgebraMultivectorElem<simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim, GeometricAlgebraOrd<simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim>, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> _functions,
-				ArrayList<ArrayList<? extends Elem<?, ?>>> _withRespectTos,
-				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpaceFirstLevel,
-				SymbolicElemFactory<DoubleElem, DoubleElemFactory> _sfac,
-				simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim _dim ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
+				final GenDescentParam param ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
 			
 			final StelemDescentEnt sa = new StelemDescentEnt();
-			sa.setFunctions( _functions );
-			sa.setWithRespectTos( _withRespectTos );
-			sa.setImplicitSpaceFirstLevel( implicitSpaceFirstLevel );
-			sa.setSfac( _sfac );
-			sa.setDim( _dim );
+			sa.setFunctions( param.getFunctions() );
+			sa.setWithRespectTos( param.getWithRespectTos() );
+			sa.setImplicitSpaceFirstLevel( param.getImplicitSpaceFirstLevel() );
+			sa.setSfac( param.getSfac() );
+			sa.setDim( param.getDim() );
 			
-			return( new NewtonRaphsonMultiElemNoBacktrack<simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim, DoubleElem, DoubleElemFactory>( sa ) );
+			return( new NewtonRaphsonMultiElemNoBacktrack<simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim, DoubleElem, DoubleElemFactory>( sa , param.getCache() ) );
 		}
 		
 	}

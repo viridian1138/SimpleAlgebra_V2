@@ -28,6 +28,7 @@ package simplealgebra.et;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
+import simplealgebra.CloneThreadCache;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
@@ -145,10 +146,32 @@ public class EinsteinTensorElemFactory<Z extends Object, R extends Elem<R,?>, S 
 	}
 	
 	
+	@Override
+	public EinsteinTensorElemFactory<Z, R, S> cloneThreadCached(
+			BigInteger threadIndex,
+			CloneThreadCache<EinsteinTensorElem<Z, R, S>, EinsteinTensorElemFactory<Z, R, S>> cache) {
+		final EinsteinTensorElemFactory<Z,R,S> ctmp = cache.getFac( this );
+		if( ctmp != null )
+		{
+			return( ctmp );
+		}
+		S sfac = fac.cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
+		if( fac != sfac )
+		{
+			final EinsteinTensorElemFactory<Z,R,S> rtmp = new EinsteinTensorElemFactory<Z,R,S>( sfac );
+			cache.putFac(this, rtmp);
+			return( rtmp );
+		}
+		cache.putFac(this, this);
+		return( this );
+	}
+	
+	
 	/**
 	 * The factory for the enclosed type.
 	 */
 	private S fac;
+
 
 }
 
