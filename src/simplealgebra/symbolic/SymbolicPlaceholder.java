@@ -33,6 +33,7 @@ import java.util.HashMap;
 
 import org.kie.internal.runtime.StatefulKnowledgeSession;
 
+import simplealgebra.CloneThreadCache;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
@@ -100,6 +101,29 @@ public class SymbolicPlaceholder<R extends Elem<R,?>, S extends ElemFactory<R,S>
 		final SymbolicElem<R,S> elems = elem.cloneThread(threadIndex);
 		final S facs = this.getFac().getFac().cloneThread(threadIndex);
 		return( new SymbolicPlaceholder<R,S>( elems , facs ) );
+	}
+	
+	
+	@Override
+	public SymbolicElem<R,S> cloneThreadCached(
+			BigInteger threadIndex,
+			CloneThreadCache<SymbolicElem<R, S>, SymbolicElemFactory<R, S>> cache) {
+		final SymbolicElem<R,S> ctmp = cache.get( this );
+		if( ctmp != null )
+		{
+			return( ctmp );
+		}
+		// Node is presumed to not be thread-safe due to the presence of the setter for elem.
+		final S facs = this.getFac().getFac().cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
+		final SymbolicElem<R,S> elems = elem.cloneThreadCached(threadIndex, cache);
+		if( ( elems != elem ) || ( facs != fac ) )
+		{
+			final SymbolicPlaceholder<R,S> rtmp = new SymbolicPlaceholder<R,S>( elems , facs );
+			cache.put(this, rtmp);
+			return( rtmp );
+		}
+		cache.put(this, this);
+		return( this );
 	}
 
 	

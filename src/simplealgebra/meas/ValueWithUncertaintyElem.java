@@ -25,6 +25,9 @@ package simplealgebra.meas;
 import java.util.ArrayList;
 
 import simplealgebra.AbsoluteValue;
+import simplealgebra.CloneThreadCache;
+import simplealgebra.ComplexElem;
+import simplealgebra.ComplexElemFactory;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.MutableElem;
@@ -149,6 +152,28 @@ public class ValueWithUncertaintyElem<R extends Elem<R,?>, S extends ElemFactory
 		{
 			return( new ValueWithUncertaintyElem<R, S>( val2 , unc2 ) );
 		}
+		return( this );
+	}
+	
+	
+	
+	@Override
+	public ValueWithUncertaintyElem<R,S> cloneThreadCached( final BigInteger threadIndex , final CloneThreadCache<ValueWithUncertaintyElem<R,S>,ValueWithUncertaintyElemFactory<R,S>> cache )
+	{
+		final ValueWithUncertaintyElem<R,S> ctmp = cache.get( this );
+		if( ctmp != null )
+		{
+			return( ctmp );
+		}
+		final R val2 = value.cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
+		final R unc2 = uncertainty.cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
+		if( ( value != val2 ) || ( uncertainty != unc2 ) )
+		{
+			final ValueWithUncertaintyElem<R,S> rtmp = new ValueWithUncertaintyElem<R,S>( val2 , unc2 );
+			cache.put(this, rtmp);
+			return( rtmp );
+		}
+		cache.put(this, this);
 		return( this );
 	}
 	

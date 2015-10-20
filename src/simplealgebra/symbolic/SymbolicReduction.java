@@ -31,6 +31,7 @@ import java.util.HashMap;
 
 import org.kie.internal.runtime.StatefulKnowledgeSession;
 
+import simplealgebra.CloneThreadCache;
 import simplealgebra.DoubleElem;
 import simplealgebra.DoubleElemFactory;
 import simplealgebra.Elem;
@@ -248,6 +249,28 @@ public class SymbolicReduction<R extends Elem<R,?>, S extends ElemFactory<R,S>> 
 		{
 			return( new SymbolicReduction<R,S>( elems , facs ) );
 		}
+		return( this );
+	}
+	
+	
+	@Override
+	public SymbolicElem<R,S> cloneThreadCached(
+			BigInteger threadIndex,
+			CloneThreadCache<SymbolicElem<R, S>, SymbolicElemFactory<R, S>> cache) {
+		final SymbolicElem<R,S> ctmp = cache.get( this );
+		if( ctmp != null )
+		{
+			return( ctmp );
+		}
+		final S facs = this.getFac().getFac().cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
+		final R elems = elem.cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
+		if( ( elems != elem ) || ( facs != fac ) )
+		{
+			final SymbolicReduction<R,S> rtmp = new SymbolicReduction<R,S>( elems , facs );
+			cache.put(this, rtmp);
+			return( rtmp );
+		}
+		cache.put(this, this);
 		return( this );
 	}
 	

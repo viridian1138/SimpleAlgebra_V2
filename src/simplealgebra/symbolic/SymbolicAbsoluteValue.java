@@ -34,6 +34,7 @@ import java.util.HashMap;
 import org.kie.internal.runtime.StatefulKnowledgeSession;
 
 import simplealgebra.AbsoluteValue;
+import simplealgebra.CloneThreadCache;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
@@ -160,6 +161,28 @@ public class SymbolicAbsoluteValue<R extends Elem<R,?>, S extends ElemFactory<R,
 		{
 			return( new SymbolicAbsoluteValue<R,S>( elems , facs ) );
 		}
+		return( this );
+	}
+	
+	
+	@Override
+	public SymbolicElem<R,S> cloneThreadCached(
+			BigInteger threadIndex,
+			CloneThreadCache<SymbolicElem<R, S>, SymbolicElemFactory<R, S>> cache) {
+		final SymbolicElem<R,S> ctmp = cache.get( this );
+		if( ctmp != null )
+		{
+			return( ctmp );
+		}
+		final S facs = this.getFac().getFac().cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
+		final SymbolicElem<R,S> elems = elem.cloneThreadCached(threadIndex, cache);
+		if( ( elems != elem ) || ( facs != fac ) )
+		{
+			final SymbolicAbsoluteValue<R,S> rtmp = new SymbolicAbsoluteValue<R,S>( elems , facs );
+			cache.put(this, rtmp);
+			return( rtmp );
+		}
+		cache.put(this, this);
 		return( this );
 	}
 	

@@ -29,6 +29,7 @@ import java.util.Iterator;
 import org.hypergraphdb.HGHandle;
 import org.hypergraphdb.HyperGraph;
 
+import simplealgebra.CloneThreadCache;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
@@ -151,6 +152,27 @@ public class DbElem<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 		{
 			return( new DbElem<R,S>( hbase , sfac , graph ) );
 		}
+		return( this );
+	}
+	
+	
+	@Override
+	public DbElem<R,S> cloneThreadCached( final BigInteger threadIndex , final CloneThreadCache<DbElem<R,S>,DbElemFactory<R,S>> cache )
+	{
+		final DbElem<R,S> ctmp = cache.get( this );
+		if( ctmp != null )
+		{
+			return( ctmp );
+		}
+		// The HyperGraph graph and the HGHandle hbase are assumed to be thread-safe.
+		S sfac = fac.cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
+		if( fac != sfac )
+		{
+			final DbElem<R,S> rtmp = new DbElem<R,S>( hbase , sfac , graph );
+			cache.put(this, rtmp);
+			return( rtmp );
+		}
+		cache.put(this, this);
 		return( this );
 	}
 	
