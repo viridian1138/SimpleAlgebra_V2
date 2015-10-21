@@ -32,6 +32,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 
+import simplealgebra.CloneThreadCache;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.MutableElem;
@@ -311,7 +312,6 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 			return col;
 		}
 
-		
 	}
 	
 	
@@ -1174,6 +1174,33 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 			final HashSet<BigInteger> keyClone = ( HashSet<BigInteger> )( key.clone() );
 			ret.setVal( keyClone , val.cloneThread(threadIndex) );
 		}
+		return( ret );
+	}
+	
+	
+	@Override
+	public GeometricAlgebraMultivectorElem<U, A, R, S> cloneThreadCached(
+			BigInteger threadIndex,
+			CloneThreadCache<GeometricAlgebraMultivectorElem<U, A, R, S>, GeometricAlgebraMultivectorElemFactory<U, A, R, S>> cache) 
+	{
+		final GeometricAlgebraMultivectorElem<U, A, R, S> ctmp = cache.get( this );
+		if( ctmp != null )
+		{
+			return( ctmp );
+		}
+		// The NumDimensions dim and the Ord ord are presumed to be immutable.
+		final S facs = fac.cloneThreadCached( threadIndex , (CloneThreadCache)( cache.getInnerCache() ) );
+		final GeometricAlgebraMultivectorElem<U,A, R, S> ret 
+			= new GeometricAlgebraMultivectorElem<U,A, R, S>( facs , dim , ord );
+		Iterator<HashSet<BigInteger>> it = map.keySet().iterator();
+		while( it.hasNext() )
+		{
+			final HashSet<BigInteger> key = it.next();
+			final R val = map.get( key );
+			final HashSet<BigInteger> keyClone = ( HashSet<BigInteger> )( key.clone() );
+			ret.setVal( keyClone , val.cloneThreadCached( threadIndex , (CloneThreadCache)( cache.getInnerCache() ) ) );
+		}
+		cache.put(this, ret);
 		return( ret );
 	}
 	

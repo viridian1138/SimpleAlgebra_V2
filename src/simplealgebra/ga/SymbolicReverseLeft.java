@@ -33,6 +33,7 @@ import java.util.HashMap;
 
 import org.kie.internal.runtime.StatefulKnowledgeSession;
 
+import simplealgebra.CloneThreadCache;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
@@ -42,6 +43,7 @@ import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.PrecedenceComparator;
 import simplealgebra.symbolic.SCacheKey;
 import simplealgebra.symbolic.SymbolicElem;
+import simplealgebra.symbolic.SymbolicElemFactory;
 
 
 /**
@@ -174,6 +176,30 @@ public class SymbolicReverseLeft<U extends NumDimensions, A extends Ord<U>, R ex
 		{
 			return( new SymbolicReverseLeft<U,A,R,S>( elemAs , facs ) );
 		}
+		return( this );
+	}
+	
+	
+	@Override
+	public SymbolicElem<GeometricAlgebraMultivectorElem<U, A, R, S>, GeometricAlgebraMultivectorElemFactory<U, A, R, S>> cloneThreadCached(
+			BigInteger threadIndex,
+			CloneThreadCache<SymbolicElem<GeometricAlgebraMultivectorElem<U, A, R, S>, GeometricAlgebraMultivectorElemFactory<U, A, R, S>>, SymbolicElemFactory<GeometricAlgebraMultivectorElem<U, A, R, S>, GeometricAlgebraMultivectorElemFactory<U, A, R, S>>> cache) 
+	{
+		final SymbolicElem<GeometricAlgebraMultivectorElem<U, A, R, S>, GeometricAlgebraMultivectorElemFactory<U, A, R, S>> ctmp = cache.get( this );
+		if( ctmp != null )
+		{
+			return( ctmp );
+		}
+		final SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> elemAs
+			= elemA.cloneThreadCached( threadIndex , (CloneThreadCache)( cache.getInnerCache() ) );
+		final GeometricAlgebraMultivectorElemFactory<U,A, R, S> facs = this.getFac().getFac().cloneThreadCached( threadIndex , (CloneThreadCache)( cache.getInnerCache() ) );
+		if( ( elemAs != elemA ) || ( facs != this.getFac().getFac() ) )
+		{
+			final SymbolicReverseLeft<U,A,R,S> rtmp = new SymbolicReverseLeft<U,A,R,S>( elemAs , facs );
+			cache.put(this, rtmp);
+			return( rtmp );
+		}
+		cache.put(this, this);
 		return( this );
 	}
 
