@@ -28,15 +28,18 @@ import java.io.PrintStream;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import org.kie.internal.runtime.StatefulKnowledgeSession;
 
+import simplealgebra.CloneThreadCache;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SCacheKey;
 import simplealgebra.symbolic.SymbolicElem;
+import simplealgebra.symbolic.SymbolicElemFactory;
 
 
 /**
@@ -123,6 +126,26 @@ public class SymbolicRegenCovar<Z extends Object, R extends Elem<R,?>, S extends
 		// The indices inside the array list are presumed to be immutable.
 		final ArrayList<Z> covars = (ArrayList<Z>)( newCovar.clone() );
 		return( new SymbolicRegenCovar<Z,R,S>( elems , facs , covars ) );
+	}
+	
+	
+	@Override
+	public SymbolicElem<EinsteinTensorElem<Z, R, S>, EinsteinTensorElemFactory<Z, R, S>> cloneThreadCached(
+			BigInteger threadIndex,
+			CloneThreadCache<SymbolicElem<EinsteinTensorElem<Z, R, S>, EinsteinTensorElemFactory<Z, R, S>>, SymbolicElemFactory<EinsteinTensorElem<Z, R, S>, EinsteinTensorElemFactory<Z, R, S>>> cache) {
+		final SymbolicElem<EinsteinTensorElem<Z, R, S>, EinsteinTensorElemFactory<Z, R, S>> ctmp = cache.get( this );
+		if( ctmp != null )
+		{
+			return( ctmp );
+		}
+		final SymbolicElem<EinsteinTensorElem<Z,R,S>,EinsteinTensorElemFactory<Z,R,S>> 
+			elems = elem.cloneThreadCached( threadIndex , cache );
+		final EinsteinTensorElemFactory<Z,R,S> facs = this.getFac().getFac().cloneThreadCached( threadIndex , (CloneThreadCache)( cache.getInnerCache() ) );
+		// The indices inside the array list are presumed to be immutable.
+		final ArrayList<Z> covars = (ArrayList<Z>)( newCovar.clone() );
+		final SymbolicRegenCovar<Z,R,S> rtmp = new SymbolicRegenCovar<Z,R,S>( elems , facs , covars );
+		cache.put(this, rtmp);
+		return( rtmp );
 	}
 	
 

@@ -32,12 +32,14 @@ import java.util.HashSet;
 
 import org.kie.internal.runtime.StatefulKnowledgeSession;
 
+import simplealgebra.CloneThreadCache;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SCacheKey;
 import simplealgebra.symbolic.SymbolicElem;
+import simplealgebra.symbolic.SymbolicElemFactory;
 
 
 /**
@@ -134,6 +136,27 @@ public class SymbolicIndexReduction<Z extends Object, R extends Elem<R,?>, S ext
 		final HashSet<Z> contravars = (HashSet<Z>)( contravariantReduce.clone() );
 		final HashSet<Z> covars = (HashSet<Z>)( covariantReduce.clone() );
 		return( new SymbolicIndexReduction<Z,R,S>( elems , facs , contravars , covars ) );
+	}
+	
+	
+	@Override
+	public SymbolicElem<EinsteinTensorElem<Z, R, S>, EinsteinTensorElemFactory<Z, R, S>> cloneThreadCached(
+			BigInteger threadIndex,
+			CloneThreadCache<SymbolicElem<EinsteinTensorElem<Z, R, S>, EinsteinTensorElemFactory<Z, R, S>>, SymbolicElemFactory<EinsteinTensorElem<Z, R, S>, EinsteinTensorElemFactory<Z, R, S>>> cache) {
+		final SymbolicElem<EinsteinTensorElem<Z, R, S>, EinsteinTensorElemFactory<Z, R, S>> ctmp = cache.get( this );
+		if( ctmp != null )
+		{
+			return( ctmp );
+		}
+		final SymbolicElem<EinsteinTensorElem<Z,R,S>,EinsteinTensorElemFactory<Z,R,S>> 
+			elems = elem.cloneThreadCached( threadIndex , cache );
+		final EinsteinTensorElemFactory<Z,R,S> facs = this.getFac().getFac().cloneThreadCached( threadIndex , (CloneThreadCache)( cache.getInnerCache() ) );
+		// Indices within the hash sets are presumed to be immutable.
+		final HashSet<Z> contravars = (HashSet<Z>)( contravariantReduce.clone() );
+		final HashSet<Z> covars = (HashSet<Z>)( covariantReduce.clone() );
+		final SymbolicIndexReduction<Z,R,S> rtmp = new SymbolicIndexReduction<Z,R,S>( elems , facs , contravars , covars );
+		cache.put(this, rtmp);
+		return( rtmp );
 	}
 	
 

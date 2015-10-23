@@ -33,6 +33,7 @@ import java.util.HashMap;
 
 import org.kie.internal.runtime.StatefulKnowledgeSession;
 
+import simplealgebra.CloneThreadCache;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
@@ -40,6 +41,7 @@ import simplealgebra.symbolic.DroolsSession;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SCacheKey;
 import simplealgebra.symbolic.SymbolicElem;
+import simplealgebra.symbolic.SymbolicElemFactory;
 
 
 /**
@@ -166,6 +168,29 @@ public class SymbolicRankTwoTrace<Z extends Object, R extends Elem<R,?>, S exten
 		{
 			return( new SymbolicRankTwoTrace<Z,R,S>( elemAs , facs ) );
 		}
+		return( this );
+	}
+	
+	
+	@Override
+	public SymbolicElem<EinsteinTensorElem<Z, R, S>, EinsteinTensorElemFactory<Z, R, S>> cloneThreadCached(
+			BigInteger threadIndex,
+			CloneThreadCache<SymbolicElem<EinsteinTensorElem<Z, R, S>, EinsteinTensorElemFactory<Z, R, S>>, SymbolicElemFactory<EinsteinTensorElem<Z, R, S>, EinsteinTensorElemFactory<Z, R, S>>> cache) {
+		final SymbolicElem<EinsteinTensorElem<Z, R, S>, EinsteinTensorElemFactory<Z, R, S>> ctmp = cache.get( this );
+		if( ctmp != null )
+		{
+			return( ctmp );
+		}
+		final SymbolicElem<EinsteinTensorElem<Z,R,S>,EinsteinTensorElemFactory<Z,R,S>> 
+			elemAs = elemA.cloneThreadCached( threadIndex , cache );
+		final EinsteinTensorElemFactory<Z,R,S> facs = this.getFac().getFac().cloneThreadCached( threadIndex , (CloneThreadCache)( cache.getInnerCache() ) );
+		if( ( elemAs != elemA ) || ( facs != this.getFac().getFac() ) )
+		{
+			final SymbolicRankTwoTrace<Z,R,S> rtmp = new SymbolicRankTwoTrace<Z,R,S>( elemAs , facs );
+			cache.put(this, rtmp);
+			return( rtmp );
+		}
+		cache.put(this, this);
 		return( this );
 	}
 	

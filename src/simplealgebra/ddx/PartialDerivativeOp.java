@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import simplealgebra.CloneThreadCache;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
@@ -39,7 +40,7 @@ import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.PrecedenceComparator;
 import simplealgebra.symbolic.SCacheKey;
 import simplealgebra.symbolic.SymbolicElem;
-import simplealgebra.symbolic.SymbolicMult;
+import simplealgebra.symbolic.SymbolicElemFactory;
 
 /**
  * Implements a partial derivative <math display="inline">
@@ -103,6 +104,24 @@ public class PartialDerivativeOp<R extends Elem<R,?>, S extends ElemFactory<R,S>
 		final S facs = this.getFac().getFac().cloneThread(threadIndex);
 		final ArrayList<K> wrts = (ArrayList<K>)( withRespectTo.clone() );
 		return( new PartialDerivativeOp<R,S,K>( facs , wrts ) );
+	}
+	
+	
+	@Override
+	public SymbolicElem<R, S> cloneThreadCached(
+			BigInteger threadIndex,
+			CloneThreadCache<SymbolicElem<R, S>, SymbolicElemFactory<R, S>> cache) {
+		final SymbolicElem<R,S> ctmp = cache.get( this );
+		if( ctmp != null )
+		{
+			return( ctmp );
+		}
+		// The indices of the ArrayList are presumed to be immutable.
+		final S facs = this.getFac().getFac().cloneThreadCached( threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
+		final ArrayList<K> wrts = (ArrayList<K>)( withRespectTo.clone() );
+		final PartialDerivativeOp<R,S,K> rtmp = new PartialDerivativeOp<R,S,K>( facs , wrts );
+		cache.put(this, rtmp);
+		return( rtmp );
 	}
 	
 

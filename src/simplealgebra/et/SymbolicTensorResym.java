@@ -31,6 +31,7 @@ import java.util.HashMap;
 
 import org.kie.internal.runtime.StatefulKnowledgeSession;
 
+import simplealgebra.CloneThreadCache;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
@@ -39,6 +40,7 @@ import simplealgebra.SquareMatrixElem;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SCacheKey;
 import simplealgebra.symbolic.SymbolicElem;
+import simplealgebra.symbolic.SymbolicElemFactory;
 
 
 /**
@@ -172,6 +174,30 @@ public class SymbolicTensorResym<Z extends Object, U extends NumDimensions, R ex
 		{
 			return( new SymbolicTensorResym<Z,U,R,S>( elems , facs , reSym , dim ) );
 		}
+		return( this );
+	}
+	
+	
+	@Override
+	public SymbolicElem<EinsteinTensorElem<Z, R, S>, EinsteinTensorElemFactory<Z, R, S>> cloneThreadCached(
+			BigInteger threadIndex,
+			CloneThreadCache<SymbolicElem<EinsteinTensorElem<Z, R, S>, EinsteinTensorElemFactory<Z, R, S>>, SymbolicElemFactory<EinsteinTensorElem<Z, R, S>, EinsteinTensorElemFactory<Z, R, S>>> cache) {
+		final SymbolicElem<EinsteinTensorElem<Z, R, S>, EinsteinTensorElemFactory<Z, R, S>> ctmp = cache.get( this );
+		if( ctmp != null )
+		{
+			return( ctmp );
+		}
+		// The NumDimensions dim is presumed to be immutable.
+		final SymbolicElem<EinsteinTensorElem<Z,R,S>,EinsteinTensorElemFactory<Z,R,S>> 
+			elems = elem.cloneThreadCached( threadIndex , cache );
+		final EinsteinTensorElemFactory<Z,R,S> facs = this.getFac().getFac().cloneThreadCached( threadIndex , (CloneThreadCache)( cache.getInnerCache() ) );
+		if( ( elems != elem ) || ( facs != this.getFac().getFac() ) )
+		{
+			final SymbolicTensorResym<Z,U,R,S> rtmp = new SymbolicTensorResym<Z,U,R,S>( elems , facs , reSym , dim );
+			cache.put(this, rtmp);
+			return( rtmp );
+		}
+		cache.put(this, this);
 		return( this );
 	}
 	

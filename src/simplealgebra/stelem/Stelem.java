@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import simplealgebra.CloneThreadCache;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
@@ -106,6 +107,25 @@ public abstract class Stelem<R extends Elem<R,?>, S extends ElemFactory<R,S>, K 
 	protected Stelem( final Stelem<R,S,K> in , final BigInteger threadIndex )
 	{
 		super( in.getFac().getFac().cloneThread(threadIndex) );
+		Iterator<K> it = in.partialMap.keySet().iterator();
+		while( it.hasNext() )
+		{
+			final K ikey = it.next();
+			final BigInteger ival = in.partialMap.get( ikey );
+			partialMap.put( (K)( ikey.cloneThread(threadIndex) ) , ival );
+		}
+	}
+	
+	
+	/**
+	 * Copies the Stelem for threading.
+	 * @param in The Stelem to be copied.
+	 * @param threadIndex The thread index.
+	 * @param cache The elem cache.
+	 */
+	protected Stelem( final Stelem<R,S,K> in , final BigInteger threadIndex , CloneThreadCache<SymbolicElem<R, S>, SymbolicElemFactory<R, S>> cache )
+	{
+		super( in.getFac().getFac().cloneThreadCached(threadIndex, cache) );
 		Iterator<K> it = in.partialMap.keySet().iterator();
 		while( it.hasNext() )
 		{

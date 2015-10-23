@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import simplealgebra.CloneThreadCache;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
@@ -38,6 +39,7 @@ import simplealgebra.symbolic.DroolsSession;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SCacheKey;
 import simplealgebra.symbolic.SymbolicElem;
+import simplealgebra.symbolic.SymbolicElemFactory;
 
 
 /**
@@ -105,6 +107,26 @@ public abstract class Nelem<R extends Elem<R,?>, S extends ElemFactory<R,S>, K e
 	protected Nelem( Nelem<R,S,K> in , final BigInteger threadIndex )
 	{
 		super( in.getFac().getFac().cloneThread(threadIndex) );
+		coord = new HashMap<K,BigInteger>();
+		final Iterator<K> it = in.coord.keySet().iterator();
+		while( it.hasNext() )
+		{
+			final K ikey = it.next();
+			final BigInteger ival = in.coord.get( ikey );
+			coord.put( (K)( ikey.cloneThread(threadIndex) ) , ival );
+		}
+	}
+	
+	
+	/**
+	 * Copies the Nelem for threading.
+	 * @param in The Nelem to copy.
+	 * @param threadIndex The thread index.
+	 * @param cache The elem cache.
+	 */
+	protected Nelem( Nelem<R,S,K> in , final BigInteger threadIndex , CloneThreadCache<SymbolicElem<R, S>, SymbolicElemFactory<R, S>> cache )
+	{
+		super( in.getFac().getFac().cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) ) );
 		coord = new HashMap<K,BigInteger>();
 		final Iterator<K> it = in.coord.keySet().iterator();
 		while( it.hasNext() )

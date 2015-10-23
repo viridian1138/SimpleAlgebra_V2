@@ -32,6 +32,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 
 import simplealgebra.AbsoluteValue;
+import simplealgebra.CloneThreadCache;
 import simplealgebra.Elem;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.Sqrt;
@@ -132,6 +133,27 @@ public class BigFixedPointElem<T extends Precision<T>> extends Elem<BigFixedPoin
 		{
 			return( new BigFixedPointElem<T>( val , precs ) );
 		}
+		return( this );
+	}
+	
+	
+	@Override
+	public BigFixedPointElem<T> cloneThreadCached(
+			BigInteger threadIndex,
+			CloneThreadCache<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> cache) {
+		final BigFixedPointElem<T> ctmp = cache.get( this );
+		if( ctmp != null )
+		{
+			return( ctmp );
+		}
+		final T precs = prec.cloneThread( threadIndex );
+		if( precs != prec )
+		{
+			final BigFixedPointElem<T> rtmp = new BigFixedPointElem<T>( val , precs );
+			cache.put(this, rtmp);
+			return( rtmp );
+		}
+		cache.put(this, this);
 		return( this );
 	}
 	
@@ -244,7 +266,6 @@ public class BigFixedPointElem<T extends Precision<T>> extends Elem<BigFixedPoin
 	 * The precision of the elem.
 	 */
 	T prec;
-	
 
 }
 
