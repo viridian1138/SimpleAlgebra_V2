@@ -2085,6 +2085,11 @@ public class TestSchrodingerSpt_DR extends TestCase {
 					}
 					break;
 					
+				default:
+					{
+						throw( new RuntimeException( "Internal Error" ) );
+					}
+					
 				}
 			}
 		}

@@ -1037,6 +1037,11 @@ public class TestStelemA extends TestCase {
 					}
 					break;
 					
+				default:
+					{
+						throw( new RuntimeException( "Internal Error" ) );
+					}
+					
 				}
 			}
 		}

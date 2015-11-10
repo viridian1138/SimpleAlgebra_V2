@@ -1927,6 +1927,11 @@ public class TestStelemD_DR extends TestCase {
 					}
 					break;
 					
+				default:
+					{
+						throw( new RuntimeException( "Internal Error" ) );
+					}
+					
 				}
 			}
 		}

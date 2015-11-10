@@ -2026,6 +2026,11 @@ protected void applyDerivativeAction( HashMap<HashMap<Ordinate, BigInteger>,Coef
 			}
 			break;
 			
+		default:
+			{
+				throw( new RuntimeException( "Internal Error" ) );
+			}
+			
 		}
 	}
 }

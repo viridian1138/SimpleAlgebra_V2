@@ -2564,6 +2564,11 @@ protected void applyDerivativeAction( HashMap<HashMap<Ordinate, BigInteger>,Coef
 			}
 			break;
 			
+		default:
+			{
+				throw( new RuntimeException( "Internal Error" ) );
+			}
+			
 		}
 	}
 }
@@ -3134,6 +3139,11 @@ protected void applyDerivativeAction( HashMap<HashMap<Ordinate, BigInteger>,Coef
 					implicitSpacesOut );
 			}
 			break;
+			
+		default:
+			{
+				throw( new RuntimeException( "Internal Error" ) );
+			}
 			
 		}
 	}

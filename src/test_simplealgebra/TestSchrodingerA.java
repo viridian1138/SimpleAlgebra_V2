@@ -1720,6 +1720,11 @@ public class TestSchrodingerA extends TestCase {
 					}
 					break;
 					
+				default:
+					{
+						throw( new RuntimeException( "Internal Error" ) );
+					}
+					
 				}
 			}
 		}

@@ -1633,6 +1633,11 @@ public class TestCWave3DCplx extends TestCase {
 					}
 					break;
 					
+				default:
+					{
+						throw( new RuntimeException( "Internal Error" ) );
+					}
+					
 				}
 			}
 		}

@@ -2048,6 +2048,11 @@ public class TestStelemD_DR_Ncore extends TestCase {
 					}
 					break;
 					
+				default:
+					{
+						throw( new RuntimeException( "Internal Error" ) );
+					}
+					
 				}
 			}
 		}

@@ -2062,6 +2062,11 @@ public class TestCWave3D_DR_Ncore extends TestCase {
 					}
 					break;
 					
+				default:
+					{
+						throw( new RuntimeException( "Internal Error" ) );
+					}
+					
 				}
 			}
 		}
