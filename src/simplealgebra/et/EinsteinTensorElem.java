@@ -30,6 +30,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map.Entry;
 
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
@@ -127,28 +128,24 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 				|| ( contravariantIndices.size() != ib.contravariantIndices.size() ) )
 		{
 			System.out.println( "***" );
-			Iterator<Z> it = contravariantIndices.iterator();
-			while( it.hasNext() )
+			for( Z ii : contravariantIndices )
 			{
-				System.out.println( it.next() );
+				System.out.println( ii );
 			}
 			System.out.println( "---" );
-			it = covariantIndices.iterator();
-			while( it.hasNext() )
+			for( Z ii : covariantIndices )
 			{
-				System.out.println( it.next() );
+				System.out.println( ii );
 			}
 			System.out.println( "---" );
-			it = ib.contravariantIndices.iterator();
-			while( it.hasNext() )
+			for( Z ii : ib.contravariantIndices )
 			{
-				System.out.println( it.next() );
+				System.out.println( ii );
 			}
 			System.out.println( "---" );
-			it = ib.covariantIndices.iterator();
-			while( it.hasNext() )
+			for( Z ii : ib.covariantIndices )
 			{
-				System.out.println( it.next() );
+				System.out.println( ii );
 			}
 			System.out.println( "***" );
 			throw( new RuntimeException( "Mismatch" ) );
@@ -167,19 +164,18 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 		
 		
 		EinsteinTensorElem<Z,R,S> ret = new EinsteinTensorElem<Z,R,S>(fac, contravariantIndices, covariantIndices);
-		Iterator<ArrayList<BigInteger>> it = map.keySet().iterator();
-		while( it.hasNext() )
+		for( final Entry<ArrayList<BigInteger>,R> ii : map.entrySet() )
 		{
-			ArrayList<BigInteger> el = it.next();
-			R vali = map.get( el );
+			ArrayList<BigInteger> el = ii.getKey();
+			R vali = ii.getValue();
 			ret.setVal(el, vali );
 		}
 		
-		it = b.map.keySet().iterator();
-		while( it.hasNext() )
+		
+		for( final Entry<ArrayList<BigInteger>,R> ii : b.map.entrySet() )
 		{
-			ArrayList<BigInteger> el = it.next();
-			R vali = b.map.get( el );
+			ArrayList<BigInteger> el = ii.getKey();
+			R vali = ii.getValue();
 			R vv = ret.get( el );
 			if( vv != null )
 			{
@@ -208,11 +204,8 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	{
 		final ArrayList<Integer> am = new ArrayList<Integer>();
 		
-		Iterator<Z> itz = contravariantIndices.iterator();
-		
-		while( itz.hasNext() )
+		for( final Z ind : contravariantIndices )
 		{
-			Z ind = itz.next();
 			int id = ib.contravariantIndices.indexOf( ind );
 			if( id < 0 )
 			{
@@ -221,11 +214,8 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 			am.add( id );
 		}
 		
-		itz = covariantIndices.iterator();
-		
-		while( itz.hasNext() )
+		for( final Z ind : covariantIndices )
 		{
-			Z ind = itz.next();
 			int id = ib.covariantIndices.indexOf( ind );
 			if( id < 0 )
 			{
@@ -237,11 +227,10 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 		
 		EinsteinTensorElem<Z,R,S> ret = new EinsteinTensorElem<Z,R,S>(fac, contravariantIndices, covariantIndices);
 		
-		Iterator<ArrayList<BigInteger>> it = ib.map.keySet().iterator();
-		while( it.hasNext() )
+		for( final Entry<ArrayList<BigInteger>,R> ii : ib.map.entrySet() )
 		{
-			final ArrayList<BigInteger> el = it.next();
-			final R vali = ib.map.get( el );
+			final ArrayList<BigInteger> el = ii.getKey();
+			final R vali = ii.getValue();
 			
 			final ArrayList<BigInteger> el2 = new ArrayList<BigInteger>();
 			
@@ -284,10 +273,8 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 		
 		
 		{
-			final Iterator<Z> it = contravariantIndices.iterator();
-			while( it.hasNext() )
+			for( final Z tstA : contravariantIndices )
 			{
-				final Z tstA = it.next();
 				final int indB = combinedB.indexOf( tstA );
 				if( indB < 0 )
 				{
@@ -314,10 +301,8 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 		
 		
 		{
-			final Iterator<Z> it = covariantIndices.iterator();
-			while( it.hasNext() )
+			for( final Z tstA : covariantIndices )
 			{
-				final Z tstA = it.next();
 				final int indB = combinedB.indexOf( tstA );
 				if( indB < 0 )
 				{
@@ -344,10 +329,8 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 		
 		
 		{
-			final Iterator<Z> it = b_contravariantIndices.iterator();
-			while( it.hasNext() )
+			for( final Z tstB : b_contravariantIndices )
 			{
-				final Z tstB = it.next();
 				if( !( contravariantIndices.contains( tstB ) ) && !( covariantIndices.contains( tstB ) ) )
 				{
 					new_contravariantIndices.add( tstB );
@@ -358,10 +341,8 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 		}
 		
 		{
-			final Iterator<Z> it = b_covariantIndices.iterator();
-			while( it.hasNext() )
+			for( final Z tstB : b_covariantIndices )
 			{
-				final Z tstB = it.next();
 				if( !( contravariantIndices.contains( tstB ) ) && !( covariantIndices.contains( tstB ) ) )
 				{
 					new_covariantIndices.add( tstB );
@@ -533,20 +514,17 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 		
 		final EinsteinTensorElem<Z,R,S> ret = new EinsteinTensorElem<Z,R,S>( fac , new_contravariantIndices , new_covariantIndices );
 		
-		final Iterator<ArrayList<BigInteger>> it = map.keySet().iterator();
 		
-		while( it.hasNext() )
+		for( final Entry<ArrayList<BigInteger>,R> ii : map.entrySet() )
 		{
-			final ArrayList<BigInteger> key = it.next();
-			final R val = map.get(key);
+			final ArrayList<BigInteger> key = ii.getKey();
+			final R val = ii.getValue();
 			final ArrayList<BigInteger> matchMapKey = buildSummationIndex( key , matchIndicesA );
 			final ArrayList<ArrayList<BigInteger>> mmatch = matchMap.get(matchMapKey);
 			if( mmatch != null )
 			{
-				Iterator<ArrayList<BigInteger>> ita = mmatch.iterator();
-				while( ita.hasNext() )
+				for( final ArrayList<BigInteger> bkey : mmatch )
 				{
-					final ArrayList<BigInteger> bkey = ita.next();
 					final R bval = b.map.get( bkey );
 					final R muval = val.mult( bval );
 					final ArrayList<BigInteger> combinedAB = buildCombinedAB( key , bkey );
@@ -580,11 +558,9 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	{
 		HashMap<ArrayList<BigInteger>,ArrayList<ArrayList<BigInteger>>> matchMap = new HashMap<ArrayList<BigInteger>,ArrayList<ArrayList<BigInteger>>>();
 		
-		Iterator<ArrayList<BigInteger>> it = b.map.keySet().iterator();
-		
-		while( it.hasNext() )
+		for( final ArrayList<BigInteger> ii : b.map.keySet() )
 		{
-			buildSummationIndexMap( it.next() , matchIndices , matchMap );
+			buildSummationIndexMap( ii , matchIndices , matchMap );
 		}
 		
 		return( matchMap );
@@ -625,10 +601,9 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	{
 		ArrayList<BigInteger> ret = new ArrayList<BigInteger>();
 		
-		Iterator<Integer> it = matchIndices.iterator();
-		while( it.hasNext() )
+		for( final Integer ii : matchIndices )
 		{
-			ret.add( combinedIndices.get( it.next() ) );
+			ret.add( combinedIndices.get( ii ) );
 		}
 		
 		return( ret );
@@ -646,16 +621,14 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	{
 		ArrayList<Z> ret = new ArrayList<Z>();
 		
-		Iterator<Z> it = contravariantIndices.iterator();
-		while( it.hasNext() )
+		for( final Z ii : contravariantIndices )
 		{
-			ret.add( it.next() );
+			ret.add( ii );
 		}
 		
-		it = covariantIndices.iterator();
-		while( it.hasNext() )
+		for( final Z ii : covariantIndices )
 		{
-			ret.add( it.next() );
+			ret.add( ii );
 		}
 		
 		return( ret );
@@ -673,16 +646,14 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	{
 		ArrayList<BigInteger> ret = new ArrayList<BigInteger>();
 		
-		Iterator<BigInteger> it = contravariantIndices.iterator();
-		while( it.hasNext() )
+		for( final BigInteger ii : contravariantIndices )
 		{
-			ret.add( it.next() );
+			ret.add( ii );
 		}
 		
-		it = covariantIndices.iterator();
-		while( it.hasNext() )
+		for( final BigInteger ii : covariantIndices )
 		{
-			ret.add( it.next() );
+			ret.add( ii );
 		}
 		
 		return( ret );
@@ -700,16 +671,14 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	{
 		ArrayList<BigInteger> ret = new ArrayList<BigInteger>();
 		
-		Iterator<BigInteger> it = akey.iterator();
-		while( it.hasNext() )
+		for( final BigInteger ii : akey )
 		{
-			ret.add( it.next() );
+			ret.add( ii );
 		}
 		
-		it = bkey.iterator();
-		while( it.hasNext() )
+		for( final BigInteger ii : bkey )
 		{
-			ret.add( it.next() );
+			ret.add( ii );
 		}
 		
 		return( ret );
@@ -719,11 +688,10 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	@Override
 	public EinsteinTensorElem<Z, R, S> negate() {
 		EinsteinTensorElem<Z,R,S> ret = new EinsteinTensorElem<Z,R,S>(fac, contravariantIndices, covariantIndices);
-		Iterator<ArrayList<BigInteger>> it = map.keySet().iterator();
-		while( it.hasNext() )
+		for( final Entry<ArrayList<BigInteger>,R> ii : map.entrySet() )
 		{
-			ArrayList<BigInteger> el = it.next();
-			R vali = map.get( el );
+			ArrayList<BigInteger> el = ii.getKey();
+			R vali = ii.getValue();
 			ret.setVal(el, vali.negate() );
 		}
 		return( ret );
@@ -733,11 +701,10 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	@Override
 	public EinsteinTensorElem<Z, R, S> mutate( Mutator<R> mutr ) throws NotInvertibleException {
 		EinsteinTensorElem<Z,R,S> ret = new EinsteinTensorElem<Z,R,S>(fac, contravariantIndices, covariantIndices);
-		Iterator<ArrayList<BigInteger>> it = map.keySet().iterator();
-		while( it.hasNext() )
+		for( final Entry<ArrayList<BigInteger>,R> ii : map.entrySet() )
 		{
-			ArrayList<BigInteger> el = it.next();
-			R vali = map.get( el );
+			ArrayList<BigInteger> el = ii.getKey();
+			R vali = ii.getValue();
 			ret.setVal(el, mutr.mutate( vali ) );
 		}
 		return( ret );
@@ -747,20 +714,17 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	@Override
 	public EinsteinTensorElem<Z, R, S> invertLeft() throws NotInvertibleException {
 		R sum = fac.zero();
-		Iterator<ArrayList<BigInteger>> it = map.keySet().iterator();
-		while( it.hasNext() )
+		for( final Entry<ArrayList<BigInteger>,R> ii : map.entrySet() )
 		{
-			final ArrayList<BigInteger> key = it.next();
-			final R val = map.get( key );
+			final R val = ii.getValue();
 			sum = sum.add( val );
 		}
 		final R inv = sum.invertLeft();
 		final EinsteinTensorElem<Z, R, S> ret = new EinsteinTensorElem<Z, R, S>( fac , covariantIndices , contravariantIndices );
-		it = map.keySet().iterator();
-		while( it.hasNext() )
+		for( final Entry<ArrayList<BigInteger>,R> ii : map.entrySet() )
 		{
-			final ArrayList<BigInteger> key = it.next();
-			final R val = map.get( key );
+			final ArrayList<BigInteger> key = ii.getKey();
+			final R val = ii.getValue();
 			final ArrayList<BigInteger> key2 = new ArrayList<BigInteger>();
 			for( int cnt = 0 ; cnt < covariantIndices.size() + contravariantIndices.size() ; cnt++ )
 			{
@@ -783,20 +747,17 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	@Override
 	public EinsteinTensorElem<Z, R, S> invertRight() throws NotInvertibleException {
 		R sum = fac.zero();
-		Iterator<ArrayList<BigInteger>> it = map.keySet().iterator();
-		while( it.hasNext() )
+		for( final Entry<ArrayList<BigInteger>,R> ii : map.entrySet() )
 		{
-			final ArrayList<BigInteger> key = it.next();
-			final R val = map.get( key );
+			final R val = ii.getValue();
 			sum = sum.add( val );
 		}
 		final R inv = sum.invertRight();
 		final EinsteinTensorElem<Z, R, S> ret = new EinsteinTensorElem<Z, R, S>( fac , covariantIndices , contravariantIndices );
-		it = map.keySet().iterator();
-		while( it.hasNext() )
+		for( final Entry<ArrayList<BigInteger>,R> ii : map.entrySet() )
 		{
-			final ArrayList<BigInteger> key = it.next();
-			final R val = map.get( key );
+			final ArrayList<BigInteger> key = ii.getKey();
+			final R val = ii.getValue();
 			final ArrayList<BigInteger> key2 = new ArrayList<BigInteger>();
 			for( int cnt = 0 ; cnt < covariantIndices.size() + contravariantIndices.size() ; cnt++ )
 			{
@@ -819,11 +780,10 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	@Override
 	public EinsteinTensorElem<Z, R, S> divideBy(BigInteger val) {
 		EinsteinTensorElem<Z,R,S> ret = new EinsteinTensorElem<Z,R,S>(fac, contravariantIndices, covariantIndices );
-		Iterator<ArrayList<BigInteger>> it = map.keySet().iterator();
-		while( it.hasNext() )
+		for( final Entry<ArrayList<BigInteger>,R> ii : map.entrySet() )
 		{
-			ArrayList<BigInteger> el = it.next();
-			R vali = map.get( el );
+			ArrayList<BigInteger> el = ii.getKey();
+			R vali = ii.getValue();
 			ret.setVal(el, vali.divideBy(val) );
 		}
 		return( ret );
@@ -853,13 +813,12 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 			throw( new RuntimeException( "Not a Rank One Tensor." ) );
 		}
 		
-		Iterator<ArrayList<BigInteger>> it = map.keySet().iterator();
-		while( it.hasNext() )
+		for( final Entry<ArrayList<BigInteger>,R> ii : map.entrySet() )
 		{
-			ArrayList<BigInteger> key = it.next();
+			ArrayList<BigInteger> key = ii.getKey();
 			HashSet<BigInteger> okey = new HashSet<BigInteger>();
 			okey.add( key.get( 0 ) );
-			R val = map.get( key );
+			R val = ii.getValue();
 			out.setVal(okey, val);
 		}
 	}
@@ -878,12 +837,11 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 			throw( new RuntimeException( "Not a Rank One Tensor." ) );
 		}
 		
-		Iterator<ArrayList<BigInteger>> it = map.keySet().iterator();
-		while( it.hasNext() )
+		for( final Entry<ArrayList<BigInteger>,R> ii : map.entrySet() )
 		{
-			ArrayList<BigInteger> key = it.next();
+			ArrayList<BigInteger> key = ii.getKey();
 			BigInteger column = key.get( 0 );
-			R val = map.get( key );
+			R val = ii.getValue();
 			out.setVal(row, column, val);
 		}
 	}
@@ -902,12 +860,11 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 			throw( new RuntimeException( "Not a Rank One Tensor." ) );
 		}
 		
-		Iterator<ArrayList<BigInteger>> it = map.keySet().iterator();
-		while( it.hasNext() )
+		for( final Entry<ArrayList<BigInteger>,R> ii : map.entrySet() )
 		{
-			ArrayList<BigInteger> key = it.next();
+			ArrayList<BigInteger> key = ii.getKey();
 			BigInteger row = key.get( 0 );
-			R val = map.get( key );
+			R val = ii.getValue();
 			out.setVal(row, column, val);
 		}
 	}
@@ -925,13 +882,12 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 			throw( new RuntimeException( "Not a Rank Two Tensor." ) );
 		}
 		
-		Iterator<ArrayList<BigInteger>> it = map.keySet().iterator();
-		while( it.hasNext() )
+		for( final Entry<ArrayList<BigInteger>,R> ii : map.entrySet() )
 		{
-			ArrayList<BigInteger> key = it.next();
+			ArrayList<BigInteger> key = ii.getKey();
 			BigInteger row = key.get(0);
 			BigInteger column = key.get(1);
-			R val = map.get( key );
+			R val = ii.getValue();
 			out.setVal(row, column, val);
 		}
 	}
@@ -952,10 +908,8 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 		final ArrayList<Integer> coI = new ArrayList<Integer>();
 		
 		int cnt = 0;
-		Iterator<Z> it = contravariantIndices.iterator();
-		while( it.hasNext() )
+		for( final Z nxt : contravariantIndices )
 		{
-			Z nxt = it.next();
 			if( !( contravariantReduce.contains( nxt ) ) )
 			{
 				contravar.add( nxt );
@@ -964,10 +918,8 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 			cnt++;
 		}
 		
-		it = covariantIndices.iterator();
-		while( it.hasNext() )
+		for( final Z nxt : covariantIndices )
 		{
-			Z nxt = it.next();
 			if( !( covariantReduce.contains( nxt ) ) )
 			{
 				covar.add( nxt );
@@ -980,19 +932,16 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 		EinsteinTensorElem<Z, R, S> ret = new EinsteinTensorElem<Z, R, S>( fac , contravar , covar );
 		
 		
-		Iterator<ArrayList<BigInteger>> it2 = map.keySet().iterator();
-		while( it2.hasNext() )
+		for( final Entry<ArrayList<BigInteger>,R> ii : map.entrySet() )
 		{
-			final ArrayList<BigInteger> elA = it2.next();
-			final R val = map.get( elA );
+			final ArrayList<BigInteger> elA = ii.getKey();
+			final R val = ii.getValue();
 			
 			final ArrayList<BigInteger> elB = new ArrayList<BigInteger>();
 			
 			
-			Iterator<Integer> it3 = coI.iterator();
-			while( it3.hasNext() )
+			for( Integer ind : coI )
 			{
-				final int ind = it3.next();
 				elB.add( elA.get( ind ) );
 			}
 			
@@ -1025,13 +974,12 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	public EinsteinTensorElem<Z, R, S> rankTwoTrace()
 	{
 		R sum = this.getFac().getFac().zero();
-		final Iterator<ArrayList<BigInteger>> it = map.keySet().iterator();
-		while( it.hasNext() )
+		for( final Entry<ArrayList<BigInteger>,R> ii : map.entrySet() )
 		{
-			final ArrayList<BigInteger> nxt = it.next();
+			final ArrayList<BigInteger> nxt = ii.getKey();
 			if( ( nxt.get( 0 ) ).equals( nxt.get( 1 ) ) )
 			{
-				sum = sum.add( map.get( nxt ) );
+				sum = sum.add( ii.getValue() );
 			}
 		}
 		return( new EinsteinTensorElem<Z, R, S>( sum , this.getFac().getFac() ) );
@@ -1143,11 +1091,10 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	public EinsteinTensorElem<Z, R, S> regenCovar( ArrayList<Z> newCovar )
 	{
 		EinsteinTensorElem<Z, R, S> ret = new EinsteinTensorElem<Z,R,S>( fac , contravariantIndices , newCovar );
-		Iterator<ArrayList<BigInteger>> it = map.keySet().iterator();
-		while( it.hasNext() )
+		for( final Entry<ArrayList<BigInteger>,R> ii : map.entrySet() )
 		{
-			ArrayList<BigInteger> key = it.next();
-			ret.map.put(key, map.get( key ) );
+			ArrayList<BigInteger> key = ii.getKey();
+			ret.map.put(key, ii.getValue() );
 		}
 		return( ret );
 	}
@@ -1164,11 +1111,10 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	public EinsteinTensorElem<Z, R, S> regenContravar( ArrayList<Z> newContravar )
 	{
 		EinsteinTensorElem<Z, R, S> ret = new EinsteinTensorElem<Z,R,S>( fac , newContravar , covariantIndices );
-		Iterator<ArrayList<BigInteger>> it = map.keySet().iterator();
-		while( it.hasNext() )
+		for( final Entry<ArrayList<BigInteger>,R> ii : map.entrySet() )
 		{
-			ArrayList<BigInteger> key = it.next();
-			ret.map.put(key, map.get( key ) );
+			ArrayList<BigInteger> key = ii.getKey();
+			ret.map.put(key, ii.getValue() );
 		}
 		return( ret );
 	}
@@ -1195,11 +1141,10 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 		final ArrayList<Z> contravars = (ArrayList<Z>)( contravariantIndices.clone() );
 		final ArrayList<Z> covars = (ArrayList<Z>)( covariantIndices.clone() );
 		final EinsteinTensorElem<Z, R, S> ret = new EinsteinTensorElem<Z, R, S>( facs , contravars , covars );
-		Iterator<ArrayList<BigInteger>> it = map.keySet().iterator();
-		while( it.hasNext() )
+		for( final Entry<ArrayList<BigInteger>,R> ii : map.entrySet() )
 		{
-			final ArrayList<BigInteger> key = it.next();
-			final R val = map.get( key );
+			final ArrayList<BigInteger> key = ii.getKey();
+			final R val = ii.getValue();
 			final R vals = val.cloneThread(threadIndex);
 			final ArrayList<BigInteger> keys = (ArrayList<BigInteger>)( key.clone() );
 			ret.setVal(keys, vals);
@@ -1213,29 +1158,26 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	public void validate() throws RuntimeException
 	{
 		final int TST_SZ = contravariantIndices.size() + covariantIndices.size();
-		final Iterator<ArrayList<BigInteger>> it = map.keySet().iterator();
-		while( it.hasNext() )
+		for( final Entry<ArrayList<BigInteger>,R> ii : map.entrySet() )
 		{
-			final ArrayList<BigInteger> key = it.next();
+			final ArrayList<BigInteger> key = ii.getKey();
 			if( key.size() != TST_SZ )
 			{
 				throw( new RuntimeException( "Mismatch" ) );
 			}
-			final R val = map.get( key );
+			final R val = ii.getValue();
 			val.validate();
 		}
-		Iterator<Z> it2 = contravariantIndices.iterator();
-		while( it2.hasNext() )
+		for( final Z ii : contravariantIndices )
 		{
-			if( it2.next() == null )
+			if( ii == null )
 			{
 				throw( new RuntimeException( "Mismatch" ) );
 			}
 		}
-		it2 = covariantIndices.iterator();
-		while( it2.hasNext() )
+		for( final Z ii : covariantIndices )
 		{
-			if( it2.next() == null )
+			if( ii == null )
 			{
 				throw( new RuntimeException( "Mismatch" ) );
 			}
@@ -1250,16 +1192,14 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	public void printIndices()
 	{
 		System.out.println( "^>>>>>>>>>>>" );
-		Iterator<Z> its = contravariantIndices.iterator();
-		while( its.hasNext() )
+		for( final Z ii : contravariantIndices )
 		{
-			System.out.println( its.next() );
+			System.out.println( ii );
 		}
 		System.out.println( "v<<<<<<<<<<<" );
-		its = covariantIndices.iterator();
-		while( its.hasNext() )
+		for( final Z ii : covariantIndices )
 		{
-			System.out.println( its.next() );
+			System.out.println( ii );
 		}
 		System.out.println( "]]]]]]]]]]]" );
 	}
