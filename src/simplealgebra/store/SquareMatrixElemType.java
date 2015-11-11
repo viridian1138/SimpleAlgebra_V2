@@ -29,8 +29,8 @@ package simplealgebra.store;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 import java.util.Map;
+import java.util.Iterator;
 
 import org.hypergraphdb.HGHandle;
 import org.hypergraphdb.HGPersistentHandle;
@@ -80,11 +80,10 @@ public class SquareMatrixElemType<U extends NumDimensions, R extends Elem<R,?>, 
 		if( map == null )
 			throw( new RuntimeException( "Failed" ) );
 		final SquareMatrixElem<U,R,S> mat = new SquareMatrixElem<U,R,S>( fac , dim );
-		Iterator<ArrayList<BigInteger>> it = map.keySet().iterator();
-		while( it.hasNext() )
+		for( Map.Entry<ArrayList<BigInteger>, R> ite : map.entrySet() )
 		{
-			ArrayList<BigInteger> key = it.next();
-			R val = map.get( key );
+			ArrayList<BigInteger> key = ite.getKey();
+			R val = ite.getValue();
 			final BigInteger row = key.get( 0 );
 			final BigInteger col = key.get( 1 );
 			mat.setVal( row , col , val );
