@@ -80,7 +80,7 @@ public class SquareMatrixElemType<U extends NumDimensions, R extends Elem<R,?>, 
 		if( map == null )
 			throw( new RuntimeException( "Failed" ) );
 		final SquareMatrixElem<U,R,S> mat = new SquareMatrixElem<U,R,S>( fac , dim );
-		for( Map.Entry<ArrayList<BigInteger>, R> ite : map.entrySet() )
+		for( final Map.Entry<ArrayList<BigInteger>, R> ite : map.entrySet() )
 		{
 			ArrayList<BigInteger> key = ite.getKey();
 			R val = ite.getValue();

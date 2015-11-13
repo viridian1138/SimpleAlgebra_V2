@@ -119,11 +119,11 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 		SquareMatrixElem<U,R,S> ret = new SquareMatrixElem<U,R,S>(fac,dim);
 		
 		{
-			for( Entry<BigInteger, HashMap<BigInteger, R>> rowie : rowMap.entrySet() )
+			for( final Entry<BigInteger, HashMap<BigInteger, R>> rowie : rowMap.entrySet() )
 			{
 				BigInteger row = rowie.getKey();
 				HashMap<BigInteger,R> subMap = rowie.getValue();
-				for( Entry<BigInteger, R> colie : subMap.entrySet() )
+				for( final Entry<BigInteger, R> colie : subMap.entrySet() )
 				{
 					BigInteger col = colie.getKey();
 					R vali = colie.getValue();
@@ -134,11 +134,11 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 		
 		
 		{
-			for( Entry<BigInteger, HashMap<BigInteger, R>> rowie : b.rowMap.entrySet() )
+			for( final Entry<BigInteger, HashMap<BigInteger, R>> rowie : b.rowMap.entrySet() )
 			{
 				BigInteger row = rowie.getKey();
 				HashMap<BigInteger,R> subMap = rowie.getValue();
-				for( Entry<BigInteger, R> colie : subMap.entrySet() )
+				for( final Entry<BigInteger, R> colie : subMap.entrySet() )
 				{
 					BigInteger col = colie.getKey();
 					R vali = colie.getValue();
@@ -163,16 +163,16 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	public SquareMatrixElem<U, R, S> mult(SquareMatrixElem<U, R, S> b) {
 		SquareMatrixElem<U,R,S> ret = new SquareMatrixElem<U,R,S>(fac,dim);
 		
-		for( Entry<BigInteger, HashMap<BigInteger, R>> rowie : rowMap.entrySet() )
+		for( final Entry<BigInteger, HashMap<BigInteger, R>> rowie : rowMap.entrySet() )
 		{
 			BigInteger row = rowie.getKey();
 			HashMap<BigInteger,R> subMapRowa = rowie.getValue();
-			for( Entry<BigInteger, HashMap<BigInteger, R>> colje : b.columnMap.entrySet() )
+			for( final Entry<BigInteger, HashMap<BigInteger, R>> colje : b.columnMap.entrySet() )
 			{
 				BigInteger col = colje.getKey();
 				HashMap<BigInteger,R> subMapColb = colje.getValue();
 				R val = null;
-				for( BigInteger k : ( subMapRowa.size() < subMapColb.size() ) ?
+				for( final BigInteger k : ( subMapRowa.size() < subMapColb.size() ) ?
 						subMapRowa.keySet() : subMapColb.keySet() )
 				{
 					R av = subMapRowa.get( k );
@@ -210,16 +210,16 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	private SquareMatrixElem<U, R, S> multRevCoeff(SquareMatrixElem<U, R, S> b) {
 		SquareMatrixElem<U,R,S> ret = new SquareMatrixElem<U,R,S>(fac,dim);
 		
-		for( Entry<BigInteger, HashMap<BigInteger, R>> rowie : rowMap.entrySet() )
+		for( final Entry<BigInteger, HashMap<BigInteger, R>> rowie : rowMap.entrySet() )
 		{
 			BigInteger row = rowie.getKey();
 			HashMap<BigInteger,R> subMapRowa = rowie.getValue();
-			for( Entry<BigInteger, HashMap<BigInteger, R>> colje : b.columnMap.entrySet() )
+			for( final Entry<BigInteger, HashMap<BigInteger, R>> colje : b.columnMap.entrySet() )
 			{
 				BigInteger col = colje.getKey();
 				HashMap<BigInteger,R> subMapColb = colje.getValue();
 				R val = null;
-				for( BigInteger k : ( subMapRowa.size() < subMapColb.size() ) ?
+				for( final BigInteger k : ( subMapRowa.size() < subMapColb.size() ) ?
 						subMapRowa.keySet() : subMapColb.keySet() )
 				{
 					R av = subMapRowa.get( k );
@@ -251,11 +251,11 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	@Override
 	public SquareMatrixElem<U, R, S> negate() {
 		SquareMatrixElem<U,R,S> ret = new SquareMatrixElem<U,R,S>(fac,dim);
-		for( Entry<BigInteger, HashMap<BigInteger, R>> rowie : rowMap.entrySet() )
+		for( final Entry<BigInteger, HashMap<BigInteger, R>> rowie : rowMap.entrySet() )
 		{
 			BigInteger row = rowie.getKey();
 			HashMap<BigInteger,R> subMap = rowie.getValue();
-			for( Entry<BigInteger, R> colie : subMap.entrySet() )
+			for( final Entry<BigInteger, R> colie : subMap.entrySet() )
 			{
 				BigInteger col = colie.getKey();
 				R vali = colie.getValue();
@@ -269,11 +269,11 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	@Override
 	public SquareMatrixElem<U, R, S> mutate( Mutator<R> mutr ) throws NotInvertibleException {
 		SquareMatrixElem<U,R,S> ret = new SquareMatrixElem<U,R,S>(fac,dim);
-		for( Entry<BigInteger, HashMap<BigInteger, R>> rowie : rowMap.entrySet() )
+		for( final Entry<BigInteger, HashMap<BigInteger, R>> rowie : rowMap.entrySet() )
 		{
 			BigInteger row = rowie.getKey();
 			HashMap<BigInteger,R> subMap = rowie.getValue();
-			for( Entry<BigInteger, R> colie : subMap.entrySet() )
+			for( final Entry<BigInteger, R> colie : subMap.entrySet() )
 			{
 				BigInteger col = colie.getKey();
 				R vali = colie.getValue();
@@ -869,7 +869,7 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 		HashMap<BigInteger,R> subMapDest = columnMap.get( destCol );
 		if( subMapSrc != null )
 		{
-			for( Entry<BigInteger, R> rowie : subMapSrc.entrySet() )
+			for( final Entry<BigInteger, R> rowie : subMapSrc.entrySet() )
 			{
 				BigInteger row = rowie.getKey();
 				R srcVal = rowie.getValue();
@@ -901,7 +901,7 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 		HashMap<BigInteger,R> subMapDest = rowMap.get( destRow );
 		if( subMapSrc != null )
 		{
-			for( Entry<BigInteger, R> colie : subMapSrc.entrySet() )
+			for( final Entry<BigInteger, R> colie : subMapSrc.entrySet() )
 			{
 				BigInteger col = colie.getKey();
 				R srcVal = colie.getValue();
@@ -933,7 +933,7 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 		HashMap<BigInteger,R> subMapDest = columnMap.get( destCol );
 		if( subMapSrc != null )
 		{
-			for( Entry<BigInteger, R> rowie : subMapSrc.entrySet() )
+			for( final Entry<BigInteger, R> rowie : subMapSrc.entrySet() )
 			{
 				BigInteger row = rowie.getKey();
 				R srcVal = rowie.getValue();
@@ -965,7 +965,7 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 		HashMap<BigInteger,R> subMapDest = rowMap.get( destRow );
 		if( subMapSrc != null )
 		{
-			for( Entry<BigInteger, R> colie : subMapSrc.entrySet() )
+			for( final Entry<BigInteger, R> colie : subMapSrc.entrySet() )
 			{
 				BigInteger col = colie.getKey();
 				R srcVal = colie.getValue();
@@ -995,7 +995,7 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 		HashMap<BigInteger,R> subMap = columnMap.get( col );
 		if( subMap != null )
 		{
-			for( Entry<BigInteger, R> rowie : subMap.entrySet() )
+			for( final Entry<BigInteger, R> rowie : subMap.entrySet() )
 			{
 				BigInteger row = rowie.getKey();
 				R val = rowie.getValue();
@@ -1020,7 +1020,7 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 		HashMap<BigInteger,R> subMap = rowMap.get( row );
 		if( subMap != null )
 		{
-			for( Entry<BigInteger, R> colie : subMap.entrySet() )
+			for( final Entry<BigInteger, R> colie : subMap.entrySet() )
 			{
 				BigInteger col = colie.getKey();
 				R val = colie.getValue();
@@ -1045,7 +1045,7 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 		HashMap<BigInteger,R> subMap = columnMap.get( col );
 		if( subMap != null )
 		{
-			for( Entry<BigInteger, R> rowie : subMap.entrySet() )
+			for( final Entry<BigInteger, R> rowie : subMap.entrySet() )
 			{
 				BigInteger row = rowie.getKey();
 				R val = rowie.getValue();
@@ -1070,7 +1070,7 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 		HashMap<BigInteger,R> subMap = rowMap.get( row );
 		if( subMap != null )
 		{
-			for( Entry<BigInteger, R> colie : subMap.entrySet() )
+			for( final Entry<BigInteger, R> colie : subMap.entrySet() )
 			{
 				BigInteger col = colie.getKey();
 				R val = colie.getValue();
@@ -1333,7 +1333,7 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	{
 		if( rmap != null )
 		{
-			for( Entry<BigInteger, R> rowie : rmap.entrySet() )
+			for( final Entry<BigInteger, R> rowie : rmap.entrySet() )
 			{
 				BigInteger row = rowie.getKey();
 				this.setVal(row, col, rowie.getValue() );
@@ -1352,7 +1352,7 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	{
 		if( cmap != null )
 		{
-			for( Entry<BigInteger, R> colie : cmap.entrySet() )
+			for( final Entry<BigInteger, R> colie : cmap.entrySet() )
 			{
 				BigInteger col = colie.getKey();
 				this.setVal(row, col, colie.getValue() );
@@ -1371,7 +1371,7 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	{
 		if( rmap != null )
 		{
-			for( BigInteger row : rmap.keySet() )
+			for( final BigInteger row : rmap.keySet() )
 			{
 				eraseVal( row , col );
 			}
@@ -1389,7 +1389,7 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	{
 		if( cmap != null )
 		{
-			for( BigInteger col : cmap.keySet() )
+			for( final BigInteger col : cmap.keySet() )
 			{
 				eraseVal( row , col );
 			}
@@ -1438,11 +1438,11 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	private SquareMatrixElem<U, R, S> icopy()
 	{
 		SquareMatrixElem<U,R,S> ret = new SquareMatrixElem<U,R,S>(fac,dim);
-		for( Entry<BigInteger, HashMap<BigInteger, R>> rowie : rowMap.entrySet() )
+		for( final Entry<BigInteger, HashMap<BigInteger, R>> rowie : rowMap.entrySet() )
 		{
 			BigInteger row = rowie.getKey();
 			HashMap<BigInteger,R> subMap = rowie.getValue();
-			for( Entry<BigInteger, R> colie : subMap.entrySet() )
+			for( final Entry<BigInteger, R> colie : subMap.entrySet() )
 			{
 				BigInteger col = colie.getKey();
 				R vali = colie.getValue();
@@ -1456,11 +1456,11 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	@Override
 	public SquareMatrixElem<U, R, S> divideBy(BigInteger val) {
 		SquareMatrixElem<U,R,S> ret = new SquareMatrixElem<U,R,S>(fac,dim);
-		for( Entry<BigInteger, HashMap<BigInteger, R>> rowie : rowMap.entrySet() )
+		for( final Entry<BigInteger, HashMap<BigInteger, R>> rowie : rowMap.entrySet() )
 		{
 			BigInteger row = rowie.getKey();
 			HashMap<BigInteger,R> subMap = rowie.getValue();
-			for( Entry<BigInteger, R> colie : subMap.entrySet() )
+			for( final Entry<BigInteger, R> colie : subMap.entrySet() )
 			{
 				BigInteger col = colie.getKey();
 				R vali = colie.getValue();
@@ -1582,7 +1582,7 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	public void columnVectorToGeometricAlgebra( BigInteger column , GeometricAlgebraMultivectorElem<U,?,R,?> out )
 	{
 		HashMap<BigInteger,R> atCol = columnMap.get( column );
-		for( Entry<BigInteger, R> rowie : atCol.entrySet() )
+		for( final Entry<BigInteger, R> rowie : atCol.entrySet() )
 		{
 			final BigInteger indx = rowie.getKey();
 			final R val = rowie.getValue();
@@ -1602,7 +1602,7 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	public void rowVectorToGeometricAlgebra( BigInteger row , GeometricAlgebraMultivectorElem<U,?,R,?> out )
 	{
 		HashMap<BigInteger,R> atRow = rowMap.get( row );
-		for( Entry<BigInteger, R> colie : atRow.entrySet() )
+		for( final Entry<BigInteger, R> colie : atRow.entrySet() )
 		{
 			final BigInteger indx = colie.getKey();
 			final R val = colie.getValue();
@@ -1627,7 +1627,7 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 		}
 		
 		HashMap<BigInteger,R> atCol = columnMap.get( column );
-		for( Entry<BigInteger, R> rowie : atCol.entrySet() )
+		for( final Entry<BigInteger, R> rowie : atCol.entrySet() )
 		{
 			final BigInteger indx = rowie.getKey();
 			final R val = rowie.getValue();
@@ -1652,7 +1652,7 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 		}
 		
 		HashMap<BigInteger,R> atRow = rowMap.get( row );
-		for( Entry<BigInteger, R> colie : atRow.entrySet() )
+		for( final Entry<BigInteger, R> colie : atRow.entrySet() )
 		{
 			final BigInteger indx = colie.getKey();
 			final R val = colie.getValue();
@@ -1675,11 +1675,11 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 			throw( new RuntimeException( "Not a Rank Two Tensor." ) );
 		}
 		
-		for( Entry<BigInteger, HashMap<BigInteger, R>> rowie : rowMap.entrySet() )
+		for( final Entry<BigInteger, HashMap<BigInteger, R>> rowie : rowMap.entrySet() )
 		{
 			BigInteger row = rowie.getKey();
 			HashMap<BigInteger,R> atRow = rowie.getValue();
-			for( Entry<BigInteger, R> colie : atRow.entrySet() )
+			for( final Entry<BigInteger, R> colie : atRow.entrySet() )
 			{
 				final BigInteger column = colie.getKey();
 				final R val = colie.getValue();
@@ -1724,7 +1724,7 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
         else
         {
             res = fac.zero();
-            for( BigInteger j1 : columnMap.keySet() )
+            for( final BigInteger j1 : columnMap.keySet() )
             {
             	final SquareMatrixElem<NumDimensions,R,S> m = genDeterminantSubMatrix( j1 );
             	R tmp = ( this.getVal( BigInteger.ZERO , j1 ) ).mult( m.determinant() );
@@ -1760,13 +1760,13 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 		final SquareMatrixElem<NumDimensions,R,S> ret = new SquareMatrixElem<NumDimensions,R,S>( fac , r );
 		
 		
-		 for( Entry<BigInteger, HashMap<BigInteger, R>> rowie : rowMap.entrySet() )
+		 for( final Entry<BigInteger, HashMap<BigInteger, R>> rowie : rowMap.entrySet() )
          {
 			     final BigInteger i = rowie.getKey();
 			     if( i.equals( BigInteger.ZERO ) )
                      continue;
                  final HashMap<BigInteger,R> ccmap = rowie.getValue();
-                 for( BigInteger j : ccmap.keySet() )
+                 for( final BigInteger j : ccmap.keySet() )
                  {
                    if( j.equals( j1 ) )
                            continue;
@@ -1789,11 +1789,11 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	{
 		// The NumDimensions dim is presumed to be immutable.
 		SquareMatrixElem<U,R,S> ret = new SquareMatrixElem<U,R,S>( fac.cloneThread( threadIndex ) , dim );
-	    for( Entry<BigInteger, HashMap<BigInteger, R>> rowie : rowMap.entrySet() )
+	    for( final Entry<BigInteger, HashMap<BigInteger, R>> rowie : rowMap.entrySet() )
 		{
 			BigInteger row = rowie.getKey();
 			HashMap<BigInteger,R> subMap = rowie.getValue();
-			for( Entry<BigInteger, R> colie : subMap.entrySet() )
+			for( final Entry<BigInteger, R> colie : subMap.entrySet() )
 			{
 				BigInteger col = colie.getKey();
 				R vali = colie.getValue().cloneThread(threadIndex);
@@ -1816,11 +1816,11 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 		
 		// The NumDimensions dim is presumed to be immutable.
 		SquareMatrixElem<U,R,S> ret = new SquareMatrixElem<U,R,S>( fac.cloneThreadCached( threadIndex , (CloneThreadCache)( cache.getInnerCache() ) ) , dim );
-		for( Entry<BigInteger, HashMap<BigInteger, R>> rowie : rowMap.entrySet() )
+		for( final Entry<BigInteger, HashMap<BigInteger, R>> rowie : rowMap.entrySet() )
 		{
 			BigInteger row = rowie.getKey();
 			HashMap<BigInteger,R> subMap = rowie.getValue();
-			for( Entry<BigInteger, R> colie : subMap.entrySet() )
+			for( final Entry<BigInteger, R> colie : subMap.entrySet() )
 			{
 				BigInteger col = colie.getKey();
 				R vali = colie.getValue().cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
@@ -1838,11 +1838,11 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	public void validate() throws RuntimeException
 	{
 		
-		for( Entry<BigInteger, HashMap<BigInteger, R>> rowie : rowMap.entrySet() )
+		for( final Entry<BigInteger, HashMap<BigInteger, R>> rowie : rowMap.entrySet() )
 		{
 			BigInteger row = rowie.getKey();
 			HashMap<BigInteger,R> atRow = rowie.getValue();
-			for( Entry<BigInteger, R> colie : atRow.entrySet() )
+			for( final Entry<BigInteger, R> colie : atRow.entrySet() )
 			{
 				final BigInteger column = colie.getKey();
 				final R val = colie.getValue();
@@ -1855,11 +1855,11 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 			}
 		}
 		
-		for( Entry<BigInteger, HashMap<BigInteger, R>> colie : columnMap.entrySet() )
+		for( final Entry<BigInteger, HashMap<BigInteger, R>> colie : columnMap.entrySet() )
 		{
 			BigInteger column = colie.getKey();
 			HashMap<BigInteger,R> atColumn = colie.getValue();
-			for( Entry<BigInteger, R> rowie : atColumn.entrySet() )
+			for( final Entry<BigInteger, R> rowie : atColumn.entrySet() )
 			{
 				final BigInteger row = rowie.getKey();
 				final R val = rowie.getValue();
@@ -1907,11 +1907,11 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 				case TRANSPOSE:
 				{
 					SquareMatrixElem<U,R,S> ret = new SquareMatrixElem<U,R,S>(fac,dim);
-					for( Entry<BigInteger, HashMap<BigInteger, R>> rowie : rowMap.entrySet() )
+					for( final Entry<BigInteger, HashMap<BigInteger, R>> rowie : rowMap.entrySet() )
 					{
 						BigInteger row = rowie.getKey();
 						HashMap<BigInteger,R> subMap = rowie.getValue();
-						for( Entry<BigInteger, R> colie : subMap.entrySet() )
+						for( final Entry<BigInteger, R> colie : subMap.entrySet() )
 						{
 							BigInteger col = colie.getKey();
 							R val = colie.getValue();

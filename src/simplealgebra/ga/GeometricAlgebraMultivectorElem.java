@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map.Entry;
 
 import simplealgebra.CloneThreadCache;
 import simplealgebra.Elem;
@@ -130,19 +131,17 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 	@Override
 	public GeometricAlgebraMultivectorElem<U,A, R, S> add(GeometricAlgebraMultivectorElem<U,A, R, S> b) {
 		GeometricAlgebraMultivectorElem<U,A,R,S> ret = new GeometricAlgebraMultivectorElem<U,A,R,S>(fac,dim,ord);
-		Iterator<HashSet<BigInteger>> it = map.keySet().iterator();
-		while( it.hasNext() )
+		for( final Entry<HashSet<BigInteger>,R> ii : map.entrySet() )
 		{
-			HashSet<BigInteger> el = it.next();
-			R vali = map.get( el );
+			HashSet<BigInteger> el = ii.getKey();
+			R vali = ii.getValue();
 			ret.setVal(el, vali );
 		}
 		
-		it = b.map.keySet().iterator();
-		while( it.hasNext() )
+		for( final Entry<HashSet<BigInteger>,R> ii : b.map.entrySet() )
 		{
-			HashSet<BigInteger> el = it.next();
-			R vali = b.map.get( el );
+			HashSet<BigInteger> el = ii.getKey();
+			R vali = ii.getValue();
 			R vv = ret.get( el );
 			if( vv != null )
 			{
@@ -162,16 +161,14 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 	public GeometricAlgebraMultivectorElem<U,A, R, S> mult(GeometricAlgebraMultivectorElem<U,A, R, S> b) {
 		GeometricAlgebraMultivectorElem<U,A,R,S> ret = new GeometricAlgebraMultivectorElem<U,A,R,S>(fac,dim,ord);
 		
-		Iterator<HashSet<BigInteger>> ita = map.keySet().iterator();
-		while( ita.hasNext() )
+		for( final Entry<HashSet<BigInteger>,R> ii : map.entrySet() )
 		{
-			HashSet<BigInteger> ka = ita.next();
-			R va = map.get( ka );
-			Iterator<HashSet<BigInteger>> itb = b.map.keySet().iterator();
-			while( itb.hasNext() )
+			HashSet<BigInteger> ka = ii.getKey();
+			R va = ii.getValue();
+			for( final Entry<HashSet<BigInteger>,R> jj : b.map.entrySet() )
 			{
-				HashSet<BigInteger> kb = itb.next();
-				R vb = b.map.get( kb );
+				HashSet<BigInteger> kb = jj.getKey();
+				R vb = jj.getValue();
 				R vmul = va.mult( vb );
 				HashSet<BigInteger> el = new HashSet<BigInteger>();
 				final boolean negate = ord.calcOrd( ka , kb , el , dim );
@@ -198,11 +195,10 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 	@Override
 	public GeometricAlgebraMultivectorElem<U,A, R, S> negate() {
 		GeometricAlgebraMultivectorElem<U,A,R,S> ret = new GeometricAlgebraMultivectorElem<U,A,R,S>(fac,dim,ord);
-		Iterator<HashSet<BigInteger>> it = map.keySet().iterator();
-		while( it.hasNext() )
+		for( final Entry<HashSet<BigInteger>,R> ii : map.entrySet() )
 		{
-			HashSet<BigInteger> el = it.next();
-			R vali = map.get( el );
+			HashSet<BigInteger> el = ii.getKey();
+			R vali = ii.getValue();
 			ret.setVal(el, vali.negate() );
 		}
 		return( ret );
@@ -212,11 +208,10 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 	@Override
 	public GeometricAlgebraMultivectorElem<U,A, R, S> mutate( Mutator<R> mutr ) throws NotInvertibleException {
 		GeometricAlgebraMultivectorElem<U,A,R,S> ret = new GeometricAlgebraMultivectorElem<U,A,R,S>(fac,dim,ord);
-		Iterator<HashSet<BigInteger>> it = map.keySet().iterator();
-		while( it.hasNext() )
+		for( final Entry<HashSet<BigInteger>,R> ii : map.entrySet() )
 		{
-			HashSet<BigInteger> el = it.next();
-			R vali = map.get( el );
+			HashSet<BigInteger> el = ii.getKey();
+			R vali = ii.getValue();
 			ret.setVal(el, mutr.mutate( vali ) );
 		}
 		return( ret );
@@ -541,10 +536,8 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 		
 		
 		int count = 0;
-		Iterator<HashSet<BigInteger>> it = map.keySet().iterator();
-		while( it.hasNext() )
+		for( final HashSet<BigInteger> key : map.keySet() )
 		{
-			HashSet<BigInteger> key = it.next();
 			AElem ae = new AElem( fac , key , count );
 			BElem be = new BElem( fac , key , count );
 			aA.setVal(key, ae);
@@ -583,11 +576,10 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 		
 		
 		count = 0;
-		Iterator<HashSet<BigInteger>> ita = aMult.map.keySet().iterator();
-		while( ita.hasNext() )
+		for( final Entry<HashSet<BigInteger>, SymbolicElem<R, S>> ii : aMult.map.entrySet() )
 		{
-			HashSet<BigInteger> id = ita.next();
-			handleInvertElemLeft( aMult.get( id ) , 
+			HashSet<BigInteger> id = ii.getKey();
+			handleInvertElemLeft( ii.getValue() , 
 					BigInteger.valueOf(count) , sq );
 			if( id.size() == 0 )
 			{
@@ -676,10 +668,8 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 		
 		
 		int count = 0;
-		Iterator<HashSet<BigInteger>> it = map.keySet().iterator();
-		while( it.hasNext() )
+		for( final HashSet<BigInteger> key : map.keySet() )
 		{
-			HashSet<BigInteger> key = it.next();
 			AElem ae = new AElem( fac , key , count );
 			BElem be = new BElem( fac , key , count );
 			aA.setVal(key, ae);
@@ -718,11 +708,10 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 		
 		
 		count = 0;
-		Iterator<HashSet<BigInteger>> ita = aMult.map.keySet().iterator();
-		while( ita.hasNext() )
+		for( final Entry<HashSet<BigInteger>, SymbolicElem<R, S>> ii : aMult.map.entrySet() )
 		{
-			HashSet<BigInteger> id = ita.next();
-			handleInvertElemRight( aMult.get( id ) , 
+			HashSet<BigInteger> id = ii.getKey();
+			handleInvertElemRight( ii.getValue() , 
 					BigInteger.valueOf(count) , sq );
 			if( id.size() == 0 )
 			{
@@ -796,11 +785,10 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 	@Override
 	public GeometricAlgebraMultivectorElem<U,A, R, S> divideBy(BigInteger val) {
 		GeometricAlgebraMultivectorElem<U,A,R,S> ret = new GeometricAlgebraMultivectorElem<U,A,R,S>(fac,dim,ord);
-		Iterator<HashSet<BigInteger>> it = map.keySet().iterator();
-		while( it.hasNext() )
+		for( final Entry<HashSet<BigInteger>,R> ii : map.entrySet() )
 		{
-			HashSet<BigInteger> el = it.next();
-			R vali = map.get( el );
+			HashSet<BigInteger> el = ii.getKey();
+			R vali = ii.getValue();
 			ret.setVal(el, vali.divideBy(val) );
 		}
 		return( ret );
@@ -816,13 +804,12 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 	public GeometricAlgebraMultivectorElem<U,A, R, S> getGradedPart( BigInteger grade )
 	{
 		GeometricAlgebraMultivectorElem<U,A, R, S> ret = new GeometricAlgebraMultivectorElem<U,A, R, S>( fac , dim , ord );
-		Iterator<HashSet<BigInteger>> it = map.keySet().iterator();
-		while( it.hasNext() )
+		for( final Entry<HashSet<BigInteger>,R> ii : map.entrySet() )
 		{
-			HashSet<BigInteger> key = it.next();
+			HashSet<BigInteger> key = ii.getKey();
 			if( grade.equals( BigInteger.valueOf( key.size() ) ) )
 			{
-				ret.setVal(key, map.get(key) );
+				ret.setVal(key, ii.getValue() );
 			}
 		}
 		return( ret );
@@ -838,12 +825,11 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 	public void vectorPartToRowVector( BigInteger row , SquareMatrixElem<U, R, ?> out )
 	{
 		GeometricAlgebraMultivectorElem<U,A, R, S> grd = getGradedPart( BigInteger.ONE );
-		Iterator<HashSet<BigInteger>> it = grd.map.keySet().iterator();
-		while( it.hasNext() )
+		for( final Entry<HashSet<BigInteger>,R> ii : grd.map.entrySet() )
 		{
-			HashSet<BigInteger> key = it.next();
+			HashSet<BigInteger> key = ii.getKey();
 			BigInteger column = key.iterator().next();
-			out.setVal(row, column, grd.map.get(key) );
+			out.setVal(row, column, ii.getValue() );
 		}
 	}
 	
@@ -857,12 +843,11 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 	public void vectorPartToColumnVector( BigInteger column , SquareMatrixElem<U, R, ?> out )
 	{
 		GeometricAlgebraMultivectorElem<U,A, R, S> grd = getGradedPart( BigInteger.ONE );
-		Iterator<HashSet<BigInteger>> it = grd.map.keySet().iterator();
-		while( it.hasNext() )
+		for( final Entry<HashSet<BigInteger>,R> ii : grd.map.entrySet() )
 		{
-			HashSet<BigInteger> key = it.next();
+			HashSet<BigInteger> key = ii.getKey();
 			BigInteger row = key.iterator().next();
-			out.setVal(row, column, grd.map.get(key) );
+			out.setVal(row, column, ii.getValue() );
 		}
 	}
 	
@@ -880,14 +865,13 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 		}
 		
 		GeometricAlgebraMultivectorElem<U,A, R, S> grd = getGradedPart( BigInteger.ONE );
-		Iterator<HashSet<BigInteger>> it = grd.map.keySet().iterator();
-		while( it.hasNext() )
+		for( final Entry<HashSet<BigInteger>,R> ii : grd.map.entrySet() )
 		{
-			HashSet<BigInteger> key = it.next();
+			HashSet<BigInteger> key = ii.getKey();
 			BigInteger indx = key.iterator().next();
 			ArrayList<BigInteger> okey = new ArrayList<BigInteger>();
 			okey.add( indx );
-			out.setVal(okey, grd.map.get(key));
+			out.setVal(okey, ii.getValue() );
 		}
 	}
 	
@@ -901,16 +885,14 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 	private GeometricAlgebraMultivectorElem<U,A, R, S> dot(GeometricAlgebraMultivectorElem<U,A, R, S> b) {
 		GeometricAlgebraMultivectorElem<U,A,R,S> ret = new GeometricAlgebraMultivectorElem<U,A,R,S>(fac,dim,ord);
 		
-		Iterator<HashSet<BigInteger>> ita = map.keySet().iterator();
-		while( ita.hasNext() )
+		for( final Entry<HashSet<BigInteger>,R> ii : map.entrySet() )
 		{
-			HashSet<BigInteger> ka = ita.next();
-			R va = map.get( ka );
-			Iterator<HashSet<BigInteger>> itb = b.map.keySet().iterator();
-			while( itb.hasNext() )
+			HashSet<BigInteger> ka = ii.getKey();
+			R va = ii.getValue();
+			for( final Entry<HashSet<BigInteger>,R> jj : b.map.entrySet() )
 			{
-				HashSet<BigInteger> kb = itb.next();
-				R vb = b.map.get( kb );
+				HashSet<BigInteger> kb = jj.getKey();
+				R vb = jj.getValue();
 				R vmul = va.mult( vb );
 				HashSet<BigInteger> el = new HashSet<BigInteger>();
 				final boolean negate = ord.calcOrd( ka , kb , el , dim );
@@ -947,16 +929,14 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 	private GeometricAlgebraMultivectorElem<U,A, R, S> wedge(GeometricAlgebraMultivectorElem<U,A, R, S> b) {
 		GeometricAlgebraMultivectorElem<U,A,R,S> ret = new GeometricAlgebraMultivectorElem<U,A,R,S>(fac,dim,ord);
 		
-		Iterator<HashSet<BigInteger>> ita = map.keySet().iterator();
-		while( ita.hasNext() )
+		for( final Entry<HashSet<BigInteger>,R> ii : map.entrySet() )
 		{
-			HashSet<BigInteger> ka = ita.next();
-			R va = map.get( ka );
-			Iterator<HashSet<BigInteger>> itb = b.map.keySet().iterator();
-			while( itb.hasNext() )
+			HashSet<BigInteger> ka = ii.getKey();
+			R va = ii.getValue();
+			for( final Entry<HashSet<BigInteger>,R> jj : b.map.entrySet() )
 			{
-				HashSet<BigInteger> kb = itb.next();
-				R vb = b.map.get( kb );
+				HashSet<BigInteger> kb = jj.getKey();
+				R vb = jj.getValue();
 				R vmul = va.mult( vb );
 				HashSet<BigInteger> el = new HashSet<BigInteger>();
 				final boolean negate = ord.calcOrd( ka , kb , el , dim );
@@ -994,11 +974,9 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 	{
 		R retA = this.getFac().getFac().zero();
 		
-		final Iterator<HashSet<BigInteger>> it = getKeyIterator();
-		
-		while( it.hasNext() )
+		for( final Entry<HashSet<BigInteger>,R> ii : map.entrySet() )
 		{
-			R nxt = getVal( it.next() );
+			R nxt = ii.getValue();
 			retA = retA.add( nxt.mult( nxt ) );
 		}
 		
@@ -1055,19 +1033,17 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 			GeometricAlgebraMultivectorElem<U,A, R, S> rowVectorOut )
 	{
 		final GeometricAlgebraMultivectorElem<U,A, R, S> rowVectIn = this.getGradedPart( BigInteger.ONE );
-		final Iterator<HashSet<BigInteger>> it = rowVectIn.map.keySet().iterator();
-		while( it.hasNext() )
+		for( final Entry<HashSet<BigInteger>,R> ii : rowVectIn.map.entrySet() )
 		{
-			final HashSet<BigInteger> keyK = it.next();
-			final R rowVectInVal = rowVectIn.get( keyK );
+			final HashSet<BigInteger> keyK = ii.getKey();
+			final R rowVectInVal = ii.getValue();
 			final BigInteger k = keyK.iterator().next();
 			final GeometricAlgebraMultivectorElem<U,A, R, S> rowVectMat = new GeometricAlgebraMultivectorElem<U,A, R, S>(fac, dim, ord);
 			in.rowVectorToGeometricAlgebra(k, rowVectMat);
-			final Iterator<HashSet<BigInteger>> ita = rowVectMat.map.keySet().iterator();
-			while( ita.hasNext() )
+			for( final Entry<HashSet<BigInteger>,R> jj : rowVectMat.map.entrySet() )
 			{
-				final HashSet<BigInteger> keyJ = ita.next();
-				final R rowVectMatVal = rowVectMat.get( keyJ );
+				final HashSet<BigInteger> keyJ = jj.getKey();
+				final R rowVectMatVal = jj.getValue();
 				final R val = rowVectInVal.mult( rowVectMatVal );
 				final R addVal = rowVectorOut.get(keyJ);
 				if( addVal != null )
@@ -1092,19 +1068,17 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 			GeometricAlgebraMultivectorElem<U,A, R, S> colVectorOut )
 	{
 		final GeometricAlgebraMultivectorElem<U,A, R, S> colVectIn = this.getGradedPart( BigInteger.ONE );
-		final Iterator<HashSet<BigInteger>> it = colVectIn.map.keySet().iterator();
-		while( it.hasNext() )
+		for( final Entry<HashSet<BigInteger>,R> ii : colVectIn.map.entrySet() )
 		{
-			final HashSet<BigInteger> keyK = it.next();
-			final R colVectInVal = colVectIn.get( keyK );
+			final HashSet<BigInteger> keyK = ii.getKey();
+			final R colVectInVal = ii.getValue();
 			final BigInteger k = keyK.iterator().next();
 			final GeometricAlgebraMultivectorElem<U,A, R, S> colVectMat = new GeometricAlgebraMultivectorElem<U,A, R, S>(fac, dim, ord);
 			in.columnVectorToGeometricAlgebra(k, colVectMat);
-			final Iterator<HashSet<BigInteger>> ita = colVectMat.map.keySet().iterator();
-			while( ita.hasNext() )
+			for( final Entry<HashSet<BigInteger>,R> jj : colVectMat.map.entrySet() )
 			{
-				final HashSet<BigInteger> keyI = ita.next();
-				final R colVectMatVal = colVectMat.get( keyI );
+				final HashSet<BigInteger> keyI = jj.getKey();
+				final R colVectMatVal = jj.getValue();
 				final R val = colVectMatVal.mult( colVectInVal );
 				final R addVal = colVectorOut.get(keyI);
 				if( addVal != null )
@@ -1130,19 +1104,17 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 			GeometricAlgebraMultivectorElem<U,A, R, S> colVectorOut )
 	{
 		final GeometricAlgebraMultivectorElem<U,A, R, S> colVectIn = this.getGradedPart( BigInteger.ONE );
-		final Iterator<HashSet<BigInteger>> it = colVectIn.map.keySet().iterator();
-		while( it.hasNext() )
+		for( final Entry<HashSet<BigInteger>,R> ii : colVectIn.map.entrySet() )
 		{
-			final HashSet<BigInteger> keyK = it.next();
-			final R colVectInVal = colVectIn.get( keyK );
+			final HashSet<BigInteger> keyK = ii.getKey();
+			final R colVectInVal = ii.getValue();
 			final BigInteger k = keyK.iterator().next();
 			final GeometricAlgebraMultivectorElem<U,A, R, S> colVectMat = new GeometricAlgebraMultivectorElem<U,A, R, S>(fac, dim, ord);
 			in.columnVectorToGeometricAlgebra(k, colVectMat);
-			final Iterator<HashSet<BigInteger>> ita = colVectMat.map.keySet().iterator();
-			while( ita.hasNext() )
+			for( final Entry<HashSet<BigInteger>,R> jj : colVectMat.map.entrySet() )
 			{
-				final HashSet<BigInteger> keyI = ita.next();
-				final R colVectMatVal = colVectMat.get( keyI );
+				final HashSet<BigInteger> keyI = jj.getKey();
+				final R colVectMatVal = jj.getValue();
 				final R val = colVectInVal.mult( colVectMatVal );
 				final R addVal = colVectorOut.get(keyI);
 				if( addVal != null )
@@ -1166,11 +1138,10 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 		final S facs = fac.cloneThread( threadIndex );
 		final GeometricAlgebraMultivectorElem<U,A, R, S> ret 
 			= new GeometricAlgebraMultivectorElem<U,A, R, S>( facs , dim , ord );
-		Iterator<HashSet<BigInteger>> it = map.keySet().iterator();
-		while( it.hasNext() )
+		for( final Entry<HashSet<BigInteger>,R> ii : map.entrySet() )
 		{
-			final HashSet<BigInteger> key = it.next();
-			final R val = map.get( key );
+			final HashSet<BigInteger> key = ii.getKey();
+			final R val = ii.getValue();
 			final HashSet<BigInteger> keyClone = ( HashSet<BigInteger> )( key.clone() );
 			ret.setVal( keyClone , val.cloneThread(threadIndex) );
 		}
@@ -1192,11 +1163,10 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 		final S facs = fac.cloneThreadCached( threadIndex , (CloneThreadCache)( cache.getInnerCache() ) );
 		final GeometricAlgebraMultivectorElem<U,A, R, S> ret 
 			= new GeometricAlgebraMultivectorElem<U,A, R, S>( facs , dim , ord );
-		Iterator<HashSet<BigInteger>> it = map.keySet().iterator();
-		while( it.hasNext() )
+		for( final Entry<HashSet<BigInteger>,R> ii : map.entrySet() )
 		{
-			final HashSet<BigInteger> key = it.next();
-			final R val = map.get( key );
+			final HashSet<BigInteger> key = ii.getKey();
+			final R val = ii.getValue();
 			final HashSet<BigInteger> keyClone = ( HashSet<BigInteger> )( key.clone() );
 			ret.setVal( keyClone , val.cloneThreadCached( threadIndex , (CloneThreadCache)( cache.getInnerCache() ) ) );
 		}
