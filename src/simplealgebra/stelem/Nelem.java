@@ -30,6 +30,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map.Entry;
 
 import simplealgebra.CloneThreadCache;
 import simplealgebra.Elem;
@@ -108,11 +109,10 @@ public abstract class Nelem<R extends Elem<R,?>, S extends ElemFactory<R,S>, K e
 	{
 		super( in.getFac().getFac().cloneThread(threadIndex) );
 		coord = new HashMap<K,BigInteger>();
-		final Iterator<K> it = in.coord.keySet().iterator();
-		while( it.hasNext() )
+		for( Entry<K,BigInteger> ii : in.coord.entrySet() )
 		{
-			final K ikey = it.next();
-			final BigInteger ival = in.coord.get( ikey );
+			final K ikey = ii.getKey();
+			final BigInteger ival = ii.getValue();
 			coord.put( (K)( ikey.cloneThread(threadIndex) ) , ival );
 		}
 	}
@@ -128,11 +128,10 @@ public abstract class Nelem<R extends Elem<R,?>, S extends ElemFactory<R,S>, K e
 	{
 		super( in.getFac().getFac().cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) ) );
 		coord = new HashMap<K,BigInteger>();
-		final Iterator<K> it = in.coord.keySet().iterator();
-		while( it.hasNext() )
+		for( Entry<K,BigInteger> ii : in.coord.entrySet() )
 		{
-			final K ikey = it.next();
-			final BigInteger ival = in.coord.get( ikey );
+			final K ikey = ii.getKey();
+			final BigInteger ival = ii.getValue();
 			coord.put( (K)( ikey.cloneThread(threadIndex) ) , ival );
 		}
 	}

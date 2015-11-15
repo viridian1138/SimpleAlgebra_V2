@@ -33,6 +33,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Random;
+import java.util.Map.Entry;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
@@ -57,8 +58,6 @@ import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicReduction;
 import simplealgebra.ddx.*;
 import simplealgebra.ga.*;
-import test_simplealgebra.TestGeneralRelativityA.StelemDescent.StelemDescentEnt;
-import test_simplealgebra.TestStelemD.IncrementManager;
 
 
 
@@ -1587,11 +1586,10 @@ private class CoeffNode
 			assertCols[ 2 ] = false;
 			assertCols[ 3 ] = false;
 			Assert.assertTrue( coord.keySet().size() == 4 );
-			Iterator<Ordinate> it = coord.keySet().iterator();
-			while( it.hasNext() )
+			for( Entry<Ordinate,BigInteger> ii : coord.entrySet() )
 			{
-				Ordinate keyCoord = it.next();
-				BigInteger coordVal = coord.get( keyCoord );
+				Ordinate keyCoord = ii.getKey();
+				BigInteger coordVal = ii.getValue();
 				final int offset = keyCoord.getCol() == 3 ? NSTPZ : keyCoord.getCol() == 2 ? NSTPY : keyCoord.getCol() == 1 ? NSTPX : NSTPT;
 				cols[ keyCoord.getCol() ] = coordVal.intValue() + offset;
 				assertCols[ keyCoord.getCol() ] = true;
@@ -1635,11 +1633,10 @@ private class CoeffNode
 		@Override
 		public void writeString( PrintStream ps ) {
 			String s0 = "bn";
-			Iterator<Ordinate> it = coord.keySet().iterator();
-			while( it.hasNext() )
+			for( Entry<Ordinate,BigInteger> ii : coord.entrySet() )
 			{
-				Ordinate key = it.next();
-				BigInteger val = coord.get( key );
+				Ordinate key = ii.getKey();
+				BigInteger val = ii.getValue();
 				s0 = s0 + "[";
 				s0 = s0 + key.getCol();
 				s0 = s0 + ",";
@@ -1667,11 +1664,10 @@ private class CoeffNode
 				{
 					return( false );
 				}
-				Iterator<Ordinate> it = coord.keySet().iterator();
-				while( it.hasNext() )
+				for( Entry<Ordinate,BigInteger> ii : coord.entrySet() )
 				{
-					Ordinate key = it.next();
-					BigInteger ka = coord.get( key );
+					Ordinate key = ii.getKey();
+					BigInteger ka = ii.getValue();
 					BigInteger kb = bn.coord.get( key );
 					if( ( ka == null ) || ( kb == null ) )
 					{
@@ -1774,11 +1770,10 @@ private class CNelem extends Nelem<SymbolicElem<DoubleElem,DoubleElemFactory>,
 	@Override
 	public void writeString( PrintStream ps ) {
 		String s0 = "cn";
-		Iterator<Ordinate> it = coord.keySet().iterator();
-		while( it.hasNext() )
+		for( Entry<Ordinate,BigInteger> ii : coord.entrySet() )
 		{
-			Ordinate key = it.next();
-			BigInteger val = coord.get( key );
+			Ordinate key = ii.getKey();
+			BigInteger val = ii.getValue();
 			s0 = s0 + "[";
 			s0 = s0 + key.getCol();
 			s0 = s0 + ",";
@@ -1801,11 +1796,10 @@ private class CNelem extends Nelem<SymbolicElem<DoubleElem,DoubleElemFactory>,
 //			{
 //				return( false );
 //			}
-//			Iterator<Ordinate> it = coord.keySet().iterator();
-//			while( it.hasNext() )
+//          for( Entry<Ordinate,BigInteger> ii : coord.entrySet() )
 //			{
-//				Ordinate key = it.next();
-//				BigInteger ka = coord.get( key );
+//				Ordinate key = ii.getKey();
+//				BigInteger ka = ii.getValue();
 //				BigInteger kb = bn.coord.get( key );
 //				if( ( ka == null ) || ( kb == null ) )
 //				{
@@ -1838,11 +1832,10 @@ private class CNelem extends Nelem<SymbolicElem<DoubleElem,DoubleElemFactory>,
 			{
 				return( false );
 			}
-			Iterator<Ordinate> it = coord.keySet().iterator();
-			while( it.hasNext() )
+			for( Entry<Ordinate,BigInteger> ii : coord.entrySet() )
 			{
-				Ordinate key = it.next();
-				BigInteger ka = coord.get( key );
+				Ordinate key = ii.getKey();
+				BigInteger ka = ii.getValue();
 				BigInteger kb = bn.coord.get( key );
 				if( ( ka == null ) || ( kb == null ) )
 				{

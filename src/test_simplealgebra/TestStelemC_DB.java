@@ -33,6 +33,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Random;
+import java.util.Map.Entry;
 
 import org.hypergraphdb.HGConfiguration;
 import org.hypergraphdb.HyperGraph;
@@ -64,9 +65,6 @@ import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicReduction;
 import simplealgebra.ga.*;
 import simplealgebra.ddx.*;
-import test_simplealgebra.TestBurgersB.StelemNewton;
-import test_simplealgebra.TestStelemC_DR.IncrementManager;
-import test_simplealgebra.TestStelemC_DR.TempArrayFillInnerParam;
 
 
 
@@ -1163,11 +1161,10 @@ public class TestStelemC_DB extends TestCase {
 			assertCols[ 1 ] = false;
 			assertCols[ 2 ] = false;
 			Assert.assertTrue( coord.keySet().size() == 3 );
-			Iterator<Ordinate> it = coord.keySet().iterator();
-			while( it.hasNext() )
+			for( Entry<Ordinate,BigInteger> ii : coord.entrySet() )
 			{
-				Ordinate keyCoord = it.next();
-				BigInteger coordVal = coord.get( keyCoord );
+				Ordinate keyCoord = ii.getKey();
+				BigInteger coordVal = ii.getValue();
 				final int offset = keyCoord.getCol() == 2 ? NSTPY : keyCoord.getCol() == 1 ? NSTPX : NSTPT;
 				cols[ keyCoord.getCol() ] = coordVal.intValue() + offset;
 				assertCols[ keyCoord.getCol() ] = true;
@@ -1191,11 +1188,10 @@ public class TestStelemC_DB extends TestCase {
 		@Override
 		public void writeString( PrintStream ps ) {
 			String s0 = "bn";
-			Iterator<Ordinate> it = coord.keySet().iterator();
-			while( it.hasNext() )
+			for( Entry<Ordinate,BigInteger> ii : coord.entrySet() )
 			{
-				Ordinate key = it.next();
-				BigInteger val = coord.get( key );
+				Ordinate key = ii.getKey();
+				BigInteger val = ii.getValue();
 				s0 = s0 + "[";
 				s0 = s0 + key.getCol();
 				s0 = s0 + ",";
@@ -1216,11 +1212,10 @@ public class TestStelemC_DB extends TestCase {
 				{
 					return( false );
 				}
-				Iterator<Ordinate> it = coord.keySet().iterator();
-				while( it.hasNext() )
+				for( Entry<Ordinate,BigInteger> ii : coord.entrySet() )
 				{
-					Ordinate key = it.next();
-					BigInteger ka = coord.get( key );
+					Ordinate key = ii.getKey();
+					BigInteger ka = ii.getValue();
 					BigInteger kb = bn.coord.get( key );
 					if( ( ka == null ) || ( kb == null ) )
 					{
@@ -1315,11 +1310,10 @@ public class TestStelemC_DB extends TestCase {
 		@Override
 		public void writeString( PrintStream ps ) {
 			String s0 = "cn";
-			Iterator<Ordinate> it = coord.keySet().iterator();
-			while( it.hasNext() )
+			for( Entry<Ordinate,BigInteger> ii : coord.entrySet() )
 			{
-				Ordinate key = it.next();
-				BigInteger val = coord.get( key );
+				Ordinate key = ii.getKey();
+				BigInteger val = ii.getValue();
 				s0 = s0 + "[";
 				s0 = s0 + key.getCol();
 				s0 = s0 + ",";
@@ -1342,11 +1336,10 @@ public class TestStelemC_DB extends TestCase {
 				{
 					return( false );
 				}
-				Iterator<Ordinate> it = coord.keySet().iterator();
-				while( it.hasNext() )
+				for( Entry<Ordinate,BigInteger> ii : coord.entrySet() )
 				{
-					Ordinate key = it.next();
-					BigInteger ka = coord.get( key );
+					Ordinate key = ii.getKey();
+					BigInteger ka = ii.getValue();
 					BigInteger kb = bn.coord.get( key );
 					if( ( ka == null ) || ( kb == null ) )
 					{
