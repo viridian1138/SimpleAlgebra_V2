@@ -1356,11 +1356,10 @@ public class TestBurgersB extends TestCase {
 			final HashMap<Ordinate, BigInteger> implicitSpaceOutM1 = new HashMap<Ordinate, BigInteger>();
 			final HashMap<Ordinate, BigInteger> implicitSpaceOutP1 = new HashMap<Ordinate, BigInteger>();
 			
-			Iterator<Ordinate> itA = implicitSpace.keySet().iterator();
-			while( itA.hasNext() )
+			for( final Entry<Ordinate,BigInteger> ii : implicitSpace.entrySet() )
 			{
-				Ordinate ae = itA.next();
-				final BigInteger valAe = implicitSpace.get( ae );
+				Ordinate ae = ii.getKey();
+				final BigInteger valAe = ii.getValue();
 				if( node.symbolicEquals( ae ) )
 				{
 					final BigInteger valAeM1 = valAe.subtract( BigInteger.ONE );
@@ -1407,11 +1406,10 @@ public class TestBurgersB extends TestCase {
 			final HashMap<Ordinate, BigInteger> implicitSpaceOutM1 = new HashMap<Ordinate, BigInteger>();
 			final HashMap<Ordinate, BigInteger> implicitSpaceOutP1 = new HashMap<Ordinate, BigInteger>();
 			
-			Iterator<Ordinate> itA = implicitSpace.keySet().iterator();
-			while( itA.hasNext() )
+			for( final Entry<Ordinate,BigInteger> ii : implicitSpace.entrySet() )
 			{
-				Ordinate ae = itA.next();
-				final BigInteger valAe = implicitSpace.get( ae );
+				Ordinate ae = ii.getKey();
+				final BigInteger valAe = ii.getValue();
 				if( node.symbolicEquals( ae ) )
 				{
 					final BigInteger valAeM1 = valAe.subtract( BigInteger.ONE );
@@ -1463,11 +1461,10 @@ public class TestBurgersB extends TestCase {
 			final HashMap<Ordinate, BigInteger> implicitSpaceOutM2 = new HashMap<Ordinate, BigInteger>();
 			final HashMap<Ordinate, BigInteger> implicitSpaceOutP2 = new HashMap<Ordinate, BigInteger>();
 			
-			Iterator<Ordinate> itA = implicitSpace.keySet().iterator();
-			while( itA.hasNext() )
+			for( final Entry<Ordinate,BigInteger> ii : implicitSpace.entrySet() )
 			{
-				Ordinate ae = itA.next();
-				final BigInteger valAe = implicitSpace.get( ae );
+				Ordinate ae = ii.getKey();
+				final BigInteger valAe = ii.getValue();
 				if( node.symbolicEquals( ae ) )
 				{
 					final BigInteger valAeM1 = valAe.subtract( BigInteger.ONE );
