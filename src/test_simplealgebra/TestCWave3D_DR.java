@@ -1627,11 +1627,10 @@ public class TestCWave3D_DR extends TestCase {
 		@Override
 		public AStelem cloneInstance() {
 			AStelem cl = new AStelem( fac );
-			Iterator<Ordinate> it = partialMap.keySet().iterator();
-			while( it.hasNext() )
+			for( Entry<Ordinate,BigInteger> ii : partialMap.entrySet() )
 			{
-				Ordinate key = it.next();
-				cl.partialMap.put(key, partialMap.get(key) );
+				Ordinate key = ii.getKey();
+				cl.partialMap.put(key, ii.getValue() );
 			}
 			return( cl );
 		}
@@ -1665,12 +1664,11 @@ public class TestCWave3D_DR extends TestCase {
 			
 			
 			{
-				Iterator<Ordinate> it = partialMap.keySet().iterator();
-				while( it.hasNext() )
+				for( Entry<Ordinate,BigInteger> ii : partialMap.entrySet() )
 				{
 					HashMap<HashMap<Ordinate, BigInteger>,CoeffNode> spacesB = new HashMap<HashMap<Ordinate, BigInteger>,CoeffNode>();
-					final Ordinate ae = it.next();
-					final BigInteger numDerivs = partialMap.get( ae );
+					final Ordinate ae = ii.getKey();
+					final BigInteger numDerivs = ii.getValue();
 					applyDerivativeAction( spacesA , ae , numDerivs.intValue() , HH[ ae.getCol() ] , spacesB );
 					spacesA = spacesB;
 				}
