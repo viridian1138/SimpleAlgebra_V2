@@ -30,6 +30,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map.Entry;
 
 import simplealgebra.CloneThreadCache;
 import simplealgebra.Elem;
@@ -107,11 +108,10 @@ public abstract class Stelem<R extends Elem<R,?>, S extends ElemFactory<R,S>, K 
 	protected Stelem( final Stelem<R,S,K> in , final BigInteger threadIndex )
 	{
 		super( in.getFac().getFac().cloneThread(threadIndex) );
-		Iterator<K> it = in.partialMap.keySet().iterator();
-		while( it.hasNext() )
+		for( final Entry<K,BigInteger> ii : in.partialMap.entrySet() )
 		{
-			final K ikey = it.next();
-			final BigInteger ival = in.partialMap.get( ikey );
+			final K ikey = ii.getKey();
+			final BigInteger ival = ii.getValue();
 			partialMap.put( (K)( ikey.cloneThread(threadIndex) ) , ival );
 		}
 	}
@@ -126,11 +126,10 @@ public abstract class Stelem<R extends Elem<R,?>, S extends ElemFactory<R,S>, K 
 	protected Stelem( final Stelem<R,S,K> in , final BigInteger threadIndex , CloneThreadCache<SymbolicElem<R, S>, SymbolicElemFactory<R, S>> cache )
 	{
 		super( in.getFac().getFac().cloneThreadCached(threadIndex, cache) );
-		Iterator<K> it = in.partialMap.keySet().iterator();
-		while( it.hasNext() )
+		for( final Entry<K,BigInteger> ii : in.partialMap.entrySet() )
 		{
-			final K ikey = it.next();
-			final BigInteger ival = in.partialMap.get( ikey );
+			final K ikey = ii.getKey();
+			final BigInteger ival = ii.getValue();
 			partialMap.put( (K)( ikey.cloneThread(threadIndex) ) , ival );
 		}
 	}
@@ -167,10 +166,8 @@ public abstract class Stelem<R extends Elem<R,?>, S extends ElemFactory<R,S>, K 
 	 */
 	protected void applyPartialDerivative(ArrayList<K> withRespectTo)
 			throws NotInvertibleException {
-		final Iterator<K> it = withRespectTo.iterator();
-		while( it.hasNext() )
+		for( final K v : withRespectTo )
 		{
-			final K v = it.next();
 			BigInteger vl = partialMap.get( v );
 			if( vl == null )
 			{

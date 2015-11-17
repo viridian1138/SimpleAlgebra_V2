@@ -33,6 +33,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map.Entry;
 
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
@@ -291,12 +292,10 @@ public abstract class NewtonRaphsonSingleElem<R extends Elem<R,?>, S extends Ele
 		{
 			implicitSpace = (HashMap<? extends Elem<?,?>,? extends Elem<?,?>>)( new HashMap() );
 		
-			Iterator<? extends Elem<?,?>> it = in.implicitSpace.keySet().iterator();
-		
-			while( it.hasNext() )
+			for( final Entry<? extends Elem<?,?>,? extends Elem<?,?>> ii : in.implicitSpace.entrySet() )
 			{
-				final Elem<?,?> ikey = it.next();
-				final Elem<?,?> ival = in.implicitSpace.get( ikey );
+				final Elem<?,?> ikey = ii.getKey();
+				final Elem<?,?> ival = ii.getValue();
 				( (HashMap) implicitSpace ).put( ikey.cloneThread(threadIndex) , ival.cloneThread(threadIndex) );
 			}
 		}

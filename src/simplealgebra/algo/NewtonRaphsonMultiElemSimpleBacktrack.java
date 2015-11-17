@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map.Entry;
 
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
@@ -185,13 +186,11 @@ public class NewtonRaphsonMultiElemSimpleBacktrack<U extends NumDimensions, R ex
 		}
 		partialEvalJacobian = new SquareMatrixElem<U,SymbolicElem<R,S>,SymbolicElemFactory<R,S>>(
 				_param.getSfac() , _param.getDim() );
-		final Iterator<ArrayList<? extends Elem<?, ?>>> itb = _param.getWithRespectTos().iterator();
 		BigInteger bcnt = BigInteger.ZERO;
-		while( itb.hasNext() )
+		for( final ArrayList<? extends Elem<?,?>> withRespectTo : _param.getWithRespectTos() )
 		{
 			final BigInteger key = bcnt;
 			bcnt = bcnt.add( BigInteger.ONE );
-			final ArrayList<? extends Elem<?,?>> withRespectTo = itb.next();
 			ita = functions.getKeyIterator();
 			while( ita.hasNext() )
 			{
@@ -383,12 +382,10 @@ public class NewtonRaphsonMultiElemSimpleBacktrack<U extends NumDimensions, R ex
 			lastValues = in.lastValues.cloneThread(threadIndex);
 		}
 		
-		Iterator<? extends Elem<?,?>> it = in.implicitSpace.keySet().iterator();
-		
-		while( it.hasNext() )
+		for( final Entry<? extends Elem<?, ?>, ? extends Elem<?, ?>> ii : in.implicitSpace.entrySet() )
 		{
-			final Elem<?,?> ikey = it.next();
-			final Elem<?,?> ival = in.implicitSpace.get( ikey );
+			final Elem<?,?> ikey = ii.getKey();
+			final Elem<?,?> ival = ii.getValue();
 			( (HashMap) implicitSpace ).put( ikey.cloneThread(threadIndex) , ival.cloneThread(threadIndex) );
 		}
 		

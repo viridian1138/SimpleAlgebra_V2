@@ -34,6 +34,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map.Entry;
 
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
@@ -407,13 +408,12 @@ public abstract class DescentAlgorithmMultiElemRemapTensor<Z extends Object, R e
 		
 		final ArrayList<ArrayList<? extends Elem<?,?>>> withRespectTos = new ArrayList<ArrayList<? extends Elem<?,?>>>();
 		
-		final Iterator<ArrayList<BigInteger>> it = param.getWithRespectTosI().keySet().iterator();
 		BigInteger wcnt = BigInteger.ZERO;
-		while( it.hasNext() )
+		for( final Entry<ArrayList<BigInteger>, ArrayList<? extends Elem<?, ?>>> ii : param.getWithRespectTosI().entrySet() )
 		{
-			ArrayList<BigInteger> key = it.next();
+			ArrayList<BigInteger> key = ii.getKey();
 			
-			withRespectTos.add( param.getWithRespectTosI().get( key ) );
+			withRespectTos.add( ii.getValue() );
 			
 			HashSet<BigInteger> hs = new HashSet<BigInteger>();
 			hs.add( wcnt );
@@ -572,11 +572,10 @@ public abstract class DescentAlgorithmMultiElemRemapTensor<Z extends Object, R e
 		
 		inMapFun = new HashMap<ArrayList<BigInteger>,BigInteger>();
 		{
-			Iterator<ArrayList<BigInteger>> it = in.inMapFun.keySet().iterator();
-			while( it.hasNext() )
+			for( final Entry<ArrayList<BigInteger>, BigInteger> ii : in.inMapFun.entrySet() )
 			{
-				final ArrayList<BigInteger> ikey = (ArrayList<BigInteger>)( it.next() );
-				final BigInteger ival = in.inMapFun.get( ikey );
+				final ArrayList<BigInteger> ikey = ii.getKey();
+				final BigInteger ival = ii.getValue();
 				inMapFun.put( (ArrayList<BigInteger>)( ikey.clone() ) , ival );
 			}
 		}
@@ -585,11 +584,10 @@ public abstract class DescentAlgorithmMultiElemRemapTensor<Z extends Object, R e
 		
 		outMapFun = new HashMap<HashSet<BigInteger>,ArrayList<BigInteger>>();
 		{
-			final Iterator<HashSet<BigInteger>> it = in.outMapFun.keySet().iterator();
-			while( it.hasNext() )
+			for( final Entry<HashSet<BigInteger>, ArrayList<BigInteger>> ii : in.outMapFun.entrySet() )
 			{
-				final HashSet<BigInteger> ikey = it.next();
-				final ArrayList<BigInteger> ival = in.outMapFun.get( ikey );
+				final HashSet<BigInteger> ikey = ii.getKey();
+				final ArrayList<BigInteger> ival = ii.getValue();
 				outMapFun.put( (HashSet<BigInteger>)( ikey.clone() ) , (ArrayList<BigInteger>)( ival.clone() ) );
 			}
 		}
@@ -600,11 +598,10 @@ public abstract class DescentAlgorithmMultiElemRemapTensor<Z extends Object, R e
 			
 		inMapOffset = new HashMap<ArrayList<BigInteger>,HashSet<BigInteger>>();
 		{
-			final Iterator<ArrayList<BigInteger>> it = in.inMapOffset.keySet().iterator();
-			while( it.hasNext() )
+			for( final Entry<ArrayList<BigInteger>, HashSet<BigInteger>> ii : in.inMapOffset.entrySet() )
 			{
-				final ArrayList<BigInteger> ikey = it.next();
-				final HashSet<BigInteger> ival = in.inMapOffset.get( ikey );
+				final ArrayList<BigInteger> ikey = ii.getKey();
+				final HashSet<BigInteger> ival = ii.getValue();
 				inMapOffset.put( (ArrayList<BigInteger>)( ikey.clone() ) , (HashSet<BigInteger>)( ival.clone() ) );
 			}
  		}
@@ -614,11 +611,10 @@ public abstract class DescentAlgorithmMultiElemRemapTensor<Z extends Object, R e
 		
 		outMapOffset = new HashMap<HashSet<BigInteger>,ArrayList<BigInteger>>();
 		{
-			final Iterator<HashSet<BigInteger>> it = in.outMapOffset.keySet().iterator();
-			while( it.hasNext() )
+			for( Entry<HashSet<BigInteger>, ArrayList<BigInteger>> ii : in.outMapOffset.entrySet() )
 			{
-				final HashSet<BigInteger> ikey = it.next();
-				final ArrayList<BigInteger> ival = in.outMapOffset.get( ikey );
+				final HashSet<BigInteger> ikey = ii.getKey();
+				final ArrayList<BigInteger> ival = ii.getValue();
 				outMapOffset.put( (HashSet<BigInteger>)( ikey.clone() ) , (ArrayList<BigInteger>)( ival.clone() ) );
 			}
 		}

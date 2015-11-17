@@ -33,6 +33,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map.Entry;
 
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
@@ -272,15 +273,11 @@ public abstract class DescentAlgorithmMultiElemInputParam<U extends NumDimension
 		functions = in.functions.cloneThread(threadIndex);
 		
 		withRespectTos = (ArrayList<ArrayList<? extends Elem<?,?>>>)( new ArrayList() );
-		Iterator<ArrayList<? extends Elem<?,?>>> ita = in.withRespectTos.iterator();
-		while( ita.hasNext() )
+		for( final ArrayList<? extends Elem<?,?>> va : in.withRespectTos )
 		{
-			final ArrayList<? extends Elem<?,?>> va = ita.next();
 			final ArrayList<? extends Elem<?,?>> vaa = (ArrayList<? extends Elem<?,?>>)( new ArrayList() );
-			Iterator<Elem<?,?>> itb = (Iterator<Elem<?, ?>>) va.iterator();
-			while( itb.hasNext() )
+			for( final Elem ela : va )
 			{
-				final Elem ela = itb.next();
 				( (ArrayList<Elem>) vaa ).add( ela );
 			}
 			( (ArrayList) withRespectTos ).add( vaa );
@@ -289,12 +286,10 @@ public abstract class DescentAlgorithmMultiElemInputParam<U extends NumDimension
 		
 		implicitSpaceFirstLevel = (HashMap<? extends Elem<?,?>,? extends Elem<?,?>>)( new HashMap() );
 		
-		Iterator<? extends Elem<?,?>> it = in.implicitSpaceFirstLevel.keySet().iterator();
-		
-		while( it.hasNext() )
+		for( Entry<? extends Elem<?,?>,? extends Elem<?,?>> ii : in.implicitSpaceFirstLevel.entrySet() )
 		{
-			final Elem<?,?> ikey = it.next();
-			final Elem<?,?> ival = in.implicitSpaceFirstLevel.get( ikey );
+			final Elem<?,?> ikey = ii.getKey();
+			final Elem<?,?> ival = ii.getValue();
 			( (HashMap) implicitSpaceFirstLevel ).put( ikey.cloneThread(threadIndex) , ival.cloneThread(threadIndex) );
 		}
 		

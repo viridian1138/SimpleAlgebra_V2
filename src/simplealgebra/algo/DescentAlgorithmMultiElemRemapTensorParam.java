@@ -33,6 +33,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map.Entry;
 
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
@@ -196,17 +197,14 @@ public class DescentAlgorithmMultiElemRemapTensorParam<Z extends Object, R exten
 		ret.withRespectTosI = ( HashMap<ArrayList<BigInteger>,ArrayList<? extends Elem<?,?>>> )( new HashMap() );
 		
 		{
-			Iterator<ArrayList<BigInteger>> it = withRespectTosI.keySet().iterator();
-			
-			while( it.hasNext() )
+			for( final Entry<ArrayList<BigInteger>, ArrayList<? extends Elem<?, ?>>> ii : withRespectTosI.entrySet() )
 			{
-				final ArrayList<BigInteger> ikey = it.next();
-				final ArrayList<? extends Elem<?,?>> ival = withRespectTosI.get( ikey );
+				final ArrayList<BigInteger> ikey = ii.getKey();
+				final ArrayList<? extends Elem<?,?>> ival = ii.getValue();
 				final ArrayList<? extends Elem<?,?>> ivalc = (ArrayList<? extends Elem<?,?>>)( new ArrayList() );
-				final Iterator<Elem> ita = (Iterator<Elem>)( ival.iterator() );
-				while( ita.hasNext() )
+				for( final Elem<?,?> jj : ival )
 				{
-					( (ArrayList) ivalc ).add( ita.next().cloneThread(threadIndex) );
+					( (ArrayList) ivalc ).add( jj.cloneThread(threadIndex) );
 				}
 				( (HashMap) ( ret.withRespectTosI ) ).put( ikey.clone() , ivalc );
 			}
@@ -218,12 +216,10 @@ public class DescentAlgorithmMultiElemRemapTensorParam<Z extends Object, R exten
 		ret.implicitSpaceFirstLevel = (HashMap<? extends Elem<?,?>,? extends Elem<?,?>>)( new HashMap() );
 		
 		{
-			Iterator<? extends Elem<?,?>> it = implicitSpaceFirstLevel.keySet().iterator();
-		
-			while( it.hasNext() )
+			for( final Entry<? extends Elem<?, ?>, ? extends Elem<?, ?>> ii : implicitSpaceFirstLevel.entrySet() )
 			{
-				final Elem<?,?> ikey = it.next();
-				final Elem<?,?> ival = implicitSpaceFirstLevel.get( ikey );
+				final Elem<?,?> ikey = ii.getKey();
+				final Elem<?,?> ival = ii.getValue();
 				( (HashMap) ( ret.implicitSpaceFirstLevel ) ).put( ikey.cloneThread(threadIndex) , ival.cloneThread(threadIndex) );
 			}
 		}
@@ -235,22 +231,20 @@ public class DescentAlgorithmMultiElemRemapTensorParam<Z extends Object, R exten
 		
 		ret.contravariantIndices = new ArrayList<Z>();
 		{
-			Iterator<Z> it = contravariantIndices.iterator();
-			while( it.hasNext() )
+			for( final Z ii : contravariantIndices )
 			{
 				// It is presumed that the Z indices are immutable.
-				ret.contravariantIndices.add( it.next() );
+				ret.contravariantIndices.add( ii );
 			}
 		}
 		
 		
 		ret.covariantIndices = new ArrayList<Z>();
 		{
-			Iterator<Z> it = covariantIndices.iterator();
-			while( it.hasNext() )
+			for( final Z ii : covariantIndices )
 			{
 				// It is presumed that the Z indices are immutable.
-				ret.covariantIndices.add( it.next() );
+				ret.covariantIndices.add( ii );
 			}
 		}
 		
