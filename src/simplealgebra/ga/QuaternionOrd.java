@@ -66,16 +66,14 @@ public class QuaternionOrd<U extends NumDimensions> extends Ord<U> {
 		
 		
 		int cnt = 0;
-		Iterator<BigInteger> it = kaa.iterator();
-		while( it.hasNext() )
+		for( final BigInteger ii : kaa )
 		{
-			arr[ cnt ] = it.next();
+			arr[ cnt ] = ii;
 			cnt++;
 		}
-		it = kbb.iterator();
-		while( it.hasNext() )
+		for( final BigInteger ii : kbb )
 		{
-			arr[ cnt ] = it.next();
+			arr[ cnt ] = ii;
 			cnt++;
 		}
 		

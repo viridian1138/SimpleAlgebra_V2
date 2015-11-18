@@ -179,21 +179,16 @@ public class CovariantDerivative<Z extends Object, U extends NumDimensions, R ex
 		
 		final ArrayList<Z> iContravar = tensorWithRespectTo.eval( implicitSpace ).getContravariantIndices();
 		
-		Iterator<Z> it = iContravar.iterator();
-		
-		while( it.hasNext() )
+		for( final Z index : iContravar )
 		{
-			Z index = it.next();
 			Z r = temp.getTemp();
 			SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>
 				conn = afac.getConnectionCoefficient( r , derivativeIndex , index );
 			
 			
 			ArrayList<Z> reContravar = new ArrayList<Z>( iContravar.size() );
-			Iterator<Z> it2 = ((ArrayList<Z>)(iContravar.clone())).iterator();
-			while( it2.hasNext() )
+			for( final Z nxt : (ArrayList<Z>)(iContravar.clone()) )
 			{
-				Z nxt = it2.next();
 				reContravar.add( nxt != index ? nxt : r );
 			}
 			

@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.hypergraphdb.HGHandle;
 import org.hypergraphdb.HGPersistentHandle;
@@ -81,11 +82,10 @@ public class EinsteinTensorElemType<Z extends Object, R extends Elem<R,?>, S ext
 		if( map == null )
 			throw( new RuntimeException( "Failed" ) );
 		final EinsteinTensorElem<Z,R,S> et = new EinsteinTensorElem<Z,R,S>( fac , contravar , covar );
-		Iterator<ArrayList<BigInteger>> it = map.keySet().iterator();
-		while( it.hasNext() )
+		for( final Entry<ArrayList<BigInteger>, R> ii : map.entrySet() )
 		{
-			ArrayList<BigInteger> key = it.next();
-			R val = map.get( key );
+			ArrayList<BigInteger> key = ii.getKey();
+			R val = ii.getValue();
 			et.setVal( key , val );
 		}
 		return( et );

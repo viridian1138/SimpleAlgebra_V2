@@ -128,10 +128,8 @@ public class PartialDerivativeOp<R extends Elem<R,?>, S extends ElemFactory<R,S>
 	@Override
 	public void writeString( PrintStream ps ) {
 		ps.print( "partialDerivative( " );
-		Iterator<K> it = withRespectTo.iterator();
-		while( it.hasNext() )
+		for( final K nxt : withRespectTo )
 		{
-			K nxt = it.next();
 			if( nxt instanceof SymbolicElem )
 			{
 				( (SymbolicElem) nxt ).writeString( ps );
@@ -159,10 +157,8 @@ public class PartialDerivativeOp<R extends Elem<R,?>, S extends ElemFactory<R,S>
 		{
 			ps.print( "<mfrac><mrow><mo>&part;</mo></mrow><mrow>" );
 		}
-		Iterator<K> it = withRespectTo.iterator();
-		while( it.hasNext() )
+		for( final K nxt : withRespectTo )
 		{
-			K nxt = it.next();
 			if( nxt instanceof SymbolicElem )
 			{
 				ps.print( "<mrow><mo>&part;</mo>" );
