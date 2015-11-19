@@ -195,15 +195,13 @@ public class SymbolicMult<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 		{
 			final ArrayList<? extends Elem<?, ?>> newWrt = new ArrayList<Elem<?, ?>>();
 			final ArrayList neWW = newWrt;
-			Iterator<? extends Elem<?,?>> it = ((PartialDerivativeOp) elemA).getWithRespectTo().iterator();
-			while( it.hasNext() )
+			for( final Object ii : ((PartialDerivativeOp) elemA).getWithRespectTo() )
 			{
-				neWW.add( it.next() );
+				neWW.add( ii );
 			}
-			it = withRespectTo.iterator();
-			while( it.hasNext() )
+			for( final Elem<?, ?> ii : withRespectTo )
 			{
-				neWW.add( it.next() );
+				neWW.add( ii );
 			}
 			return( elemB.evalPartialDerivative(newWrt, implicitSpace) );
 		}
@@ -288,15 +286,13 @@ public class SymbolicMult<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 		{
 			final ArrayList<? extends Elem<?, ?>> newWrt = new ArrayList<Elem<?, ?>>();
 			final ArrayList neWW = newWrt;
-			Iterator<? extends Elem<?,?>> it = ((PartialDerivativeOp) elemA).getWithRespectTo().iterator();
-			while( it.hasNext() )
+			for( final Object ii : ((PartialDerivativeOp) elemA).getWithRespectTo() )
 			{
-				neWW.add( it.next() );
+				neWW.add( ii );
 			}
-			it = withRespectTo.iterator();
-			while( it.hasNext() )
+			for( final Elem<?, ?> ii : withRespectTo )
 			{
-				neWW.add( it.next() );
+				neWW.add( ii );
 			}
 			return( elemB.evalPartialDerivativeCached(newWrt, implicitSpace, cache) );
 		}
