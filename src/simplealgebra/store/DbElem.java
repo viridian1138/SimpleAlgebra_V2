@@ -86,10 +86,9 @@ public class DbElem<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 	public DbElem<R, S> handleOptionalOp( Object id , ArrayList<DbElem<R, S>> args ) throws NotInvertibleException
 	{
 		final ArrayList<R> args2 = new ArrayList<R>();
-		Iterator<DbElem<R, S>> it = args.iterator();
-		while( it.hasNext() )
+		for( final DbElem<R, S> ii : args )
 		{
-			args2.add( it.next().query() );
+			args2.add( ii.query() );
 		}
 		final R retA = query().handleOptionalOp( id , args2 );
 		return( new DbElem<R,S>( retA , graph ) );

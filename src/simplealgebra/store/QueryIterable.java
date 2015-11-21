@@ -119,10 +119,8 @@ public class QueryIterable<T extends Object> implements Collection<T>, Iterable<
 	@Override
 	public int size() {
 		int cnt = 0;
-		Iterator<T> it = iterator();
-		while( it.hasNext() )
+		for( final T ob : this )
 		{
-			T ob = it.next();
 			cnt++;
 		}
 		return( cnt );
@@ -137,10 +135,8 @@ public class QueryIterable<T extends Object> implements Collection<T>, Iterable<
 
 	@Override
 	public boolean contains(Object o) {
-		Iterator<T> it = iterator();
-		while( it.hasNext() )
+		for( final T ob : this )
 		{
-			T ob = it.next();
 			if( ob.equals( o ) )
 			{
 				return( true );

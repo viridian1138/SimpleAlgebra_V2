@@ -32,6 +32,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map;
+import java.util.Map.Entry;
 
 import org.hypergraphdb.HGHandle;
 import org.hypergraphdb.HGPersistentHandle;
@@ -88,11 +89,10 @@ public class GeometricAlgebraMultivectorElemType<U extends NumDimensions, A exte
 		if( map == null )
 			throw( new RuntimeException( "Failed" ) );
 		final GeometricAlgebraMultivectorElem<U,A,R,S> ga = new GeometricAlgebraMultivectorElem<U,A,R,S>( fac , dim , ord );
-		Iterator<HashSet<BigInteger>> it = map.keySet().iterator();
-		while( it.hasNext() )
+		for( final Entry<HashSet<BigInteger>, R> ii : map.entrySet() )
 		{
-			HashSet<BigInteger> key = it.next();
-			R val = map.get( key );
+			HashSet<BigInteger> key = ii.getKey();
+			R val = ii.getValue();
 			ga.setVal( key , val );
 		}
 		return( ga );

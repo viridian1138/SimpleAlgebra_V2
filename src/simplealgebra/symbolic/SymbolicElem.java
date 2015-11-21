@@ -278,10 +278,9 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 		
 		if( args != null )
 		{
-			Iterator<SymbolicElem<R, S>> it = args.iterator();
-			while( it.hasNext() )
+			for( final SymbolicElem<R, S> ii : args )
 			{
-				args2.add( it.next() );
+				args2.add( ii );
 			}
 		}
 		
