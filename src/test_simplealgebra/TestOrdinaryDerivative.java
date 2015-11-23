@@ -29,6 +29,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
+import java.util.Map.Entry;
 import java.util.Random;
 
 import junit.framework.Assert;
@@ -567,15 +568,14 @@ public class TestOrdinaryDerivative extends TestCase {
 		
 		
 		int kcnt = 0;
-		Iterator<ArrayList<BigInteger>> itA = ev.getKeyIterator();
-		while( itA.hasNext() )
+		for( final Entry<ArrayList<BigInteger>, SymbolicElem<DoubleElem, DoubleElemFactory>> ii : ev.getEntrySet() )
 		{
 			kcnt++;
-			ArrayList<BigInteger> key = itA.next();
+			ArrayList<BigInteger> key = ii.getKey();
 			Assert.assertTrue( key.size() == 2 );
 			final int ind0 = key.get( 0 ).intValue();
 			final int ind1 = key.get( 1 ).intValue();
-			SymbolicElem<DoubleElem,DoubleElemFactory> el = ev.getVal( key );
+			SymbolicElem<DoubleElem,DoubleElemFactory> el = ii.getValue();
 			SymbolicMult<DoubleElem,DoubleElemFactory> sm =
 					(SymbolicMult<DoubleElem,DoubleElemFactory>) el;
 			PartialDerivativeOp<DoubleElem,DoubleElemFactory,Ordinate> po =

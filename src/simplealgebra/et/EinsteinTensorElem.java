@@ -31,6 +31,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
@@ -1122,13 +1123,24 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	
 	
 	/**
-	 * Returns the iterator of index keys for iterating through the set of sparse elements in the tensor.
+	 * Returns the set of index keys for iterating through the set of sparse elements in the tensor.
 	 * 
-	 * @return The iterator of index keys for iterating through the set of sparse elements in the tensor.
+	 * @return The set of index keys for iterating through the set of sparse elements in the tensor.
 	 */
-	public Iterator<ArrayList<BigInteger>> getKeyIterator()
+	public Set<ArrayList<BigInteger>> getKeySet()
 	{
-		return( map.keySet().iterator() );
+		return( map.keySet() );
+	}
+	
+	
+	/**
+	 * Returns the entry set of sparse elements in the tensor.
+	 * 
+	 * @return The entry set of sparse elements in the tensor.
+	 */
+	public Set<Entry<ArrayList<BigInteger>, R>> getEntrySet()
+	{
+		return( map.entrySet() );
 	}
 	
 	

@@ -31,6 +31,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Iterator;
+import java.util.Map.Entry;
 
 import org.hypergraphdb.HGHandle;
 import org.hypergraphdb.HGPersistentHandle;
@@ -110,11 +111,10 @@ public class SquareMatrixElemType<U extends NumDimensions, R extends Elem<R,?>, 
 		EinsteinTensorElem<String,R,S> oid2 = new EinsteinTensorElem<String,R,S>(	
 				oid.getFac().getFac() , contravarIndices, covarIndices );
 		oid.toRankTwoTensor( oid2 );
-		Iterator<ArrayList<BigInteger>> it = oid2.getKeyIterator();
-		while( it.hasNext() )
+		for( final Entry<ArrayList<BigInteger>, R> ii : oid2.getEntrySet() )
 		{
-			ArrayList<BigInteger> key = it.next();
-			R val = oid2.getVal( key );
+			ArrayList<BigInteger> key = ii.getKey();
+			R val = ii.getValue();
 			map.put( key , val );
 		}
 		HGHandle mapHandle = hg.assertAtom(graph, map );

@@ -321,17 +321,16 @@ public abstract class DescentAlgorithmMultiElemRemapTensor<Z extends Object, R e
 			final GeometricAlgebraMultivectorElem<Adim,GeometricAlgebraOrd<Adim>,SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,
 				SymbolicElemFactory<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>> ofun )
 	{
-		final Iterator<ArrayList<BigInteger>> it = functions.getKeyIterator();
-		while( it.hasNext() )
+		for( final Entry<ArrayList<BigInteger>, SymbolicElem<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> ii : functions.getEntrySet() )
 		{
-			ArrayList<BigInteger> key = it.next();
+			ArrayList<BigInteger> key = ii.getKey();
 			
 			BigInteger key2 = inMapFun.get( key );
 			
 			HashSet<BigInteger> hs = new HashSet<BigInteger>();
 			hs.add( key2 );
 			
-			ofun.setVal( hs , functions.getVal( key ) );
+			ofun.setVal( hs , ii.getValue() );
 		}
 	}
 	
@@ -350,11 +349,8 @@ public abstract class DescentAlgorithmMultiElemRemapTensor<Z extends Object, R e
 		BigInteger dimCnt = BigInteger.ZERO;
 		
 		
-		final Iterator<ArrayList<BigInteger>> it = functions.getKeyIterator();
-		while( it.hasNext() )
+		for( final ArrayList<BigInteger> key : functions.getKeySet() )
 		{
-			ArrayList<BigInteger> key = it.next();
-			
 			inMapFun.put(key, dimCnt);
 			
 			HashSet<BigInteger> hs = new HashSet<BigInteger>();
@@ -549,11 +545,10 @@ public abstract class DescentAlgorithmMultiElemRemapTensor<Z extends Object, R e
 		EinsteinTensorElem<Z,R,S> value =
 				getIterationValue();
 		
-		Iterator<ArrayList<BigInteger>> it = value.getKeyIterator();
-		while( it.hasNext() )
+		for( final Entry<ArrayList<BigInteger>, R> ii : value.getEntrySet() )
 		{
-			ArrayList<BigInteger> key = it.next();
-			ret.setVal( inMapOffset.get( key ) , value.getVal( key ) );
+			ArrayList<BigInteger> key = ii.getKey();
+			ret.setVal( inMapOffset.get( key ) , ii.getValue() );
 		}
 		
 		return( ret );

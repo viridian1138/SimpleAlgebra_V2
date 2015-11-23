@@ -910,11 +910,10 @@ public class TestGeneralRelativityA extends TestCase {
 private double calcMagnitudeSq( EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> in )
 {
 	double db = 0.0;
-	Iterator<ArrayList<BigInteger>> it = in.getKeyIterator();
-	while( it.hasNext() )
+	for( final Entry<ArrayList<BigInteger>, DoubleElem> ii : in.getEntrySet() )
 	{
-		final ArrayList<BigInteger> elem = it.next();
-		final DoubleElem dbl = in.getVal( elem );
+		final ArrayList<BigInteger> elem = ii.getKey();
+		final DoubleElem dbl = ii.getValue();
 		final double vl = dbl.getVal();
 		System.out.print( elem + " " + vl + " " );
 		db += vl * vl;
@@ -949,10 +948,8 @@ private double calcMagnitudeSq( DoubleElem in )
  */
 private boolean calcEq( EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> a , EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> b )
 {
-	Iterator<ArrayList<BigInteger>> it = a.getKeyIterator();
-	while( it.hasNext() )
+	for( final ArrayList<BigInteger> elem : a.getKeySet() )
 	{
-		final ArrayList<BigInteger> elem = it.next();
 		final DoubleElem dbla = a.getVal( elem );
 		final DoubleElem dblb = b.getVal( elem );
 		if( ( dbla == null ) || ( dblb == null ) )
@@ -964,10 +961,8 @@ private boolean calcEq( EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> 
 			return( false );
 		}
 	}
-	it = b.getKeyIterator();
-	while( it.hasNext() )
+	for( final ArrayList<BigInteger> elem : b.getKeySet() )
 	{
-		final ArrayList<BigInteger> elem = it.next();
 		final DoubleElem dbla = a.getVal( elem );
 		final DoubleElem dblb = b.getVal( elem );
 		if( ( dbla == null ) || ( dblb == null ) )
@@ -2539,11 +2534,10 @@ protected class VEvalElem extends SymbolicElem<EinsteinTensorElem<String,DoubleE
 		EinsteinTensorElem<String, DoubleElem, DoubleElemFactory> ret = 
 				new EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>( new DoubleElemFactory() , dval.getContravariantIndices() , dval.getCovariantIndices() );
 		
-		Iterator<ArrayList<BigInteger>> it = dval.getKeyIterator();
-		while( it.hasNext() )
+		for( final Entry<ArrayList<BigInteger>, SymbolicElem<DoubleElem, DoubleElemFactory>> ii : dval.getEntrySet() )
 		{
-			final ArrayList<BigInteger> key = it.next();
-			ret.setVal( key , dval.getVal( key ).eval( implicitSpace ) );
+			final ArrayList<BigInteger> key = ii.getKey();
+			ret.setVal( key , ii.getValue().eval( implicitSpace ) );
 		}
 		
 		return( ret );
@@ -2567,11 +2561,10 @@ protected class VEvalElem extends SymbolicElem<EinsteinTensorElem<String,DoubleE
 		EinsteinTensorElem<String, DoubleElem, DoubleElemFactory> ret = 
 				new EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>( new DoubleElemFactory() , dval.getContravariantIndices() , dval.getCovariantIndices() );
 		
-		Iterator<ArrayList<BigInteger>> it = dval.getKeyIterator();
-		while( it.hasNext() )
+		for( final Entry<ArrayList<BigInteger>, SymbolicElem<DoubleElem, DoubleElemFactory>> ii : dval.getEntrySet() )
 		{
-			final ArrayList<BigInteger> keyA = it.next();
-			ret.setVal( keyA , dval.getVal( keyA ).eval( implicitSpace ) );
+			final ArrayList<BigInteger> keyA = ii.getKey();
+			ret.setVal( keyA , ii.getValue().eval( implicitSpace ) );
 		}
 		
 		cache.put(key, ret);
@@ -2587,11 +2580,10 @@ protected class VEvalElem extends SymbolicElem<EinsteinTensorElem<String,DoubleE
 		EinsteinTensorElem<String, DoubleElem, DoubleElemFactory> ret = 
 				new EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>( new DoubleElemFactory() , dval.getContravariantIndices() , dval.getCovariantIndices() );
 		
-		Iterator<ArrayList<BigInteger>> it = dval.getKeyIterator();
-		while( it.hasNext() )
+		for( final Entry<ArrayList<BigInteger>, SymbolicElem<DoubleElem, DoubleElemFactory>> ii : dval.getEntrySet() )
 		{
-			final ArrayList<BigInteger> key = it.next();
-			ret.setVal( key , dval.getVal( key ).evalPartialDerivative( withRespectTo , implicitSpace ) );
+			final ArrayList<BigInteger> key = ii.getKey();
+			ret.setVal( key , ii.getValue().evalPartialDerivative( withRespectTo , implicitSpace ) );
 		}
 		
 		return( ret );
@@ -2609,12 +2601,10 @@ protected class VEvalElem extends SymbolicElem<EinsteinTensorElem<String,DoubleE
 
 	@Override
 	public void writeString( PrintStream ps ) {
-		Iterator<ArrayList<BigInteger>> it = dval.getKeyIterator();
-		while( it.hasNext() )
+		for( final Entry<ArrayList<BigInteger>, SymbolicElem<DoubleElem, DoubleElemFactory>> ii : dval.getEntrySet() )
 		{
-			final ArrayList<BigInteger> key = it.next();
 			ps.print( "\n" + "** " );
-			( dval.getVal( key ) ).writeString( ps );
+			( ii.getValue() ).writeString( ps );
 		}
 	}
 
@@ -2685,11 +2675,10 @@ public SymbolicElem<EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>,
 	EinsteinTensorElem<String,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> retA = 
 			new EinsteinTensorElem<String,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>( sefac , dval.getContravariantIndices() , dval.getCovariantIndices() );
 	
-	Iterator<ArrayList<BigInteger>> it = dval.getKeyIterator();
-	while( it.hasNext() )
+	for( final Entry<ArrayList<BigInteger>, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> ii : dval.getEntrySet() )
 	{
-		final ArrayList<BigInteger> key = it.next();
-		retA.setVal( key , dval.getVal( key ).eval( implicitSpace ) );
+		final ArrayList<BigInteger> key = ii.getKey();
+		retA.setVal( key , ii.getValue().eval( implicitSpace ) );
 	}
 	
 	return( new VEvalElem( vefac , retA ) );
@@ -2716,11 +2705,10 @@ public SymbolicElem<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, E
 	final HashMap<SCacheKey<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElem<DoubleElem, DoubleElemFactory>> 
 		cache2 = new HashMap<SCacheKey<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElem<DoubleElem, DoubleElemFactory>>();
 	
-	Iterator<ArrayList<BigInteger>> it = dval.getKeyIterator();
-	while( it.hasNext() )
+	for( final Entry<ArrayList<BigInteger>, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> ii : dval.getEntrySet() )
 	{
-		final ArrayList<BigInteger> keyA = it.next();
-		retA.setVal( keyA , dval.getVal( keyA ).evalCached( implicitSpace , cache2 ) );
+		final ArrayList<BigInteger> keyA = ii.getKey();
+		retA.setVal( keyA , ii.getValue().evalCached( implicitSpace , cache2 ) );
 	}
 	
 	final SymbolicElem<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>
@@ -2739,11 +2727,10 @@ public SymbolicElem<EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>,
 	EinsteinTensorElem<String,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> retA = 
 			new EinsteinTensorElem<String,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>( sefac , dval.getContravariantIndices() , dval.getCovariantIndices() );
 	
-	Iterator<ArrayList<BigInteger>> it = dval.getKeyIterator();
-	while( it.hasNext() )
+	for( final Entry<ArrayList<BigInteger>, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> ii : dval.getEntrySet() )
 	{
-		final ArrayList<BigInteger> key = it.next();
-		retA.setVal( key , dval.getVal( key ).evalPartialDerivative( withRespectTo , implicitSpace ) );
+		final ArrayList<BigInteger> key = ii.getKey();
+		retA.setVal( key , ii.getValue().evalPartialDerivative( withRespectTo , implicitSpace ) );
 	}
 	
 	return( new VEvalElem( vefac , retA ) );
@@ -2762,11 +2749,10 @@ public SymbolicElem<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, E
 	final HashMap<SCacheKey<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElem<DoubleElem, DoubleElemFactory>> 
 		cache2 = new HashMap<SCacheKey<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElem<DoubleElem, DoubleElemFactory>>();
 	
-	Iterator<ArrayList<BigInteger>> it = dval.getKeyIterator();
-	while( it.hasNext() )
+	for( final Entry<ArrayList<BigInteger>, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> ii : dval.getEntrySet() )
 	{
-		final ArrayList<BigInteger> key = it.next();
-		retA.setVal( key , dval.getVal( key ).evalPartialDerivativeCached( withRespectTo , implicitSpace , cache2 ) );
+		final ArrayList<BigInteger> key = ii.getKey();
+		retA.setVal( key , ii.getValue().evalPartialDerivativeCached( withRespectTo , implicitSpace , cache2 ) );
 	}
 	
 	return( new VEvalElem( vefac , retA ) );
@@ -2847,11 +2833,10 @@ public SymbolicElem<SymbolicElem<EinsteinTensorElem<String,DoubleElem,DoubleElem
 EinsteinTensorElem<String,SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>> retA = 
 		new EinsteinTensorElem<String,SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>( sefac , dval.getContravariantIndices() , dval.getCovariantIndices() );
 
-Iterator<ArrayList<BigInteger>> it = dval.getKeyIterator();
-while( it.hasNext() )
+for( final Entry<ArrayList<BigInteger>, SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>> ii : dval.getEntrySet() )
 {
-	final ArrayList<BigInteger> key = it.next();
-	retA.setVal( key , dval.getVal( key ).eval( implicitSpace ) );
+	final ArrayList<BigInteger> key = ii.getKey();
+	retA.setVal( key , ii.getValue().eval( implicitSpace ) );
 }
 
 return( new VEvalElem2( fac.getFac() , sefac.getFac() , vefac , retA ) );
@@ -2878,11 +2863,10 @@ public SymbolicElem<SymbolicElem<EinsteinTensorElem<String, DoubleElem, DoubleEl
 	EinsteinTensorElem<String,SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>> retA = 
 			new EinsteinTensorElem<String,SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>( sefac , dval.getContravariantIndices() , dval.getCovariantIndices() );
 
-	Iterator<ArrayList<BigInteger>> it = dval.getKeyIterator();
-	while( it.hasNext() )
+	for( final Entry<ArrayList<BigInteger>, SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>> ii : dval.getEntrySet() )
 	{
-		final ArrayList<BigInteger> keyA = it.next();
-		retA.setVal( keyA , dval.getVal( keyA ).evalCached( implicitSpace , cache2 ) );
+		final ArrayList<BigInteger> keyA = ii.getKey();
+		retA.setVal( keyA , ii.getValue().evalCached( implicitSpace , cache2 ) );
 	}
 
 	final SymbolicElem<SymbolicElem<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>>
@@ -2902,11 +2886,10 @@ public SymbolicElem<SymbolicElem<EinsteinTensorElem<String,DoubleElem,DoubleElem
 	EinsteinTensorElem<String,SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>> retA = 
 			new EinsteinTensorElem<String,SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>( sefac , dval.getContravariantIndices() , dval.getCovariantIndices() );
 
-Iterator<ArrayList<BigInteger>> it = dval.getKeyIterator();
-while( it.hasNext() )
+for( final Entry<ArrayList<BigInteger>, SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>> ii : dval.getEntrySet() )
 {
-	final ArrayList<BigInteger> key = it.next();
-	retA.setVal( key , dval.getVal( key ).evalPartialDerivative( withRespectTo , implicitSpace ) );
+	final ArrayList<BigInteger> key = ii.getKey();
+	retA.setVal( key , ii.getValue().evalPartialDerivative( withRespectTo , implicitSpace ) );
 }
 
 return( new VEvalElem2( fac.getFac() , sefac.getFac() , vefac , retA ) );
@@ -2925,11 +2908,10 @@ public SymbolicElem<SymbolicElem<EinsteinTensorElem<String, DoubleElem, DoubleEl
 	final HashMap<SCacheKey<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> 
 		cache2 = new HashMap<SCacheKey<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>();
 	
-	Iterator<ArrayList<BigInteger>> it = dval.getKeyIterator();
-	while( it.hasNext() )
+	for( final Entry<ArrayList<BigInteger>, SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>> ii : dval.getEntrySet() )
 	{
-		final ArrayList<BigInteger> key = it.next();
-		retA.setVal( key , dval.getVal( key ).evalPartialDerivativeCached( withRespectTo , implicitSpace , cache2 ) );
+		final ArrayList<BigInteger> key = ii.getKey();
+		retA.setVal( key , ii.getValue().evalPartialDerivativeCached( withRespectTo , implicitSpace , cache2 ) );
 	}
 
 	return( new VEvalElem2( fac.getFac() , sefac.getFac() , vefac , retA ) );
@@ -2937,12 +2919,10 @@ public SymbolicElem<SymbolicElem<EinsteinTensorElem<String, DoubleElem, DoubleEl
 
 @Override
 public void writeString( PrintStream ps ) {
-	Iterator<ArrayList<BigInteger>> it = dval.getKeyIterator();
-	while( it.hasNext() )
+	for( final Entry<ArrayList<BigInteger>, SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>> ii : dval.getEntrySet() )
 	{
-		final ArrayList<BigInteger> key = it.next();
 		ps.print( "\n" + "** " );
-		( dval.getVal( key ) ).writeString( ps );
+		( ii.getValue() ).writeString( ps );
 	}
 }
 
@@ -3048,12 +3028,10 @@ public EinsteinTensorElem<String, SymbolicElem<SymbolicElem<SymbolicElem<DoubleE
 
 @Override
 public void writeString( PrintStream ps ) {
-	Iterator<ArrayList<BigInteger>> it = dval.getKeyIterator();
-	while( it.hasNext() )
+	for( final Entry<ArrayList<BigInteger>, SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>> ii : dval.getEntrySet() )
 	{
-		final ArrayList<BigInteger> key = it.next();
-		ps.print( "\n" + "** " ); 
-		( dval.getVal( key ) ).writeString( ps );
+		ps.print( "\n" + "** " );
+		( ii.getValue() ).writeString( ps );
 	}
 }
 

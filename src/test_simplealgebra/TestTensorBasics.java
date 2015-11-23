@@ -27,6 +27,7 @@ package test_simplealgebra;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Map.Entry;
 import java.util.Random;
 
 import junit.framework.Assert;
@@ -299,13 +300,12 @@ public class TestTensorBasics extends TestCase {
 		
 		int kcnt = 0;
 		DoubleElem elem = null;
-		Iterator<ArrayList<BigInteger>> itA = etC.getKeyIterator();
-		while( itA.hasNext() )
+		for( final Entry<ArrayList<BigInteger>, DoubleElem> ii : etC.getEntrySet() )
 		{
 			kcnt++;
-			ArrayList<BigInteger> key = itA.next();
+			ArrayList<BigInteger> key = ii.getKey();
 			Assert.assertTrue( key.size() == 0 );
-			elem = etC.getVal( key );
+			elem = ii.getValue();
 		}
 		
 		Assert.assertTrue( kcnt == 1 );
@@ -403,15 +403,14 @@ public class TestTensorBasics extends TestCase {
 		final int[] tstArr = { 3 , 5 , 7 , 13 };
 		
 		int kcnt = 0;
-		Iterator<ArrayList<BigInteger>> itA = etC.getKeyIterator();
-		while( itA.hasNext() )
+		for( final Entry<ArrayList<BigInteger>, DoubleElem> ii : etC.getEntrySet() )
 		{
 			kcnt++;
-			ArrayList<BigInteger> key = itA.next();
+			ArrayList<BigInteger> key = ii.getKey();
 			Assert.assertTrue( key.size() == 2 );
 			final int ind0 = key.get( 0 ).intValue();
 			final int ind1 = key.get( 1 ).intValue();
-			DoubleElem elem = etC.getVal( key );
+			DoubleElem elem = ii.getValue();
 			final double expectedAnswer = tstArr[ ind0 ] * tstArr[ ind1 ];
 			Assert.assertTrue( Math.abs( elem.getVal() - expectedAnswer ) < 0.001 );
 		}
@@ -508,14 +507,13 @@ public class TestTensorBasics extends TestCase {
 		final int[] tstArr = { 3 , 5 , 7 , 13 };
 		
 		int kcnt = 0;
-		Iterator<ArrayList<BigInteger>> itA = etC.getKeyIterator();
-		while( itA.hasNext() )
+		for( final Entry<ArrayList<BigInteger>, DoubleElem> ii : etC.getEntrySet() )
 		{
 			kcnt++;
-			ArrayList<BigInteger> key = itA.next();
+			ArrayList<BigInteger> key = ii.getKey();
 			Assert.assertTrue( key.size() == 1 );
 			final int ind0 = key.get( 0 ).intValue();
-			DoubleElem elem = etC.getVal( key );
+			DoubleElem elem = ii.getValue();
 			final double expectedAnswer = tstArr[ ind0 ] * tstArr[ ind0 ];
 			Assert.assertTrue( Math.abs( elem.getVal() - expectedAnswer ) < 0.001 );
 		}
@@ -612,14 +610,13 @@ public class TestTensorBasics extends TestCase {
 		final int[] tstArr = { 3 , 5 , 7 , 13 };
 		
 		int kcnt = 0;
-		Iterator<ArrayList<BigInteger>> itA = etC.getKeyIterator();
-		while( itA.hasNext() )
+		for( final Entry<ArrayList<BigInteger>, DoubleElem> ii : etC.getEntrySet() )
 		{
 			kcnt++;
-			ArrayList<BigInteger> key = itA.next();
+			ArrayList<BigInteger> key = ii.getKey();
 			Assert.assertTrue( key.size() == 1 );
 			final int ind0 = key.get( 0 ).intValue();
-			DoubleElem elem = etC.getVal( key );
+			DoubleElem elem = ii.getValue();
 			final double expectedAnswer = tstArr[ ind0 ] * 5.0;
 			Assert.assertTrue( Math.abs( elem.getVal() - expectedAnswer ) < 0.001 );
 		}
@@ -715,14 +712,13 @@ public class TestTensorBasics extends TestCase {
 		final int[] tstArr = { 3 , 5 , 7 , 13 };
 		
 		int kcnt = 0;
-		Iterator<ArrayList<BigInteger>> itA = etC.getKeyIterator();
-		while( itA.hasNext() )
+		for( final Entry<ArrayList<BigInteger>, DoubleElem> ii : etC.getEntrySet() )
 		{
 			kcnt++;
-			ArrayList<BigInteger> key = itA.next();
+			ArrayList<BigInteger> key = ii.getKey();
 			Assert.assertTrue( key.size() == 1 );
 			final int ind0 = key.get( 0 ).intValue();
-			DoubleElem elem = etC.getVal( key );
+			DoubleElem elem = ii.getValue();
 			final double expectedAnswer = tstArr[ ind0 ] * tstArr[ ind0 ];
 			Assert.assertTrue( Math.abs( elem.getVal() - expectedAnswer ) < 0.001 );
 		}
@@ -820,14 +816,13 @@ public class TestTensorBasics extends TestCase {
 		final int[] tstArr = { 3 , 5 , 7 , 13 };
 		
 		int kcnt = 0;
-		Iterator<ArrayList<BigInteger>> itA = etC.getKeyIterator();
-		while( itA.hasNext() )
+		for( final Entry<ArrayList<BigInteger>, DoubleElem> ii : etC.getEntrySet() )
 		{
 			kcnt++;
-			ArrayList<BigInteger> key = itA.next();
+			ArrayList<BigInteger> key = ii.getKey();
 			Assert.assertTrue( key.size() == 1 );
 			final int ind0 = key.get( 0 ).intValue();
-			DoubleElem elem = etC.getVal( key );
+			DoubleElem elem = ii.getValue();
 			final double expectedAnswer = tstArr[ ind0 ] * tstArr[ ind0 ];
 			Assert.assertTrue( Math.abs( elem.getVal() - expectedAnswer ) < 0.001 );
 		}
@@ -907,11 +902,10 @@ public class TestTensorBasics extends TestCase {
 		
 		
 		int kcnt = 0;
-		Iterator<ArrayList<BigInteger>> itA = etC.getKeyIterator();
-		while( itA.hasNext() )
+		for( final Entry<ArrayList<BigInteger>, DoubleElem> ii : etC.getEntrySet() )
 		{
 			kcnt++;
-			ArrayList<BigInteger> key = itA.next();
+			ArrayList<BigInteger> key = ii.getKey();
 			Assert.assertTrue( key.size() == 2 );
 		}
 		
@@ -1003,11 +997,10 @@ public class TestTensorBasics extends TestCase {
 		
 		
 		int kcnt = 0;
-		Iterator<ArrayList<BigInteger>> itA = etC.getKeyIterator();
-		while( itA.hasNext() )
+		for( final Entry<ArrayList<BigInteger>, DoubleElem> ii : etC.getEntrySet() )
 		{
 			kcnt++;
-			ArrayList<BigInteger> key = itA.next();
+			ArrayList<BigInteger> key = ii.getKey();
 			Assert.assertTrue( key.size() == 2 );
 		}
 		

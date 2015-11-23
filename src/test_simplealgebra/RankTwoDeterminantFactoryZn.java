@@ -5,6 +5,7 @@ package test_simplealgebra;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Map.Entry;
 
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
@@ -81,13 +82,12 @@ public class RankTwoDeterminantFactoryZn<Z extends Object, U extends NumDimensio
 	{
 		final SquareMatrixElem<Adim,R,S> matrix = new SquareMatrixElem<Adim,R,S>( in.getFac().getFac(), (Adim) dim );
 		
-		final Iterator<ArrayList<BigInteger>> ita = in.getKeyIterator();
-		while( ita.hasNext() )
+		for( final Entry<ArrayList<BigInteger>, R> ii : in.getEntrySet() )
 		{
-			final ArrayList<BigInteger> keyA = ita.next();
+			final ArrayList<BigInteger> keyA = ii.getKey();
 			final BigInteger row = keyA.get( 0 ).subtract( BigInteger.ONE );
 			final BigInteger col = keyA.get( 1 ).subtract( BigInteger.ONE );
-			matrix.setVal( row , col , in.getVal( keyA ) );
+			matrix.setVal( row , col , ii.getValue() );
 		}
 		
 		return( matrix.determinant() );

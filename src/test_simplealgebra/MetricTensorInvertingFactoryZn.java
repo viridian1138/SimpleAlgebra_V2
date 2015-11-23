@@ -23,6 +23,7 @@ package test_simplealgebra;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Map.Entry;
 
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
@@ -99,13 +100,12 @@ public abstract class MetricTensorInvertingFactoryZn<Z extends Object, U extends
 			final SquareMatrixElem<Adim,SymbolicElem<R, S>,SymbolicElemFactory<R, S>> tmp = 
 					new SquareMatrixElem<Adim,SymbolicElem<R, S>,SymbolicElemFactory<R, S>>( fac , odim );
 			
-			final Iterator<ArrayList<BigInteger>> ita = elem.getKeyIterator();
-			while( ita.hasNext() )
+			for( final Entry<ArrayList<BigInteger>, SymbolicElem<R, S>> ii : elem.getEntrySet() )
 			{
-				final ArrayList<BigInteger> keyA = ita.next();
+				final ArrayList<BigInteger> keyA = ii.getKey();
 				final BigInteger row = keyA.get( 0 ).subtract( BigInteger.ONE );
 				final BigInteger col = keyA.get( 1 ).subtract( BigInteger.ONE );
-				tmp.setVal( row , col , elem.getVal( keyA ) );
+				tmp.setVal( row , col , ii.getValue() );
 			}
 			
 			try
@@ -120,14 +120,13 @@ public abstract class MetricTensorInvertingFactoryZn<Z extends Object, U extends
 				
 				inv.toRankTwoTensor( rA );
 				
-				final Iterator<ArrayList<BigInteger>> itb = rA.getKeyIterator();
-				while( itb.hasNext() )
+				for( final Entry<ArrayList<BigInteger>, SymbolicElem<R, S>> ii : rA.getEntrySet() )
 				{
-					final ArrayList<BigInteger> keyA = itb.next();
+					final ArrayList<BigInteger> keyA = ii.getKey();
 					final ArrayList<BigInteger> keyB = new ArrayList<BigInteger>();
 					keyB.add( keyA.get( 0 ).add( BigInteger.ONE ) );
 					keyB.add( keyA.get( 1 ).add( BigInteger.ONE ) );
-					ret.setVal( keyB , rA.getVal( keyA ) );
+					ret.setVal( keyB , ii.getValue() );
 				}
 				
 				return( ret );
@@ -153,13 +152,12 @@ public abstract class MetricTensorInvertingFactoryZn<Z extends Object, U extends
 			final SquareMatrixElem<Adim,SymbolicElem<R, S>,SymbolicElemFactory<R, S>> tmp = 
 					new SquareMatrixElem<Adim,SymbolicElem<R, S>,SymbolicElemFactory<R, S>>( fac , odim );
 			
-			final Iterator<ArrayList<BigInteger>> ita = elem.getKeyIterator();
-			while( ita.hasNext() )
+			for( final Entry<ArrayList<BigInteger>, SymbolicElem<R, S>> ii : elem.getEntrySet() )
 			{
-				final ArrayList<BigInteger> keyA = ita.next();
+				final ArrayList<BigInteger> keyA = ii.getKey();
 				final BigInteger row = keyA.get( 0 ).subtract( BigInteger.ONE );
 				final BigInteger col = keyA.get( 1 ).subtract( BigInteger.ONE );
-				tmp.setVal( row , col , elem.getVal( keyA ) );
+				tmp.setVal( row , col , ii.getValue() );
 			}
 			
 			try
@@ -174,14 +172,13 @@ public abstract class MetricTensorInvertingFactoryZn<Z extends Object, U extends
 				
 				inv.toRankTwoTensor( rA );
 				
-				final Iterator<ArrayList<BigInteger>> itb = rA.getKeyIterator();
-				while( itb.hasNext() )
+				for( final Entry<ArrayList<BigInteger>, SymbolicElem<R, S>> ii : rA.getEntrySet() )
 				{
-					final ArrayList<BigInteger> keyA = ita.next();
+					final ArrayList<BigInteger> keyA = ii.getKey();
 					final ArrayList<BigInteger> keyB = new ArrayList<BigInteger>();
 					keyB.add( keyA.get( 0 ).add( BigInteger.ONE ) );
 					keyB.add( keyA.get( 1 ).add( BigInteger.ONE ) );
-					ret.setVal( keyB , rA.getVal( keyA ) );
+					ret.setVal( keyB , ii.getValue() );
 				}
 				
 				return( ret );

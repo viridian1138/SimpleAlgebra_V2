@@ -29,9 +29,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Random;
+import java.util.Map.Entry;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
+import simplealgebra.ComplexElem;
+import simplealgebra.ComplexElemFactory;
 import simplealgebra.DoubleElem;
 import simplealgebra.DoubleElemFactory;
 import simplealgebra.Elem;
@@ -594,12 +597,10 @@ public class TestConnectionCoefficient extends TestCase {
 
 		@Override
 		public void writeString( PrintStream ps ) {
-			Iterator<ArrayList<BigInteger>> it = dval.getKeyIterator();
-			while( it.hasNext() )
+			for( final Entry<ArrayList<BigInteger>, SymbolicElem<DoubleElem, DoubleElemFactory>> ii : dval.getEntrySet() )
 			{
-				final ArrayList<BigInteger> key = it.next();
 				ps.print( "\n" + "** " );
-				( dval.getVal( key ) ).writeString( ps );
+				( ii.getValue() ).writeString( ps );
 			}
 		}
 
@@ -778,11 +779,9 @@ public class TestConnectionCoefficient extends TestCase {
 		
 		
 		int kcnt = 0;
-		Iterator<ArrayList<BigInteger>> itA = ev.getKeyIterator();
-		while( itA.hasNext() )
+		for( final ArrayList<BigInteger> key : ev.getKeySet() )
 		{
 			kcnt++;
-			ArrayList<BigInteger> key = itA.next();
 			Assert.assertTrue( key.size() == 3 );
 			// Eval Value Here
 			/* final int ind0 = key.get( 0 ).intValue();

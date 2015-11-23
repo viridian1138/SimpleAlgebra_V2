@@ -32,6 +32,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map.Entry;
 
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
@@ -95,10 +96,9 @@ public abstract class DescentAlgorithmMultiElemRemapTensorDiag<Z extends Object,
 			final GeometricAlgebraMultivectorElem<Adim,GeometricAlgebraOrd<Adim>,SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,
 				SymbolicElemFactory<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>> ofun )
 	{
-		final Iterator<ArrayList<BigInteger>> it = functions.getKeyIterator();
-		while( it.hasNext() )
+		for( final Entry<ArrayList<BigInteger>, SymbolicElem<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> ii : functions.getEntrySet() )
 		{
-			ArrayList<BigInteger> key = it.next();
+			ArrayList<BigInteger> key = ii.getKey();
 			
 			if( keyPasses( key ) )
 			{
@@ -107,7 +107,7 @@ public abstract class DescentAlgorithmMultiElemRemapTensorDiag<Z extends Object,
 				HashSet<BigInteger> hs = new HashSet<BigInteger>();
 				hs.add( key2 );
 			
-				ofun.setVal( hs , functions.getVal( key ) );
+				ofun.setVal( hs , ii.getValue() );
 			}
 		}
 	}
@@ -121,11 +121,8 @@ public abstract class DescentAlgorithmMultiElemRemapTensorDiag<Z extends Object,
 		BigInteger dimCnt = BigInteger.ZERO;
 		
 		
-		final Iterator<ArrayList<BigInteger>> it = functions.getKeyIterator();
-		while( it.hasNext() )
+		for( final ArrayList<BigInteger> key : functions.getKeySet() )
 		{
-			ArrayList<BigInteger> key = it.next();
-			
 			if( keyPasses( key ) )
 			{
 				inMapFun.put(key, dimCnt);

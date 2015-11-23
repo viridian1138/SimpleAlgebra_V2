@@ -27,6 +27,7 @@ package test_simplealgebra;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Iterator;
+import java.util.Map.Entry;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
@@ -312,11 +313,10 @@ public class TestDbElemTensor extends TestCase {
 		Assert.assertTrue( et.getCovariantIndices().size() == 2 );
 		
 		int cnt = 0;
-		Iterator<ArrayList<BigInteger>> it = et.getKeyIterator();
-		while( it.hasNext() )
+		for( final Entry<ArrayList<BigInteger>, ComplexElem<DoubleElem, DoubleElemFactory>> ii : et.getEntrySet() )
 		{
-			ArrayList<BigInteger> key = it.next();
-			Assert.assertTrue( et.getVal( key ) != null );
+			Assert.assertTrue( ii.getKey() != null );
+			Assert.assertTrue( ii.getValue() != null );
 			cnt++;
 		}
 		

@@ -37,6 +37,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map.Entry;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
@@ -1323,12 +1324,10 @@ public class TestMaterialDerivativeFlatAsym3D extends TestCase
 
 		@Override
 		public void writeString( PrintStream ps ) {
-			Iterator<ArrayList<BigInteger>> it = dval.getKeyIterator();
-			while( it.hasNext() )
+			for( final Entry<ArrayList<BigInteger>, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> ii : dval.getEntrySet() )
 			{
-				final ArrayList<BigInteger> key = it.next();
 				ps.print( "\n" + "** " );
-				( dval.getVal( key ) ).writeString( ps );
+				( ii.getValue() ).writeString( ps );
 			}
 		}
 		

@@ -104,11 +104,10 @@ public class EinsteinTensorElemType<Z extends Object, R extends Elem<R,?>, S ext
 		HGHandle covarHandle = graph.add( oid.getCovariantIndices() ); // hg.assertAtom(graph, oid.getCovariantIndices() ); !!!!!!!!!!!!!!!!!!!!!!!!!!
 		HGHandle facHandle = hg.assertAtom(graph, oid.getFac().getFac() );
 		final HashMap<ArrayList<BigInteger>,R> map = new HashMap<ArrayList<BigInteger>,R>();
-		Iterator<ArrayList<BigInteger>> it = oid.getKeyIterator();
-		while( it.hasNext() )
+		for( final Entry<ArrayList<BigInteger>, R> ii : oid.getEntrySet() )
 		{
-			ArrayList<BigInteger> key = it.next();
-			R val = oid.getVal( key );
+			ArrayList<BigInteger> key = ii.getKey();
+			R val = ii.getValue();
 			map.put( key , val );
 		}
 		HGHandle mapHandle = hg.assertAtom(graph, map );
