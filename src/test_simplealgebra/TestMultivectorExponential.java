@@ -27,6 +27,7 @@ package test_simplealgebra;
 import java.math.BigInteger;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map.Entry;
 import java.util.Random;
 
 import junit.framework.Assert;
@@ -209,14 +210,12 @@ public class TestMultivectorExponential extends TestCase {
 		}
 		
 		
-		Iterator<HashSet<BigInteger>> it = exp.getKeyIterator();
-		
-		while( it.hasNext() )
+		for( final Entry<HashSet<BigInteger>, DoubleElem> ii : exp.getEntrySet() )
 		{
-			HashSet<BigInteger> h = it.next();
+			HashSet<BigInteger> h = ii.getKey();
 			if( ( h.size() != 0 ) && ( h.size() != 1 ) )
 			{
-				Assert.assertEquals( 0.0 , exp.get( h ).getVal() , 1E+1 );
+				Assert.assertEquals( 0.0 , ii.getValue().getVal() , 1E+1 );
 			}
 		}
 		
@@ -294,14 +293,12 @@ public class TestMultivectorExponential extends TestCase {
 		}
 		
 		
-		Iterator<HashSet<BigInteger>> it = exp.getKeyIterator();
-		
-		while( it.hasNext() )
+		for( final Entry<HashSet<BigInteger>, DoubleElem> ii : exp.getEntrySet() )
 		{
-			HashSet<BigInteger> h = it.next();
+			HashSet<BigInteger> h = ii.getKey();
 			if( ( h.size() != 0 ) && ( h.size() != 4 ) )
 			{
-				Assert.assertEquals( 0.0 , exp.get( h ).getVal() , 1E+1 );
+				Assert.assertEquals( 0.0 , ii.getValue().getVal() , 1E+1 );
 			}
 		}
 		

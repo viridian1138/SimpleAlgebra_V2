@@ -32,6 +32,7 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map.Entry;
+import java.util.Set;
 
 import simplealgebra.CloneThreadCache;
 import simplealgebra.Elem;
@@ -1268,13 +1269,25 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 	
 	
 	/**
-	 * Returns the iterator to the basis vectors of the enclosed elems.
+	 * Returns the set of the basis vectors of the enclosed elems.
 	 * 
-	 * @return The iterator to the basis vectors of the enclosed elems.
+	 * @return The set of the basis vectors of the enclosed elems.
 	 */
-	public Iterator<HashSet<BigInteger>> getKeyIterator()
+	public Set<HashSet<BigInteger>> getKeySet()
 	{
-		return( map.keySet().iterator() );
+		return( map.keySet() );
+	}
+	
+	
+	
+	/**
+	 * Returns the entry set of the multivector.
+	 * 
+	 * @return The entry set of the multivector.
+	 */
+	public Set<Entry<HashSet<BigInteger>, R>> getEntrySet()
+	{
+		return( map.entrySet() );
 	}
 	
 	

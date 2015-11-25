@@ -1091,11 +1091,9 @@ private GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<Te
 private double calcMagnitudeSq( GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> in )
 {
 	double db = 0.0;
-	Iterator<HashSet<BigInteger>> it = in.getKeyIterator();
-	while( it.hasNext() )
+	for( final Entry<HashSet<BigInteger>, DoubleElem> ii : in.getEntrySet() )
 	{
-		final HashSet<BigInteger> elem = it.next();
-		final DoubleElem dbl = in.get( elem );
+		final DoubleElem dbl = ii.getValue();
 		final double vl = dbl.getVal();
 		db += vl * vl;
 	}
@@ -1129,11 +1127,10 @@ private double calcMagnitudeSq( DoubleElem in )
  */
 private boolean calcEq( GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> a , GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> b )
 {
-	Iterator<HashSet<BigInteger>> it = a.getKeyIterator();
-	while( it.hasNext() )
+	for( final Entry<HashSet<BigInteger>, DoubleElem> ii : a.getEntrySet() )
 	{
-		final HashSet<BigInteger> elem = it.next();
-		final DoubleElem dbla = a.get( elem );
+		final HashSet<BigInteger> elem = ii.getKey();
+		final DoubleElem dbla = ii.getValue();
 		final DoubleElem dblb = b.get( elem );
 		if( ( dbla == null ) || ( dblb == null ) )
 		{
@@ -1144,12 +1141,11 @@ private boolean calcEq( GeometricAlgebraMultivectorElem<TestDimensionFour,Spacet
 			return( false );
 		}
 	}
-	it = b.getKeyIterator();
-	while( it.hasNext() )
+	for( final Entry<HashSet<BigInteger>, DoubleElem> ii : b.getEntrySet() )
 	{
-		final HashSet<BigInteger> elem = it.next();
+		final HashSet<BigInteger> elem = ii.getKey();
 		final DoubleElem dbla = a.get( elem );
-		final DoubleElem dblb = b.get( elem );
+		final DoubleElem dblb = ii.getValue();
 		if( ( dbla == null ) || ( dblb == null ) )
 		{
 			return( false );
@@ -2650,11 +2646,10 @@ protected class VEvalElem extends SymbolicElem<GeometricAlgebraMultivectorElem<T
 		GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory> ret = 
 				new GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory>( new DoubleElemFactory() , new TestDimensionFour() , new SpacetimeAlgebraOrd<TestDimensionFour>() );
 		
-		Iterator<HashSet<BigInteger>> it = dval.getKeyIterator();
-		while( it.hasNext() )
+		for( final Entry<HashSet<BigInteger>, SymbolicElem<DoubleElem, DoubleElemFactory>> ii : dval.getEntrySet() )
 		{
-			final HashSet<BigInteger> key = it.next();
-			ret.setVal( key , dval.get( key ).eval( implicitSpace ) );
+			final HashSet<BigInteger> key = ii.getKey();
+			ret.setVal( key , ii.getValue().eval( implicitSpace ) );
 		}
 		
 		return( ret );
@@ -2678,11 +2673,10 @@ protected class VEvalElem extends SymbolicElem<GeometricAlgebraMultivectorElem<T
 		GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory> ret = 
 				new GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory>( new DoubleElemFactory() , new TestDimensionFour() , new SpacetimeAlgebraOrd<TestDimensionFour>() );
 		
-		Iterator<HashSet<BigInteger>> it = dval.getKeyIterator();
-		while( it.hasNext() )
+		for( final Entry<HashSet<BigInteger>, SymbolicElem<DoubleElem, DoubleElemFactory>> ii : dval.getEntrySet() )
 		{
-			final HashSet<BigInteger> keyA = it.next();
-			ret.setVal( keyA , dval.get( keyA ).eval( implicitSpace ) );
+			final HashSet<BigInteger> keyA = ii.getKey();
+			ret.setVal( keyA , ii.getValue().eval( implicitSpace ) );
 		}
 		
 		cache.put(key, ret);
@@ -2698,11 +2692,10 @@ protected class VEvalElem extends SymbolicElem<GeometricAlgebraMultivectorElem<T
 		GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory> ret = 
 				new GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory>( new DoubleElemFactory() , new TestDimensionFour() , new SpacetimeAlgebraOrd<TestDimensionFour>() );
 		
-		Iterator<HashSet<BigInteger>> it = dval.getKeyIterator();
-		while( it.hasNext() )
+		for( final Entry<HashSet<BigInteger>, SymbolicElem<DoubleElem, DoubleElemFactory>> ii : dval.getEntrySet() )
 		{
-			final HashSet<BigInteger> key = it.next();
-			ret.setVal( key , dval.get( key ).evalPartialDerivative( withRespectTo , implicitSpace ) );
+			final HashSet<BigInteger> key = ii.getKey();
+			ret.setVal( key , ii.getValue().evalPartialDerivative( withRespectTo , implicitSpace ) );
 		}
 		
 		return( ret );
@@ -2720,12 +2713,10 @@ protected class VEvalElem extends SymbolicElem<GeometricAlgebraMultivectorElem<T
 
 	@Override
 	public void writeString( PrintStream ps ) {
-		Iterator<HashSet<BigInteger>> it = dval.getKeyIterator();
-		while( it.hasNext() )
+		for( final Entry<HashSet<BigInteger>, SymbolicElem<DoubleElem, DoubleElemFactory>> ii : dval.getEntrySet() )
 		{
-			final HashSet<BigInteger> key = it.next();
 			ps.print( "\n" + "** " );
-			( dval.get( key ) ).writeString( ps );
+			( ii.getValue() ).writeString( ps );
 		}
 	}
 
@@ -2795,11 +2786,10 @@ public SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeA
 	GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> retA = 
 			new GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>( sefac , new TestDimensionFour() , new SpacetimeAlgebraOrd<TestDimensionFour>() );
 	
-	Iterator<HashSet<BigInteger>> it = dval.getKeyIterator();
-	while( it.hasNext() )
+	for( final Entry<HashSet<BigInteger>, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> ii : dval.getEntrySet() )
 	{
-		final HashSet<BigInteger> key = it.next();
-		retA.setVal( key , dval.get( key ).eval( implicitSpace ) );
+		final HashSet<BigInteger> key = ii.getKey();
+		retA.setVal( key , ii.getValue().eval( implicitSpace ) );
 	}
 	
 	return( new VEvalElem( vefac , retA ) );
@@ -2827,11 +2817,10 @@ public SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFour, Spacetime
 		cache2 = new HashMap<SCacheKey<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElem<DoubleElem, DoubleElemFactory>>();
 
 	
-	Iterator<HashSet<BigInteger>> it = dval.getKeyIterator();
-	while( it.hasNext() )
+	for( final Entry<HashSet<BigInteger>, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> ii : dval.getEntrySet() )
 	{
-		final HashSet<BigInteger> keyA = it.next();
-		retA.setVal( keyA , dval.get( keyA ).evalCached( implicitSpace , cache2 ) );
+		final HashSet<BigInteger> keyA = ii.getKey();
+		retA.setVal( keyA , ii.getValue().evalCached( implicitSpace , cache2 ) );
 	}
 	
 	final SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFour, SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory>, GeometricAlgebraMultivectorElemFactory<TestDimensionFour, SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory>>
@@ -2850,11 +2839,10 @@ public SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeA
 	GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> retA = 
 			new GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>( sefac , new TestDimensionFour() , new SpacetimeAlgebraOrd<TestDimensionFour>() );
 	
-	Iterator<HashSet<BigInteger>> it = dval.getKeyIterator();
-	while( it.hasNext() )
+	for( final Entry<HashSet<BigInteger>, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> ii : dval.getEntrySet() )
 	{
-		final HashSet<BigInteger> key = it.next();
-		retA.setVal( key , dval.get( key ).evalPartialDerivative( withRespectTo , implicitSpace ) );
+		final HashSet<BigInteger> key = ii.getKey();
+		retA.setVal( key , ii.getValue().evalPartialDerivative( withRespectTo , implicitSpace ) );
 	}
 	
 	return( new VEvalElem( vefac , retA ) );
@@ -2873,11 +2861,10 @@ public SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFour, Spacetime
 	final HashMap<SCacheKey<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElem<DoubleElem, DoubleElemFactory>> 
 		cache2 = new HashMap<SCacheKey<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElem<DoubleElem, DoubleElemFactory>>();
 	
-	Iterator<HashSet<BigInteger>> it = dval.getKeyIterator();
-	while( it.hasNext() )
+	for( final Entry<HashSet<BigInteger>, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> ii : dval.getEntrySet() )
 	{
-		final HashSet<BigInteger> key = it.next();
-		retA.setVal( key , dval.get( key ).evalPartialDerivativeCached( withRespectTo , implicitSpace , cache2 ) );
+		final HashSet<BigInteger> key = ii.getKey();
+		retA.setVal( key , ii.getValue().evalPartialDerivativeCached( withRespectTo , implicitSpace , cache2 ) );
 	}
 	
 	return( new VEvalElem( vefac , retA ) );
@@ -2957,11 +2944,10 @@ public SymbolicElem<SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFo
 GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>> retA = 
 		new GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>( sefac , new TestDimensionFour() , new SpacetimeAlgebraOrd<TestDimensionFour>() );
 
-Iterator<HashSet<BigInteger>> it = dval.getKeyIterator();
-while( it.hasNext() )
+for( final Entry<HashSet<BigInteger>, SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>> ii : dval.getEntrySet() )
 {
-	final HashSet<BigInteger> key = it.next();
-	retA.setVal( key , dval.get( key ).eval( implicitSpace ) );
+	final HashSet<BigInteger> key = ii.getKey();
+	retA.setVal( key , ii.getValue().eval( implicitSpace ) );
 }
 
 return( new VEvalElem2( fac.getFac() , sefac.getFac() , vefac , retA ) );
@@ -2988,11 +2974,10 @@ public SymbolicElem<SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFo
 	final HashMap<SCacheKey<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> 
 		cache2 = new HashMap<SCacheKey<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>();
 	
-	Iterator<HashSet<BigInteger>> it = dval.getKeyIterator();
-	while( it.hasNext() )
+	for( final Entry<HashSet<BigInteger>, SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>> ii : dval.getEntrySet() )
 	{
-		final HashSet<BigInteger> keyA = it.next();
-		retA.setVal( keyA , dval.get( keyA ).evalCached( implicitSpace , cache2 ) );
+		final HashSet<BigInteger> keyA = ii.getKey();
+		retA.setVal( keyA , ii.getValue().evalCached( implicitSpace , cache2 ) );
 	}
 
 	final SymbolicElem<SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFour, SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory>, GeometricAlgebraMultivectorElemFactory<TestDimensionFour, SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<GeometricAlgebraMultivectorElem<TestDimensionFour, SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory>, GeometricAlgebraMultivectorElemFactory<TestDimensionFour, SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory>>>
@@ -3012,11 +2997,10 @@ public SymbolicElem<SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFo
 	GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>> retA = 
 			new GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>( sefac , new TestDimensionFour() , new SpacetimeAlgebraOrd<TestDimensionFour>() );
 
-Iterator<HashSet<BigInteger>> it = dval.getKeyIterator();
-while( it.hasNext() )
+for( final Entry<HashSet<BigInteger>, SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>> ii : dval.getEntrySet() )
 {
-	final HashSet<BigInteger> key = it.next();
-	retA.setVal( key , dval.get( key ).evalPartialDerivative( withRespectTo , implicitSpace ) );
+	final HashSet<BigInteger> key = ii.getKey();
+	retA.setVal( key , ii.getValue().evalPartialDerivative( withRespectTo , implicitSpace ) );
 }
 
 return( new VEvalElem2( fac.getFac() , sefac.getFac() , vefac , retA ) );
@@ -3035,11 +3019,10 @@ public SymbolicElem<SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFo
 	final HashMap<SCacheKey<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> 
 		cache2 = new HashMap<SCacheKey<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>();
 	
-	Iterator<HashSet<BigInteger>> it = dval.getKeyIterator();
-	while( it.hasNext() )
+	for( final Entry<HashSet<BigInteger>, SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>> ii : dval.getEntrySet() )
 	{
-		final HashSet<BigInteger> key = it.next();
-		retA.setVal( key , dval.get( key ).evalPartialDerivativeCached( withRespectTo , implicitSpace , cache2 ) );
+		final HashSet<BigInteger> key = ii.getKey();
+		retA.setVal( key , ii.getValue().evalPartialDerivativeCached( withRespectTo , implicitSpace , cache2 ) );
 	}
 
 	return( new VEvalElem2( fac.getFac() , sefac.getFac() , vefac , retA ) );

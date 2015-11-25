@@ -2328,17 +2328,15 @@ protected void applyAdd(
 			DoubleElem lastTotal = new DoubleElem( 0.0 );
 			DoubleElem nextTotal = new DoubleElem( 0.0 );
 			
-			Iterator<HashSet<BigInteger>> it = lastValue.getKeyIterator();
-			while( it.hasNext() )
+			for( final Entry<HashSet<BigInteger>, DoubleElem> ii : lastValue.getEntrySet() )
 			{
-				DoubleElem v = lastValue.get( it.next() );
+				DoubleElem v = ii.getValue();
 				lastTotal = lastTotal.add( v.mult( v ) );
 			}
 			
-			it = nextValue.getKeyIterator();
-			while( it.hasNext() )
+			for( final Entry<HashSet<BigInteger>, DoubleElem> ii : nextValue.getEntrySet() )
 			{
-				DoubleElem v = nextValue.get( it.next() );
+				DoubleElem v = ii.getValue();
 				nextTotal = nextTotal.add( v.mult( v ) );
 			}
 			

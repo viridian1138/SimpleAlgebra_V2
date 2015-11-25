@@ -172,15 +172,14 @@ public class NewtonRaphsonMultiElemSimpleBacktrack<U extends NumDimensions, R ex
 		param = _param;
 		final SimplificationType useSimplification = _param.useSimplification();
 		final boolean useCachedEval = _param.useCachedEval();
-		Iterator<HashSet<BigInteger>> ita = functions.getKeyIterator();
 		evals = new GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,SymbolicElem<R,S>,SymbolicElemFactory<R,S>>( 
 				_param.getSfac() , _param.getDim() , new GeometricAlgebraOrd<U>() );
-		while( ita.hasNext() )
+		for( final Entry<HashSet<BigInteger>, SymbolicElem<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> ii : functions.getEntrySet() )
 		{
-			final HashSet<BigInteger> key = ita.next();
+			final HashSet<BigInteger> key = ii.getKey();
 			SymbolicElem<R,S> evalF = useCachedEval ? 
-					functions.get( key ).evalCached( _param.getImplicitSpaceFirstLevel() , cache ) :
-					functions.get( key ).eval( _param.getImplicitSpaceFirstLevel() );
+					ii.getValue().evalCached( _param.getImplicitSpaceFirstLevel() , cache ) :
+					ii.getValue().eval( _param.getImplicitSpaceFirstLevel() );
 			evalF = handleSimplification( evalF , useSimplification );
 			evals.setVal( key , evalF );
 		}
@@ -191,10 +190,8 @@ public class NewtonRaphsonMultiElemSimpleBacktrack<U extends NumDimensions, R ex
 		{
 			final BigInteger key = bcnt;
 			bcnt = bcnt.add( BigInteger.ONE );
-			ita = functions.getKeyIterator();
-			while( ita.hasNext() )
+			for( final HashSet<BigInteger> key2A : functions.getKeySet() )
 			{
-				final HashSet<BigInteger> key2A = ita.next();
 				final BigInteger key2 = key2A.iterator().next();
 				final SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>> fun = _param.getFunctions().get( key2A );
 				SymbolicElem<R,S> evalP = useCachedEval ?
@@ -318,11 +315,10 @@ public class NewtonRaphsonMultiElemSimpleBacktrack<U extends NumDimensions, R ex
 		GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,R,S> ret = new GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,R,S>(
 				sfac.getFac(), dim, new GeometricAlgebraOrd<U>() );
 		
-		Iterator<HashSet<BigInteger>> ita = evals.getKeyIterator();
-		while( ita.hasNext() )
+		for( final Entry<HashSet<BigInteger>, SymbolicElem<R, S>> ii : evals.getEntrySet() )
 		{
-			HashSet<BigInteger> key = ita.next();
-			ret.setVal( key , evals.get( key ).eval( implicitSpace ) );
+			HashSet<BigInteger> key = ii.getKey();
+			ret.setVal( key , ii.getValue().eval( implicitSpace ) );
 		}
 		
 		return( ret );
@@ -340,19 +336,15 @@ public class NewtonRaphsonMultiElemSimpleBacktrack<U extends NumDimensions, R ex
 	{
 		final SquareMatrixElem<U,R,S> evalJacobian = new SquareMatrixElem<U,R,S>( sfac.getFac() , dim );
 		
-		final Iterator<HashSet<BigInteger>> ita = functions.getKeyIterator();
-		while( ita.hasNext() )
+		for( final HashSet<BigInteger> key2A : functions.getKeySet() )
 		{
-			final HashSet<BigInteger> key2A = ita.next();
 			final BigInteger key2 = key2A.iterator().next();
 			final GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,SymbolicElem<R,S>,SymbolicElemFactory<R,S>> row = 
 						new GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,SymbolicElem<R,S>,SymbolicElemFactory<R,S>>(
 								sfac , dim, new GeometricAlgebraOrd<U>() );
 			partialEvalJacobian.rowVectorToGeometricAlgebra( key2 , row );
-			final Iterator<HashSet<BigInteger>> itb = row.getKeyIterator();
-			while( itb.hasNext() )
+			for( final HashSet<BigInteger> keyA : row.getKeySet() )
 			{
-				final HashSet<BigInteger> keyA = itb.next();
 				final BigInteger key = keyA.iterator().next();
 				final SymbolicElem<R,S> pe = partialEvalJacobian.get( key2 , key );
 				// System.out.println( "*****" );

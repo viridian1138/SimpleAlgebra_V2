@@ -25,6 +25,7 @@ package simplealgebra.samp;
 import java.math.BigInteger;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map.Entry;
 
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
@@ -59,15 +60,14 @@ public class Sampling<U extends NumDimensions, A extends Ord<U>, R extends Elem<
 	public R mean( GeometricAlgebraMultivectorElem<U,A,R,S> y )
 	{
 		R sum = y.getFac().getFac().zero();
-		final Iterator<HashSet<BigInteger>> it = y.getKeyIterator();
-		while( it.hasNext() )
+		for( final Entry<HashSet<BigInteger>, R> ii : y.getEntrySet() )
 		{
-			final HashSet<BigInteger> key = it.next();
+			final HashSet<BigInteger> key = ii.getKey();
 			if( key.size() != 1 )
 			{
 				throw( new RuntimeException( "Inconsistent" ) );
 			}
-			sum = sum.add( y.get(key ) );
+			sum = sum.add( ii.getValue() );
 		}
 		final U dim = y.getFac().getDim();
 		final BigInteger ndim = dim.getVal();
@@ -90,15 +90,14 @@ public class Sampling<U extends NumDimensions, A extends Ord<U>, R extends Elem<
 			R meanX , R meanY ,
 			GeometricAlgebraMultivectorElem<U,A,R,S> slopesY ) throws NotInvertibleException
 	{
-		final Iterator<HashSet<BigInteger>> it = xv.getKeyIterator();
-		while( it.hasNext() )
+		for( final Entry<HashSet<BigInteger>, R> ii : xv.getEntrySet() )
 		{
-			final HashSet<BigInteger> key = it.next();
+			final HashSet<BigInteger> key = ii.getKey();
 			if( key.size() != 1 )
 			{
 				throw( new RuntimeException( "Inconsistent" ) );
 			}
-			final R xsub = xv.get( key ).add( meanX.negate() );
+			final R xsub = ii.getValue().add( meanX.negate() );
 			final R ysub = yv.get( key ).add( meanY.negate() );
 			final R mul = ysub.mult( xsub.invertLeft() );
 			slopesY.setVal( key , mul );

@@ -31,6 +31,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map.Entry;
 
 import junit.framework.TestCase;
 import simplealgebra.DoubleElem;
@@ -111,10 +112,9 @@ public class TestDf3PlneCutFileWriterAnim extends TestCase {
 				
 		DoubleElem total = de.zero();
 		
-		Iterator<HashSet<BigInteger>> it = in.getKeyIterator();
-		while( it.hasNext() )
+		for( final Entry<HashSet<BigInteger>, DoubleElem> ii : in.getEntrySet() )
 		{
-			final DoubleElem dd = ( in.get( it.next() ) );
+			final DoubleElem dd = ii.getValue();
 			total = total.add( dd.mult( dd ) );
 		}
 		

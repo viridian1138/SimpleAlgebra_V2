@@ -111,11 +111,10 @@ public class GeometricAlgebraMultivectorElemType<U extends NumDimensions, A exte
 		HGHandle dimHandle = hg.assertAtom(graph, oid.getFac().getDim() );
 		HGHandle ordHandle = hg.assertAtom(graph, oid.getFac().getOrd() );
 		final HashMap<HashSet<BigInteger>,R> map = new HashMap<HashSet<BigInteger>,R>();
-		Iterator<HashSet<BigInteger>> it = oid.getKeyIterator();
-		while( it.hasNext() )
+		for( final Entry<HashSet<BigInteger>, R> ii : oid.getEntrySet() )
 		{
-			HashSet<BigInteger> key = it.next();
-			R val = oid.getVal( key );
+			HashSet<BigInteger> key = ii.getKey();
+			R val = ii.getValue();
 			map.put( key , val );
 		}
 		HGHandle mapHandle = hg.assertAtom(graph, map );

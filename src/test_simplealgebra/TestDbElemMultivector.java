@@ -28,6 +28,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.Map.Entry;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
@@ -158,11 +159,10 @@ public class TestDbElemMultivector extends TestCase {
 //		Assert.assertTrue( et.getCovariantIndices().size() == 2 );
 		
 		int cnt = 0;
-		Iterator<HashSet<BigInteger>> it = ga.getKeyIterator();
-		while( it.hasNext() )
+		for( final Entry<HashSet<BigInteger>, ComplexElem<DoubleElem, DoubleElemFactory>> ii : ga.getEntrySet() )
 		{
-			HashSet<BigInteger> key = it.next();
-			Assert.assertTrue( ga.getVal( key ) != null );
+			Assert.assertTrue( ii.getKey() != null );
+			Assert.assertTrue( ii.getValue() != null );
 			cnt++;
 		}
 		

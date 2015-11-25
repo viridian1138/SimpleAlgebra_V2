@@ -321,17 +321,16 @@ public abstract class DescentAlgorithmMultiElemRemap<U extends NumDimensions, A 
 			final GeometricAlgebraMultivectorElem<Adim,GeometricAlgebraOrd<Adim>,SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,
 			SymbolicElemFactory<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>> ofun )
 	{
-		final Iterator<HashSet<BigInteger>> it = functions.getKeyIterator();
-		while( it.hasNext() )
+		for( final Entry<HashSet<BigInteger>, SymbolicElem<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> ii : functions.getEntrySet() )
 		{
-			HashSet<BigInteger> key = it.next();
+			HashSet<BigInteger> key = ii.getKey();
 			
 			BigInteger key2 = inMapFun.get( key );
 			
 			HashSet<BigInteger> hs = new HashSet<BigInteger>();
 			hs.add( key2 );
 			
-			ofun.setVal( hs , functions.get( key ) );
+			ofun.setVal( hs , ii.getValue() );
 		}
 	}
 	
@@ -349,11 +348,8 @@ public abstract class DescentAlgorithmMultiElemRemap<U extends NumDimensions, A 
 		BigInteger dimCnt = BigInteger.ZERO;
 		
 		
-		final Iterator<HashSet<BigInteger>> it = functions.getKeyIterator();
-		while( it.hasNext() )
+		for( final HashSet<BigInteger> key : functions.getKeySet() )
 		{
-			HashSet<BigInteger> key = it.next();
-			
 			inMapFun.put(key, dimCnt);
 			
 			HashSet<BigInteger> hs = new HashSet<BigInteger>();
@@ -451,11 +447,10 @@ public abstract class DescentAlgorithmMultiElemRemap<U extends NumDimensions, A 
 		GeometricAlgebraMultivectorElem<U,A,R,S> ret =
 				new GeometricAlgebraMultivectorElem<U,A,R,S>( fac , idim , iord );
 		
-		Iterator<HashSet<BigInteger>> it = sv.getKeyIterator();
-		while( it.hasNext() )
+		for( final Entry<HashSet<BigInteger>, R> ii : sv.getEntrySet() )
 		{
-			HashSet<BigInteger> key = it.next();
-			ret.setVal( outMapFun.get( key ) , sv.get( key ) );
+			HashSet<BigInteger> key = ii.getKey();
+			ret.setVal( outMapFun.get( key ) , ii.getValue() );
 		}
 		
 		return( ret );
@@ -484,11 +479,10 @@ public abstract class DescentAlgorithmMultiElemRemap<U extends NumDimensions, A 
 		GeometricAlgebraMultivectorElem<U,A,R,S> ret =
 				new GeometricAlgebraMultivectorElem<U,A,R,S>( fac , idim , iord );
 		
-		Iterator<HashSet<BigInteger>> it = iterationOffset.getKeyIterator();
-		while( it.hasNext() )
+		for( final Entry<HashSet<BigInteger>, R> ii : iterationOffset.getEntrySet() )
 		{
-			HashSet<BigInteger> key = it.next();
-			ret.setVal( outMapOffset.get( key ) , iterationOffset.get( key ) );
+			HashSet<BigInteger> key = ii.getKey();
+			ret.setVal( outMapOffset.get( key ) , ii.getValue() );
 		}
 		
 		performIterationUpdate( ret );
@@ -514,11 +508,10 @@ public abstract class DescentAlgorithmMultiElemRemap<U extends NumDimensions, A 
 		GeometricAlgebraMultivectorElem<U,A,R,S> ret =
 				new GeometricAlgebraMultivectorElem<U,A,R,S>( fac , idim , iord );
 		
-		Iterator<HashSet<BigInteger>> it = value.getKeyIterator();
-		while( it.hasNext() )
+		for( final Entry<HashSet<BigInteger>, R> ii : value.getEntrySet() )
 		{
-			HashSet<BigInteger> key = it.next();
-			ret.setVal( outMapOffset.get( key ) , value.get( key ) );
+			HashSet<BigInteger> key = ii.getKey();
+			ret.setVal( outMapOffset.get( key ) , ii.getValue() );
 		}
 		
 		setIterationValue( ret );
@@ -547,11 +540,10 @@ public abstract class DescentAlgorithmMultiElemRemap<U extends NumDimensions, A 
 		GeometricAlgebraMultivectorElem<U,A,R,S> value =
 				getIterationValue();
 		
-		Iterator<HashSet<BigInteger>> it = value.getKeyIterator();
-		while( it.hasNext() )
+		for( final Entry<HashSet<BigInteger>, R> ii : value.getEntrySet() )
 		{
-			HashSet<BigInteger> key = it.next();
-			ret.setVal( inMapOffset.get( key ) , value.get( key ) );
+			HashSet<BigInteger> key = ii.getKey();
+			ret.setVal( inMapOffset.get( key ) , ii.getValue() );
 		}
 		
 		return( ret );

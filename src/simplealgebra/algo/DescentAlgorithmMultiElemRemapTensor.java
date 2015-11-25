@@ -449,11 +449,10 @@ public abstract class DescentAlgorithmMultiElemRemapTensor<Z extends Object, R e
 		EinsteinTensorElem<Z,R,S> ret =
 				new EinsteinTensorElem<Z,R,S>( fac , contravariantIndices , covariantIndices );
 		
-		Iterator<HashSet<BigInteger>> it = sv.getKeyIterator();
-		while( it.hasNext() )
+		for( final Entry<HashSet<BigInteger>, R> ii : sv.getEntrySet() )
 		{
-			HashSet<BigInteger> key = it.next();
-			ret.setVal( outMapFun.get( key ) , sv.get( key ) );
+			HashSet<BigInteger> key = ii.getKey();
+			ret.setVal( outMapFun.get( key ) , ii.getValue() );
 		}
 		
 		return( ret );
@@ -482,11 +481,10 @@ public abstract class DescentAlgorithmMultiElemRemapTensor<Z extends Object, R e
 		EinsteinTensorElem<Z,R,S> ret =
 				new EinsteinTensorElem<Z,R,S>( fac , contravariantIndices , covariantIndices );
 		
-		Iterator<HashSet<BigInteger>> it = iterationOffset.getKeyIterator();
-		while( it.hasNext() )
+		for( final Entry<HashSet<BigInteger>, R> ii : iterationOffset.getEntrySet() )
 		{
-			HashSet<BigInteger> key = it.next();
-			ret.setVal( outMapOffset.get( key ) , iterationOffset.get( key ) );
+			HashSet<BigInteger> key = ii.getKey();
+			ret.setVal( outMapOffset.get( key ) , ii.getValue() );
 		}
 		
 		performIterationUpdate( ret );
@@ -512,11 +510,10 @@ public abstract class DescentAlgorithmMultiElemRemapTensor<Z extends Object, R e
 		EinsteinTensorElem<Z,R,S> ret =
 				new EinsteinTensorElem<Z,R,S>( fac , contravariantIndices , covariantIndices );
 		
-		Iterator<HashSet<BigInteger>> it = value.getKeyIterator();
-		while( it.hasNext() )
+		for( final Entry<HashSet<BigInteger>, R> ii : value.getEntrySet() )
 		{
-			HashSet<BigInteger> key = it.next();
-			ret.setVal( outMapOffset.get( key ) , value.get( key ) );
+			HashSet<BigInteger> key = ii.getKey();
+			ret.setVal( outMapOffset.get( key ) , ii.getValue() );
 		}
 		
 		setIterationValue( ret );
