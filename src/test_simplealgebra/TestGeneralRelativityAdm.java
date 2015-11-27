@@ -2290,11 +2290,10 @@ public SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFacto
 	
 	
 	{
-		Iterator<HashMap<Ordinate, BigInteger>> it = spacesA.keySet().iterator();
-		while( it.hasNext() )
+		for( final Entry<HashMap<Ordinate, BigInteger>, CoeffNode> ii : spacesA.entrySet() )
 		{
-			HashMap<Ordinate, BigInteger> spaceAe = it.next();
-			CoeffNode coeff = spacesA.get( spaceAe );
+			HashMap<Ordinate, BigInteger> spaceAe = ii.getKey();
+			CoeffNode coeff = ii.getValue();
 			final CNelemMetric an0 = 
 					new CNelemMetric( fac.getFac() , spaceAe , index );
 			SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>
@@ -2858,11 +2857,10 @@ public SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFacto
 	
 	
 	{
-		Iterator<HashMap<Ordinate, BigInteger>> it = spacesA.keySet().iterator();
-		while( it.hasNext() )
+		for( final Entry<HashMap<Ordinate, BigInteger>, CoeffNode> ii : spacesA.entrySet() )
 		{
-			HashMap<Ordinate, BigInteger> spaceAe = it.next();
-			CoeffNode coeff = spacesA.get( spaceAe );
+			HashMap<Ordinate, BigInteger> spaceAe = ii.getKey();
+			CoeffNode coeff = ii.getValue();
 			final CNelemConjugateMomentum an0 = 
 					new CNelemConjugateMomentum( fac.getFac() , spaceAe , index );
 			SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>

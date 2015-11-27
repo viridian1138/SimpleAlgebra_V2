@@ -1245,11 +1245,10 @@ public class TestStelemC extends TestCase {
 			
 			
 			{
-				Iterator<HashMap<Ordinate, BigInteger>> it = spacesA.keySet().iterator();
-				while( it.hasNext() )
+				for( final Entry<HashMap<Ordinate, BigInteger>, CoeffNode> ii : spacesA.entrySet() )
 				{
-					HashMap<Ordinate, BigInteger> spaceAe = it.next();
-					CoeffNode coeff = spacesA.get( spaceAe );
+					HashMap<Ordinate, BigInteger> spaceAe = ii.getKey();
+					CoeffNode coeff = ii.getValue();
 					final CNelem an0 = 
 							new CNelem( fac.getFac() , spaceAe );
 					SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>
