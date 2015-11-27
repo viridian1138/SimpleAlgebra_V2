@@ -1101,10 +1101,8 @@ public class TestStelemB extends TestCase {
 			{
 				CoeffNode cf = new CoeffNode( fac.getFac().identity() , fac.getFac().identity() );
 				HashMap<Ordinate, BigInteger> key = new HashMap<Ordinate, BigInteger>();
-				Iterator<Ordinate> it = imp.keySet().iterator();
-				while( it.hasNext() )
+				for( final Ordinate ae : imp.keySet() )
 				{
-					Ordinate ae = it.next();
 					BigInteger valA = BigInteger.valueOf( imp.get( ae ).getCol() );
 					key.put( ae , valA );
 				}
@@ -1337,11 +1335,10 @@ public class TestStelemB extends TestCase {
 				applyDerivativeAction(implicitSpacesMid, node, numDerivatives-3, hh, implicitSpacesOut);
 			}
 			
-			Iterator<HashMap<Ordinate, BigInteger>> it = implicitSpacesIn.keySet().iterator();
-			while( it.hasNext() )
+			for( final Entry<HashMap<Ordinate, BigInteger>,CoeffNode> ii : implicitSpacesIn.entrySet() )
 			{
-				final HashMap<Ordinate, BigInteger> implicitSpace = it.next();
-				final CoeffNode coeffNodeIn = implicitSpacesIn.get( implicitSpace );
+				final HashMap<Ordinate, BigInteger> implicitSpace = ii.getKey();
+				final CoeffNode coeffNodeIn = ii.getValue();
 				
 				switch( numDerivatives )
 				{
