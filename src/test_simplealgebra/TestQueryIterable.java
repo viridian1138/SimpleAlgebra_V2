@@ -96,12 +96,9 @@ public class TestQueryIterable extends TestCase {
 		
 		
 		int cnt = 0;
-		Iterator<DoubleElem> it = qi.iterator();
 		
-		
-		while( it.hasNext() )
+		for( final DoubleElem d : qi )
 		{
-			DoubleElem d = it.next();
 			Assert.assertTrue( d != null );
 			cnt++;
 		}

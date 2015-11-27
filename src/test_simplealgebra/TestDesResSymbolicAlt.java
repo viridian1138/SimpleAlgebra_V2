@@ -57,7 +57,6 @@ import simplealgebra.et.SimpleCurveMetricTensorFactory;
 import simplealgebra.et.VectorPotentialFactory;
 import simplealgebra.symbolic.*;
 
-
 import java.io.*;
 
 
@@ -1005,20 +1004,18 @@ public class TestDesResSymbolicAlt extends TestCase
 				SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> b,
 				boolean after) {
 			
-			Iterator<Class> it = terminalSymbolsA.iterator();
-			while( it.hasNext() )
+			for( final Class ii : terminalSymbolsA )
 			{
-				if( it.next().isInstance( a ) )
+				if( ii.isInstance( a ) )
 				{
 					return( false );
 				}
 			}
 			
 			
-			it = terminalSymbolsB.iterator();
-			while( it.hasNext() )
+			for( final Class ii : terminalSymbolsB )
 			{
-				if( it.next().isInstance( b ) )
+				if( ii.isInstance( b ) )
 				{
 					return( false );
 				}

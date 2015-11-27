@@ -707,20 +707,18 @@ public class TestCovariantDerivativeFlatAsym3D extends TestCase {
 				SymbolicElem<DoubleElem, DoubleElemFactory> b,
 				boolean after) {
 			
-			Iterator<Class> it = terminalSymbolsA.iterator();
-			while( it.hasNext() )
+			for( final Class ii : terminalSymbolsA )
 			{
-				if( it.next().isInstance( a ) )
+				if( ii.isInstance( a ) )
 				{
 					return( false );
 				}
 			}
 			
 			
-			it = terminalSymbolsB.iterator();
-			while( it.hasNext() )
+			for( final Class ii : terminalSymbolsA )
 			{
-				if( it.next().isInstance( b ) )
+				if( ii.isInstance( b ) )
 				{
 					return( false );
 				}

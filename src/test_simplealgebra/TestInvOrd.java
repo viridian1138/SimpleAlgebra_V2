@@ -92,18 +92,16 @@ public class TestInvOrd<U extends NumDimensions> extends Ord<U> {
 		}
 		
 		
-		Iterator<BigInteger> it = ka.iterator();
-		while( it.hasNext() )
+		for( final BigInteger ii : ka )
 		{
-			el.add( it.next() );
+			el.add( ii );
 		}
 		
 		
 		
-		it = kb.iterator();
-		while( it.hasNext() )
+		for( final BigInteger ii : kb )
 		{
-			el.add( it.next() );
+			el.add( ii );
 		}
 
 		
