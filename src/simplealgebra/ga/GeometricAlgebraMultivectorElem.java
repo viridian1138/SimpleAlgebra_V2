@@ -1273,7 +1273,7 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 	 * 
 	 * @return The set of the basis vectors of the enclosed elems.
 	 */
-	public Set<HashSet<BigInteger>> getKeySet()
+	public Iterable<HashSet<BigInteger>> getKeySet()
 	{
 		return( map.keySet() );
 	}
@@ -1285,7 +1285,7 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 	 * 
 	 * @return The entry set of the multivector.
 	 */
-	public Set<Entry<HashSet<BigInteger>, R>> getEntrySet()
+	public Iterable<Entry<HashSet<BigInteger>, R>> getEntrySet()
 	{
 		return( map.entrySet() );
 	}

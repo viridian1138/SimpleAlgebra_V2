@@ -1127,7 +1127,7 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	 * 
 	 * @return The set of index keys for iterating through the set of sparse elements in the tensor.
 	 */
-	public Set<ArrayList<BigInteger>> getKeySet()
+	public Iterable<ArrayList<BigInteger>> getKeySet()
 	{
 		return( map.keySet() );
 	}
@@ -1138,7 +1138,7 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	 * 
 	 * @return The entry set of sparse elements in the tensor.
 	 */
-	public Set<Entry<ArrayList<BigInteger>, R>> getEntrySet()
+	public Iterable<Entry<ArrayList<BigInteger>, R>> getEntrySet()
 	{
 		return( map.entrySet() );
 	}
