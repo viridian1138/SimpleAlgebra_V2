@@ -3634,10 +3634,10 @@ protected class VEvalElem extends SymbolicElem<EinsteinTensorElem<String,DoubleE
 
 	@Override
 	public void writeString( PrintStream ps ) {
-		for( final Entry<ArrayList<BigInteger>, SymbolicElem<DoubleElem, DoubleElemFactory>> ii : dval.getEntrySet() )
+		for( final SymbolicElem<DoubleElem, DoubleElemFactory> ii : dval.getValueSet() )
 		{
 			ps.print( "\n" + "** " );
-			( ii.getValue() ).writeString( ps );
+			ii.writeString( ps );
 		}
 	}
 	
@@ -3950,10 +3950,10 @@ public SymbolicElem<SymbolicElem<EinsteinTensorElem<String, DoubleElem, DoubleEl
 
 @Override
 public void writeString( PrintStream ps ) {
-	for( final Entry<ArrayList<BigInteger>, SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>> ii : dval.getEntrySet() )
+	for( final SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> ii : dval.getValueSet() )
 	{
 		ps.print( "\n" + "** " );
-		( ii.getValue() ).writeString( ps );
+		ii.writeString( ps );
 	}
 }
 
@@ -4059,10 +4059,10 @@ public EinsteinTensorElem<String, SymbolicElem<SymbolicElem<SymbolicElem<DoubleE
 
 @Override
 public void writeString( PrintStream ps ) {
-	for( final Entry<ArrayList<BigInteger>, SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>> ii : dval.getEntrySet() )
+	for( final SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> ii : dval.getValueSet() )
 	{
 		ps.print( "\n" + "** " );
-		( ii.getValue() ).writeString( ps );
+		ii.writeString( ps );
 	}
 }
 
@@ -4142,10 +4142,10 @@ public EinsteinTensorElem<String, SymbolicElem<SymbolicElem<SymbolicElem<DoubleE
 
 @Override
 public void writeString( PrintStream ps ) {
-	for( final Entry<ArrayList<BigInteger>, SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>> ii : dval.getEntrySet() )
+	for( final SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> ii : dval.getValueSet() )
 	{
 		ps.print( "\n" + "** " );
-		( ii.getValue() ).writeString( ps );
+		ii.writeString( ps );
 	}
 }
 
@@ -4224,10 +4224,10 @@ public EinsteinTensorElem<String, SymbolicElem<SymbolicElem<SymbolicElem<DoubleE
 
 @Override
 public void writeString( PrintStream ps ) {
-	for( final Entry<ArrayList<BigInteger>, SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>> ii : dval.getEntrySet() )
+	for( final SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> ii : dval.getValueSet() )
 	{
 		ps.print( "\n" + "** " );
-		( ii.getValue() ).writeString( ps );
+		ii.writeString( ps );
 	}
 }
 
@@ -4307,10 +4307,10 @@ public EinsteinTensorElem<String, SymbolicElem<SymbolicElem<SymbolicElem<DoubleE
 
 @Override
 public void writeString( PrintStream ps ) {
-	for( final Entry<ArrayList<BigInteger>, SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>> ii : dval.getEntrySet() )
+	for( final SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> ii : dval.getValueSet() )
 	{
 		ps.print( "\n" + "** " );
-		( ii.getValue() ).writeString( ps );
+		ii.writeString( ps );
 	}
 }
 

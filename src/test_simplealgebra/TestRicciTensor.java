@@ -580,10 +580,10 @@ public class TestRicciTensor extends TestCase {
 
 		@Override
 		public void writeString( PrintStream ps ) {
-			for( final Entry<ArrayList<BigInteger>, SymbolicElem<DoubleElem, DoubleElemFactory>> ii : dval.getEntrySet() )
+			for( final SymbolicElem<DoubleElem, DoubleElemFactory> ii : dval.getValueSet() )
 			{
 				ps.print( "\n" + "** " );
-				( ii.getValue() ).writeString( ps );
+				ii.writeString( ps );
 			}
 		}
 		

@@ -1293,6 +1293,18 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 	
 	
 	/**
+	 * Returns the set of values in the tensor.
+	 * 
+	 * @return The set of values in the tensor.
+	 */
+	public Iterable<R> getValueSet()
+	{
+		return( map.values() );
+	}
+	
+	
+	
+	/**
 	 * The map of basis vectors to enclosed elems.
 	 */
 	private final HashMap<HashSet<BigInteger>,R> map = new HashMap<HashSet<BigInteger>,R>();

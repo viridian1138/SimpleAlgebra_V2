@@ -1144,6 +1144,17 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	}
 	
 	
+	/**
+	 * Returns the set of values in the tensor.
+	 * 
+	 * @return The set of values in the tensor.
+	 */
+	public Iterable<R> getValueSet()
+	{
+		return( map.values() );
+	}
+	
+	
 	
 	@Override
 	public EinsteinTensorElem<Z, R, S> cloneThread( final BigInteger threadIndex )

@@ -2709,10 +2709,10 @@ protected class VEvalElem extends SymbolicElem<GeometricAlgebraMultivectorElem<T
 
 	@Override
 	public void writeString( PrintStream ps ) {
-		for( final Entry<HashSet<BigInteger>, SymbolicElem<DoubleElem, DoubleElemFactory>> ii : dval.getEntrySet() )
+		for( final SymbolicElem<DoubleElem, DoubleElemFactory> ii : dval.getValueSet() )
 		{
 			ps.print( "\n" + "** " );
-			( ii.getValue() ).writeString( ps );
+			ii.writeString( ps );
 		}
 	}
 
