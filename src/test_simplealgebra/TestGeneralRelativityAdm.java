@@ -1006,12 +1006,10 @@ public class TestGeneralRelativityAdm extends TestCase {
 private double calcMagnitudeSq( EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> in )
 {
 	double db = 0.0;
-	for( final Entry<ArrayList<BigInteger>, DoubleElem> ii : in.getEntrySet() )
+	for( final DoubleElem dbl : in.getValueSet() )
 	{
-		final ArrayList<BigInteger> elem = ii.getKey();
-		final DoubleElem dbl = ii.getValue();
 		final double vl = dbl.getVal();
-		System.out.print( elem + " " + vl + " " );
+		// System.out.print( elem + " " + vl + " " );
 		db += vl * vl;
 	}
 	return( db );
