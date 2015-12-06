@@ -1091,9 +1091,8 @@ private GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<Te
 private double calcMagnitudeSq( GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> in )
 {
 	double db = 0.0;
-	for( final Entry<HashSet<BigInteger>, DoubleElem> ii : in.getEntrySet() )
+	for( final DoubleElem dbl : in.getValueSet() )
 	{
-		final DoubleElem dbl = ii.getValue();
 		final double vl = dbl.getVal();
 		db += vl * vl;
 	}

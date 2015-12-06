@@ -112,9 +112,8 @@ public class TestDf3PlneCutFileWriterAnim extends TestCase {
 				
 		DoubleElem total = de.zero();
 		
-		for( final Entry<HashSet<BigInteger>, DoubleElem> ii : in.getEntrySet() )
+		for( final DoubleElem dd : in.getValueSet() )
 		{
-			final DoubleElem dd = ii.getValue();
 			total = total.add( dd.mult( dd ) );
 		}
 		

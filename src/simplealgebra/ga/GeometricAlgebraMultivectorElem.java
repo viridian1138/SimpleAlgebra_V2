@@ -975,9 +975,8 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 	{
 		R retA = this.getFac().getFac().zero();
 		
-		for( final Entry<HashSet<BigInteger>,R> ii : map.entrySet() )
+		for( final R nxt : map.values() )
 		{
-			R nxt = ii.getValue();
 			retA = retA.add( nxt.mult( nxt ) );
 		}
 		

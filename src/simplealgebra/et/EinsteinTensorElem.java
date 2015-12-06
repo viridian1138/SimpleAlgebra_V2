@@ -715,9 +715,8 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	@Override
 	public EinsteinTensorElem<Z, R, S> invertLeft() throws NotInvertibleException {
 		R sum = fac.zero();
-		for( final Entry<ArrayList<BigInteger>,R> ii : map.entrySet() )
+		for( final R val : map.values() )
 		{
-			final R val = ii.getValue();
 			sum = sum.add( val );
 		}
 		final R inv = sum.invertLeft();
@@ -748,9 +747,8 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	@Override
 	public EinsteinTensorElem<Z, R, S> invertRight() throws NotInvertibleException {
 		R sum = fac.zero();
-		for( final Entry<ArrayList<BigInteger>,R> ii : map.entrySet() )
+		for( final R val : map.values() )
 		{
-			final R val = ii.getValue();
 			sum = sum.add( val );
 		}
 		final R inv = sum.invertRight();

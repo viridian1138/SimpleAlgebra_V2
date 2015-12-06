@@ -1639,10 +1639,10 @@ public class TestMaterialDerivativeFlatAsym4D extends TestCase
 
 		@Override
 		public void writeString( PrintStream ps ) {
-			for( final Entry<ArrayList<BigInteger>, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> ii : dval.getEntrySet() )
+			for( final SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> ii : dval.getValueSet() )
 			{
 				ps.print( "\n" + "** " );
-				( ii.getValue() ).writeString( ps );
+				ii.writeString( ps );
 			}
 		}
 		
