@@ -103,7 +103,7 @@ public class TestCovariantDerivativeSingleCurve extends TestCase {
 	 * @author thorngreen
 	 *
 	 */
-	private class Ordinate extends SymbolicElem<EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>,EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>>
+	private static class Ordinate extends SymbolicElem<EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>,EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>>
 	{
 		/**
 		 * The number of the ordinate.

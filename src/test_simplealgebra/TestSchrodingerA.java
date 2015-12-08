@@ -865,7 +865,7 @@ public class TestSchrodingerA extends TestCase {
 	 * @author thorngreen
 	 *
 	 */
-	private class Ordinate extends SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
+	private static class Ordinate extends SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 	{
 		/**
 		 * The number of the ordinate.
@@ -1097,7 +1097,7 @@ public class TestSchrodingerA extends TestCase {
 	 * @author thorngreen
 	 *
 	 */
-	private class CoeffNode
+	private static class CoeffNode
 	{
 		/**
 		 * The numerator.
@@ -1149,7 +1149,7 @@ public class TestSchrodingerA extends TestCase {
 	 * @author thorngreen
 	 *
 	 */
-	private class BNelem extends Nelem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>,Ordinate>
+	private static class BNelem extends Nelem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>,Ordinate>
 	{
 
 		/**

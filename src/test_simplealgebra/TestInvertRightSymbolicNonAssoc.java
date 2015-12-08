@@ -80,7 +80,7 @@ public class TestInvertRightSymbolicNonAssoc extends TestCase
 	 * @author tgreen
 	 *
 	 */
-	private class AElem extends SymbolicElem<EinsteinTensorElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,EinsteinTensorElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
+	private static class AElem extends SymbolicElem<EinsteinTensorElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,EinsteinTensorElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
 	{
 
 		/**

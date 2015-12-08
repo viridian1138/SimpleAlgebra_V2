@@ -843,7 +843,7 @@ public class TestStelemC_DB extends TestCase {
 	 * @author thorngreen
 	 *
 	 */
-	private class Ordinate extends SymbolicElem<DoubleElem, DoubleElemFactory>
+	private static class Ordinate extends SymbolicElem<DoubleElem, DoubleElemFactory>
 	{
 		/**
 		 * The number of the ordinate.
@@ -1072,7 +1072,7 @@ public class TestStelemC_DB extends TestCase {
 	 * @author thorngreen
 	 *
 	 */
-	private class CoeffNode
+	private static class CoeffNode
 	{
 		/**
 		 * The numerator.
@@ -1124,7 +1124,7 @@ public class TestStelemC_DB extends TestCase {
 	 * @author thorngreen
 	 *
 	 */
-	private class BNelem extends Nelem<DoubleElem,DoubleElemFactory,Ordinate>
+	private static class BNelem extends Nelem<DoubleElem,DoubleElemFactory,Ordinate>
 	{
 
 		/**

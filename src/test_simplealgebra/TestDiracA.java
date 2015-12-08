@@ -1249,7 +1249,7 @@ private class DDirec extends DirectionalDerivativePartialFactory<
  * @author thorngreen
  *
  */
-private class Ordinate extends SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>,GeometricAlgebraMultivectorElemFactory<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>>
+private static class Ordinate extends SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>,GeometricAlgebraMultivectorElemFactory<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>>
 {
 	/**
 	 * The number of the ordinate.
@@ -1481,7 +1481,7 @@ private static class StelemReduction3L extends SymbolicReduction<
  * @author thorngreen
  *
  */
-private class CoeffNode
+private static class CoeffNode
 {
 	/**
 	 * The numerator.
@@ -1535,7 +1535,7 @@ private class CoeffNode
 	 * @author thorngreen
 	 *
 	 */
-	private class BNelem extends Nelem<DoubleElem,DoubleElemFactory,Ordinate>
+	private static class BNelem extends Nelem<DoubleElem,DoubleElemFactory,Ordinate>
 	{
 		/**
 		 * The index of the component of the multivector.

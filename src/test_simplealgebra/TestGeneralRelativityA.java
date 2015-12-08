@@ -1066,7 +1066,7 @@ private class DDirec extends DirectionalDerivativePartialFactory<
  * @author thorngreen
  *
  */
-private class Ordinate extends SymbolicElem<EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>,EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>>
+private static class Ordinate extends SymbolicElem<EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>,EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>>
 {
 	/**
 	 * The number of the ordinate.
@@ -1299,7 +1299,7 @@ private class StelemReduction3L extends SymbolicReduction<
  * @author thorngreen
  *
  */
-private class CoeffNode
+private static class CoeffNode
 {
 	/**
 	 * The numerator.
@@ -1354,7 +1354,7 @@ private class CoeffNode
 	 * @author thorngreen
 	 *
 	 */
-	private class BNelem extends Nelem<DoubleElem,DoubleElemFactory,Ordinate>
+	private static class BNelem extends Nelem<DoubleElem,DoubleElemFactory,Ordinate>
 	{
 		/**
 		 * The index of the component of the tensor.

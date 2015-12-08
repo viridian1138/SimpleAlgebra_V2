@@ -83,7 +83,7 @@ public class TestInvertRightSymbolic extends TestCase
 	 * @author tgreen
 	 *
 	 */
-	private class AElem extends SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
+	private static class AElem extends SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
 	{
 		/**
 		 * The row of the elem.
