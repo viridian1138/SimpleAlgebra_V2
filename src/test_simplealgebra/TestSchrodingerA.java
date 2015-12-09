@@ -966,7 +966,7 @@ public class TestSchrodingerA extends TestCase {
 	 * @author thorngreen
 	 *
 	 */
-	private class SymbolicConst extends SymbolicReduction<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
+	private static class SymbolicConst extends SymbolicReduction<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 	{
 
 		/**
@@ -1009,7 +1009,7 @@ public class TestSchrodingerA extends TestCase {
 	 * @author thorngreen
 	 *
 	 */
-	private class StelemReduction2L extends SymbolicReduction<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>
+	private static class StelemReduction2L extends SymbolicReduction<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>
 	{
 
 		/**
@@ -1051,7 +1051,7 @@ public class TestSchrodingerA extends TestCase {
 	 * @author thorngreen
 	 *
 	 */
-	private class StelemReduction3L extends SymbolicReduction<
+	private static class StelemReduction3L extends SymbolicReduction<
 		SymbolicElem<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>,
 		SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>>
 	{
@@ -1940,7 +1940,7 @@ public class TestSchrodingerA extends TestCase {
 	 * @author thorngreen
 	 *
 	 */
-	protected class StelemNewton extends NewtonRaphsonSingleElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
+	protected static class StelemNewton extends NewtonRaphsonSingleElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 	{
 
 		/**

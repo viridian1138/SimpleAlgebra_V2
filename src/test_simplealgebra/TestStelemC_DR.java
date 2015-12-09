@@ -936,7 +936,7 @@ public class TestStelemC_DR extends TestCase {
 	 * @author thorngreen
 	 *
 	 */
-	private class SymbolicConst extends SymbolicReduction<DoubleElem, DoubleElemFactory>
+	private static class SymbolicConst extends SymbolicReduction<DoubleElem, DoubleElemFactory>
 	{
 
 		/**
@@ -977,7 +977,7 @@ public class TestStelemC_DR extends TestCase {
 	 * @author thorngreen
 	 *
 	 */
-	private class StelemReduction2L extends SymbolicReduction<SymbolicElem<DoubleElem, DoubleElemFactory>,SymbolicElemFactory<DoubleElem, DoubleElemFactory>>
+	private static class StelemReduction2L extends SymbolicReduction<SymbolicElem<DoubleElem, DoubleElemFactory>,SymbolicElemFactory<DoubleElem, DoubleElemFactory>>
 	{
 
 		/**
@@ -1019,7 +1019,7 @@ public class TestStelemC_DR extends TestCase {
 	 * @author thorngreen
 	 *
 	 */
-	private class StelemReduction3L extends SymbolicReduction<
+	private static class StelemReduction3L extends SymbolicReduction<
 		SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
 		SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>
 	{
@@ -1894,7 +1894,7 @@ public class TestStelemC_DR extends TestCase {
 	 * @author thorngreen
 	 *
 	 */
-	protected class StelemNewton extends NewtonRaphsonSingleElem<DoubleElem,DoubleElemFactory>
+	protected static class StelemNewton extends NewtonRaphsonSingleElem<DoubleElem,DoubleElemFactory>
 	{
 
 		/**

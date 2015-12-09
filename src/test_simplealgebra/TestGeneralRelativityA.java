@@ -1166,7 +1166,7 @@ private static class Ordinate extends SymbolicElem<EinsteinTensorElem<String,Dou
  * @author thorngreen
  *
  */
-private class SymbolicConst extends SymbolicReduction<DoubleElem,DoubleElemFactory>
+private static class SymbolicConst extends SymbolicReduction<DoubleElem,DoubleElemFactory>
 {
 
 	/**
@@ -1208,7 +1208,7 @@ private class SymbolicConst extends SymbolicReduction<DoubleElem,DoubleElemFacto
  * @author thorngreen
  *
  */
-private class StelemReduction2L extends SymbolicReduction<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>
+private static class StelemReduction2L extends SymbolicReduction<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>
 {
 
 	/**
@@ -1251,7 +1251,7 @@ private class StelemReduction2L extends SymbolicReduction<SymbolicElem<DoubleEle
  * @author thorngreen
  *
  */
-private class StelemReduction3L extends SymbolicReduction<
+private static class StelemReduction3L extends SymbolicReduction<
 	SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
 	SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>
 {

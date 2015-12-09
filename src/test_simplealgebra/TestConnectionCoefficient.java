@@ -425,7 +425,7 @@ public class TestConnectionCoefficient extends TestCase {
 	 * @author thorngreen
 	 *
 	 */
-	private class SymbolicConst extends SymbolicReduction<DoubleElem,DoubleElemFactory>
+	private static class SymbolicConst extends SymbolicReduction<DoubleElem,DoubleElemFactory>
 	{
 
 		/**
