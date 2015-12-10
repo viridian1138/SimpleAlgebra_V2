@@ -886,7 +886,7 @@ public class TestBurgersB extends TestCase {
 	 * @author thorngreen
 	 *
 	 */	
-	private class CNelem extends Nelem<SymbolicElem<DoubleElem,DoubleElemFactory>,
+	private static class CNelem extends Nelem<SymbolicElem<DoubleElem,DoubleElemFactory>,
 		SymbolicElemFactory<DoubleElem,DoubleElemFactory>,Ordinate>
 	{
 

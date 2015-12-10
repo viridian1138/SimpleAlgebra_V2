@@ -1026,7 +1026,7 @@ public class TestStelemD_DR extends TestCase {
 	 * @author thorngreen
 	 *
 	 */
-	private class DDirec extends DirectionalDerivativePartialFactory<
+	private static class DDirec extends DirectionalDerivativePartialFactory<
 		SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>, 
 		SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
 		Ordinate>
@@ -1485,7 +1485,7 @@ public class TestStelemD_DR extends TestCase {
 	 * @author thorngreen
 	 *
 	 */	
-	private class CNelem extends Nelem<SymbolicElem<DoubleElem,DoubleElemFactory>,
+	private static class CNelem extends Nelem<SymbolicElem<DoubleElem,DoubleElemFactory>,
 		SymbolicElemFactory<DoubleElem,DoubleElemFactory>,Ordinate>
 	{
 
@@ -2265,7 +2265,7 @@ public class TestStelemD_DR extends TestCase {
 	 * @author thorngreen
 	 *
 	 */
-	protected class IncrementManager
+	protected static class IncrementManager
 	{
 		/**
 		 * The current discretized X-coordinate.

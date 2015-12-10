@@ -1080,7 +1080,7 @@ private boolean calcEq( EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> 
  * @author thorngreen
  *
  */
-private class DDirec4 extends DirectionalDerivativePartialFactory<
+private static class DDirec4 extends DirectionalDerivativePartialFactory<
 	SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
 	SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
 	Ordinate>
@@ -1163,7 +1163,7 @@ private class DDirec4 extends DirectionalDerivativePartialFactory<
  * @author thorngreen
  *
  */
-private class DDirec3 extends DirectionalDerivativePartialFactory<
+private static class DDirec3 extends DirectionalDerivativePartialFactory<
 	SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
 	SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
 	Ordinate>
@@ -1845,7 +1845,7 @@ private static class CoeffNode
  * @author thorngreen
  *
  */	
-private class CNelemMetric extends Nelem<SymbolicElem<DoubleElem,DoubleElemFactory>,
+private static class CNelemMetric extends Nelem<SymbolicElem<DoubleElem,DoubleElemFactory>,
 	SymbolicElemFactory<DoubleElem,DoubleElemFactory>,Ordinate>
 {
 	/**
@@ -2029,7 +2029,7 @@ private class CNelemMetric extends Nelem<SymbolicElem<DoubleElem,DoubleElemFacto
 * @author thorngreen
 *
 */	
-private class CNelemConjugateMomentum extends Nelem<SymbolicElem<DoubleElem,DoubleElemFactory>,
+private static class CNelemConjugateMomentum extends Nelem<SymbolicElem<DoubleElem,DoubleElemFactory>,
 SymbolicElemFactory<DoubleElem,DoubleElemFactory>,Ordinate>
 {
 /**
@@ -5232,7 +5232,7 @@ protected void initTempArray()
  * @author thorngreen
  *
  */
-protected class IncrementManager
+protected static class IncrementManager
 {
 	/**
 	 * The current discretized X-coordinate.

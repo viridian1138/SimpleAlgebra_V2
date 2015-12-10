@@ -470,7 +470,7 @@ public class TestRiemannTensor extends TestCase {
 	 * @author thorngreen
 	 *
 	 */
-	private class DDirec extends DirectionalDerivativePartialFactory<DoubleElem,DoubleElemFactory,Ordinate>
+	private static class DDirec extends DirectionalDerivativePartialFactory<DoubleElem,DoubleElemFactory,Ordinate>
 	{
 		/**
 		 * Factory for building the value of the derivative of an ordinate.

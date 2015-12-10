@@ -811,7 +811,7 @@ public class TestSchrodingerSpt extends TestCase {
 	 * @author thorngreen
 	 *
 	 */
-	private class DDirec extends DirectionalDerivativePartialFactory<
+	private static class DDirec extends DirectionalDerivativePartialFactory<
 		SymbolicElem<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>, 
 		SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>,
 		Ordinate>
@@ -1305,7 +1305,7 @@ public class TestSchrodingerSpt extends TestCase {
 	 * @author thorngreen
 	 *
 	 */	
-	private class CNelem extends Nelem<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,
+	private static class CNelem extends Nelem<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,
 		SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,Ordinate>
 	{
 
@@ -2079,7 +2079,7 @@ public class TestSchrodingerSpt extends TestCase {
 	 * @author thorngreen
 	 *
 	 */
-	protected class IncrementManager
+	protected static class IncrementManager
 	{
 		/**
 		 * The current discretized X-coordinate.
