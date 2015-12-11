@@ -966,7 +966,7 @@ public class TestDesResSymbolicAlt extends TestCase
 	 * @author thorngreen
 	 *
 	 */
-	private class PrecCompare extends PrecedenceComparator<ComplexElem<DoubleElem, DoubleElemFactory>,ComplexElemFactory<DoubleElem, DoubleElemFactory>>
+	private static class PrecCompare extends PrecedenceComparator<ComplexElem<DoubleElem, DoubleElemFactory>,ComplexElemFactory<DoubleElem, DoubleElemFactory>>
 	{
 		
 		/**

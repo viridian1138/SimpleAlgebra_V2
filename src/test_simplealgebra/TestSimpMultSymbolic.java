@@ -152,7 +152,7 @@ public class TestSimpMultSymbolic extends TestCase
 	 * @author tgreen
 	 *
 	 */
-	private class BElem extends SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
+	private static class BElem extends SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
 	{
 
 		/**

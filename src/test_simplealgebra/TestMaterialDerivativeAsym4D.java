@@ -2229,7 +2229,7 @@ public class TestMaterialDerivativeAsym4D extends TestCase
 	 * @author thorngreen
 	 *
 	 */
-	private class PrecCompare extends PrecedenceComparator<ComplexElem<DoubleElem, DoubleElemFactory>,ComplexElemFactory<DoubleElem, DoubleElemFactory>>
+	private static class PrecCompare extends PrecedenceComparator<ComplexElem<DoubleElem, DoubleElemFactory>,ComplexElemFactory<DoubleElem, DoubleElemFactory>>
 	{
 		
 		/**

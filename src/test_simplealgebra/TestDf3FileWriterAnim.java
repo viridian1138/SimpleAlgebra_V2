@@ -54,7 +54,7 @@ public class TestDf3FileWriterAnim extends TestCase {
 	 * @author thorngreen
 	 *
 	 */
-	protected class TstDf3FileWriterAnim extends RawFileWriter
+	protected static class TstDf3FileWriterAnim extends RawFileWriter
 	{
 
 		

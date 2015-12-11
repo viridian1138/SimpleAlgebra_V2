@@ -201,7 +201,7 @@ public class TestCovariantDerivativeFlat extends TestCase {
 	 * @author thorngreen
 	 *
 	 */
-	private class BElem extends SymbolicElem<EinsteinTensorElem<String,SymbolicElem<DoubleElem, DoubleElemFactory>,SymbolicElemFactory<DoubleElem, DoubleElemFactory>>,EinsteinTensorElemFactory<String,SymbolicElem<DoubleElem, DoubleElemFactory>,SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>
+	private static class BElem extends SymbolicElem<EinsteinTensorElem<String,SymbolicElem<DoubleElem, DoubleElemFactory>,SymbolicElemFactory<DoubleElem, DoubleElemFactory>>,EinsteinTensorElemFactory<String,SymbolicElem<DoubleElem, DoubleElemFactory>,SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>
 	{
 
 		/**
@@ -679,7 +679,7 @@ public class TestCovariantDerivativeFlat extends TestCase {
 	 * @author thorngreen
 	 *
 	 */
-	private class PrecCompare extends PrecedenceComparator<DoubleElem, DoubleElemFactory>
+	private static class PrecCompare extends PrecedenceComparator<DoubleElem, DoubleElemFactory>
 	{
 		
 		/**

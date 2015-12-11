@@ -165,7 +165,7 @@ public class TestDf3PlneCutFileWriterAnim extends TestCase {
 	 * @author thorngreen
 	 *
 	 */
-	protected class TstDf3FileWriterAnim extends RawFileWriter
+	protected static class TstDf3FileWriterAnim extends RawFileWriter
 	{
 
 		

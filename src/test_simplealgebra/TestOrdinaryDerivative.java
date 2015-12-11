@@ -203,7 +203,7 @@ public class TestOrdinaryDerivative extends TestCase {
 	 * @author thorngreen
 	 *
 	 */
-	private class BElem extends SymbolicElem<EinsteinTensorElem<String,SymbolicElem<DoubleElem, DoubleElemFactory>,SymbolicElemFactory<DoubleElem, DoubleElemFactory>>,EinsteinTensorElemFactory<String,SymbolicElem<DoubleElem, DoubleElemFactory>,SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>
+	private static class BElem extends SymbolicElem<EinsteinTensorElem<String,SymbolicElem<DoubleElem, DoubleElemFactory>,SymbolicElemFactory<DoubleElem, DoubleElemFactory>>,EinsteinTensorElemFactory<String,SymbolicElem<DoubleElem, DoubleElemFactory>,SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>
 	{
 
 		/**
@@ -318,7 +318,7 @@ public class TestOrdinaryDerivative extends TestCase {
 	 * @author thorngreen
 	 *
 	 */
-	private class CElem extends SymbolicElem<DoubleElem,DoubleElemFactory>
+	private static class CElem extends SymbolicElem<DoubleElem,DoubleElemFactory>
 	{
 		/**
 		 * The index of the component.

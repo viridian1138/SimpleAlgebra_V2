@@ -53,7 +53,7 @@ public class TestDf3FileWriter extends TestCase {
 	 * @author thorngreen
 	 *
 	 */
-	protected class TstDf3FileWriter extends RawFileWriter
+	protected static class TstDf3FileWriter extends RawFileWriter
 	{
 
 		/**
