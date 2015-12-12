@@ -910,7 +910,7 @@ public class TestMaterialDerivativeFlatAsym3D extends TestCase
 	 * @author thorngreen
 	 *
 	 */
-	private class X0_Elem extends SymbolicElem<DoubleElem,DoubleElemFactory>
+	private static class X0_Elem extends SymbolicElem<DoubleElem,DoubleElemFactory>
 	{
 
 		/**
@@ -986,7 +986,7 @@ public class TestMaterialDerivativeFlatAsym3D extends TestCase
 	 * @author thorngreen
 	 *
 	 */
-	private class X1_Elem extends SymbolicElem<DoubleElem,DoubleElemFactory>
+	private static class X1_Elem extends SymbolicElem<DoubleElem,DoubleElemFactory>
 	{
 
 		/**
@@ -1062,7 +1062,7 @@ public class TestMaterialDerivativeFlatAsym3D extends TestCase
 	 * @author thorngreen
 	 *
 	 */
-	private class X2_Elem extends SymbolicElem<DoubleElem,DoubleElemFactory>
+	private static class X2_Elem extends SymbolicElem<DoubleElem,DoubleElemFactory>
 	{
 
 		/**
