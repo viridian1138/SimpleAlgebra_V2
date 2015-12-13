@@ -85,7 +85,7 @@ public class TestMetricDeterminant extends TestCase
 	 * @author thorngreen
 	 *
 	 */
-	private class CSquaredElem extends SymbolicElem<DoubleElem,DoubleElemFactory>
+	private static class CSquaredElem extends SymbolicElem<DoubleElem,DoubleElemFactory>
 	{
 
 		/**
