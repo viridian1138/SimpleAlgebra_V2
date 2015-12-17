@@ -164,7 +164,7 @@ public class TestDesResSymbolic extends TestCase
 	 * @author thorngreen
 	 *
 	 */ 
-	private class T_2UxElem extends SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
+	private static class T_2UxElem extends SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 	{
 
 		/**
@@ -547,7 +547,7 @@ public class TestDesResSymbolic extends TestCase
 	 * @author thorngreen
 	 *
 	 */
-	private class VectFac extends VectorPotentialFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
+	private static class VectFac extends VectorPotentialFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 	{
 
 		/**

@@ -49,7 +49,7 @@ public class TestRawFileWriter extends TestCase {
 	 * @author thorngreen
 	 *
 	 */
-	protected class TstRawFileWriter extends RawFileWriter
+	protected static class TstRawFileWriter extends RawFileWriter
 	{
 
 		/**

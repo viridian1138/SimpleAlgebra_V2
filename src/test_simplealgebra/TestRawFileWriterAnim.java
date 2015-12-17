@@ -50,7 +50,7 @@ public class TestRawFileWriterAnim extends TestCase {
 	 * @author thorngreen
 	 *
 	 */
-	protected class TstRawFileWriterAnim extends RawFileWriter
+	protected static class TstRawFileWriterAnim extends RawFileWriter
 	{
 
 		/**

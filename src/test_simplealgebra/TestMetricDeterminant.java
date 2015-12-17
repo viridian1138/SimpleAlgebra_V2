@@ -166,7 +166,7 @@ public class TestMetricDeterminant extends TestCase
 	 * @author thorngreen
 	 *
 	 */
-	private class T_2UxElem extends SymbolicElem<DoubleElem,DoubleElemFactory>
+	private static class T_2UxElem extends SymbolicElem<DoubleElem,DoubleElemFactory>
 	{
 
 		/**
