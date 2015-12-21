@@ -1677,7 +1677,7 @@ private static class CNelem extends Nelem<SymbolicElem<DoubleElem,DoubleElemFact
  * @author thorngreen
  *
  */	
-private class AStelem extends Stelem<SymbolicElem<DoubleElem,DoubleElemFactory>,
+private static class AStelem extends Stelem<SymbolicElem<DoubleElem,DoubleElemFactory>,
 	SymbolicElemFactory<DoubleElem,DoubleElemFactory>,Ordinate>
 {	
 
@@ -3038,7 +3038,7 @@ public void writeString( PrintStream ps ) {
  * @author thorngreen
  *
  */
-protected class TestMetricTensorFactory extends MetricTensorInvertingFactory<String, TestDimensionFour,
+protected static class TestMetricTensorFactory extends MetricTensorInvertingFactory<String, TestDimensionFour,
 	SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>,SymbolicElemFactory<DoubleElem, DoubleElemFactory>>,
 	SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>,SymbolicElemFactory<DoubleElem, DoubleElemFactory>>
 	>
