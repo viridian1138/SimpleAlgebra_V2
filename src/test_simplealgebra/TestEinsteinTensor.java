@@ -676,11 +676,11 @@ public class TestEinsteinTensor extends TestCase {
 		final DoubleElemFactory de = new DoubleElemFactory();
 		
 		
-		final ArrayList<String> contravariantIndices = new ArrayList<String>();
+		// final ArrayList<String> contravariantIndices = new ArrayList<String>();
 		
-		final ArrayList<String> covariantIndices = new ArrayList<String>();
+		// final ArrayList<String> covariantIndices = new ArrayList<String>();
 		
-		covariantIndices.add( "v" );
+		// covariantIndices.add( "v" );
 		
 		
 		final TestDimensionFour tdim = new TestDimensionFour();
@@ -712,8 +712,8 @@ public class TestEinsteinTensor extends TestCase {
 		
 
 		
-		SymbolicElem<EinsteinTensorElem<String, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, EinsteinTensorElemFactory<String, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> elem
-			= new BElem(se2s);
+		// SymbolicElem<EinsteinTensorElem<String, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, EinsteinTensorElemFactory<String, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> elem
+		//	= new BElem(se2s);
 		
 		
 		

@@ -168,12 +168,12 @@ public class TestDbElemBasics extends TestCase {
 				SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>(se, td);
 		
 		
-		final DbElemFactory<SquareMatrixElem<TestDimensionFour,
-			SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>,SquareMatrixElemFactory<TestDimensionFour,
-			SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>> se3 =
-			new DbElemFactory<SquareMatrixElem<TestDimensionFour,
-			SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>,SquareMatrixElemFactory<TestDimensionFour,
-			SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>>(se2, graph);
+		// final DbElemFactory<SquareMatrixElem<TestDimensionFour,
+		//	SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>,SquareMatrixElemFactory<TestDimensionFour,
+		//	SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>> se3 =
+		//	new DbElemFactory<SquareMatrixElem<TestDimensionFour,
+		//	SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>,SquareMatrixElemFactory<TestDimensionFour,
+		//	SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>>(se2, graph);
 		
 		
 		final DbElem<SquareMatrixElem<TestDimensionFour,

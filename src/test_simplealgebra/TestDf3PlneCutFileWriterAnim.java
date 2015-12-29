@@ -117,7 +117,7 @@ public class TestDf3PlneCutFileWriterAnim extends TestCase {
 			total = total.add( dd.mult( dd ) );
 		}
 		
-		final ArrayList<DoubleElem> args = new ArrayList<DoubleElem>();
+		// final ArrayList<DoubleElem> args = new ArrayList<DoubleElem>();
 		
 		final DoubleElem invSqrtTotal = ( new DoubleElem( Math.sqrt( total.getVal() ) ) ).invertLeft();
 		

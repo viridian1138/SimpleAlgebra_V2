@@ -160,15 +160,15 @@ public class TestInvertRightSymbolicNonAssoc extends TestCase
 	 */
 	public void testInvertRightElems() throws NotInvertibleException
 	{
-		final TestDimensionFour td = new TestDimensionFour();
+		// final TestDimensionFour td = new TestDimensionFour();
 		
 		final DoubleElemFactory dl = new DoubleElemFactory();
 		
 		final EinsteinTensorElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory> se = 
 				new EinsteinTensorElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>(dl);
 		
-		final SymbolicElemFactory<EinsteinTensorElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,EinsteinTensorElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>> ye = 
-				new SymbolicElemFactory<EinsteinTensorElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,EinsteinTensorElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>(se);
+		// final SymbolicElemFactory<EinsteinTensorElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,EinsteinTensorElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>> ye = 
+		//		new SymbolicElemFactory<EinsteinTensorElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,EinsteinTensorElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>(se);
 		
 		final SymbolicElem<EinsteinTensorElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,EinsteinTensorElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
 			ten = new AElem( se );

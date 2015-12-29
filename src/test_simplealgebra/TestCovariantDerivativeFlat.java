@@ -752,11 +752,11 @@ public class TestCovariantDerivativeFlat extends TestCase {
 		final DoubleElemFactory de = new DoubleElemFactory();
 		
 		
-		final ArrayList<String> contravariantIndices = new ArrayList<String>();
+		// final ArrayList<String> contravariantIndices = new ArrayList<String>();
 		
-		final ArrayList<String> covariantIndices = new ArrayList<String>();
+		// final ArrayList<String> covariantIndices = new ArrayList<String>();
 		
-		covariantIndices.add( "v" );
+		// covariantIndices.add( "v" );
 		
 		
 		final TestDimensionFour tdim = new TestDimensionFour();
@@ -777,8 +777,8 @@ public class TestCovariantDerivativeFlat extends TestCase {
 		final DDirec dd = new DDirec( de2 , de );
 		
 		
-		final OrdinaryDerivativeFactory<String, TestDimensionFour, DoubleElem, DoubleElemFactory, Ordinate> ofacI =
-				new OrdinaryDerivativeFactory<String, TestDimensionFour, DoubleElem, DoubleElemFactory, Ordinate>(se2s, tdim, dd, null);
+		// final OrdinaryDerivativeFactory<String, TestDimensionFour, DoubleElem, DoubleElemFactory, Ordinate> ofacI =
+		//		new OrdinaryDerivativeFactory<String, TestDimensionFour, DoubleElem, DoubleElemFactory, Ordinate>(se2s, tdim, dd, null);
 		
 		
 		

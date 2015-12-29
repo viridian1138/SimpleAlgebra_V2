@@ -231,13 +231,15 @@ public class TestConnectionCoefficient extends TestCase {
 			
 			covariantIndices.add( "v" );
 			
+			final DoubleElemFactory de = new DoubleElemFactory();
+			
 			
 			final EinsteinTensorElem<String,SymbolicElem<DoubleElem, DoubleElemFactory>,SymbolicElemFactory<DoubleElem, DoubleElemFactory>>
 				elem = new EinsteinTensorElem<String,SymbolicElem<DoubleElem, DoubleElemFactory>,SymbolicElemFactory<DoubleElem, DoubleElemFactory>>(fac.getFac(), contravariantIndices, covariantIndices);
 			
 			for( int cnt = 0 ; cnt < TestDimensionFour.FOUR ; cnt++ )
 			{
-				CElem ce = new CElem( new DoubleElemFactory() , cnt );
+				CElem ce = new CElem( de , cnt );
 				final ArrayList<BigInteger> key = new ArrayList<BigInteger>();
 				key.add( BigInteger.valueOf( cnt ) );
 				elem.setVal( key , ce );
@@ -701,11 +703,11 @@ public class TestConnectionCoefficient extends TestCase {
 		final DoubleElemFactory de = new DoubleElemFactory();
 		
 		
-		final ArrayList<String> contravariantIndices = new ArrayList<String>();
+		// final ArrayList<String> contravariantIndices = new ArrayList<String>();
 		
-		final ArrayList<String> covariantIndices = new ArrayList<String>();
+		// final ArrayList<String> covariantIndices = new ArrayList<String>();
 		
-		covariantIndices.add( "v" );
+		// covariantIndices.add( "v" );
 		
 		
 		final TestDimensionFour tdim = new TestDimensionFour();
@@ -741,8 +743,8 @@ public class TestConnectionCoefficient extends TestCase {
 		
 		
 		
-		SymbolicElem<EinsteinTensorElem<String, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, EinsteinTensorElemFactory<String, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> elem
-			= new BElem(se2s);
+		// SymbolicElem<EinsteinTensorElem<String, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, EinsteinTensorElemFactory<String, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> elem
+		//	= new BElem(se2s);
 		
 		
 		final SymbolicElem<EinsteinTensorElem<String, SymbolicElem<DoubleElem, DoubleElemFactory>, 

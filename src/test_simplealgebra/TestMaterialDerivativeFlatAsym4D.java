@@ -2078,11 +2078,11 @@ public class TestMaterialDerivativeFlatAsym4D extends TestCase
 				new ComplexElemFactory<DoubleElem,DoubleElemFactory>( dl );
 		
 		
-		SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
-			cSquared = new CSquaredElem( ce );
+		// SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
+		// 	cSquared = new CSquaredElem( ce );
 		
-		SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
-			t_2Ux = new T_2UxElem( ce );
+		// SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
+		//	t_2Ux = new T_2UxElem( ce );
 		
 		
 		final SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> ye = 

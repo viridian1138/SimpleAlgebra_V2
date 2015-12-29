@@ -211,8 +211,8 @@ public class TestTensorNotAssociative extends TestCase {
 		final DoubleElemFactory de = new DoubleElemFactory();
 		
 		
-		final EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory> etfA =
-				new EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>( de );
+		// final EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory> etfA =
+		//		new EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>( de );
 		
 		
 		final EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> etA =
@@ -220,8 +220,8 @@ public class TestTensorNotAssociative extends TestCase {
 		
 		
 		
-		final EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory> etfB =
-				new EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>( de );
+		// final EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory> etfB =
+		//		new EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>( de );
 		
 		
 		final EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> etB =
@@ -229,8 +229,8 @@ public class TestTensorNotAssociative extends TestCase {
 		
 		
 		
-		final EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory> etfC =
-				new EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>( de );
+		// final EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory> etfC =
+		//		new EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>( de );
 		
 		
 		final EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> etC =

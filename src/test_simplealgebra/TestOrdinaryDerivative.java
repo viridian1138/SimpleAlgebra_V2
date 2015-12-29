@@ -511,11 +511,11 @@ public class TestOrdinaryDerivative extends TestCase {
 		final DoubleElemFactory de = new DoubleElemFactory();
 		
 		
-		final ArrayList<String> contravariantIndices = new ArrayList<String>();
+		// final ArrayList<String> contravariantIndices = new ArrayList<String>();
 		
-		final ArrayList<String> covariantIndices = new ArrayList<String>();
+		// final ArrayList<String> covariantIndices = new ArrayList<String>();
 		
-		contravariantIndices.add( "v" );
+		// contravariantIndices.add( "v" );
 		
 		
 		final TestDimensionFour tdim = new TestDimensionFour();
