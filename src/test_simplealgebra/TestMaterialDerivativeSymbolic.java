@@ -2156,16 +2156,16 @@ public class TestMaterialDerivativeSymbolic extends TestCase
 		
 		
 		
-		final Object z0 = new Object()
-		{
-			
-		};
+//		final Object z0 = new Object()
+//		{
+//			
+//		};
 		
 		
-		final Object z1 = new Object()
-		{
-			
-		};
+//		final Object z1 = new Object()
+//		{
+//			
+//		};
 		
 	
 		
