@@ -5794,7 +5794,10 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 						SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
 						SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
 						Ordinate>( );
-					param3.setCoordVecFac( null );  /* !!!!!!!!!!!!!1 Uveca !!!!!!!!!! */
+				
+					// This is allowed to be null because the space of the derivative is the same as the tensor to which it is applied.
+					param3.setCoordVecFac( null );
+					
 					param3.setDfac( ddirec3 );
 					param3.setDim( tdim );
 					param3.setFac( ge );
@@ -5821,7 +5824,10 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 						SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
 						SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
 						Ordinate>( );
-					param4.setCoordVecFac( null );  /* !!!!!!!!!!!!!1 Uveca !!!!!!!!!! */
+				
+					// This is allowed to be null because the space of the derivative is the same as the tensor to which it is applied.
+					param4.setCoordVecFac( null );
+					
 					param4.setDfac( ddirec4 );
 					param4.setDim( tdim );
 					param4.setFac( ge );

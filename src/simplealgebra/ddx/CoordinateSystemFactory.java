@@ -36,7 +36,9 @@ import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 
 /**
- * Factory for generating a tensor for the coordinate system.
+ * Factory for generating a tensor for the coordinate system.  This is primarily used
+ * to provide a mapping when the (u,v) space of the derivative is different from the
+ * (x,y) space to which the derivative is applied.
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

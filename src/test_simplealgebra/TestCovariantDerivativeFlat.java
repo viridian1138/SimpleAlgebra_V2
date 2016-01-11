@@ -800,7 +800,10 @@ public class TestCovariantDerivativeFlat extends TestCase {
 		param.setFac( se2s );
 		param.setTensorWithRespectTo( elem );
 		param.setDerivativeIndex( "v" );
-		param.setCoordVecFac( null );  /* !!!!!!!!!!!!!1 Uveca !!!!!!!!!! */
+		
+		// This is allowed to be null because the space of the derivative is the same as the tensor to which it is applied.
+		param.setCoordVecFac( null );
+		
 		param.setTemp( new TestTemporaryIndexFactory() );
 		param.setMetric( tmt );
 		param.setDim( tdim );

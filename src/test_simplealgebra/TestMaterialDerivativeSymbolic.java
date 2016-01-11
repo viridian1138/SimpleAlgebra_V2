@@ -2190,7 +2190,10 @@ public class TestMaterialDerivativeSymbolic extends TestCase
 		
 		param.setFac( etfac );
 		param.setTensorWithRespectTo( vectFac );
-		param.setCoordVecFac( null ); /* !!!!!!!!!!!!!1 Uveca !!!!!!!!!! */
+		
+		// This is allowed to be null because the space of the derivative is the same as the tensor to which it is applied.
+		param.setCoordVecFac( null );
+		
 		param.setTemp( new TestTemporaryIndexFactory() );
 		param.setMetric( scfac );
 		param.setDim( td );

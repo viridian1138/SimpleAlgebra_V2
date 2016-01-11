@@ -367,7 +367,9 @@ public class CovariantDerivative<Z extends Object, U extends NumDimensions, R ex
 	private Z derivativeIndex;
 	
 	/**
-	 * The factory for the underlying coordinate system U.
+	 * The factory for the underlying coordinate system U.  This is allowed to be null
+	 * in instances where the space of the derivatives as the space of the tensor to
+	 * which the derivative is applied.
 	 */
 	private CoordinateSystemFactory<Z,R,S> coordVecFac;
 	
