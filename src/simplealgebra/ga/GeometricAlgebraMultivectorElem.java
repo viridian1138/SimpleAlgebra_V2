@@ -898,7 +898,7 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 				HashSet<BigInteger> el = new HashSet<BigInteger>();
 				final boolean negate = ord.calcOrd( ka , kb , el , dim );
 				final int maxGrd = Math.max( ka.size() , kb.size() );
-				if( el.size() <= maxGrd )
+				if( el.size() < maxGrd )
 				{
 					if( negate )
 					{
@@ -942,7 +942,7 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 				HashSet<BigInteger> el = new HashSet<BigInteger>();
 				final boolean negate = ord.calcOrd( ka , kb , el , dim );
 				final int maxGrd = Math.max( ka.size() , kb.size() );
-				if( el.size() > maxGrd )
+				if( el.size() >= maxGrd )
 				{
 					if( negate )
 					{
