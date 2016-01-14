@@ -47,6 +47,7 @@ import simplealgebra.et.db.SymbolicTensorResymType;
 import simplealgebra.ga.db.GeometricAlgebraMultivectorElemFactoryType;
 import simplealgebra.ga.db.GeometricAlgebraMultivectorElemType;
 import simplealgebra.ga.db.SymbolicDotType;
+import simplealgebra.ga.db.SymbolicDotHestenesType;
 import simplealgebra.ga.db.SymbolicReverseLeftType;
 import simplealgebra.ga.db.SymbolicReverseRightType;
 import simplealgebra.ga.db.SymbolicWedgeType;
@@ -107,6 +108,7 @@ public class TypeSystemInit {
 		GeometricAlgebraMultivectorElemType.initType( graph );
 		GeometricAlgebraMultivectorElemFactoryType.initType( graph );
 		SymbolicDotType.initType( graph );
+		SymbolicDotHestenesType.initType( graph );
 		SymbolicReverseLeftType.initType( graph );
 		SymbolicReverseRightType.initType( graph );
 		SymbolicWedgeType.initType( graph );

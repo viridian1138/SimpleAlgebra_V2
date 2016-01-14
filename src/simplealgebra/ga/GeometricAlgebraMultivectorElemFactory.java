@@ -158,6 +158,16 @@ public class GeometricAlgebraMultivectorElemFactory<U extends NumDimensions, A e
 				}
 				// break;
 				
+				case DOT_HESTENES:
+				{
+					SymbolicElem<GeometricAlgebraMultivectorElem<U,A, R, S>, GeometricAlgebraMultivectorElemFactory<U,A,R,S>> argA
+						= args.get( 0 );
+					SymbolicElem<GeometricAlgebraMultivectorElem<U,A, R, S>, GeometricAlgebraMultivectorElemFactory<U,A,R,S>> argB
+						= args.get( 1 );
+					return( new SymbolicDotHestenes<U,A,R,S>( argA , argB , argA.getFac().getFac() ) );
+				}
+				// break;
+				
 				case WEDGE:
 				{
 					SymbolicElem<GeometricAlgebraMultivectorElem<U,A, R, S>, GeometricAlgebraMultivectorElemFactory<U,A,R,S>> argA

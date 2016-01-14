@@ -26,6 +26,7 @@ import simplealgebra.ddx.PartialDerivativeOp;
 import simplealgebra.ga.SymbolicReverseLeft;
 import simplealgebra.ga.SymbolicReverseRight;
 import simplealgebra.ga.SymbolicDot;
+import simplealgebra.ga.SymbolicDotHestenes;
 import simplealgebra.ga.SymbolicWedge;
 import simplealgebra.ga.GeometricAlgebraMultivectorElemFactory;
 
@@ -272,6 +273,37 @@ rule "Apply DotB"
      then
           // System.out.println( "Apply DotB" );
           insert( new Reng( p , new SymbolicDot( p.getElemA() , r0.getEnd() , (GeometricAlgebraMultivectorElemFactory)( p.getFac().getFac() ) , ds ) ) );
+end
+
+
+
+
+
+
+rule "Apply DotHestenesA"
+     when
+          r0 : Reng( )
+          p : SymbolicDotHestenes( elemA == r0.getStrt() )
+          not( Reng( strt == p ) )
+          ds : DroolsSession()
+     then
+          // System.out.println( "Apply DotHestenesA" );
+          insert( new Reng( p , new SymbolicDotHestenes( r0.getEnd() , p.getElemB() , (GeometricAlgebraMultivectorElemFactory)( p.getFac().getFac() ) , ds ) ) );
+end
+
+
+
+
+
+rule "Apply DotHestenesB"
+     when
+          r0 : Reng( )
+          p : SymbolicDotHestenes( elemB == r0.getStrt() )
+          not( Reng( strt == p ) )
+          ds : DroolsSession()
+     then
+          // System.out.println( "Apply DotHestenesB" );
+          insert( new Reng( p , new SymbolicDotHestenes( p.getElemA() , r0.getEnd() , (GeometricAlgebraMultivectorElemFactory)( p.getFac().getFac() ) , ds ) ) );
 end
 
 

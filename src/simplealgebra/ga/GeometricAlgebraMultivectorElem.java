@@ -83,6 +83,12 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 		DOT,
 		
 		/**
+		 * An enumerated command for a "Hestenes" dot product.
+		 * See "Geometric Algebra for Computer Scientists" by L. Dorst.
+		 */
+		DOT_HESTENES,
+		
+		/**
 		 * An enumerated command for a wedge product.
 		 */
 		WEDGE,
@@ -898,6 +904,51 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 				HashSet<BigInteger> el = new HashSet<BigInteger>();
 				final boolean negate = ord.calcOrd( ka , kb , el , dim );
 				final int maxGrd = Math.max( ka.size() , kb.size() );
+				if( el.size() <= maxGrd )
+				{
+					if( negate )
+					{
+						vmul = vmul.negate();
+					}
+					R vv = ret.get( el );
+					if( vv != null )
+					{
+						ret.setVal(el, vv.add(vmul) );
+					}
+					else
+					{
+						ret.setVal(el, vmul );
+					}
+				}
+			}
+		}
+		
+		return( ret );
+	}
+	
+	
+	/**
+	 * Returns the "Hestenes" dot product of the multivector with the parameter.
+	 * See "Geometric Algebra for Computer Scientists" by L. Dorst.
+	 * 
+	 * @param b The right-side argument of the dot product.
+	 * @return The result of the dot product.
+	 */
+	private GeometricAlgebraMultivectorElem<U,A, R, S> dotHestenes(GeometricAlgebraMultivectorElem<U,A, R, S> b) {
+		GeometricAlgebraMultivectorElem<U,A,R,S> ret = new GeometricAlgebraMultivectorElem<U,A,R,S>(fac,dim,ord);
+		
+		for( final Entry<HashSet<BigInteger>,R> ii : map.entrySet() )
+		{
+			HashSet<BigInteger> ka = ii.getKey();
+			R va = ii.getValue();
+			for( final Entry<HashSet<BigInteger>,R> jj : b.map.entrySet() )
+			{
+				HashSet<BigInteger> kb = jj.getKey();
+				R vb = jj.getValue();
+				R vmul = va.mult( vb );
+				HashSet<BigInteger> el = new HashSet<BigInteger>();
+				final boolean negate = ord.calcOrd( ka , kb , el , dim );
+				final int maxGrd = Math.max( ka.size() , kb.size() );
 				if( el.size() < maxGrd )
 				{
 					if( negate )
@@ -1187,6 +1238,13 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 				{
 					GeometricAlgebraMultivectorElem<U,A, R, S> b = args.get( 0 );
 					return( dot( b ) );
+				}
+				// break;
+				
+				case DOT_HESTENES:
+				{
+					GeometricAlgebraMultivectorElem<U,A, R, S> b = args.get( 0 );
+					return( dotHestenes( b ) );
 				}
 				// break;
 				
