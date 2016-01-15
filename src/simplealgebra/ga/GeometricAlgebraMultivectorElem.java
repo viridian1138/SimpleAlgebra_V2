@@ -94,6 +94,12 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 		WEDGE,
 		
 		/**
+		 * An enumerated command for a cross product.
+		 * Note: the cross product only works with vectors in 3-D for a GeometricAlgebraOrd.
+		 */
+		CROSS,
+		
+		/**
 		 * An enumerated command for right-side reversion.
 		 */
 		REVERSE_LEFT,
@@ -1018,6 +1024,31 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 	
 	
 	/**
+	 * Returns the cross product of the multivector with the parameter.
+	 * Note: this operation only works with vectors in 3-D for a GeometricAlgebraOrd.
+	 * 
+	 * @param b The right-side argument of the cross product.
+	 * @return The result of the cross product.
+	 */
+	private GeometricAlgebraMultivectorElem<U,A, R, S> cross(GeometricAlgebraMultivectorElem<U,A, R, S> b) {
+		final GeometricAlgebraMultivectorElem<U,A,R,S> wdg = wedge( b );
+		final GeometricAlgebraMultivectorElem<U,A,R,S> mi = new GeometricAlgebraMultivectorElem<U,A,R,S>(fac,dim,ord);
+		
+		final HashSet<BigInteger> ia = new HashSet<BigInteger>();
+		ia.add( BigInteger.ZERO );
+		ia.add( BigInteger.ONE );
+		ia.add( BigInteger.valueOf( 2 ) );
+		
+		final R negOne = fac.negativeIdentity();
+		
+		mi.setVal(ia, negOne);
+		
+		return( mi.mult( wdg ) );
+	}
+	
+	
+	
+	/**
 	 * Returns the desired result from multiplying the multivector by its reversion.
 	 * 
 	 * @return The desired result from multiplying the multivector by its reversion.
@@ -1252,6 +1283,13 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 				{
 					GeometricAlgebraMultivectorElem<U,A, R, S> b = args.get( 0 );
 					return( wedge( b ) );
+				}
+				// break;
+				
+				case CROSS:
+				{
+					GeometricAlgebraMultivectorElem<U,A, R, S> b = args.get( 0 );
+					return( cross( b ) );
 				}
 				// break;
 				

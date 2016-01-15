@@ -28,6 +28,7 @@ import simplealgebra.ga.SymbolicReverseRight;
 import simplealgebra.ga.SymbolicDot;
 import simplealgebra.ga.SymbolicDotHestenes;
 import simplealgebra.ga.SymbolicWedge;
+import simplealgebra.ga.SymbolicCross;
 import simplealgebra.ga.GeometricAlgebraMultivectorElemFactory;
 
 
@@ -338,6 +339,38 @@ rule "Apply WedgeB"
           // System.out.println( "Apply WedgeB" );
           insert( new Reng( p , new SymbolicWedge( p.getElemA() , r0.getEnd() , (GeometricAlgebraMultivectorElemFactory)( p.getFac().getFac() ) , ds ) ) );
 end
+
+
+
+
+
+
+rule "Apply CrossA"
+     when
+          r0 : Reng( )
+          p : SymbolicCross( elemA == r0.getStrt() )
+          not( Reng( strt == p ) )
+          ds : DroolsSession()
+     then
+          // System.out.println( "Apply CrossA" );
+          insert( new Reng( p , new SymbolicCross( r0.getEnd() , p.getElemB() , (GeometricAlgebraMultivectorElemFactory)( p.getFac().getFac() ) , ds ) ) );
+end
+
+
+
+
+
+rule "Apply CrossB"
+     when
+          r0 : Reng( )
+          p : SymbolicCross( elemB == r0.getStrt() )
+          not( Reng( strt == p ) )
+          ds : DroolsSession()
+     then
+          // System.out.println( "Apply CrossB" );
+          insert( new Reng( p , new SymbolicCross( p.getElemA() , r0.getEnd() , (GeometricAlgebraMultivectorElemFactory)( p.getFac().getFac() ) , ds ) ) );
+end
+
 
 
 

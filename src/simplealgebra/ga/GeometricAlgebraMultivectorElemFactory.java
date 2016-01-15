@@ -178,6 +178,16 @@ public class GeometricAlgebraMultivectorElemFactory<U extends NumDimensions, A e
 				}
 				// break;
 				
+				case CROSS:
+				{
+					SymbolicElem<GeometricAlgebraMultivectorElem<U,A, R, S>, GeometricAlgebraMultivectorElemFactory<U,A,R,S>> argA
+						= args.get( 0 );
+					SymbolicElem<GeometricAlgebraMultivectorElem<U,A, R, S>, GeometricAlgebraMultivectorElemFactory<U,A,R,S>> argB
+						= args.get( 1 );
+					return( new SymbolicCross<U,A,R,S>( argA , argB , argA.getFac().getFac() ) );
+				}
+				// break;
+				
 				case REVERSE_LEFT:
 				{
 					SymbolicElem<GeometricAlgebraMultivectorElem<U,A, R, S>, GeometricAlgebraMultivectorElemFactory<U,A,R,S>> argA

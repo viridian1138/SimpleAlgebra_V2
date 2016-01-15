@@ -47,13 +47,13 @@ import simplealgebra.symbolic.SymbolicElemFactory;
 
 
 /**
- * Symbolic elem for the "Hestenes" version of the Geometric Algebra dot product <math display="inline">
+ * Symbolic elem for the Geometric Algebra cross product <math display="inline">
  * <mrow>
  *   <mi>A</mi>
- *   <mrow><msub><mo>&CenterDot;</mo><mi>H</mi></msub></mrow>
+ *   <mo>&times;</mo>
  *   <mi>B</mi>
  * </mrow>
- * </math> over multivectors.  See "Geometric Algebra for Computer Scientists" by L. Dorst.
+ * </math> over multivectors.
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
@@ -64,18 +64,18 @@ import simplealgebra.symbolic.SymbolicElemFactory;
  * @param <R> The enclosed type.
  * @param <S> The factory for the enclosed type.
  */
-public class SymbolicDotHestenes<U extends NumDimensions, A extends Ord<U>, R extends Elem<R,?>, S extends ElemFactory<R,S>> extends 
+public class SymbolicCross<U extends NumDimensions, A extends Ord<U>, R extends Elem<R,?>, S extends ElemFactory<R,S>> extends 
 	SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> 
 {
 
 	/**
-	 * Constructs the "Hestenes" dot product.
+	 * Constructs the cross product.
 	 * 
-	 * @param _elemA The left argument of the dot product.
-	 * @param _elemB The right argument of the dot product.
+	 * @param _elemA The left argument of the cross product.
+	 * @param _elemB The right argument of the cross product.
 	 * @param _fac The factory for the enclosed type.
 	 */
-	public SymbolicDotHestenes( 
+	public SymbolicCross( 
 			SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> _elemA , 
 			SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> _elemB , GeometricAlgebraMultivectorElemFactory<U,A, R, S> _fac) 
 	{
@@ -86,14 +86,14 @@ public class SymbolicDotHestenes<U extends NumDimensions, A extends Ord<U>, R ex
 	
 	
 	/**
-	 * Constructs the "Hestenes" dot product for use in a Drools ( http://drools.org ) session.
+	 * Constructs the cross product for use in a Drools ( http://drools.org ) session.
 	 * 
-	 * @param _elemA The left argument of the dot product.
-	 * @param _elemB The right argument of the dot product.
+	 * @param _elemA The left argument of the cross product.
+	 * @param _elemB The right argument of the cross product.
 	 * @param _fac The factory for the enclosed type.
 	 * @param ds The Drools session.
 	 */
-	public SymbolicDotHestenes( 
+	public SymbolicCross( 
 			SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> _elemA , 
 			SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> _elemB , GeometricAlgebraMultivectorElemFactory<U,A, R, S> _fac ,
 			DroolsSession ds ) 
@@ -108,10 +108,11 @@ public class SymbolicDotHestenes<U extends NumDimensions, A extends Ord<U>, R ex
 			MultiplicativeDistributionRequiredException {
 		ArrayList<GeometricAlgebraMultivectorElem<U,A,R,S>> args = new ArrayList<GeometricAlgebraMultivectorElem<U,A,R,S>>();
 		args.add( elemB.eval( implicitSpace ) );
-		return( elemA.eval( implicitSpace ).handleOptionalOp( GeometricAlgebraMultivectorElem.GeometricAlgebraMultivectorCmd.DOT_HESTENES , args ) );
+		return( elemA.eval( implicitSpace ).handleOptionalOp( GeometricAlgebraMultivectorElem.GeometricAlgebraMultivectorCmd.CROSS , args ) );
 	}
 	
 	
+
 	@Override
 	public GeometricAlgebraMultivectorElem<U, A, R, S> evalCached(
 			HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace,
@@ -128,7 +129,7 @@ public class SymbolicDotHestenes<U extends NumDimensions, A extends Ord<U>, R ex
 		ArrayList<GeometricAlgebraMultivectorElem<U,A,R,S>> args = new ArrayList<GeometricAlgebraMultivectorElem<U,A,R,S>>();
 		args.add( elemB.evalCached( implicitSpace , cache ) );
 		final GeometricAlgebraMultivectorElem<U, A, R, S> ret = 
-				elemA.evalCached( implicitSpace , cache ).handleOptionalOp( GeometricAlgebraMultivectorElem.GeometricAlgebraMultivectorCmd.DOT_HESTENES , args );
+				elemA.evalCached( implicitSpace , cache ).handleOptionalOp( GeometricAlgebraMultivectorElem.GeometricAlgebraMultivectorCmd.CROSS , args );
 		cache.put(key, ret);
 		return( ret );
 	}
@@ -142,7 +143,6 @@ public class SymbolicDotHestenes<U extends NumDimensions, A extends Ord<U>, R ex
 		return null;
 	}
 	
-	
 	@Override
 	public GeometricAlgebraMultivectorElem<U, A, R, S> evalPartialDerivativeCached(
 			ArrayList<? extends Elem<?, ?>> withRespectTo,
@@ -153,6 +153,7 @@ public class SymbolicDotHestenes<U extends NumDimensions, A extends Ord<U>, R ex
 		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! TBD !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		return null;
 	}
+	
 	
 	
 	@Override
@@ -167,19 +168,20 @@ public class SymbolicDotHestenes<U extends NumDimensions, A extends Ord<U>, R ex
 	{
 		return( elemB.exposesDerivatives() );
 	}
-	
+
 	
 	@Override
-	public SymbolicDotHestenes<U,A,R,S> cloneThread( final BigInteger threadIndex )
+	public SymbolicCross<U,A,R,S> cloneThread( final BigInteger threadIndex )
 	{
-		final SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> elemA2
-			= elemA.cloneThread(threadIndex);
-		final SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> elemB2
-			= elemB.cloneThread(threadIndex);
-		final GeometricAlgebraMultivectorElemFactory<U,A, R, S> facs = this.getFac().getFac().cloneThread(threadIndex);
-		if( ( elemA2 != elemA ) || ( elemB2 != elemB ) || ( facs != this.getFac().getFac() ) )
+		final SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>>
+			elemAs = elemA.cloneThread(threadIndex);
+		final SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>>
+			elemBs = elemB.cloneThread(threadIndex);
+		final GeometricAlgebraMultivectorElemFactory<U,A, R, S>
+			facs = this.getFac().getFac().cloneThread(threadIndex);
+		if( ( elemAs != elemA ) || ( elemBs != elemB ) || ( facs != this.getFac().getFac() ) )
 		{
-			return( new SymbolicDotHestenes<U,A,R,S>( elemA2 , elemB2 , facs ) );
+			return( new SymbolicCross<U,A,R,S>( elemAs , elemBs , facs ) );
 		}
 		return( this );
 	}
@@ -202,7 +204,7 @@ public class SymbolicDotHestenes<U extends NumDimensions, A extends Ord<U>, R ex
 		final GeometricAlgebraMultivectorElemFactory<U,A, R, S> facs = this.getFac().getFac().cloneThreadCached( threadIndex , (CloneThreadCache)( cache.getInnerCache() ) );
 		if( ( elemA2 != elemA ) || ( elemB2 != elemB ) || ( facs != this.getFac().getFac() ) )
 		{
-			final SymbolicDotHestenes<U,A,R,S> rtmp = new SymbolicDotHestenes<U,A,R,S>( elemA2 , elemB2 , facs );
+			final SymbolicCross<U,A,R,S> rtmp = new SymbolicCross<U,A,R,S>( elemA2 , elemB2 , facs );
 			cache.put(this, rtmp);
 			return( rtmp );
 		}
@@ -213,7 +215,7 @@ public class SymbolicDotHestenes<U extends NumDimensions, A extends Ord<U>, R ex
 	
 	@Override
 	public void writeString( PrintStream ps ) {
-		ps.print( "dotHestenes( " );
+		ps.print( "cross( " );
 		elemA.writeString( ps );
 		ps.print( " , " );
 		elemB.writeString( ps );
@@ -243,7 +245,7 @@ public class SymbolicDotHestenes<U extends NumDimensions, A extends Ord<U>, R ex
 		{
 			ps.print( "</mrow>" );
 		}
-		ps.print( "<mrow><msub><mo>&CenterDot;</mo><mi>H</mi></msub></mrow>" );
+		ps.print( "<mo>&times;</mo>" );
 		if( pc.parenNeeded( this ,  elemB , true ) )
 		{
 			ps.print( "<mfenced><mrow>" );
@@ -264,24 +266,24 @@ public class SymbolicDotHestenes<U extends NumDimensions, A extends Ord<U>, R ex
 	}
 	
 	
-	
 	/**
-	 * Returns the left argument of the dot product.
+	 * Returns the left argument of the cross product.
 	 * 
-	 * @return The left argument of the dot prodict.
+	 * @return The left argument of the cross prodict.
 	 */
 	public SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> getElemA() {
 		return elemA;
 	}
 	
 	/**
-	 * Returns the right argument of the dot product.
+	 * Returns the right argument of the cross product.
 	 * 
-	 * @return The right argument of the dot product.
+	 * @return The right argument of the cross product.
 	 */
 	public SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> getElemB() {
 		return elemB;
 	}
+	
 	
 	@Override
 	public void performInserts( StatefulKnowledgeSession session )
@@ -291,15 +293,16 @@ public class SymbolicDotHestenes<U extends NumDimensions, A extends Ord<U>, R ex
 		super.performInserts( session );
 	}
 
+	
 	/**
-	 * The left argument of the dot product.
+	 * The left argument of the cross product.
 	 */
 	private SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> elemA;
 	
 	/**
-	 * The right argument of the dot product.
+	 * The right argument of the cross product.
 	 */
 	private SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> elemB;
-	
+
 }
 
