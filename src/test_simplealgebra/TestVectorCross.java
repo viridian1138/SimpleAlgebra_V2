@@ -52,11 +52,11 @@ public class TestVectorCross extends TestCase {
 	
 	
 	/**
-	 * Tests the wedge product between a vector and a scalar.
+	 * Tests the cross product between two vectors.
 	 * 
 	 * @throws NotInvertibleException
 	 */
-	public void testScalarWedgeA( ) throws Throwable
+	public void testVectorCrossA( ) throws Throwable
 	{
 		Random rand = new Random( 5432 );
 		
