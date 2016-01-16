@@ -104,15 +104,11 @@ public class TestScalarWedge extends TestCase {
 			prod = mvA.handleOptionalOp( GeometricAlgebraMultivectorElem.GeometricAlgebraMultivectorCmd.WEDGE , args );
 		
 		
-		final Iterator<Entry<HashSet<BigInteger>, DoubleElem>> it = prod.getEntrySet().iterator();
-		
-		
 		int acnt = 0;
 		
 		
-		while( it.hasNext() )
+		for( final Entry<HashSet<BigInteger>, DoubleElem> e : prod.getEntrySet() )
 		{
-			final Entry<HashSet<BigInteger>, DoubleElem> e = it.next();
 			Assert.assertTrue( e.getKey().size() == 1 );
 			final BigInteger ka = e.getKey().iterator().next();
 			final double dA = ( v[ ka.intValue() ] ) * s;
@@ -182,15 +178,11 @@ public class TestScalarWedge extends TestCase {
 			prod = mvB.handleOptionalOp( GeometricAlgebraMultivectorElem.GeometricAlgebraMultivectorCmd.WEDGE , args );
 		
 		
-		final Iterator<Entry<HashSet<BigInteger>, DoubleElem>> it = prod.getEntrySet().iterator();
-		
-		
 		int acnt = 0;
 		
 		
-		while( it.hasNext() )
+		for( final Entry<HashSet<BigInteger>, DoubleElem> e : prod.getEntrySet() )
 		{
-			final Entry<HashSet<BigInteger>, DoubleElem> e = it.next();
 			Assert.assertTrue( e.getKey().size() == 1 );
 			final BigInteger ka = e.getKey().iterator().next();
 			final double dA = ( v[ ka.intValue() ] ) * s;

@@ -105,15 +105,11 @@ public class TestVectorCross extends TestCase {
 			prod = mvA.handleOptionalOp( GeometricAlgebraMultivectorElem.GeometricAlgebraMultivectorCmd.CROSS , args );
 		
 		
-		final Iterator<Entry<HashSet<BigInteger>, DoubleElem>> it = prod.getEntrySet().iterator();
-		
-		
 		int acnt = 0;
 		
 		
-		while( it.hasNext() )
+		for( final Entry<HashSet<BigInteger>, DoubleElem> e : prod.getEntrySet() )
 		{
-			final Entry<HashSet<BigInteger>, DoubleElem> e = it.next();
 			Assert.assertTrue( e.getKey().size() == 1 );
 			final BigInteger ka = e.getKey().iterator().next();
 			final double dA = vc[ ka.intValue() ];
