@@ -268,7 +268,7 @@ public class SymbolicDotHestenes<U extends NumDimensions, A extends Ord<U>, R ex
 	/**
 	 * Returns the left argument of the dot product.
 	 * 
-	 * @return The left argument of the dot prodict.
+	 * @return The left argument of the dot product.
 	 */
 	public SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> getElemA() {
 		return elemA;

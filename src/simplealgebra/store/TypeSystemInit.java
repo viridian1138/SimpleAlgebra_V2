@@ -54,6 +54,7 @@ import simplealgebra.ga.db.SymbolicWedgeType;
 import simplealgebra.ga.db.SymbolicLeftContractionType;
 import simplealgebra.ga.db.SymbolicRightContractionType;
 import simplealgebra.ga.db.SymbolicCrossType;
+import simplealgebra.ga.db.SymbolicScalarType;
 import simplealgebra.meas.db.ValueWithUncertaintyElemFactoryType;
 import simplealgebra.meas.db.ValueWithUncertaintyElemType;
 import simplealgebra.symbolic.db.SymbolicAbsoluteValueType;
@@ -118,6 +119,7 @@ public class TypeSystemInit {
 		SymbolicLeftContractionType.initType( graph );
 		SymbolicRightContractionType.initType( graph );
 		SymbolicCrossType.initType( graph );
+		SymbolicScalarType.initType( graph );
 		
 		SquareMatrixElemType.initType( graph );
 		SquareMatrixElemFactoryType.initType( graph );

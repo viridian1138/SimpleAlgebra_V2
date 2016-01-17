@@ -47,10 +47,10 @@ import simplealgebra.symbolic.SymbolicElemFactory;
 
 
 /**
- * Symbolic elem for the Geometric Algebra cross product <math display="inline">
+ * Symbolic elem for the Geometric Algebra scalar product <math display="inline">
  * <mrow>
  *   <mi>A</mi>
- *   <mo>&times;</mo>
+ *   <mo>*</mo>
  *   <mi>B</mi>
  * </mrow>
  * </math> over multivectors.
@@ -64,18 +64,18 @@ import simplealgebra.symbolic.SymbolicElemFactory;
  * @param <R> The enclosed type.
  * @param <S> The factory for the enclosed type.
  */
-public class SymbolicCross<U extends NumDimensions, A extends Ord<U>, R extends Elem<R,?>, S extends ElemFactory<R,S>> extends 
+public class SymbolicScalar<U extends NumDimensions, A extends Ord<U>, R extends Elem<R,?>, S extends ElemFactory<R,S>> extends 
 	SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> 
 {
 
 	/**
-	 * Constructs the cross product.
+	 * Constructs the scalar product.
 	 * 
-	 * @param _elemA The left argument of the cross product.
-	 * @param _elemB The right argument of the cross product.
+	 * @param _elemA The left argument of the scalar product.
+	 * @param _elemB The right argument of the scalar product.
 	 * @param _fac The factory for the enclosed type.
 	 */
-	public SymbolicCross( 
+	public SymbolicScalar( 
 			SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> _elemA , 
 			SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> _elemB , GeometricAlgebraMultivectorElemFactory<U,A, R, S> _fac) 
 	{
@@ -86,14 +86,14 @@ public class SymbolicCross<U extends NumDimensions, A extends Ord<U>, R extends 
 	
 	
 	/**
-	 * Constructs the cross product for use in a Drools ( http://drools.org ) session.
+	 * Constructs the scalar product for use in a Drools ( http://drools.org ) session.
 	 * 
-	 * @param _elemA The left argument of the cross product.
-	 * @param _elemB The right argument of the cross product.
+	 * @param _elemA The left argument of the scalar product.
+	 * @param _elemB The right argument of the scalar product.
 	 * @param _fac The factory for the enclosed type.
 	 * @param ds The Drools session.
 	 */
-	public SymbolicCross( 
+	public SymbolicScalar( 
 			SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> _elemA , 
 			SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> _elemB , GeometricAlgebraMultivectorElemFactory<U,A, R, S> _fac ,
 			DroolsSession ds ) 
@@ -108,7 +108,7 @@ public class SymbolicCross<U extends NumDimensions, A extends Ord<U>, R extends 
 			MultiplicativeDistributionRequiredException {
 		ArrayList<GeometricAlgebraMultivectorElem<U,A,R,S>> args = new ArrayList<GeometricAlgebraMultivectorElem<U,A,R,S>>();
 		args.add( elemB.eval( implicitSpace ) );
-		return( elemA.eval( implicitSpace ).handleOptionalOp( GeometricAlgebraMultivectorElem.GeometricAlgebraMultivectorCmd.CROSS , args ) );
+		return( elemA.eval( implicitSpace ).handleOptionalOp( GeometricAlgebraMultivectorElem.GeometricAlgebraMultivectorCmd.SCALAR , args ) );
 	}
 	
 	
@@ -129,7 +129,7 @@ public class SymbolicCross<U extends NumDimensions, A extends Ord<U>, R extends 
 		ArrayList<GeometricAlgebraMultivectorElem<U,A,R,S>> args = new ArrayList<GeometricAlgebraMultivectorElem<U,A,R,S>>();
 		args.add( elemB.evalCached( implicitSpace , cache ) );
 		final GeometricAlgebraMultivectorElem<U, A, R, S> ret = 
-				elemA.evalCached( implicitSpace , cache ).handleOptionalOp( GeometricAlgebraMultivectorElem.GeometricAlgebraMultivectorCmd.CROSS , args );
+				elemA.evalCached( implicitSpace , cache ).handleOptionalOp( GeometricAlgebraMultivectorElem.GeometricAlgebraMultivectorCmd.SCALAR , args );
 		cache.put(key, ret);
 		return( ret );
 	}
@@ -171,7 +171,7 @@ public class SymbolicCross<U extends NumDimensions, A extends Ord<U>, R extends 
 
 	
 	@Override
-	public SymbolicCross<U,A,R,S> cloneThread( final BigInteger threadIndex )
+	public SymbolicScalar<U,A,R,S> cloneThread( final BigInteger threadIndex )
 	{
 		final SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>>
 			elemAs = elemA.cloneThread(threadIndex);
@@ -181,7 +181,7 @@ public class SymbolicCross<U extends NumDimensions, A extends Ord<U>, R extends 
 			facs = this.getFac().getFac().cloneThread(threadIndex);
 		if( ( elemAs != elemA ) || ( elemBs != elemB ) || ( facs != this.getFac().getFac() ) )
 		{
-			return( new SymbolicCross<U,A,R,S>( elemAs , elemBs , facs ) );
+			return( new SymbolicScalar<U,A,R,S>( elemAs , elemBs , facs ) );
 		}
 		return( this );
 	}
@@ -204,7 +204,7 @@ public class SymbolicCross<U extends NumDimensions, A extends Ord<U>, R extends 
 		final GeometricAlgebraMultivectorElemFactory<U,A, R, S> facs = this.getFac().getFac().cloneThreadCached( threadIndex , (CloneThreadCache)( cache.getInnerCache() ) );
 		if( ( elemA2 != elemA ) || ( elemB2 != elemB ) || ( facs != this.getFac().getFac() ) )
 		{
-			final SymbolicCross<U,A,R,S> rtmp = new SymbolicCross<U,A,R,S>( elemA2 , elemB2 , facs );
+			final SymbolicScalar<U,A,R,S> rtmp = new SymbolicScalar<U,A,R,S>( elemA2 , elemB2 , facs );
 			cache.put(this, rtmp);
 			return( rtmp );
 		}
@@ -215,7 +215,7 @@ public class SymbolicCross<U extends NumDimensions, A extends Ord<U>, R extends 
 	
 	@Override
 	public void writeString( PrintStream ps ) {
-		ps.print( "cross( " );
+		ps.print( "scalar( " );
 		elemA.writeString( ps );
 		ps.print( " , " );
 		elemB.writeString( ps );
@@ -245,7 +245,7 @@ public class SymbolicCross<U extends NumDimensions, A extends Ord<U>, R extends 
 		{
 			ps.print( "</mrow>" );
 		}
-		ps.print( "<mo>&times;</mo>" );
+		ps.print( "<mo>*</mo>" );
 		if( pc.parenNeeded( this ,  elemB , true ) )
 		{
 			ps.print( "<mfenced><mrow>" );
@@ -267,18 +267,18 @@ public class SymbolicCross<U extends NumDimensions, A extends Ord<U>, R extends 
 	
 	
 	/**
-	 * Returns the left argument of the cross product.
+	 * Returns the left argument of the scalar product.
 	 * 
-	 * @return The left argument of the cross product.
+	 * @return The left argument of the scalar product.
 	 */
 	public SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> getElemA() {
 		return elemA;
 	}
 	
 	/**
-	 * Returns the right argument of the cross product.
+	 * Returns the right argument of the scalar product.
 	 * 
-	 * @return The right argument of the cross product.
+	 * @return The right argument of the scalar product.
 	 */
 	public SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> getElemB() {
 		return elemB;
@@ -295,12 +295,12 @@ public class SymbolicCross<U extends NumDimensions, A extends Ord<U>, R extends 
 
 	
 	/**
-	 * The left argument of the cross product.
+	 * The left argument of the scalar product.
 	 */
 	private SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> elemA;
 	
 	/**
-	 * The right argument of the cross product.
+	 * The right argument of the scalar product.
 	 */
 	private SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> elemB;
 

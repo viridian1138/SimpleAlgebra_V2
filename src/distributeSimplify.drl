@@ -31,6 +31,7 @@ import simplealgebra.ga.SymbolicLeftContraction;
 import simplealgebra.ga.SymbolicRightContraction;
 import simplealgebra.ga.SymbolicWedge;
 import simplealgebra.ga.SymbolicCross;
+import simplealgebra.ga.SymbolicScalar;
 import simplealgebra.ga.GeometricAlgebraMultivectorElemFactory;
 
 
@@ -400,6 +401,37 @@ rule "Apply WedgeB"
      then
           // System.out.println( "Apply WedgeB" );
           insert( new Reng( p , new SymbolicWedge( p.getElemA() , r0.getEnd() , (GeometricAlgebraMultivectorElemFactory)( p.getFac().getFac() ) , ds ) ) );
+end
+
+
+
+
+
+
+rule "Apply ScalarA"
+     when
+          r0 : Reng( )
+          p : SymbolicScalar( elemA == r0.getStrt() )
+          not( Reng( strt == p ) )
+          ds : DroolsSession()
+     then
+          // System.out.println( "Apply ScalarA" );
+          insert( new Reng( p , new SymbolicScalar( r0.getEnd() , p.getElemB() , (GeometricAlgebraMultivectorElemFactory)( p.getFac().getFac() ) , ds ) ) );
+end
+
+
+
+
+
+rule "Apply ScalarB"
+     when
+          r0 : Reng( )
+          p : SymbolicScalar( elemB == r0.getStrt() )
+          not( Reng( strt == p ) )
+          ds : DroolsSession()
+     then
+          // System.out.println( "Apply ScalarB" );
+          insert( new Reng( p , new SymbolicScalar( p.getElemA() , r0.getEnd() , (GeometricAlgebraMultivectorElemFactory)( p.getFac().getFac() ) , ds ) ) );
 end
 
 

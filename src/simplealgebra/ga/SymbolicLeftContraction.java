@@ -50,7 +50,7 @@ import simplealgebra.symbolic.SymbolicElemFactory;
  * Symbolic elem for the Geometric Algebra left contraction product <math display="inline">
  * <mrow>
  *   <mi>A</mi>
- *   <mo>&and;</mo>
+ *   <mo>&rfloor;</mo>
  *   <mi>B</mi>
  * </mrow>
  * </math> over multivectors.
@@ -245,7 +245,7 @@ public class SymbolicLeftContraction<U extends NumDimensions, A extends Ord<U>, 
 		{
 			ps.print( "</mrow>" );
 		}
-		ps.print( "<mo>&and;</mo>" );
+		ps.print( "<mo>&rfloor;</mo>" );
 		if( pc.parenNeeded( this ,  elemB , true ) )
 		{
 			ps.print( "<mfenced><mrow>" );
@@ -269,7 +269,7 @@ public class SymbolicLeftContraction<U extends NumDimensions, A extends Ord<U>, 
 	/**
 	 * Returns the left argument of the left contraction product.
 	 * 
-	 * @return The left argument of the left contraction prodict.
+	 * @return The left argument of the left contraction product.
 	 */
 	public SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> getElemA() {
 		return elemA;

@@ -269,7 +269,7 @@ public class SymbolicWedge<U extends NumDimensions, A extends Ord<U>, R extends 
 	/**
 	 * Returns the left argument of the wedge product.
 	 * 
-	 * @return The left argument of the wedge prodict.
+	 * @return The left argument of the wedge product.
 	 */
 	public SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> getElemA() {
 		return elemA;

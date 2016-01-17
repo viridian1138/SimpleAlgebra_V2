@@ -208,6 +208,16 @@ public class GeometricAlgebraMultivectorElemFactory<U extends NumDimensions, A e
 				}
 				// break;
 				
+				case SCALAR:
+				{
+					SymbolicElem<GeometricAlgebraMultivectorElem<U,A, R, S>, GeometricAlgebraMultivectorElemFactory<U,A,R,S>> argA
+						= args.get( 0 );
+					SymbolicElem<GeometricAlgebraMultivectorElem<U,A, R, S>, GeometricAlgebraMultivectorElemFactory<U,A,R,S>> argB
+						= args.get( 1 );
+					return( new SymbolicScalar<U,A,R,S>( argA , argB , argA.getFac().getFac() ) );
+				}
+				// break;
+				
 				case REVERSE_LEFT:
 				{
 					SymbolicElem<GeometricAlgebraMultivectorElem<U,A, R, S>, GeometricAlgebraMultivectorElemFactory<U,A,R,S>> argA

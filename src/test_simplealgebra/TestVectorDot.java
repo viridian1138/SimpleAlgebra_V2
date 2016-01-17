@@ -191,6 +191,78 @@ public class TestVectorDot extends TestCase {
 		
 	}
 	
+	
+	
+	
+	
+	/**
+	 * Tests the scalar product between two vectors.
+	 * 
+	 * @throws NotInvertibleException
+	 */
+	public void testVectorScalarProductA( ) throws Throwable
+	{
+		Random rand = new Random( 5432 );
+		
+		final TestDimensionThree td = new TestDimensionThree();
+		
+		final GeometricAlgebraOrd<TestDimensionThree> ord = new GeometricAlgebraOrd<TestDimensionThree>();
+		
+		final DoubleElemFactory dl = new DoubleElemFactory();
+		
+		final GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> se = 
+				new GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>(dl, td, ord);
+		
+		final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> mvA = se.zero();
+		
+		final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> mvB = se.zero();
+		
+		
+		
+		final double[] v0 = { rand.nextDouble() , rand.nextDouble() , rand.nextDouble() };
+		
+		final double[] v1 = { rand.nextDouble() , rand.nextDouble() , rand.nextDouble() };
+		
+		final double vc =
+				v0[ 0 ] * v1[ 0 ] + v0[ 1 ] * v1[ 1 ] + v0[ 2 ] * v1[ 2 ];
+		
+		
+		for( int cnt = 0 ; cnt < TestDimensionThree.THREE ; cnt++ )
+		{
+			final HashSet<BigInteger> key = new HashSet<BigInteger>();
+			key.add( BigInteger.valueOf( cnt ) );
+			mvA.setVal( key , new DoubleElem( v0[ cnt ] ) );
+			mvB.setVal( key , new DoubleElem( v1[ cnt ] ) );
+		}
+		
+		
+		
+		final ArrayList<GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>> 
+			args = new ArrayList<GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>>();
+		
+		args.add( mvB );
+		
+		
+		final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> 
+			prod = mvA.handleOptionalOp( GeometricAlgebraMultivectorElem.GeometricAlgebraMultivectorCmd.SCALAR , args );
+		
+		
+		int acnt = 0;
+		
+		
+		for( final Entry<HashSet<BigInteger>, DoubleElem> e : prod.getEntrySet() )
+		{
+			Assert.assertTrue( e.getKey().size() == 0 );
+			final double dB = e.getValue().getVal();
+			Assert.assertTrue( Math.abs( vc - dB ) < 1E-5 );
+			acnt++;
+		}
+		
+		Assert.assertTrue( acnt == 1 );
+		
+		
+	}
+	
 		
 	
 	
