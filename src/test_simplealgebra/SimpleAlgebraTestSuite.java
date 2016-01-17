@@ -108,6 +108,7 @@ public class SimpleAlgebraTestSuite extends TestSuite {
 		s.addTestSuite( TestScalarDot.class );
 		s.addTestSuite( TestVectorCross.class );
 		s.addTestSuite( TestVectorDot.class );
+		s.addTestSuite( TestBivectorWedge.class );
 		return( s );
 	}
 	
