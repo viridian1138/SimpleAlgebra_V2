@@ -51,6 +51,8 @@ import simplealgebra.ga.db.SymbolicDotHestenesType;
 import simplealgebra.ga.db.SymbolicReverseLeftType;
 import simplealgebra.ga.db.SymbolicReverseRightType;
 import simplealgebra.ga.db.SymbolicWedgeType;
+import simplealgebra.ga.db.SymbolicLeftContractionType;
+import simplealgebra.ga.db.SymbolicRightContractionType;
 import simplealgebra.ga.db.SymbolicCrossType;
 import simplealgebra.meas.db.ValueWithUncertaintyElemFactoryType;
 import simplealgebra.meas.db.ValueWithUncertaintyElemType;
@@ -113,6 +115,8 @@ public class TypeSystemInit {
 		SymbolicReverseLeftType.initType( graph );
 		SymbolicReverseRightType.initType( graph );
 		SymbolicWedgeType.initType( graph );
+		SymbolicLeftContractionType.initType( graph );
+		SymbolicRightContractionType.initType( graph );
 		SymbolicCrossType.initType( graph );
 		
 		SquareMatrixElemType.initType( graph );

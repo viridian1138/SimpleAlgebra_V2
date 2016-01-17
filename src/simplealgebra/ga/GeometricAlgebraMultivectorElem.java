@@ -89,6 +89,18 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 		DOT_HESTENES,
 		
 		/**
+		 * The left contraction product.
+		 * See "Geometric Algebra for Computer Scientists" by L. Dorst.
+		 */
+		LEFT_CONTRACTION,
+		
+		/**
+		 * The right contraction product.
+		 * See "Geometric Algebra for Computer Scientists" by L. Dorst.
+		 */
+		RIGHT_CONTRACTION,
+		
+		/**
 		 * An enumerated command for a wedge product.
 		 */
 		WEDGE,
@@ -1023,6 +1035,94 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 	
 	
 	/**
+	 * Returns the left contraction product of the multivector with the parameter.
+	 * 
+	 * @param b The right-side argument of the left contraction product.
+	 * @return The result of the left contraction product.
+	 */
+	private GeometricAlgebraMultivectorElem<U,A, R, S> leftContraction(GeometricAlgebraMultivectorElem<U,A, R, S> b) {
+		GeometricAlgebraMultivectorElem<U,A,R,S> ret = new GeometricAlgebraMultivectorElem<U,A,R,S>(fac,dim,ord);
+		
+		for( final Entry<HashSet<BigInteger>,R> ii : map.entrySet() )
+		{
+			HashSet<BigInteger> ka = ii.getKey();
+			R va = ii.getValue();
+			for( final Entry<HashSet<BigInteger>,R> jj : b.map.entrySet() )
+			{
+				HashSet<BigInteger> kb = jj.getKey();
+				R vb = jj.getValue();
+				R vmul = va.mult( vb );
+				HashSet<BigInteger> el = new HashSet<BigInteger>();
+				final boolean negate = ord.calcOrd( ka , kb , el , dim );
+				if( el.size() == ( kb.size() - ka.size() ) )
+				{
+					if( negate )
+					{
+						vmul = vmul.negate();
+					}
+					R vv = ret.get( el );
+					if( vv != null )
+					{
+						ret.setVal(el, vv.add(vmul) );
+					}
+					else
+					{
+						ret.setVal(el, vmul );
+					}
+				}
+			}
+		}
+		
+		return( ret );
+	}
+	
+	
+	
+	/**
+	 * Returns the right contraction product of the multivector with the parameter.
+	 * 
+	 * @param b The right-side argument of the right contraction product.
+	 * @return The result of the right contraction product.
+	 */
+	private GeometricAlgebraMultivectorElem<U,A, R, S> rightContraction(GeometricAlgebraMultivectorElem<U,A, R, S> b) {
+		GeometricAlgebraMultivectorElem<U,A,R,S> ret = new GeometricAlgebraMultivectorElem<U,A,R,S>(fac,dim,ord);
+		
+		for( final Entry<HashSet<BigInteger>,R> ii : map.entrySet() )
+		{
+			HashSet<BigInteger> ka = ii.getKey();
+			R va = ii.getValue();
+			for( final Entry<HashSet<BigInteger>,R> jj : b.map.entrySet() )
+			{
+				HashSet<BigInteger> kb = jj.getKey();
+				R vb = jj.getValue();
+				R vmul = va.mult( vb );
+				HashSet<BigInteger> el = new HashSet<BigInteger>();
+				final boolean negate = ord.calcOrd( ka , kb , el , dim );
+				if( el.size() == ( ka.size() - kb.size() ) )
+				{
+					if( negate )
+					{
+						vmul = vmul.negate();
+					}
+					R vv = ret.get( el );
+					if( vv != null )
+					{
+						ret.setVal(el, vv.add(vmul) );
+					}
+					else
+					{
+						ret.setVal(el, vmul );
+					}
+				}
+			}
+		}
+		
+		return( ret );
+	}
+	
+	
+	
+	/**
 	 * Returns the cross product of the multivector with the parameter.
 	 * Note: this operation only works with vectors in 3-D for a GeometricAlgebraOrd.
 	 * 
@@ -1275,6 +1375,20 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 				{
 					GeometricAlgebraMultivectorElem<U,A, R, S> b = args.get( 0 );
 					return( dotHestenes( b ) );
+				}
+				// break;
+				
+				case LEFT_CONTRACTION:
+				{
+					GeometricAlgebraMultivectorElem<U,A, R, S> b = args.get( 0 );
+					return( leftContraction( b ) );
+				}
+				// break;
+				
+				case RIGHT_CONTRACTION:
+				{
+					GeometricAlgebraMultivectorElem<U,A, R, S> b = args.get( 0 );
+					return( rightContraction( b ) );
 				}
 				// break;
 				

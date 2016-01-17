@@ -168,6 +168,26 @@ public class GeometricAlgebraMultivectorElemFactory<U extends NumDimensions, A e
 				}
 				// break;
 				
+				case LEFT_CONTRACTION:
+				{
+					SymbolicElem<GeometricAlgebraMultivectorElem<U,A, R, S>, GeometricAlgebraMultivectorElemFactory<U,A,R,S>> argA
+						= args.get( 0 );
+					SymbolicElem<GeometricAlgebraMultivectorElem<U,A, R, S>, GeometricAlgebraMultivectorElemFactory<U,A,R,S>> argB
+						= args.get( 1 );
+					return( new SymbolicLeftContraction<U,A,R,S>( argA , argB , argA.getFac().getFac() ) );
+				}
+				// break;
+				
+				case RIGHT_CONTRACTION:
+				{
+					SymbolicElem<GeometricAlgebraMultivectorElem<U,A, R, S>, GeometricAlgebraMultivectorElemFactory<U,A,R,S>> argA
+						= args.get( 0 );
+					SymbolicElem<GeometricAlgebraMultivectorElem<U,A, R, S>, GeometricAlgebraMultivectorElemFactory<U,A,R,S>> argB
+						= args.get( 1 );
+					return( new SymbolicRightContraction<U,A,R,S>( argA , argB , argA.getFac().getFac() ) );
+				}
+				// break;
+				
 				case WEDGE:
 				{
 					SymbolicElem<GeometricAlgebraMultivectorElem<U,A, R, S>, GeometricAlgebraMultivectorElemFactory<U,A,R,S>> argA
