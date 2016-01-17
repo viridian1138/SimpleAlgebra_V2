@@ -998,8 +998,7 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 				R vmul = va.mult( vb );
 				HashSet<BigInteger> el = new HashSet<BigInteger>();
 				final boolean negate = ord.calcOrd( ka , kb , el , dim );
-				final int maxGrd = Math.max( ka.size() , kb.size() );
-				if( el.size() >= maxGrd )
+				if( el.size() == ( ka.size() + kb.size() ) )
 				{
 					if( negate )
 					{
