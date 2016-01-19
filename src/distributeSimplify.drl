@@ -1478,3 +1478,38 @@ end
 
 
 
+
+
+rule "Wedge Zero A"
+      when
+          ez : SymbolicZero( )
+          mult1 : SymbolicWedge( elemA == ez )
+          elB : SymbolicElem() from mult1.getElemB()
+          not( Reng( strt == mult1 ) )
+          not( Reng( strt == elB ) )
+          not( Reng( strt == ez ) )
+      then
+          // System.out.println( "Wedge Zero A" );
+          insert( new Reng( mult1 , ez ) );
+end
+
+
+
+
+
+rule "Wedge Zero B"
+      when
+          ez : SymbolicZero( )
+          mult1 : SymbolicWedge( elemB == ez )
+          elA : SymbolicElem() from mult1.getElemA()
+          not( Reng( strt == mult1 ) )
+          not( Reng( strt == elA ) )
+          not( Reng( strt == ez ) )
+      then
+          // System.out.println( "Wedge Zero B" );
+          insert( new Reng( mult1 , ez ) );
+end
+
+
+
+
