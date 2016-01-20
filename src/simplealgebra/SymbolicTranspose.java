@@ -31,6 +31,9 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.kie.internal.runtime.StatefulKnowledgeSession;
+
+import simplealgebra.symbolic.DroolsSession;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.PrecedenceComparator;
 import simplealgebra.symbolic.SCacheKey;
@@ -62,6 +65,20 @@ public class SymbolicTranspose<U extends NumDimensions, R extends Elem<R,?>, S e
 	{
 		super( _fac );
 		elem = _elem;
+	}
+	
+	
+	/**
+	 * Constructs the transpose for use in a Drools ( http://drools.org ) session.
+	 * 
+	 * @param _elem The enclosed elem.
+	 * @param _fac The enclosed factory.
+	 * @param ds The Drools session.
+	 */
+	public SymbolicTranspose( SymbolicElem<SquareMatrixElem<U,R,S>,SquareMatrixElemFactory<U,R,S>> _elem , SquareMatrixElemFactory<U, R, S> _fac , DroolsSession ds )
+	{
+		this( _elem , _fac );
+		ds.insert( this );
 	}
 
 	
@@ -191,6 +208,26 @@ public class SymbolicTranspose<U extends NumDimensions, R extends Elem<R,?>, S e
 			ps.print( "</mrow>" );
 		}
 		ps.print( "<mo>T</mo></msup>" );
+	}
+	
+	
+	@Override
+	public boolean symbolicEquals( SymbolicElem<SquareMatrixElem<U,R,S>, SquareMatrixElemFactory<U,R,S>> b )
+	{
+		if( b instanceof SymbolicTranspose )
+		{
+			return( elem.symbolicEquals( ((SymbolicTranspose<U,R,S>) b).getElem() ) );
+		}
+		
+		return( false );
+	}
+	
+	
+	@Override
+	public void performInserts( StatefulKnowledgeSession session )
+	{
+		elem.performInserts( session );
+		super.performInserts( session );
 	}
 	
 	

@@ -22,6 +22,8 @@ package simplealgebra.symbolic
 
 
 
+import simplealgebra.SymbolicTranspose;
+import simplealgebra.SquareMatrixElemFactory;
 import simplealgebra.ddx.PartialDerivativeOp;
 import simplealgebra.ga.SymbolicReverseLeft;
 import simplealgebra.ga.SymbolicReverseRight;
@@ -370,6 +372,21 @@ rule "Apply RightContractionB"
      then
           // System.out.println( "Apply RightContractionB" );
           insert( new Reng( p , new SymbolicRightContraction( p.getElemA() , r0.getEnd() , (GeometricAlgebraMultivectorElemFactory)( p.getFac().getFac() ) , ds ) ) );
+end
+
+
+
+
+
+rule "Apply Transpose"
+     when
+          r0 : Reng( )
+          p : SymbolicTranspose( elem == r0.getStrt() )
+          not( Reng( strt == p ) )
+          ds : DroolsSession()
+     then
+          // System.out.println( "Apply Transpose" );
+          insert( new Reng( p , new SymbolicTranspose( r0.getEnd() , (SquareMatrixElemFactory)( p.getFac().getFac() ) , ds ) ) );
 end
 
 
@@ -1475,6 +1492,55 @@ rule "Mult Negative Ident B"
           // System.out.println( "Mult Negative Ident B" );
           insert( new Reng( mult1 , nez.negate() ) );
 end
+
+
+
+
+
+rule "Transpose Zero"
+      when
+          ez : SymbolicZero( )
+          tr1 : SymbolicTranspose( elem == ez )
+          not( Reng( strt == tr1 ) )
+          not( Reng( strt == ez ) )
+      then
+          // System.out.println( "Transpose Zero" );
+          insert( new Reng( tr1 , ez ) );
+end
+
+
+
+
+
+rule "Transpose Identity"
+      when
+          iden : SymbolicIdentity( )
+          tr1 : SymbolicTranspose( elem == iden )
+          not( Reng( strt == tr1 ) )
+          not( Reng( strt == iden ) )
+      then
+          // System.out.println( "Transpose Identity" );
+          insert( new Reng( tr1 , iden ) );
+end
+
+
+
+
+
+rule "Transpose Over Negate"
+      when
+          na : SymbolicNegate( )
+          tr1 : SymbolicTranspose( elem == na )
+          a : SymbolicElem() from na.getElem()
+          not( Reng( strt == tr1 ) )
+          not( Reng( strt == na ) )
+          not( Reng( strt == a ) )
+          ds : DroolsSession()
+      then
+          // System.out.println( "Transpose Over Negate" );
+          insert( new Reng( tr1 , ( new SymbolicTranspose( a , (SquareMatrixElemFactory)( tr1.getFac().getFac() ) , ds ) ).negate().insSym( ds ) ) );
+end
+
 
 
 
