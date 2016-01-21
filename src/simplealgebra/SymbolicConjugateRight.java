@@ -31,6 +31,8 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.kie.internal.runtime.StatefulKnowledgeSession;
+
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.PrecedenceComparator;
 import simplealgebra.symbolic.SCacheKey;
@@ -243,6 +245,14 @@ public class SymbolicConjugateRight<R extends Elem<R,?>, S extends ElemFactory<R
 			ps.print( "</mrow>" );
 		}
 		ps.print( "<mo>*R</mo></msup>" );
+	}
+	
+	
+	@Override
+	public void performInserts( StatefulKnowledgeSession session )
+	{
+		elem.performInserts( session );
+		super.performInserts( session );
 	}
 	
 	

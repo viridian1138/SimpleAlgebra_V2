@@ -29,6 +29,8 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import org.kie.internal.runtime.StatefulKnowledgeSession;
+
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.PrecedenceComparator;
 import simplealgebra.symbolic.SCacheKey;
@@ -186,6 +188,14 @@ public class SymbolicInvertLeftRevCoeff<U extends NumDimensions, R extends Elem<
 			ps.print( "</mrow>" );
 		}
 		ps.print( "<mi>-1LR</mi></msup>" );
+	}
+	
+	
+	@Override
+	public void performInserts( StatefulKnowledgeSession session )
+	{
+		elem.performInserts( session );
+		super.performInserts( session );
 	}
 	
 	
