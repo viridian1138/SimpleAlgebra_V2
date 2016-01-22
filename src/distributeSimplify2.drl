@@ -22,9 +22,25 @@ package simplealgebra.symbolic
 
 
 
+import simplealgebra.SymbolicConjugateLeft;
+import simplealgebra.SymbolicConjugateRight;
+import simplealgebra.SymbolicInvertLeftRevCoeff;
+import simplealgebra.SymbolicInvertRightRevCoeff;
+import simplealgebra.SymbolicMultRevCoeff;
 import simplealgebra.SymbolicTranspose;
 import simplealgebra.SquareMatrixElemFactory;
 import simplealgebra.ddx.PartialDerivativeOp;
+import simplealgebra.ddx.FlowVectorTensor;
+import simplealgebra.ddx.MaterialDerivativeFactory;
+import simplealgebra.ddx.DirectionalDerivative;
+import simplealgebra.ddx.CovariantDerivative;
+import simplealgebra.ddx.CovariantDerivativeFactory;
+import simplealgebra.et.SymbolicIndexReduction;
+import simplealgebra.et.SymbolicRankTwoTrace;
+import simplealgebra.et.SymbolicRegenContravar;
+import simplealgebra.et.SymbolicRegenCovar;
+import simplealgebra.et.SymbolicTensorResym;
+import simplealgebra.et.EinsteinTensorElemFactory;
 import simplealgebra.ga.SymbolicReverseLeft;
 import simplealgebra.ga.SymbolicReverseRight;
 import simplealgebra.ga.SymbolicDot;
@@ -1191,6 +1207,81 @@ rule "Wedge Zero B"
           // System.out.println( "Wedge Zero B" );
           insert( new Reng( mult1 , ez ) );
 end
+
+
+
+
+
+
+
+rule "Dot Zero A"
+      when
+          ez : SymbolicZero( )
+          mult1 : SymbolicDot( elemA == ez )
+          elB : SymbolicElem() from mult1.getElemB()
+          not( Reng( strt == mult1 ) )
+          not( Reng( strt == elB ) )
+          not( Reng( strt == ez ) )
+      then
+          // System.out.println( "Dot Zero A" );
+          insert( new Reng( mult1 , ez ) );
+end
+
+
+
+
+
+rule "Dot Zero B"
+      when
+          ez : SymbolicZero( )
+          mult1 : SymbolicDot( elemB == ez )
+          elA : SymbolicElem() from mult1.getElemA()
+          not( Reng( strt == mult1 ) )
+          not( Reng( strt == elA ) )
+          not( Reng( strt == ez ) )
+      then
+          // System.out.println( "Dot Zero B" );
+          insert( new Reng( mult1 , ez ) );
+end
+
+
+
+
+
+
+
+rule "Dot Hestenes Zero A"
+      when
+          ez : SymbolicZero( )
+          mult1 : SymbolicDotHestenes( elemA == ez )
+          elB : SymbolicElem() from mult1.getElemB()
+          not( Reng( strt == mult1 ) )
+          not( Reng( strt == elB ) )
+          not( Reng( strt == ez ) )
+      then
+          // System.out.println( "Dot Hestenes Zero A" );
+          insert( new Reng( mult1 , ez ) );
+end
+
+
+
+
+
+rule "Dot Hestenes Zero B"
+      when
+          ez : SymbolicZero( )
+          mult1 : SymbolicDotHestenes( elemB == ez )
+          elA : SymbolicElem() from mult1.getElemA()
+          not( Reng( strt == mult1 ) )
+          not( Reng( strt == elA ) )
+          not( Reng( strt == ez ) )
+      then
+          // System.out.println( "Dot Hestenes Zero B" );
+          insert( new Reng( mult1 , ez ) );
+end
+
+
+
 
 
 
