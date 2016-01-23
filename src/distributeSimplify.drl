@@ -40,6 +40,7 @@ import simplealgebra.et.SymbolicRankTwoTrace;
 import simplealgebra.et.SymbolicRegenContravar;
 import simplealgebra.et.SymbolicRegenCovar;
 import simplealgebra.et.SymbolicTensorResym;
+import simplealgebra.et.OrdinaryDerivative;
 import simplealgebra.et.EinsteinTensorElemFactory;
 import simplealgebra.ga.SymbolicReverseLeft;
 import simplealgebra.ga.SymbolicReverseRight;
@@ -496,6 +497,21 @@ rule "Apply CrossB"
      then
           // System.out.println( "Apply CrossB" );
           insert( new Reng( p , new SymbolicCross( p.getElemA() , r0.getEnd() , (GeometricAlgebraMultivectorElemFactory)( p.getFac().getFac() ) , ds ) ) );
+end
+
+
+
+
+
+rule "Apply Symbolic Index Reduction"
+     when
+          r0 : Reng( )
+          p : SymbolicIndexReduction( elem == r0.getStrt() )
+          not( Reng( strt == p ) )
+          ds : DroolsSession()
+     then
+          // System.out.println( "Apply Symbolic Index Reduction" );
+          insert( new Reng( p , new SymbolicIndexReduction( r0.getEnd() , (EinsteinTensorElemFactory)( p.getFac().getFac() ) ,  p.getContravariantReduce() , p.getCovariantReduce() , ds ) ) );
 end
 
 
@@ -1661,6 +1677,57 @@ rule "Dot Hestenes Zero B"
           not( Reng( strt == ez ) )
       then
           // System.out.println( "Dot Hestenes Zero B" );
+          insert( new Reng( mult1 , ez ) );
+end
+
+
+
+
+
+
+
+rule "Scalar Product Zero A"
+      when
+          ez : SymbolicZero( )
+          mult1 : SymbolicScalar( elemA == ez )
+          elB : SymbolicElem() from mult1.getElemB()
+          not( Reng( strt == mult1 ) )
+          not( Reng( strt == elB ) )
+          not( Reng( strt == ez ) )
+      then
+          // System.out.println( "Scalar Product Zero A" );
+          insert( new Reng( mult1 , ez ) );
+end
+
+
+
+
+
+rule "Scalar Product Zero B"
+      when
+          ez : SymbolicZero( )
+          mult1 : SymbolicScalar( elemB == ez )
+          elA : SymbolicElem() from mult1.getElemA()
+          not( Reng( strt == mult1 ) )
+          not( Reng( strt == elA ) )
+          not( Reng( strt == ez ) )
+      then
+          // System.out.println( "Scalar Product Zero B" );
+          insert( new Reng( mult1 , ez ) );
+end
+
+
+
+
+
+rule "Symbolic Index Reduction Zero"
+      when
+          ez : SymbolicZero( )
+          mult1 : SymbolicIndexReduction( elem == ez )
+          not( Reng( strt == mult1 ) )
+          not( Reng( strt == ez ) )
+      then
+          // System.out.println( "Symbolic Index Reduction Zero" );
           insert( new Reng( mult1 , ez ) );
 end
 

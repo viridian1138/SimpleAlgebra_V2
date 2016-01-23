@@ -36,6 +36,7 @@ import simplealgebra.CloneThreadCache;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
+import simplealgebra.symbolic.DroolsSession;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SCacheKey;
 import simplealgebra.symbolic.SymbolicElem;
@@ -72,6 +73,24 @@ public class SymbolicIndexReduction<Z extends Object, R extends Elem<R,?>, S ext
 		elem = _elem;
 		contravariantReduce = _contravariantReduce;
 		covariantReduce = _covariantReduce;
+	}
+	
+	
+	/**
+	 * Constructs the elem for use in a Drools ( http://drools.org ) session.
+	 * 
+	 * @param _elem The nested elem.
+	 * @param _fac The factory for the enclosed type.
+	 * @param _contravariantReduce The set of contravariant indices to be removed.
+	 * @param _covariantReduce The set of covariant indices to be removed.
+	 * @param ds The Drools session.
+	 */
+	public SymbolicIndexReduction( SymbolicElem<EinsteinTensorElem<Z,R,S>,EinsteinTensorElemFactory<Z,R,S>> _elem , 
+			EinsteinTensorElemFactory<Z,R,S> _fac ,
+			HashSet<Z> _contravariantReduce , HashSet<Z> _covariantReduce , DroolsSession ds )
+	{
+		this( _elem , _fac , _contravariantReduce , _covariantReduce );
+		ds.insert( ds );
 	}
 	
 	
