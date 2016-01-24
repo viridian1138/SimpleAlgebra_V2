@@ -4971,7 +4971,8 @@ protected static class ShiftVectorFactory3
 	/**
 	 * Constructs the index raise factory.
 	 * 
-	 * @param _dim The number of dimensions of the matrix for the determinant.
+	 * @param _ifac Factory for generating temporary indices.
+	 * @param _metricTensor The inverting metric tensor for performing the index raise.
 	 */
 	public ShiftVectorFactory3( TemporaryIndexFactory<String> _ifac , MetricTensorFactory<String, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>  _metricTensor )
 	{
@@ -5356,7 +5357,8 @@ protected final IncrementManager im = new IncrementManager();
  * Performs descent iterations for one value of T.
  * 
  * @param tval The value of T over which to iterate.
- * @param descent The descent algorithm to use for the iterations.
+ * @param descentMetric The descent algorithms to use for the iterations of the metric tensor.
+ * @param descentConjugateMomentum The descent algorithms to use for iterations of the conjugate momentum.
  * @param implicitSpace2 The implicit space over which to iterate.
  * @throws NotInvertibleException
  * @throws MultiplicativeDistributionRequiredException

@@ -1631,7 +1631,7 @@ public class TestStelemD_DR_Ncore extends TestCase {
 		 * Copies the CNelem for threading.
 		 * 
 		 * @param in The CNelem to be copied.
-		 * @param threadIndex The thread index.
+		 * @param _threadIndex The thread index.
 		 */
 		public CNelem( final CNelem in , final BigInteger _threadIndex )
 		{

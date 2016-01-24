@@ -385,9 +385,10 @@ public class TestDf3PlneCutFileWriterAnim extends TestCase {
 		
 		
 		/**
-		 * Writes DF3 data to a file.
+		 * Writes DF3 data to a pair of files.
 		 * 
-		 * @param pathName The path to the file.
+		 * @param pathNamePl The path to the file containing positive values.
+		 * @param pathNameNe The path to the file containing negative values.
 		 * @throws Throwable
 		 */
 		public void writeDf3( String pathNamePl , String pathNameNe ) throws Throwable

@@ -348,7 +348,7 @@ public class TestInvertNestedLeftNTwo extends TestCase {
 		/**
 		 * Sets the original matrix that should equal the identity matrix.
 		 * 
-		 * @param mat The matrix that should equal the identity matrix.
+		 * @param shouldBeIdent The matrix that should equal the identity matrix.
 		 */
 		public void setShouldBeIdent(
 				SquareMatrixElem<TestDimensionFour, SquareMatrixElem<TestDimensionFour, SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory>, SquareMatrixElemFactory<TestDimensionFour, DoubleElem, DoubleElemFactory>>, SquareMatrixElemFactory<TestDimensionFour, SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory>, SquareMatrixElemFactory<TestDimensionFour, DoubleElem, DoubleElemFactory>>> shouldBeIdent) {

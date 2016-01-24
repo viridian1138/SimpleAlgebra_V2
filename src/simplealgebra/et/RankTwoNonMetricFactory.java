@@ -69,7 +69,8 @@ public abstract class RankTwoNonMetricFactory<Z extends Object, R extends Elem<R
 	/**
 	 * Constructs the index raise factory.
 	 * 
-	 * @param _dim The number of dimensions of the matrix for the determinant.
+	 * @param _ifac Factory for generating temporary indices.
+	 * @param _metricTensor The inverting metric tensor for performing the index raise.
 	 */
 	public RankTwoNonMetricFactory( TemporaryIndexFactory<Z> _ifac , MetricTensorFactory<Z,R,S> _metricTensor )
 	{
@@ -81,7 +82,8 @@ public abstract class RankTwoNonMetricFactory<Z extends Object, R extends Elem<R
 	/**
 	 * Raises the indices of a covariant rank-two tensor.
 	 * 
-	 * @param in The covariant rank-two tensor to be raised.
+	 * @param indexI The first index of the covariant rank-two tensor to be raised.
+	 * @param indexJ The second index of the covariant rank-two tensor to be raised.
 	 * @return The raised tensor.
 	 */
 	public SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> genIndexRaise( Z indexI , Z indexJ )
@@ -105,7 +107,8 @@ public abstract class RankTwoNonMetricFactory<Z extends Object, R extends Elem<R
 	/**
 	 * Lowers the indices of a contravariant rank-two tensor.
 	 * 
-	 * @param in The contravariant rank-two tensor to be lowered.
+	 * @param indexI The first index of the contravariant rank-two tensor to be lowered.
+	 * @param indexJ The second index of the contravariant rank-two tensor to be lowered.
 	 * @return The lowered tensor.
 	 */
 	public SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> genIndexLower( Z indexI , Z indexJ )
