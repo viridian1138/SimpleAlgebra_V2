@@ -28,6 +28,7 @@ import simplealgebra.SymbolicInvertLeftRevCoeff;
 import simplealgebra.SymbolicInvertRightRevCoeff;
 import simplealgebra.SymbolicMultRevCoeff;
 import simplealgebra.SymbolicTranspose;
+import simplealgebra.ComplexElemFactory;
 import simplealgebra.SquareMatrixElemFactory;
 import simplealgebra.ddx.PartialDerivativeOp;
 import simplealgebra.ddx.FlowVectorTensor;
@@ -280,6 +281,36 @@ rule "Apply Transpose"
      then
           // System.out.println( "Apply Transpose" );
           insert( new Reng( p , new SymbolicTranspose( r0.getEnd() , (SquareMatrixElemFactory)( p.getFac().getFac() ) , ds ) ) );
+end
+
+
+
+
+
+rule "Apply Conjugate Left"
+     when
+          r0 : Reng( )
+          p : SymbolicConjugateLeft( elem == r0.getStrt() )
+          not( Reng( strt == p ) )
+          ds : DroolsSession()
+     then
+          // System.out.println( "Apply Conjugate Left" );
+          insert( new Reng( p , new SymbolicConjugateLeft( r0.getEnd() , (ComplexElemFactory)( p.getFac().getFac() ) , ds ) ) );
+end
+
+
+
+
+
+rule "Apply Conjugate Right"
+     when
+          r0 : Reng( )
+          p : SymbolicConjugateRight( elem == r0.getStrt() )
+          not( Reng( strt == p ) )
+          ds : DroolsSession()
+     then
+          // System.out.println( "Apply Conjugate Right" );
+          insert( new Reng( p , new SymbolicConjugateRight( r0.getEnd() , (ComplexElemFactory)( p.getFac().getFac() ) , ds ) ) );
 end
 
 
@@ -1188,6 +1219,36 @@ rule "Transpose Over Negate"
       then
           // System.out.println( "Transpose Over Negate" );
           insert( new Reng( tr1 , ( new SymbolicTranspose( a , (SquareMatrixElemFactory)( tr1.getFac().getFac() ) , ds ) ).negate().insSym( ds ) ) );
+end
+
+
+
+
+
+rule "Conjugate Left Identity"
+      when
+          iden : SymbolicIdentity( )
+          tr1 : SymbolicConjugateLeft( elem == iden )
+          not( Reng( strt == tr1 ) )
+          not( Reng( strt == iden ) )
+      then
+          // System.out.println( "Conjugate Left Identity" );
+          insert( new Reng( tr1 , iden ) );
+end
+
+
+
+
+
+rule "Conjugate Right Identity"
+      when
+          iden : SymbolicIdentity( )
+          tr1 : SymbolicConjugateRight( elem == iden )
+          not( Reng( strt == tr1 ) )
+          not( Reng( strt == iden ) )
+      then
+          // System.out.println( "Conjugate Right Identity" );
+          insert( new Reng( tr1 , iden ) );
 end
 
 

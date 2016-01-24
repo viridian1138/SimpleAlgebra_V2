@@ -33,6 +33,7 @@ import java.util.HashMap;
 
 import org.kie.internal.runtime.StatefulKnowledgeSession;
 
+import simplealgebra.symbolic.DroolsSession;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.PrecedenceComparator;
 import simplealgebra.symbolic.SCacheKey;
@@ -114,6 +115,20 @@ public class SymbolicConjugateLeft<R extends Elem<R,?>, S extends ElemFactory<R,
 	{
 		super( _fac );
 		elem = _elem;
+	}
+	
+	
+	/**
+	 * Constructs the elem for use in a Drools ( http://drools.org ) session.
+	 * 
+	 * @param _elem The nested elem.
+	 * @param _fac The factory for the nested elem.
+	 * @param ds The Drools session.
+	 */
+	public SymbolicConjugateLeft( SymbolicElem<ComplexElem<R,S>,ComplexElemFactory<R,S>> _elem , ComplexElemFactory<R, S> _fac, DroolsSession ds) 
+	{
+		this( _elem , _fac );
+		ds.insert( this );
 	}
 
 	
