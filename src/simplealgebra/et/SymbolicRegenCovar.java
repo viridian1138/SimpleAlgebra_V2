@@ -36,6 +36,7 @@ import simplealgebra.CloneThreadCache;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
+import simplealgebra.symbolic.DroolsSession;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SCacheKey;
 import simplealgebra.symbolic.SymbolicElem;
@@ -71,6 +72,22 @@ public class SymbolicRegenCovar<Z extends Object, R extends Elem<R,?>, S extends
 		super( _fac );
 		elem = _elem;
 		newCovar = _newCovar;
+	}
+	
+	
+	/**
+	 * Constructs the elem for use in a Drools ( http://drools.org ) session.
+	 * 
+	 * @param _elem The argument.
+	 * @param _fac The factory for the enclosed type.
+	 * @param _newCovar The new list of names for the covariant indices.
+	 * @param ds The Drools session.
+	 */
+	public SymbolicRegenCovar( SymbolicElem<EinsteinTensorElem<Z,R,S>,EinsteinTensorElemFactory<Z,R,S>> _elem , 
+			EinsteinTensorElemFactory<Z,R,S> _fac , ArrayList<Z> _newCovar , DroolsSession ds  )
+	{
+		this( _elem , _fac , _newCovar );
+		ds.insert( this );
 	}
 	
 	

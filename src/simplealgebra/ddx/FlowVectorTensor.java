@@ -39,6 +39,7 @@ import simplealgebra.NotInvertibleException;
 import simplealgebra.NumDimensions;
 import simplealgebra.et.EinsteinTensorElem;
 import simplealgebra.et.EinsteinTensorElemFactory;
+import simplealgebra.symbolic.DroolsSession;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SCacheKey;
 import simplealgebra.symbolic.SymbolicElem;
@@ -78,6 +79,25 @@ public class FlowVectorTensor<Z extends Object, U extends NumDimensions, R exten
 		index = _index;
 		dim = _dim;
 		dfac = _dfac;
+	}
+	
+	/**
+	 * Constructs the flow vector tensor for use in a Drools ( http://drools.org ) session.
+	 * 
+	 * @param _fac Factory for the enclosed type.
+	 * @param _index The tensor index for the flow vector.
+	 * @param _dim The number of dimensions over which to calculate the flow vector.
+	 * @param _dfac Factory for generating the components of the flow vector.
+	 * @param ds The Drools session.
+	 */
+	public FlowVectorTensor( EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, 
+			SymbolicElemFactory<R, S>> _fac , 
+			Z _index ,
+			U _dim ,
+			FlowVectorFactory<R,S,K> _dfac , DroolsSession ds ) 
+	{
+		this( _fac , _index , _dim , _dfac );
+		ds.insert( this );
 	}
 
 	@Override

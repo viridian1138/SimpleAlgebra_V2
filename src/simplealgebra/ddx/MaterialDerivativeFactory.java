@@ -30,6 +30,8 @@ import java.io.PrintStream;
 import java.math.BigInteger;
 import java.util.HashMap;
 
+import org.kie.internal.runtime.StatefulKnowledgeSession;
+
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
@@ -39,6 +41,7 @@ import simplealgebra.et.EinsteinTensorElem;
 import simplealgebra.et.EinsteinTensorElemFactory;
 import simplealgebra.et.MetricTensorFactory;
 import simplealgebra.et.TemporaryIndexFactory;
+import simplealgebra.symbolic.DroolsSession;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.PrecedenceComparator;
 import simplealgebra.symbolic.SCacheKey;
@@ -135,6 +138,19 @@ public class MaterialDerivativeFactory<Z extends Object, U extends NumDimensions
 		cofac = new CovariantDerivativeFactory<Z,U,R,S,K>( param2 );
 	}
 	
+	
+	/**
+	 * Constructs the tensor factory for use in a Drools ( http://drools.org ) session.
+	 * 
+	 * @param param Object defining the set of input parameters.
+	 * @param ds The Drools session.
+	 */
+	public MaterialDerivativeFactory( 
+			MaterialDerivativeFactoryParam<Z,U,R,S,K> param , DroolsSession ds )
+	{
+		this( param );
+		ds.insert( this );
+	}
 	
 	
 	/**
@@ -265,6 +281,12 @@ public class MaterialDerivativeFactory<Z extends Object, U extends NumDimensions
 	}
 	
 	
+	@Override
+	public void performInserts( StatefulKnowledgeSession session )
+	{
+		tensorWithRespectTo.performInserts( session );
+		super.performInserts( session );
+	}	
 	
 	
 	/**

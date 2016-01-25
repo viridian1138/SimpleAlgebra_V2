@@ -68,6 +68,19 @@ public class SymbolicReduction<R extends Elem<R,?>, S extends ElemFactory<R,S>> 
 		elem = _elem;
 	}
 	
+	/**
+	 * Constructs the reduction for use in a Drools ( http://drools.org ) session.
+	 * 
+	 * @param _elem The enclosed elem.
+	 * @param _fac The enclosed factory.
+	 * @param ds The Drools session.
+	 */
+	public SymbolicReduction( R _elem , S _fac , DroolsSession ds )
+	{
+		this( _elem , _fac );
+		ds.insert( this );
+	}
+	
 	@Override
 	public R eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
 		return( elem );

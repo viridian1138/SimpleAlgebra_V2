@@ -36,6 +36,7 @@ import simplealgebra.CloneThreadCache;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
+import simplealgebra.symbolic.DroolsSession;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.PrecedenceComparator;
 import simplealgebra.symbolic.SCacheKey;
@@ -78,6 +79,19 @@ public class PartialDerivativeOp<R extends Elem<R,?>, S extends ElemFactory<R,S>
 	{
 		super( _fac );
 		withRespectTo = _withRespectTo;
+	}
+	
+	/**
+	 * Constructs the partial derivative.
+	 * 
+	 * @param _fac The factory for the enclosed type.
+	 * @param _withRespectTo The variable(s) over which to take the partial derivative.
+	 * @param ds The Drools session.
+	 */
+	public PartialDerivativeOp( S _fac , ArrayList<K> _withRespectTo , DroolsSession ds )
+	{
+		this( _fac , _withRespectTo );
+		ds.insert( this );
 	}
 	
 	@Override

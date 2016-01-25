@@ -31,6 +31,7 @@ import java.util.HashMap;
 
 import org.kie.internal.runtime.StatefulKnowledgeSession;
 
+import simplealgebra.symbolic.DroolsSession;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.PrecedenceComparator;
 import simplealgebra.symbolic.SCacheKey;
@@ -65,6 +66,20 @@ public class SymbolicInvertLeftRevCoeff<U extends NumDimensions, R extends Elem<
 	{
 		super( _fac );
 		elem = _elem;
+	}
+	
+	/**
+	 * Constructs the elem for use in a Drools ( http://drools.org ) session.
+	 * 
+	 * @param _elem The enclosed elem.
+	 * @param _fac The factory for the enclosed type.
+	 * @param ds The Drools session.
+	 */
+	public SymbolicInvertLeftRevCoeff( SymbolicElem<SquareMatrixElem<U,R,S>,SquareMatrixElemFactory<U,R,S>> _elem , 
+			SquareMatrixElemFactory<U, R, S> _fac , DroolsSession ds )
+	{
+		this( _elem , _fac );
+		ds.insert( this );
 	}
 	
 	@Override

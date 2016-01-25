@@ -32,6 +32,7 @@ import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NumDimensions;
 import simplealgebra.ddx.DirectionalDerivativePartialFactory;
+import simplealgebra.symbolic.DroolsSession;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 
@@ -83,6 +84,25 @@ public class OrdinaryDerivativeFactory<Z extends Object, U extends NumDimensions
 		dim = _dim;
 		dfac = _dfac;
 		remap = _remap;
+	}
+	
+	/**
+	 * Constructs the tensor factory for use in a Drools ( http://drools.org ) session.
+	 * 
+	 * @param _fac The factory for the enclosed type.
+	 * @param _dim The number of dimensions for the index.
+	 * @param _dfac Factory for generating the partial derivatives of a directional derivative.
+	 * @param _remap Parameter describing how to remap the derivative.  Leave as null if no remapping is desired.
+	 * @param ds The Drools session.
+	 */
+	public OrdinaryDerivativeFactory( EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, 
+			SymbolicElemFactory<R, S>> _fac , 
+			U _dim ,
+			DirectionalDerivativePartialFactory<R,S,K> _dfac ,
+			DerivativeRemap<Z,R,S> _remap , DroolsSession ds )
+	{
+		this( _fac , _dim , _dfac , _remap );
+		ds.insert( this );
 	}
 	
 	/**

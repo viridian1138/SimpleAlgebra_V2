@@ -38,6 +38,7 @@ import simplealgebra.NumDimensions;
 import simplealgebra.ga.GeometricAlgebraMultivectorElem;
 import simplealgebra.ga.GeometricAlgebraMultivectorElemFactory;
 import simplealgebra.ga.Ord;
+import simplealgebra.symbolic.DroolsSession;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.PrecedenceComparator;
 import simplealgebra.symbolic.SCacheKey;
@@ -83,6 +84,25 @@ public class DirectionalDerivative<U extends NumDimensions, A extends Ord<U>, R 
 		dim = _dim;
 		ord = _ord;
 		dfac = _dfac;
+	}
+	
+	/**
+	 * Constructs the directional derivative for use in a Drools ( http://drools.org ) session.
+	 * 
+	 * @param _fac Factory for the enclosed type.
+	 * @param _dim The number of dimensions over which to express the directional derivative.
+	 * @param _ord The ord of the directional derivative vector.
+	 * @param _dfac Factory for generating the partial derivatives of the directional derivative.
+	 * @param ds The Drools session.
+	 */
+	public DirectionalDerivative( GeometricAlgebraMultivectorElemFactory<U,A, SymbolicElem<R, S>, 
+			SymbolicElemFactory<R, S>> _fac , 
+			U _dim ,
+			A _ord ,
+			DirectionalDerivativePartialFactory<R,S,K> _dfac , DroolsSession ds )
+	{
+		this( _fac , _dim , _ord , _dfac );
+		ds.insert( this );
 	}
 	
 	@Override

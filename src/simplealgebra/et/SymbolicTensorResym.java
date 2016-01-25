@@ -37,6 +37,7 @@ import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.NumDimensions;
 import simplealgebra.SquareMatrixElem;
+import simplealgebra.symbolic.DroolsSession;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SCacheKey;
 import simplealgebra.symbolic.SymbolicElem;
@@ -92,6 +93,23 @@ public class SymbolicTensorResym<Z extends Object, U extends NumDimensions, R ex
 		elem = _elem;
 		reSym = _reSym;
 		dim = _dim;
+	}
+	
+	
+	/**
+	 * Constructs the elem for use in a Drools ( http://drools.org ) session.
+	 * 
+	 * @param _elem The argument.
+	 * @param _fac The factory for the enclosed type.
+	 * @param _reSym The resym type.
+	 * @param _dim The number of dimensions.
+	 * @param ds The Drools session.
+	 */
+	public SymbolicTensorResym( SymbolicElem<EinsteinTensorElem<Z,R,S>,EinsteinTensorElemFactory<Z,R,S>> _elem , 
+			EinsteinTensorElemFactory<Z,R,S> _fac , ResymType _reSym , U _dim , DroolsSession ds )
+	{
+		this( _elem , _fac , _reSym , _dim );
+		ds.insert( this );
 	}
 	
 	

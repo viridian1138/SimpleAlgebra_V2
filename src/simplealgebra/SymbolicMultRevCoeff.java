@@ -31,6 +31,7 @@ import java.util.HashMap;
 
 import org.kie.internal.runtime.StatefulKnowledgeSession;
 
+import simplealgebra.symbolic.DroolsSession;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.PrecedenceComparator;
 import simplealgebra.symbolic.SCacheKey;
@@ -74,6 +75,22 @@ public class SymbolicMultRevCoeff<U extends NumDimensions, R extends Elem<R,?>, 
 		super( _fac );
 		elemA = _elemA;
 		elemB = _elemB;
+	}
+	
+	/**
+	 * Constructs the elem for use in a Drools ( http://drools.org ) session.
+	 * 
+	 * @param _elemA The left-side argument of the multiplication.
+	 * @param _elemB The right-side argument of the multiplication.
+	 * @param _fac The factory for the enclosed type.
+	 * @param ds The Drools session.
+	 */
+	public SymbolicMultRevCoeff( SymbolicElem<SquareMatrixElem<U,R,S>,SquareMatrixElemFactory<U,R,S>> _elemA , 
+			SymbolicElem<SquareMatrixElem<U,R,S>,SquareMatrixElemFactory<U,R,S>> _elemB ,
+			SquareMatrixElemFactory<U, R, S> _fac , DroolsSession ds )
+	{
+		this( _elemA , _elemB , _fac );
+		ds.insert( this );
 	}
 	
 	@Override

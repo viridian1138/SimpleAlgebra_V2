@@ -44,6 +44,7 @@ import simplealgebra.et.MetricTensorFactory;
 import simplealgebra.et.OrdinaryDerivativeFactory;
 import simplealgebra.et.SymbolicRegenContravar;
 import simplealgebra.et.TemporaryIndexFactory;
+import simplealgebra.symbolic.DroolsSession;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.PrecedenceComparator;
 import simplealgebra.symbolic.SCacheKey;
@@ -149,6 +150,21 @@ public class CovariantDerivative<Z extends Object, U extends NumDimensions, R ex
 		metric = param.getMetric();
 		remap = param.getRemap();
 		odfac = new OrdinaryDerivativeFactory<Z,U,R,S,K>( param.getFac() , param.getDim() , param.getDfac() , null );
+	}
+	
+	
+	
+	/**
+	 * Constructs the tensor factory for use in a Drools ( http://drools.org ) session.
+	 * 
+	 * @param param The input parameter for the factory.
+	 * @param ds The Drools session.
+	 */
+	public CovariantDerivative( 
+			CovariantDerivativeFactoryParam<Z,U,R,S,K> param , DroolsSession ds )
+	{
+		this( param );
+		ds.insert( this );
 	}
 	
 	
