@@ -44,6 +44,8 @@ import simplealgebra.Elem;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.SquareMatrixElem;
 import simplealgebra.SquareMatrixElemFactory;
+import simplealgebra.SymbolicInvertLeftRevCoeff;
+import simplealgebra.SymbolicInvertRightRevCoeff;
 import simplealgebra.SymbolicTranspose;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SCacheKey;
@@ -216,6 +218,82 @@ public class TestMatrixOpSymbolic extends TestCase
 		
 		Assert.assertTrue( ( sn.getElem() ) instanceof SymbolicIdentity );
 		
+		
+	}
+	
+	
+	
+	
+	
+	/**
+	 * Tests that the invert right rev coeff of identity reduces to identity.
+	 * 
+	 * @throws NotInvertibleException
+	 */
+	public void testInvertRightRevCoeffIdentity() throws NotInvertibleException
+	{
+		final TestDimensionFour td = new TestDimensionFour();
+		
+		final DoubleElemFactory dl = new DoubleElemFactory();
+		
+		final SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory> se = 
+				new SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>(dl, td);
+		
+		final SymbolicElemFactory<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>> ye = 
+				new SymbolicElemFactory<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>(se);
+		
+		SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
+			d1 = ye.identity();
+		
+		ArrayList<SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>> params = new ArrayList<SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>>();
+		
+		SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
+			d2 = d1.handleOptionalOp( SquareMatrixElem.SquareMatrixCmd.INVERT_RIGHT_REV_COEFF , params );
+		
+		Assert.assertTrue( d2 instanceof SymbolicInvertRightRevCoeff );
+		
+		SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
+			d2a = d2.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
+		
+		Assert.assertTrue( d2a instanceof SymbolicIdentity );
+		
+	}
+	
+	
+	
+	
+	
+	/**
+	 * Tests that the invert left rev coeff of identity reduces to identity.
+	 * 
+	 * @throws NotInvertibleException
+	 */
+	public void testInvertLeftRevCoeffIdentity() throws NotInvertibleException
+	{
+		final TestDimensionFour td = new TestDimensionFour();
+		
+		final DoubleElemFactory dl = new DoubleElemFactory();
+		
+		final SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory> se = 
+				new SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>(dl, td);
+		
+		final SymbolicElemFactory<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>> ye = 
+				new SymbolicElemFactory<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>(se);
+		
+		SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
+			d1 = ye.identity();
+		
+		ArrayList<SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>> params = new ArrayList<SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>>();
+		
+		SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
+			d2 = d1.handleOptionalOp( SquareMatrixElem.SquareMatrixCmd.INVERT_LEFT_REV_COEFF , params );
+		
+		Assert.assertTrue( d2 instanceof SymbolicInvertLeftRevCoeff );
+		
+		SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
+			d2a = d2.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
+		
+		Assert.assertTrue( d2a instanceof SymbolicIdentity );
 		
 	}
 	

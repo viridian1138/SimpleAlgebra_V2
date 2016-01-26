@@ -287,6 +287,36 @@ end
 
 
 
+rule "Apply Invert Left Rev Coeff"
+     when
+          r0 : Reng( )
+          p : SymbolicInvertLeftRevCoeff( elem == r0.getStrt() )
+          not( Reng( strt == p ) )
+          ds : DroolsSession()
+     then
+          // System.out.println( "Apply Invert Left Rev Coeff" );
+          insert( new Reng( p , new SymbolicInvertLeftRevCoeff( r0.getEnd() , (SquareMatrixElemFactory)( p.getFac().getFac() ) , ds ) ) );
+end
+
+
+
+
+
+rule "Apply Invert Right Rev Coeff"
+     when
+          r0 : Reng( )
+          p : SymbolicInvertRightRevCoeff( elem == r0.getStrt() )
+          not( Reng( strt == p ) )
+          ds : DroolsSession()
+     then
+          // System.out.println( "Apply Invert Right Rev Coeff" );
+          insert( new Reng( p , new SymbolicInvertRightRevCoeff( r0.getEnd() , (SquareMatrixElemFactory)( p.getFac().getFac() ) , ds ) ) );
+end
+
+
+
+
+
 rule "Apply Conjugate Left"
      when
           r0 : Reng( )
@@ -1219,6 +1249,36 @@ rule "Transpose Over Negate"
       then
           // System.out.println( "Transpose Over Negate" );
           insert( new Reng( tr1 , ( new SymbolicTranspose( a , (SquareMatrixElemFactory)( tr1.getFac().getFac() ) , ds ) ).negate().insSym( ds ) ) );
+end
+
+
+
+
+
+rule "Invert Left Rev Coeff Identity"
+      when
+          iden : SymbolicIdentity( )
+          tr1 : SymbolicInvertLeftRevCoeff( elem == iden )
+          not( Reng( strt == tr1 ) )
+          not( Reng( strt == iden ) )
+      then
+          // System.out.println( "Invert Left Rev Coeff Identity" );
+          insert( new Reng( tr1 , iden ) );
+end
+
+
+
+
+
+rule "Invert Right Rev Coeff Identity"
+      when
+          iden : SymbolicIdentity( )
+          tr1 : SymbolicInvertRightRevCoeff( elem == iden )
+          not( Reng( strt == tr1 ) )
+          not( Reng( strt == iden ) )
+      then
+          // System.out.println( "Invert Right Rev Coeff Identity" );
+          insert( new Reng( tr1 , iden ) );
 end
 
 
