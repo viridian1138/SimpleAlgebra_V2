@@ -375,7 +375,78 @@ public class TestMatrixOpSymbolic extends TestCase
 	}
 	
 	
+	/**
+	 * Tests that the mult rev coeff between the identity and an elem is the identity.
+	 * 
+	 * @throws NotInvertibleException
+	 */
+	public void testMultRevIdentityA() throws NotInvertibleException
+	{
+		final TestDimensionFour td = new TestDimensionFour();
+		
+		final DoubleElemFactory dl = new DoubleElemFactory();
+		
+		final SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory> se = 
+				new SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>(dl, td);
+		
+		final SymbolicElemFactory<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>> ye = 
+				new SymbolicElemFactory<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>(se);
+		
+		SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
+			d1 = new AElem( se );
+		
+		ArrayList<SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>> params = new ArrayList<SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>>();
+		
+		params.add( ye.identity() );
+		
+		SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
+			d2 = d1.handleOptionalOp( SquareMatrixElem.SquareMatrixCmd.MULT_REV_COEFF , params );
+		
+		Assert.assertTrue( d2 instanceof SymbolicMultRevCoeff );
+		
+		SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
+			d2a = d2.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
+		
+		Assert.assertTrue( d2a instanceof AElem );
+		
+	}
 	
+	
+	/**
+	 * Tests that the mult rev coeff between the identity and an elem is the identity.
+	 * 
+	 * @throws NotInvertibleException
+	 */
+	public void testMultRevIdentityB() throws NotInvertibleException
+	{
+		final TestDimensionFour td = new TestDimensionFour();
+		
+		final DoubleElemFactory dl = new DoubleElemFactory();
+		
+		final SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory> se = 
+				new SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>(dl, td);
+		
+		final SymbolicElemFactory<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>> ye = 
+				new SymbolicElemFactory<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>(se);
+		
+		SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
+			d1 = ye.identity();
+		
+		ArrayList<SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>> params = new ArrayList<SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>>();
+		
+		params.add( new AElem( se ) );
+		
+		SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
+			d2 = d1.handleOptionalOp( SquareMatrixElem.SquareMatrixCmd.MULT_REV_COEFF , params );
+		
+		Assert.assertTrue( d2 instanceof SymbolicMultRevCoeff );
+		
+		SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
+			d2a = d2.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
+		
+		Assert.assertTrue( d2a instanceof AElem );
+		
+	}
 	
 
 	

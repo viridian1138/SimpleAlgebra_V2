@@ -1349,6 +1349,41 @@ end
 
 
 
+
+rule "MultRevCoeff Ident A"
+      when
+          ez : SymbolicIdentity( )
+          mult1 : SymbolicMultRevCoeff( elemA == ez )
+          elB : SymbolicElem() from mult1.getElemB()
+          not( Reng( strt == mult1 ) )
+          not( Reng( strt == elB ) )
+          not( Reng( strt == ez ) )
+          eval( !( elB.exposesDerivatives() ) )
+      then
+          // System.out.println( "MultRevCoeff Ident A" );
+          insert( new Reng( mult1 , elB ) );
+end
+
+
+
+
+rule "MultRevCoeff Ident B"
+      when
+          ez : SymbolicIdentity( )
+          mult1 : SymbolicMultRevCoeff( elemB == ez )
+          elA : SymbolicElem() from mult1.getElemA()
+          not( Reng( strt == mult1 ) )
+          not( Reng( strt == elA ) )
+          not( Reng( strt == ez ) )
+      then
+          // System.out.println( "MultRevCoeff Ident B" );
+          insert( new Reng( mult1 , elA ) );
+end
+
+
+
+
+
 rule "Conjugate Left Identity"
       when
           iden : SymbolicIdentity( )
