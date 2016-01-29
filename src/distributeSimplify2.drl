@@ -596,6 +596,36 @@ end
 
 
 
+rule "Apply ReverseLeft"
+     when
+          r0 : Reng( )
+          p : SymbolicReverseLeft( elemA == r0.getStrt() )
+          not( Reng( strt == p ) )
+          ds : DroolsSession()
+     then
+          // System.out.println( "Apply ReverseLeft" );
+          insert( new Reng( p , new SymbolicReverseLeft( r0.getEnd() , (GeometricAlgebraMultivectorElemFactory)( p.getFac().getFac() ) , ds ) ) );
+end
+
+
+
+
+
+rule "Apply ReverseRight"
+     when
+          r0 : Reng( )
+          p : SymbolicReverseRight( elemA == r0.getStrt() )
+          not( Reng( strt == p ) )
+          ds : DroolsSession()
+     then
+          // System.out.println( "Apply ReverseRight" );
+          insert( new Reng( p , new SymbolicReverseRight( r0.getEnd() , (GeometricAlgebraMultivectorElemFactory)( p.getFac().getFac() ) , ds ) ) );
+end
+
+
+
+
+
 rule "Apply Symbolic Index Reduction"
      when
           r0 : Reng( )
@@ -1550,6 +1580,36 @@ rule "Scalar Product Zero B"
       then
           // System.out.println( "Scalar Product Zero B" );
           insert( new Reng( mult1 , ez ) );
+end
+
+
+
+
+
+rule "ReverseLeft Identity"
+      when
+          ident : SymbolicIdentity( )
+          mult1 : SymbolicReverseLeft( elemA == ident )
+          not( Reng( strt == mult1 ) )
+          not( Reng( strt == ident ) )
+      then
+          // System.out.println( "ReverseLeft Identity" );
+          insert( new Reng( mult1 , ident ) );
+end
+
+
+
+
+
+rule "ReverseRight Identity"
+      when
+          ident : SymbolicIdentity( )
+          mult1 : SymbolicReverseRight( elemA == ident )
+          not( Reng( strt == mult1 ) )
+          not( Reng( strt == ident ) )
+      then
+          // System.out.println( "ReverseRight Identity" );
+          insert( new Reng( mult1 , ident ) );
 end
 
 
