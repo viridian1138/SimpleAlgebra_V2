@@ -641,6 +641,66 @@ end
 
 
 
+rule "Apply Symbolic Rank Two Trace"
+     when
+          r0 : Reng( )
+          p : SymbolicRankTwoTrace( elemA == r0.getStrt() )
+          not( Reng( strt == p ) )
+          ds : DroolsSession()
+     then
+          // System.out.println( "Apply Symbolic Rank Two Trace" );
+          insert( new Reng( p , new SymbolicRankTwoTrace( r0.getEnd() , (EinsteinTensorElemFactory)( p.getFac().getFac() ) , ds ) ) );
+end
+
+
+
+
+
+rule "Apply Symbolic Regen Contravar"
+     when
+          r0 : Reng( )
+          p : SymbolicRegenContravar( elem == r0.getStrt() )
+          not( Reng( strt == p ) )
+          ds : DroolsSession()
+     then
+          // System.out.println( "Apply Symbolic Regen Contravar" );
+          insert( new Reng( p , new SymbolicRegenContravar( r0.getEnd() , (EinsteinTensorElemFactory)( p.getFac().getFac() ) , p.getNewContravar() , ds ) ) );
+end
+
+
+
+
+
+rule "Apply Symbolic Regen Covar"
+     when
+          r0 : Reng( )
+          p : SymbolicRegenCovar( elem == r0.getStrt() )
+          not( Reng( strt == p ) )
+          ds : DroolsSession()
+     then
+          // System.out.println( "Apply Symbolic Regen Covar" );
+          insert( new Reng( p , new SymbolicRegenCovar( r0.getEnd() , (EinsteinTensorElemFactory)( p.getFac().getFac() ) , p.getNewCovar() , ds ) ) );
+end
+
+
+
+
+
+rule "Apply Symbolic Tensor Resym"
+     when
+          r0 : Reng( )
+          p : SymbolicTensorResym( elem == r0.getStrt() )
+          not( Reng( strt == p ) )
+          ds : DroolsSession()
+     then
+          // System.out.println( "Apply Symbolic Tensor Resym" );
+          insert( new Reng( p , new SymbolicTensorResym( r0.getEnd() , (EinsteinTensorElemFactory)( p.getFac().getFac() ) , p.getReSym() , p.getDim() , ds ) ) );
+end
+
+
+
+
+
 
 // This simplification has a parallel implementation in SymbolicZero.negate()
 rule "Double Negate"
