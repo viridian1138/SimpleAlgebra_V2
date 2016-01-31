@@ -272,6 +272,21 @@ end
 
 
 
+rule "Apply SymbolicReduction"
+     when
+          r0 : Reng( )
+          p : SymbolicReduction( elem == r0.getStrt() )
+          not( Reng( strt == p ) )
+          ds : DroolsSession()
+     then
+          // System.out.println( "Apply SymbolicReduction" );
+          insert( new Reng( p , new SymbolicReduction( r0.getEnd() , p.getFac().getFac() , ds ) ) );
+end
+
+
+
+
+
 
 
 
@@ -1704,6 +1719,38 @@ rule "Mult Negative Ident B"
       then
           // System.out.println( "Mult Negative Ident B" );
           insert( new Reng( mult1 , nez.negate() ) );
+end
+
+
+
+
+
+rule "SymbolicReduction Zero"
+      when
+          ez : SymbolicZero( )
+          tr1 : SymbolicReduction( elem == ez )
+          not( Reng( strt == tr1 ) )
+          not( Reng( strt == ez ) )
+          ds : DroolsSession()
+      then
+          // System.out.println( "SymbolicReduction Zero" );
+          insert( new Reng( tr1 , tr1.getFac().zero().insSym( ds ) ) );
+end
+
+
+
+
+
+rule "SymbolicReduction Identity"
+      when
+          ident : SymbolicIdentity( )
+          tr1 : SymbolicReduction( elem == ident )
+          not( Reng( strt == tr1 ) )
+          not( Reng( strt == ident ) )
+          ds : DroolsSession()
+      then
+          // System.out.println( "SymbolicReduction Identity" );
+          insert( new Reng( tr1 , tr1.getFac().identity().insSym( ds ) ) );
 end
 
 
