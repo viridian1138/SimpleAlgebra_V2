@@ -186,8 +186,29 @@ public class SymbolicReduction<R extends Elem<R,?>, S extends ElemFactory<R,S>> 
 			{
 				case DISTRIBUTE_SIMPLIFY:
 				{
-					SymbolicReduction<R,S> ths = this;
-					return( ths );
+					if( elem instanceof SymbolicElem )
+					{
+						return( super.handleOptionalOp(id, args) );
+					}
+					else
+					{
+						SymbolicReduction<R,S> ths = this;
+						return( ths );
+					}
+				}
+				// break;
+				
+				case DISTRIBUTE_SIMPLIFY2:
+				{
+					if( elem instanceof SymbolicElem )
+					{
+						return( super.handleOptionalOp(id, args) );
+					}
+					else
+					{
+						SymbolicReduction<R,S> ths = this;
+						return( ths );
+					}
 				}
 				// break;
 			}

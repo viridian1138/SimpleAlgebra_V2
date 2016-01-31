@@ -186,6 +186,13 @@ public class SymbolicPlaceholder<R extends Elem<R,?>, S extends ElemFactory<R,S>
 					return( ths );
 				}
 				// break;
+				
+				case DISTRIBUTE_SIMPLIFY2:
+				{
+					SymbolicPlaceholder<R,S> ths = this;
+					return( ths );
+				}
+				// break;
 			}
 		}
 		
