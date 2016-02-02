@@ -287,6 +287,21 @@ end
 
 
 
+rule "Apply SymbolicSqrt"
+     when
+          r0 : Reng( )
+          p : SymbolicSqrt( elem == r0.getStrt() )
+          not( Reng( strt == p ) )
+          ds : DroolsSession()
+     then
+          // System.out.println( "Apply SymbolicSqrt" );
+          insert( new Reng( p , new SymbolicSqrt( r0.getEnd() , p.getFac().getFac() , ds ) ) );
+end
+
+
+
+
+
 
 
 
@@ -1751,6 +1766,22 @@ rule "SymbolicReduction Identity"
       then
           // System.out.println( "SymbolicReduction Identity" );
           insert( new Reng( tr1 , tr1.getFac().identity().insSym( ds ) ) );
+end
+
+
+
+
+
+rule "SymbolicSqrt Identity"
+      when
+          ident : SymbolicIdentity( )
+          tr1 : SymbolicSqrt( elem == ident )
+          not( Reng( strt == tr1 ) )
+          not( Reng( strt == ident ) )
+          ds : DroolsSession()
+      then
+          // System.out.println( "SymbolicSqrt Identity" );
+          insert( new Reng( tr1 , ident ) );
 end
 
 

@@ -112,6 +112,7 @@ public class SimpleAlgebraTestSuite extends TestSuite {
 		s.addTestSuite( TestGaZeroSymbolic.class );
 		s.addTestSuite( TestMatrixOpSymbolic.class );
 		s.addTestSuite( TestComplexOpSymbolic.class );
+		s.addTestSuite( TestSqrtSymbolic.class );
 		return( s );
 	}
 	
