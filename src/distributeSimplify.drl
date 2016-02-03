@@ -786,6 +786,38 @@ end
 
 
 
+rule "Absolute Value Identity"
+     when
+          n0 : SymbolicIdentity( )
+          n1 : SymbolicAbsoluteValue( elem == n0 )
+          not( Reng( strt == n1 ) )
+          not( Reng( strt == n0 ) )
+     then
+          // System.out.println( "Absolute Value Identity" );
+          insert( new Reng( n1 , n0 ) );
+end
+
+
+
+
+
+
+rule "Absolute Value Zero"
+     when
+          n0 : SymbolicZero( )
+          n1 : SymbolicAbsoluteValue( elem == n0 )
+          not( Reng( strt == n1 ) )
+          not( Reng( strt == n0 ) )
+     then
+          // System.out.println( "Absolute Value Zero" );
+          insert( new Reng( n1 , n0 ) );
+end
+
+
+
+
+
+
 
 rule "Double Invert Left NonCommute"
      when

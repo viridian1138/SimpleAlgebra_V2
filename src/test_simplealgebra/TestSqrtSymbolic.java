@@ -68,8 +68,6 @@ public class TestSqrtSymbolic extends TestCase
 	 */
 	public void testSqrtSymbolic() throws NotInvertibleException
 	{
-		final TestDimensionFour td = new TestDimensionFour();
-		
 		final DoubleElemFactory dl = new DoubleElemFactory();
 		
 		final SymbolicElemFactory<DoubleElem,DoubleElemFactory> ye = 
