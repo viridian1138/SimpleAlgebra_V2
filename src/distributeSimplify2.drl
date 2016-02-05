@@ -1803,6 +1803,111 @@ end
 
 
 
+rule "Directional Derivative Of Constant --> Zero"
+      when
+          pd : DirectionalDerivative( )
+          mult : SymbolicMult( elemA == pd )
+          cn : SymbolicElem() from mult.getElemB()
+          not( Reng( strt == mult ) )
+          not( Reng( strt == cn ) )
+          not( Reng( strt == pd ) )
+          ds: DroolsSession()
+          eval( cn.isPartialDerivativeZero() )
+      then
+         // System.out.println( "Directional Derivative Of Constant --> Zero" );
+         insert( new Reng( mult , new SymbolicZero( cn.getFac() , ds ) ) );
+end
+
+
+
+
+
+
+
+rule "Directional Derivative Dot Constant --> Zero"
+      when
+          pd : DirectionalDerivative( )
+          mult : SymbolicDot( elemA == pd )
+          cn : SymbolicElem() from mult.getElemB()
+          not( Reng( strt == mult ) )
+          not( Reng( strt == cn ) )
+          not( Reng( strt == pd ) )
+          ds: DroolsSession()
+          eval( cn.isPartialDerivativeZero() )
+      then
+         // System.out.println( "Directional Derivative Dot Constant --> Zero" );
+         insert( new Reng( mult , new SymbolicZero( cn.getFac() , ds ) ) );
+end
+
+
+
+
+
+
+
+rule "Directional Derivative DotHestenes Constant --> Zero"
+      when
+          pd : DirectionalDerivative( )
+          mult : SymbolicDotHestenes( elemA == pd )
+          cn : SymbolicElem() from mult.getElemB()
+          not( Reng( strt == mult ) )
+          not( Reng( strt == cn ) )
+          not( Reng( strt == pd ) )
+          ds: DroolsSession()
+          eval( cn.isPartialDerivativeZero() )
+      then
+         // System.out.println( "Directional Derivative DotHestenes Constant --> Zero" );
+         insert( new Reng( mult , new SymbolicZero( cn.getFac() , ds ) ) );
+end
+
+
+
+
+
+
+
+rule "Directional Derivative Wedge Constant --> Zero"
+      when
+          pd : DirectionalDerivative( )
+          mult : SymbolicWedge( elemA == pd )
+          cn : SymbolicElem() from mult.getElemB()
+          not( Reng( strt == mult ) )
+          not( Reng( strt == cn ) )
+          not( Reng( strt == pd ) )
+          ds: DroolsSession()
+          eval( cn.isPartialDerivativeZero() )
+      then
+         // System.out.println( "Directional Derivative Wedge Constant --> Zero" );
+         insert( new Reng( mult , new SymbolicZero( cn.getFac() , ds ) ) );
+end
+
+
+
+
+
+
+
+rule "Directional Derivative Cross Constant --> Zero"
+      when
+          pd : DirectionalDerivative( )
+          mult : SymbolicCross( elemA == pd )
+          cn : SymbolicElem() from mult.getElemB()
+          not( Reng( strt == mult ) )
+          not( Reng( strt == cn ) )
+          not( Reng( strt == pd ) )
+          ds: DroolsSession()
+          eval( cn.isPartialDerivativeZero() )
+      then
+         // System.out.println( "Directional Derivative Cross Constant --> Zero" );
+         insert( new Reng( mult , new SymbolicZero( cn.getFac() , ds ) ) );
+end
+
+
+
+
+
+
+
 
 
 
