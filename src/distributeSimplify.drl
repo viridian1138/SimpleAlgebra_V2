@@ -2291,3 +2291,24 @@ end
 
 
 
+
+rule "Directional Derivative Scalar-Product Constant --> Zero"
+      when
+          pd : DirectionalDerivative( )
+          mult : SymbolicScalar( elemA == pd )
+          cn : SymbolicElem() from mult.getElemB()
+          not( Reng( strt == mult ) )
+          not( Reng( strt == cn ) )
+          not( Reng( strt == pd ) )
+          ds: DroolsSession()
+          eval( cn.isPartialDerivativeZero() )
+      then
+         // System.out.println( "Directional Derivative Scalar-Product Constant --> Zero" );
+         insert( new Reng( mult , new SymbolicZero( cn.getFac() , ds ) ) );
+end
+
+
+
+
+
+
