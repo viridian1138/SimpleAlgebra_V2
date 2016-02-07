@@ -50,6 +50,7 @@ import simplealgebra.et.OrdinaryDerivativeFactory;
 import simplealgebra.et.SymbolicTensorResym;
 import simplealgebra.et.TemporaryIndexFactory;
 import simplealgebra.et.SymbolicTensorResym.ResymType;
+import simplealgebra.prec.DefaultPrecedenceComparator;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.PrecedenceComparator;
 import simplealgebra.symbolic.SCacheKey;
@@ -676,63 +677,9 @@ public class TestCovariantDerivativeFlatAsym3D extends TestCase {
 	 * @author thorngreen
 	 *
 	 */
-	private static class PrecCompare extends PrecedenceComparator<DoubleElem, DoubleElemFactory>
+	private static class PrecCompare extends DefaultPrecedenceComparator<DoubleElem, DoubleElemFactory>
 	{
 		
-		/**
-		 * Set of terminal symbol classes for the parent node in the expression tree.
-		 */
-		protected final HashSet<Class> terminalSymbolsA = new HashSet<Class>();
-		
-		/**
-		 * Set of terminal symbol classes for the child node in the expression tree.
-		 */
-		protected final HashSet<Class> terminalSymbolsB = new HashSet<Class>();
-
-		
-		/**
-		 * Constructs the precedence comparison object.
-		 */
-		public PrecCompare()
-		{
-			 terminalSymbolsA.add( SymbolicSqrt.class ); 
-			 terminalSymbolsB.add( SymbolicSqrt.class ); 
-			 terminalSymbolsA.add( PartialDerivativeOp.class );
-			 terminalSymbolsB.add( PartialDerivativeOp.class );
-		}
-		
-		@Override
-		public boolean parenNeeded(
-				SymbolicElem<DoubleElem, DoubleElemFactory> a,
-				SymbolicElem<DoubleElem, DoubleElemFactory> b,
-				boolean after) {
-			
-			for( final Class ii : terminalSymbolsA )
-			{
-				if( ii.isInstance( a ) )
-				{
-					return( false );
-				}
-			}
-			
-			
-			for( final Class ii : terminalSymbolsA )
-			{
-				if( ii.isInstance( b ) )
-				{
-					return( false );
-				}
-			}
-			
-			if( ( a instanceof SymbolicAdd ) && ( b instanceof SymbolicMult ) )
-			{
-				return( false );
-			}
-			
-			// TODO Auto-generated method stub
-			
-			return( true );
-		}
 		
 	}
 	

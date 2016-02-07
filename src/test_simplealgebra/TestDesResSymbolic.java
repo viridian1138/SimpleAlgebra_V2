@@ -55,6 +55,7 @@ import simplealgebra.et.EmFieldTensorFactory;
 import simplealgebra.et.RankTwoDeterminantFactory;
 import simplealgebra.et.SimpleCurveMetricTensorFactory;
 import simplealgebra.et.VectorPotentialFactory;
+import simplealgebra.prec.DefaultPrecedenceComparator;
 import simplealgebra.symbolic.*;
 
 import java.io.*;
@@ -970,70 +971,28 @@ public class TestDesResSymbolic extends TestCase
 	 * @author thorngreen
 	 *
 	 */
-	private static class PrecCompare extends PrecedenceComparator<ComplexElem<DoubleElem, DoubleElemFactory>,ComplexElemFactory<DoubleElem, DoubleElemFactory>>
+	private static class PrecCompare extends DefaultPrecedenceComparator<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 	{
 		
-		/**
-		 * Set of terminal symbol classes for the parent node in the expression tree.
-		 */
-		protected final HashSet<Class> terminalSymbolsA = new HashSet<Class>();
-		
-		/**
-		 * Set of terminal symbol classes for the child node in the expression tree.
-		 */
-		protected final HashSet<Class> terminalSymbolsB = new HashSet<Class>();
-		
-		
-		/**
-		 * Constructs the precedence comparison object.
-		 */
-		public PrecCompare()
+		@Override
+		protected void enclosedOrTerminalSymbolsAInit()
 		{
-			terminalSymbolsB.add( A0_Elem.class );
-			terminalSymbolsB.add( A1_Elem.class );
-			terminalSymbolsB.add( A2_Elem.class );
-			terminalSymbolsB.add( A3_Elem.class );
-			terminalSymbolsB.add( CSquaredElem.class );
-			terminalSymbolsA.add( SymbolicSqrt.class );
-			terminalSymbolsB.add( SymbolicSqrt.class );
-			terminalSymbolsA.add( PartialDerivativeOp.class );
-			terminalSymbolsB.add( PartialDerivativeOp.class );
-			terminalSymbolsA.add( T_2UxElem.class );
-			terminalSymbolsB.add( T_2UxElem.class );
+			defaultEnclosedOrTerminalSymbolsAInit();
+			enclosedOrTerminalSymbolsA.add( T_2UxElem.class );
 		}
 		
+		
+		
 		@Override
-		public boolean parenNeeded(
-				SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> a,
-				SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> b,
-				boolean after) {
-			
-			for( final Class ii : terminalSymbolsA )
-			{
-				if( ii.isInstance( a ) )
-				{
-					return( false );
-				}
-			}
-			
-			
-			for( final Class ii : terminalSymbolsB )
-			{
-				if( ii.isInstance( b ) )
-				{
-					return( false );
-				}
-			}
-			
-			
-			if( ( a instanceof SymbolicAdd ) && ( b instanceof SymbolicMult ) )
-			{
-				return( false );
-			}
-			
-			// TODO Auto-generated method stub
-			
-			return( true );
+		protected void enclosedOrTerminalSymbolsBInit()
+		{
+			defaultEnclosedOrTerminalSymbolsBInit();
+			enclosedOrTerminalSymbolsB.add( A0_Elem.class );
+			enclosedOrTerminalSymbolsB.add( A1_Elem.class );
+			enclosedOrTerminalSymbolsB.add( A2_Elem.class );
+			enclosedOrTerminalSymbolsB.add( A3_Elem.class );
+			enclosedOrTerminalSymbolsB.add( CSquaredElem.class );
+			enclosedOrTerminalSymbolsB.add( T_2UxElem.class );
 		}
 		
 	}
@@ -1224,9 +1183,9 @@ public class TestDesResSymbolic extends TestCase
 		//		valA.writeMathMLWrapped( comp , System.out );
 				final SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 					val = valA.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
-//				System.out.print( "<P>" );
-//				val.writeMathMLWrapped( comp , System.out );
-//				System.out.println( "" );
+				System.out.print( "<P>" );
+				val.writeMathMLWrapped( comp , System.out );
+				System.out.println( "" );
 				
 				if( ii.equals( jj ) )
 				{
