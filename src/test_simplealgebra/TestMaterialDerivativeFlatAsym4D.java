@@ -1912,6 +1912,7 @@ public class TestMaterialDerivativeFlatAsym4D extends TestCase
 			enclosedOrTerminalSymbolsB.add( V3_Elem.class );
 			enclosedOrTerminalSymbolsB.add( CSquaredElem.class );
 			enclosedOrTerminalSymbolsB.add( T_2UxElem.class );
+			this.enclosedOrTerminalSymbolsB.add( CVal_Elem.class );
 		}
 		
 	}

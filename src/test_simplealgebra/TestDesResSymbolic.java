@@ -1183,9 +1183,9 @@ public class TestDesResSymbolic extends TestCase
 		//		valA.writeMathMLWrapped( comp , System.out );
 				final SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 					val = valA.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
-	//			System.out.print( "<P>" );
-	//			val.writeMathMLWrapped( comp , System.out );
-	//			System.out.println( "" );
+				System.out.print( "<P>" );
+				val.writeMathMLWrapped( comp , System.out );
+				System.out.println( "" );
 				
 				if( ii.equals( jj ) )
 				{

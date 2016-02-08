@@ -680,6 +680,11 @@ public class TestCovariantDerivativeFlatAsym3D extends TestCase {
 	private static class PrecCompare extends DefaultPrecedenceComparator<DoubleElem, DoubleElemFactory>
 	{
 		
+		@Override
+		protected void enclosedOrTerminalSymbolsBInit()
+		{
+			defaultEnclosedOrTerminalSymbolsBInit();
+		}
 		
 	}
 	

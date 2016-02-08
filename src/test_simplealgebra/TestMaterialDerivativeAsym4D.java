@@ -2256,6 +2256,7 @@ public class TestMaterialDerivativeAsym4D extends TestCase
 			enclosedOrTerminalSymbolsB.add( V3_Elem.class );
 			enclosedOrTerminalSymbolsB.add( CSquaredElem.class );
 			enclosedOrTerminalSymbolsB.add( T_2UxElem.class );
+			enclosedOrTerminalSymbolsB.add( CVal_Elem.class );
 		}
 		
 	}

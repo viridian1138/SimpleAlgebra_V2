@@ -58,31 +58,62 @@ import simplealgebra.ga.SymbolicScalar;
 public class DefaultPrecedenceComparator<R extends Elem<R,?>, S extends ElemFactory<R,S>> extends PrecedenceComparator<R,S> {
 	
 	
-	
+	/**
+	 * Node representing an operator in a precedence relationship.
+	 * 
+	 * @author tgreen
+	 *
+	 */
 	protected static class OperatorNode
 	{
 		
+		/**
+		 * The class of the operator.
+		 */
 		protected Class<? extends SymbolicElem> operatorClass;
 		
 		
+		/**
+		 * Constructs the node.
+		 * 
+		 * @param cls The class of the operator.
+		 */
 		public OperatorNode( Class<? extends SymbolicElem> cls )
 		{
 			operatorClass = cls;
 		}
 		
 		
+		/**
+		 * Gets the class of the operator.
+		 * 
+		 * @return The class of the operator.
+		 */
 		public Class<? extends SymbolicElem> getOperatorClass()
 		{
 			return( operatorClass );
 		}
 		
 		
+		/**
+		 * Returns true iff. a parenthesis is required to convert to infix, where "this" is the parent node.
+		 * @param precA The precedence of the parent node in the elem tree.
+		 * @param precB The precedence of the child node in the elem tree.
+		 * @param b The child node in the elem tree.
+		 * @param after Whether the child is written after the parent in infix notation.
+		 * @return Whether infix notation requires a parenthesis for the child.
+		 */
 		public boolean parenNeeded( final int precA , final int precB , OperatorNode b , boolean after )
 		{
 			return( true );
 		}
 		
 		
+		/**
+		 * Returns whether the operator is compatible with being used in "invisible operator" multiplication.
+		 * 
+		 * @return True iff. the operator is compatible with being used in "invisible operator" multiplication.
+		 */
 		public boolean isItimesCompatible()
 		{
 			return( true );
@@ -93,10 +124,20 @@ public class DefaultPrecedenceComparator<R extends Elem<R,?>, S extends ElemFact
 	
 	
 	
-	
+	/**
+	 * Node for a multi-character identifier.
+	 * 
+	 * @author tgreen
+	 *
+	 */
 	protected static class MultiCharIdentOperator extends OperatorNode
 	{
 		
+		/**
+		 * Constructs the node.
+		 * 
+		 * @param cls The class of the operator.
+		 */
 		public MultiCharIdentOperator( Class<? extends SymbolicElem> cls )
 		{
 			super( cls );
@@ -118,10 +159,20 @@ public class DefaultPrecedenceComparator<R extends Elem<R,?>, S extends ElemFact
 	
 	
 	
-	
+	/**
+	 * Node for a basic unary operator.
+	 * 
+	 * @author tgreen
+	 *
+	 */
 	protected static class SimpleUnaryOperator extends OperatorNode
 	{
 		
+		/**
+		 * Constructs the node.
+		 * 
+		 * @param cls The class of the operator.
+		 */
 		public SimpleUnaryOperator( Class<? extends SymbolicElem> cls )
 		{
 			super( cls );
@@ -136,10 +187,20 @@ public class DefaultPrecedenceComparator<R extends Elem<R,?>, S extends ElemFact
 	}
 	
 	
-	
+	/**
+	 * Node for a unary operator that superscripts its operand.
+	 * 
+	 * @author tgreen
+	 *
+	 */
 	protected static class SuperscriptingOperator extends OperatorNode
 	{
 		
+		/**
+		 * Constructs the node.
+		 * 
+		 * @param cls The class of the operator.
+		 */
 		public SuperscriptingOperator( Class<? extends SymbolicElem> cls )
 		{
 			super( cls );
@@ -155,10 +216,20 @@ public class DefaultPrecedenceComparator<R extends Elem<R,?>, S extends ElemFact
 	
 	
 	
-	
+	/**
+	 * Node for unary negation.
+	 * 
+	 * @author tgreen
+	 *
+	 */
 	protected static class NegateOperator extends SimpleUnaryOperator
 	{
 		
+		/**
+		 * Constructs the node.
+		 * 
+		 * @param cls The class of the operator.
+		 */
 		public NegateOperator( Class<? extends SymbolicElem> cls )
 		{
 			super( cls );
@@ -174,10 +245,21 @@ public class DefaultPrecedenceComparator<R extends Elem<R,?>, S extends ElemFact
 	
 	
 	
-	protected static class SymmetricBinaryOperator extends OperatorNode
+	/**
+	 * Node for a basic binary operator.
+	 * 
+	 * @author tgreen
+	 *
+	 */
+	protected static class SimpleBinaryOperator extends OperatorNode
 	{
 		
-		public SymmetricBinaryOperator( Class<? extends SymbolicElem> cls )
+		/**
+		 * Constructs the node.
+		 * 
+		 * @param cls The class of the operator.
+		 */
+		public SimpleBinaryOperator( Class<? extends SymbolicElem> cls )
 		{
 			super( cls );
 		}
@@ -192,9 +274,20 @@ public class DefaultPrecedenceComparator<R extends Elem<R,?>, S extends ElemFact
 	
 	
 	
-	protected static class ItimesOperator extends SymmetricBinaryOperator
+	/**
+	 * Node for binary invisible multiplication.
+	 * 
+	 * @author tgreen
+	 *
+	 */
+	protected static class ItimesOperator extends SimpleBinaryOperator
 	{
 		
+		/**
+		 * Constructs the node.
+		 * 
+		 * @param cls The class of the operator.
+		 */
 		public ItimesOperator( Class<? extends SymbolicElem> cls )
 		{
 			super( cls );
@@ -293,7 +386,7 @@ public class DefaultPrecedenceComparator<R extends Elem<R,?>, S extends ElemFact
 		{
 			final HashSet<OperatorNode> hs = new HashSet<OperatorNode>();
 			
-			hs.add( new SymmetricBinaryOperator( SymbolicAdd.class ) );
+			hs.add( new SimpleBinaryOperator( SymbolicAdd.class ) );
 			
 			operatorPrecedence.add( hs );
 		}
@@ -304,7 +397,7 @@ public class DefaultPrecedenceComparator<R extends Elem<R,?>, S extends ElemFact
 		{
 			final HashSet<OperatorNode> hs = new HashSet<OperatorNode>();
 			
-			hs.add( new SymmetricBinaryOperator( SymbolicMultRevCoeff.class ) );
+			hs.add( new SimpleBinaryOperator( SymbolicMultRevCoeff.class ) );
 			hs.add( new ItimesOperator( SymbolicMult.class ) );
 			
 			operatorPrecedence.add( hs );
@@ -316,11 +409,11 @@ public class DefaultPrecedenceComparator<R extends Elem<R,?>, S extends ElemFact
 		{
 			final HashSet<OperatorNode> hs = new HashSet<OperatorNode>();
 			
-			hs.add( new SymmetricBinaryOperator( SymbolicDot.class ) );
-			hs.add( new SymmetricBinaryOperator( SymbolicDotHestenes.class ) );
-			hs.add( new SymmetricBinaryOperator( SymbolicScalar.class ) );
-			hs.add( new SymmetricBinaryOperator( SymbolicLeftContraction.class ) );
-			hs.add( new SymmetricBinaryOperator( SymbolicRightContraction.class ) );
+			hs.add( new SimpleBinaryOperator( SymbolicDot.class ) );
+			hs.add( new SimpleBinaryOperator( SymbolicDotHestenes.class ) );
+			hs.add( new SimpleBinaryOperator( SymbolicScalar.class ) );
+			hs.add( new SimpleBinaryOperator( SymbolicLeftContraction.class ) );
+			hs.add( new SimpleBinaryOperator( SymbolicRightContraction.class ) );
 			
 			operatorPrecedence.add( hs );
 		}
@@ -331,8 +424,8 @@ public class DefaultPrecedenceComparator<R extends Elem<R,?>, S extends ElemFact
 		{
 			final HashSet<OperatorNode> hs = new HashSet<OperatorNode>();
 			
-			hs.add( new SymmetricBinaryOperator( SymbolicWedge.class ) );
-			hs.add( new SymmetricBinaryOperator( SymbolicCross.class ) );
+			hs.add( new SimpleBinaryOperator( SymbolicWedge.class ) );
+			hs.add( new SimpleBinaryOperator( SymbolicCross.class ) );
 			
 			operatorPrecedence.add( hs );
 		}

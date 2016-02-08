@@ -41,9 +41,9 @@ import simplealgebra.NotInvertibleException;
 
 /**
  * Symbolic elem. for calculating the absolute value <math display="inline">
- * <mrow><mo>|</mo><mrow>
+ * <mrow><mfenced open="|" close="|"><mrow>
  *   <mi>A</mi>
- * </mrow><mo>|</mo></mrow>
+ * </mrow></mfenced></mrow>
  * </math>.
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
@@ -197,9 +197,9 @@ public class SymbolicAbsoluteValue<R extends Elem<R,?>, S extends ElemFactory<R,
 	@Override
 	public void writeMathML( PrecedenceComparator<R,S> pc , PrintStream ps )
 	{
-		ps.print( "<mrow><mo>|</mo><mrow>" );
+		ps.print( "<mrow><mfenced open=\"|\" close=\"|\"><mrow>" );
 		elem.writeMathML(pc, ps);
-		ps.print( "</mrow><mo>|</mo></mrow>" );
+		ps.print( "</mrow></mfenced></mrow>" );
 	}
 	
 	/**
