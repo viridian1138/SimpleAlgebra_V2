@@ -36,7 +36,7 @@ import simplealgebra.ElemFactory;
 
 
 /**
- * A description of how to assign precedence for converting to infix notation.
+ *  Handles MathML ( http://www.w3.org/Math/ ) parenthesis generation.
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
@@ -45,37 +45,23 @@ import simplealgebra.ElemFactory;
  * @param <R> The enclosed elem type.
  * @param <S> The factory for the enclosed elem type.
  */
-public abstract class PrecedenceComparator<R extends Elem<R,?>, S extends ElemFactory<R,S>> extends Object {
-	
-	
-	/**
-	 * Returns true iff. a parenthesis is required to convert to infix.
-	 * @param a The parent node in the elem tree.
-	 * @param b The child node in the elem tree.
-	 * @param after Whether the child is written after the parent in infix notation.
-	 * @return Whether infix notation requires a parenthesis for the child.
-	 */
-	public abstract boolean parenNeeded( SymbolicElem<R,S> a , SymbolicElem<R,S> b , boolean after );
-	
-	
-	/**
-	 * Gets the parenthesis generator.
-	 * 
-	 * @return The parenthesis generator.
-	 */
-	public abstract ParenthesisGenerator<R,S> getParenthesisGenerator();
+public abstract class ParenthesisGenerator<R extends Elem<R,?>, S extends ElemFactory<R,S>> extends Object {
 	
 
 	/**
-	 * Handles MathML ( http://www.w3.org/Math/ ) presentations that are not supported.
+	 * Generates a MathML ( http://www.w3.org/Math/ ) open parenthesis.
 	 * 
-	 * @param a The unsupported element.
+	 * @param ps The stream to which to write the parenthesis.
 	 */
-	public void handleUnimplementedElem( SymbolicElem<R,S> a , PrintStream ps )
-	{
-		System.out.println( "Not Supported : " + ( a.getClass().getName() ) );
-		throw( new RuntimeException( "NotSupported" ) );
-	}
+	public abstract void handleParenthesisOpen( PrintStream ps );
+	
+	/**
+	 * Generates a MathML ( http://www.w3.org/Math/ ) close parenthesis.
+	 * 
+	 * @param ps The stream to which to write the parenthesis.
+	 */
+	public abstract void handleParenthesisClose( PrintStream ps );
+	
 	
 }
 

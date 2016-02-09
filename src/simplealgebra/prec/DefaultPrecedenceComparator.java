@@ -321,6 +321,11 @@ public class DefaultPrecedenceComparator<R extends Elem<R,?>, S extends ElemFact
 	 */
 	protected final HashSet<Class<? extends SymbolicElem>> enclosedOrTerminalSymbolsB = new HashSet<Class<? extends SymbolicElem>>();
 	
+	/**
+	 * The parenthesis generator.
+	 */
+	protected ParenthesisGenerator<R,S> parenthesisGenerator = null;
+	
 	
 	
 	
@@ -544,6 +549,16 @@ public class DefaultPrecedenceComparator<R extends Elem<R,?>, S extends ElemFact
 	
 	
 	/**
+	 * Initializes the parenthesis generator.
+	 */
+	protected void parenthesisGeneratorInit()
+	{
+		parenthesisGenerator = new DefaultParenthesisGenerator<R,S>();
+	}
+	
+	
+	
+	/**
 	 * Indicates whether the comparator is initialized.
 	 */
 	protected boolean initialized = false;
@@ -560,6 +575,7 @@ public class DefaultPrecedenceComparator<R extends Elem<R,?>, S extends ElemFact
 			operatorInit();
 			enclosedOrTerminalSymbolsAInit();
 			enclosedOrTerminalSymbolsBInit();
+			parenthesisGeneratorInit();
 		
 			initialized = true;
 		}
@@ -607,6 +623,13 @@ public class DefaultPrecedenceComparator<R extends Elem<R,?>, S extends ElemFact
 		
 		
 		return( true );
+	}
+	
+	
+	@Override
+	public ParenthesisGenerator<R,S> getParenthesisGenerator()
+	{
+		return( parenthesisGenerator );
 	}
 
 	
