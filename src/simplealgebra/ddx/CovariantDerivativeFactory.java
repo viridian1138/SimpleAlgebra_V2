@@ -331,7 +331,7 @@ public class CovariantDerivativeFactory<Z extends Object, U extends NumDimension
 		ps.print( "<mi>" + derivativeIndex + "</mi></msub>" );
 		if( pc.parenNeeded( this ,  tensorWithRespectTo , true ) )
 		{
-			ps.print( "<mfenced><mrow>" );
+			pc.getParenthesisGenerator().handleParenthesisOpen(ps);
 		}
 		else
 		{
@@ -340,7 +340,7 @@ public class CovariantDerivativeFactory<Z extends Object, U extends NumDimension
 		tensorWithRespectTo.writeMathML(pc, ps);
 		if( pc.parenNeeded( this ,  tensorWithRespectTo , true ) )
 		{
-			ps.print( "</mrow></mfenced>" );
+			pc.getParenthesisGenerator().handleParenthesisClose(ps);
 		}
 		else
 		{

@@ -228,7 +228,7 @@ public class SymbolicDot<U extends NumDimensions, A extends Ord<U>, R extends El
 	{
 		if( pc.parenNeeded( this ,  elemA , false ) )
 		{
-			ps.print( "<mfenced><mrow>" );
+			pc.getParenthesisGenerator().handleParenthesisOpen(ps);
 		}
 		else
 		{
@@ -237,7 +237,7 @@ public class SymbolicDot<U extends NumDimensions, A extends Ord<U>, R extends El
 		elemA.writeMathML(pc, ps);
 		if( pc.parenNeeded( this ,  elemA , false ) )
 		{
-			ps.print( "</mrow></mfenced>" );
+			pc.getParenthesisGenerator().handleParenthesisClose(ps);
 		}
 		else
 		{
@@ -246,7 +246,7 @@ public class SymbolicDot<U extends NumDimensions, A extends Ord<U>, R extends El
 		ps.print( "<mo>&CenterDot;</mo>" );
 		if( pc.parenNeeded( this ,  elemB , true ) )
 		{
-			ps.print( "<mfenced><mrow>" );
+			pc.getParenthesisGenerator().handleParenthesisOpen(ps);
 		}
 		else
 		{
@@ -255,7 +255,7 @@ public class SymbolicDot<U extends NumDimensions, A extends Ord<U>, R extends El
 		elemB.writeMathML(pc, ps);
 		if( pc.parenNeeded( this ,  elemB , true ) )
 		{
-			ps.print( "</mrow></mfenced>" );
+			pc.getParenthesisGenerator().handleParenthesisClose(ps);
 		}
 		else
 		{

@@ -166,7 +166,7 @@ public class SymbolicAdd<R extends Elem<R,?>, S extends ElemFactory<R,S>> extend
 	{
 		if( pc.parenNeeded( this ,  elemA , false ) )
 		{
-			ps.print( "<mfenced><mrow>" );
+			pc.getParenthesisGenerator().handleParenthesisOpen(ps);
 		}
 		else
 		{
@@ -175,7 +175,7 @@ public class SymbolicAdd<R extends Elem<R,?>, S extends ElemFactory<R,S>> extend
 		elemA.writeMathML(pc, ps);
 		if( pc.parenNeeded( this ,  elemA , false ) )
 		{
-			ps.print( "</mrow></mfenced>" );
+			pc.getParenthesisGenerator().handleParenthesisClose(ps);
 		}
 		else
 		{
@@ -184,7 +184,7 @@ public class SymbolicAdd<R extends Elem<R,?>, S extends ElemFactory<R,S>> extend
 		ps.print( "<mo>+</mo>" );
 		if( pc.parenNeeded( this ,  elemB , true ) )
 		{
-			ps.print( "<mfenced><mrow>" );
+			pc.getParenthesisGenerator().handleParenthesisOpen(ps);
 		}
 		else
 		{
@@ -193,7 +193,7 @@ public class SymbolicAdd<R extends Elem<R,?>, S extends ElemFactory<R,S>> extend
 		elemB.writeMathML(pc, ps);
 		if( pc.parenNeeded( this ,  elemB , true ) )
 		{
-			ps.print( "</mrow></mfenced>" );
+			pc.getParenthesisGenerator().handleParenthesisClose(ps);
 		}
 		else
 		{

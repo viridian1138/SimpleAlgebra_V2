@@ -220,7 +220,7 @@ public class SymbolicReverseRight<U extends NumDimensions, A extends Ord<U>, R e
 		ps.print( "<msup>" );
 		if( pc.parenNeeded( this ,  elemA , false ) )
 		{
-			ps.print( "<mfenced><mrow>" );
+			pc.getParenthesisGenerator().handleParenthesisOpen(ps);
 		}
 		else
 		{
@@ -229,7 +229,7 @@ public class SymbolicReverseRight<U extends NumDimensions, A extends Ord<U>, R e
 		elemA.writeMathML(pc, ps);
 		if( pc.parenNeeded( this ,  elemA , false ) )
 		{
-			ps.print( "</mrow></mfenced>" );
+			pc.getParenthesisGenerator().handleParenthesisClose(ps);
 		}
 		else
 		{

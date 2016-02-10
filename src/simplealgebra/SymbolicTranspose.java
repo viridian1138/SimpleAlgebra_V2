@@ -192,7 +192,7 @@ public class SymbolicTranspose<U extends NumDimensions, R extends Elem<R,?>, S e
 		ps.print( "<msup>" );
 		if( pc.parenNeeded( this ,  elem , false ) )
 		{
-			ps.print( "<mfenced><mrow>" );
+			pc.getParenthesisGenerator().handleParenthesisOpen(ps);
 		}
 		else
 		{
@@ -201,7 +201,7 @@ public class SymbolicTranspose<U extends NumDimensions, R extends Elem<R,?>, S e
 		elem.writeMathML(pc, ps);
 		if( pc.parenNeeded( this ,  elem , false ) )
 		{
-			ps.print( "</mrow></mfenced>" );
+			pc.getParenthesisGenerator().handleParenthesisClose(ps);
 		}
 		else
 		{

@@ -228,7 +228,7 @@ public class SymbolicDotHestenes<U extends NumDimensions, A extends Ord<U>, R ex
 	{
 		if( pc.parenNeeded( this ,  elemA , false ) )
 		{
-			ps.print( "<mfenced><mrow>" );
+			pc.getParenthesisGenerator().handleParenthesisOpen(ps);
 		}
 		else
 		{
@@ -237,7 +237,7 @@ public class SymbolicDotHestenes<U extends NumDimensions, A extends Ord<U>, R ex
 		elemA.writeMathML(pc, ps);
 		if( pc.parenNeeded( this ,  elemA , false ) )
 		{
-			ps.print( "</mrow></mfenced>" );
+			pc.getParenthesisGenerator().handleParenthesisClose(ps);
 		}
 		else
 		{
@@ -246,7 +246,7 @@ public class SymbolicDotHestenes<U extends NumDimensions, A extends Ord<U>, R ex
 		ps.print( "<mrow><msub><mo>&CenterDot;</mo><mi>H</mi></msub></mrow>" );
 		if( pc.parenNeeded( this ,  elemB , true ) )
 		{
-			ps.print( "<mfenced><mrow>" );
+			pc.getParenthesisGenerator().handleParenthesisOpen(ps);
 		}
 		else
 		{
@@ -255,7 +255,7 @@ public class SymbolicDotHestenes<U extends NumDimensions, A extends Ord<U>, R ex
 		elemB.writeMathML(pc, ps);
 		if( pc.parenNeeded( this ,  elemB , true ) )
 		{
-			ps.print( "</mrow></mfenced>" );
+			pc.getParenthesisGenerator().handleParenthesisClose(ps);
 		}
 		else
 		{

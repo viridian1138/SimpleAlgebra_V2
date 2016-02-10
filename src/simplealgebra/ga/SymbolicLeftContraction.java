@@ -230,7 +230,7 @@ public class SymbolicLeftContraction<U extends NumDimensions, A extends Ord<U>, 
 	{
 		if( pc.parenNeeded( this ,  elemA , false ) )
 		{
-			ps.print( "<mfenced><mrow>" );
+			pc.getParenthesisGenerator().handleParenthesisOpen(ps);
 		}
 		else
 		{
@@ -239,7 +239,7 @@ public class SymbolicLeftContraction<U extends NumDimensions, A extends Ord<U>, 
 		elemA.writeMathML(pc, ps);
 		if( pc.parenNeeded( this ,  elemA , false ) )
 		{
-			ps.print( "</mrow></mfenced>" );
+			pc.getParenthesisGenerator().handleParenthesisClose(ps);
 		}
 		else
 		{
@@ -248,7 +248,7 @@ public class SymbolicLeftContraction<U extends NumDimensions, A extends Ord<U>, 
 		ps.print( "<mo>&rfloor;</mo>" );
 		if( pc.parenNeeded( this ,  elemB , true ) )
 		{
-			ps.print( "<mfenced><mrow>" );
+			pc.getParenthesisGenerator().handleParenthesisOpen(ps);
 		}
 		else
 		{
@@ -257,7 +257,7 @@ public class SymbolicLeftContraction<U extends NumDimensions, A extends Ord<U>, 
 		elemB.writeMathML(pc, ps);
 		if( pc.parenNeeded( this ,  elemB , true ) )
 		{
-			ps.print( "</mrow></mfenced>" );
+			pc.getParenthesisGenerator().handleParenthesisClose(ps);
 		}
 		else
 		{

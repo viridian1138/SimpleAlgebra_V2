@@ -244,7 +244,7 @@ public class SymbolicConjugateRight<R extends Elem<R,?>, S extends ElemFactory<R
 		ps.print( "<msup>" );
 		if( pc.parenNeeded( this ,  elem , false ) )
 		{
-			ps.print( "<mfenced><mrow>" );
+			pc.getParenthesisGenerator().handleParenthesisOpen(ps);
 		}
 		else
 		{
@@ -253,7 +253,7 @@ public class SymbolicConjugateRight<R extends Elem<R,?>, S extends ElemFactory<R
 		elem.writeMathML(pc, ps);
 		if( pc.parenNeeded( this ,  elem , false ) )
 		{
-			ps.print( "</mrow></mfenced>" );
+			pc.getParenthesisGenerator().handleParenthesisClose(ps);
 		}
 		else
 		{

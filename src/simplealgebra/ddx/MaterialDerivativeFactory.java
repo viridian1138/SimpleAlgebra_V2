@@ -263,7 +263,7 @@ public class MaterialDerivativeFactory<Z extends Object, U extends NumDimensions
 		ps.print( "<mi>" + derivativeIndex + "</mi></msub>" );
 		if( pc.parenNeeded( this ,  tensorWithRespectTo , true ) )
 		{
-			ps.print( "<mfenced><mrow>" );
+			pc.getParenthesisGenerator().handleParenthesisOpen(ps);
 		}
 		else
 		{
@@ -272,7 +272,7 @@ public class MaterialDerivativeFactory<Z extends Object, U extends NumDimensions
 		tensorWithRespectTo.writeMathML(pc, ps);
 		if( pc.parenNeeded( this ,  tensorWithRespectTo , true ) )
 		{
-			ps.print( "</mrow></mfenced>" );
+			pc.getParenthesisGenerator().handleParenthesisClose(ps);
 		}
 		else
 		{

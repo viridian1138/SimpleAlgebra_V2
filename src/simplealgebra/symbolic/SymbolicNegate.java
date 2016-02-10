@@ -164,12 +164,12 @@ public class SymbolicNegate<R extends Elem<R,?>, S extends ElemFactory<R,S>> ext
 		ps.print( "<mo>-</mo><mrow>" );
 		if( pc.parenNeeded( this ,  elem , true ) )
 		{
-			ps.print( "<mfenced><mrow>" );
+			pc.getParenthesisGenerator().handleParenthesisOpen(ps);
 		}
 		elem.writeMathML(pc, ps);
 		if( pc.parenNeeded( this ,  elem , true ) )
 		{
-			ps.print( "</mrow></mfenced>" );
+			pc.getParenthesisGenerator().handleParenthesisClose(ps);
 		}
 		ps.print( "</mrow>" );
 	}
