@@ -310,6 +310,20 @@ public class SymbolicReduction<R extends Elem<R,?>, S extends ElemFactory<R,S>> 
 	
 	
 	@Override
+	public void writeMathML( PrecedenceComparator<R,S> pc , PrintStream ps )
+	{
+		if( elem instanceof SymbolicElem )
+		{
+			( (SymbolicElem) elem ).writeMathML(pc, ps);
+		}
+		else
+		{
+			ps.print( "<mn>REDUCTION</mn>" );
+		}
+	}
+	
+	
+	@Override
 	public void writeString( PrintStream ps ) {
 		ps.print( "reduction( " );
 		if( elem instanceof SymbolicElem )

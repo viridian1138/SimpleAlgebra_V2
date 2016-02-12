@@ -37,8 +37,6 @@ import simplealgebra.ga.SymbolicCross;
 import simplealgebra.ga.SymbolicScalar;
 
 // import simplealgebra.symbolic.SymbolicMutable;
-// import simplealgebra.symbolic.SymbolicPlaceholder;
-// import simplealgebra.symbolic.SymbolicReduction;
 
 
 
@@ -332,11 +330,25 @@ public class DefaultPrecedenceComparator<R extends Elem<R,?>, S extends ElemFact
 	/**
 	 * Gets the precedence number of the elem, where larger numbers indicate higher precedence.
 	 * 
-	 * @param clss The elem to check.
+	 * @param clssA The elem to check.
 	 * @return The precedence value, of -1 if no precedence entry was found.
 	 */
-	protected int getPrecedenceNumber( SymbolicElem<R,S> clss )
+	protected int getPrecedenceNumber( final SymbolicElem<R,S> clssA )
 	{
+		SymbolicElem<?,?> clss = clssA;
+		while( clss instanceof SymbolicReduction )
+		{
+			final Elem<?,?> ob = ( (SymbolicReduction<?,?>) clss ).getElem();
+			if( ob instanceof SymbolicElem )
+			{
+				clss = (SymbolicElem<?,?>) ob;
+			}
+			else
+			{
+				return( -1 );
+			}
+		}
+		
 		for( int cnt = 0 ; cnt < operatorPrecedence.size() ; cnt++ )
 		{
 			final HashSet<OperatorNode> hs = operatorPrecedence.get( cnt );
@@ -358,11 +370,25 @@ public class DefaultPrecedenceComparator<R extends Elem<R,?>, S extends ElemFact
 	/**
 	 * Gets the precedence node of the elem.
 	 * 
-	 * @param clss The elem to check.
+	 * @param clssA The elem to check.
 	 * @return The precedence node, or null if no precedence node was found.
 	 */
-	protected OperatorNode getOperatorNode( SymbolicElem<R,S> clss )
+	protected OperatorNode getOperatorNode( final SymbolicElem<R,S> clssA )
 	{
+		SymbolicElem<?,?> clss = clssA;
+		while( clss instanceof SymbolicReduction )
+		{
+			final Elem<?,?> ob = ( (SymbolicReduction<?,?>) clss ).getElem();
+			if( ob instanceof SymbolicElem )
+			{
+				clss = (SymbolicElem<?,?>) ob;
+			}
+			else
+			{
+				return( new MultiCharIdentOperator( clss.getClass() ) );
+			}
+		}
+		
 		for( int cnt = 0 ; cnt < operatorPrecedence.size() ; cnt++ )
 		{
 			final HashSet<OperatorNode> hs = operatorPrecedence.get( cnt );
