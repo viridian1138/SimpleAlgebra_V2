@@ -223,7 +223,15 @@ public class SymbolicReduction<R extends Elem<R,?>, S extends ElemFactory<R,S>> 
 	{
 		if( ( b instanceof SymbolicReduction ) && ( elem instanceof SymbolicElem ) )
 		{
-			return( ( (SymbolicElem) elem ).symbolicEquals( (SymbolicElem)( ( (SymbolicReduction) b ).getElem() ) ) );
+			final SymbolicReduction ba = (SymbolicReduction) b;
+			if( ba.getElem() instanceof SymbolicElem )
+			{
+				return( ( (SymbolicElem) elem ).symbolicEquals( (SymbolicElem)( ba.getElem() ) ) );
+			}
+			else
+			{
+				return( false );
+			}
 		}
 		return( false );
 	}
@@ -237,6 +245,17 @@ public class SymbolicReduction<R extends Elem<R,?>, S extends ElemFactory<R,S>> 
 			return( this.symbolicEquals( (SymbolicReduction) b ) );
 		}
 		return( false );
+	}
+	
+	
+	@Override
+	public int hashCode()
+	{
+		if( elem instanceof SymbolicElem )
+		{
+			return( elem.hashCode() );
+		}
+		return( super.hashCode() );
 	}
 	
 	
