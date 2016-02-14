@@ -302,6 +302,21 @@ end
 
 
 
+rule "Apply SymbolicExponential"
+     when
+          r0 : Reng( )
+          p : SymbolicExponential( elem == r0.getStrt() )
+          not( Reng( strt == p ) )
+          ds : DroolsSession()
+     then
+          // System.out.println( "Apply SymbolicExponential" );
+          insert( new Reng( p , new SymbolicExponential( r0.getEnd() , p.getFac().getFac() , p.getIval() , ds ) ) );
+end
+
+
+
+
+
 rule "Apply Transpose"
      when
           r0 : Reng( )

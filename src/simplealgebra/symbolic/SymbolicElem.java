@@ -167,6 +167,11 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 	public SymbolicElem<R, S> divideBy(BigInteger val) {
 		return( new SymbolicDivideBy<R,S>( this , fac , val ) );
 	}
+	
+	@Override
+	public SymbolicElem<R, S>  exp( int numIter ) {
+		return( new SymbolicExponential<R,S>( this , fac , numIter ) );
+	}
 
 	@Override
 	public SymbolicElemFactory<R, S> getFac() {
