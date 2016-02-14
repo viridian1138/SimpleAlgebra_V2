@@ -172,7 +172,60 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 	public SymbolicElem<R, S>  exp( int numIter ) {
 		return( new SymbolicExponential<R,S>( this , fac , numIter ) );
 	}
+	
+	@Override
+	public SymbolicElem<R, S>  sin( int numIter ) {
+		return( new SymbolicSine<R,S>( this , fac , numIter ) );
+	}
+	
+	@Override
+	public SymbolicElem<R, S>  cos( int numIter ) {
+		return( new SymbolicCosine<R,S>( this , fac , numIter ) );
+	}
+	
+	/**
+	 * Expands the exponential function <math display="inline">
+     * <mrow>
+     *  <msup>
+     *          <mo>e</mo>
+     *        <mi>x</mi>
+     *  </msup>
+     * </mrow>
+     * </math>
+	 * 
+	 * @param numIter The number of iterations to use in the  calculation.
+	 * @return The exponent of the elem.
+	 */
+	public SymbolicElem<R,S> expandExp( int numIter )
+	{
+		return( super.exp(numIter) );
+	}
+	
+	
+	/**
+	 * Expands the sine function in units of radians.
+	 * 
+	 * @param numIter The number of iterations to use in the  calculation.
+	 * @return The sine of the argument.
+	 */
+	public SymbolicElem<R,S> expandSin( int numIter )
+	{
+		return( super.sin(numIter) );
+	}
+	
+	
+	/**
+	 * Expands the cosine function in units of radians.
+	 * 
+	 * @param numIter The number of iterations to use in the  calculation.
+	 * @return The cosine of the argument.
+	 */
+	public SymbolicElem<R,S> expandCos( int numIter )
+	{
+		return( super.cos(numIter) );
+	}
 
+	
 	@Override
 	public SymbolicElemFactory<R, S> getFac() {
 		return( new SymbolicElemFactory<R,S>( fac ) );

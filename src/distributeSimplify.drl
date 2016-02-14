@@ -317,6 +317,36 @@ end
 
 
 
+rule "Apply SymbolicSine"
+     when
+          r0 : Reng( )
+          p : SymbolicSine( elem == r0.getStrt() )
+          not( Reng( strt == p ) )
+          ds : DroolsSession()
+     then
+          // System.out.println( "Apply SymbolicSine" );
+          insert( new Reng( p , new SymbolicSine( r0.getEnd() , p.getFac().getFac() , p.getIval() , ds ) ) );
+end
+
+
+
+
+
+rule "Apply SymbolicCosine"
+     when
+          r0 : Reng( )
+          p : SymbolicCosine( elem == r0.getStrt() )
+          not( Reng( strt == p ) )
+          ds : DroolsSession()
+     then
+          // System.out.println( "Apply SymbolicCosine" );
+          insert( new Reng( p , new SymbolicCosine( r0.getEnd() , p.getFac().getFac() , p.getIval() , ds ) ) );
+end
+
+
+
+
+
 
 
 
@@ -1829,6 +1859,54 @@ rule "SymbolicSqrt Identity"
       then
           // System.out.println( "SymbolicSqrt Identity" );
           insert( new Reng( tr1 , ident ) );
+end
+
+
+
+
+
+rule "Exponential Of Zero --> Identity"
+      when
+          a : SymbolicZero( )
+          b : SymbolicExponential( elem == a )
+          not( Reng( strt == b ) )
+          not( Reng( strt == a ) )
+          ds : DroolsSession()
+      then
+          // System.out.println( "Exponential Of Zero --> Identity" );
+          insert( new Reng( b , new SymbolicIdentity( a.getFac().getFac() , ds ) ) );
+end
+
+
+
+
+
+rule "Sine Of Zero --> Zero"
+      when
+          a : SymbolicZero( )
+          b : SymbolicSine( elem == a )
+          not( Reng( strt == b ) )
+          not( Reng( strt == a ) )
+          ds : DroolsSession()
+      then
+          // System.out.println( "Sine Of Zero --> Identity" );
+          insert( new Reng( b , a ) );
+end
+
+
+
+
+
+rule "Cosine Of Zero --> Identity"
+      when
+          a : SymbolicZero( )
+          b : SymbolicCosine( elem == a )
+          not( Reng( strt == b ) )
+          not( Reng( strt == a ) )
+          ds : DroolsSession()
+      then
+          // System.out.println( "Cosine Of Zero --> Identity" );
+          insert( new Reng( b , new SymbolicIdentity( a.getFac().getFac() , ds ) ) );
 end
 
 

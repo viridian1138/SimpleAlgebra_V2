@@ -516,6 +516,8 @@ public class DefaultPrecedenceComparator<R extends Elem<R,?>, S extends ElemFact
 	{
 		enclosedOrTerminalSymbolsA.add( SymbolicSqrt.class );
 		enclosedOrTerminalSymbolsA.add( SymbolicExponential.class );
+		enclosedOrTerminalSymbolsA.add( SymbolicSine.class );
+		enclosedOrTerminalSymbolsA.add( SymbolicCosine.class );
 		enclosedOrTerminalSymbolsA.add( SymbolicAbsoluteValue.class );
 		enclosedOrTerminalSymbolsA.add( PartialDerivativeOp.class );
 		enclosedOrTerminalSymbolsA.add( DirectionalDerivative.class );
@@ -534,6 +536,8 @@ public class DefaultPrecedenceComparator<R extends Elem<R,?>, S extends ElemFact
 	{
 		enclosedOrTerminalSymbolsB.add( SymbolicSqrt.class );
 		enclosedOrTerminalSymbolsB.add( SymbolicExponential.class );
+		enclosedOrTerminalSymbolsB.add( SymbolicSine.class );
+		enclosedOrTerminalSymbolsB.add( SymbolicCosine.class );
 		enclosedOrTerminalSymbolsB.add( SymbolicAbsoluteValue.class );
 		enclosedOrTerminalSymbolsB.add( PartialDerivativeOp.class );
 		enclosedOrTerminalSymbolsB.add( DirectionalDerivative.class );

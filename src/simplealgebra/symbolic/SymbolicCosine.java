@@ -39,14 +39,7 @@ import java.math.BigInteger;
 
 
 /**
- * A symbolic elem for the exponential function <math display="inline">
- * <mrow>
- *  <msup>
- *          <mo>e</mo>
- *        <mi>x</mi>
- *  </msup>
- * </mrow>
- * </math>
+ * A symbolic elem for the cosine function.
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
@@ -55,7 +48,7 @@ import java.math.BigInteger;
  * @param <R> The enclosed type.
  * @param <S> The factory for the enclosed type.
  */
-public class SymbolicExponential<R extends Elem<R,?>, S extends ElemFactory<R,S>> extends SymbolicElem<R,S> 
+public class SymbolicCosine<R extends Elem<R,?>, S extends ElemFactory<R,S>> extends SymbolicElem<R,S> 
 {
 
 	/**
@@ -65,7 +58,7 @@ public class SymbolicExponential<R extends Elem<R,?>, S extends ElemFactory<R,S>
 	 * @param _fac The factory for the enclosed elem.
 	 * @param _ival The number of iterations.
 	 */
-	public SymbolicExponential( SymbolicElem<R,S> _elem , S _fac , int _ival )
+	public SymbolicCosine( SymbolicElem<R,S> _elem , S _fac , int _ival )
 	{
 		super( _fac );
 		elem = _elem;
@@ -80,7 +73,7 @@ public class SymbolicExponential<R extends Elem<R,?>, S extends ElemFactory<R,S>
 	 * @param _ival The number of iterations.
 	 * @param ds The Drools session.
 	 */
-	public SymbolicExponential( SymbolicElem<R,S> _elem , S _fac , int _ival , DroolsSession ds )
+	public SymbolicCosine( SymbolicElem<R,S> _elem , S _fac , int _ival , DroolsSession ds )
 	{
 		this( _elem , _fac , _ival );
 		ds.insert( this );
@@ -110,13 +103,13 @@ public class SymbolicExponential<R extends Elem<R,?>, S extends ElemFactory<R,S>
 	{
 		if( ( this.getFac().isMultCommutative() ) && ( this.getFac().isMultAssociative() ) )
 		{
-			final R expV = this.eval( implicitSpace );
+			final R cosV = elem.sin( ival ).negate().eval( implicitSpace );
 			final R dv = elem.evalPartialDerivative( withRespectTo , implicitSpace );
-			return( expV.mult( dv ) );
+			return( cosV.mult( dv ) );
 		}
 		else
 		{
-			return( super.exp( ival ).evalPartialDerivative(withRespectTo, implicitSpace) );
+			return( super.cos( ival ).evalPartialDerivative(withRespectTo, implicitSpace) );
 		}
 	}
 	
@@ -126,13 +119,13 @@ public class SymbolicExponential<R extends Elem<R,?>, S extends ElemFactory<R,S>
 	{
 		if( ( this.getFac().isMultCommutative() ) && ( this.getFac().isMultAssociative() ) )
 		{
-			final R expV = this.evalCached( implicitSpace , cache );
+			final R cosV = elem.sin( ival ).negate().evalCached( implicitSpace , cache );
 			final R dv = elem.evalPartialDerivativeCached( withRespectTo , implicitSpace , cache );
-			return( expV.mult( dv ) );
+			return( cosV.mult( dv ) );
 		}
 		else
 		{
-			return( super.exp( ival ).evalPartialDerivativeCached(withRespectTo, implicitSpace, cache) );
+			return( super.cos( ival ).evalPartialDerivativeCached(withRespectTo, implicitSpace, cache) );
 		}
 	}
 	
@@ -145,13 +138,13 @@ public class SymbolicExponential<R extends Elem<R,?>, S extends ElemFactory<R,S>
 	
 	
 	@Override
-	public SymbolicExponential<R,S> cloneThread( final BigInteger threadIndex )
+	public SymbolicCosine<R,S> cloneThread( final BigInteger threadIndex )
 	{
 		final SymbolicElem<R,S> elems = elem.cloneThread( threadIndex );
 		final S facs = this.getFac().getFac().cloneThread(threadIndex);
 		if( ( elems != elem ) || ( facs != fac ) )
 		{
-			return( new SymbolicExponential<R,S>( elems , facs , ival ) );
+			return( new SymbolicCosine<R,S>( elems , facs , ival ) );
 		}
 		return( this );
 	}
@@ -170,7 +163,7 @@ public class SymbolicExponential<R extends Elem<R,?>, S extends ElemFactory<R,S>
 		final SymbolicElem<R,S> elems = elem.cloneThreadCached(threadIndex, cache);
 		if( ( elems != elem ) || ( facs != fac ) )
 		{
-			final SymbolicExponential<R,S> rtmp = new SymbolicExponential<R,S>( elems , facs , ival );
+			final SymbolicCosine<R,S> rtmp = new SymbolicCosine<R,S>( elems , facs , ival );
 			cache.put(this, rtmp);
 			return( rtmp );
 		}
@@ -181,7 +174,7 @@ public class SymbolicExponential<R extends Elem<R,?>, S extends ElemFactory<R,S>
 	
 	@Override
 	public void writeString( PrintStream ps ) {
-		ps.print( "exp( " );
+		ps.print( "cos( " );
 		elem.writeString( ps );
 		ps.print( " )" );
 	}
@@ -190,9 +183,11 @@ public class SymbolicExponential<R extends Elem<R,?>, S extends ElemFactory<R,S>
 	@Override
 	public void writeMathML( PrecedenceComparator<R,S> pc , PrintStream ps )
 	{
-		ps.print( "<mrow><msup><mo>e</mo><mrow>" );
+		ps.print( "<mrow><mi>cos</mi><mo>&ApplyFunction;</mo>" );
+		pc.getParenthesisGenerator().handleParenthesisOpen(ps);
 		elem.writeMathML(pc, ps);
-		ps.print( "</mrow></msup></mrow>" );
+		pc.getParenthesisGenerator().handleParenthesisClose(ps);
+		ps.print( "</mrow>" );
 	}
 	
 	
