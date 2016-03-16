@@ -24,6 +24,7 @@
 
 package simplealgebra.store;
 
+import java.io.PrintStream;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
@@ -33,6 +34,7 @@ import simplealgebra.CloneThreadCache;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
+import simplealgebra.WriteElemCache;
 import simplealgebra.symbolic.SymbolicElem;
 
 
@@ -159,6 +161,51 @@ public class DbElemFactory<R extends Elem<R,?>, S extends ElemFactory<R,S>> exte
 		}
 		cache.putFac(this, this);
 		return( this );
+	}
+	
+	
+	@Override
+	public String writeDesc( WriteElemCache<DbElem<R,S>,DbElemFactory<R,S>> cache , PrintStream ps )
+	{
+		String st = cache.getFac( this );
+		if( st == null )
+		{
+			final String sta = fac.writeDesc( (WriteElemCache<R,S>)( cache.getInnerCache() ) , ps);
+			st = cache.getIncrementVal();
+			cache.putFac(this, st);
+			writeElemFactoryTypeString( ps );
+			ps.print( " " );
+			ps.print( st );
+			ps.print( " = new " );
+			writeElemFactoryTypeString( ps );
+			ps.print( "( " );
+			ps.print( sta );
+			ps.println( " );" );
+		}
+		return( st );
+	}
+	
+	@Override
+	public void writeElemTypeString( PrintStream ps )
+	{
+		ps.print( DbElem.class.getSimpleName() );
+		ps.print( "<" );
+		fac.writeElemTypeString(ps);
+		ps.print( "," );
+		fac.writeElemFactoryTypeString(ps);
+		ps.print( ">" );
+	}
+	
+	
+	@Override
+	public void writeElemFactoryTypeString( PrintStream ps )
+	{
+		ps.print( DbElemFactory.class.getSimpleName() );
+		ps.print( "<" );
+		fac.writeElemTypeString(ps);
+		ps.print( "," );
+		fac.writeElemFactoryTypeString(ps);
+		ps.print( ">" );
 	}
 	
 	

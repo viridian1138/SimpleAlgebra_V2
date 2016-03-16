@@ -24,6 +24,7 @@
 
 package simplealgebra;
 
+import java.io.PrintStream;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
@@ -341,6 +342,22 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 		final T ret = ( x.exp( numIter ) ).add( x.negate().exp( numIter ) ).divideBy( 2 );
 		return( ret );
 	}
+	
+	
+	
+	/**
+	 * Writes a description of the instance to the output stream.
+	 * 
+	 * @param cache Instance cache from which to cache objects.
+	 * @param ps Stream to write the description.
+	 * @return String describing the id of the object.
+	 */
+	public abstract String writeDesc( WriteElemCache<T,R> cache , PrintStream ps );
+//	{
+//		throw( new RuntimeException( "Not Supported" ) );
+//	}
+	
+
 	
 	
 }

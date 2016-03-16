@@ -26,7 +26,9 @@
 
 package simplealgebra;
 
+import java.io.PrintStream;
 import java.math.BigInteger;
+
 
 /**
  * The number of dimensions in an elem.
@@ -45,6 +47,40 @@ public abstract class NumDimensions {
 	 * @return The number of dimensions in the elem.
 	 */
 	public abstract BigInteger getVal();
+	
+	/**
+	 * Writes the type of the dimension.
+	 * 
+	 * @param ps The type to which to write the dimension.
+	 */
+	public void writeTypeString( PrintStream ps )
+	{
+		ps.print( this.getClass().getSimpleName() );
+	}
+	
+	/**
+	 * Writes a description of the instance to the output stream.
+	 * 
+	 * @param cache Instance cache from which to cache objects.
+	 * @param ps Stream to write the description.
+	 * @return String describing the id of the object.
+	 */
+	public String writeDesc( WriteNumDimensionsCache cache , PrintStream ps )
+	{
+		String st = cache.getFac( this );
+		if( st == null )
+		{
+			st = cache.getIncrementVal();
+			cache.putFac( this, st );
+			writeTypeString( ps );
+			ps.print( " " );
+			ps.print( st );
+			ps.print( " = new " );
+			writeTypeString( ps );
+			ps.println( "();" );
+		}
+		return( st );
+	}
 	
 }
 

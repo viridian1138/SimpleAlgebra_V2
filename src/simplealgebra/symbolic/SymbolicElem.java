@@ -108,12 +108,6 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 			HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace , HashMap<SCacheKey<R,S>,R> cache ) throws NotInvertibleException, MultiplicativeDistributionRequiredException;
 	
 	/**
-	 * Writes a string representation of the elem to a print stream.
-	 * @param ps The print stream to which to write the elem.
-	 */
-	abstract public void writeString( PrintStream ps );
-	
-	/**
 	 * Writes MathML ( http://www.w3.org/Math/ ) presentation tags describing the elem to a print stream.
 	 * @param pc A description of how to assign precedence for converting to infix notation.
 	 * @param ps The print stream to which to write the tags.

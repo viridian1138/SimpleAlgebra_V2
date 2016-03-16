@@ -38,6 +38,7 @@ import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.NumDimensions;
+import simplealgebra.WriteElemCache;
 import simplealgebra.symbolic.DroolsSession;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.PrecedenceComparator;
@@ -214,12 +215,48 @@ public class SymbolicRightContraction<U extends NumDimensions, A extends Ord<U>,
 	
 	
 	@Override
-	public void writeString( PrintStream ps ) {
-		ps.print( "rightContraction( " );
-		elemA.writeString( ps );
-		ps.print( " , " );
-		elemB.writeString( ps );
-		ps.print( " )" );
+	public String writeDesc( WriteElemCache<SymbolicElem<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>>,SymbolicElemFactory<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>>> cache , PrintStream ps )
+	{
+		String st = cache.get( this );
+		if( st == null )
+		{
+			final String elemAs = elemA.writeDesc( cache , ps);
+			final String elemBs = elemB.writeDesc( cache , ps);
+			final String facs = fac.writeDesc( (WriteElemCache)( cache.getInnerCache() ) , ps);
+			st = cache.getIncrementVal();
+			cache.put(this, st);
+			ps.print( SymbolicRightContraction.class.getSimpleName() );
+			ps.print( "<" );
+			this.getFac().getFac().getDim().writeTypeString(ps);
+			ps.print( "," );
+			this.getFac().getFac().getOrd().writeTypeString(this.getFac().getFac().getDim(), ps);
+			ps.print( "," );
+			this.getFac().getFac().getFac().writeElemTypeString(ps);
+			ps.print( "," );
+			this.getFac().getFac().getFac().writeElemFactoryTypeString(ps);
+			ps.print( ">" );
+			ps.print( " " );
+			ps.print( st );
+			ps.print( " = new " );
+			ps.print( SymbolicRightContraction.class.getSimpleName() );
+			ps.print( "<" );
+			this.getFac().getFac().getDim().writeTypeString(ps);
+			ps.print( "," );
+			this.getFac().getFac().getOrd().writeTypeString(this.getFac().getFac().getDim(), ps);
+			ps.print( "," );
+			this.getFac().getFac().getFac().writeElemTypeString(ps);
+			ps.print( "," );
+			this.getFac().getFac().getFac().writeElemFactoryTypeString(ps);
+			ps.print( ">" );
+			ps.print( "( " );
+			ps.print( elemAs );
+			ps.print( " , " );
+			ps.print( elemBs );
+			ps.print( " , " );
+			ps.print( facs );
+			ps.println( " );" );
+		}
+		return( st );
 	}
 	
 	

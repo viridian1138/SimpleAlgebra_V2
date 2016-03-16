@@ -41,6 +41,7 @@ import simplealgebra.DoubleElem;
 import simplealgebra.DoubleElemFactory;
 import simplealgebra.Elem;
 import simplealgebra.NotInvertibleException;
+import simplealgebra.WriteElemCache;
 import simplealgebra.et.EinsteinTensorElem;
 import simplealgebra.et.EinsteinTensorElemFactory;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
@@ -137,8 +138,25 @@ public class TestInvertLeftSymbolicNonAssoc extends TestCase
 		}
 		
 		@Override
-		public void writeString( PrintStream ps ) {
-			ps.print( "a( )" );
+		public String writeDesc(
+				WriteElemCache<SymbolicElem<EinsteinTensorElem<TestDimensionFour, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<TestDimensionFour, DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<EinsteinTensorElem<TestDimensionFour, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<TestDimensionFour, DoubleElem, DoubleElemFactory>>> cache,
+				PrintStream ps) {
+			String st = cache.get( this );
+			if( st == null )
+			{
+				final String sta = fac.writeDesc( (WriteElemCache<EinsteinTensorElem<TestDimensionFour, DoubleElem, DoubleElemFactory>,EinsteinTensorElemFactory<TestDimensionFour, DoubleElem, DoubleElemFactory>>)( cache.getInnerCache() ) , ps);
+				st = cache.getIncrementVal();
+				cache.put(this, st);
+				ps.print( AElem.class.getSimpleName() );
+				ps.print( " " );
+				ps.print( st );
+				ps.print( " = new " );
+				ps.print( AElem.class.getSimpleName() );
+				ps.print( "( " );
+				ps.print( sta );
+				ps.println( " );" );
+			}
+			return( st );
 		}
 
 		

@@ -46,6 +46,7 @@ import simplealgebra.ComplexElem;
 import simplealgebra.ComplexElemFactory;
 import simplealgebra.SymbolicConjugateLeft;
 import simplealgebra.SymbolicConjugateRight;
+import simplealgebra.WriteElemCache;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SCacheKey;
 import simplealgebra.symbolic.SymbolicElem;
@@ -53,7 +54,6 @@ import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicIdentity;
 import simplealgebra.symbolic.SymbolicNegate;
 import simplealgebra.symbolic.SymbolicOps;
-import simplealgebra.symbolic.SymbolicZero;
 
 
 
@@ -129,10 +129,27 @@ public class TestComplexOpSymbolic extends TestCase
 			
 			return( false );
 		}
-		
+
 		@Override
-		public void writeString( PrintStream ps ) {
-			ps.print( "a( )" );
+		public String writeDesc(
+				WriteElemCache<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> cache,
+				PrintStream ps) {
+			String st = cache.get( this );
+			if( st == null )
+			{
+				final String sta = fac.writeDesc( (WriteElemCache<ComplexElem<DoubleElem, DoubleElemFactory>,ComplexElemFactory<DoubleElem, DoubleElemFactory>>)( cache.getInnerCache() ) , ps);
+				st = cache.getIncrementVal();
+				cache.put(this, st);
+				ps.print( AElem.class.getSimpleName() );
+				ps.print( " " );
+				ps.print( st );
+				ps.print( " = new " );
+				ps.print( AElem.class.getSimpleName() );
+				ps.print( "( " );
+				ps.print( sta );
+				ps.println( " );" );
+			}
+			return( st );
 		}
 		
 		

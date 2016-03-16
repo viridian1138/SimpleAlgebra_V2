@@ -28,16 +28,19 @@
 
 package simplealgebra.bigfixedpoint;
 
+import java.io.PrintStream;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
 import simplealgebra.AbsoluteValue;
+import simplealgebra.AbstractCache;
 import simplealgebra.CloneThreadCache;
 import simplealgebra.DoubleElem;
 import simplealgebra.DoubleElemFactory;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.Sqrt;
+import simplealgebra.WriteElemCache;
 import simplealgebra.symbolic.SymbolicAbsoluteValue;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicSqrt;
@@ -154,6 +157,51 @@ public class BigFixedPointElemFactory<T extends Precision<T>> extends ElemFactor
 		cache.putFac(this, this);
 		return( this );
 	}
+	
+	
+	
+	
+	@Override
+	public String writeDesc( WriteElemCache<BigFixedPointElem<T>,BigFixedPointElemFactory<T>> cache , PrintStream ps )
+	{
+		String st = cache.getFac( this );
+		if( st == null )
+		{
+			cache.applyAuxCache( new WritePrecisionCache<T>( cache.getCacheVal() ) );
+			final String sta = prec.writeDesc( (WritePrecisionCache<T>)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) WritePrecisionCache.class ) ) , ps);
+			st = cache.getIncrementVal();
+			cache.putFac(this, st);
+			writeElemFactoryTypeString( ps );
+			ps.print( " " );
+			ps.print( st );
+			ps.print( " = new " );
+			writeElemFactoryTypeString( ps );
+			ps.print( "( " );
+			ps.print( sta );
+			ps.println( " );" );
+		}
+		return( st );
+	}
+	
+	@Override
+	public void writeElemTypeString( PrintStream ps )
+	{
+		ps.print( BigFixedPointElem.class.getSimpleName() );
+		ps.print( "<" );
+		prec.writeTypeString(ps);
+		ps.print( ">" );
+	}
+	
+	
+	@Override
+	public void writeElemFactoryTypeString( PrintStream ps )
+	{
+		ps.print( BigFixedPointElemFactory.class.getSimpleName() );
+		ps.print( "<" );
+		prec.writeTypeString(ps);
+		ps.print( ">" );
+	}
+	
 	
 	
 	@Override

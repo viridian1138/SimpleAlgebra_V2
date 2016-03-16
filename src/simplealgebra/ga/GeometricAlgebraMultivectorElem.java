@@ -34,6 +34,7 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import simplealgebra.AbstractCache;
 import simplealgebra.CloneThreadCache;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
@@ -43,6 +44,9 @@ import simplealgebra.NotInvertibleException;
 import simplealgebra.NumDimensions;
 import simplealgebra.SquareMatrixElem;
 import simplealgebra.SquareMatrixElemFactory;
+import simplealgebra.WriteBigIntegerCache;
+import simplealgebra.WriteElemCache;
+import simplealgebra.WriteNumDimensionsCache;
 import simplealgebra.et.EinsteinTensorElem;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SCacheKey;
@@ -316,8 +320,30 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 		}
 
 		@Override
-		public void writeString( PrintStream ps ) {
-			throw( new RuntimeException( "NotSupported" ) );
+		public String writeDesc( WriteElemCache<SymbolicElem<R,S>,SymbolicElemFactory<R,S>> cache , PrintStream ps )
+		{
+			String st = cache.get( this );
+			if( st == null )
+			{
+				final String sta = fac.writeDesc( (WriteElemCache<R,S>)( cache.getInnerCache() ) , ps);
+				cache.applyAuxCache( new WriteGaSetCache( cache.getCacheVal() ) );
+				final String stair = ( (WriteGaSetCache)( cache.getAuxCache( WriteGaSetCache.class ) ) ).writeDesc(indx, (WriteBigIntegerCache)( cache.getAuxCache( WriteBigIntegerCache.class ) ) , ps);
+				st = cache.getIncrementVal();
+				cache.put(this, st);
+				ps.print( AElem.class.getSimpleName() );
+				ps.print( " " );
+				ps.print( st );
+				ps.print( " = new " );
+				ps.print( AElem.class.getSimpleName() );
+				ps.print( "( " );
+				ps.print( sta );
+				ps.print( " , " );
+				ps.print( stair );
+				ps.print( " , " );
+				ps.print( col );
+				ps.println( " );" );
+			}
+			return( st );
 		}
 		
 		/**
@@ -407,8 +433,30 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 		}
 
 		@Override
-		public void writeString( PrintStream ps ) {
-			throw( new RuntimeException( "NotSupported" ) );
+		public String writeDesc( WriteElemCache<SymbolicElem<R,S>,SymbolicElemFactory<R,S>> cache , PrintStream ps )
+		{
+			String st = cache.get( this );
+			if( st == null )
+			{
+				final String sta = fac.writeDesc( (WriteElemCache<R,S>)( cache.getInnerCache() ) , ps);
+				cache.applyAuxCache( new WriteGaSetCache( cache.getCacheVal() ) );
+				final String stair = ( (WriteGaSetCache)( cache.getAuxCache( WriteGaSetCache.class ) ) ).writeDesc(indx, (WriteBigIntegerCache)( cache.getAuxCache( WriteBigIntegerCache.class ) ) , ps);
+				st = cache.getIncrementVal();
+				cache.put(this, st);
+				ps.print( BElem.class.getSimpleName() );
+				ps.print( " " );
+				ps.print( st );
+				ps.print( " = new " );
+				ps.print( BElem.class.getSimpleName() );
+				ps.print( "( " );
+				ps.print( sta );
+				ps.print( " , " );
+				ps.print( stair );
+				ps.print( " , " );
+				ps.print( col );
+				ps.println( " );" );
+			}
+			return( st );
 		}
 		
 		/**
@@ -1406,6 +1454,52 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 		}
 		cache.put(this, ret);
 		return( ret );
+	}
+	
+	
+	
+	@Override
+	public String writeDesc( WriteElemCache<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> cache , PrintStream ps )
+	{
+		String st = cache.get( this );
+		if( st == null )
+		{
+			final String sta = fac.writeDesc( (WriteElemCache<R,S>)( cache.getInnerCache() ) , ps);
+			cache.applyAuxCache( new WriteNumDimensionsCache( cache.getCacheVal() ) );
+			cache.applyAuxCache( new WriteBigIntegerCache( cache.getCacheVal() ) );
+			cache.applyAuxCache( new WriteGaSetCache( cache.getCacheVal() ) );
+			cache.applyAuxCache( new WriteOrdCache( cache.getCacheVal() ) );
+			final String staDim = dim.writeDesc( (WriteNumDimensionsCache)( cache.getAuxCache( WriteNumDimensionsCache.class ) ) , ps);
+			final String staOrd = ord.writeDesc( (WriteOrdCache<U>)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) WriteOrdCache.class ) ) , dim, ps);
+			st = cache.getIncrementVal();
+			cache.put(this, st);
+			this.getFac().writeElemTypeString( ps );
+			ps.print( " " );
+			ps.print( st );
+			ps.print( " = new " );
+			this.getFac().writeElemTypeString( ps );
+			ps.print( "( " );
+			ps.print( sta );
+			ps.print( " , " );
+			ps.print( staDim );
+			ps.print( " , " );
+			ps.print( staOrd );
+			ps.println( " );" );
+			for( final Entry<HashSet<BigInteger>,R> ii : map.entrySet() )
+			{
+				final HashSet<BigInteger> key = ii.getKey();
+				final R val = ii.getValue();
+				final String stt = val.writeDesc( (WriteElemCache)( cache.getInnerCache() ) , ps);
+				String stair = ( (WriteGaSetCache)( cache.getAuxCache( WriteGaSetCache.class ) ) ).writeDesc(key, (WriteBigIntegerCache)( cache.getAuxCache( WriteBigIntegerCache.class ) ) , ps);
+				ps.print( st );
+				ps.print( ".setVal( " );
+				ps.print( stair );
+				ps.print( " , " );
+				ps.print( stt );
+				ps.println( " );" );
+			}
+		}
+		return( st );
 	}
 	
 	

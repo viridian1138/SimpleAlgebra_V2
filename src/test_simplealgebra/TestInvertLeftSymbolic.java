@@ -37,12 +37,15 @@ import java.util.HashMap;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
+import simplealgebra.AbstractCache;
 import simplealgebra.DoubleElem;
 import simplealgebra.DoubleElemFactory;
 import simplealgebra.Elem;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.SquareMatrixElem;
 import simplealgebra.SquareMatrixElemFactory;
+import simplealgebra.WriteBigIntegerCache;
+import simplealgebra.WriteElemCache;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SCacheKey;
 import simplealgebra.symbolic.SymbolicAdd;
@@ -172,8 +175,32 @@ public class TestInvertLeftSymbolic extends TestCase
 		}
 		
 		@Override
-		public void writeString( PrintStream ps ) {
-			ps.print( "a( " + row + " , " + col + " )" );
+		public String writeDesc(
+				WriteElemCache<SymbolicElem<SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory>, SquareMatrixElemFactory<TestDimensionFour, DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory>, SquareMatrixElemFactory<TestDimensionFour, DoubleElem, DoubleElemFactory>>> cache,
+				PrintStream ps) {
+			String st = cache.get( this );
+			if( st == null )
+			{
+				cache.applyAuxCache( new WriteBigIntegerCache( cache.getCacheVal() ) );
+				final String sta = fac.writeDesc( (WriteElemCache<SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour, DoubleElem, DoubleElemFactory>>)( cache.getInnerCache() ) , ps);
+				String starow = ( (WriteBigIntegerCache)( cache.getAuxCache( WriteBigIntegerCache.class ) ) ).writeDesc( row , ps );
+				String stacol = ( (WriteBigIntegerCache)( cache.getAuxCache( WriteBigIntegerCache.class ) ) ).writeDesc( col , ps );
+				st = cache.getIncrementVal();
+				cache.put(this, st);
+				ps.print( AElem.class.getSimpleName() );
+				ps.print( " " );
+				ps.print( st );
+				ps.print( " = new " );
+				ps.print( AElem.class.getSimpleName() );
+				ps.print( "( " );
+				ps.print( sta );
+				ps.print( " , " );
+				ps.print( starow );
+				ps.print( " , " );
+				ps.print( stacol );
+				ps.println( " );" );
+			}
+			return( st );
 		}
 
 		

@@ -25,6 +25,7 @@
 
 package simplealgebra;
 
+import java.io.PrintStream;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
@@ -135,6 +136,27 @@ public class DoubleElem extends Elem<DoubleElem, DoubleElemFactory> {
 		}
 		
 		return( super.handleOptionalOp(id, args) );
+	}
+	
+	
+	@Override
+	public String writeDesc( WriteElemCache<DoubleElem,DoubleElemFactory> cache , PrintStream ps )
+	{
+		String st = cache.get( this );
+		if( st == null )
+		{
+			st = cache.getIncrementVal();
+			cache.put(this, st);
+			this.getFac().writeElemTypeString(ps);
+			ps.print( " " );
+			ps.print( st );
+			ps.print( " = new " );
+			this.getFac().writeElemTypeString(ps);
+			ps.print( "( Double.doubleValue( \"" );
+			ps.print( d );
+			ps.println( "\" ) );" );
+		}
+		return( st );
 	}
 	
 	

@@ -25,6 +25,7 @@
 
 package simplealgebra;
 
+import java.io.PrintStream;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -1829,6 +1830,55 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 		}
 		cache.put( this, ret);
 		return( ret );
+	}
+	
+	
+	
+	@Override
+	public String writeDesc( WriteElemCache<SquareMatrixElem<U,R,S>,SquareMatrixElemFactory<U,R,S>> cache , PrintStream ps )
+	{
+		String st = cache.get( this );
+		if( st == null )
+		{
+			final String sta = fac.writeDesc( (WriteElemCache<R,S>)( cache.getInnerCache() ) , ps);
+			cache.applyAuxCache( new WriteNumDimensionsCache( cache.getCacheVal() ) );
+			cache.applyAuxCache( new WriteBigIntegerCache( cache.getCacheVal() ) );
+			final String sta2 = dim.writeDesc( (WriteNumDimensionsCache)( cache.getAuxCache( WriteNumDimensionsCache.class ) ) , ps);
+			st = cache.getIncrementVal();
+			cache.put(this, st);
+			this.getFac().writeElemTypeString( ps );
+			ps.print( " " );
+			ps.print( st );
+			ps.print( " = new " );
+			this.getFac().writeElemTypeString( ps );
+			ps.print( "( " );
+			ps.print( sta );
+			ps.print( " , " );
+			ps.print( sta2 );
+			ps.println( " );" );
+			for( final Entry<BigInteger, HashMap<BigInteger, R>> rowie : rowMap.entrySet() )
+			{
+				BigInteger row = rowie.getKey();
+				HashMap<BigInteger,R> atRow = rowie.getValue();
+				for( final Entry<BigInteger, R> colie : atRow.entrySet() )
+				{
+					final BigInteger column = colie.getKey();
+					final R val = colie.getValue();
+					final String stt = val.writeDesc( (WriteElemCache)( cache.getInnerCache() ) , ps);
+					String stair = ( (WriteBigIntegerCache)( cache.getAuxCache( WriteBigIntegerCache.class ) ) ).writeDesc( row , ps );
+					String staic = ( (WriteBigIntegerCache)( cache.getAuxCache( WriteBigIntegerCache.class ) ) ).writeDesc( column , ps );
+					ps.print( st );
+					ps.print( ".setVal( " );
+					ps.print( stair );
+					ps.print( " , " );
+					ps.print( staic );
+					ps.print( " , " );
+					ps.print( stt );
+					ps.println( " );" );
+				}
+			}
+		}
+		return( st );
 	}
 	
 	

@@ -48,6 +48,7 @@ import simplealgebra.DoubleElemFactory;
 import simplealgebra.Elem;
 import simplealgebra.Mutator;
 import simplealgebra.NotInvertibleException;
+import simplealgebra.WriteElemCache;
 import simplealgebra.ddx.DirectionalDerivativePartialFactory;
 import simplealgebra.ddx.FlowVectorFactory;
 import simplealgebra.ddx.MaterialDerivativeFactory;
@@ -173,8 +174,25 @@ public class TestMaterialDerivativeFlatAsym4D extends TestCase
 		}
 		
 		@Override
-		public void writeString( PrintStream ps ) {
-			ps.print( "cSquared( )" );
+		public String writeDesc(
+				WriteElemCache<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> cache,
+				PrintStream ps) {
+			String st = cache.get( this );
+			if( st == null )
+			{
+				final String sta = fac.writeDesc( (WriteElemCache<ComplexElem<DoubleElem, DoubleElemFactory>,ComplexElemFactory<DoubleElem, DoubleElemFactory>>)( cache.getInnerCache() ) , ps);
+				st = cache.getIncrementVal();
+				cache.put(this, st);
+				ps.print( CSquaredElem.class.getSimpleName() );
+				ps.print( " " );
+				ps.print( st );
+				ps.print( " = new " );
+				ps.print( CSquaredElem.class.getSimpleName() );
+				ps.print( "( " );
+				ps.print( sta );
+				ps.println( " );" );
+			}
+			return( st );
 		}
 		
 		@Override
@@ -253,8 +271,25 @@ public class TestMaterialDerivativeFlatAsym4D extends TestCase
 		}
 		
 		@Override
-		public void writeString( PrintStream ps ) {
-			ps.print( "T_2Ux( )" );
+		public String writeDesc(
+				WriteElemCache<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> cache,
+				PrintStream ps) {
+			String st = cache.get( this );
+			if( st == null )
+			{
+				final String sta = fac.writeDesc( (WriteElemCache<ComplexElem<DoubleElem, DoubleElemFactory>,ComplexElemFactory<DoubleElem, DoubleElemFactory>>)( cache.getInnerCache() ) , ps);
+				st = cache.getIncrementVal();
+				cache.put(this, st);
+				ps.print( T_2UxElem.class.getSimpleName() );
+				ps.print( " " );
+				ps.print( st );
+				ps.print( " = new " );
+				ps.print( T_2UxElem.class.getSimpleName() );
+				ps.print( "( " );
+				ps.print( sta );
+				ps.println( " );" );
+			}
+			return( st );
 		}
 		
 		@Override
@@ -334,8 +369,25 @@ public class TestMaterialDerivativeFlatAsym4D extends TestCase
 		}
 		
 		@Override
-		public void writeString( PrintStream ps ) {
-			ps.print( "C( )" );
+		public String writeDesc(
+				WriteElemCache<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> cache,
+				PrintStream ps) {
+			String st = cache.get( this );
+			if( st == null )
+			{
+				final String sta = fac.writeDesc( (WriteElemCache<ComplexElem<DoubleElem, DoubleElemFactory>,ComplexElemFactory<DoubleElem, DoubleElemFactory>>)( cache.getInnerCache() ) , ps);
+				st = cache.getIncrementVal();
+				cache.put(this, st);
+				ps.print( CVal_Elem.class.getSimpleName() );
+				ps.print( " " );
+				ps.print( st );
+				ps.print( " = new " );
+				ps.print( CVal_Elem.class.getSimpleName() );
+				ps.print( "( " );
+				ps.print( sta );
+				ps.println( " );" );
+			}
+			return( st );
 		}
 		
 		@Override
@@ -410,8 +462,25 @@ public class TestMaterialDerivativeFlatAsym4D extends TestCase
 		}
 		
 		@Override
-		public void writeString( PrintStream ps ) {
-			ps.print( "A0( )" );
+		public String writeDesc(
+				WriteElemCache<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> cache,
+				PrintStream ps) {
+			String st = cache.get( this );
+			if( st == null )
+			{
+				final String sta = fac.writeDesc( (WriteElemCache<ComplexElem<DoubleElem, DoubleElemFactory>,ComplexElemFactory<DoubleElem, DoubleElemFactory>>)( cache.getInnerCache() ) , ps);
+				st = cache.getIncrementVal();
+				cache.put(this, st);
+				ps.print( A0_Elem.class.getSimpleName() );
+				ps.print( " " );
+				ps.print( st );
+				ps.print( " = new " );
+				ps.print( A0_Elem.class.getSimpleName() );
+				ps.print( "( " );
+				ps.print( sta );
+				ps.println( " );" );
+			}
+			return( st );
 		}
 		
 		@Override
@@ -485,8 +554,25 @@ public class TestMaterialDerivativeFlatAsym4D extends TestCase
 		}
 		
 		@Override
-		public void writeString( PrintStream ps ) {
-			ps.print( "A1( )" );
+		public String writeDesc(
+				WriteElemCache<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> cache,
+				PrintStream ps) {
+			String st = cache.get( this );
+			if( st == null )
+			{
+				final String sta = fac.writeDesc( (WriteElemCache<ComplexElem<DoubleElem, DoubleElemFactory>,ComplexElemFactory<DoubleElem, DoubleElemFactory>>)( cache.getInnerCache() ) , ps);
+				st = cache.getIncrementVal();
+				cache.put(this, st);
+				ps.print( A1_Elem.class.getSimpleName() );
+				ps.print( " " );
+				ps.print( st );
+				ps.print( " = new " );
+				ps.print( A1_Elem.class.getSimpleName() );
+				ps.print( "( " );
+				ps.print( sta );
+				ps.println( " );" );
+			}
+			return( st );
 		}
 		
 		@Override
@@ -561,8 +647,25 @@ public class TestMaterialDerivativeFlatAsym4D extends TestCase
 		}
 		
 		@Override
-		public void writeString( PrintStream ps ) {
-			ps.print( "A2( )" );
+		public String writeDesc(
+				WriteElemCache<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> cache,
+				PrintStream ps) {
+			String st = cache.get( this );
+			if( st == null )
+			{
+				final String sta = fac.writeDesc( (WriteElemCache<ComplexElem<DoubleElem, DoubleElemFactory>,ComplexElemFactory<DoubleElem, DoubleElemFactory>>)( cache.getInnerCache() ) , ps);
+				st = cache.getIncrementVal();
+				cache.put(this, st);
+				ps.print( A2_Elem.class.getSimpleName() );
+				ps.print( " " );
+				ps.print( st );
+				ps.print( " = new " );
+				ps.print( A2_Elem.class.getSimpleName() );
+				ps.print( "( " );
+				ps.print( sta );
+				ps.println( " );" );
+			}
+			return( st );
 		}
 		
 		@Override
@@ -637,8 +740,25 @@ public class TestMaterialDerivativeFlatAsym4D extends TestCase
 		}
 		
 		@Override
-		public void writeString( PrintStream ps ) {
-			ps.print( "A3( )" );
+		public String writeDesc(
+				WriteElemCache<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> cache,
+				PrintStream ps) {
+			String st = cache.get( this );
+			if( st == null )
+			{
+				final String sta = fac.writeDesc( (WriteElemCache<ComplexElem<DoubleElem, DoubleElemFactory>,ComplexElemFactory<DoubleElem, DoubleElemFactory>>)( cache.getInnerCache() ) , ps);
+				st = cache.getIncrementVal();
+				cache.put(this, st);
+				ps.print( A3_Elem.class.getSimpleName() );
+				ps.print( " " );
+				ps.print( st );
+				ps.print( " = new " );
+				ps.print( A3_Elem.class.getSimpleName() );
+				ps.print( "( " );
+				ps.print( sta );
+				ps.println( " );" );
+			}
+			return( st );
 		}
 		
 		@Override
@@ -719,8 +839,25 @@ public class TestMaterialDerivativeFlatAsym4D extends TestCase
 		}
 		
 		@Override
-		public void writeString( PrintStream ps ) {
-			ps.print( "V0( )" );
+		public String writeDesc(
+				WriteElemCache<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> cache,
+				PrintStream ps) {
+			String st = cache.get( this );
+			if( st == null )
+			{
+				final String sta = fac.writeDesc( (WriteElemCache<ComplexElem<DoubleElem, DoubleElemFactory>,ComplexElemFactory<DoubleElem, DoubleElemFactory>>)( cache.getInnerCache() ) , ps);
+				st = cache.getIncrementVal();
+				cache.put(this, st);
+				ps.print( V0_Elem.class.getSimpleName() );
+				ps.print( " " );
+				ps.print( st );
+				ps.print( " = new " );
+				ps.print( V0_Elem.class.getSimpleName() );
+				ps.print( "( " );
+				ps.print( sta );
+				ps.println( " );" );
+			}
+			return( st );
 		}
 		
 		@Override
@@ -795,8 +932,25 @@ public class TestMaterialDerivativeFlatAsym4D extends TestCase
 		}
 		
 		@Override
-		public void writeString( PrintStream ps ) {
-			ps.print( "V1( )" );
+		public String writeDesc(
+				WriteElemCache<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> cache,
+				PrintStream ps) {
+			String st = cache.get( this );
+			if( st == null )
+			{
+				final String sta = fac.writeDesc( (WriteElemCache<ComplexElem<DoubleElem, DoubleElemFactory>,ComplexElemFactory<DoubleElem, DoubleElemFactory>>)( cache.getInnerCache() ) , ps);
+				st = cache.getIncrementVal();
+				cache.put(this, st);
+				ps.print( V1_Elem.class.getSimpleName() );
+				ps.print( " " );
+				ps.print( st );
+				ps.print( " = new " );
+				ps.print( V1_Elem.class.getSimpleName() );
+				ps.print( "( " );
+				ps.print( sta );
+				ps.println( " );" );
+			}
+			return( st );
 		}
 		
 		@Override
@@ -871,8 +1025,25 @@ public class TestMaterialDerivativeFlatAsym4D extends TestCase
 		}
 		
 		@Override
-		public void writeString( PrintStream ps ) {
-			ps.print( "V2( )" );
+		public String writeDesc(
+				WriteElemCache<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> cache,
+				PrintStream ps) {
+			String st = cache.get( this );
+			if( st == null )
+			{
+				final String sta = fac.writeDesc( (WriteElemCache<ComplexElem<DoubleElem, DoubleElemFactory>,ComplexElemFactory<DoubleElem, DoubleElemFactory>>)( cache.getInnerCache() ) , ps);
+				st = cache.getIncrementVal();
+				cache.put(this, st);
+				ps.print( V2_Elem.class.getSimpleName() );
+				ps.print( " " );
+				ps.print( st );
+				ps.print( " = new " );
+				ps.print( V2_Elem.class.getSimpleName() );
+				ps.print( "( " );
+				ps.print( sta );
+				ps.println( " );" );
+			}
+			return( st );
 		}
 		
 		@Override
@@ -947,8 +1118,25 @@ public class TestMaterialDerivativeFlatAsym4D extends TestCase
 		}
 		
 		@Override
-		public void writeString( PrintStream ps ) {
-			ps.print( "V3( )" );
+		public String writeDesc(
+				WriteElemCache<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> cache,
+				PrintStream ps) {
+			String st = cache.get( this );
+			if( st == null )
+			{
+				final String sta = fac.writeDesc( (WriteElemCache<ComplexElem<DoubleElem, DoubleElemFactory>,ComplexElemFactory<DoubleElem, DoubleElemFactory>>)( cache.getInnerCache() ) , ps);
+				st = cache.getIncrementVal();
+				cache.put(this, st);
+				ps.print( V3_Elem.class.getSimpleName() );
+				ps.print( " " );
+				ps.print( st );
+				ps.print( " = new " );
+				ps.print( V3_Elem.class.getSimpleName() );
+				ps.print( "( " );
+				ps.print( sta );
+				ps.println( " );" );
+			}
+			return( st );
 		}
 		
 		@Override
@@ -1131,8 +1319,27 @@ public class TestMaterialDerivativeFlatAsym4D extends TestCase
 		}
 
 		@Override
-		public void writeString(PrintStream ps) {
-			ps.print( "v()" );
+		public String writeDesc(
+				WriteElemCache<SymbolicElem<EinsteinTensorElem<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>, EinsteinTensorElemFactory<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>>, SymbolicElemFactory<EinsteinTensorElem<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>, EinsteinTensorElemFactory<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>>> cache,
+				PrintStream ps) {
+			String st = cache.get( this );
+			if( st == null )
+			{
+				final String sta = fac.writeDesc( (WriteElemCache<EinsteinTensorElem<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>,EinsteinTensorElemFactory<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>>)( cache.getInnerCache() ) , ps);
+				st = cache.getIncrementVal();
+				cache.put(this, st);
+				ps.print( VectFac.class.getSimpleName() );
+				ps.print( " " );
+				ps.print( st );
+				ps.print( " = new " );
+				ps.print( VectFac.class.getSimpleName() );
+				ps.print( "( " );
+				ps.print( sta );
+				ps.print( " , " );
+				ps.print( index );
+				ps.println( " );" );
+			}
+			return( st );
 		}
 		
 		/**
@@ -1206,8 +1413,25 @@ public class TestMaterialDerivativeFlatAsym4D extends TestCase
 		}
 		
 		@Override
-		public void writeString( PrintStream ps ) {
-			ps.print( "T( )" );
+		public String writeDesc(
+				WriteElemCache<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>> cache,
+				PrintStream ps) {
+			String st = cache.get( this );
+			if( st == null )
+			{
+				final String sta = fac.writeDesc( (WriteElemCache<DoubleElem, DoubleElemFactory>)( cache.getInnerCache() ) , ps);
+				st = cache.getIncrementVal();
+				cache.put(this, st);
+				ps.print( X0_Elem.class.getSimpleName() );
+				ps.print( " " );
+				ps.print( st );
+				ps.print( " = new " );
+				ps.print( X0_Elem.class.getSimpleName() );
+				ps.print( "( " );
+				ps.print( sta );
+				ps.println( " );" );
+			}
+			return( st );
 		}
 		
 		@Override
@@ -1282,8 +1506,25 @@ public class TestMaterialDerivativeFlatAsym4D extends TestCase
 		}
 		
 		@Override
-		public void writeString( PrintStream ps ) {
-			ps.print( "X1( )" );
+		public String writeDesc(
+				WriteElemCache<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>> cache,
+				PrintStream ps) {
+			String st = cache.get( this );
+			if( st == null )
+			{
+				final String sta = fac.writeDesc( (WriteElemCache<DoubleElem, DoubleElemFactory>)( cache.getInnerCache() ) , ps);
+				st = cache.getIncrementVal();
+				cache.put(this, st);
+				ps.print( X1_Elem.class.getSimpleName() );
+				ps.print( " " );
+				ps.print( st );
+				ps.print( " = new " );
+				ps.print( X1_Elem.class.getSimpleName() );
+				ps.print( "( " );
+				ps.print( sta );
+				ps.println( " );" );
+			}
+			return( st );
 		}
 		
 		@Override
@@ -1358,8 +1599,25 @@ public class TestMaterialDerivativeFlatAsym4D extends TestCase
 		}
 		
 		@Override
-		public void writeString( PrintStream ps ) {
-			ps.print( "X2( )" );
+		public String writeDesc(
+				WriteElemCache<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>> cache,
+				PrintStream ps) {
+			String st = cache.get( this );
+			if( st == null )
+			{
+				final String sta = fac.writeDesc( (WriteElemCache<DoubleElem, DoubleElemFactory>)( cache.getInnerCache() ) , ps);
+				st = cache.getIncrementVal();
+				cache.put(this, st);
+				ps.print( X2_Elem.class.getSimpleName() );
+				ps.print( " " );
+				ps.print( st );
+				ps.print( " = new " );
+				ps.print( X2_Elem.class.getSimpleName() );
+				ps.print( "( " );
+				ps.print( sta );
+				ps.println( " );" );
+			}
+			return( st );
 		}
 		
 		@Override
@@ -1434,8 +1692,25 @@ public class TestMaterialDerivativeFlatAsym4D extends TestCase
 		}
 		
 		@Override
-		public void writeString( PrintStream ps ) {
-			ps.print( "X3( )" );
+		public String writeDesc(
+				WriteElemCache<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>> cache,
+				PrintStream ps) {
+			String st = cache.get( this );
+			if( st == null )
+			{
+				final String sta = fac.writeDesc( (WriteElemCache<DoubleElem, DoubleElemFactory>)( cache.getInnerCache() ) , ps);
+				st = cache.getIncrementVal();
+				cache.put(this, st);
+				ps.print( X3_Elem.class.getSimpleName() );
+				ps.print( " " );
+				ps.print( st );
+				ps.print( " = new " );
+				ps.print( X3_Elem.class.getSimpleName() );
+				ps.print( "( " );
+				ps.print( sta );
+				ps.println( " );" );
+			}
+			return( st );
 		}
 		
 		@Override
@@ -1566,8 +1841,25 @@ public class TestMaterialDerivativeFlatAsym4D extends TestCase
 		}
 
 		@Override
-		public void writeString(PrintStream ps) {
-			throw( new RuntimeException( "NotSupported" ) );
+		public String writeDesc(
+				WriteElemCache<SymbolicElem<EinsteinTensorElem<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>, EinsteinTensorElemFactory<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>>, SymbolicElemFactory<EinsteinTensorElem<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>, EinsteinTensorElemFactory<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>>> cache,
+				PrintStream ps) {
+			String st = cache.get( this );
+			if( st == null )
+			{
+				final String sta = fac.writeDesc( (WriteElemCache<EinsteinTensorElem<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>,EinsteinTensorElemFactory<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>>)( cache.getInnerCache() ) , ps);
+				st = cache.getIncrementVal();
+				cache.put(this, st);
+				ps.print( DerivTElem.class.getSimpleName() );
+				ps.print( " " );
+				ps.print( st );
+				ps.print( " = new " );
+				ps.print( DerivTElem.class.getSimpleName() );
+				ps.print( "( " );
+				ps.print( sta );
+				ps.println( " );" );
+			}
+			return( st );
 		}
 		
 	}
@@ -1639,12 +1931,28 @@ public class TestMaterialDerivativeFlatAsym4D extends TestCase
 		}
 
 		@Override
-		public void writeString( PrintStream ps ) {
-			for( final SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> ii : dval.getValueSet() )
+		public String writeDesc(
+				WriteElemCache<SymbolicElem<EinsteinTensorElem<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>, EinsteinTensorElemFactory<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>>, SymbolicElemFactory<EinsteinTensorElem<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>, EinsteinTensorElemFactory<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>>> cache,
+				PrintStream ps) {
+			String st = cache.get( this );
+			if( st == null )
 			{
-				ps.print( "\n" + "** " );
-				ii.writeString( ps );
+				final String sta = fac.writeDesc( (WriteElemCache<EinsteinTensorElem<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>,EinsteinTensorElemFactory<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>>)( cache.getInnerCache() ) , ps);
+				final String dvals = dval.writeDesc( (WriteElemCache<EinsteinTensorElem<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>,EinsteinTensorElemFactory<Object, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>>)( cache.getInnerCache() ) , ps);
+				st = cache.getIncrementVal();
+				cache.put(this, st);
+				ps.print( SymbolicMetricTensor.class.getSimpleName() );
+				ps.print( " " );
+				ps.print( st );
+				ps.print( " = new " );
+				ps.print( SymbolicMetricTensor.class.getSimpleName() );
+				ps.print( "( " );
+				ps.print( sta );
+				ps.print( " , " );
+				ps.print( dvals );
+				ps.println( " );" );
 			}
+			return( st );
 		}
 		
 	}

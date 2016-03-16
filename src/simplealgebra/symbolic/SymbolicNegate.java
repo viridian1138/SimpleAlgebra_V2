@@ -35,6 +35,7 @@ import simplealgebra.CloneThreadCache;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
+import simplealgebra.WriteElemCache;
 
 import java.io.*;
 import java.math.BigInteger;
@@ -152,11 +153,31 @@ public class SymbolicNegate<R extends Elem<R,?>, S extends ElemFactory<R,S>> ext
 	
 
 	@Override
-	public void writeString( PrintStream ps ) {
-		ps.print( "negate( " );
-		elem.writeString( ps );
-		ps.print( " )" );
+	public String writeDesc( WriteElemCache<SymbolicElem<R,S>,SymbolicElemFactory<R,S>> cache , PrintStream ps )
+	{
+		String st = cache.get( this );
+		if( st == null )
+		{
+			final String elems = elem.writeDesc( cache , ps);
+			final String facs = fac.writeDesc( (WriteElemCache)( cache.getInnerCache() ) , ps);
+			st = cache.getIncrementVal();
+			cache.put(this, st);
+			ps.print( SymbolicNegate.class.getSimpleName() );
+			this.getFac().writeOrdinaryEnclosedType(ps);
+			ps.print( " " );
+			ps.print( st );
+			ps.print( " = new " );
+			ps.print( SymbolicNegate.class.getSimpleName() );
+			this.getFac().writeOrdinaryEnclosedType(ps);
+			ps.print( "( " );
+			ps.print( elems );
+			ps.print( " , " );
+			ps.print( facs );
+			ps.println( " );" );
+		}
+		return( st );
 	}
+	
 	
 	@Override
 	public void writeMathML( PrecedenceComparator<R,S> pc , PrintStream ps )

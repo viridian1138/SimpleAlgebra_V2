@@ -30,12 +30,15 @@ import java.io.PrintStream;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Iterator;
 
+import simplealgebra.AbstractCache;
 import simplealgebra.CloneThreadCache;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
+import simplealgebra.WriteBigIntegerCache;
+import simplealgebra.WriteElemCache;
+import simplealgebra.WriteNumDimensionsCache;
 import simplealgebra.symbolic.DroolsSession;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.PrecedenceComparator;
@@ -140,21 +143,30 @@ public class PartialDerivativeOp<R extends Elem<R,?>, S extends ElemFactory<R,S>
 	
 
 	@Override
-	public void writeString( PrintStream ps ) {
-		ps.print( "partialDerivative( " );
-		for( final K nxt : withRespectTo )
+	public String writeDesc( WriteElemCache<SymbolicElem<R,S>,SymbolicElemFactory<R,S>> cache , PrintStream ps )
+	{
+		String st = cache.get( this );
+		if( st == null )
 		{
-			if( nxt instanceof SymbolicElem )
-			{
-				( (SymbolicElem) nxt ).writeString( ps );
-				ps.print( " " );
-			}
-			else
-			{
-				ps.print( nxt );
-			}
+			final String sta = fac.writeDesc( (WriteElemCache<R,S>)( cache.getInnerCache() ) , ps);
+			cache.applyAuxCache( new WriteKListCache<K>( cache.getCacheVal() ) );
+			String staKList = ( (WriteKListCache<K>)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) WriteKListCache.class ) ) ).writeDesc(withRespectTo , (WriteElemCache)( cache.getInnerCache() ) , ps);
+			st = cache.getIncrementVal();
+			cache.put(this, st);
+			ps.print( PartialDerivativeOp.class.getSimpleName() );
+			this.getFac().writeOrdinaryEnclosedType(ps);
+			ps.print( " " );
+			ps.print( st );
+			ps.print( " = new " );
+			ps.print( PartialDerivativeOp.class.getSimpleName() );
+			this.getFac().writeOrdinaryEnclosedType(ps);
+			ps.print( "( " );
+			ps.print( sta );
+			ps.print( " , " );
+			ps.print( staKList );
+			ps.println( " );" );
 		}
-		ps.print( " )" );
+		return( st );
 	}
 	
 	@Override

@@ -25,6 +25,7 @@
 
 package simplealgebra;
 
+import java.io.PrintStream;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
@@ -135,6 +136,38 @@ public class DoubleElemFactory extends ElemFactory<DoubleElem, DoubleElemFactory
 	public DoubleElemFactory()
 	{
 	}
+	
+	
+	@Override
+	public String writeDesc( WriteElemCache<DoubleElem,DoubleElemFactory> cache , PrintStream ps )
+	{
+		String st = cache.getFac( this );
+		if( st == null )
+		{
+			st = cache.getIncrementVal();
+			cache.putFac(this, st);
+			writeElemFactoryTypeString( ps );
+			ps.print( " " );
+			ps.print( st );
+			ps.print( " = new " );
+			writeElemFactoryTypeString( ps );
+			ps.println( "();" );
+		}
+		return( st );
+	}
+	
+	@Override
+	public void writeElemTypeString( PrintStream ps )
+	{
+		ps.print( DoubleElem.class.getSimpleName() );
+	}
+	
+	@Override
+	public void writeElemFactoryTypeString( PrintStream ps )
+	{
+		ps.print( DoubleElemFactory.class.getSimpleName() );
+	}
 
 	
 }
+

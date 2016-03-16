@@ -28,7 +28,12 @@
 
 package simplealgebra.et;
 
+import java.io.PrintStream;
 import java.math.BigInteger;
+
+import simplealgebra.DoubleElem;
+import simplealgebra.DoubleElemFactory;
+import simplealgebra.WriteElemCache;
 
 
 
@@ -62,6 +67,31 @@ public abstract class TemporaryIndexFactory<Z extends Object> {
 	public TemporaryIndexFactory<Z> cloneThread( final BigInteger threadIndex )
 	{
 		throw( new RuntimeException( "Not Supported" ) );
+	}
+	
+	
+	/**
+	 * Writes a description of the instance to the output stream.
+	 * 
+	 * @param cache Instance cache from which to cache objects.
+	 * @param ps Stream to write the description.
+	 * @return String describing the id of the object.
+	 */
+	public String writeDesc( WriteTemporaryIndexFactoryCache<Z> cache , PrintStream ps )
+	{
+		String st = cache.get( this );
+		if( st == null )
+		{
+			st = cache.getIncrementVal();
+			cache.put(this, st);
+			ps.print( this.getClass().getSimpleName() );
+			ps.print( " " );
+			ps.print( st );
+			ps.print( " = new " );
+			ps.print( this.getClass().getSimpleName() );
+			ps.println( "();" );
+		}
+		return( st );
 	}
 	
 

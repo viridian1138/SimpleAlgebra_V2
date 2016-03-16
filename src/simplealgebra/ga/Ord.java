@@ -28,6 +28,7 @@
 package simplealgebra.ga;
 
 
+import java.io.PrintStream;
 import java.math.BigInteger;
 import java.util.HashSet;
 
@@ -55,6 +56,45 @@ public abstract class Ord<U extends NumDimensions> {
 	 * @return True iff. the result of the product is to be negated.
 	 */
 	public abstract boolean calcOrd( HashSet<BigInteger> ka , HashSet<BigInteger> kb , HashSet<BigInteger> el , U dim );
+	
+	/**
+	 * Writes the type of the dimension.
+	 * 
+	 * @param dim The number of dimensions in the algebra.
+	 * @param ps The type to which to write the dimension.
+	 */
+	public void writeTypeString( NumDimensions dim , PrintStream ps )
+	{
+		ps.print( this.getClass().getSimpleName() );
+		ps.print( "<" );
+		dim.writeTypeString( ps );
+		ps.print( ">" );
+	}
+	
+	/**
+	 * Writes a description of the instance to the output stream.
+	 * 
+	 * @param cache Instance cache from which to cache objects.
+	 * @param dim The number of dimensions in the algebra.
+	 * @param ps Stream to write the description.
+	 * @return String describing the id of the object.
+	 */
+	public String writeDesc( WriteOrdCache<U> cache , NumDimensions dim , PrintStream ps )
+	{
+		String st = cache.getFac( this );
+		if( st == null )
+		{
+			st = cache.getIncrementVal();
+			cache.putFac( this, st );
+			writeTypeString( dim , ps );
+			ps.print( " " );
+			ps.print( st );
+			ps.print( " = new " );
+			writeTypeString( dim , ps );
+			ps.println( "();" );
+		}
+		return( st );
+	}
 
 	
 }

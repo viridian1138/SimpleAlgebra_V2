@@ -35,6 +35,7 @@ import simplealgebra.CloneThreadCache;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
+import simplealgebra.WriteElemCache;
 
 /**
  * A symbolic elem for the identity.
@@ -184,8 +185,26 @@ public class SymbolicIdentity<R extends Elem<R,?>, S extends ElemFactory<R,S>> e
 	
 
 	@Override
-	public void writeString( PrintStream ps ) {
-		ps.println( "IDENTITY" );
+	public String writeDesc( WriteElemCache<SymbolicElem<R,S>,SymbolicElemFactory<R,S>> cache , PrintStream ps )
+	{
+		String st = cache.get( this );
+		if( st == null )
+		{
+			final String sta = fac.writeDesc( (WriteElemCache<R,S>)( cache.getInnerCache() ) , ps);
+			st = cache.getIncrementVal();
+			cache.put(this, st);
+			ps.print( SymbolicIdentity.class.getSimpleName() );
+			this.getFac().writeOrdinaryEnclosedType(ps);
+			ps.print( " " );
+			ps.print( st );
+			ps.print( " = new " );
+			ps.print( SymbolicIdentity.class.getSimpleName() );
+			this.getFac().writeOrdinaryEnclosedType(ps);
+			ps.print( "( " );
+			ps.print( sta );
+			ps.println( " );" );
+		}
+		return( st );
 	}
 	
 	@Override

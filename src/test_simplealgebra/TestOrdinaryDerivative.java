@@ -40,6 +40,7 @@ import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.NumDimensions;
+import simplealgebra.WriteElemCache;
 import simplealgebra.ddx.*;
 import simplealgebra.et.EinsteinTensorElem;
 import simplealgebra.et.EinsteinTensorElemFactory;
@@ -155,8 +156,27 @@ public class TestOrdinaryDerivative extends TestCase {
 		}
 
 		@Override
-		public void writeString( PrintStream ps ) {
-			ps.print( "a" + col + "()" );
+		public String writeDesc(
+				WriteElemCache<SymbolicElem<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>> cache,
+				PrintStream ps) {
+			String st = cache.get( this );
+			if( st == null )
+			{
+				final String sta = fac.writeDesc( (WriteElemCache<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>,EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory> >)( cache.getInnerCache() ) , ps);
+				st = cache.getIncrementVal();
+				cache.put(this, st);
+				ps.print( Ordinate.class.getSimpleName() );
+				ps.print( " " );
+				ps.print( st );
+				ps.print( " = new " );
+				ps.print( Ordinate.class.getSimpleName() );
+				ps.print( "( " );
+				ps.print( sta );
+				ps.print( " , " );
+				ps.print( col );
+				ps.println( " );" );
+			}
+			return( st );
 		}
 		
 		@Override
@@ -278,8 +298,25 @@ public class TestOrdinaryDerivative extends TestCase {
 		}
 
 		@Override
-		public void writeString( PrintStream ps ) {
-			ps.print( "b()" );
+		public String writeDesc(
+				WriteElemCache<SymbolicElem<EinsteinTensorElem<String, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, EinsteinTensorElemFactory<String, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<EinsteinTensorElem<String, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, EinsteinTensorElemFactory<String, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>> cache,
+				PrintStream ps) {
+			String st = cache.get( this );
+			if( st == null )
+			{
+				final String sta = fac.writeDesc( (WriteElemCache<EinsteinTensorElem<String, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>,EinsteinTensorElemFactory<String, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>> >)( cache.getInnerCache() ) , ps);
+				st = cache.getIncrementVal();
+				cache.put(this, st);
+				ps.print( BElem.class.getSimpleName() );
+				ps.print( " " );
+				ps.print( st );
+				ps.print( " = new " );
+				ps.print( BElem.class.getSimpleName() );
+				ps.print( "( " );
+				ps.print( sta );
+				ps.println( " );" );
+			}
+			return( st );
 		}
 		
 		@Override
@@ -369,8 +406,27 @@ public class TestOrdinaryDerivative extends TestCase {
 		}
 
 		@Override
-		public void writeString( PrintStream ps ) {
-			ps.print( "c" + col + "()" );
+		public String writeDesc(
+				WriteElemCache<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>> cache,
+				PrintStream ps) {
+			String st = cache.get( this );
+			if( st == null )
+			{
+				final String sta = fac.writeDesc( (WriteElemCache<DoubleElem,DoubleElemFactory >)( cache.getInnerCache() ) , ps);
+				st = cache.getIncrementVal();
+				cache.put(this, st);
+				ps.print( CElem.class.getSimpleName() );
+				ps.print( " " );
+				ps.print( st );
+				ps.print( " = new " );
+				ps.print( CElem.class.getSimpleName() );
+				ps.print( "( " );
+				ps.print( sta );
+				ps.print( " , " );
+				ps.print( col );
+				ps.println( " );" );
+			}
+			return( st );
 		}
 		
 		@Override
@@ -428,11 +484,6 @@ public class TestOrdinaryDerivative extends TestCase {
 		 */
 		public SymbolicConst(DoubleElem _elem, DoubleElemFactory _fac) {
 			super(_elem, _fac);
-		}
-		
-		@Override
-		public void writeString( PrintStream ps ) {
-			ps.print( " " + ( this.getElem().getVal() ) );
 		}
 		
 		@Override

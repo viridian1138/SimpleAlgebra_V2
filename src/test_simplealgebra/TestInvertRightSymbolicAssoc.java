@@ -41,6 +41,7 @@ import simplealgebra.DoubleElem;
 import simplealgebra.DoubleElemFactory;
 import simplealgebra.Elem;
 import simplealgebra.NotInvertibleException;
+import simplealgebra.WriteElemCache;
 import simplealgebra.et.EinsteinTensorElemFactory;
 import simplealgebra.ga.GeometricAlgebraMultivectorElem;
 import simplealgebra.ga.GeometricAlgebraMultivectorElemFactory;
@@ -139,8 +140,25 @@ public class TestInvertRightSymbolicAssoc extends TestCase
 		}
 		
 		@Override
-		public void writeString( PrintStream ps ) {
-			ps.print( "a( )" );
+		public String writeDesc(
+				WriteElemCache<SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFour, GeometricAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory>, GeometricAlgebraMultivectorElemFactory<TestDimensionFour, GeometricAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<GeometricAlgebraMultivectorElem<TestDimensionFour, GeometricAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory>, GeometricAlgebraMultivectorElemFactory<TestDimensionFour, GeometricAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory>>> cache,
+				PrintStream ps) {
+			String st = cache.get( this );
+			if( st == null )
+			{
+				final String sta = fac.writeDesc( (WriteElemCache<GeometricAlgebraMultivectorElem<TestDimensionFour, GeometricAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory>,GeometricAlgebraMultivectorElemFactory<TestDimensionFour, GeometricAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory>>)( cache.getInnerCache() ) , ps);
+				st = cache.getIncrementVal();
+				cache.put(this, st);
+				ps.print( AElem.class.getSimpleName() );
+				ps.print( " " );
+				ps.print( st );
+				ps.print( " = new " );
+				ps.print( AElem.class.getSimpleName() );
+				ps.print( "( " );
+				ps.print( sta );
+				ps.println( " );" );
+			}
+			return( st );
 		}
 		
 	}

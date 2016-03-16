@@ -32,10 +32,13 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
+import simplealgebra.AbstractCache;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.NumDimensions;
+import simplealgebra.WriteElemCache;
+import simplealgebra.WriteNumDimensionsCache;
 import simplealgebra.et.ConnectionCoefficientFactory;
 import simplealgebra.et.DerivativeRemap;
 import simplealgebra.et.EinsteinTensorElem;
@@ -44,6 +47,9 @@ import simplealgebra.et.MetricTensorFactory;
 import simplealgebra.et.OrdinaryDerivativeFactory;
 import simplealgebra.et.SymbolicRegenContravar;
 import simplealgebra.et.TemporaryIndexFactory;
+import simplealgebra.et.WriteDerivativeRemapCache;
+import simplealgebra.et.WriteMetricTensorFactoryCache;
+import simplealgebra.et.WriteTemporaryIndexFactoryCache;
 import simplealgebra.symbolic.DroolsSession;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.PrecedenceComparator;
@@ -264,7 +270,10 @@ public class CovariantDerivative<Z extends Object, U extends NumDimensions, R ex
 		// The NumDimensions dim and the indices are presumed to be immutable.
 		param.setFac( this.getFac().getFac().cloneThread(threadIndex) );
 		param.setDerivativeIndex(derivativeIndex);
-		param.setCoordVecFac( coordVecFac.cloneThread(threadIndex) );
+		if( coordVecFac != null )
+		{
+			param.setCoordVecFac( coordVecFac.cloneThread(threadIndex) );
+		}
 		param.setTemp( temp.cloneThread(threadIndex) );
 		param.setMetric( metric.cloneThread(threadIndex) );
 		param.setDim( odfac.getDim() );
@@ -289,8 +298,161 @@ public class CovariantDerivative<Z extends Object, U extends NumDimensions, R ex
 	
 
 	@Override
-	public void writeString( PrintStream ps ) {
-		ps.print( "covariantDerivativeOp[ " + derivativeIndex + " ]" );
+	public String writeDesc(
+			WriteElemCache<SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>, SymbolicElemFactory<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>> cache,
+			PrintStream ps) {
+		String st = cache.get( this );
+		if( st == null )
+		{
+			cache.applyAuxCache( new WriteDirectionalDerivativePartialFactoryCache( cache.getCacheVal() ) );
+			cache.applyAuxCache( new WriteNumDimensionsCache( cache.getCacheVal() ) );
+			cache.applyAuxCache( new WriteCoordinateSystemFactoryCache<Z,R,S>( cache.getCacheVal() ) );
+			cache.applyAuxCache( new WriteTemporaryIndexFactoryCache<Z>( cache.getCacheVal() ) );
+			cache.applyAuxCache( new WriteDerivativeRemapCache<Z,R,S>( cache.getCacheVal() ) );
+			cache.applyAuxCache( new WriteMetricTensorFactoryCache<Z,R,S>( cache.getCacheVal() ) );
+			
+			final String facs = fac.writeDesc( (WriteElemCache)( cache.getInnerCache() ) , ps);
+			final String derivs = cache.getIncrementVal();
+			 ps.print( "final " );
+			 ps.print( derivativeIndex.getClass().getSimpleName() );
+			 ps.print( " = new " );
+			 ps.print( derivativeIndex.getClass().getSimpleName() );
+			 ps.print( "( \"" );
+			 ps.print( derivativeIndex );
+			 ps.println( "\" );" );
+			String coordvs = null;
+			if( coordVecFac != null )
+			{
+				coordvs = coordVecFac.writeDesc( (WriteCoordinateSystemFactoryCache)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) WriteCoordinateSystemFactoryCache.class ) ) , (WriteElemCache) cache , ps );
+			}
+		
+			final String temps = temp.writeDesc( (WriteTemporaryIndexFactoryCache)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) WriteTemporaryIndexFactoryCache.class ) ) , ps);
+			
+			final String metrics = metric.writeDesc( (WriteMetricTensorFactoryCache)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) WriteMetricTensorFactoryCache.class ) ) , ps);
+			
+			final String dims = odfac.getDim().writeDesc( (WriteNumDimensionsCache)( cache.getAuxCache( WriteNumDimensionsCache.class ) )  , ps );
+			
+			final String dfacs = odfac.getDfac().writeDesc( ( (WriteDirectionalDerivativePartialFactoryCache)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) WriteDirectionalDerivativePartialFactoryCache.class ) ) ) , ps);
+			
+			String remaps = null;
+			if( remap != null )
+			{
+				remaps = remap.writeDesc( (WriteDerivativeRemapCache)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) WriteDerivativeRemapCache.class ) ) , ps);
+			}
+			
+			
+			st = cache.getIncrementVal();
+			cache.put(this, st);
+			final String stp = cache.getIncrementVal();
+			cache.put(this, st);
+			ps.print( CovariantDerivativeFactoryParam.class.getSimpleName() );
+			ps.print( "<" );
+			ps.print( "? extends Object" );
+			ps.print( "," );
+			odfac.getDim().writeTypeString(ps);
+			ps.print( "," );
+			fac.writeElemTypeString(ps);
+			ps.print( "," );
+			fac.writeElemFactoryTypeString(ps);
+			ps.print( "," );
+			ps.print( "? extends Elem<?,?>" );
+			ps.print( ">" );
+			ps.print( " " );
+			ps.print( stp );
+			ps.print( " = new " );
+			ps.print( CovariantDerivativeFactoryParam.class.getSimpleName() );
+			ps.print( "<" );
+			ps.print( "? extends Object" );
+			ps.print( "," );
+			odfac.getDim().writeTypeString(ps);
+			ps.print( "," );
+			fac.writeElemTypeString(ps);
+			ps.print( "," );
+			fac.writeElemFactoryTypeString(ps);
+			ps.print( "," );
+			ps.print( "? extends Elem<?,?>" );
+			ps.print( ">" );
+			ps.print( "( " );
+			ps.println( " );" );
+			
+			ps.print( stp );
+			ps.print( ".setFac( " );
+			ps.print( facs );
+			ps.println( " );" );
+			
+			ps.print( stp );
+			ps.print( ".setDerivativeIndex( " );
+			ps.print( derivs );
+			ps.println( " );" );
+			
+			if( coordvs != null )
+			{
+				ps.print( stp );
+				ps.print( ".setCoordVecFac( " );
+				ps.print( coordvs );
+				ps.println( " );" );
+			}
+			
+			ps.print( stp );
+			ps.print( ".setTemp( " );
+			ps.print( temps );
+			ps.println( " );" );
+			
+			ps.print( stp );
+			ps.print( ".setMetric( " );
+			ps.print( metrics );
+			ps.println( " );" );
+			
+			ps.print( stp );
+			ps.print( ".setDim( " );
+			ps.print( dims );
+			ps.println( " );" );
+			
+			ps.print( stp );
+			ps.print( ".setDfac( " );
+			ps.print( dfacs );
+			ps.println( " );" );
+			
+			if( remaps != null )
+			{
+				ps.print( stp );
+				ps.print( ".setRemap( " );
+				ps.print( remaps );
+				ps.println( " );" );
+			}
+			
+			ps.print( CovariantDerivative.class.getSimpleName() );
+			ps.print( "<" );
+			ps.print( "? extends Object" );
+			ps.print( "," );
+			odfac.getDim().writeTypeString(ps);
+			ps.print( "," );
+			fac.writeElemTypeString(ps);
+			ps.print( "," );
+			fac.writeElemFactoryTypeString(ps);
+			ps.print( "," );
+			ps.print( "? extends Elem<?,?>" );
+			ps.print( ">" );
+			ps.print( " " );
+			ps.print( stp );
+			ps.print( " = new " );
+			ps.print( CovariantDerivative.class.getSimpleName() );
+			ps.print( "<" );
+			ps.print( "? extends Object" );
+			ps.print( "," );
+			odfac.getDim().writeTypeString(ps);
+			ps.print( "," );
+			fac.writeElemTypeString(ps);
+			ps.print( "," );
+			fac.writeElemFactoryTypeString(ps);
+			ps.print( "," );
+			ps.print( "? extends Elem<?,?>" );
+			ps.print( ">" );
+			ps.print( "( " );
+			ps.print( stp );
+			ps.println( " );" );
+		}
+		return( st );
 	}
 	
 	

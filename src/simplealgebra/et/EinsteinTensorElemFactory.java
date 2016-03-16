@@ -25,6 +25,7 @@
 
 package simplealgebra.et;
 
+import java.io.PrintStream;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
@@ -32,6 +33,7 @@ import simplealgebra.CloneThreadCache;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
+import simplealgebra.WriteElemCache;
 import simplealgebra.symbolic.SymbolicElem;
 
 
@@ -164,6 +166,51 @@ public class EinsteinTensorElemFactory<Z extends Object, R extends Elem<R,?>, S 
 		}
 		cache.putFac(this, this);
 		return( this );
+	}
+	
+	
+	@Override
+	public String writeDesc( WriteElemCache<EinsteinTensorElem<Z,R,S>,EinsteinTensorElemFactory<Z,R,S>> cache , PrintStream ps )
+	{
+		String st = cache.getFac( this );
+		if( st == null )
+		{
+			final String sta = fac.writeDesc( (WriteElemCache<R,S>)( cache.getInnerCache() ) , ps);
+			st = cache.getIncrementVal();
+			cache.putFac(this, st);
+			writeElemFactoryTypeString( ps );
+			ps.print( " " );
+			ps.print( st );
+			ps.print( " = new " );
+			writeElemFactoryTypeString( ps );
+			ps.print( "( " );
+			ps.print( sta );
+			ps.println( " );" );
+		}
+		return( st );
+	}
+	
+	@Override
+	public void writeElemTypeString( PrintStream ps )
+	{
+		ps.print( EinsteinTensorElem.class.getSimpleName() );
+		ps.print( "<? extends Object," );
+		fac.writeElemTypeString(ps);
+		ps.print( "," );
+		fac.writeElemFactoryTypeString(ps);
+		ps.print( ">" );
+	}
+	
+	
+	@Override
+	public void writeElemFactoryTypeString( PrintStream ps )
+	{
+		ps.print( EinsteinTensorElemFactory.class.getSimpleName() );
+		ps.print( "<? extends Object," );
+		fac.writeElemTypeString(ps);
+		ps.print( "," );
+		fac.writeElemFactoryTypeString(ps);
+		ps.print( ">" );
 	}
 	
 	

@@ -31,12 +31,18 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import simplealgebra.AbstractCache;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.NumDimensions;
+import simplealgebra.WriteElemCache;
+import simplealgebra.WriteNumDimensionsCache;
 import simplealgebra.ddx.DerivativeElem;
+import simplealgebra.ddx.DirectionalDerivative;
 import simplealgebra.ddx.DirectionalDerivativePartialFactory;
+import simplealgebra.ddx.WriteDirectionalDerivativePartialFactoryCache;
+import simplealgebra.ga.WriteOrdCache;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.PrecedenceComparator;
 import simplealgebra.symbolic.SCacheKey;
@@ -202,11 +208,59 @@ public class OrdinaryDerivative<Z extends Object, U extends NumDimensions, R ext
 		return( this );
 	}
 	
+	
 
 	@Override
-	public void writeString( PrintStream ps ) {
-		ps.print( "ordinaryDerivativeTensor" );
+	public String writeDesc(
+			WriteElemCache<SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>, SymbolicElemFactory<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>> cache,
+			PrintStream ps) {
+		String st = cache.get( this );
+		if( st == null )
+		{
+			cache.applyAuxCache( new WriteDirectionalDerivativePartialFactoryCache( cache.getCacheVal() ) );
+			cache.applyAuxCache( new WriteNumDimensionsCache( cache.getCacheVal() ) );
+			final String facs = fac.writeDesc( (WriteElemCache)( cache.getInnerCache() ) , ps);
+			final String staiF = dfac.writeDesc( ( (WriteDirectionalDerivativePartialFactoryCache)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) WriteDirectionalDerivativePartialFactoryCache.class ) ) ) , ps);
+			final String staDim = dim.writeDesc( (WriteNumDimensionsCache)( cache.getAuxCache( WriteNumDimensionsCache.class ) ) , ps);
+			String sl = cache.getIncrementVal();
+			ps.print( "final " );
+			ps.print( index.getClass().getSimpleName() );
+			ps.print( " = new " );
+			ps.print( index.getClass().getSimpleName() );
+			ps.print( "( \"" );
+			ps.print( index );
+			ps.println( "\" );" );
+			st = cache.getIncrementVal();
+			cache.put(this, st);
+			ps.print( OrdinaryDerivative.class.getSimpleName() );
+			ps.print( "<? extends Object," );
+			fac.writeElemTypeString(ps);
+			ps.print( "," );
+			fac.writeElemFactoryTypeString(ps);
+			ps.print( ">" );
+			ps.print( " " );
+			ps.print( st );
+			ps.print( " = new " );
+			ps.print( OrdinaryDerivative.class.getSimpleName() );
+			ps.print( "<? extends Object," );
+			fac.writeElemTypeString(ps);
+			ps.print( "," );
+			fac.writeElemFactoryTypeString(ps);
+			ps.print( ">" );
+			ps.print( "( " );
+			ps.print( facs );
+			ps.print( " , " );
+			ps.print( sl );
+			ps.print( " , " );
+			ps.print( staDim );
+			ps.print( " , " );
+			ps.print( staiF );
+			ps.println( " );" );
+		}
+		return( st );
 	}
+	
+	
 	
 	@Override
 	public void writeMathML(
@@ -262,6 +316,7 @@ public class OrdinaryDerivative<Z extends Object, U extends NumDimensions, R ext
 	 * Factory for generating the partial derivatives of a directional derivative.
 	 */
 	private DirectionalDerivativePartialFactory<R,S,K> dfac;
+
 	
 
 }

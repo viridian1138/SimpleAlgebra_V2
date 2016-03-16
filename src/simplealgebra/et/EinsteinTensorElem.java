@@ -25,6 +25,7 @@
 
 package simplealgebra.et;
 
+import java.io.PrintStream;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
@@ -33,13 +34,20 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import simplealgebra.AbstractCache;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.MutableElem;
 import simplealgebra.Mutator;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.SquareMatrixElem;
+import simplealgebra.WriteBigIntegerCache;
+import simplealgebra.WriteElemCache;
+import simplealgebra.WriteNumDimensionsCache;
 import simplealgebra.ga.GeometricAlgebraMultivectorElem;
+import simplealgebra.ga.GeometricAlgebraMultivectorElemFactory;
+import simplealgebra.ga.WriteGaSetCache;
+import simplealgebra.ga.WriteOrdCache;
 
 
 
@@ -1174,6 +1182,50 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	}
 	
 	
+	@Override
+	public String writeDesc( WriteElemCache<EinsteinTensorElem<Z,R,S>,EinsteinTensorElemFactory<Z,R,S>> cache , PrintStream ps )
+	{
+		String st = cache.get( this );
+		if( st == null )
+		{
+			final String sta = fac.writeDesc( (WriteElemCache<R,S>)( cache.getInnerCache() ) , ps);
+			cache.applyAuxCache( new WriteZListCache<Z>( cache.getCacheVal() ) );
+			cache.applyAuxCache( new WriteBigIntegerCache( cache.getCacheVal() ) );
+			cache.applyAuxCache( new WriteEinListCache( cache.getCacheVal() ) ); 
+			String staZListContravar =  ( (WriteZListCache<Z>)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) WriteZListCache.class ) ) ).writeDesc( contravariantIndices , ps );
+			String staZListCovar = ( (WriteZListCache<Z>)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) WriteZListCache.class ) ) ).writeDesc( covariantIndices , ps );
+			st = cache.getIncrementVal();
+			cache.put(this, st);
+			this.getFac().writeElemTypeString( ps );
+			ps.print( " " );
+			ps.print( st );
+			ps.print( " = new " );
+			this.getFac().writeElemTypeString( ps );
+			ps.print( "( " );
+			ps.print( sta );
+			ps.print( " , " );
+			ps.print( staZListContravar );
+			ps.print( " , " );
+			ps.print( staZListCovar );
+			ps.println( " );" );
+			for( final Entry<ArrayList<BigInteger>,R> ii : map.entrySet() )
+			{
+				final ArrayList<BigInteger> key = ii.getKey();
+				final R val = ii.getValue();
+				final String stt = val.writeDesc( (WriteElemCache)( cache.getInnerCache() ) , ps);
+				String stair = ( (WriteEinListCache)( cache.getAuxCache( WriteEinListCache.class ) ) ).writeDesc(key, (WriteBigIntegerCache)( cache.getAuxCache( WriteBigIntegerCache.class ) ) , ps);
+				ps.print( st );
+				ps.print( ".setVal( " );
+				ps.print( stair );
+				ps.print( " , " );
+				ps.print( stt );
+				ps.println( " );" );
+			}
+		}
+		return( st );
+	}
+	
+	
 	
 	@Override
 	public void validate() throws RuntimeException
@@ -1205,28 +1257,6 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 		}
 	}
 	
-	
-	
-	/**
-	 * Debug method for printing the indices in the tensor.
-	 */
-	public void printIndices()
-	{
-		System.out.println( "^>>>>>>>>>>>" );
-		for( final Z ii : contravariantIndices )
-		{
-			System.out.println( ii );
-		}
-		System.out.println( "v<<<<<<<<<<<" );
-		for( final Z ii : covariantIndices )
-		{
-			System.out.println( ii );
-		}
-		System.out.println( "]]]]]]]]]]]" );
-	}
-	
-	
-
 
 	
 	

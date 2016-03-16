@@ -31,12 +31,16 @@ import java.util.HashMap;
 
 import org.kie.internal.runtime.StatefulKnowledgeSession;
 
+import simplealgebra.AbstractCache;
 import simplealgebra.CloneThreadCache;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.NumDimensions;
 import simplealgebra.SquareMatrixElem;
+import simplealgebra.WriteElemCache;
+import simplealgebra.WriteNumDimensionsCache;
+import simplealgebra.ddx.WriteDirectionalDerivativePartialFactoryCache;
 import simplealgebra.symbolic.DroolsSession;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SCacheKey;
@@ -221,9 +225,53 @@ public class SymbolicTensorResym<Z extends Object, U extends NumDimensions, R ex
 	
 
 	@Override
-	public void writeString( PrintStream ps ) {
-		ps.print( "symbolicTensorResym" );
+	public String writeDesc(
+			WriteElemCache<SymbolicElem<EinsteinTensorElem<Z, R, S>, EinsteinTensorElemFactory<Z, R, S>>, SymbolicElemFactory<EinsteinTensorElem<Z, R, S>, EinsteinTensorElemFactory<Z, R, S>>> cache,
+			PrintStream ps) 
+	{
+		String st = cache.get( this );
+		if( st == null )
+		{
+			cache.applyAuxCache( new WriteNumDimensionsCache( cache.getCacheVal() ) );
+			final String elemAs = elem.writeDesc( cache , ps);
+			final String facs = fac.writeDesc( (WriteElemCache)( cache.getInnerCache() ) , ps);
+			final String staDim = dim.writeDesc( (WriteNumDimensionsCache)( cache.getAuxCache( WriteNumDimensionsCache.class ) ) , ps);
+			String sl = cache.getIncrementVal();
+			st = cache.getIncrementVal();
+			cache.put(this, st);
+			ps.print( SymbolicTensorResym.class.getSimpleName() );
+			ps.print( "<? extends Object," );
+			dim.writeTypeString(ps);
+			ps.print( "," );
+			fac.writeElemTypeString(ps);
+			ps.print( "," );
+			fac.writeElemFactoryTypeString(ps);
+			ps.print( ">" );
+			ps.print( " " );
+			ps.print( st );
+			ps.print( " = new " );
+			ps.print( SymbolicTensorResym.class.getSimpleName() );
+			ps.print( "<? extends Object," );
+			dim.writeTypeString(ps);
+			ps.print( "," );
+			fac.writeElemTypeString(ps);
+			ps.print( "," );
+			fac.writeElemFactoryTypeString(ps);
+			ps.print( ">" );
+			ps.print( "( " );
+			ps.print( elemAs );
+			ps.print( " , " );
+			ps.print( facs );
+			ps.print( " , " );
+			ps.print( "ResymType." );
+			ps.print( "" + reSym );
+			ps.print( " , " );
+			ps.print( staDim );
+			ps.println( " );" );
+		}
+		return( st );
 	}
+	
 	
 	@Override
 	public void performInserts( StatefulKnowledgeSession session )

@@ -22,6 +22,7 @@
 
 package simplealgebra.store;
 
+import java.io.PrintStream;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.Iterator;
@@ -33,6 +34,7 @@ import simplealgebra.CloneThreadCache;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
+import simplealgebra.WriteElemCache;
 
 
 /**
@@ -173,6 +175,32 @@ public class DbElem<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 		}
 		cache.put(this, this);
 		return( this );
+	}
+	
+	
+	@Override
+	public String writeDesc( WriteElemCache<DbElem<R,S>,DbElemFactory<R,S>> cache , PrintStream ps )
+	{
+		String st = cache.get( this );
+		if( st == null )
+		{
+			final String sta = fac.writeDesc( (WriteElemCache<R,S>)( cache.getInnerCache() ) , ps);
+			st = cache.getIncrementVal();
+			cache.put(this, st);
+			this.getFac().writeElemTypeString( ps );
+			ps.print( " " );
+			ps.print( st );
+			ps.print( " = new " );
+			this.getFac().writeElemTypeString( ps );
+			ps.print( "( " );
+			ps.print( hbase );
+			ps.print( " , " );
+			ps.print( sta );
+			ps.print( " , " );
+			ps.print( graph );
+			ps.println( " );" );
+		}
+		return( st );
 	}
 	
 	

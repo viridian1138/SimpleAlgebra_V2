@@ -45,8 +45,7 @@ import simplealgebra.DoubleElemFactory;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
-import simplealgebra.SquareMatrixElem;
-import simplealgebra.SquareMatrixElemFactory;
+import simplealgebra.WriteElemCache;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.PrecedenceComparator;
 import simplealgebra.symbolic.SCacheKey;
@@ -56,10 +55,9 @@ import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicIdentity;
 import simplealgebra.symbolic.SymbolicOps;
 import simplealgebra.symbolic.SymbolicZero;
-
-
 import simplealgebra.et.*;
 import simplealgebra.*;
+
 import java.io.*;
 
 
@@ -147,8 +145,25 @@ public class TestMetricDeterminant extends TestCase
 		}
 		
 		@Override
-		public void writeString( PrintStream ps ) {
-			ps.print( "cSquared( )" );
+		public String writeDesc(
+				WriteElemCache<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>> cache,
+				PrintStream ps) {
+			String st = cache.get( this );
+			if( st == null )
+			{
+				final String sta = fac.writeDesc( (WriteElemCache<DoubleElem,DoubleElemFactory>)( cache.getInnerCache() ) , ps);
+				st = cache.getIncrementVal();
+				cache.put(this, st);
+				ps.print( CSquaredElem.class.getSimpleName() );
+				ps.print( " " );
+				ps.print( st );
+				ps.print( " = new " );
+				ps.print( CSquaredElem.class.getSimpleName() );
+				ps.print( "( " );
+				ps.print( sta );
+				ps.println( " );" );
+			}
+			return( st );
 		}
 
 		
@@ -222,8 +237,25 @@ public class TestMetricDeterminant extends TestCase
 		}
 		
 		@Override
-		public void writeString( PrintStream ps ) {
-			ps.print( "T_2Ux( )" );
+		public String writeDesc(
+				WriteElemCache<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>> cache,
+				PrintStream ps) {
+			String st = cache.get( this );
+			if( st == null )
+			{
+				final String sta = fac.writeDesc( (WriteElemCache<DoubleElem,DoubleElemFactory>)( cache.getInnerCache() ) , ps);
+				st = cache.getIncrementVal();
+				cache.put(this, st);
+				ps.print( T_2UxElem.class.getSimpleName() );
+				ps.print( " " );
+				ps.print( st );
+				ps.print( " = new " );
+				ps.print( T_2UxElem.class.getSimpleName() );
+				ps.print( "( " );
+				ps.print( sta );
+				ps.println( " );" );
+			}
+			return( st );
 		}
 		
 		@Override

@@ -33,12 +33,19 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import simplealgebra.AbstractCache;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.NumDimensions;
+import simplealgebra.WriteElemCache;
+import simplealgebra.WriteNumDimensionsCache;
 import simplealgebra.et.EinsteinTensorElem;
 import simplealgebra.et.EinsteinTensorElemFactory;
+import simplealgebra.et.WriteDerivativeRemapCache;
+import simplealgebra.et.WriteMetricTensorFactoryCache;
+import simplealgebra.et.WriteOrdinaryDerivativeFactoryCache;
+import simplealgebra.et.WriteTemporaryIndexFactoryCache;
 import simplealgebra.symbolic.DroolsSession;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SCacheKey;
@@ -194,8 +201,72 @@ public class FlowVectorTensor<Z extends Object, U extends NumDimensions, R exten
 	
 
 	@Override
-	public void writeString(PrintStream ps) {
-		ps.print( "flowVectorTensor" );
+	public String writeDesc(
+			WriteElemCache<SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>, SymbolicElemFactory<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>> cache,
+			PrintStream ps) {
+		String st = cache.get( this );
+		if( st == null )
+		{
+			cache.applyAuxCache( new WriteNumDimensionsCache( cache.getCacheVal() ) );
+			cache.applyAuxCache( new WriteFlowVectorFactoryCache<R,S,K>( cache.getCacheVal() ) );
+			
+			final String facs = fac.writeDesc( (WriteElemCache)( cache.getInnerCache() ) , ps);
+			
+			final String derivs = cache.getIncrementVal();
+			 ps.print( "final " );
+			 ps.print( index.getClass().getSimpleName() );
+			 ps.print( " = new " );
+			 ps.print( index.getClass().getSimpleName() );
+			 ps.print( "( \"" );
+			 ps.print( index );
+			 ps.println( "\" );" );
+			
+			final String dims = dim.writeDesc( (WriteNumDimensionsCache)( cache.getAuxCache( WriteNumDimensionsCache.class ) )  , ps );
+			
+			final String dfacss = dfac.writeDesc( ( (WriteFlowVectorFactoryCache)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) WriteFlowVectorFactoryCache.class ) ) ) , ps);
+			
+		
+			
+			st = cache.getIncrementVal();
+			cache.put(this, st);
+			ps.print( FlowVectorTensor.class.getSimpleName() );
+			ps.print( "<" );
+			ps.print( "? extends Object" );
+			ps.print( "," );
+			dim.writeTypeString(ps);
+			ps.print( "," );
+			fac.writeElemTypeString(ps);
+			ps.print( "," );
+			fac.writeElemFactoryTypeString(ps);
+			ps.print( "," );
+			ps.print( "? extends Elem<?,?>" );
+			ps.print( ">" );
+			ps.print( " " );
+			ps.print( st );
+			ps.print( " = new " );
+			ps.print( FlowVectorTensor.class.getSimpleName() );
+			ps.print( "<" );
+			ps.print( "? extends Object" );
+			ps.print( "," );
+			dim.writeTypeString(ps);
+			ps.print( "," );
+			fac.writeElemTypeString(ps);
+			ps.print( "," );
+			fac.writeElemFactoryTypeString(ps);
+			ps.print( "," );
+			ps.print( "? extends Elem<?,?>" );
+			ps.print( ">" );
+			ps.print( "( " );
+			ps.print( facs );
+			ps.print( " , " );
+			ps.print( derivs );
+			ps.print( " , " );
+			ps.print( dims );
+			ps.print( " , " );
+			ps.print( dfacss );
+			ps.println( " );" );
+		}
+		return( st );
 	}
 	
 	

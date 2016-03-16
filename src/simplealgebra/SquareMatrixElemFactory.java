@@ -25,9 +25,11 @@
 
 package simplealgebra;
 
+import java.io.PrintStream;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
+import simplealgebra.bigfixedpoint.WritePrecisionCache;
 import simplealgebra.symbolic.SymbolicElem;
 
 
@@ -184,6 +186,59 @@ public class SquareMatrixElemFactory<U extends NumDimensions, R extends Elem<R,?
 		}
 		cache.putFac(this, this);
 		return( this );
+	}
+	
+	
+	@Override
+	public String writeDesc( WriteElemCache<SquareMatrixElem<U,R,S>,SquareMatrixElemFactory<U,R,S>> cache , PrintStream ps )
+	{
+		String st = cache.getFac( this );
+		if( st == null )
+		{
+			final String sta = fac.writeDesc( (WriteElemCache<R,S>)( cache.getInnerCache() ) , ps);
+			cache.applyAuxCache( new WriteNumDimensionsCache( cache.getCacheVal() ) );
+			final String sta2 = dim.writeDesc( (WriteNumDimensionsCache)( cache.getAuxCache( WriteNumDimensionsCache.class ) ) , ps);
+			st = cache.getIncrementVal();
+			cache.putFac(this, st);
+			writeElemFactoryTypeString( ps );
+			ps.print( " " );
+			ps.print( st );
+			ps.print( " = new " );
+			writeElemFactoryTypeString( ps );
+			ps.print( "( " );
+			ps.print( sta );
+			ps.print( " , " );
+			ps.print( sta2 );
+			ps.println( " );" );
+		}
+		return( st );
+	}
+	
+	@Override
+	public void writeElemTypeString( PrintStream ps )
+	{
+		ps.print( SquareMatrixElem.class.getSimpleName() );
+		ps.print( "<" );
+		dim.writeTypeString(ps);
+		ps.print( "," );
+		fac.writeElemTypeString(ps);
+		ps.print( "," );
+		fac.writeElemFactoryTypeString(ps);
+		ps.print( ">" );
+	}
+	
+	
+	@Override
+	public void writeElemFactoryTypeString( PrintStream ps )
+	{
+		ps.print( SquareMatrixElemFactory.class.getSimpleName() );
+		ps.print( "<" );
+		dim.writeTypeString(ps);
+		ps.print( "," );
+		fac.writeElemTypeString(ps);
+		ps.print( "," );
+		fac.writeElemFactoryTypeString(ps);
+		ps.print( ">" );
 	}
 	
 	

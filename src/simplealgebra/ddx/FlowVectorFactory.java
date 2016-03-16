@@ -26,6 +26,7 @@
 
 package simplealgebra.ddx;
 
+import java.io.PrintStream;
 import java.math.BigInteger;
 
 import simplealgebra.Elem;
@@ -63,6 +64,30 @@ public abstract class FlowVectorFactory<R extends Elem<R,?>, S extends ElemFacto
 	public boolean exposesDerivatives()
 	{
 		return( false );
+	}
+	
+	/**
+	 * Writes a description of the instance to the output stream.
+	 * 
+	 * @param cache Instance cache from which to cache objects.
+	 * @param ps Stream to write the description.
+	 * @return String describing the id of the object.
+	 */
+	public String writeDesc( WriteFlowVectorFactoryCache<R,S,K> cache , PrintStream ps )
+	{
+		String st = (String) cache.getFac( this );
+		if( st == null )
+		{
+			st = cache.getIncrementVal();
+			cache.putFac( this, st );
+			ps.print( this.getClass().getSimpleName() );
+			ps.print( " " );
+			ps.print( st );
+			ps.print( " = new " );
+			ps.print( this.getClass().getSimpleName() );
+			ps.println( "();" );
+		}
+		return( st );
 	}
 	
 	/**

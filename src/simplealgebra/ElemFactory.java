@@ -24,6 +24,7 @@
 
 package simplealgebra;
 
+import java.io.PrintStream;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
@@ -163,6 +164,42 @@ public abstract class ElemFactory<T extends Elem<T,?>, R extends ElemFactory<T,R
 	 * @return The thread-cloned object, or the same object if immutable.
 	 */
 	public abstract R cloneThreadCached( final BigInteger threadIndex , final CloneThreadCache<T,R> cache );
+	
+	
+	/**
+	 * Returns the new instance of the write elem cache.
+	 * 
+	 * @return The new instance of the cache.
+	 */
+	public final WriteElemCache<T,R> generateWriteElemCache()
+	{
+		return( new WriteElemCache<T,R>() );
+	}
+	
+	/**
+	 * Writes a description of the instance to the output stream.
+	 * 
+	 * @param cache Instance cache from which to cache objects.
+	 * @param ps Stream to write the description.
+	 * @return String describing the id of the object.
+	 */
+	public abstract String writeDesc( WriteElemCache<T,R> cache , PrintStream ps );
+
+
+	/**
+	 * Writes the type of the elem.
+	 * 
+	 * @param ps The stream to which to write the type.
+	 */
+	public abstract void writeElemTypeString( PrintStream ps );
+
+	/**
+	 * Writes the type of the factory.
+	 * 
+	 * @param ps The stream to which to write the type.
+	 */
+	public abstract void writeElemFactoryTypeString( PrintStream ps );
+
 	
 	
 }

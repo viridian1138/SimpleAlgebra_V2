@@ -30,10 +30,15 @@ import java.util.HashMap;
 
 import org.kie.internal.runtime.StatefulKnowledgeSession;
 
+import simplealgebra.AbstractCache;
 import simplealgebra.CloneThreadCache;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
+import simplealgebra.WriteBigIntegerCache;
+import simplealgebra.WriteElemCache;
+import simplealgebra.bigfixedpoint.WritePrecisionCache;
+
 import java.math.BigInteger;
 
 
@@ -162,10 +167,33 @@ public class SymbolicDivideBy<R extends Elem<R,?>, S extends ElemFactory<R,S>> e
 
 	
 	@Override
-	public void writeString( PrintStream ps ) {
-		ps.print( "divideBy( " );
-		elem.writeString( ps );
-		ps.print( " , " + ( ival ) + " )" );
+	public String writeDesc( WriteElemCache<SymbolicElem<R,S>,SymbolicElemFactory<R,S>> cache , PrintStream ps )
+	{
+		String st = cache.get( this );
+		if( st == null )
+		{
+			cache.applyAuxCache( new WriteBigIntegerCache( cache.getCacheVal() ) );
+			final String elems = elem.writeDesc( cache , ps);
+			final String facs = fac.writeDesc( (WriteElemCache)( cache.getInnerCache() ) , ps);
+			String stai = ( (WriteBigIntegerCache)( cache.getAuxCache( WriteBigIntegerCache.class ) ) ).writeDesc( ival , ps );
+			st = cache.getIncrementVal();
+			cache.put(this, st);
+			ps.print( SymbolicDivideBy.class.getSimpleName() );
+			this.getFac().writeOrdinaryEnclosedType(ps);
+			ps.print( " " );
+			ps.print( st );
+			ps.print( " = new " );
+			ps.print( SymbolicDivideBy.class.getSimpleName() );
+			this.getFac().writeOrdinaryEnclosedType(ps);
+			ps.print( "( " );
+			ps.print( elems );
+			ps.print( " , " );
+			ps.print( facs );
+			ps.print( " , " );
+			ps.print( stai );
+			ps.println( " );" );
+		}
+		return( st );
 	}
 	
 	

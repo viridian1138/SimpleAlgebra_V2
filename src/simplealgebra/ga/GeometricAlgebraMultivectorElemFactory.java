@@ -25,16 +25,23 @@
 
 package simplealgebra.ga;
 
+import java.io.PrintStream;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import simplealgebra.AbstractCache;
 import simplealgebra.CloneThreadCache;
 import simplealgebra.ComplexElemFactory;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.NumDimensions;
+import simplealgebra.SquareMatrixElem;
+import simplealgebra.SquareMatrixElemFactory;
+import simplealgebra.WriteBigIntegerCache;
+import simplealgebra.WriteElemCache;
+import simplealgebra.WriteNumDimensionsCache;
 import simplealgebra.symbolic.SymbolicElem;
 
 /**
@@ -276,6 +283,71 @@ public class GeometricAlgebraMultivectorElemFactory<U extends NumDimensions, A e
 		cache.putFac(this, this);
 		return( this );
 	}
+	
+	
+	
+	
+	@Override
+	public String writeDesc( WriteElemCache<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> cache , PrintStream ps )
+	{
+		String st = cache.getFac( this );
+		if( st == null )
+		{
+			final String sta = fac.writeDesc( (WriteElemCache<R,S>)( cache.getInnerCache() ) , ps);
+			cache.applyAuxCache( new WriteNumDimensionsCache( cache.getCacheVal() ) );
+			cache.applyAuxCache( new WriteOrdCache( cache.getCacheVal() ) );
+			final String sta2 = dim.writeDesc( (WriteNumDimensionsCache)( cache.getAuxCache( WriteNumDimensionsCache.class ) ) , ps);
+			final String sta3 = ord.writeDesc( (WriteOrdCache)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) WriteOrdCache.class ) ) ,dim ,  ps);
+			st = cache.getIncrementVal();
+			cache.putFac(this, st);
+			writeElemFactoryTypeString( ps );
+			ps.print( " " );
+			ps.print( st );
+			ps.print( " = new " );
+			writeElemFactoryTypeString( ps );
+			ps.print( "( " );
+			ps.print( sta );
+			ps.print( " , " );
+			ps.print( sta2 );
+			ps.print( " , " );
+			ps.print( sta3 );
+			ps.println( " );" );
+		}
+		return( st );
+	}
+	
+	@Override
+	public void writeElemTypeString( PrintStream ps )
+	{
+		ps.print( GeometricAlgebraMultivectorElem.class.getSimpleName() );
+		ps.print( "<" );
+		dim.writeTypeString(ps);
+		ps.print( "," );
+		ord.writeTypeString(dim,ps);
+		ps.print( "," );
+		fac.writeElemTypeString(ps);
+		ps.print( "," );
+		fac.writeElemFactoryTypeString(ps);
+		ps.print( ">" );
+	}
+	
+	
+	@Override
+	public void writeElemFactoryTypeString( PrintStream ps )
+	{
+		ps.print( GeometricAlgebraMultivectorElemFactory.class.getSimpleName() );
+		ps.print( "<" );
+		dim.writeTypeString(ps);
+		ps.print( "," );
+		ord.writeTypeString(dim,ps);
+		ps.print( "," );
+		fac.writeElemTypeString(ps);
+		ps.print( "," );
+		fac.writeElemFactoryTypeString(ps);
+		ps.print( ">" );
+	}
+	
+	
 	
 	
 	

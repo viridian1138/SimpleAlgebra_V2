@@ -30,7 +30,9 @@
 
 package simplealgebra.bigfixedpoint;
 
+import java.io.PrintStream;
 import java.math.BigInteger;
+
 
 /**
  * The precision of a BigFixedPointElem.  Subclasses of Precision are usually immutable.
@@ -72,6 +74,42 @@ public abstract class Precision<T extends Precision<T>> {
 	{
 		// Subclasses of Precision are presumed to be immutable.  Override this method to implement a Precision that is not immutable.
 		return( (T) this );
+	}
+	
+	
+	/**
+	 * Writes the type of the precision.
+	 * 
+	 * @param ps The type to which to write the precision.
+	 */
+	public void writeTypeString( PrintStream ps )
+	{
+		ps.print( this.getClass().getSimpleName() );
+	}
+	
+	
+	/**
+	 * Writes a description of the instance to the output stream.
+	 * 
+	 * @param cache Instance cache from which to cache objects.
+	 * @param ps Stream to write the description.
+	 * @return String describing the id of the object.
+	 */
+	public String writeDesc( WritePrecisionCache<T> cache , PrintStream ps )
+	{
+		String st = cache.getFac( (T) this );
+		if( st == null )
+		{
+			st = cache.getIncrementVal();
+			cache.putFac( (T) this, st );
+			writeTypeString( ps );
+			ps.print( " " );
+			ps.print( st );
+			ps.print( " = new " );
+			writeTypeString( ps );
+			ps.println( "();" );
+		}
+		return( st );
 	}
 
 	

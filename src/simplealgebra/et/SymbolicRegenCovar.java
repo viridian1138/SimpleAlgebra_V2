@@ -28,14 +28,15 @@ import java.io.PrintStream;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.HashSet;
 
 import org.kie.internal.runtime.StatefulKnowledgeSession;
 
+import simplealgebra.AbstractCache;
 import simplealgebra.CloneThreadCache;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
+import simplealgebra.WriteElemCache;
 import simplealgebra.symbolic.DroolsSession;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SCacheKey;
@@ -167,9 +168,45 @@ public class SymbolicRegenCovar<Z extends Object, R extends Elem<R,?>, S extends
 	
 
 	@Override
-	public void writeString( PrintStream ps ) {
-		ps.print( "symbolicRegenCovar" );
+	public String writeDesc(
+			WriteElemCache<SymbolicElem<EinsteinTensorElem<Z, R, S>, EinsteinTensorElemFactory<Z, R, S>>, SymbolicElemFactory<EinsteinTensorElem<Z, R, S>, EinsteinTensorElemFactory<Z, R, S>>> cache,
+			PrintStream ps) {
+		String st = cache.get( this );
+		if( st == null )
+		{
+			cache.applyAuxCache( new WriteZListCache<Z>( cache.getCacheVal() ) );
+			final String elemAs = elem.writeDesc( cache , ps);
+			final String facs = fac.writeDesc( (WriteElemCache)( cache.getInnerCache() ) , ps);
+			String staZListCovar =  ( (WriteZListCache<Z>)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) WriteZListCache.class ) ) ).writeDesc( newCovar , ps );
+			String sl = cache.getIncrementVal();
+			st = cache.getIncrementVal();
+			cache.put(this, st);
+			ps.print( SymbolicIndexReduction.class.getSimpleName() );
+			ps.print( "<? extends Object," );
+			fac.writeElemTypeString(ps);
+			ps.print( "," );
+			fac.writeElemFactoryTypeString(ps);
+			ps.print( ">" );
+			ps.print( " " );
+			ps.print( st );
+			ps.print( " = new " );
+			ps.print( SymbolicIndexReduction.class.getSimpleName() );
+			ps.print( "<? extends Object," );
+			fac.writeElemTypeString(ps);
+			ps.print( "," );
+			fac.writeElemFactoryTypeString(ps);
+			ps.print( ">" );
+			ps.print( "( " );
+			ps.print( elemAs );
+			ps.print( " , " );
+			ps.print( facs );
+			ps.print( " , " );
+			ps.print( staZListCovar );
+			ps.println( " );" );
+		}
+		return( st );
 	}
+	
 	
 	@Override
 	public boolean exposesDerivatives()

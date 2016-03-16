@@ -28,10 +28,18 @@
 
 package simplealgebra.et;
 
+import java.io.PrintStream;
+
+import simplealgebra.AbstractCache;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NumDimensions;
+import simplealgebra.WriteElemCache;
+import simplealgebra.WriteNumDimensionsCache;
+import simplealgebra.ddx.DirectionalDerivative;
 import simplealgebra.ddx.DirectionalDerivativePartialFactory;
+import simplealgebra.ddx.WriteDirectionalDerivativePartialFactoryCache;
+import simplealgebra.ga.WriteOrdCache;
 import simplealgebra.symbolic.DroolsSession;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
@@ -125,6 +133,72 @@ public class OrdinaryDerivativeFactory<Z extends Object, U extends NumDimensions
 		
 		return( ret );
 }
+	
+	
+	
+	
+	/**
+	 * Writes a description of the instance to the output stream.
+	 * 
+	 * @param cache Instance cache from which to cache objects.
+	 * @param ecache Instance cache from which to cache elems.
+	 * @param ps Stream to write the description.
+	 * @return String describing the id of the object.
+	 */
+	public String writeDesc( WriteOrdinaryDerivativeFactoryCache<Z,U,R,S,K> cache , WriteElemCache<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> ecache , PrintStream ps )
+	{
+		String st = cache.get( this );
+		if( st == null )
+		{
+			ecache.applyAuxCache( new WriteDirectionalDerivativePartialFactoryCache( ecache.getCacheVal() ) );
+			ecache.applyAuxCache( new WriteNumDimensionsCache( ecache.getCacheVal() ) );
+			ecache.applyAuxCache( new WriteDerivativeRemapCache<Z,R,S>( ecache.getCacheVal() ) );
+			final String facs = fac.writeDesc( (WriteElemCache)( ecache.getInnerCache() ) , ps);
+			final String staiF = dfac.writeDesc( ( (WriteDirectionalDerivativePartialFactoryCache)( ecache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) WriteDirectionalDerivativePartialFactoryCache.class ) ) ) , ps);
+			final String staDim = dim.writeDesc( (WriteNumDimensionsCache)( ecache.getAuxCache( WriteNumDimensionsCache.class ) ) , ps);
+			String remaps = "null";
+			if( remap != null )
+			{
+				remaps = remap.writeDesc( (WriteDerivativeRemapCache)( ecache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) WriteDerivativeRemapCache.class ) ) , ps);
+			}
+			st = cache.getIncrementVal();
+			cache.put(this, st);
+			ps.print( OrdinaryDerivativeFactory.class.getSimpleName() );
+			ps.print( "<" );
+			dim.writeTypeString(ps);
+			ps.print( "," );
+			fac.writeElemTypeString(ps);
+			ps.print( "," );
+			fac.writeElemFactoryTypeString(ps);
+			ps.print( "," );
+			ps.print( "? extends Object" );
+			ps.print( ">" );
+			ps.print( " " );
+			ps.print( st );
+			ps.print( " = new " );
+			ps.print( OrdinaryDerivativeFactory.class.getSimpleName() );
+			ps.print( "<" );
+			dim.writeTypeString(ps);
+			ps.print( "," );
+			fac.writeElemTypeString(ps);
+			ps.print( "," );
+			fac.writeElemFactoryTypeString(ps);
+			ps.print( "," );
+			ps.print( "? extends Object" );
+			ps.print( ">" );
+			ps.print( "( " );
+			ps.print( facs );
+			ps.print( " , " );
+			ps.print( staDim );
+			ps.print( " , " );
+			ps.print( staiF );
+			ps.print( " , " );
+			ps.print( remaps );
+			ps.println( " );" );
+		}
+		return( st );
+		
+	}
 	
 	
 	

@@ -37,6 +37,7 @@ import simplealgebra.CloneThreadCache;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
+import simplealgebra.WriteElemCache;
 import simplealgebra.symbolic.DroolsSession;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SCacheKey;
@@ -194,13 +195,43 @@ public class SymbolicRankTwoTrace<Z extends Object, R extends Elem<R,?>, S exten
 		return( this );
 	}
 	
+
 	
 	@Override
-	public void writeString( PrintStream ps ) {
-		ps.print( "trace( " );
-		elemA.writeString( ps );
-		ps.print( " )" );
+	public String writeDesc(
+			WriteElemCache<SymbolicElem<EinsteinTensorElem<Z, R, S>, EinsteinTensorElemFactory<Z, R, S>>, SymbolicElemFactory<EinsteinTensorElem<Z, R, S>, EinsteinTensorElemFactory<Z, R, S>>> cache,
+			PrintStream ps) {
+		String st = cache.get( this );
+		if( st == null )
+		{
+			final String elems = elemA.writeDesc( cache , ps);
+			final String facs = fac.writeDesc( (WriteElemCache)( cache.getInnerCache() ) , ps);
+			st = cache.getIncrementVal();
+			cache.put(this, st);
+			ps.print( SymbolicRankTwoTrace.class.getSimpleName() );
+			ps.print( "<? extends Object," );
+			fac.writeElemTypeString(ps);
+			ps.print( "," );
+			fac.writeElemFactoryTypeString(ps);
+			ps.print( ">" );
+			ps.print( " " );
+			ps.print( st );
+			ps.print( " = new " );
+			ps.print( SymbolicRankTwoTrace.class.getSimpleName() );
+			ps.print( "<? extends Object," );
+			fac.writeElemTypeString(ps);
+			ps.print( "," );
+			fac.writeElemFactoryTypeString(ps);
+			ps.print( ">" );
+			ps.print( "( " );
+			ps.print( elems );
+			ps.print( " , " );
+			ps.print( facs );
+			ps.println( " );" );
+		}
+		return( st );
 	}
+	
 	
 	
 	/**
@@ -225,6 +256,7 @@ public class SymbolicRankTwoTrace<Z extends Object, R extends Elem<R,?>, S exten
 	 * The argument of the trace.
 	 */
 	private SymbolicElem<EinsteinTensorElem<Z,R,S>,EinsteinTensorElemFactory<Z,R,S>> elemA;
+
 	
 }
 

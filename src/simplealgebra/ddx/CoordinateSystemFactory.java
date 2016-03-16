@@ -26,10 +26,12 @@
 
 package simplealgebra.ddx;
 
+import java.io.PrintStream;
 import java.math.BigInteger;
 
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
+import simplealgebra.WriteElemCache;
 import simplealgebra.et.EinsteinTensorElem;
 import simplealgebra.et.EinsteinTensorElemFactory;
 import simplealgebra.symbolic.SymbolicElem;
@@ -59,6 +61,18 @@ public abstract class CoordinateSystemFactory<Z extends Object, R extends Elem<R
 	 */
 	public abstract SymbolicElem<EinsteinTensorElem<Z,SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,
 		EinsteinTensorElemFactory<Z,SymbolicElem<R,S>,SymbolicElemFactory<R,S>>> genCoord( Z index );
+	
+	
+	
+	/**
+	 * Writes a description of the instance to the output stream.
+	 * 
+	 * @param wcache The cache from which to write coordinate systems.
+	 * @param cache Instance cache from which to cache elems.
+	 * @param ps Stream to write the description.
+	 * @return String describing the id of the object.
+	 */
+	public abstract String writeDesc( WriteCoordinateSystemFactoryCache wcache , WriteElemCache cache , PrintStream ps );
 	
 	
 	/**

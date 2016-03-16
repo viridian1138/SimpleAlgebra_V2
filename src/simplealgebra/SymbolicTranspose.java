@@ -176,12 +176,47 @@ public class SymbolicTranspose<U extends NumDimensions, R extends Elem<R,?>, S e
 	}
 
 	
+	
+	
 	@Override
-	public void writeString( PrintStream ps ) {
-		ps.print( "transpose( " );
-		elem.writeString( ps );
-		ps.print( " )" );
+	public String writeDesc( WriteElemCache<SymbolicElem<SquareMatrixElem<U,R,S>,SquareMatrixElemFactory<U,R,S>>,SymbolicElemFactory<SquareMatrixElem<U,R,S>,SquareMatrixElemFactory<U,R,S>>> cache , PrintStream ps )
+	{
+		String st = cache.get( this );
+		if( st == null )
+		{
+			final String elemAs = elem.writeDesc( cache , ps);
+			final String facs = fac.writeDesc( (WriteElemCache)( cache.getInnerCache() ) , ps);
+			st = cache.getIncrementVal();
+			cache.put(this, st);
+			ps.print( SymbolicTranspose.class.getSimpleName() );
+			ps.print( "<" );
+			this.getFac().getFac().getDim().writeTypeString(ps);
+			ps.print( "," );
+			this.getFac().getFac().getFac().writeElemTypeString(ps);
+			ps.print( "," );
+			this.getFac().getFac().getFac().writeElemFactoryTypeString(ps);
+			ps.print( ">" );
+			ps.print( " " );
+			ps.print( st );
+			ps.print( " = new " );
+			ps.print( SymbolicTranspose.class.getSimpleName() );
+			ps.print( "<" );
+			this.getFac().getFac().getDim().writeTypeString(ps);
+			ps.print( "," );
+			this.getFac().getFac().getFac().writeElemTypeString(ps);
+			ps.print( "," );
+			this.getFac().getFac().getFac().writeElemFactoryTypeString(ps);
+			ps.print( ">" );
+			ps.print( "( " );
+			ps.print( elemAs );
+			ps.print( " , " );
+			ps.print( facs );
+			ps.println( " );" );
+		}
+		return( st );
 	}
+	
+	
 	
 	
 	@Override

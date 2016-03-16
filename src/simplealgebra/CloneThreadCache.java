@@ -39,7 +39,7 @@ import java.util.HashMap;
  * @param <T> The elem type.
  * @param <R> The factory for the elem type.
  */
-public class CloneThreadCache<T extends Elem<T,?>, R extends ElemFactory<T,R>>
+public class CloneThreadCache<T extends Elem<T,?>, R extends ElemFactory<T,R>> extends AbstractCache<T,R,T,R>
 {
 
 	/**
@@ -47,51 +47,9 @@ public class CloneThreadCache<T extends Elem<T,?>, R extends ElemFactory<T,R>>
 	 */
 	public CloneThreadCache( )
 	{
+		super();
 	}
 	
-	/**
-	 * Gets a elem from the elem cache.
-	 * 
-	 * @param in The elem to be cloned.
-	 * @return The cached elem or null.
-	 */
-	public T get( T in )
-	{
-		return( map.get( in ) );
-	}
-	
-	/**
-	 * Puts an elem into the elem cache.
-	 * 
-	 * @param key The elem to be cloned.
-	 * @param value The elem to be cached.
-	 */
-	public void put( T key , T value )
-	{
-		map.put(key, value);
-	}
-	
-	/**
-	 * Gets a factory from the factory cache.
-	 * 
-	 * @param in The factory to be cloned.
-	 * @return The cached factory or null.
-	 */
-	public R getFac( R in )
-	{
-		return( facmap.get( in ) );
-	}
-	
-	/**
-	 * Puts a factory into the factory cache.
-	 * 
-	 * @param key The factory to be cloned.
-	 * @param value The factory to be cached.
-	 */
-	public void putFac( R key , R value )
-	{
-		facmap.put(key, value);
-	}
 	
 	/**
 	 * Gets the cache for the enclosed type (if applicable).
@@ -107,16 +65,6 @@ public class CloneThreadCache<T extends Elem<T,?>, R extends ElemFactory<T,R>>
 		return( innerCache );
 	}
 	
-	
-	/**
-	 * Map of elems.
-	 */
-	protected HashMap<T,T> map = new HashMap<T,T>();
-	
-	/**
-	 * Map of factories.
-	 */
-	protected HashMap<R,R> facmap = new HashMap<R,R>();
 	
 	/**
 	 * Cache for the enclosed type (if applicable).

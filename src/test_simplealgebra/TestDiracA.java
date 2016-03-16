@@ -37,6 +37,7 @@ import java.util.Map.Entry;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
+import simplealgebra.AbstractCache;
 import simplealgebra.ComplexElem;
 import simplealgebra.ComplexElemFactory;
 import simplealgebra.DoubleElem;
@@ -45,6 +46,8 @@ import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.NumDimensions;
+import simplealgebra.WriteBigIntegerCache;
+import simplealgebra.WriteElemCache;
 import simplealgebra.algo.*;
 import simplealgebra.ddx.DirectionalDerivative;
 import simplealgebra.ddx.DirectionalDerivativePartialFactory;
@@ -57,6 +60,8 @@ import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicReduction;
 import simplealgebra.ddx.*;
+import simplealgebra.et.EinsteinTensorElem;
+import simplealgebra.et.EinsteinTensorElemFactory;
 import simplealgebra.ga.*;
 
 
@@ -1300,8 +1305,27 @@ private static class Ordinate extends SymbolicElem<GeometricAlgebraMultivectorEl
 	}
 
 	@Override
-	public void writeString( PrintStream ps ) {
-		ps.print( "a" + col + "()" );
+	public String writeDesc(
+			WriteElemCache<SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFour, SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory>, GeometricAlgebraMultivectorElemFactory<TestDimensionFour, SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<GeometricAlgebraMultivectorElem<TestDimensionFour, SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory>, GeometricAlgebraMultivectorElemFactory<TestDimensionFour, SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory>>> cache,
+			PrintStream ps) {
+		String st = cache.get( this );
+		if( st == null )
+		{
+			final String sta = fac.writeDesc( (WriteElemCache<GeometricAlgebraMultivectorElem<TestDimensionFour, SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory>,GeometricAlgebraMultivectorElemFactory<TestDimensionFour, SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory>>)( cache.getInnerCache() ) , ps);
+			st = cache.getIncrementVal();
+			cache.put(this, st);
+			ps.print( Ordinate.class.getSimpleName() );
+			ps.print( " " );
+			ps.print( st );
+			ps.print( " = new " );
+			ps.print( Ordinate.class.getSimpleName() );
+			ps.print( "( " );
+			ps.print( sta );
+			ps.print( " , " );
+			ps.print( col );
+			ps.println( " );" );
+		}
+		return( st );
 	}
 	
 	@Override
@@ -1364,11 +1388,6 @@ private static class SymbolicConst extends SymbolicReduction<DoubleElem,DoubleEl
 	}
 	
 	@Override
-	public void writeString( PrintStream ps ) {
-		ps.print( " " + ( this.getElem().getVal() ) );
-	}
-	
-	@Override
 	public boolean symbolicEquals( SymbolicElem<DoubleElem,DoubleElemFactory> b )
 	{
 		if( b instanceof SymbolicConst )
@@ -1404,13 +1423,6 @@ private static class StelemReduction2L extends SymbolicReduction<SymbolicElem<Do
 	public StelemReduction2L( SymbolicElem<DoubleElem,DoubleElemFactory> _elem, 
 			SymbolicElemFactory<DoubleElem,DoubleElemFactory> _fac) {
 		super(_elem, _fac);
-	}
-	
-	@Override
-	public void writeString( PrintStream ps ) {
-		ps.print( "reduce2L( " );
-		getElem().writeString( ps );
-		ps.print( " )" );
 	}
 	
 	@Override
@@ -1450,13 +1462,6 @@ private static class StelemReduction3L extends SymbolicReduction<
 			SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> _elem, 
 			SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> _fac) {
 		super(_elem, _fac);
-	}
-	
-	@Override
-	public void writeString( PrintStream ps ) {
-		ps.print( "reduce3L( " );
-		getElem().writeString( ps );
-		ps.print( " )" );
 	}
 	
 	@Override
@@ -1626,27 +1631,43 @@ private static class CoeffNode
 		}
 
 		@Override
-		public void writeString( PrintStream ps ) {
-			String s0 = "bn";
-			for( Entry<Ordinate,BigInteger> ii : coord.entrySet() )
+		public String writeDesc(
+				WriteElemCache<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>> cache,
+				PrintStream ps) {
+			String st = cache.get( this );
+			if( st == null )
 			{
-				Ordinate key = ii.getKey();
-				BigInteger val = ii.getValue();
-				s0 = s0 + "[";
-				s0 = s0 + key.getCol();
-				s0 = s0 + ",";
-				s0 = s0 + val.intValue();
-				s0 = s0 + "]";
+				final String sta = fac.writeDesc( (WriteElemCache<DoubleElem, DoubleElemFactory>)( cache.getInnerCache() ) , ps);
+				cache.applyAuxCache( new WriteBigIntegerCache( cache.getCacheVal() ) );
+				final String strr = cache.getIncrementVal();
+				ps.print( "final HashMap<Ordinate, BigInteger> " );
+				ps.print( strr );
+				ps.println( " = new HashMap<Ordinate, BigInteger>();" );
+				for( Entry<Ordinate,BigInteger> ii : coord.entrySet() )
+				{
+					final String stai = ( (WriteBigIntegerCache)( cache.getAuxCache( WriteBigIntegerCache.class ) ) ).writeDesc( ii.getValue() , ps );
+					final String sl = ii.getKey().writeDesc( (WriteElemCache)( cache.getInnerCache() ) , ps);
+					ps.print( strr );
+					ps.print( ".put( " );
+					ps.print( sl );
+					ps.print( " , " );
+					ps.print( stai );
+					ps.println( " );" );
+				}
+				st = cache.getIncrementVal();
+				cache.put(this, st);
+				ps.print( BNelem.class.getSimpleName() );
+				ps.print( " " );
+				ps.print( st );
+				ps.print( " = new " );
+				ps.print( BNelem.class.getSimpleName() );
+				ps.print( "( " );
+				ps.print( sta );
+				ps.print( " , " );
+				ps.print( strr );
+				ps.println( " );" );
 			}
-			s0 = s0 + "{";
-			Iterator<BigInteger> ita = index.iterator();
-			while( ita.hasNext() )
-			{
-				BigInteger b = ita.next();
-				s0 = s0 + b + ",";
-			}
-			s0 = s0 + "}()";
-			ps.print( s0 );
+			return( st );
 		}
 		
 		@Override
@@ -1763,20 +1784,57 @@ private static class CNelem extends Nelem<SymbolicElem<DoubleElem,DoubleElemFact
 	
 
 	@Override
-	public void writeString( PrintStream ps ) {
-		String s0 = "cn";
-		for( Entry<Ordinate,BigInteger> ii : coord.entrySet() )
+	public String writeDesc(
+			WriteElemCache<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> cache,
+			PrintStream ps) {
+		String st = cache.get( this );
+		if( st == null )
 		{
-			Ordinate key = ii.getKey();
-			BigInteger val = ii.getValue();
-			s0 = s0 + "[";
-			s0 = s0 + key.getCol();
-			s0 = s0 + ",";
-			s0 = s0 + val.intValue();
-			s0 = s0 + "]";
+			final String sta = fac.writeDesc( (WriteElemCache<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>)( cache.getInnerCache() ) , ps);
+			cache.applyAuxCache( new WriteBigIntegerCache( cache.getCacheVal() ) );
+			final String strr = cache.getIncrementVal();
+			ps.print( "final HashMap<Ordinate, BigInteger> " );
+			ps.print( strr );
+			ps.println( " = new HashMap<Ordinate, BigInteger>();" );
+			final String stri = cache.getIncrementVal();
+			ps.print( "final HashSet<BigInteger> " );
+			ps.print( stri );
+			ps.println( " = new HashSet<BigInteger>();" );
+			for( Entry<Ordinate,BigInteger> ii : coord.entrySet() )
+			{
+				final String stai = ( (WriteBigIntegerCache)( cache.getAuxCache( WriteBigIntegerCache.class ) ) ).writeDesc( ii.getValue() , ps );
+				final String sl = ii.getKey().writeDesc( (WriteElemCache)( cache.getInnerCache() ) , ps);
+				ps.print( strr );
+				ps.print( ".put( " );
+				ps.print( sl );
+				ps.print( " , " );
+				ps.print( stai );
+				ps.println( " );" );
+			}
+			for( BigInteger ii : index )
+			{
+				final String stai = ( (WriteBigIntegerCache)( cache.getAuxCache( WriteBigIntegerCache.class ) ) ).writeDesc( ii , ps );
+				ps.print( stri );
+				ps.print( ".add( " );
+				ps.print( stai );
+				ps.println( " );" );
+			}
+			st = cache.getIncrementVal();
+			cache.put(this, st);
+			ps.print( BNelem.class.getSimpleName() );
+			ps.print( " " );
+			ps.print( st );
+			ps.print( " = new " );
+			ps.print( BNelem.class.getSimpleName() );
+			ps.print( "( " );
+			ps.print( sta );
+			ps.print( " , " );
+			ps.print( strr );
+			ps.print( " , " );
+			ps.print( stri );
+			ps.println( " );" );
 		}
-		s0 = s0 + "()";
-		ps.print( s0 );
+		return( st );
 	}
 	
 
@@ -1973,9 +2031,49 @@ public SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFac
 
 
 @Override
-public void writeString( PrintStream ps ) {
-	throw( new RuntimeException( "NotSupported" ) );
+public String writeDesc(
+		WriteElemCache<SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>> cache,
+		PrintStream ps) {
+	String st = cache.get( this );
+	if( st == null )
+	{
+		cache.applyAuxCache( new WriteBigIntegerCache( cache.getCacheVal() ) );
+		final String sta = fac.writeDesc( (WriteElemCache< SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>> , SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>> >)( cache.getInnerCache() ) , ps);
+		st = cache.getIncrementVal();
+		cache.put(this, st);
+		ps.print( AStelem.class.getSimpleName() );
+		ps.print( " " );
+		ps.print( st );
+		ps.print( " = new " );
+		ps.print( AStelem.class.getSimpleName() );
+		ps.print( "( " );
+		ps.print( sta );
+		ps.println( " );" );
+		for( final Entry<Ordinate,BigInteger> ii : partialMap.entrySet() )
+		{
+			Ordinate key = ii.getKey();
+			BigInteger val = ii.getValue();
+			final String stav = ( (WriteBigIntegerCache)( cache.getAuxCache( WriteBigIntegerCache.class ) ) ).writeDesc( val , ps );
+			final String stak = key.writeDesc( (WriteElemCache)( cache.getInnerCache() ) , ps);
+			ps.print( st );
+			ps.print( ".partialMap.put( " );
+			ps.print( stak );
+			ps.print( " , " );
+			ps.print( stav );
+			ps.println( " );" );
+		}
+		for( final BigInteger ii : index )
+		{
+			final String stav = ( (WriteBigIntegerCache)( cache.getAuxCache( WriteBigIntegerCache.class ) ) ).writeDesc( ii , ps );
+			ps.print( st );
+			ps.print( ".index.add( " );
+			ps.print( stav );
+			ps.println( " );" );
+		}
+	}
+	return( st );
 }
+
 
 
         /**
@@ -2707,12 +2805,28 @@ protected static class VEvalElem extends SymbolicElem<GeometricAlgebraMultivecto
 	}
 
 	@Override
-	public void writeString( PrintStream ps ) {
-		for( final SymbolicElem<DoubleElem, DoubleElemFactory> ii : dval.getValueSet() )
+	public String writeDesc(
+			WriteElemCache<SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFour, SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory>, GeometricAlgebraMultivectorElemFactory<TestDimensionFour, SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<GeometricAlgebraMultivectorElem<TestDimensionFour, SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory>, GeometricAlgebraMultivectorElemFactory<TestDimensionFour, SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory>>> cache,
+			PrintStream ps) {
+		String st = cache.get( this );
+		if( st == null )
 		{
-			ps.print( "\n" + "** " );
-			ii.writeString( ps );
+			final String sta = fac.writeDesc( (WriteElemCache<GeometricAlgebraMultivectorElem<TestDimensionFour, SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory>,GeometricAlgebraMultivectorElemFactory<TestDimensionFour, SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory> >)( cache.getInnerCache() ) , ps);
+			final String dvals = dval.writeDesc( (WriteElemCache<GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,GeometricAlgebraMultivectorElemFactory<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> >)( cache.getInnerCache() ) , ps);
+			st = cache.getIncrementVal(); // #####################################
+			cache.put(this, st);
+			ps.print( VEvalElem.class.getSimpleName() );
+			ps.print( " " );
+			ps.print( st );
+			ps.print( " = new " );
+			ps.print( VEvalElem.class.getSimpleName() );
+			ps.print( "( " );
+			ps.print( sta );
+			ps.print( " , " );
+			ps.print( dvals );
+			ps.println( " );" );
 		}
+		return( st );
 	}
 
 	
@@ -2866,9 +2980,31 @@ public SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFour, Spacetime
 }
 
 @Override
-public void writeString( PrintStream ps ) {
-	throw( new RuntimeException( "Not Supported" ) );
+public String writeDesc(
+		WriteElemCache<SymbolicElem<SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFour, SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory>, GeometricAlgebraMultivectorElemFactory<TestDimensionFour, SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<GeometricAlgebraMultivectorElem<TestDimensionFour, SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory>, GeometricAlgebraMultivectorElemFactory<TestDimensionFour, SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFour, SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory>, GeometricAlgebraMultivectorElemFactory<TestDimensionFour, SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<GeometricAlgebraMultivectorElem<TestDimensionFour, SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory>, GeometricAlgebraMultivectorElemFactory<TestDimensionFour, SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory>>>> cache,
+		PrintStream ps) {
+	String st = cache.get( this );
+	if( st == null )
+	{
+		final String sta = fac.writeDesc( (WriteElemCache<SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>,GeometricAlgebraMultivectorElemFactory<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>,GeometricAlgebraMultivectorElemFactory<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>>>)( cache.getInnerCache() ) , ps);
+		final String dvals = dval.writeDesc( (WriteElemCache<GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>,GeometricAlgebraMultivectorElemFactory<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>)( cache.getInnerCache() ) , ps);
+		st = cache.getIncrementVal(); // ############################################################
+		cache.put(this, st);
+		ps.print( VEvalElem2.class.getSimpleName() );
+		ps.print( " " );
+		ps.print( st );
+		ps.print( " = new " );
+		ps.print( VEvalElem2.class.getSimpleName() );
+		ps.print( "( " );
+		ps.print( sta );
+		ps.print( " , " );
+		ps.print( dvals );
+		ps.println( " );" );
+	}
+	return( st );
 }
+
+
 
 
 }
@@ -3023,9 +3159,30 @@ public SymbolicElem<SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFo
 	return( new VEvalElem2( fac.getFac() , sefac.getFac() , vefac , retA ) );
 }
 
+
 @Override
-public void writeString( PrintStream ps ) {
-throw( new RuntimeException( "Not Supported" ) );
+public String writeDesc(
+		WriteElemCache<SymbolicElem<SymbolicElem<SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFour, SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory>, GeometricAlgebraMultivectorElemFactory<TestDimensionFour, SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<GeometricAlgebraMultivectorElem<TestDimensionFour, SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory>, GeometricAlgebraMultivectorElemFactory<TestDimensionFour, SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFour, SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory>, GeometricAlgebraMultivectorElemFactory<TestDimensionFour, SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<GeometricAlgebraMultivectorElem<TestDimensionFour, SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory>, GeometricAlgebraMultivectorElemFactory<TestDimensionFour, SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory>>>>, SymbolicElemFactory<SymbolicElem<SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFour, SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory>, GeometricAlgebraMultivectorElemFactory<TestDimensionFour, SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<GeometricAlgebraMultivectorElem<TestDimensionFour, SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory>, GeometricAlgebraMultivectorElemFactory<TestDimensionFour, SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFour, SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory>, GeometricAlgebraMultivectorElemFactory<TestDimensionFour, SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<GeometricAlgebraMultivectorElem<TestDimensionFour, SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory>, GeometricAlgebraMultivectorElemFactory<TestDimensionFour, SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory>>>>> cache,
+		PrintStream ps) {
+	String st = cache.get( this );
+	if( st == null )
+	{
+		final String sta = fac.writeDesc( (WriteElemCache<SymbolicElem<SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>,GeometricAlgebraMultivectorElemFactory<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>,GeometricAlgebraMultivectorElemFactory<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>,GeometricAlgebraMultivectorElemFactory<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>,GeometricAlgebraMultivectorElemFactory<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>>>>)( cache.getInnerCache() ) , ps);
+		final String dvals = dval.writeDesc( (WriteElemCache<GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>,GeometricAlgebraMultivectorElemFactory<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>>)( cache.getInnerCache() ) , ps);
+		st = cache.getIncrementVal(); // ###############################################################
+		cache.put(this, st);
+		ps.print( VEvalElem3.class.getSimpleName() );
+		ps.print( " " );
+		ps.print( st );
+		ps.print( " = new " );
+		ps.print( VEvalElem3.class.getSimpleName() );
+		ps.print( "( " );
+		ps.print( sta );
+		ps.print( " , " );
+		ps.print( dvals );
+		ps.println( " );" );
+	}
+	return( st );
 }
 
 

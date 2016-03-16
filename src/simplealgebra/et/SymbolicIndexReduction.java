@@ -32,10 +32,14 @@ import java.util.HashSet;
 
 import org.kie.internal.runtime.StatefulKnowledgeSession;
 
+import simplealgebra.AbstractCache;
 import simplealgebra.CloneThreadCache;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
+import simplealgebra.WriteBigIntegerCache;
+import simplealgebra.WriteElemCache;
+import simplealgebra.WriteNumDimensionsCache;
 import simplealgebra.symbolic.DroolsSession;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SCacheKey;
@@ -180,9 +184,48 @@ public class SymbolicIndexReduction<Z extends Object, R extends Elem<R,?>, S ext
 	
 
 	@Override
-	public void writeString( PrintStream ps ) {
-		ps.print( "symbolicIndexReduction" );
+	public String writeDesc(
+			WriteElemCache<SymbolicElem<EinsteinTensorElem<Z, R, S>, EinsteinTensorElemFactory<Z, R, S>>, SymbolicElemFactory<EinsteinTensorElem<Z, R, S>, EinsteinTensorElemFactory<Z, R, S>>> cache,
+			PrintStream ps) {
+		String st = cache.get( this );
+		if( st == null )
+		{
+			cache.applyAuxCache( new WriteZSetCache<Z>( cache.getCacheVal() ) );
+			final String elemAs = elem.writeDesc( cache , ps);
+			final String facs = fac.writeDesc( (WriteElemCache)( cache.getInnerCache() ) , ps);
+			String staZSetContravar = ( (WriteZSetCache<Z>)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) WriteZSetCache.class ) ) ).writeDesc( contravariantReduce , ps );
+			String staZSetCovar = ( (WriteZSetCache<Z>)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) WriteZSetCache.class ) ) ).writeDesc( covariantReduce , ps );
+			String sl = cache.getIncrementVal();
+			st = cache.getIncrementVal();
+			cache.put(this, st);
+			ps.print( SymbolicIndexReduction.class.getSimpleName() );
+			ps.print( "<? extends Object," );
+			fac.writeElemTypeString(ps);
+			ps.print( "," );
+			fac.writeElemFactoryTypeString(ps);
+			ps.print( ">" );
+			ps.print( " " );
+			ps.print( st );
+			ps.print( " = new " );
+			ps.print( SymbolicIndexReduction.class.getSimpleName() );
+			ps.print( "<? extends Object," );
+			fac.writeElemTypeString(ps);
+			ps.print( "," );
+			fac.writeElemFactoryTypeString(ps);
+			ps.print( ">" );
+			ps.print( "( " );
+			ps.print( elemAs );
+			ps.print( " , " );
+			ps.print( facs );
+			ps.print( " , " );
+			ps.print( staZSetContravar );
+			ps.print( " , " );
+			ps.print( staZSetCovar );
+			ps.println( " );" );
+		}
+		return( st );
 	}
+
 	
 	@Override
 	public void performInserts( StatefulKnowledgeSession session )
@@ -237,6 +280,6 @@ public class SymbolicIndexReduction<Z extends Object, R extends Elem<R,?>, S ext
 	 */
 	private SymbolicElem<EinsteinTensorElem<Z,R,S>,EinsteinTensorElemFactory<Z,R,S>> elem;
 
-
+	
 }
 

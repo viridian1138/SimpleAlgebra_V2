@@ -36,12 +36,18 @@ import java.util.Map.Entry;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
+import simplealgebra.AbstractCache;
 import simplealgebra.DoubleElem;
 import simplealgebra.DoubleElemFactory;
 import simplealgebra.Elem;
 import simplealgebra.NotInvertibleException;
+import simplealgebra.WriteBigIntegerCache;
+import simplealgebra.WriteElemCache;
 import simplealgebra.algo.NewtonRaphsonSingleElem;
+import simplealgebra.bigfixedpoint.WritePrecisionCache;
 import simplealgebra.ddx.PartialDerivativeOp;
+import simplealgebra.et.EinsteinTensorElem;
+import simplealgebra.et.EinsteinTensorElemFactory;
 import simplealgebra.stelem.Nelem;
 import simplealgebra.stelem.Stelem;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
@@ -241,8 +247,27 @@ public class TestStelemA extends TestCase {
 		}
 
 		@Override
-		public void writeString( PrintStream ps ) {
-			ps.print( "a" + col + "()" );
+		public String writeDesc(
+				WriteElemCache<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>> cache,
+				PrintStream ps) {
+			String st = cache.get( this );
+			if( st == null )
+			{
+				final String sta = fac.writeDesc( (WriteElemCache<DoubleElem,DoubleElemFactory>)( cache.getInnerCache() ) , ps);
+				st = cache.getIncrementVal();
+				cache.put(this, st);
+				ps.print( Ordinate.class.getSimpleName() );
+				ps.print( " " );
+				ps.print( st );
+				ps.print( " = new " );
+				ps.print( Ordinate.class.getSimpleName() );
+				ps.print( "( " );
+				ps.print( sta );
+				ps.print( " , " );
+				ps.print( col );
+				ps.println( " );" );
+			}
+			return( st );
 		}
 		
 		@Override
@@ -304,11 +329,6 @@ public class TestStelemA extends TestCase {
 		}
 		
 		@Override
-		public void writeString( PrintStream ps ) {
-			ps.print( "const( " + getElem().getVal() + " )" );
-		}
-		
-		@Override
 		public boolean symbolicEquals( SymbolicElem<DoubleElem,DoubleElemFactory> b )
 		{
 			if( b instanceof SymbolicConst )
@@ -342,13 +362,6 @@ public class TestStelemA extends TestCase {
 		 */
 		public StelemReduction2L(SymbolicElem<DoubleElem, DoubleElemFactory> _elem, SymbolicElemFactory<DoubleElem, DoubleElemFactory> _fac) {
 			super(_elem, _fac);
-		}
-		
-		@Override
-		public void writeString( PrintStream ps ) {
-			ps.print( "reduce2L( " );
-			getElem().writeString( ps );
-			ps.print( " )" );
 		}
 		
 		@Override
@@ -388,13 +401,6 @@ public class TestStelemA extends TestCase {
 				SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> _elem, 
 				SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> _fac) {
 			super(_elem, _fac);
-		}
-		
-		@Override
-		public void writeString( PrintStream ps ) {
-			ps.print( "reduce3L( " );
-			getElem().writeString( ps );
-			ps.print( " )" );
 		}
 		
 		@Override
@@ -530,20 +536,43 @@ public class TestStelemA extends TestCase {
 		}
 
 		@Override
-		public void writeString( PrintStream ps ) {
-			String s0 = "bn";
-			for( Entry<Ordinate,BigInteger> ii : coord.entrySet() )
+		public String writeDesc(
+				WriteElemCache<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>> cache,
+				PrintStream ps) {
+			String st = cache.get( this );
+			if( st == null )
 			{
-				Ordinate key = ii.getKey();
-				BigInteger val = ii.getValue();
-				s0 = s0 + "[";
-				s0 = s0 + key.getCol();
-				s0 = s0 + ",";
-				s0 = s0 + val.intValue();
-				s0 = s0 + "]";
+				final String sta = fac.writeDesc( (WriteElemCache<DoubleElem, DoubleElemFactory>)( cache.getInnerCache() ) , ps);
+				cache.applyAuxCache( new WriteBigIntegerCache( cache.getCacheVal() ) );
+				final String strr = cache.getIncrementVal();
+				ps.print( "final HashMap<Ordinate, BigInteger> " );
+				ps.print( strr );
+				ps.println( " = new HashMap<Ordinate, BigInteger>();" );
+				for( Entry<Ordinate,BigInteger> ii : coord.entrySet() )
+				{
+					final String stai = ( (WriteBigIntegerCache)( cache.getAuxCache( WriteBigIntegerCache.class ) ) ).writeDesc( ii.getValue() , ps );
+					final String sl = ii.getKey().writeDesc( (WriteElemCache)( cache.getInnerCache() ) , ps);
+					ps.print( strr );
+					ps.print( ".put( " );
+					ps.print( sl );
+					ps.print( " , " );
+					ps.print( stai );
+					ps.println( " );" );
+				}
+				st = cache.getIncrementVal();
+				cache.put(this, st);
+				ps.print( BNelem.class.getSimpleName() );
+				ps.print( " " );
+				ps.print( st );
+				ps.print( " = new " );
+				ps.print( BNelem.class.getSimpleName() );
+				ps.print( "( " );
+				ps.print( sta );
+				ps.print( " , " );
+				ps.print( strr );
+				ps.println( " );" );
 			}
-			s0 = s0 + "()";
-			ps.print( s0 );
+			return( st );
 		}
 		
 		@Override
@@ -574,6 +603,8 @@ public class TestStelemA extends TestCase {
 			}
 			return( false );
 		}
+
+
 		
 	}
 	
@@ -650,22 +681,45 @@ public class TestStelemA extends TestCase {
 			return( evalPartialDerivative( withRespectTo , implicitSpace ) );
 		}
 		
-
+		
 		@Override
-		public void writeString( PrintStream ps ) {
-			String s0 = "cn";
-			for( Entry<Ordinate,BigInteger> ii : coord.entrySet() )
+		public String writeDesc(
+				WriteElemCache<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> cache,
+				PrintStream ps) {
+			String st = cache.get( this );
+			if( st == null )
 			{
-				Ordinate key = ii.getKey();
-				BigInteger val = ii.getValue();
-				s0 = s0 + "[";
-				s0 = s0 + key.getCol();
-				s0 = s0 + ",";
-				s0 = s0 + val.intValue();
-				s0 = s0 + "]";
+				final String sta = fac.writeDesc( (WriteElemCache<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>)( cache.getInnerCache() ) , ps);
+				cache.applyAuxCache( new WriteBigIntegerCache( cache.getCacheVal() ) );
+				final String strr = cache.getIncrementVal();
+				ps.print( "final HashMap<Ordinate, BigInteger> " );
+				ps.print( strr );
+				ps.println( " = new HashMap<Ordinate, BigInteger>();" );
+				for( Entry<Ordinate,BigInteger> ii : coord.entrySet() )
+				{
+					final String stai = ( (WriteBigIntegerCache)( cache.getAuxCache( WriteBigIntegerCache.class ) ) ).writeDesc( ii.getValue() , ps );
+					final String sl = ii.getKey().writeDesc( (WriteElemCache)( cache.getInnerCache() ) , ps);
+					ps.print( strr );
+					ps.print( ".put( " );
+					ps.print( sl );
+					ps.print( " , " );
+					ps.print( stai );
+					ps.println( " );" );
+				}
+				st = cache.getIncrementVal();
+				cache.put(this, st);
+				ps.print( CNelem.class.getSimpleName() );
+				ps.print( " " );
+				ps.print( st );
+				ps.print( " = new " );
+				ps.print( CNelem.class.getSimpleName() );
+				ps.print( "( " );
+				ps.print( sta );
+				ps.print( " , " );
+				ps.print( strr );
+				ps.println( " );" );
 			}
-			s0 = s0 + "()";
-			ps.print( s0 );
+			return( st );
 		}
 		
 		
@@ -698,6 +752,7 @@ public class TestStelemA extends TestCase {
 			}
 			return( false );
 		}
+		
 		
 	}
 	
@@ -822,11 +877,6 @@ public class TestStelemA extends TestCase {
 			return( ret );
 		}
 		
-
-		@Override
-		public void writeString( PrintStream ps ) {
-			throw( new RuntimeException( "NotSupported" ) );
-		}
 		
 		
 		/**
@@ -1244,6 +1294,28 @@ public class TestStelemA extends TestCase {
 			CoeffNode nxt = new CoeffNode( outNumer , outDenom );
 			
 			implicitSpacesOut.put( implicitSpace , nxt );
+		}
+
+		@Override
+		public String writeDesc(
+				WriteElemCache<SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>> cache,
+				PrintStream ps) {
+			String st = cache.get( this );
+			if( st == null )
+			{
+				final String sta = fac.writeDesc( (WriteElemCache<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>> >)( cache.getInnerCache() ) , ps);
+				st = cache.getIncrementVal();
+				cache.put(this, st);
+				ps.print( AStelem.class.getSimpleName() );
+				ps.print( " " );
+				ps.print( st );
+				ps.print( " = new " );
+				ps.print( AStelem.class.getSimpleName() );
+				ps.print( "( " );
+				ps.print( sta );
+				ps.println( " );" );
+			}
+			return( st );
 		}
 		
 		

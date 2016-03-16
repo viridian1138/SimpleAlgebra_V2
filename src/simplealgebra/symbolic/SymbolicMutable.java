@@ -28,14 +28,21 @@ package simplealgebra.symbolic;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.Map.Entry;
 
 import org.kie.internal.runtime.StatefulKnowledgeSession;
 
+import simplealgebra.AbstractCache;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.MutableElem;
 import simplealgebra.Mutator;
 import simplealgebra.NotInvertibleException;
+import simplealgebra.WriteBigIntegerCache;
+import simplealgebra.WriteElemCache;
+import simplealgebra.WriteNumDimensionsCache;
+import simplealgebra.ga.WriteOrdCache;
 
 import java.io.*;
 import java.math.BigInteger;
@@ -153,12 +160,46 @@ public class SymbolicMutable<T extends Elem<T,?>, U extends MutableElem<T,U,?>, 
 	}
 	
 
+	
 	@Override
-	public void writeString( PrintStream ps ) {
-		ps.print( elemB.writeString( ) );
-		ps.print( "( " );
-		elemA.writeString( ps );
-		ps.print( " )" );
+	public String writeDesc(
+			WriteElemCache<SymbolicElem<U, R>, SymbolicElemFactory<U, R>> cache,
+			PrintStream ps) 
+	{
+		String st = cache.get( this );
+		if( st == null )
+		{
+			final String sta = fac.writeDesc( (WriteElemCache<U,R>)( cache.getInnerCache() ) , ps);
+			cache.applyAuxCache( new WriteMutableCache<T,U,M>( cache.getCacheVal() ) );
+			final String elemAs = elemA.writeDesc( cache , ps);
+			String staMut = ( (WriteMutableCache<T,U,M>)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) WriteMutableCache.class ) ) ).get( elemB );
+			if( staMut == null )
+			{
+				staMut = ( (WriteMutableCache<T,U,M>)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) WriteMutableCache.class ) ) ).getIncrementVal();
+				ps.print( "final " );
+				ps.print( elemB.getClass().getSimpleName() );
+				ps.print( staMut );
+				ps.print( " = new " );
+				ps.print( elemB.getClass().getSimpleName() );
+				ps.println( "();" );
+				( (WriteMutableCache<T,U,M>)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) WriteMutableCache.class ) ) ).put(elemB, staMut);
+			}
+			st = cache.getIncrementVal();
+			cache.put(this, st);
+			this.getFac().writeElemTypeString( ps );
+			ps.print( " " );
+			ps.print( st );
+			ps.print( " = new " );
+			this.getFac().writeElemTypeString( ps );
+			ps.print( "( " );
+			ps.print( elemAs );
+			ps.print( " , " );
+			ps.print( staMut );
+			ps.print( " , " );
+			ps.print( sta );
+			ps.println( " );" );
+		}
+		return( st );
 	}
 	
 	
@@ -187,6 +228,7 @@ public class SymbolicMutable<T extends Elem<T,?>, U extends MutableElem<T,U,?>, 
 		elemA.performInserts( session );
 		super.performInserts( session );
 	}
+
 
 }
 

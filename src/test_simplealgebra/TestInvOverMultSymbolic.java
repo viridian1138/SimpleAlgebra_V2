@@ -45,6 +45,7 @@ import simplealgebra.Elem;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.SquareMatrixElem;
 import simplealgebra.SquareMatrixElemFactory;
+import simplealgebra.WriteElemCache;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SCacheKey;
 import simplealgebra.symbolic.SymbolicAdd;
@@ -132,10 +133,27 @@ public class TestInvOverMultSymbolic extends TestCase
 			
 			return( false );
 		}
-		
+
 		@Override
-		public void writeString( PrintStream ps ) {
-			ps.print( "a( )" );
+		public String writeDesc(
+				WriteElemCache<SymbolicElem<SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory>, SquareMatrixElemFactory<TestDimensionFour, DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory>, SquareMatrixElemFactory<TestDimensionFour, DoubleElem, DoubleElemFactory>>> cache,
+				PrintStream ps) {
+			String st = cache.get( this );
+			if( st == null )
+			{
+				final String sta = fac.writeDesc( (WriteElemCache<SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour, DoubleElem, DoubleElemFactory>>)( cache.getInnerCache() ) , ps);
+				st = cache.getIncrementVal();
+				cache.put(this, st);
+				ps.print( AElem.class.getSimpleName() );
+				ps.print( " " );
+				ps.print( st );
+				ps.print( " = new " );
+				ps.print( AElem.class.getSimpleName() );
+				ps.print( "( " );
+				ps.print( sta );
+				ps.println( " );" );
+			}
+			return( st );
 		}
 
 		
@@ -206,11 +224,30 @@ public class TestInvOverMultSymbolic extends TestCase
 			
 			return( false );
 		}
-		
+
 		@Override
-		public void writeString( PrintStream ps ) {
-			ps.print( "b()" );
+		public String writeDesc(
+				WriteElemCache<SymbolicElem<SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory>, SquareMatrixElemFactory<TestDimensionFour, DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory>, SquareMatrixElemFactory<TestDimensionFour, DoubleElem, DoubleElemFactory>>> cache,
+				PrintStream ps) {
+			String st = cache.get( this );
+			if( st == null )
+			{
+				final String sta = fac.writeDesc( (WriteElemCache<SquareMatrixElem<TestDimensionFour, DoubleElem, DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour, DoubleElem, DoubleElemFactory>>)( cache.getInnerCache() ) , ps);
+				st = cache.getIncrementVal();
+				cache.put(this, st);
+				ps.print( BElem.class.getSimpleName() );
+				ps.print( " " );
+				ps.print( st );
+				ps.print( " = new " );
+				ps.print( BElem.class.getSimpleName() );
+				ps.print( "( " );
+				ps.print( sta );
+				ps.println( " );" );
+			}
+			return( st );
 		}
+		
+		
 		
 	}
 	

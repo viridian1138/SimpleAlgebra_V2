@@ -22,6 +22,7 @@
 
 package simplealgebra;
 
+import java.io.PrintStream;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashSet;
@@ -369,6 +370,31 @@ public class ComplexElem<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 		}
 		cache.put(this, this);
 		return( this );
+	}
+	
+	
+	@Override
+	public String writeDesc( WriteElemCache<ComplexElem<R,S>,ComplexElemFactory<R,S>> cache , PrintStream ps )
+	{
+		String st = cache.get( this );
+		if( st == null )
+		{
+			final String res = re.writeDesc( (WriteElemCache)( cache.getInnerCache() ) , ps);
+			final String ims = im.writeDesc( (WriteElemCache)( cache.getInnerCache() ) , ps);
+			st = cache.getIncrementVal();
+			cache.put(this, st);
+			this.getFac().writeElemTypeString( ps );
+			ps.print( " " );
+			ps.print( st );
+			ps.print( " = new " );
+			this.getFac().writeElemTypeString( ps );
+			ps.print( "( " );
+			ps.print( res );
+			ps.print( " , " );
+			ps.print( ims );
+			ps.println( " );" );
+		}
+		return( st );
 	}
 
 	

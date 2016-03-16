@@ -27,6 +27,9 @@
 
 package simplealgebra.symbolic;
 
+import simplealgebra.Elem;
+import simplealgebra.WriteElemCache;
+
 
 /**
  * Configuration for logging in a Drools ( http://drools.org ) session.  This configuration
@@ -61,16 +64,19 @@ public class LoggingConfiguration {
 		System.out.println( "Logging:" );
 		System.out.println( obj );
 		
-		if( obj instanceof SymbolicElem )
+		if( obj instanceof Elem )
 		{
-			((SymbolicElem) obj).writeString( System.out );
+			((Elem) obj).writeDesc( ((Elem) obj).getFac().generateWriteElemCache() , System.out );
 		}
 		
 		if( obj instanceof Reng )
 		{
-			((Reng) obj).getStrt().writeString( System.out );
+			WriteElemCache cache = ((Reng) obj).getStrt().getFac().generateWriteElemCache();
+			System.out.println( "*** Start Reng..." );
+			((Reng) obj).getStrt().writeDesc( cache , System.out );
 			System.out.println( "-->" );
-			((Reng) obj).getEnd().writeString( System.out );
+			((Reng) obj).getEnd().writeDesc( cache , System.out );
+			System.out.println( "*** End Reng..." );
 		}
 		
 		System.out.println( "------------" );

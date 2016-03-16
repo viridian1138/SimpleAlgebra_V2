@@ -26,6 +26,7 @@
 
 package simplealgebra.ddx;
 
+import java.io.PrintStream;
 import java.math.BigInteger;
 
 import simplealgebra.Elem;
@@ -69,6 +70,42 @@ public abstract class DirectionalDerivativePartialFactory<R extends Elem<R,?>, S
 	public DirectionalDerivativePartialFactory<R,S,K> cloneThread( final BigInteger threadIndex )
 	{
 		throw( new RuntimeException( "Not Supported.  Override cloneThread() method to add support." ) );
+	}
+	
+	
+	/**
+	 * Writes the type of the factory.
+	 * 
+	 * @param ps The type to which to write the factory.
+	 */
+	public void writeTypeString( PrintStream ps )
+	{
+		ps.print( this.getClass().getSimpleName() );
+	}
+	
+	
+	/**
+	 * Writes a description of the instance to the output stream.
+	 * 
+	 * @param cache Instance cache from which to cache objects.
+	 * @param ps Stream to write the description.
+	 * @return String describing the id of the object.
+	 */
+	public String writeDesc( WriteDirectionalDerivativePartialFactoryCache cache , PrintStream ps )
+	{
+		String st = (String) cache.getFac( this );
+		if( st == null )
+		{
+			st = cache.getIncrementVal();
+			cache.putFac( this, st );
+			writeTypeString( ps );
+			ps.print( " " );
+			ps.print( st );
+			ps.print( " = new " );
+			writeTypeString( ps );
+			ps.println( "();" );
+		}
+		return( st );
 	}
 
 	

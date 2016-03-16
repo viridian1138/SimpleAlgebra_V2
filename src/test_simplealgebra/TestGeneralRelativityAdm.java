@@ -37,6 +37,7 @@ import java.util.Map.Entry;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
+import simplealgebra.AbstractCache;
 import simplealgebra.ComplexElem;
 import simplealgebra.ComplexElemFactory;
 import simplealgebra.DoubleElem;
@@ -46,6 +47,8 @@ import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.NumDimensions;
 import simplealgebra.SquareMatrixElem;
+import simplealgebra.WriteBigIntegerCache;
+import simplealgebra.WriteElemCache;
 import simplealgebra.algo.*;
 import simplealgebra.ddx.DirectionalDerivative;
 import simplealgebra.ddx.DirectionalDerivativePartialFactory;
@@ -1286,8 +1289,27 @@ private static class Ordinate extends SymbolicElem<EinsteinTensorElem<String,Dou
 	}
 
 	@Override
-	public void writeString( PrintStream ps ) {
-		ps.print( "a" + col + "()" );
+	public String writeDesc(
+			WriteElemCache<SymbolicElem<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>> cache,
+			PrintStream ps) {
+		String st = cache.get( this );
+		if( st == null )
+		{
+			final String sta = fac.writeDesc( (WriteElemCache<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>,EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>)( cache.getInnerCache() ) , ps);
+			st = cache.getIncrementVal();
+			cache.put(this, st);
+			ps.print( Ordinate.class.getSimpleName() );
+			ps.print( " " );
+			ps.print( st );
+			ps.print( " = new " );
+			ps.print( Ordinate.class.getSimpleName() );
+			ps.print( "( " );
+			ps.print( sta );
+			ps.print( " , " );
+			ps.print( col );
+			ps.println( " );" );
+		}
+		return( st );
 	}
 	
 	@Override
@@ -1349,11 +1371,6 @@ private static class SymbolicConst extends SymbolicReduction<DoubleElem,DoubleEl
 	}
 	
 	@Override
-	public void writeString( PrintStream ps ) {
-		ps.print( " " + ( this.getElem().getVal() ) );
-	}
-	
-	@Override
 	public boolean symbolicEquals( SymbolicElem<DoubleElem,DoubleElemFactory> b )
 	{
 		if( b instanceof SymbolicConst )
@@ -1389,13 +1406,6 @@ private static class StelemReduction2L extends SymbolicReduction<SymbolicElem<Do
 	public StelemReduction2L( SymbolicElem<DoubleElem,DoubleElemFactory> _elem, 
 			SymbolicElemFactory<DoubleElem,DoubleElemFactory> _fac) {
 		super(_elem, _fac);
-	}
-	
-	@Override
-	public void writeString( PrintStream ps ) {
-		ps.print( "reduce2L( " );
-		getElem().writeString( ps );
-		ps.print( " )" );
 	}
 	
 	@Override
@@ -1435,13 +1445,6 @@ private static class StelemReduction3L extends SymbolicReduction<
 			SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> _elem, 
 			SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> _fac) {
 		super(_elem, _fac);
-	}
-	
-	@Override
-	public void writeString( PrintStream ps ) {
-		ps.print( "reduce3L( " );
-		getElem().writeString( ps );
-		ps.print( " )" );
 	}
 	
 	@Override
@@ -1615,27 +1618,57 @@ private static class CoeffNode
 		}
 
 		@Override
-		public void writeString( PrintStream ps ) {
-			String s0 = "bn";
-			for( Entry<Ordinate,BigInteger> ii : coord.entrySet() )
+		public String writeDesc(
+				WriteElemCache<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>> cache,
+				PrintStream ps) {
+			String st = cache.get( this );
+			if( st == null )
 			{
-				Ordinate key = ii.getKey();
-				BigInteger val = ii.getValue();
-				s0 = s0 + "[";
-				s0 = s0 + key.getCol();
-				s0 = s0 + ",";
-				s0 = s0 + val.intValue();
-				s0 = s0 + "]";
+				final String sta = fac.writeDesc( (WriteElemCache<DoubleElem, DoubleElemFactory>)( cache.getInnerCache() ) , ps);
+				cache.applyAuxCache( new WriteBigIntegerCache( cache.getCacheVal() ) );
+				final String strr = cache.getIncrementVal();
+				ps.print( "final HashMap<Ordinate, BigInteger> " );
+				ps.print( strr );
+				ps.println( " = new HashMap<Ordinate, BigInteger>();" );
+				final String stri = cache.getIncrementVal();
+				ps.print( "final ArrayList<BigInteger> " );
+				ps.print( stri );
+				ps.println( " = new ArrayList<BigInteger>();" );
+				for( Entry<Ordinate,BigInteger> ii : coord.entrySet() )
+				{
+					final String stai = ( (WriteBigIntegerCache)( cache.getAuxCache( WriteBigIntegerCache.class ) ) ).writeDesc( ii.getValue() , ps );
+					final String sl = ii.getKey().writeDesc( (WriteElemCache)( cache.getInnerCache() ) , ps);
+					ps.print( strr );
+					ps.print( ".put( " );
+					ps.print( sl );
+					ps.print( " , " );
+					ps.print( stai );
+					ps.println( " );" );
+				}
+				for( BigInteger ii : index )
+				{
+					final String stai = ( (WriteBigIntegerCache)( cache.getAuxCache( WriteBigIntegerCache.class ) ) ).writeDesc( ii , ps );
+					ps.print( stri );
+					ps.print( ".add( " );
+					ps.print( stai );
+					ps.println( " );" );
+				}
+				st = cache.getIncrementVal();
+				cache.put(this, st);
+				ps.print( BNelemMetric.class.getSimpleName() );
+				ps.print( " " );
+				ps.print( st );
+				ps.print( " = new " );
+				ps.print( BNelemMetric.class.getSimpleName() );
+				ps.print( "( " );
+				ps.print( sta );
+				ps.print( " , " );
+				ps.print( strr );
+				ps.print( " , " );
+				ps.print( stri );
+				ps.println( " );" );
 			}
-			s0 = s0 + "{";
-			Iterator<BigInteger> ita = index.iterator();
-			while( ita.hasNext() )
-			{
-				BigInteger b = ita.next();
-				s0 = s0 + b + ",";
-			}
-			s0 = s0 + "}()";
-			ps.print( s0 );
+			return( st );
 		}
 		
 		@Override
@@ -1774,27 +1807,57 @@ private static class CoeffNode
 		}
 
 		@Override
-		public void writeString( PrintStream ps ) {
-			String s0 = "bn";
-			for( Entry<Ordinate,BigInteger> ii : coord.entrySet() )
+		public String writeDesc(
+				WriteElemCache<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>> cache,
+				PrintStream ps) {
+			String st = cache.get( this );
+			if( st == null )
 			{
-				Ordinate key = ii.getKey();
-				BigInteger val = ii.getValue();
-				s0 = s0 + "[";
-				s0 = s0 + key.getCol();
-				s0 = s0 + ",";
-				s0 = s0 + val.intValue();
-				s0 = s0 + "]";
+				final String sta = fac.writeDesc( (WriteElemCache<DoubleElem, DoubleElemFactory>)( cache.getInnerCache() ) , ps);
+				cache.applyAuxCache( new WriteBigIntegerCache( cache.getCacheVal() ) );
+				final String strr = cache.getIncrementVal();
+				ps.print( "final HashMap<Ordinate, BigInteger> " );
+				ps.print( strr );
+				ps.println( " = new HashMap<Ordinate, BigInteger>();" );
+				final String stri = cache.getIncrementVal();
+				ps.print( "final ArrayList<BigInteger> " );
+				ps.print( stri );
+				ps.println( " = new ArrayList<BigInteger>();" );
+				for( Entry<Ordinate,BigInteger> ii : coord.entrySet() )
+				{
+					final String stai = ( (WriteBigIntegerCache)( cache.getAuxCache( WriteBigIntegerCache.class ) ) ).writeDesc( ii.getValue() , ps );
+					final String sl = ii.getKey().writeDesc( (WriteElemCache)( cache.getInnerCache() ) , ps);
+					ps.print( strr );
+					ps.print( ".put( " );
+					ps.print( sl );
+					ps.print( " , " );
+					ps.print( stai );
+					ps.println( " );" );
+				}
+				for( BigInteger ii : index )
+				{
+					final String stai = ( (WriteBigIntegerCache)( cache.getAuxCache( WriteBigIntegerCache.class ) ) ).writeDesc( ii , ps );
+					ps.print( stri );
+					ps.print( ".add( " );
+					ps.print( stai );
+					ps.println( " );" );
+				}
+				st = cache.getIncrementVal();
+				cache.put(this, st);
+				ps.print( BNelemConjugateMomentum.class.getSimpleName() );
+				ps.print( " " );
+				ps.print( st );
+				ps.print( " = new " );
+				ps.print( BNelemConjugateMomentum.class.getSimpleName() );
+				ps.print( "( " );
+				ps.print( sta );
+				ps.print( " , " );
+				ps.print( strr );
+				ps.print( " , " );
+				ps.print( stri );
+				ps.println( " );" );
 			}
-			s0 = s0 + "{";
-			Iterator<BigInteger> ita = index.iterator();
-			while( ita.hasNext() )
-			{
-				BigInteger b = ita.next();
-				s0 = s0 + b + ",";
-			}
-			s0 = s0 + "}()";
-			ps.print( s0 );
+			return( st );
 		}
 		
 		@Override
@@ -1928,20 +1991,43 @@ private static class CNelemMetric extends Nelem<SymbolicElem<DoubleElem,DoubleEl
 	
 
 	@Override
-	public void writeString( PrintStream ps ) {
-		String s0 = "cn";
-		for( Entry<Ordinate,BigInteger> ii : coord.entrySet() )
+	public String writeDesc(
+			WriteElemCache<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> cache,
+			PrintStream ps) {
+		String st = cache.get( this );
+		if( st == null )
 		{
-			Ordinate key = ii.getKey();
-			BigInteger val = ii.getValue();
-			s0 = s0 + "[";
-			s0 = s0 + key.getCol();
-			s0 = s0 + ",";
-			s0 = s0 + val.intValue();
-			s0 = s0 + "]";
+			final String sta = fac.writeDesc( (WriteElemCache<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>)( cache.getInnerCache() ) , ps);
+			cache.applyAuxCache( new WriteBigIntegerCache( cache.getCacheVal() ) );
+			final String strr = cache.getIncrementVal();
+			ps.print( "final HashMap<Ordinate, BigInteger> " );
+			ps.print( strr );
+			ps.println( " = new HashMap<Ordinate, BigInteger>();" );
+			for( Entry<Ordinate,BigInteger> ii : coord.entrySet() )
+			{
+				final String stai = ( (WriteBigIntegerCache)( cache.getAuxCache( WriteBigIntegerCache.class ) ) ).writeDesc( ii.getValue() , ps );
+				final String sl = ii.getKey().writeDesc( (WriteElemCache)( cache.getInnerCache() ) , ps);
+				ps.print( strr );
+				ps.print( ".put( " );
+				ps.print( sl );
+				ps.print( " , " );
+				ps.print( stai );
+				ps.println( " );" );
+			}
+			st = cache.getIncrementVal();
+			cache.put(this, st);
+			ps.print( CNelemMetric.class.getSimpleName() );
+			ps.print( " " );
+			ps.print( st );
+			ps.print( " = new " );
+			ps.print( CNelemMetric.class.getSimpleName() );
+			ps.print( "( " );
+			ps.print( sta );
+			ps.print( " , " );
+			ps.print( strr );
+			ps.println( " );" );
 		}
-		s0 = s0 + "()";
-		ps.print( s0 );
+		return( st );
 	}
 	
 	
@@ -2111,20 +2197,43 @@ public SymbolicElem<DoubleElem,DoubleElemFactory> evalPartialDerivativeCached(Ar
 
 
 @Override
-public void writeString( PrintStream ps ) {
-	String s0 = "cn";
-	for( Entry<Ordinate,BigInteger> ii : coord.entrySet() )
+public String writeDesc(
+		WriteElemCache<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> cache,
+		PrintStream ps) {
+	String st = cache.get( this );
+	if( st == null )
 	{
-		Ordinate key = ii.getKey();
-		BigInteger val = ii.getValue();
-		s0 = s0 + "[";
-		s0 = s0 + key.getCol();
-		s0 = s0 + ",";
-		s0 = s0 + val.intValue();
-		s0 = s0 + "]";
+		final String sta = fac.writeDesc( (WriteElemCache<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>)( cache.getInnerCache() ) , ps);
+		cache.applyAuxCache( new WriteBigIntegerCache( cache.getCacheVal() ) );
+		final String strr = cache.getIncrementVal();
+		ps.print( "final HashMap<Ordinate, BigInteger> " );
+		ps.print( strr );
+		ps.println( " = new HashMap<Ordinate, BigInteger>();" );
+		for( Entry<Ordinate,BigInteger> ii : coord.entrySet() )
+		{
+			final String stai = ( (WriteBigIntegerCache)( cache.getAuxCache( WriteBigIntegerCache.class ) ) ).writeDesc( ii.getValue() , ps );
+			final String sl = ii.getKey().writeDesc( (WriteElemCache)( cache.getInnerCache() ) , ps);
+			ps.print( strr );
+			ps.print( ".put( " );
+			ps.print( sl );
+			ps.print( " , " );
+			ps.print( stai );
+			ps.println( " );" );
+		}
+		st = cache.getIncrementVal();
+		cache.put(this, st);
+		ps.print( CNelemConjugateMomentum.class.getSimpleName() );
+		ps.print( " " );
+		ps.print( st );
+		ps.print( " = new " );
+		ps.print( CNelemConjugateMomentum.class.getSimpleName() );
+		ps.print( "( " );
+		ps.print( sta );
+		ps.print( " , " );
+		ps.print( strr );
+		ps.println( " );" );
 	}
-	s0 = s0 + "()";
-	ps.print( s0 );
+	return( st );
 }
 
 
@@ -2330,8 +2439,47 @@ public SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFac
 
 
 @Override
-public void writeString( PrintStream ps ) {
-	ps.print( "AstelemMetric" );
+public String writeDesc(
+		WriteElemCache<SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>> cache,
+		PrintStream ps) {
+	String st = cache.get( this );
+	if( st == null )
+	{
+		cache.applyAuxCache( new WriteBigIntegerCache( cache.getCacheVal() ) );
+		final String sta = fac.writeDesc( (WriteElemCache< SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>> , SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>> >)( cache.getInnerCache() ) , ps);
+		st = cache.getIncrementVal();
+		cache.put(this, st);
+		ps.print( AStelemMetric.class.getSimpleName() );
+		ps.print( " " );
+		ps.print( st );
+		ps.print( " = new " );
+		ps.print( AStelemMetric.class.getSimpleName() );
+		ps.print( "( " );
+		ps.print( sta );
+		ps.println( " );" );
+		for( final Entry<Ordinate,BigInteger> ii : partialMap.entrySet() )
+		{
+			Ordinate key = ii.getKey();
+			BigInteger val = ii.getValue();
+			final String stav = ( (WriteBigIntegerCache)( cache.getAuxCache( WriteBigIntegerCache.class ) ) ).writeDesc( val , ps );
+			final String stak = key.writeDesc( (WriteElemCache)( cache.getInnerCache() ) , ps);
+			ps.print( st );
+			ps.print( ".partialMap.put( " );
+			ps.print( stak );
+			ps.print( " , " );
+			ps.print( stav );
+			ps.println( " );" );
+		}
+		for( final BigInteger ii : index )
+		{
+			final String stav = ( (WriteBigIntegerCache)( cache.getAuxCache( WriteBigIntegerCache.class ) ) ).writeDesc( ii , ps );
+			ps.print( st );
+			ps.print( ".index.add( " );
+			ps.print( stav );
+			ps.println( " );" );
+		}
+	}
+	return( st );
 }
 
 
@@ -2897,8 +3045,47 @@ public SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFac
 
 
 @Override
-public void writeString( PrintStream ps ) {
-	ps.print( "AstelemConjugateMomentum" );
+public String writeDesc(
+		WriteElemCache<SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>> cache,
+		PrintStream ps) {
+	String st = cache.get( this );
+	if( st == null )
+	{
+		cache.applyAuxCache( new WriteBigIntegerCache( cache.getCacheVal() ) );
+		final String sta = fac.writeDesc( (WriteElemCache< SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>> , SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>> >)( cache.getInnerCache() ) , ps);
+		st = cache.getIncrementVal();
+		cache.put(this, st);
+		ps.print( AStelemConjugateMomentum.class.getSimpleName() );
+		ps.print( " " );
+		ps.print( st );
+		ps.print( " = new " );
+		ps.print( AStelemConjugateMomentum.class.getSimpleName() );
+		ps.print( "( " );
+		ps.print( sta );
+		ps.println( " );" );
+		for( final Entry<Ordinate,BigInteger> ii : partialMap.entrySet() )
+		{
+			Ordinate key = ii.getKey();
+			BigInteger val = ii.getValue();
+			final String stav = ( (WriteBigIntegerCache)( cache.getAuxCache( WriteBigIntegerCache.class ) ) ).writeDesc( val , ps );
+			final String stak = key.writeDesc( (WriteElemCache)( cache.getInnerCache() ) , ps);
+			ps.print( st );
+			ps.print( ".partialMap.put( " );
+			ps.print( stak );
+			ps.print( " , " );
+			ps.print( stav );
+			ps.println( " );" );
+		}
+		for( final BigInteger ii : index )
+		{
+			final String stav = ( (WriteBigIntegerCache)( cache.getAuxCache( WriteBigIntegerCache.class ) ) ).writeDesc( ii , ps );
+			ps.print( st );
+			ps.print( ".index.add( " );
+			ps.print( stav );
+			ps.println( " );" );
+		}
+	}
+	return( st );
 }
 
 
@@ -3631,12 +3818,28 @@ protected static class VEvalElem extends SymbolicElem<EinsteinTensorElem<String,
 	}
 
 	@Override
-	public void writeString( PrintStream ps ) {
-		for( final SymbolicElem<DoubleElem, DoubleElemFactory> ii : dval.getValueSet() )
+	public String writeDesc(
+			WriteElemCache<SymbolicElem<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>> cache,
+			PrintStream ps) {
+		String st = cache.get( this );
+		if( st == null )
 		{
-			ps.print( "\n" + "** " );
-			ii.writeString( ps );
+			final String sta = fac.writeDesc( (WriteElemCache<EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>,EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>>)( cache.getInnerCache() ) , ps);
+			final String dvals = dval.writeDesc( (WriteElemCache<EinsteinTensorElem<String,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,EinsteinTensorElemFactory<String,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>)( cache.getInnerCache() ) , ps);
+			st = cache.getIncrementVal(); // #####################################
+			cache.put(this, st);
+			ps.print( VEvalElem.class.getSimpleName() );
+			ps.print( " " );
+			ps.print( st );
+			ps.print( " = new " );
+			ps.print( VEvalElem.class.getSimpleName() );
+			ps.print( "( " );
+			ps.print( sta );
+			ps.print( " , " );
+			ps.print( dvals );
+			ps.println( " );" );
 		}
+		return( st );
 	}
 	
 }
@@ -3788,10 +3991,32 @@ public SymbolicElem<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, E
 	return( new VEvalElem( vefac , retA ) );
 }
 
+
 @Override
-public void writeString( PrintStream ps ) {
-	throw( new RuntimeException( "Not Supported" ) );
+public String writeDesc(
+		WriteElemCache<SymbolicElem<SymbolicElem<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>>> cache,
+		PrintStream ps) {
+	String st = cache.get( this );
+	if( st == null )
+	{
+		final String sta = fac.writeDesc( (WriteElemCache<SymbolicElem<EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>,EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>,EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>>>)( cache.getInnerCache() ) , ps);
+		final String dvals = dval.writeDesc( (WriteElemCache<EinsteinTensorElem<String,SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>,EinsteinTensorElemFactory<String,SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>)( cache.getInnerCache() ) , ps);
+		st = cache.getIncrementVal(); // #####################################
+		cache.put(this, st);
+		ps.print( VEvalElem2.class.getSimpleName() );
+		ps.print( " " );
+		ps.print( st );
+		ps.print( " = new " );
+		ps.print( VEvalElem2.class.getSimpleName() );
+		ps.print( "( " );
+		ps.print( sta );
+		ps.print( " , " );
+		ps.print( dvals );
+		ps.println( " );" );
+	}
+	return( st );
 }
+
 
 }
 
@@ -3946,14 +4171,32 @@ public SymbolicElem<SymbolicElem<EinsteinTensorElem<String, DoubleElem, DoubleEl
 	return( new VEvalElem2( fac.getFac() , sefac.getFac() , vefac , retA ) );
 }
 
+
 @Override
-public void writeString( PrintStream ps ) {
-	for( final SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> ii : dval.getValueSet() )
+public String writeDesc(
+		WriteElemCache<SymbolicElem<SymbolicElem<SymbolicElem<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>>>, SymbolicElemFactory<SymbolicElem<SymbolicElem<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>>>> cache,
+		PrintStream ps) {
+	String st = cache.get( this );
+	if( st == null )
 	{
-		ps.print( "\n" + "** " );
-		ii.writeString( ps );
+		final String sta = fac.writeDesc( (WriteElemCache<SymbolicElem<SymbolicElem<EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>,EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>,EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>,EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>,EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>>>>)( cache.getInnerCache() ) , ps);
+		final String dvals = dval.writeDesc( (WriteElemCache<EinsteinTensorElem<String,SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>,EinsteinTensorElemFactory<String,SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>>)( cache.getInnerCache() ) , ps);
+		st = cache.getIncrementVal(); // #####################################
+		cache.put(this, st);
+		ps.print( VEvalElem3.class.getSimpleName() );
+		ps.print( " " );
+		ps.print( st );
+		ps.print( " = new " );
+		ps.print( VEvalElem3.class.getSimpleName() );
+		ps.print( "( " );
+		ps.print( sta );
+		ps.print( " , " );
+		ps.print( dvals );
+		ps.println( " );" );
 	}
+	return( st );
 }
+
 
 
 }
@@ -4056,13 +4299,30 @@ public EinsteinTensorElem<String, SymbolicElem<SymbolicElem<SymbolicElem<DoubleE
 }
 
 @Override
-public void writeString( PrintStream ps ) {
-	for( final SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> ii : dval.getValueSet() )
+public String writeDesc(
+		WriteElemCache<SymbolicElem<EinsteinTensorElem<String, SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>>, EinsteinTensorElemFactory<String, SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>>>, SymbolicElemFactory<EinsteinTensorElem<String, SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>>, EinsteinTensorElemFactory<String, SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>>>> cache,
+		PrintStream ps) {
+	String st = cache.get( this );
+	if( st == null )
 	{
-		ps.print( "\n" + "** " );
-		ii.writeString( ps );
+		final String sta = fac.writeDesc( (WriteElemCache<EinsteinTensorElem<String,SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>,EinsteinTensorElemFactory<String,SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>>)( cache.getInnerCache() ) , ps);
+		final String dvals = dval.writeDesc( (WriteElemCache<EinsteinTensorElem<String,SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>,EinsteinTensorElemFactory<String,SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>>)( cache.getInnerCache() ) , ps);
+		st = cache.getIncrementVal();
+		cache.put(this, st);
+		ps.print( SymbolicMetricTensor.class.getSimpleName() );
+		ps.print( " " );
+		ps.print( st );
+		ps.print( " = new " );
+		ps.print( SymbolicMetricTensor.class.getSimpleName() );
+		ps.print( "( " );
+		ps.print( sta );
+		ps.print( " , " );
+		ps.print( dvals );
+		ps.println( " );" );
 	}
+	return( st );
 }
+
 
 }
 
@@ -4139,13 +4399,30 @@ public EinsteinTensorElem<String, SymbolicElem<SymbolicElem<SymbolicElem<DoubleE
 }
 
 @Override
-public void writeString( PrintStream ps ) {
-	for( final SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> ii : dval.getValueSet() )
+public String writeDesc(
+		WriteElemCache<SymbolicElem<EinsteinTensorElem<String, SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>>, EinsteinTensorElemFactory<String, SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>>>, SymbolicElemFactory<EinsteinTensorElem<String, SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>>, EinsteinTensorElemFactory<String, SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>>>> cache,
+		PrintStream ps) {
+	String st = cache.get( this );
+	if( st == null )
 	{
-		ps.print( "\n" + "** " );
-		ii.writeString( ps );
+		final String sta = fac.writeDesc( (WriteElemCache<EinsteinTensorElem<String,SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>,EinsteinTensorElemFactory<String,SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>>)( cache.getInnerCache() ) , ps);
+		final String dvals = dval.writeDesc( (WriteElemCache<EinsteinTensorElem<String,SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>,EinsteinTensorElemFactory<String,SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>>)( cache.getInnerCache() ) , ps);
+		st = cache.getIncrementVal();
+		cache.put(this, st);
+		ps.print( SymbolicRankTwoTensor.class.getSimpleName() );
+		ps.print( " " );
+		ps.print( st );
+		ps.print( " = new " );
+		ps.print( SymbolicRankTwoTensor.class.getSimpleName() );
+		ps.print( "( " );
+		ps.print( sta );
+		ps.print( " , " );
+		ps.print( dvals );
+		ps.println( " );" );
 	}
+	return( st );
 }
+
 
 }
 
@@ -4220,14 +4497,32 @@ public EinsteinTensorElem<String, SymbolicElem<SymbolicElem<SymbolicElem<DoubleE
 	throw( new RuntimeException( "NotSupported" ) );
 }
 
+
 @Override
-public void writeString( PrintStream ps ) {
-	for( final SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> ii : dval.getValueSet() )
+public String writeDesc(
+		WriteElemCache<SymbolicElem<EinsteinTensorElem<String, SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>>, EinsteinTensorElemFactory<String, SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>>>, SymbolicElemFactory<EinsteinTensorElem<String, SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>>, EinsteinTensorElemFactory<String, SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>>>> cache,
+		PrintStream ps) {
+	String st = cache.get( this );
+	if( st == null )
 	{
-		ps.print( "\n" + "** " );
-		ii.writeString( ps );
+		final String sta = fac.writeDesc( (WriteElemCache<EinsteinTensorElem<String,SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>,EinsteinTensorElemFactory<String,SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>>)( cache.getInnerCache() ) , ps);
+		final String dvals = dval.writeDesc( (WriteElemCache<EinsteinTensorElem<String,SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>,EinsteinTensorElemFactory<String,SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>>)( cache.getInnerCache() ) , ps);
+		st = cache.getIncrementVal();
+		cache.put(this, st);
+		ps.print( SymbolicShiftVector.class.getSimpleName() );
+		ps.print( " " );
+		ps.print( st );
+		ps.print( " = new " );
+		ps.print( SymbolicShiftVector.class.getSimpleName() );
+		ps.print( "( " );
+		ps.print( sta );
+		ps.print( " , " );
+		ps.print( dvals );
+		ps.println( " );" );
 	}
+	return( st );
 }
+
 
 }
 
@@ -4303,14 +4598,32 @@ public EinsteinTensorElem<String, SymbolicElem<SymbolicElem<SymbolicElem<DoubleE
 	throw( new RuntimeException( "NotSupported" ) );
 }
 
+
 @Override
-public void writeString( PrintStream ps ) {
-	for( final SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> ii : dval.getValueSet() )
+public String writeDesc(
+		WriteElemCache<SymbolicElem<EinsteinTensorElem<String, SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>>, EinsteinTensorElemFactory<String, SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>>>, SymbolicElemFactory<EinsteinTensorElem<String, SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>>, EinsteinTensorElemFactory<String, SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>>>> cache,
+		PrintStream ps) {
+	String st = cache.get( this );
+	if( st == null )
 	{
-		ps.print( "\n" + "** " );
-		ii.writeString( ps );
+		final String sta = fac.writeDesc( (WriteElemCache<EinsteinTensorElem<String,SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>,EinsteinTensorElemFactory<String,SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>>)( cache.getInnerCache() ) , ps);
+		final String dvals = dval.writeDesc( (WriteElemCache<EinsteinTensorElem<String,SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>,EinsteinTensorElemFactory<String,SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>>)( cache.getInnerCache() ) , ps);
+		st = cache.getIncrementVal();
+		cache.put(this, st);
+		ps.print( SymbolicLapseScalar.class.getSimpleName() );
+		ps.print( " " );
+		ps.print( st );
+		ps.print( " = new " );
+		ps.print( SymbolicLapseScalar.class.getSimpleName() );
+		ps.print( "( " );
+		ps.print( sta );
+		ps.print( " , " );
+		ps.print( dvals );
+		ps.println( " );" );
 	}
+	return( st );
 }
+
 
 }
 

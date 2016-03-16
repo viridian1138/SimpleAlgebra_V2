@@ -33,6 +33,9 @@ import simplealgebra.ElemFactory;
 import simplealgebra.MutableElem;
 import simplealgebra.Mutator;
 import simplealgebra.NotInvertibleException;
+import simplealgebra.WriteElemCache;
+
+import java.io.PrintStream;
 import java.math.BigInteger;
 
 /**
@@ -175,6 +178,31 @@ public class ValueWithUncertaintyElem<R extends Elem<R,?>, S extends ElemFactory
 		}
 		cache.put(this, this);
 		return( this );
+	}
+	
+	
+	@Override
+	public String writeDesc( WriteElemCache<ValueWithUncertaintyElem<R,S>,ValueWithUncertaintyElemFactory<R,S>> cache , PrintStream ps )
+	{
+		String st = cache.get( this );
+		if( st == null )
+		{
+			final String vals = value.writeDesc( (WriteElemCache)( cache.getInnerCache() ) , ps);
+			final String unss = uncertainty.writeDesc( (WriteElemCache)( cache.getInnerCache() ) , ps);
+			st = cache.getIncrementVal();
+			cache.put(this, st);
+			this.getFac().writeElemTypeString( ps );
+			ps.print( " " );
+			ps.print( st );
+			ps.print( " = new " );
+			this.getFac().writeElemTypeString( ps );
+			ps.print( "( " );
+			ps.print( vals );
+			ps.print( " , " );
+			ps.print( unss );
+			ps.println( " );" );
+		}
+		return( st );
 	}
 	
 

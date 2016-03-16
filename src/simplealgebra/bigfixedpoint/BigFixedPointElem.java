@@ -27,15 +27,20 @@
 
 package simplealgebra.bigfixedpoint;
 
+import java.io.PrintStream;
 import java.math.BigDecimal;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
 import simplealgebra.AbsoluteValue;
+import simplealgebra.AbstractCache;
 import simplealgebra.CloneThreadCache;
 import simplealgebra.Elem;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.Sqrt;
+import simplealgebra.WriteElemCache;
+import simplealgebra.WriteBigIntegerCache;
+import simplealgebra.WriteNumDimensionsCache;
 
 /**
  * A fixed-point elem.
@@ -155,6 +160,33 @@ public class BigFixedPointElem<T extends Precision<T>> extends Elem<BigFixedPoin
 		}
 		cache.put(this, this);
 		return( this );
+	}
+	
+	
+	@Override
+	public String writeDesc( WriteElemCache<BigFixedPointElem<T>,BigFixedPointElemFactory<T>> cache , PrintStream ps )
+	{
+		String st = cache.get( this );
+		if( st == null )
+		{
+			cache.applyAuxCache( new WriteNumDimensionsCache( cache.getCacheVal() ) );
+			cache.applyAuxCache( new WritePrecisionCache<T>( cache.getCacheVal() ) );
+			final String sta = prec.writeDesc( (WritePrecisionCache<T>)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) WritePrecisionCache.class ) ) , ps);
+			String stai = ( (WriteBigIntegerCache)( cache.getAuxCache( WriteBigIntegerCache.class ) ) ).writeDesc( val , ps );
+			st = cache.getIncrementVal();
+			cache.put(this, st);
+			this.getFac().writeElemTypeString( ps );
+			ps.print( " " );
+			ps.print( st );
+			ps.print( " = new " );
+			this.getFac().writeElemTypeString( ps );
+			ps.print( "( " );
+			ps.print( stai );
+			ps.print( " , " );
+			ps.print( sta );
+			ps.println( " );" );
+		}
+		return( st );
 	}
 	
 	

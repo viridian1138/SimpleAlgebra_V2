@@ -188,14 +188,48 @@ public class SymbolicMultRevCoeff<U extends NumDimensions, R extends Elem<R,?>, 
 	}
 
 	
+	
 	@Override
-	public void writeString( PrintStream ps ) {
-		ps.print( "multRevCoeff( " );
-		elemA.writeString( ps );
-		ps.print( " , " );
-		elemB.writeString( ps );
-		ps.print( " )" );
+	public String writeDesc( WriteElemCache<SymbolicElem<SquareMatrixElem<U,R,S>,SquareMatrixElemFactory<U,R,S>>,SymbolicElemFactory<SquareMatrixElem<U,R,S>,SquareMatrixElemFactory<U,R,S>>> cache , PrintStream ps )
+	{
+		String st = cache.get( this );
+		if( st == null )
+		{
+			final String elemAs = elemA.writeDesc( cache , ps);
+			final String elemBs = elemB.writeDesc( cache , ps);
+			final String facs = fac.writeDesc( (WriteElemCache)( cache.getInnerCache() ) , ps);
+			st = cache.getIncrementVal();
+			cache.put(this, st);
+			ps.print( SymbolicMultRevCoeff.class.getSimpleName() );
+			ps.print( "<" );
+			this.getFac().getFac().getDim().writeTypeString(ps);
+			ps.print( "," );
+			this.getFac().getFac().getFac().writeElemTypeString(ps);
+			ps.print( "," );
+			this.getFac().getFac().getFac().writeElemFactoryTypeString(ps);
+			ps.print( ">" );
+			ps.print( " " );
+			ps.print( st );
+			ps.print( " = new " );
+			ps.print( SymbolicMultRevCoeff.class.getSimpleName() );
+			ps.print( "<" );
+			this.getFac().getFac().getDim().writeTypeString(ps);
+			ps.print( "," );
+			this.getFac().getFac().getFac().writeElemTypeString(ps);
+			ps.print( "," );
+			this.getFac().getFac().getFac().writeElemFactoryTypeString(ps);
+			ps.print( ">" );
+			ps.print( "( " );
+			ps.print( elemAs );
+			ps.print( " , " );
+			ps.print( elemBs );
+			ps.print( " , " );
+			ps.print( facs );
+			ps.println( " );" );
+		}
+		return( st );
 	}
+	
 	
 	
 	@Override

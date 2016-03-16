@@ -31,17 +31,23 @@ import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import simplealgebra.AbstractCache;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.NumDimensions;
+import simplealgebra.WriteBigIntegerCache;
+import simplealgebra.WriteElemCache;
+import simplealgebra.WriteNumDimensionsCache;
 import simplealgebra.ga.GeometricAlgebraMultivectorElem;
 import simplealgebra.ga.GeometricAlgebraMultivectorElemFactory;
 import simplealgebra.ga.Ord;
+import simplealgebra.ga.WriteOrdCache;
 import simplealgebra.symbolic.DroolsSession;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.PrecedenceComparator;
 import simplealgebra.symbolic.SCacheKey;
+import simplealgebra.symbolic.SymbolicDivideBy;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 
@@ -243,10 +249,6 @@ public class DirectionalDerivative<U extends NumDimensions, A extends Ord<U>, R 
 	
 	
 
-	@Override
-	public void writeString( PrintStream ps ) {
-		ps.print( "directionalDerivative" );
-	}
 	
 	
 	@Override
@@ -262,6 +264,65 @@ public class DirectionalDerivative<U extends NumDimensions, A extends Ord<U>, R 
 		}
 		return( this );
 	}
+	
+	
+	
+	@Override
+	public String writeDesc(
+			WriteElemCache<SymbolicElem<GeometricAlgebraMultivectorElem<U, A, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, GeometricAlgebraMultivectorElemFactory<U, A, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>, SymbolicElemFactory<GeometricAlgebraMultivectorElem<U, A, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, GeometricAlgebraMultivectorElemFactory<U, A, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>> cache,
+			PrintStream ps) {
+		String st = cache.get( this );
+		if( st == null )
+		{
+			cache.applyAuxCache( new WriteDirectionalDerivativePartialFactoryCache( cache.getCacheVal() ) );
+			cache.applyAuxCache( new WriteNumDimensionsCache( cache.getCacheVal() ) );
+			cache.applyAuxCache( new WriteOrdCache<U>( cache.getCacheVal() ) );
+			final String facs = fac.writeDesc( (WriteElemCache)( cache.getInnerCache() ) , ps);
+			final String staiF = dfac.writeDesc( ( (WriteDirectionalDerivativePartialFactoryCache)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) WriteDirectionalDerivativePartialFactoryCache.class ) ) ) , ps);
+			final String staDim = dim.writeDesc( (WriteNumDimensionsCache)( cache.getAuxCache( WriteNumDimensionsCache.class ) ) , ps);
+			final String staOrd = ord.writeDesc( (WriteOrdCache<U>)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) WriteOrdCache.class ) ) , dim, ps);
+			st = cache.getIncrementVal();
+			cache.put(this, st);
+			ps.print( DirectionalDerivative.class.getSimpleName() );
+			ps.print( "<" );
+			dim.writeTypeString(ps);
+			ps.print( "," );
+			ord.writeTypeString(dim,ps);
+			ps.print( "," );
+			fac.writeElemTypeString(ps);
+			ps.print( "," );
+			fac.writeElemFactoryTypeString(ps);
+			ps.print( "," );
+			ps.print( "? extends Object" );
+			ps.print( ">" );
+			ps.print( " " );
+			ps.print( st );
+			ps.print( " = new " );
+			ps.print( DirectionalDerivative.class.getSimpleName() );
+			ps.print( "<" );
+			dim.writeTypeString(ps);
+			ps.print( "," );
+			ord.writeTypeString(dim,ps);
+			ps.print( "," );
+			fac.writeElemTypeString(ps);
+			ps.print( "," );
+			fac.writeElemFactoryTypeString(ps);
+			ps.print( "," );
+			ps.print( "? extends Object" );
+			ps.print( ">" );
+			ps.print( "( " );
+			ps.print( facs );
+			ps.print( " , " );
+			ps.print( staDim );
+			ps.print( " , " );
+			ps.print( staOrd );
+			ps.print( " , " );
+			ps.print( staiF );
+			ps.println( " );" );
+		}
+		return( st );
+	}
+	
 	
 	
 	@Override
@@ -314,6 +375,8 @@ public class DirectionalDerivative<U extends NumDimensions, A extends Ord<U>, R 
 	 * Factory for generating the partial derivatives of the directional derivative.
 	 */
 	private DirectionalDerivativePartialFactory<R,S,K> dfac;
+
+	
 
 }
 

@@ -26,11 +26,13 @@
 
 package simplealgebra.symbolic;
 
+import java.io.PrintStream;
 import java.math.BigInteger;
 
 import simplealgebra.CloneThreadCache;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
+import simplealgebra.WriteElemCache;
 
 /**
  * Factory for symbolic elems.
@@ -120,6 +122,57 @@ public class SymbolicElemFactory<R extends Elem<R,?>, S extends ElemFactory<R,S>
 		}
 		cache.putFac(this, this);
 		return( this );
+	}
+	
+	
+	@Override
+	public String writeDesc( WriteElemCache<SymbolicElem<R,S>,SymbolicElemFactory<R,S>> cache , PrintStream ps )
+	{
+		String st = cache.getFac( this );
+		if( st == null )
+		{
+			final String sta = fac.writeDesc( (WriteElemCache<R,S>)( cache.getInnerCache() ) , ps);
+			st = cache.getIncrementVal();
+			cache.putFac(this, st);
+			writeElemFactoryTypeString( ps );
+			ps.print( " " );
+			ps.print( st );
+			ps.print( " = new " );
+			writeElemFactoryTypeString( ps );
+			ps.print( "( " );
+			ps.print( sta );
+			ps.println( " );" );
+		}
+		return( st );
+	}
+	
+	@Override
+	public void writeElemTypeString( PrintStream ps )
+	{
+		ps.print( SymbolicElem.class.getSimpleName() );
+		writeOrdinaryEnclosedType( ps );
+	}
+	
+	
+	@Override
+	public void writeElemFactoryTypeString( PrintStream ps )
+	{
+		ps.print( SymbolicElemFactory.class.getSimpleName() );
+		writeOrdinaryEnclosedType( ps );
+	}
+	
+	/**
+	 * Writes the enclosed type of an ordinary symbolic elem.
+	 * 
+	 * @param ps The stream to which to write the enclosed type.
+	 */
+	public void writeOrdinaryEnclosedType( PrintStream ps )
+	{
+		ps.print( "<" );
+		fac.writeElemTypeString(ps);
+		ps.print( "," );
+		fac.writeElemFactoryTypeString(ps);
+		ps.print( ">" );
 	}
 	
 	
