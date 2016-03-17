@@ -283,11 +283,14 @@ public class TestWriteDesc extends TestCase
 		final SymbolicElemFactory<DoubleElem,DoubleElemFactory> ye = 
 				new SymbolicElemFactory<DoubleElem,DoubleElemFactory>(dl);
 		
+		String aa = null;
+		
 		
 		System.out.println( "***" );
 		
-		ye.writeDesc( ye.generateWriteElemCache() , System.out );
+		aa = ye.writeDesc( ye.generateWriteElemCache() , System.out );
 		
+		System.out.println( "### " + aa );
 		
 		System.out.println( "***" );
 		
@@ -295,8 +298,9 @@ public class TestWriteDesc extends TestCase
 		final DoubleElem d = new DoubleElem( 1.2345 );
 		
 		
-		d.writeDesc( d.getFac().generateWriteElemCache() , System.out );
+		aa = d.writeDesc( d.getFac().generateWriteElemCache() , System.out );
 
+		System.out.println( "### " + aa );
 		
 		System.out.println( "***" );
 		
@@ -304,8 +308,9 @@ public class TestWriteDesc extends TestCase
 		final DoubleElemFactory de = new DoubleElemFactory();
 		
 		
-		de.writeDesc( de.generateWriteElemCache() , System.out );
+		aa = de.writeDesc( de.generateWriteElemCache() , System.out );
 
+		System.out.println( "### " + aa );
 		
 		System.out.println( "***" );
 		
@@ -313,8 +318,9 @@ public class TestWriteDesc extends TestCase
 		final ComplexElemFactory<DoubleElem,DoubleElemFactory> ce = new ComplexElemFactory<DoubleElem,DoubleElemFactory>( de );
 		
 		
-		ce.writeDesc( ce.generateWriteElemCache() , System.out );
+		aa = ce.writeDesc( ce.generateWriteElemCache() , System.out );
 
+		System.out.println( "### " + aa );
 		
 		System.out.println( "***" );
 		
@@ -322,8 +328,9 @@ public class TestWriteDesc extends TestCase
 		final ComplexElem<DoubleElem,DoubleElemFactory> cd = new ComplexElem<DoubleElem,DoubleElemFactory>( new DoubleElem( -2.3 ) , new DoubleElem( -4.6 ) );
 		
 		
-		cd.writeDesc( cd.getFac().generateWriteElemCache() , System.out );
+		aa = cd.writeDesc( cd.getFac().generateWriteElemCache() , System.out );
 
+		System.out.println( "### " + aa );
 		
 		System.out.println( "***" );
 		
@@ -331,8 +338,9 @@ public class TestWriteDesc extends TestCase
 		final ComplexElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> ce2 = new ComplexElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>( ce );
 		
 		
-		ce2.writeDesc( ce2.generateWriteElemCache() , System.out );
+		aa = ce2.writeDesc( ce2.generateWriteElemCache() , System.out );
 		
+		System.out.println( "### " + aa );
 		
 		System.out.println( "***" );
 		
@@ -343,8 +351,9 @@ public class TestWriteDesc extends TestCase
 		final ComplexElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> cd2a =
 				new ComplexElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>( cd , cd2 );
 		
-		cd2a.writeDesc( cd2a.getFac().generateWriteElemCache() , System.out );
+		aa = cd2a.writeDesc( cd2a.getFac().generateWriteElemCache() , System.out );
 		
+		System.out.println( "### " + aa );
 		
 		System.out.println( "***" );
 		
@@ -352,8 +361,9 @@ public class TestWriteDesc extends TestCase
 		final ValueWithUncertaintyElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> ve2 = new ValueWithUncertaintyElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>( ce );
 		
 		
-		ve2.writeDesc( ve2.generateWriteElemCache() , System.out );
+		aa = ve2.writeDesc( ve2.generateWriteElemCache() , System.out );
 		
+		System.out.println( "### " + aa );
 		
 		System.out.println( "***" );
 		
@@ -361,8 +371,9 @@ public class TestWriteDesc extends TestCase
 		final ValueWithUncertaintyElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> cv2a =
 				new ValueWithUncertaintyElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>( cd , cd2 );
 		
-		cv2a.writeDesc( cv2a.getFac().generateWriteElemCache() , System.out );
+		aa = cv2a.writeDesc( cv2a.getFac().generateWriteElemCache() , System.out );
 		
+		System.out.println( "### " + aa );
 		
 		System.out.println( "***" );
 		
@@ -370,8 +381,9 @@ public class TestWriteDesc extends TestCase
 		final SquareMatrixElemFactory<TestDimensionFour,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> sqe2 = new SquareMatrixElemFactory<TestDimensionFour,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>( ce , td );
 		
 		
-		sqe2.writeDesc( sqe2.generateWriteElemCache() , System.out );
+		aa = sqe2.writeDesc( sqe2.generateWriteElemCache() , System.out );
 		
+		System.out.println( "### " + aa );
 		
 		System.out.println( "***" );
 		
@@ -383,8 +395,9 @@ public class TestWriteDesc extends TestCase
 		
 		sq2a.setVal( BigInteger.valueOf( 5 ) , BigInteger.valueOf( 6 ) , cd2 );
 		
-		sq2a.writeDesc( sq2a.getFac().generateWriteElemCache() , System.out );
+		aa = sq2a.writeDesc( sq2a.getFac().generateWriteElemCache() , System.out );
 		
+		System.out.println( "### " + aa );
 		
 		System.out.println( "***" );
 		
@@ -394,8 +407,9 @@ public class TestWriteDesc extends TestCase
 		final GeometricAlgebraMultivectorElemFactory<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 			ge = new GeometricAlgebraMultivectorElemFactory<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>(ce, td, ord);
 		
-		ge.writeDesc( ge.generateWriteElemCache() , System.out );
+		aa = ge.writeDesc( ge.generateWriteElemCache() , System.out );
 		
+		System.out.println( "### " + aa );
 		
 		System.out.println( "***" );
 		
@@ -417,16 +431,18 @@ public class TestWriteDesc extends TestCase
 			ge2.setVal( ind , cd2 );
 		}
 		
-		ge2.writeDesc( ge2.getFac().generateWriteElemCache() , System.out );
+		aa = ge2.writeDesc( ge2.getFac().generateWriteElemCache() , System.out );
 	
+		System.out.println( "### " + aa );
 	
 		System.out.println( "***" );
 		
 		final EinsteinTensorElemFactory<String,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 			ee = new EinsteinTensorElemFactory<String,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>(ce);
 		
-		ee.writeDesc( ee.generateWriteElemCache() , System.out );
+		aa = ee.writeDesc( ee.generateWriteElemCache() , System.out );
 		
+		System.out.println( "### " + aa );
 		
 		System.out.println( "***" );
 		
@@ -457,8 +473,9 @@ public class TestWriteDesc extends TestCase
 		}
 		
 		
-		ed.writeDesc( ed.getFac().generateWriteElemCache() , System.out );
+		aa = ed.writeDesc( ed.getFac().generateWriteElemCache() , System.out );
 		
+		System.out.println( "### " + aa );
 		
 		System.out.println( "***" );
 		
@@ -513,7 +530,9 @@ public class TestWriteDesc extends TestCase
 			ga3 = ga1.handleOptionalOp( GeometricAlgebraMultivectorCmd.CROSS , args );
 		
 		
-		ga3.writeDesc( ga3.getFac().generateWriteElemCache() , System.out );
+		String aa = ga3.writeDesc( ga3.getFac().generateWriteElemCache() , System.out );
+		
+		System.out.println( "### " + aa );
 		
 		
 	}

@@ -24,8 +24,11 @@
 
 package simplealgebra.symbolic;
 
+import java.io.PrintStream;
+
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
+import simplealgebra.WriteElemCache;
 
 
 /**
@@ -68,6 +71,33 @@ public class Reng<R extends Elem<R,?>, S extends ElemFactory<R,S>> {
 	 */
 	public SymbolicElem<R, S> getEnd() {
 		return end;
+	}
+	
+	/**
+	 * Writes the Reng to a PrintStream.
+	 * 
+	 * @param ps The print stream.
+	 * @return String corresponding to the Reng.
+	 */
+	public String writeDesc( PrintStream ps )
+	{
+		final WriteElemCache<SymbolicElem<R, S>, SymbolicElemFactory<R, S>> cache = getStrt().getFac().generateWriteElemCache();
+		final String a1 = getStrt().writeDesc( cache , ps );
+		final String a2 = getEnd().writeDesc( cache , ps );
+		final String a3 = cache.getIncrementVal();
+		ps.print( Reng.class.getSimpleName() );
+		getStrt().getFac().writeOrdinaryEnclosedType(ps);
+		ps.print( " " );
+		ps.print( a3 );
+		ps.print( " = new " );
+		ps.print( Reng.class.getSimpleName() );
+		getStrt().getFac().writeOrdinaryEnclosedType(ps);
+		ps.print( "( " );
+		ps.print( a1 );
+		ps.print( " , " );
+		ps.print( a2 );
+		ps.println( " );" );
+		return( a3 );
 	}
 	
 	/**

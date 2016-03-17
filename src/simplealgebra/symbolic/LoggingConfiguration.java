@@ -66,17 +66,14 @@ public class LoggingConfiguration {
 		
 		if( obj instanceof Elem )
 		{
-			((Elem) obj).writeDesc( ((Elem) obj).getFac().generateWriteElemCache() , System.out );
+			final String aa = ((Elem) obj).writeDesc( ((Elem) obj).getFac().generateWriteElemCache() , System.out );
+			System.out.println( "### " + aa );
 		}
 		
 		if( obj instanceof Reng )
 		{
-			WriteElemCache cache = ((Reng) obj).getStrt().getFac().generateWriteElemCache();
-			System.out.println( "*** Start Reng..." );
-			((Reng) obj).getStrt().writeDesc( cache , System.out );
-			System.out.println( "-->" );
-			((Reng) obj).getEnd().writeDesc( cache , System.out );
-			System.out.println( "*** End Reng..." );
+			final String aa  = ((Reng) obj).writeDesc( System.out );
+			System.out.println( "### " + aa );
 		}
 		
 		System.out.println( "------------" );
