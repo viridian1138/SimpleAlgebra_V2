@@ -34,6 +34,7 @@ import java.util.Map.Entry;
 
 import simplealgebra.et.EinsteinTensorElem;
 import simplealgebra.ga.GeometricAlgebraMultivectorElem;
+import simplealgebra.symbolic.PrecedenceComparator;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicIdentity;
 import simplealgebra.symbolic.SymbolicZero;
@@ -1879,6 +1880,47 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 			}
 		}
 		return( st );
+	}
+	
+	
+	
+	
+	@Override
+	public void writeMathML( PrecedenceComparator pc , PrintStream ps )
+	{
+		ps.print( "<mfenced open=\"[\" close=\"]\"><mtable>" );
+		
+		final BigInteger max = dim.getVal();
+		for( BigInteger row = BigInteger.ZERO ; row.compareTo(max) < 0 ; row = row.add( BigInteger.ONE ) )
+		{
+			ps.print( "<mtr>" );
+			
+			for( BigInteger col = BigInteger.ZERO ; col.compareTo(max) < 0 ; col = col.add( BigInteger.ONE ) )
+			{
+				final R el = this.get(row, col);
+				
+				if( ( el == null ) || ( el instanceof SymbolicZero ) )
+				{
+					/*
+					 * There doesn't seem to be an invisible zero in MathML,
+					 * so the invisible separator (code 2063) is
+					 * used here instead.
+					 */
+					ps.print( "<mtd><mo>&#x2063;</mo></mtd>" );
+				}
+				else
+				{
+					ps.print( "<mtd>" );
+					el.writeMathML(pc, ps);
+					ps.print( "</mtd>" );
+				}
+				
+			}
+			
+			ps.print( "</mtr>" );
+		}
+		
+		ps.print( "</mtable></mfenced>" );
 	}
 	
 	

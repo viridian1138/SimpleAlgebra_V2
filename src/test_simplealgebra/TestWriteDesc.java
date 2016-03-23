@@ -722,15 +722,22 @@ public class TestWriteDesc extends TestCase
 		final SquareMatrixElem<TestDimensionFour,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> sq2a =
 				new SquareMatrixElem<TestDimensionFour,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>(ce, td );
 		
-		sq2a.setVal( BigInteger.valueOf( 4 ) , BigInteger.valueOf( 5 ) , cd );
+		sq2a.setVal( BigInteger.valueOf( 1 ) , BigInteger.valueOf( 2 ) , cd );
 		
-		sq2a.setVal( BigInteger.valueOf( 5 ) , BigInteger.valueOf( 6 ) , cd2 );
+		sq2a.setVal( BigInteger.valueOf( 2 ) , BigInteger.valueOf( 3 ) , cd2 );
 		
 		aa = sq2a.writeDesc( sq2a.getFac().generateWriteElemCache() , System.out );
 		
 		System.out.println( "### " + aa );
 		
 		System.out.println( "***" );
+		
+		sq2a.writeMathMLWrapped( dp , System.out );
+		
+		System.out.println( "" );
+		
+		System.out.println( "***" );
+		
 		
 		
 		final GeometricAlgebraOrd<TestDimensionFour> ord = new GeometricAlgebraOrd<TestDimensionFour>( );

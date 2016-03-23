@@ -11,6 +11,7 @@ import simplealgebra.meas.ValueWithUncertaintyElem;
 import simplealgebra.symbolic.*;
 import simplealgebra.ComplexElem;
 import simplealgebra.DoubleElem;
+import simplealgebra.SquareMatrixElem;
 import simplealgebra.SymbolicConjugateLeft;
 import simplealgebra.SymbolicConjugateRight;
 import simplealgebra.SymbolicInvertLeftRevCoeff;
@@ -552,6 +553,7 @@ public class DefaultPrecedenceComparator extends PrecedenceComparator {
 		enclosedOrTerminalSymbolsA.add( SymbolicDivideBy.class );
 		enclosedOrTerminalSymbolsA.add( OrdinaryDerivative.class );
 		enclosedOrTerminalSymbolsA.add( CovariantDerivative.class );
+		enclosedOrTerminalSymbolsA.add( SquareMatrixElem.class );
 	}
 	
 	
@@ -570,6 +572,7 @@ public class DefaultPrecedenceComparator extends PrecedenceComparator {
 		enclosedOrTerminalSymbolsB.add( SymbolicDivideBy.class );
 		enclosedOrTerminalSymbolsB.add( OrdinaryDerivative.class );
 		enclosedOrTerminalSymbolsB.add( CovariantDerivative.class );
+		enclosedOrTerminalSymbolsB.add( SquareMatrixElem.class );
 	}
 	
 	
