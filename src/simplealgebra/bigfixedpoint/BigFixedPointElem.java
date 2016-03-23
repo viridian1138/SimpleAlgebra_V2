@@ -40,7 +40,6 @@ import simplealgebra.NotInvertibleException;
 import simplealgebra.Sqrt;
 import simplealgebra.WriteElemCache;
 import simplealgebra.WriteBigIntegerCache;
-import simplealgebra.WriteNumDimensionsCache;
 import simplealgebra.symbolic.PrecedenceComparator;
 
 /**
@@ -234,7 +233,7 @@ public class BigFixedPointElem<T extends Precision<T>> extends Elem<BigFixedPoin
 		String st = cache.get( this );
 		if( st == null )
 		{
-			cache.applyAuxCache( new WriteNumDimensionsCache( cache.getCacheVal() ) );
+			cache.applyAuxCache( new WriteBigIntegerCache( cache.getCacheVal() ) );
 			cache.applyAuxCache( new WritePrecisionCache<T>( cache.getCacheVal() ) );
 			final String sta = prec.writeDesc( (WritePrecisionCache<T>)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) WritePrecisionCache.class ) ) , ps);
 			String stai = ( (WriteBigIntegerCache)( cache.getAuxCache( WriteBigIntegerCache.class ) ) ).writeDesc( val , ps );

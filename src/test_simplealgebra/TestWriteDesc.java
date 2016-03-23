@@ -50,6 +50,9 @@ import simplealgebra.SquareMatrixElem;
 import simplealgebra.SquareMatrixElemFactory;
 import simplealgebra.WriteBigIntegerCache;
 import simplealgebra.WriteElemCache;
+import simplealgebra.bigfixedpoint.BigFixedPointElem;
+import simplealgebra.bigfixedpoint.BigFixedPointElemFactory;
+import simplealgebra.bigfixedpoint.Precision;
 import simplealgebra.et.EinsteinTensorElem;
 import simplealgebra.et.EinsteinTensorElemFactory;
 import simplealgebra.ga.GeometricAlgebraMultivectorElem;
@@ -60,12 +63,14 @@ import simplealgebra.meas.ValueWithUncertaintyElem;
 import simplealgebra.meas.ValueWithUncertaintyElemFactory;
 import simplealgebra.prec.DefaultPrecedenceComparator;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
+import simplealgebra.symbolic.PrecedenceComparator;
 import simplealgebra.symbolic.SCacheKey;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicIdentity;
 import simplealgebra.symbolic.SymbolicOps;
 import simplealgebra.symbolic.SymbolicSqrt;
+import test_simplealgebra.TestMandelbrotSet.LrgPrecision;
 
 
 
@@ -81,6 +86,125 @@ import simplealgebra.symbolic.SymbolicSqrt;
 public class TestWriteDesc extends TestCase 
 {
 
+	
+	/**
+	 * Constant containing the number ten.
+	 */
+	static final BigInteger TEN = BigInteger.valueOf( 10 );
+	
+	
+	/**
+	 * Returns the number <math display="inline">
+     * <mrow>
+     *   <msup>
+     *           <mn>10</mn>
+     *       <mrow>
+     *         <mi>X</mi>
+     *         <mo>+</mo>
+     *         <mn>1</mn>
+     *       </mrow>
+     *   </msup>
+     * </mrow>
+     * </math>, where X is the input parameter.
+	 * 
+	 * @param cnt The input parameter.
+	 * @return The value <math display="inline">
+     * <mrow>
+     *   <msup>
+     *           <mn>10</mn>
+     *       <mrow>
+     *         <mi>X</mi>
+     *         <mo>+</mo>
+     *         <mn>1</mn>
+     *       </mrow>
+     *   </msup>
+     * </mrow>
+     * </math>.
+	 */
+	protected static BigInteger calcVal( final int cnt )
+	{
+		BigInteger ret = TEN;
+		for( int i = 0 ; i < cnt ; i++ )
+		{
+			ret = ret.multiply( TEN );
+		}
+		return( ret );
+	}
+	
+
+	
+	/**
+	 * Constant containing the value <math display="inline">
+     * <mrow>
+     *   <msup>
+     *           <mn>10</mn>
+     *         <mn>801</mn>
+     *   </msup>
+     * </mrow>
+     * </math>.
+	 * 
+	 * Largest possible double is around <math display="inline">
+     * <mrow>
+     *   <msup>
+     *           <mn>10</mn>
+     *         <mn>308</mn>
+     *   </msup>
+     * </mrow>
+     * </math>.
+	 */
+	static final BigInteger baseVal = calcVal( 800 );
+	
+	
+	/**
+	 * Constant containing the square of baseVal, or <math display="inline">
+     * <mrow>
+     *   <msup>
+     *           <mn>10</mn>
+     *         <mn>1602</mn>
+     *   </msup>
+     * </mrow>
+     * </math>.
+	 */
+	protected static final BigInteger finalBaseValSq = baseVal.multiply( baseVal );
+	
+	
+	/**
+	 * Defines a precision of baseVal, or one part in <math display="inline">
+     * <mrow>
+     *   <msup>
+     *           <mn>10</mn>
+     *         <mn>801</mn>
+     *   </msup>
+     * </mrow>
+     * </math>.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
+	protected static final class LrgPrecision extends Precision<LrgPrecision>
+	{
+		@Override
+		public BigInteger getVal()
+		{
+			return( baseVal );
+		}
+		
+		@Override
+		public BigInteger getValSquared()
+		{
+			return( finalBaseValSq );
+		}
+		
+	}
+	
+	
+	/**
+	 * A constant defining the large precision.
+	 */
+	static final LrgPrecision lrgPrecision = new LrgPrecision();
+	
+	
+	
 	
 	/**
 	 * A component of the "A" vector.
@@ -160,6 +284,12 @@ public class TestWriteDesc extends TestCase
 				ps.println( " );" );
 			}
 			return( st );
+		}
+		
+		@Override
+		public void writeMathML( PrecedenceComparator pc , PrintStream ps )
+		{
+			ps.print( "<mrow><msub><mi>a</mi><mn>" + col + "</mn></msub></mrow>" );
 		}
 		
 		/**
@@ -257,6 +387,12 @@ public class TestWriteDesc extends TestCase
 			return( st );
 		}
 		
+		@Override
+		public void writeMathML( PrecedenceComparator pc , PrintStream ps )
+		{
+			ps.print( "<mrow><msub><mi>b</mi><mn>" + col + "</mn></msub></mrow>" );
+		}
+		
 		/**
 		 * Returns the vector ordinate index.
 		 * 
@@ -270,6 +406,37 @@ public class TestWriteDesc extends TestCase
 	
 	
 	
+	
+	/**
+	 * Provides precedence comparison rules for the test.  Used when generating MathML.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
+	private static class PrecCompare extends DefaultPrecedenceComparator
+	{
+		
+		@Override
+		protected void enclosedOrTerminalSymbolsAInit()
+		{
+			defaultEnclosedOrTerminalSymbolsAInit();
+		}
+		
+		
+		
+		@Override
+		protected void enclosedOrTerminalSymbolsBInit()
+		{
+			defaultEnclosedOrTerminalSymbolsBInit();
+			enclosedOrTerminalSymbolsB.add( AElem.class );
+			enclosedOrTerminalSymbolsB.add( BElem.class );
+		}
+		
+	}
+	
+	
+	
+	
 	/**
 	 * Tests the writing of elems to a PrintStream.
 	 * 
@@ -277,7 +444,7 @@ public class TestWriteDesc extends TestCase
 	 */
 	public void testWriteDesc() throws NotInvertibleException
 	{
-		final DefaultPrecedenceComparator dp = new DefaultPrecedenceComparator();
+		final DefaultPrecedenceComparator dp = new PrecCompare();
 		
 		final TestDimensionFour td = new TestDimensionFour();
 		
@@ -310,6 +477,13 @@ public class TestWriteDesc extends TestCase
 		System.out.println( "***" );
 		
 		
+		d.writeMathMLWrapped( dp , System.out );
+		
+		System.out.println( "" );
+		
+		System.out.println( "***" );
+		
+		
 		final DoubleElemFactory de = new DoubleElemFactory();
 		
 		
@@ -318,6 +492,71 @@ public class TestWriteDesc extends TestCase
 		System.out.println( "### " + aa );
 		
 		System.out.println( "***" );
+		
+		
+		
+		
+		final BigFixedPointElemFactory<LrgPrecision> dlf = new BigFixedPointElemFactory<LrgPrecision>( lrgPrecision );
+		
+		
+		aa = dlf.writeDesc( dlf.generateWriteElemCache() , System.out );
+
+		System.out.println( "### " + aa );
+		
+		System.out.println( "***" );
+		
+		
+		
+		
+		final BigFixedPointElem<LrgPrecision> ddlf = new BigFixedPointElem<LrgPrecision>( BigInteger.valueOf( 1 ) , lrgPrecision);
+		
+		aa = ddlf.writeDesc( ddlf.getFac().generateWriteElemCache() , System.out );
+		
+		System.out.println( "### " + aa );
+		
+		System.out.println( "***" );
+		
+		ddlf.writeMathMLWrapped( dp , System.out );
+		
+		System.out.println( "" );
+		
+		System.out.println( "***" );
+		
+		
+		
+		
+		final AElem a1 = new AElem( de , 1 );
+		
+		aa = a1.writeDesc( a1.getFac().generateWriteElemCache() , System.out );
+		
+		System.out.println( "### " + aa );
+		
+		System.out.println( "***" );
+		
+		a1.writeMathMLWrapped( dp , System.out );
+		
+		System.out.println( "" );
+		
+		System.out.println( "***" );
+		
+		
+		
+		
+		final BElem b2 = new BElem( de , 2 );
+		
+		aa = b2.writeDesc( b2.getFac().generateWriteElemCache() , System.out );
+		
+		System.out.println( "### " + aa );
+		
+		System.out.println( "***" );
+		
+		b2.writeMathMLWrapped( dp , System.out );
+		
+		System.out.println( "" );
+		
+		System.out.println( "***" );
+		
+		
 		
 		
 		final ComplexElemFactory<DoubleElem,DoubleElemFactory> ce = new ComplexElemFactory<DoubleElem,DoubleElemFactory>( de );
@@ -342,7 +581,70 @@ public class TestWriteDesc extends TestCase
 		
 		cd.writeMathMLWrapped( dp , System.out );
 		
+		System.out.println( "" );
+		
 		System.out.println( "***" );
+		
+		
+		
+		final ComplexElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> cse2 = new ComplexElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>( ye );
+		
+		
+		aa = cse2.writeDesc( cse2.generateWriteElemCache() , System.out );
+		
+		System.out.println( "### " + aa );
+		
+		System.out.println( "***" );
+		
+		
+		
+		final ComplexElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> csd2 = new ComplexElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>( a1 , b2 );
+		
+		aa = csd2.writeDesc( csd2.getFac().generateWriteElemCache() , System.out );
+
+		System.out.println( "### " + aa );
+		
+		System.out.println( "***" );
+		
+		
+		csd2.writeMathMLWrapped( dp , System.out );
+		
+		System.out.println( "" );
+		
+		System.out.println( "***" );
+		
+		
+		
+		
+		
+		final ValueWithUncertaintyElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> csv2 = new ValueWithUncertaintyElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>( ye );
+		
+		
+		aa = csv2.writeDesc( csv2.generateWriteElemCache() , System.out );
+		
+		System.out.println( "### " + aa );
+		
+		System.out.println( "***" );
+		
+		
+		
+		final ValueWithUncertaintyElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> cssv2 = new ValueWithUncertaintyElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>( a1 , b2 );
+		
+		aa = cssv2.writeDesc( cssv2.getFac().generateWriteElemCache() , System.out );
+
+		System.out.println( "### " + aa );
+		
+		System.out.println( "***" );
+		
+		
+		cssv2.writeMathMLWrapped( dp , System.out );
+		
+		System.out.println( "" );
+		
+		System.out.println( "***" );
+		
+		
+		
 		
 		
 		final ComplexElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> ce2 = new ComplexElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>( ce );
@@ -358,6 +660,21 @@ public class TestWriteDesc extends TestCase
 		final ComplexElem<DoubleElem,DoubleElemFactory> cd2 = new ComplexElem<DoubleElem,DoubleElemFactory>( new DoubleElem( -2.3 ) , new DoubleElem( -4.6 ) );
 		
 		
+		aa = cd2.writeDesc( cd2.getFac().generateWriteElemCache() , System.out );
+		
+		System.out.println( "### " + aa );
+		
+		System.out.println( "***" );
+		
+		
+		cd2.writeMathMLWrapped(dp, System.out);
+		
+		System.out.println( "" );
+		
+		System.out.println( "***" );
+		
+		
+		
 		final ComplexElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> cd2a =
 				new ComplexElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>( cd , cd2 );
 		
@@ -366,6 +683,10 @@ public class TestWriteDesc extends TestCase
 		System.out.println( "### " + aa );
 		
 		System.out.println( "***" );
+		
+		
+		
+		
 		
 		
 		final ValueWithUncertaintyElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> ve2 = new ValueWithUncertaintyElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>( ce );
