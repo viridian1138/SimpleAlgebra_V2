@@ -41,6 +41,7 @@ import simplealgebra.Sqrt;
 import simplealgebra.WriteElemCache;
 import simplealgebra.WriteBigIntegerCache;
 import simplealgebra.WriteNumDimensionsCache;
+import simplealgebra.symbolic.PrecedenceComparator;
 
 /**
  * A fixed-point elem.
@@ -160,6 +161,70 @@ public class BigFixedPointElem<T extends Precision<T>> extends Elem<BigFixedPoin
 		}
 		cache.put(this, this);
 		return( this );
+	}
+	
+	
+	@Override
+	public void writeMathML( PrecedenceComparator pc , PrintStream ps )
+	{
+		if( val.equals( BigInteger.ZERO ) )
+		{
+			ps.print( "<mn>0.0</mn>" );
+			return;
+		}
+		
+		final BigInteger TWO = BigInteger.valueOf( 2 );
+		final BigInteger TEN = BigInteger.valueOf( 10 );
+		final BigInteger TENVAL = prec.getVal().multiply( TEN );
+		
+		BigInteger exponent = BigInteger.ZERO;
+		BigInteger mantissa = val;
+		
+		while( mantissa.abs().compareTo( TENVAL ) >= 0 )
+		{
+			mantissa = mantissa.divide( TEN );
+			exponent = exponent.add( BigInteger.ONE );
+		}
+		
+		while( mantissa.abs().compareTo( prec.getVal() ) < 0 )
+		{
+			mantissa = mantissa.multiply( TEN );
+			exponent = exponent.subtract( BigInteger.ONE );
+		}
+		
+		BigInteger manPrec = prec.getVal();
+		
+		final int DOUBLE_FRACTION_SIZE = 52;
+		final BigInteger MAX_DBL_MANTISSA = BigInteger.valueOf( ( 1L << ( DOUBLE_FRACTION_SIZE - 1 ) ) - 1 );
+		
+		while( ( mantissa.abs().compareTo( MAX_DBL_MANTISSA ) > 0 ) || ( manPrec.abs().compareTo( MAX_DBL_MANTISSA ) > 0 ) )
+		{
+			mantissa = mantissa.divide( TWO );
+			manPrec = manPrec.divide( TWO );
+		}
+		
+		
+		final double mantissaDbl = ( mantissa.doubleValue() ) / ( manPrec.doubleValue() );
+		
+		
+		if( exponent.equals( BigInteger.ZERO ) )
+		{
+			ps.print( "<mn>" );
+			ps.print( mantissaDbl );
+			ps.print( "</mn>" );
+		}
+		else
+		{
+			ps.print( "<mrow>" );
+			ps.print( "<mn>" );
+			ps.print( mantissaDbl );
+			ps.print( "</mn>" );
+			ps.print( "<mo>&times;</mo>" );
+			ps.print( "<msup><mn>10</mn><mn>" );
+			ps.print( exponent );
+			ps.print( "</mn></msup>" );
+			ps.print( "</mrow>" );
+		}
 	}
 	
 	

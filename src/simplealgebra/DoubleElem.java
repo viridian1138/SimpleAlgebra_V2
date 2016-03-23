@@ -29,6 +29,8 @@ import java.io.PrintStream;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
+import simplealgebra.symbolic.PrecedenceComparator;
+
 /**
  * An elem for doubles.
  * 
@@ -136,6 +138,55 @@ public class DoubleElem extends Elem<DoubleElem, DoubleElemFactory> {
 		}
 		
 		return( super.handleOptionalOp(id, args) );
+	}
+	
+	
+	@Override
+	public void writeMathML( PrecedenceComparator pc , PrintStream ps )
+	{
+		if( d == 0.0 )
+		{
+			ps.print( "<mn>0.0</mn>" );
+			return;
+		}
+		
+		final double expd = Math.log10( Math.abs( d ) );
+		int exponent = (int) expd;
+		final double div = Math.exp( exponent * Math.log( 10.0 ) );
+		double mantissa = ( d / div );
+		
+		while( Math.abs( mantissa ) >= 10.0 )
+		{
+			mantissa = mantissa / 10.0;
+			exponent++;
+		}
+		
+		while( Math.abs( mantissa ) < 1.0 )
+		{
+			mantissa = mantissa * 10.0;
+			exponent--;
+		}
+		
+		
+		if( exponent == 0 )
+		{
+			ps.print( "<mn>" );
+			ps.print( mantissa );
+			ps.print( "</mn>" );
+		}
+		else
+		{
+			ps.print( "<mrow>" );
+			ps.print( "<mn>" );
+			ps.print( mantissa );
+			ps.print( "</mn>" );
+			ps.print( "<mo>&times;</mo>" );
+			ps.print( "<msup><mn>10</mn><mn>" );
+			ps.print( exponent );
+			ps.print( "</mn></msup>" );
+			ps.print( "</mrow>" );
+		}
+		
 	}
 	
 	

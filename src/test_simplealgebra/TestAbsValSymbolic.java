@@ -65,7 +65,7 @@ public class TestAbsValSymbolic extends TestCase
 	 * @author thorngreen
 	 *
 	 */
-	private static class PrecCompare extends DefaultPrecedenceComparator<DoubleElem, DoubleElemFactory>
+	private static class PrecCompare extends DefaultPrecedenceComparator
 	{
 		
 		

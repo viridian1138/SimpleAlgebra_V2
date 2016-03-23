@@ -445,7 +445,7 @@ public class SymbolicMult<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 	
 	
 	@Override
-	public void writeMathML( PrecedenceComparator<R,S> pc , PrintStream ps )
+	public void writeMathML( PrecedenceComparator pc , PrintStream ps )
 	{
 		if( pc.parenNeeded( this ,  elemA , false ) )
 		{

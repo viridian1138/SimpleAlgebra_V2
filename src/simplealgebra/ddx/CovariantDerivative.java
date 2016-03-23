@@ -458,7 +458,7 @@ public class CovariantDerivative<Z extends Object, U extends NumDimensions, R ex
 	
 	@Override
 	public void writeMathML(
-			PrecedenceComparator<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> pc,
+			PrecedenceComparator  pc,
 			PrintStream ps) {
 		
 		ps.print( "<msub><mo>&nabla;</mo>" );

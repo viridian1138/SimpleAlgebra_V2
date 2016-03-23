@@ -51,7 +51,7 @@ public class LoggingConfiguration {
 	/**
 	 * Configuration setting for turning event logging on/off.
 	 */
-	public static boolean ENENT_LOGGING_ON = false;
+	public static boolean EVENT_LOGGING_ON = false;
 	
 	
 	/**

@@ -203,7 +203,7 @@ public class SymbolicCosine<R extends Elem<R,?>, S extends ElemFactory<R,S>> ext
 	
 	
 	@Override
-	public void writeMathML( PrecedenceComparator<R,S> pc , PrintStream ps )
+	public void writeMathML( PrecedenceComparator pc , PrintStream ps )
 	{
 		ps.print( "<mrow><mi>cos</mi><mo>&ApplyFunction;</mo>" );
 		pc.getParenthesisGenerator().handleParenthesisOpen(ps);

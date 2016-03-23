@@ -203,7 +203,7 @@ public class SymbolicSine<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 	
 	
 	@Override
-	public void writeMathML( PrecedenceComparator<R,S> pc , PrintStream ps )
+	public void writeMathML( PrecedenceComparator pc , PrintStream ps )
 	{
 		ps.print( "<mrow><mi>sin</mi><mo>&ApplyFunction;</mo>" );
 		pc.getParenthesisGenerator().handleParenthesisOpen(ps);

@@ -58,6 +58,7 @@ import simplealgebra.ga.GeometricAlgebraMultivectorElemFactory;
 import simplealgebra.ga.GeometricAlgebraOrd;
 import simplealgebra.meas.ValueWithUncertaintyElem;
 import simplealgebra.meas.ValueWithUncertaintyElemFactory;
+import simplealgebra.prec.DefaultPrecedenceComparator;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SCacheKey;
 import simplealgebra.symbolic.SymbolicElem;
@@ -276,6 +277,8 @@ public class TestWriteDesc extends TestCase
 	 */
 	public void testWriteDesc() throws NotInvertibleException
 	{
+		final DefaultPrecedenceComparator dp = new DefaultPrecedenceComparator();
+		
 		final TestDimensionFour td = new TestDimensionFour();
 		
 		final DoubleElemFactory dl = new DoubleElemFactory();
@@ -295,7 +298,9 @@ public class TestWriteDesc extends TestCase
 		System.out.println( "***" );
 		
 		
-		final DoubleElem d = new DoubleElem( 1.2345 );
+		final DoubleElem d = new DoubleElem( 1.2345E5 );
+		
+		final DoubleElem d2 = new DoubleElem( -5.4321E5 );
 		
 		
 		aa = d.writeDesc( d.getFac().generateWriteElemCache() , System.out );
@@ -325,12 +330,17 @@ public class TestWriteDesc extends TestCase
 		System.out.println( "***" );
 		
 		
-		final ComplexElem<DoubleElem,DoubleElemFactory> cd = new ComplexElem<DoubleElem,DoubleElemFactory>( new DoubleElem( -2.3 ) , new DoubleElem( -4.6 ) );
+		final ComplexElem<DoubleElem,DoubleElemFactory> cd = new ComplexElem<DoubleElem,DoubleElemFactory>( d , d2 );
 		
 		
 		aa = cd.writeDesc( cd.getFac().generateWriteElemCache() , System.out );
 
 		System.out.println( "### " + aa );
+		
+		System.out.println( "***" );
+		
+		
+		cd.writeMathMLWrapped( dp , System.out );
 		
 		System.out.println( "***" );
 		

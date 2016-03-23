@@ -269,7 +269,7 @@ public class SymbolicConjugateRight<R extends Elem<R,?>, S extends ElemFactory<R
 	
 	@Override
 	public void writeMathML(
-			PrecedenceComparator<ComplexElem<R, S>, ComplexElemFactory<R, S>> pc,
+			PrecedenceComparator pc,
 			PrintStream ps) {
 		ps.print( "<msup>" );
 		if( pc.parenNeeded( this ,  elem , false ) )

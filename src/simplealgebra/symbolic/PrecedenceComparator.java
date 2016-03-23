@@ -41,11 +41,8 @@ import simplealgebra.ElemFactory;
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
  * @author thorngreen
- *
- * @param <R> The enclosed elem type.
- * @param <S> The factory for the enclosed elem type.
  */
-public abstract class PrecedenceComparator<R extends Elem<R,?>, S extends ElemFactory<R,S>> extends Object {
+public abstract class PrecedenceComparator extends Object {
 	
 	
 	/**
@@ -55,7 +52,7 @@ public abstract class PrecedenceComparator<R extends Elem<R,?>, S extends ElemFa
 	 * @param after Whether the child is written after the parent in infix notation.
 	 * @return Whether infix notation requires a parenthesis for the child.
 	 */
-	public abstract boolean parenNeeded( SymbolicElem<R,S> a , SymbolicElem<R,S> b , boolean after );
+	public abstract boolean parenNeeded( Elem<?,?> a , Elem<?,?> b , boolean after );
 	
 	
 	/**
@@ -63,17 +60,17 @@ public abstract class PrecedenceComparator<R extends Elem<R,?>, S extends ElemFa
 	 * 
 	 * @return The parenthesis generator.
 	 */
-	public abstract ParenthesisGenerator<R,S> getParenthesisGenerator();
+	public abstract ParenthesisGenerator getParenthesisGenerator();
 	
 
 	/**
 	 * Handles MathML ( http://www.w3.org/Math/ ) presentations that are not supported.
 	 * 
-	 * @param a The unsupported element.
+	 * @param elem The unsupported element.
 	 */
-	public void handleUnimplementedElem( SymbolicElem<R,S> a , PrintStream ps )
+	public void handleUnimplementedElem( Elem<?, ?> elem , PrintStream ps )
 	{
-		System.out.println( "Not Supported : " + ( a.getClass().getName() ) );
+		System.out.println( "Not Supported : " + ( elem.getClass().getName() ) );
 		throw( new RuntimeException( "NotSupported" ) );
 	}
 	

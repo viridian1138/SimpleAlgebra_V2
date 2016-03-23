@@ -234,7 +234,7 @@ public class SymbolicMultRevCoeff<U extends NumDimensions, R extends Elem<R,?>, 
 	
 	@Override
 	public void writeMathML(
-			PrecedenceComparator<SquareMatrixElem<U, R, S>, SquareMatrixElemFactory<U, R, S>> pc,
+			PrecedenceComparator pc,
 			PrintStream ps) {
 		if( pc.parenNeeded( this ,  elemA , false ) )
 		{

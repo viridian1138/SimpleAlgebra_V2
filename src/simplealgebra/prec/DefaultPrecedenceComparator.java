@@ -7,13 +7,17 @@ import java.util.*;
 
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
+import simplealgebra.meas.ValueWithUncertaintyElem;
 import simplealgebra.symbolic.*;
+import simplealgebra.ComplexElem;
+import simplealgebra.DoubleElem;
 import simplealgebra.SymbolicConjugateLeft;
 import simplealgebra.SymbolicConjugateRight;
 import simplealgebra.SymbolicInvertLeftRevCoeff;
 import simplealgebra.SymbolicInvertRightRevCoeff;
 import simplealgebra.SymbolicMultRevCoeff;
 import simplealgebra.SymbolicTranspose;
+import simplealgebra.bigfixedpoint.BigFixedPointElem;
 import simplealgebra.ddx.PartialDerivativeOp;
 import simplealgebra.ddx.FlowVectorTensor;
 // import simplealgebra.ddx.MaterialDerivativeFactory;
@@ -50,10 +54,8 @@ import simplealgebra.ga.SymbolicScalar;
  * 
  * @author thorngreen
  *
- * @param <R> The enclosed elem type.
- * @param <S> The factory for the enclosed elem type.
  */
-public class DefaultPrecedenceComparator<R extends Elem<R,?>, S extends ElemFactory<R,S>> extends PrecedenceComparator<R,S> {
+public class DefaultPrecedenceComparator extends PrecedenceComparator {
 	
 	
 	/**
@@ -68,7 +70,7 @@ public class DefaultPrecedenceComparator<R extends Elem<R,?>, S extends ElemFact
 		/**
 		 * The class of the operator.
 		 */
-		protected Class<? extends SymbolicElem> operatorClass;
+		protected Class<? extends Elem> operatorClass;
 		
 		
 		/**
@@ -76,7 +78,7 @@ public class DefaultPrecedenceComparator<R extends Elem<R,?>, S extends ElemFact
 		 * 
 		 * @param cls The class of the operator.
 		 */
-		public OperatorNode( Class<? extends SymbolicElem> cls )
+		public OperatorNode( Class<? extends Elem> cls )
 		{
 			operatorClass = cls;
 		}
@@ -87,7 +89,7 @@ public class DefaultPrecedenceComparator<R extends Elem<R,?>, S extends ElemFact
 		 * 
 		 * @return The class of the operator.
 		 */
-		public Class<? extends SymbolicElem> getOperatorClass()
+		public Class<? extends Elem> getOperatorClass()
 		{
 			return( operatorClass );
 		}
@@ -136,7 +138,7 @@ public class DefaultPrecedenceComparator<R extends Elem<R,?>, S extends ElemFact
 		 * 
 		 * @param cls The class of the operator.
 		 */
-		public MultiCharIdentOperator( Class<? extends SymbolicElem> cls )
+		public MultiCharIdentOperator( Class<? extends Elem> cls )
 		{
 			super( cls );
 		}
@@ -171,7 +173,7 @@ public class DefaultPrecedenceComparator<R extends Elem<R,?>, S extends ElemFact
 		 * 
 		 * @param cls The class of the operator.
 		 */
-		public SimpleUnaryOperator( Class<? extends SymbolicElem> cls )
+		public SimpleUnaryOperator( Class<? extends Elem> cls )
 		{
 			super( cls );
 		}
@@ -199,7 +201,7 @@ public class DefaultPrecedenceComparator<R extends Elem<R,?>, S extends ElemFact
 		 * 
 		 * @param cls The class of the operator.
 		 */
-		public SuperscriptingOperator( Class<? extends SymbolicElem> cls )
+		public SuperscriptingOperator( Class<? extends Elem> cls )
 		{
 			super( cls );
 		}
@@ -228,7 +230,7 @@ public class DefaultPrecedenceComparator<R extends Elem<R,?>, S extends ElemFact
 		 * 
 		 * @param cls The class of the operator.
 		 */
-		public NegateOperator( Class<? extends SymbolicElem> cls )
+		public NegateOperator( Class<? extends Elem> cls )
 		{
 			super( cls );
 		}
@@ -257,7 +259,7 @@ public class DefaultPrecedenceComparator<R extends Elem<R,?>, S extends ElemFact
 		 * 
 		 * @param cls The class of the operator.
 		 */
-		public SimpleBinaryOperator( Class<? extends SymbolicElem> cls )
+		public SimpleBinaryOperator( Class<? extends Elem> cls )
 		{
 			super( cls );
 		}
@@ -286,7 +288,7 @@ public class DefaultPrecedenceComparator<R extends Elem<R,?>, S extends ElemFact
 		 * 
 		 * @param cls The class of the operator.
 		 */
-		public ItimesOperator( Class<? extends SymbolicElem> cls )
+		public ItimesOperator( Class<? extends Elem> cls )
 		{
 			super( cls );
 		}
@@ -311,18 +313,18 @@ public class DefaultPrecedenceComparator<R extends Elem<R,?>, S extends ElemFact
 	/**
 	 * Set of terminal symbol classes for the parent node in the expression tree.
 	 */
-	protected final HashSet<Class<? extends SymbolicElem>> enclosedOrTerminalSymbolsA = new HashSet<Class<? extends SymbolicElem>>();
+	protected final HashSet<Class<? extends Elem>> enclosedOrTerminalSymbolsA = new HashSet<Class<? extends Elem>>();
 	
 	
 	/**
 	 * Set of terminal symbol classes for the child node in the expression tree.
 	 */
-	protected final HashSet<Class<? extends SymbolicElem>> enclosedOrTerminalSymbolsB = new HashSet<Class<? extends SymbolicElem>>();
+	protected final HashSet<Class<? extends Elem>> enclosedOrTerminalSymbolsB = new HashSet<Class<? extends Elem>>();
 	
 	/**
 	 * The parenthesis generator.
 	 */
-	protected ParenthesisGenerator<R,S> parenthesisGenerator = null;
+	protected ParenthesisGenerator parenthesisGenerator = null;
 	
 	
 	
@@ -333,15 +335,15 @@ public class DefaultPrecedenceComparator<R extends Elem<R,?>, S extends ElemFact
 	 * @param clssA The elem to check.
 	 * @return The precedence value, of -1 if no precedence entry was found.
 	 */
-	protected int getPrecedenceNumber( final SymbolicElem<R,S> clssA )
+	protected int getPrecedenceNumber( final Elem<?,?> clssA )
 	{
-		SymbolicElem<?,?> clss = clssA;
+		Elem<?,?> clss = clssA;
 		while( clss instanceof SymbolicReduction )
 		{
 			final Elem<?,?> ob = ( (SymbolicReduction<?,?>) clss ).getElem();
-			if( ob instanceof SymbolicElem )
+			if( ob instanceof Elem )
 			{
-				clss = (SymbolicElem<?,?>) ob;
+				clss = (Elem<?,?>) ob;
 			}
 			else
 			{
@@ -373,15 +375,15 @@ public class DefaultPrecedenceComparator<R extends Elem<R,?>, S extends ElemFact
 	 * @param clssA The elem to check.
 	 * @return The precedence node, or null if no precedence node was found.
 	 */
-	protected OperatorNode getOperatorNode( final SymbolicElem<R,S> clssA )
+	protected OperatorNode getOperatorNode( final Elem<?,?> clssA )
 	{
-		SymbolicElem<?,?> clss = clssA;
+		Elem<?,?> clss = clssA;
 		while( clss instanceof SymbolicReduction )
 		{
 			final Elem<?,?> ob = ( (SymbolicReduction<?,?>) clss ).getElem();
-			if( ob instanceof SymbolicElem )
+			if( ob instanceof Elem )
 			{
-				clss = (SymbolicElem<?,?>) ob;
+				clss = (Elem<?,?>) ob;
 			}
 			else
 			{
@@ -414,10 +416,35 @@ public class DefaultPrecedenceComparator<R extends Elem<R,?>, S extends ElemFact
 	{
 		
 		
+		
+		{
+			final HashSet<OperatorNode> hs = new HashSet<OperatorNode>();
+			
+			hs.add( new SimpleBinaryOperator( ValueWithUncertaintyElem.class ) );
+			
+			operatorPrecedence.add( hs );
+		}
+		
+		
+		
+		
+		{
+			final HashSet<OperatorNode> hs = new HashSet<OperatorNode>();
+			
+			hs.add( new SimpleBinaryOperator( ComplexElem.class ) );
+			
+			operatorPrecedence.add( hs );
+		}
+		
+		
+		
+		
 		{
 			final HashSet<OperatorNode> hs = new HashSet<OperatorNode>();
 			
 			hs.add( new SimpleBinaryOperator( SymbolicAdd.class ) );
+			hs.add( new MultiCharIdentOperator( DoubleElem.class ) );
+			hs.add( new MultiCharIdentOperator( BigFixedPointElem.class ) );
 			
 			operatorPrecedence.add( hs );
 		}
@@ -583,7 +610,7 @@ public class DefaultPrecedenceComparator<R extends Elem<R,?>, S extends ElemFact
 	 */
 	protected void parenthesisGeneratorInit()
 	{
-		parenthesisGenerator = new DefaultParenthesisGenerator<R,S>();
+		parenthesisGenerator = new DefaultParenthesisGenerator();
 	}
 	
 	
@@ -614,7 +641,7 @@ public class DefaultPrecedenceComparator<R extends Elem<R,?>, S extends ElemFact
 
 	
 	@Override
-	public boolean parenNeeded( SymbolicElem<R,S> a , SymbolicElem<R,S> b , boolean after )
+	public boolean parenNeeded( Elem<?,?> a , Elem<?,?> b , boolean after )
 	{
 		
 		if( !initialized )
@@ -623,7 +650,7 @@ public class DefaultPrecedenceComparator<R extends Elem<R,?>, S extends ElemFact
 		}
 		
 		
-		for( final Class<? extends SymbolicElem> ii : enclosedOrTerminalSymbolsA )
+		for( final Class<? extends Elem> ii : enclosedOrTerminalSymbolsA )
 		{
 			if( ii.isInstance( a ) )
 			{
@@ -632,7 +659,7 @@ public class DefaultPrecedenceComparator<R extends Elem<R,?>, S extends ElemFact
 		}
 		
 		
-		for( final Class<? extends SymbolicElem> ii : enclosedOrTerminalSymbolsB )
+		for( final Class<? extends Elem> ii : enclosedOrTerminalSymbolsB )
 		{
 			if( ii.isInstance( b ) )
 			{
@@ -657,7 +684,7 @@ public class DefaultPrecedenceComparator<R extends Elem<R,?>, S extends ElemFact
 	
 	
 	@Override
-	public ParenthesisGenerator<R,S> getParenthesisGenerator()
+	public ParenthesisGenerator getParenthesisGenerator()
 	{
 		return( parenthesisGenerator );
 	}

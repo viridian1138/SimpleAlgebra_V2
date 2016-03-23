@@ -218,7 +218,7 @@ public class SymbolicInvertLeftRevCoeff<U extends NumDimensions, R extends Elem<
 	
 	@Override
 	public void writeMathML(
-			PrecedenceComparator<SquareMatrixElem<U, R, S>, SquareMatrixElemFactory<U, R, S>> pc,
+			PrecedenceComparator pc,
 			PrintStream ps) {
 		ps.print( "<msup>" );
 		if( pc.parenNeeded( this ,  elem , false ) )

@@ -183,7 +183,7 @@ public class SymbolicAdd<R extends Elem<R,?>, S extends ElemFactory<R,S>> extend
 	
 	
 	@Override
-	public void writeMathML( PrecedenceComparator<R,S> pc , PrintStream ps )
+	public void writeMathML( PrecedenceComparator pc , PrintStream ps )
 	{
 		if( pc.parenNeeded( this ,  elemA , false ) )
 		{

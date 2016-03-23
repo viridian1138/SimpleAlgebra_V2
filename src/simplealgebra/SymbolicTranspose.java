@@ -221,7 +221,7 @@ public class SymbolicTranspose<U extends NumDimensions, R extends Elem<R,?>, S e
 	
 	@Override
 	public void writeMathML(
-			PrecedenceComparator<SquareMatrixElem<U, R, S>, SquareMatrixElemFactory<U, R, S>> pc,
+			PrecedenceComparator pc,
 			PrintStream ps) 
 	{
 		ps.print( "<msup>" );

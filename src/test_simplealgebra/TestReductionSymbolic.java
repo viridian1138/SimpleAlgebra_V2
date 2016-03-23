@@ -66,7 +66,7 @@ public class TestReductionSymbolic extends TestCase
 	 * @author thorngreen
 	 *
 	 */
-	private static class PrecCompare extends DefaultPrecedenceComparator<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>
+	private static class PrecCompare extends DefaultPrecedenceComparator
 	{
 		
 		

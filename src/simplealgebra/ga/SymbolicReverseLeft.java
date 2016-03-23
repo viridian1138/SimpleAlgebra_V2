@@ -250,7 +250,7 @@ public class SymbolicReverseLeft<U extends NumDimensions, A extends Ord<U>, R ex
 	
 	@Override
 	public void writeMathML(
-			PrecedenceComparator<GeometricAlgebraMultivectorElem<U, A, R, S>, GeometricAlgebraMultivectorElemFactory<U, A, R, S>> pc,
+			PrecedenceComparator pc,
 			PrintStream ps) 
 	{
 		ps.print( "<msup>" );

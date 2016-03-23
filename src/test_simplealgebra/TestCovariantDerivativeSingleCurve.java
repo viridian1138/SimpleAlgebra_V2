@@ -179,7 +179,7 @@ public class TestCovariantDerivativeSingleCurve extends TestCase {
 		}
 		
 		@Override
-		public void writeMathML( PrecedenceComparator<EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>,EinsteinTensorElemFactory<String,DoubleElem,DoubleElemFactory>> pc , PrintStream ps )
+		public void writeMathML( PrecedenceComparator pc , PrintStream ps )
 		{
 			ps.print( "<msub><mi>x</mi><mn>" + col + "</mn></msub>" );
 		}
@@ -435,7 +435,7 @@ public class TestCovariantDerivativeSingleCurve extends TestCase {
 		}
 		
 		@Override
-		public void writeMathML( PrecedenceComparator<DoubleElem,DoubleElemFactory> pc , PrintStream ps )
+		public void writeMathML( PrecedenceComparator pc , PrintStream ps )
 		{
 			ps.print( "<msub><mi>C</mi><mn>" + col + "</mn></msub>" );
 		}
@@ -498,7 +498,7 @@ public class TestCovariantDerivativeSingleCurve extends TestCase {
 		}
 		
 		@Override
-		public void writeMathML( PrecedenceComparator<DoubleElem,DoubleElemFactory> pc , PrintStream ps )
+		public void writeMathML( PrecedenceComparator pc , PrintStream ps )
 		{
 			ps.print( "<mn>" + ( this.getElem().getVal() ) + "</mn>" );
 		}
@@ -765,7 +765,7 @@ public class TestCovariantDerivativeSingleCurve extends TestCase {
 	 * @author thorngreen
 	 *
 	 */
-	private static class PrecCompare extends DefaultPrecedenceComparator<DoubleElem, DoubleElemFactory>
+	private static class PrecCompare extends DefaultPrecedenceComparator
 	{
 		
 		

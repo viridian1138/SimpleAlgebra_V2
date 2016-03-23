@@ -42,10 +42,8 @@ import simplealgebra.ElemFactory;
  * 
  * @author thorngreen
  *
- * @param <R> The enclosed elem type.
- * @param <S> The factory for the enclosed elem type.
  */
-public abstract class ParenthesisGenerator<R extends Elem<R,?>, S extends ElemFactory<R,S>> extends Object {
+public abstract class ParenthesisGenerator extends Object {
 	
 
 	/**

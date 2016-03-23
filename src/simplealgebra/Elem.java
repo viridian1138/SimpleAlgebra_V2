@@ -28,6 +28,8 @@ import java.io.PrintStream;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
+import simplealgebra.symbolic.PrecedenceComparator;
+
 
 /**
  * An elem implements properties similar to those for a noncommutative ring, though there are some important
@@ -353,9 +355,49 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 	 * @return String describing the id of the object.
 	 */
 	public abstract String writeDesc( WriteElemCache<T,R> cache , PrintStream ps );
-//	{
-//		throw( new RuntimeException( "Not Supported" ) );
-//	}
+	
+	
+	
+	/**
+	 * Writes MathML ( http://www.w3.org/Math/ ) presentation tags describing the elem to a print stream.
+	 * @param pc A description of how to assign precedence for converting to infix notation.
+	 * @param ps The print stream to which to write the tags.
+	 */
+	public void writeMathML( PrecedenceComparator pc , PrintStream ps )
+	{
+		pc.handleUnimplementedElem( this , ps );
+	}
+
+	/**
+	 * Writes MathML ( http://www.w3.org/Math/ ) presentation tags describing the elem, wrapped in the top-level math tag, to a print stream.
+	 * @param pc A description of how to assign precedence for converting to infix notation.
+	 * @param ps The print stream to which to write the tags.
+	 */
+	public void writeMathMLWrapped( PrecedenceComparator pc , PrintStream ps )
+	{
+		ps.print( "<math display=\"inline\">" );
+		writeMathML( pc , ps );
+		ps.print( "</math>" );
+	}
+	
+	/**
+	 * Writes a self-contained HTML file containing MathML ( http://www.w3.org/Math/ ) presentation tags describing the elem.
+	 * @param pc A description of how to assign precedence for converting to infix notation.
+	 * @param ps The print stream to which to write the tags.
+	 */
+	public void writeHtmlFile( PrecedenceComparator pc , PrintStream ps )
+	{
+		ps.println( "<html>" );
+		ps.println( "<head>" );
+		ps.println( "<title>Title</title>" );
+		ps.println( "</head>" );
+		ps.println( "<body>" );
+		ps.print( "<P>" );
+		writeMathMLWrapped( pc , ps );
+		ps.println( "" );
+		ps.println( "</body>" );
+		ps.println( "</html>" );
+	}
 	
 
 	

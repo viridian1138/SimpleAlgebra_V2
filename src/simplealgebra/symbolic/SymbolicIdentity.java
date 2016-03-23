@@ -208,7 +208,7 @@ public class SymbolicIdentity<R extends Elem<R,?>, S extends ElemFactory<R,S>> e
 	}
 	
 	@Override
-	public void writeMathML( PrecedenceComparator<R,S> pc , PrintStream ps ) {
+	public void writeMathML( PrecedenceComparator pc , PrintStream ps ) {
 		ps.print( "<mn>IDENTITY</mn>" );
 	}
 	

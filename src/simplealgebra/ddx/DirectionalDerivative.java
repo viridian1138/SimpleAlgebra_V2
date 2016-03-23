@@ -327,7 +327,7 @@ public class DirectionalDerivative<U extends NumDimensions, A extends Ord<U>, R 
 	
 	@Override
 	public void writeMathML(
-			PrecedenceComparator<GeometricAlgebraMultivectorElem<U, A, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, GeometricAlgebraMultivectorElemFactory<U, A, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> pc,
+			PrecedenceComparator pc,
 			PrintStream ps) {
 		ps.print( "<mo>&nabla;</mo>" );
 	}

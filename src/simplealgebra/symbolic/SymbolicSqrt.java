@@ -208,7 +208,7 @@ public class SymbolicSqrt<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 	}
 	
 	@Override
-	public void writeMathML( PrecedenceComparator<R,S> pc , PrintStream ps )
+	public void writeMathML( PrecedenceComparator pc , PrintStream ps )
 	{
 		ps.print( "<msqrt><mrow>" );
 		elem.writeMathML(pc, ps);

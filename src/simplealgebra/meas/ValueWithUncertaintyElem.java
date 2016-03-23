@@ -34,6 +34,7 @@ import simplealgebra.MutableElem;
 import simplealgebra.Mutator;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.WriteElemCache;
+import simplealgebra.symbolic.PrecedenceComparator;
 
 import java.io.PrintStream;
 import java.math.BigInteger;
@@ -178,6 +179,47 @@ public class ValueWithUncertaintyElem<R extends Elem<R,?>, S extends ElemFactory
 		}
 		cache.put(this, this);
 		return( this );
+	}
+	
+	
+	@Override
+	public void writeMathML( PrecedenceComparator pc , PrintStream ps )
+	{
+		if( pc.parenNeeded( this ,  value , false ) )
+		{
+			pc.getParenthesisGenerator().handleParenthesisOpen(ps);
+		}
+		else
+		{
+			ps.print( "<mrow>" );
+		}
+		value.writeMathML(pc, ps);
+		if( pc.parenNeeded( this ,  value , false ) )
+		{
+			pc.getParenthesisGenerator().handleParenthesisClose(ps);
+		}
+		else
+		{
+			ps.print( "</mrow>" );
+		}
+		ps.print( "<mo>&PlusMinus;</mo>" );
+		if( pc.parenNeeded( this ,  uncertainty , true ) )
+		{
+			pc.getParenthesisGenerator().handleParenthesisOpen(ps);
+		}
+		else
+		{
+			ps.print( "<mrow>" );
+		}
+		uncertainty.writeMathML(pc, ps);
+		if( pc.parenNeeded( this ,  uncertainty , true ) )
+		{
+			pc.getParenthesisGenerator().handleParenthesisClose(ps);
+		}
+		else
+		{
+			ps.print( "</mrow>" );
+		}
 	}
 	
 	

@@ -260,7 +260,7 @@ public class SymbolicDotHestenes<U extends NumDimensions, A extends Ord<U>, R ex
 	
 	@Override
 	public void writeMathML(
-			PrecedenceComparator<GeometricAlgebraMultivectorElem<U, A, R, S>, GeometricAlgebraMultivectorElemFactory<U, A, R, S>> pc,
+			PrecedenceComparator pc,
 			PrintStream ps) 
 	{
 		if( pc.parenNeeded( this ,  elemA , false ) )

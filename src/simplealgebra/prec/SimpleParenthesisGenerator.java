@@ -44,10 +44,8 @@ import simplealgebra.symbolic.ParenthesisGenerator;
  * 
  * @author thorngreen
  *
- * @param <R> The enclosed elem type.
- * @param <S> The factory for the enclosed elem type.
  */
-public class SimpleParenthesisGenerator<R extends Elem<R,?>, S extends ElemFactory<R,S>> extends ParenthesisGenerator<R,S> 
+public class SimpleParenthesisGenerator extends ParenthesisGenerator 
 {
 	
 

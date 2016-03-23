@@ -259,7 +259,7 @@ public class TestMetricDeterminant extends TestCase
 		}
 		
 		@Override
-		public void writeMathML( PrecedenceComparator<DoubleElem,DoubleElemFactory> pc , PrintStream ps )
+		public void writeMathML( PrecedenceComparator pc , PrintStream ps )
 		{
 			ps.print( "<mn>2</mn><mo>&InvisibleTimes;</mo><mi>U</mi><mfenced><mi>x</mi></mfenced>" );
 		}

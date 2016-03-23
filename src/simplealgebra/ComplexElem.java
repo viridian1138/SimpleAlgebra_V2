@@ -30,6 +30,7 @@ import java.util.HashSet;
 import simplealgebra.ga.GeometricAlgebraMultivectorElem;
 import simplealgebra.ga.GeometricAlgebraMultivectorElemFactory;
 import simplealgebra.ga.GeometricAlgebraOrd;
+import simplealgebra.symbolic.PrecedenceComparator;
 
 /**
  * Complex number for representing e.g. phasors in electrical circuit theory.
@@ -370,6 +371,49 @@ public class ComplexElem<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 		}
 		cache.put(this, this);
 		return( this );
+	}
+	
+	
+	@Override
+	public void writeMathML( PrecedenceComparator pc , PrintStream ps )
+	{
+		if( pc.parenNeeded( this ,  re , false ) )
+		{
+			pc.getParenthesisGenerator().handleParenthesisOpen(ps);
+		}
+		else
+		{
+			ps.print( "<mrow>" );
+		}
+		re.writeMathML(pc, ps);
+		if( pc.parenNeeded( this ,  re , false ) )
+		{
+			pc.getParenthesisGenerator().handleParenthesisClose(ps);
+		}
+		else
+		{
+			ps.print( "</mrow>" );
+		}
+		ps.print( "<mo>+</mo>" );
+		if( pc.parenNeeded( this ,  im , true ) )
+		{
+			pc.getParenthesisGenerator().handleParenthesisOpen(ps);
+		}
+		else
+		{
+			ps.print( "<mrow>" );
+		}
+		im.writeMathML(pc, ps);
+		if( pc.parenNeeded( this ,  im , true ) )
+		{
+			pc.getParenthesisGenerator().handleParenthesisClose(ps);
+		}
+		else
+		{
+			ps.print( "</mrow>" );
+		}
+		ps.print( "<mo>&InvisibleTimes;</mo>" );
+		ps.print( "<mi>&ImaginaryI;</mi>" );
 	}
 	
 	

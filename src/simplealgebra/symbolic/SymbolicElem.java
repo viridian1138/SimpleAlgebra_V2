@@ -107,15 +107,7 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 	abstract public R evalPartialDerivativeCached( ArrayList<? extends Elem<?,?>> withRespectTo , 
 			HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace , HashMap<SCacheKey<R,S>,R> cache ) throws NotInvertibleException, MultiplicativeDistributionRequiredException;
 	
-	/**
-	 * Writes MathML ( http://www.w3.org/Math/ ) presentation tags describing the elem to a print stream.
-	 * @param pc A description of how to assign precedence for converting to infix notation.
-	 * @param ps The print stream to which to write the tags.
-	 */
-	public void writeMathML( PrecedenceComparator<R,S> pc , PrintStream ps )
-	{
-		pc.handleUnimplementedElem( this , ps );
-	}
+	
 	
 	/**
 	 * Constructs the elem.
@@ -268,38 +260,6 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 	}
 	
 	
-	/**
-	 * Writes MathML ( http://www.w3.org/Math/ ) presentation tags describing the elem, wrapped in the top-level math tag, to a print stream.
-	 * @param pc A description of how to assign precedence for converting to infix notation.
-	 * @param ps The print stream to which to write the tags.
-	 */
-	public void writeMathMLWrapped( PrecedenceComparator<R,S> pc , PrintStream ps )
-	{
-		ps.print( "<math display=\"inline\">" );
-		writeMathML( pc , ps );
-		ps.print( "</math>" );
-	}
-	
-	/**
-	 * Writes a self-contained HTML file containing MathML ( http://www.w3.org/Math/ ) presentation tags describing the elem.
-	 * @param pc A description of how to assign precedence for converting to infix notation.
-	 * @param ps The print stream to which to write the tags.
-	 */
-	public void writeHtmlFile( PrecedenceComparator<R,S> pc , PrintStream ps )
-	{
-		ps.println( "<html>" );
-		ps.println( "<head>" );
-		ps.println( "<title>Title</title>" );
-		ps.println( "</head>" );
-		ps.println( "<body>" );
-		ps.print( "<P>" );
-		writeMathMLWrapped( pc , ps );
-		ps.println( "" );
-		ps.println( "</body>" );
-		ps.println( "</html>" );
-	}
-	
-	
 	
 	@Override
 	public SymbolicElem<R, S> handleOptionalOp( Object id , ArrayList<SymbolicElem<R, S>> args ) throws NotInvertibleException
@@ -429,7 +389,7 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 					session.insert( new LoggingConfiguration() );
 				}
 				
-				if( LoggingConfiguration.ENENT_LOGGING_ON )
+				if( LoggingConfiguration.EVENT_LOGGING_ON )
 				{
 					session.addEventListener( generateEventLoggingListener() );
 				}
@@ -508,7 +468,7 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 					session.insert( new LoggingConfiguration() );
 				}
 				
-				if( LoggingConfiguration.ENENT_LOGGING_ON )
+				if( LoggingConfiguration.EVENT_LOGGING_ON )
 				{
 					session.addEventListener( generateEventLoggingListener() );
 				}

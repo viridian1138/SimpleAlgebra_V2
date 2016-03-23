@@ -330,16 +330,9 @@ public class SymbolicReduction<R extends Elem<R,?>, S extends ElemFactory<R,S>> 
 	
 	
 	@Override
-	public void writeMathML( PrecedenceComparator<R,S> pc , PrintStream ps )
+	public void writeMathML( PrecedenceComparator pc , PrintStream ps )
 	{
-		if( elem instanceof SymbolicElem )
-		{
-			( (SymbolicElem) elem ).writeMathML(pc, ps);
-		}
-		else
-		{
-			ps.print( "<mn>REDUCTION</mn>" );
-		}
+		elem.writeHtmlFile(pc, ps);
 	}
 	
 	

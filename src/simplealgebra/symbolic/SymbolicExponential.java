@@ -210,7 +210,7 @@ public class SymbolicExponential<R extends Elem<R,?>, S extends ElemFactory<R,S>
 	
 	
 	@Override
-	public void writeMathML( PrecedenceComparator<R,S> pc , PrintStream ps )
+	public void writeMathML( PrecedenceComparator pc , PrintStream ps )
 	{
 		ps.print( "<mrow><msup><mo>e</mo><mrow>" );
 		elem.writeMathML(pc, ps);

@@ -216,7 +216,7 @@ public class SymbolicAbsoluteValue<R extends Elem<R,?>, S extends ElemFactory<R,
 	
 	
 	@Override
-	public void writeMathML( PrecedenceComparator<R,S> pc , PrintStream ps )
+	public void writeMathML( PrecedenceComparator pc , PrintStream ps )
 	{
 		ps.print( "<mrow><mfenced open=\"|\" close=\"|\"><mrow>" );
 		elem.writeMathML(pc, ps);

@@ -165,7 +165,7 @@ public class TestDesResSymbolicAlt extends TestCase
 		}
 		
 		@Override
-		public void writeMathML( PrecedenceComparator<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> pc , PrintStream ps )
+		public void writeMathML( PrecedenceComparator pc , PrintStream ps )
 		{
 			ps.print( "<msup><mi>c</mi><mn>2</mn></msup>" );
 		}
@@ -258,7 +258,7 @@ public class TestDesResSymbolicAlt extends TestCase
 		}
 		
 		@Override
-		public void writeMathML( PrecedenceComparator<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> pc , PrintStream ps )
+		public void writeMathML( PrecedenceComparator pc , PrintStream ps )
 		{
 			ps.print( "<mn>2</mn><mo>&InvisibleTimes;</mo><mi>U</mi><mfenced><mi>x</mi></mfenced>" );
 		}
@@ -351,7 +351,7 @@ public class TestDesResSymbolicAlt extends TestCase
 		}
 		
 		@Override
-		public void writeMathML( PrecedenceComparator<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> pc , PrintStream ps )
+		public void writeMathML( PrecedenceComparator pc , PrintStream ps )
 		{
 			ps.print( "<msub><mi>A</mi><mn>0</mn></msub>" );
 		}
@@ -443,7 +443,7 @@ public class TestDesResSymbolicAlt extends TestCase
 		}
 		
 		@Override
-		public void writeMathML( PrecedenceComparator<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> pc , PrintStream ps )
+		public void writeMathML( PrecedenceComparator pc , PrintStream ps )
 		{
 			ps.print( "<msub><mi>A</mi><mn>1</mn></msub>" );
 		}
@@ -536,7 +536,7 @@ public class TestDesResSymbolicAlt extends TestCase
 		}
 		
 		@Override
-		public void writeMathML( PrecedenceComparator<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> pc , PrintStream ps )
+		public void writeMathML( PrecedenceComparator pc , PrintStream ps )
 		{
 			ps.print( "<msub><mi>A</mi><mn>2</mn></msub>" );
 		}
@@ -632,7 +632,7 @@ public class TestDesResSymbolicAlt extends TestCase
 		}
 		
 		@Override
-		public void writeMathML( PrecedenceComparator<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> pc , PrintStream ps )
+		public void writeMathML( PrecedenceComparator pc , PrintStream ps )
 		{
 			ps.print( "<msub><mi>A</mi><mn>3</mn></msub>" );
 		}
@@ -779,7 +779,7 @@ public class TestDesResSymbolicAlt extends TestCase
 		}
 		
 		@Override
-		public void writeMathML( PrecedenceComparator<DoubleElem,DoubleElemFactory> pc , PrintStream ps )
+		public void writeMathML( PrecedenceComparator pc , PrintStream ps )
 		{
 			ps.print( "<msub><mi>x</mi><mn>0</mn></msub>" );
 		}
@@ -872,7 +872,7 @@ public class TestDesResSymbolicAlt extends TestCase
 		}
 		
 		@Override
-		public void writeMathML( PrecedenceComparator<DoubleElem,DoubleElemFactory> pc , PrintStream ps )
+		public void writeMathML( PrecedenceComparator pc , PrintStream ps )
 		{
 			ps.print( "<msub><mi>x</mi><mn>1</mn></msub>" );
 		}
@@ -965,7 +965,7 @@ public class TestDesResSymbolicAlt extends TestCase
 		}
 		
 		@Override
-		public void writeMathML( PrecedenceComparator<DoubleElem,DoubleElemFactory> pc , PrintStream ps )
+		public void writeMathML( PrecedenceComparator pc , PrintStream ps )
 		{
 			ps.print( "<msub><mi>x</mi><mn>2</mn></msub>" );
 		}
@@ -1058,7 +1058,7 @@ public class TestDesResSymbolicAlt extends TestCase
 		}
 		
 		@Override
-		public void writeMathML( PrecedenceComparator<DoubleElem,DoubleElemFactory> pc , PrintStream ps )
+		public void writeMathML( PrecedenceComparator pc , PrintStream ps )
 		{
 			ps.print( "<msub><mi>x</mi><mn>3</mn></msub>" );
 		}
@@ -1139,7 +1139,7 @@ public class TestDesResSymbolicAlt extends TestCase
 	 * @author thorngreen
 	 *
 	 */
-	private static class PrecCompare extends DefaultPrecedenceComparator<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
+	private static class PrecCompare extends DefaultPrecedenceComparator
 	{
 		
 		
