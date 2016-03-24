@@ -33,6 +33,8 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map.Entry;
 import java.util.Set;
+import java.util.TreeMap;
+import java.util.TreeSet;
 
 import simplealgebra.AbstractCache;
 import simplealgebra.CloneThreadCache;
@@ -49,12 +51,14 @@ import simplealgebra.WriteElemCache;
 import simplealgebra.WriteNumDimensionsCache;
 import simplealgebra.et.EinsteinTensorElem;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
+import simplealgebra.symbolic.PrecedenceComparator;
 import simplealgebra.symbolic.SCacheKey;
 import simplealgebra.symbolic.SymbolicAdd;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicMult;
 import simplealgebra.symbolic.SymbolicNegate;
+import simplealgebra.symbolic.SymbolicZero;
 
 
 /**
@@ -1500,6 +1504,127 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 			}
 		}
 		return( st );
+	}
+	
+	
+	
+	/**
+	 * Sorted comparable set for writing to MathML.
+	 * 
+	 * @author tgreen
+	 *
+	 */
+	protected static class MathMLTreeSet extends TreeSet<BigInteger> implements Comparable<TreeSet<BigInteger>>
+	{
+		
+		/**
+		 * Constructs the set.
+		 * 
+		 * @param in The multivector key from which to construct.
+		 */
+		public MathMLTreeSet( HashSet<BigInteger> in )
+		{
+			super();
+			for( final BigInteger z : in )
+			{
+				add( z );
+			}
+		}
+
+		@Override
+		public int compareTo( TreeSet<BigInteger> arg0 ) 
+		{
+			if( size() < arg0.size() )
+			{
+				return( -1 );
+			}
+			
+			if( size() > arg0.size() )
+			{
+				return( 1 );
+			}
+			
+			final Iterator<BigInteger> it = arg0.iterator();
+			
+			for( final BigInteger z : this )
+			{
+				final BigInteger zarg = it.next();
+				
+				final int comp = z.compareTo( zarg );
+				
+				if( comp != 0 )
+				{
+					return( comp );
+				}
+			}
+			
+			return( 0 );
+		}
+		
+		
+	}
+	
+	
+	
+	
+	@Override
+	public void writeMathML( PrecedenceComparator pc , PrintStream ps )
+	{
+		
+		final TreeMap<MathMLTreeSet,R> sortedMap = new TreeMap<MathMLTreeSet,R>();
+		
+		for( final Entry<HashSet<BigInteger>,R> ii : map.entrySet() )
+		{
+			final MathMLTreeSet ts = new MathMLTreeSet( ii.getKey() );
+			if( !( ii.getValue() instanceof SymbolicZero ) )
+			{
+				sortedMap.put( ts , ii.getValue() );
+			}
+		}
+		
+		boolean first = true;
+		
+		for( final Entry<MathMLTreeSet,R> ii : sortedMap.entrySet() )
+		{
+			if( !first )
+			{
+				ps.print( "<mo>+</mo>" );
+			}
+			
+			
+			if( pc.parenNeeded( this ,  ii.getValue() , false ) )
+			{
+				pc.getParenthesisGenerator().handleParenthesisOpen(ps);
+			}
+			else
+			{
+				ps.print( "<mrow>" );
+			}
+			
+			
+			ii.getValue().writeMathML(pc, ps);
+			
+			
+			if( pc.parenNeeded( this ,  ii.getValue() , false ) )
+			{
+				pc.getParenthesisGenerator().handleParenthesisClose(ps);
+			}
+			else
+			{
+				ps.print( "</mrow>" );
+			}
+			
+			
+			for( final BigInteger b : ii.getKey() )
+			{
+				ps.print( "<msub><mi>&sigma;</mi><mn>" );
+				ps.print( b );
+				ps.print( "</mn></msub>" );
+			}
+			
+			first = false;
+		}
+		
 	}
 	
 	

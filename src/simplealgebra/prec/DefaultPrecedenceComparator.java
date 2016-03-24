@@ -31,6 +31,7 @@ import simplealgebra.ddx.CovariantDerivative;
 // import simplealgebra.et.SymbolicRegenCovar;
 // import simplealgebra.et.SymbolicTensorResym;
 import simplealgebra.et.OrdinaryDerivative;
+import simplealgebra.ga.GeometricAlgebraMultivectorElem;
 import simplealgebra.ga.SymbolicReverseLeft;
 import simplealgebra.ga.SymbolicReverseRight;
 import simplealgebra.ga.SymbolicDot;
@@ -458,6 +459,7 @@ public class DefaultPrecedenceComparator extends PrecedenceComparator {
 			
 			hs.add( new SimpleBinaryOperator( SymbolicMultRevCoeff.class ) );
 			hs.add( new ItimesOperator( SymbolicMult.class ) );
+			hs.add( new ItimesOperator( GeometricAlgebraMultivectorElem.class ) );
 			
 			operatorPrecedence.add( hs );
 		}

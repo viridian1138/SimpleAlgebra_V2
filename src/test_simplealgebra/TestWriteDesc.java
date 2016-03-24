@@ -36,6 +36,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Map.Entry;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
@@ -757,15 +758,15 @@ public class TestWriteDesc extends TestCase
 	
 		{
 			final HashSet<BigInteger> ind = new HashSet<BigInteger>();
-			ind.add( BigInteger.valueOf( 4 ) );
-			ind.add( BigInteger.valueOf( 5 ) );
+			ind.add( BigInteger.valueOf( 1 ) );
+			ind.add( BigInteger.valueOf( 2 ) );
 			ge2.setVal( ind , cd );
 		}
 		
 		{
 			final HashSet<BigInteger> ind = new HashSet<BigInteger>();
-			ind.add( BigInteger.valueOf( 5 ) );
-			ind.add( BigInteger.valueOf( 6 ) );
+			ind.add( BigInteger.valueOf( 2 ) );
+			ind.add( BigInteger.valueOf( 3 ) );
 			ge2.setVal( ind , cd2 );
 		}
 		
@@ -774,6 +775,15 @@ public class TestWriteDesc extends TestCase
 		System.out.println( "### " + aa );
 	
 		System.out.println( "***" );
+		
+		ge2.writeMathMLWrapped( dp , System.out );
+		
+		System.out.println( "" );
+		
+		System.out.println( "***" );
+		
+		
+		
 		
 		final EinsteinTensorElemFactory<String,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 			ee = new EinsteinTensorElemFactory<String,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>(ce);
@@ -829,6 +839,8 @@ public class TestWriteDesc extends TestCase
 	 */
 	public void testWriteDescCrossProduct() throws Throwable
 	{
+		final DefaultPrecedenceComparator dp = new PrecCompare();
+		
 		final TestDimensionThree td = new TestDimensionThree();
 		
 		final DoubleElemFactory dl = new DoubleElemFactory();
@@ -865,12 +877,31 @@ public class TestWriteDesc extends TestCase
 		args.add( ga2 );
 		
 		final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>
-			ga3 = ga1.handleOptionalOp( GeometricAlgebraMultivectorCmd.CROSS , args );
+			ga3a = ga1.handleOptionalOp( GeometricAlgebraMultivectorCmd.CROSS , args );
+		
+		final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>
+			ga3 = new GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>(ye, td, ord);
+
+		
+		for( final Entry<HashSet<BigInteger>, SymbolicElem<DoubleElem, DoubleElemFactory>> ii : ga3a.getEntrySet() )
+		{
+			final SymbolicElem<DoubleElem, DoubleElemFactory> nv = ii.getValue().handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY2 , null);
+					
+			ga3.setVal( ii.getKey() , nv );
+		}
 		
 		
 		String aa = ga3.writeDesc( ga3.getFac().generateWriteElemCache() , System.out );
 		
 		System.out.println( "### " + aa );
+		
+		System.out.println( "***" );
+		
+		ga3.writeMathMLWrapped( dp , System.out );
+		
+		System.out.println( "" );
+		
+		System.out.println( "***" );
 		
 		
 	}
