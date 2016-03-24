@@ -31,6 +31,8 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Iterator;
+import java.util.TreeMap;
+import java.util.TreeSet;
 import java.util.Map.Entry;
 import java.util.Set;
 
@@ -48,6 +50,8 @@ import simplealgebra.ga.GeometricAlgebraMultivectorElem;
 import simplealgebra.ga.GeometricAlgebraMultivectorElemFactory;
 import simplealgebra.ga.WriteGaSetCache;
 import simplealgebra.ga.WriteOrdCache;
+import simplealgebra.symbolic.PrecedenceComparator;
+import simplealgebra.symbolic.SymbolicZero;
 
 
 
@@ -1223,6 +1227,137 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 			}
 		}
 		return( st );
+	}
+	
+	
+	
+	/**
+	 * Comparable list for writing to MathML.
+	 * 
+	 * @author tgreen
+	 *
+	 */
+	protected static class MathMLArrayList extends ArrayList<BigInteger> implements Comparable<ArrayList<BigInteger>>
+	{
+		
+		/**
+		 * Constructs the list.
+		 * 
+		 * @param in The tensor key from which to construct.
+		 */
+		public MathMLArrayList( ArrayList<BigInteger> in )
+		{
+			super();
+			for( final BigInteger z : in )
+			{
+				add( z );
+			}
+		}
+
+		@Override
+		public int compareTo( ArrayList<BigInteger> arg0 ) 
+		{
+			if( size() < arg0.size() )
+			{
+				return( -1 );
+			}
+			
+			if( size() > arg0.size() )
+			{
+				return( 1 );
+			}
+			
+			final Iterator<BigInteger> it = arg0.iterator();
+			
+			for( final BigInteger z : this )
+			{
+				final BigInteger zarg = it.next();
+				
+				final int comp = z.compareTo( zarg );
+				
+				if( comp != 0 )
+				{
+					return( comp );
+				}
+			}
+			
+			return( 0 );
+		}
+		
+		
+	}
+	
+	
+	
+	@Override
+	public void writeMathML( PrecedenceComparator pc , PrintStream ps )
+	{
+		
+		final TreeMap<MathMLArrayList,R> sortedMap = new TreeMap<MathMLArrayList,R>();
+		
+		for( final Entry<ArrayList<BigInteger>,R> ii : map.entrySet() )
+		{
+			final MathMLArrayList ts = new MathMLArrayList( ii.getKey() );
+			if( !( ii.getValue() instanceof SymbolicZero ) )
+			{
+				sortedMap.put( ts , ii.getValue() );
+			}
+		}
+		
+		boolean first = true;
+		
+		for( final Entry<MathMLArrayList,R> ii : sortedMap.entrySet() )
+		{
+			if( !first )
+			{
+				ps.print( "<mo>+</mo>" );
+			}
+			
+			
+			if( pc.parenNeeded( this ,  ii.getValue() , false ) )
+			{
+				pc.getParenthesisGenerator().handleParenthesisOpen(ps);
+			}
+			else
+			{
+				ps.print( "<mrow>" );
+			}
+			
+			
+			ii.getValue().writeMathML(pc, ps);
+			
+			
+			if( pc.parenNeeded( this ,  ii.getValue() , false ) )
+			{
+				pc.getParenthesisGenerator().handleParenthesisClose(ps);
+			}
+			else
+			{
+				ps.print( "</mrow>" );
+			}
+			
+			
+			if( ii.getKey().size() > 0 )
+			{
+				boolean ifirst = true;
+				ps.print( "<msub><mi>&sigma;</mi><mrow>" );
+				for( final BigInteger b : ii.getKey() )
+				{
+					if( !ifirst )
+					{
+						ps.print( "<mo>,</mo>" );
+					}
+					ps.print( "<mn>" );
+					ps.print( b );
+					ps.print( "</mn>" );
+					ifirst = false;
+				}
+				ps.print( "</mrow></msub>" );
+			}
+			
+			first = false;
+		}
+		
 	}
 	
 	

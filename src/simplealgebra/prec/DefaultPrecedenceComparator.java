@@ -24,6 +24,7 @@ import simplealgebra.ddx.FlowVectorTensor;
 // import simplealgebra.ddx.MaterialDerivativeFactory;
 import simplealgebra.ddx.DirectionalDerivative;
 import simplealgebra.ddx.CovariantDerivative;
+import simplealgebra.et.EinsteinTensorElem;
 // import simplealgebra.ddx.CovariantDerivativeFactory;
 // import simplealgebra.et.SymbolicIndexReduction;
 // import simplealgebra.et.SymbolicRankTwoTrace;
@@ -460,6 +461,7 @@ public class DefaultPrecedenceComparator extends PrecedenceComparator {
 			hs.add( new SimpleBinaryOperator( SymbolicMultRevCoeff.class ) );
 			hs.add( new ItimesOperator( SymbolicMult.class ) );
 			hs.add( new ItimesOperator( GeometricAlgebraMultivectorElem.class ) );
+			hs.add( new ItimesOperator( EinsteinTensorElem.class ) );
 			
 			operatorPrecedence.add( hs );
 		}

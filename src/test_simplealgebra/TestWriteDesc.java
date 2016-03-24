@@ -827,6 +827,12 @@ public class TestWriteDesc extends TestCase
 		
 		System.out.println( "***" );
 		
+		ed.writeMathMLWrapped( dp , System.out );
+		
+		System.out.println( "" );
+		
+		System.out.println( "***" );
+		
 		
 	}
 	
