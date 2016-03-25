@@ -307,9 +307,14 @@ public class DefaultPrecedenceComparator extends PrecedenceComparator {
 	
 	
 	/**
-	 * The operator precedence table of the comparator.
+	 * The operator precedence table of the comparator for the parent node.
 	 */
-	protected final ArrayList<HashSet<OperatorNode>> operatorPrecedence = new ArrayList<HashSet<OperatorNode>>();
+	protected final ArrayList<HashSet<OperatorNode>> operatorPrecedenceParent = new ArrayList<HashSet<OperatorNode>>();
+	
+	/**
+	 * The operator precedence table of the comparator for the child node.
+	 */
+	protected final ArrayList<HashSet<OperatorNode>> operatorPrecedenceChild = new ArrayList<HashSet<OperatorNode>>();
 	
 	
 	
@@ -336,9 +341,10 @@ public class DefaultPrecedenceComparator extends PrecedenceComparator {
 	 * Gets the precedence number of the elem, where larger numbers indicate higher precedence.
 	 * 
 	 * @param clssA The elem to check.
+	 * @param operatorPrecedence The operator precedence map.
 	 * @return The precedence value, of -1 if no precedence entry was found.
 	 */
-	protected int getPrecedenceNumber( final Elem<?,?> clssA )
+	protected int getPrecedenceNumber( final Elem<?,?> clssA , ArrayList<HashSet<OperatorNode>> operatorPrecedence )
 	{
 		Elem<?,?> clss = clssA;
 		while( clss instanceof SymbolicReduction )
@@ -376,9 +382,10 @@ public class DefaultPrecedenceComparator extends PrecedenceComparator {
 	 * Gets the precedence node of the elem.
 	 * 
 	 * @param clssA The elem to check.
+	 * @param operatorPrecedence The operator precedence map.
 	 * @return The precedence node, or null if no precedence node was found.
 	 */
-	protected OperatorNode getOperatorNode( final Elem<?,?> clssA )
+	protected OperatorNode getOperatorNode( final Elem<?,?> clssA ,  ArrayList<HashSet<OperatorNode>> operatorPrecedence )
 	{
 		Elem<?,?> clss = clssA;
 		while( clss instanceof SymbolicReduction )
@@ -423,23 +430,12 @@ public class DefaultPrecedenceComparator extends PrecedenceComparator {
 		{
 			final HashSet<OperatorNode> hs = new HashSet<OperatorNode>();
 			
-			hs.add( new SimpleBinaryOperator( ValueWithUncertaintyElem.class ) );
+			hs.add( new SimpleBinaryOperator( SymbolicAdd.class ) );
+			hs.add( new MultiCharIdentOperator( DoubleElem.class ) );
+			hs.add( new MultiCharIdentOperator( BigFixedPointElem.class ) );
 			
-			operatorPrecedence.add( hs );
+			operatorPrecedenceParent.add( hs );
 		}
-		
-		
-		
-		
-		{
-			final HashSet<OperatorNode> hs = new HashSet<OperatorNode>();
-			
-			hs.add( new SimpleBinaryOperator( ComplexElem.class ) );
-			
-			operatorPrecedence.add( hs );
-		}
-		
-		
 		
 		
 		{
@@ -448,11 +444,36 @@ public class DefaultPrecedenceComparator extends PrecedenceComparator {
 			hs.add( new SimpleBinaryOperator( SymbolicAdd.class ) );
 			hs.add( new MultiCharIdentOperator( DoubleElem.class ) );
 			hs.add( new MultiCharIdentOperator( BigFixedPointElem.class ) );
+			hs.add( new SimpleBinaryOperator( GeometricAlgebraMultivectorElem.class ) );
+			hs.add( new SimpleBinaryOperator( EinsteinTensorElem.class ) );
+			hs.add( new SimpleBinaryOperator( ComplexElem.class ) );
 			
-			operatorPrecedence.add( hs );
+			operatorPrecedenceChild.add( hs );
 		}
 		
 		
+		// -----------------------------------------------------------------
+		
+		
+		{
+			final HashSet<OperatorNode> hs = new HashSet<OperatorNode>();
+			
+			hs.add( new SimpleBinaryOperator( ValueWithUncertaintyElem.class ) );
+			
+			operatorPrecedenceParent.add( hs );
+		}
+		
+		
+		{
+			final HashSet<OperatorNode> hs = new HashSet<OperatorNode>();
+			
+			hs.add( new SimpleBinaryOperator( ValueWithUncertaintyElem.class ) );
+			
+			operatorPrecedenceChild.add( hs );
+		}
+		
+		
+		// -----------------------------------------------------------------
 		
 		
 		{
@@ -462,11 +483,23 @@ public class DefaultPrecedenceComparator extends PrecedenceComparator {
 			hs.add( new ItimesOperator( SymbolicMult.class ) );
 			hs.add( new ItimesOperator( GeometricAlgebraMultivectorElem.class ) );
 			hs.add( new ItimesOperator( EinsteinTensorElem.class ) );
+			hs.add( new ItimesOperator( ComplexElem.class ) );
 			
-			operatorPrecedence.add( hs );
+			operatorPrecedenceParent.add( hs );
 		}
 		
 		
+		{
+			final HashSet<OperatorNode> hs = new HashSet<OperatorNode>();
+			
+			hs.add( new SimpleBinaryOperator( SymbolicMultRevCoeff.class ) );
+			hs.add( new ItimesOperator( SymbolicMult.class ) );
+			
+			operatorPrecedenceChild.add( hs );
+		}
+		
+		
+		// -----------------------------------------------------------------
 		
 		
 		{
@@ -478,10 +511,24 @@ public class DefaultPrecedenceComparator extends PrecedenceComparator {
 			hs.add( new SimpleBinaryOperator( SymbolicLeftContraction.class ) );
 			hs.add( new SimpleBinaryOperator( SymbolicRightContraction.class ) );
 			
-			operatorPrecedence.add( hs );
+			operatorPrecedenceParent.add( hs );
 		}
 		
 		
+		{
+			final HashSet<OperatorNode> hs = new HashSet<OperatorNode>();
+			
+			hs.add( new SimpleBinaryOperator( SymbolicDot.class ) );
+			hs.add( new SimpleBinaryOperator( SymbolicDotHestenes.class ) );
+			hs.add( new SimpleBinaryOperator( SymbolicScalar.class ) );
+			hs.add( new SimpleBinaryOperator( SymbolicLeftContraction.class ) );
+			hs.add( new SimpleBinaryOperator( SymbolicRightContraction.class ) );
+			
+			operatorPrecedenceChild.add( hs );
+		}
+		
+		
+		// -----------------------------------------------------------------
 		
 		
 		{
@@ -490,9 +537,21 @@ public class DefaultPrecedenceComparator extends PrecedenceComparator {
 			hs.add( new SimpleBinaryOperator( SymbolicWedge.class ) );
 			hs.add( new SimpleBinaryOperator( SymbolicCross.class ) );
 			
-			operatorPrecedence.add( hs );
+			operatorPrecedenceParent.add( hs );
 		}
 		
+		
+		{
+			final HashSet<OperatorNode> hs = new HashSet<OperatorNode>();
+			
+			hs.add( new SimpleBinaryOperator( SymbolicWedge.class ) );
+			hs.add( new SimpleBinaryOperator( SymbolicCross.class ) );
+			
+			operatorPrecedenceChild.add( hs );
+		}
+		
+		
+		// -----------------------------------------------------------------
 		
 		
 		{
@@ -508,10 +567,28 @@ public class DefaultPrecedenceComparator extends PrecedenceComparator {
 			hs.add( new SuperscriptingOperator( SymbolicInvertRightRevCoeff.class ) );
 			hs.add( new SuperscriptingOperator( SymbolicTranspose.class ) );
 			
-			operatorPrecedence.add( hs );
+			operatorPrecedenceParent.add( hs );
 		}
 		
 		
+		{
+			final HashSet<OperatorNode> hs = new HashSet<OperatorNode>();
+			
+			hs.add( new SuperscriptingOperator( SymbolicInvertLeft.class ) );
+			hs.add( new SuperscriptingOperator( SymbolicInvertRight.class ) );
+			hs.add( new SuperscriptingOperator( SymbolicReverseLeft.class ) );
+			hs.add( new SuperscriptingOperator( SymbolicReverseRight.class ) );
+			hs.add( new SuperscriptingOperator( SymbolicConjugateLeft.class ) );
+			hs.add( new SuperscriptingOperator( SymbolicConjugateRight.class ) );
+			hs.add( new SuperscriptingOperator( SymbolicInvertLeftRevCoeff.class ) );
+			hs.add( new SuperscriptingOperator( SymbolicInvertRightRevCoeff.class ) );
+			hs.add( new SuperscriptingOperator( SymbolicTranspose.class ) );
+			
+			operatorPrecedenceChild.add( hs );
+		}
+		
+		
+		// -----------------------------------------------------------------
 		
 		
 		{
@@ -519,10 +596,20 @@ public class DefaultPrecedenceComparator extends PrecedenceComparator {
 			
 			hs.add( new NegateOperator( SymbolicNegate.class ) );
 			
-			operatorPrecedence.add( hs );
+			operatorPrecedenceParent.add( hs );
 		}
 		
 		
+		{
+			final HashSet<OperatorNode> hs = new HashSet<OperatorNode>();
+			
+			hs.add( new NegateOperator( SymbolicNegate.class ) );
+			
+			operatorPrecedenceChild.add( hs );
+		}
+		
+		
+		// -----------------------------------------------------------------
 		
 		
 		{
@@ -533,7 +620,19 @@ public class DefaultPrecedenceComparator extends PrecedenceComparator {
 			hs.add( new MultiCharIdentOperator( SymbolicIdentity.class ) );
 			hs.add( new MultiCharIdentOperator( SymbolicZero.class ) );
 			
-			operatorPrecedence.add( hs );
+			operatorPrecedenceParent.add( hs );
+		}
+		
+		
+		{
+			final HashSet<OperatorNode> hs = new HashSet<OperatorNode>();
+			
+			hs.add( new MultiCharIdentOperator( SymbolicSine.class ) );
+			hs.add( new MultiCharIdentOperator( SymbolicCosine.class ) );
+			hs.add( new MultiCharIdentOperator( SymbolicIdentity.class ) );
+			hs.add( new MultiCharIdentOperator( SymbolicZero.class ) );
+			
+			operatorPrecedenceChild.add( hs );
 		}
 		
 		
@@ -675,10 +774,10 @@ public class DefaultPrecedenceComparator extends PrecedenceComparator {
 		}
 		
 		
-		OperatorNode ao = getOperatorNode( a );
-		int ai = getPrecedenceNumber( a );
-		OperatorNode bo = getOperatorNode( b );
-		int bi = getPrecedenceNumber( b );
+		OperatorNode ao = getOperatorNode( a , operatorPrecedenceParent );
+		int ai = getPrecedenceNumber( a , operatorPrecedenceParent );
+		OperatorNode bo = getOperatorNode( b , operatorPrecedenceChild );
+		int bi = getPrecedenceNumber( b , operatorPrecedenceChild );
 		
 		if( ao != null )
 		{

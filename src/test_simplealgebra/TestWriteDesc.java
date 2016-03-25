@@ -686,6 +686,13 @@ public class TestWriteDesc extends TestCase
 		System.out.println( "***" );
 		
 		
+		cd2a.writeMathMLWrapped( dp , System.out );
+		
+		System.out.println( "" );
+		
+		System.out.println( "***" );
+		
+		
 		
 		
 		
@@ -708,6 +715,14 @@ public class TestWriteDesc extends TestCase
 		System.out.println( "### " + aa );
 		
 		System.out.println( "***" );
+		
+		
+		cv2a.writeMathMLWrapped( dp , System.out );
+		
+		System.out.println( "" );
+		
+		System.out.println( "***" );
+		
 		
 		
 		final SquareMatrixElemFactory<TestDimensionFour,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> sqe2 = new SquareMatrixElemFactory<TestDimensionFour,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>( ce , td );
