@@ -629,6 +629,10 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 			
 			KnowledgeBuilder builder = KnowledgeBuilderFactory.newKnowledgeBuilder();
 			
+			// Load in the reng support as a separate cross-cutting concern.
+			builder.add( ResourceFactory.newClassPathResource( "reng.drl" )  , 
+					ResourceType.DRL );
+			
 			builder.add( ResourceFactory.newClassPathResource( "distributeSimplify.drl" )  , 
 					ResourceType.DRL );
 			
@@ -662,6 +666,10 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 			OptimizerFactory.setDefaultOptimizer( OptimizerFactory.SAFE_REFLECTIVE );
 			
 			KnowledgeBuilder builder = KnowledgeBuilderFactory.newKnowledgeBuilder();
+			
+			// Load in the reng support as a separate cross-cutting concern.
+			builder.add( ResourceFactory.newClassPathResource( "reng.drl" )  , 
+					ResourceType.DRL );
 			
 			builder.add( ResourceFactory.newClassPathResource( "distributeSimplify2.drl" )  , 
 					ResourceType.DRL );
