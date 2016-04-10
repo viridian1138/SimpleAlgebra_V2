@@ -53,7 +53,6 @@ import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicIdentity;
 import simplealgebra.symbolic.SymbolicNegate;
-import simplealgebra.symbolic.SymbolicOps;
 
 
 
@@ -183,7 +182,7 @@ public class TestComplexOpSymbolic extends TestCase
 		Assert.assertTrue( d2 instanceof SymbolicConjugateLeft );
 		
 		SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
-			d2a = d2.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
+			d2a = d2.distributeSimplify();
 		
 		Assert.assertTrue( d2a instanceof SymbolicIdentity );
 		
@@ -219,7 +218,7 @@ public class TestComplexOpSymbolic extends TestCase
 		Assert.assertTrue( d2 instanceof SymbolicConjugateRight );
 		
 		SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
-			d2a = d2.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
+			d2a = d2.distributeSimplify();
 		
 		Assert.assertTrue( d2a instanceof SymbolicIdentity );
 		

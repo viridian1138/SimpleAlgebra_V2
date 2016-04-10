@@ -35,9 +35,12 @@ import simplealgebra.Mutator;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.WriteElemCache;
 import simplealgebra.symbolic.PrecedenceComparator;
+import simplealgebra.symbolic.SymbolicElem.EVAL_MODE;
 
 import java.io.PrintStream;
 import java.math.BigInteger;
+
+import org.kie.internal.runtime.StatefulKnowledgeSession;
 
 /**
  * Elem for a value with an uncertainty (e.g. a measurement error).
@@ -179,6 +182,22 @@ public class ValueWithUncertaintyElem<R extends Elem<R,?>, S extends ElemFactory
 		}
 		cache.put(this, this);
 		return( this );
+	}
+	
+	
+	@Override
+	public void performInserts( StatefulKnowledgeSession session )
+	{
+		value.performInserts( session );
+		uncertainty.performInserts( session );
+		super.performInserts( session );
+	}
+	
+	
+	@Override
+	public boolean evalSymbolicZeroApprox( EVAL_MODE mode )
+	{
+		return( ( value.evalSymbolicZeroApprox(mode) ) && ( uncertainty.evalSymbolicZeroApprox(mode) ) );
 	}
 	
 	

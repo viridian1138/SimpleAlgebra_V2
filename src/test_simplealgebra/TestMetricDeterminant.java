@@ -53,7 +53,6 @@ import simplealgebra.symbolic.SymbolicAdd;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicIdentity;
-import simplealgebra.symbolic.SymbolicOps;
 import simplealgebra.symbolic.SymbolicZero;
 import simplealgebra.et.*;
 import simplealgebra.*;
@@ -326,7 +325,7 @@ public class TestMetricDeterminant extends TestCase
 		
 		
 		SymbolicElem<DoubleElem,DoubleElemFactory>
-			d2 = det.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY2 , null);
+			d2 = det.distributeSimplify2();
 		
 		// System.out.println( d2.writeString() );
 		
@@ -340,7 +339,7 @@ public class TestMetricDeterminant extends TestCase
 		
 		
 		SymbolicElem<DoubleElem,DoubleElemFactory>
-			d3 = d2.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
+			d3 = d2.distributeSimplify();
 	
 		// System.out.println( d3.writeString() );
 		

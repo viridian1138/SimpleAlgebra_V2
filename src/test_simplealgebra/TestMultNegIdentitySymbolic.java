@@ -49,7 +49,6 @@ import simplealgebra.symbolic.SCacheKey;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicNegate;
-import simplealgebra.symbolic.SymbolicOps;
 
 
 
@@ -180,7 +179,7 @@ public class TestMultNegIdentitySymbolic extends TestCase
 			d1 = d0a.mult( d1a );
 		
 		SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
-			d2 = d1.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY2 , null);
+			d2 = d1.distributeSimplify2();
 		
 		Assert.assertTrue( d2 instanceof SymbolicNegate );
 		
@@ -220,7 +219,7 @@ public class TestMultNegIdentitySymbolic extends TestCase
 			d1 = d1a.mult( d0a );
 		
 		SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
-			d2 = d1.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY2 , null);
+			d2 = d1.distributeSimplify2();
 		
 		Assert.assertTrue( d2 instanceof SymbolicNegate );
 		

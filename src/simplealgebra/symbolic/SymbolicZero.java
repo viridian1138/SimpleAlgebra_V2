@@ -36,6 +36,7 @@ import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.WriteElemCache;
+import simplealgebra.symbolic.SymbolicElem.EVAL_MODE;
 
 import java.math.BigInteger;
 
@@ -211,6 +212,12 @@ public class SymbolicZero<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 	public boolean symbolicEquals( SymbolicElem<R, S> b )
 	{
 		return( b instanceof SymbolicZero );
+	}
+	
+	@Override
+	public boolean evalSymbolicZeroApprox( EVAL_MODE mode )
+	{
+		return( true );
 	}
 	
 	/**

@@ -65,7 +65,6 @@ import simplealgebra.symbolic.SymbolicExponential;
 import simplealgebra.symbolic.SymbolicIdentity;
 import simplealgebra.symbolic.SymbolicMult;
 import simplealgebra.symbolic.SymbolicNegate;
-import simplealgebra.symbolic.SymbolicOps;
 import simplealgebra.symbolic.SymbolicSine;
 import simplealgebra.symbolic.SymbolicZero;
 
@@ -225,7 +224,7 @@ public class TestGaZeroSymbolic extends TestCase
 		Assert.assertTrue( d2 instanceof SymbolicWedge );
 		
 		SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>,GeometricAlgebraMultivectorElemFactory<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>>
-			d2a = d2.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
+			d2a = d2.distributeSimplify();
 		
 		Assert.assertTrue( d2a instanceof SymbolicZero );
 		
@@ -268,7 +267,7 @@ public class TestGaZeroSymbolic extends TestCase
 		Assert.assertTrue( d2 instanceof SymbolicWedge );
 		
 		SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>,GeometricAlgebraMultivectorElemFactory<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>>
-			d2a = d2.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
+			d2a = d2.distributeSimplify();
 		
 		Assert.assertTrue( d2a instanceof SymbolicZero );
 		
@@ -313,7 +312,7 @@ public class TestGaZeroSymbolic extends TestCase
 		Assert.assertTrue( d2 instanceof SymbolicDot );
 		
 		SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>,GeometricAlgebraMultivectorElemFactory<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>>
-			d2a = d2.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
+			d2a = d2.distributeSimplify();
 		
 		Assert.assertTrue( d2a instanceof SymbolicZero );
 		
@@ -356,7 +355,7 @@ public class TestGaZeroSymbolic extends TestCase
 		Assert.assertTrue( d2 instanceof SymbolicDot );
 		
 		SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>,GeometricAlgebraMultivectorElemFactory<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>>
-			d2a = d2.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
+			d2a = d2.distributeSimplify();
 		
 		Assert.assertTrue( d2a instanceof SymbolicZero );
 		
@@ -401,7 +400,7 @@ public class TestGaZeroSymbolic extends TestCase
 		Assert.assertTrue( d2 instanceof SymbolicDotHestenes );
 		
 		SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>,GeometricAlgebraMultivectorElemFactory<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>>
-			d2a = d2.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
+			d2a = d2.distributeSimplify();
 		
 		Assert.assertTrue( d2a instanceof SymbolicZero );
 		
@@ -444,7 +443,7 @@ public class TestGaZeroSymbolic extends TestCase
 		Assert.assertTrue( d2 instanceof SymbolicDotHestenes );
 		
 		SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>,GeometricAlgebraMultivectorElemFactory<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>>
-			d2a = d2.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
+			d2a = d2.distributeSimplify();
 		
 		Assert.assertTrue( d2a instanceof SymbolicZero );
 		
@@ -489,7 +488,7 @@ public class TestGaZeroSymbolic extends TestCase
 		Assert.assertTrue( d2 instanceof SymbolicScalar );
 		
 		SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>,GeometricAlgebraMultivectorElemFactory<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>>
-			d2a = d2.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
+			d2a = d2.distributeSimplify();
 		
 		Assert.assertTrue( d2a instanceof SymbolicZero );
 		
@@ -532,7 +531,7 @@ public class TestGaZeroSymbolic extends TestCase
 		Assert.assertTrue( d2 instanceof SymbolicScalar );
 		
 		SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>,GeometricAlgebraMultivectorElemFactory<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>>
-			d2a = d2.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
+			d2a = d2.distributeSimplify();
 		
 		Assert.assertTrue( d2a instanceof SymbolicZero );
 		
@@ -570,7 +569,7 @@ public class TestGaZeroSymbolic extends TestCase
 		Assert.assertTrue( d2 instanceof SymbolicReverseLeft );
 		
 		SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>,GeometricAlgebraMultivectorElemFactory<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>>
-			d2a = d2.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
+			d2a = d2.distributeSimplify();
 		
 		Assert.assertTrue( d2a instanceof SymbolicIdentity );
 		
@@ -608,7 +607,7 @@ public class TestGaZeroSymbolic extends TestCase
 		Assert.assertTrue( d2 instanceof SymbolicReverseRight );
 		
 		SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>,GeometricAlgebraMultivectorElemFactory<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>>
-			d2a = d2.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
+			d2a = d2.distributeSimplify();
 		
 		Assert.assertTrue( d2a instanceof SymbolicIdentity );
 		
@@ -659,7 +658,7 @@ public class TestGaZeroSymbolic extends TestCase
 		Assert.assertTrue( d2 instanceof SymbolicDot );
 		
 		SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFour, GeometricAlgebraOrd<TestDimensionFour>, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, GeometricAlgebraMultivectorElemFactory<TestDimensionFour, GeometricAlgebraOrd<TestDimensionFour>, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>
-			d2a = d2.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
+			d2a = d2.distributeSimplify();
 		
 		Assert.assertTrue( d2a instanceof SymbolicZero );
 		
@@ -710,7 +709,7 @@ public class TestGaZeroSymbolic extends TestCase
 		Assert.assertTrue( d2 instanceof SymbolicDotHestenes );
 		
 		SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFour, GeometricAlgebraOrd<TestDimensionFour>, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, GeometricAlgebraMultivectorElemFactory<TestDimensionFour, GeometricAlgebraOrd<TestDimensionFour>, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>
-			d2a = d2.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
+			d2a = d2.distributeSimplify();
 		
 		Assert.assertTrue( d2a instanceof SymbolicZero );
 		
@@ -761,7 +760,7 @@ public class TestGaZeroSymbolic extends TestCase
 		Assert.assertTrue( d2 instanceof SymbolicWedge );
 		
 		SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFour, GeometricAlgebraOrd<TestDimensionFour>, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, GeometricAlgebraMultivectorElemFactory<TestDimensionFour, GeometricAlgebraOrd<TestDimensionFour>, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>
-			d2a = d2.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
+			d2a = d2.distributeSimplify();
 		
 		Assert.assertTrue( d2a instanceof SymbolicZero );
 		
@@ -812,7 +811,7 @@ public class TestGaZeroSymbolic extends TestCase
 		Assert.assertTrue( d2 instanceof SymbolicCross );
 		
 		SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFour, GeometricAlgebraOrd<TestDimensionFour>, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, GeometricAlgebraMultivectorElemFactory<TestDimensionFour, GeometricAlgebraOrd<TestDimensionFour>, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>
-			d2a = d2.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
+			d2a = d2.distributeSimplify();
 		
 		Assert.assertTrue( d2a instanceof SymbolicZero );
 		
@@ -859,7 +858,7 @@ public class TestGaZeroSymbolic extends TestCase
 		Assert.assertTrue( d2 instanceof SymbolicMult );
 		
 		SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFour, GeometricAlgebraOrd<TestDimensionFour>, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, GeometricAlgebraMultivectorElemFactory<TestDimensionFour, GeometricAlgebraOrd<TestDimensionFour>, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>
-			d2a = d2.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
+			d2a = d2.distributeSimplify();
 		
 		Assert.assertTrue( d2a instanceof SymbolicZero );
 		
@@ -913,7 +912,7 @@ public class TestGaZeroSymbolic extends TestCase
 		Assert.assertTrue( d2 instanceof SymbolicScalar );
 		
 		SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFour, GeometricAlgebraOrd<TestDimensionFour>, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, GeometricAlgebraMultivectorElemFactory<TestDimensionFour, GeometricAlgebraOrd<TestDimensionFour>, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>
-			d2a = d2.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
+			d2a = d2.distributeSimplify();
 		
 		Assert.assertTrue( d2a instanceof SymbolicZero );
 		
@@ -952,7 +951,7 @@ public class TestGaZeroSymbolic extends TestCase
 		Assert.assertTrue( d1 instanceof SymbolicExponential );
 		
 		SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFour, GeometricAlgebraOrd<TestDimensionFour>, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, GeometricAlgebraMultivectorElemFactory<TestDimensionFour, GeometricAlgebraOrd<TestDimensionFour>, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>
-			d2a = d1.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
+			d2a = d1.distributeSimplify();
 		
 		Assert.assertTrue( d2a instanceof SymbolicIdentity );
 		
@@ -991,7 +990,7 @@ public class TestGaZeroSymbolic extends TestCase
 		Assert.assertTrue( d1 instanceof SymbolicSine );
 		
 		SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFour, GeometricAlgebraOrd<TestDimensionFour>, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, GeometricAlgebraMultivectorElemFactory<TestDimensionFour, GeometricAlgebraOrd<TestDimensionFour>, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>
-			d2a = d1.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
+			d2a = d1.distributeSimplify();
 		
 		Assert.assertTrue( d2a instanceof SymbolicZero );
 		
@@ -1030,7 +1029,7 @@ public class TestGaZeroSymbolic extends TestCase
 		Assert.assertTrue( d1 instanceof SymbolicCosine );
 		
 		SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFour, GeometricAlgebraOrd<TestDimensionFour>, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, GeometricAlgebraMultivectorElemFactory<TestDimensionFour, GeometricAlgebraOrd<TestDimensionFour>, SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>
-			d2a = d1.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
+			d2a = d1.distributeSimplify();
 		
 		Assert.assertTrue( d2a instanceof SymbolicIdentity );
 		

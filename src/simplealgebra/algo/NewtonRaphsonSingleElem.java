@@ -168,9 +168,9 @@ public abstract class NewtonRaphsonSingleElem<R extends Elem<R,?>, S extends Ele
 			case NONE:
 				return( in );
 			case DISTRIBUTE_SIMPLIFY:
-				return( in.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null) );
+				return( in.distributeSimplify() );
 			case DISTRIBUTE_SIMPLIFY2:
-				return( in.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY2 , null) );
+				return( in.distributeSimplify2() );
 		}
 		throw( new RuntimeException( "Not Supported" ) );
 	}

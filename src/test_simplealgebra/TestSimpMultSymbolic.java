@@ -52,7 +52,6 @@ import simplealgebra.symbolic.SymbolicAdd;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicIdentity;
-import simplealgebra.symbolic.SymbolicOps;
 import simplealgebra.symbolic.SymbolicZero;
 
 
@@ -294,7 +293,7 @@ public class TestSimpMultSymbolic extends TestCase
 			d1 = d0.mult( b0.invertRight() );
 		
 		SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
-			d2 = d1.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
+			d2 = d1.distributeSimplify();
 		
 //		System.out.println( d3 );
 		
@@ -349,7 +348,7 @@ public class TestSimpMultSymbolic extends TestCase
 			d1 = ( b0.invertLeft() ).mult( d0 );
 		
 		SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
-			d2 = d1.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
+			d2 = d1.distributeSimplify();
 		
 //		System.out.println( d3 );
 		

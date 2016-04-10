@@ -40,7 +40,6 @@ import simplealgebra.ga.GeometricAlgebraMultivectorElem;
 import simplealgebra.ga.GeometricAlgebraOrd;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SymbolicElem;
-import simplealgebra.symbolic.SymbolicOps;
 
 
 /**
@@ -95,9 +94,9 @@ public abstract class DescentAlgorithmMultiElem<U extends NumDimensions, R exten
 			case NONE:
 				return( in );
 			case DISTRIBUTE_SIMPLIFY:
-				return( in.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null) );
+				return( in.distributeSimplify() );
 			case DISTRIBUTE_SIMPLIFY2:
-				return( in.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY2 , null) );
+				return( in.distributeSimplify2() );
 		}
 		throw( new RuntimeException( "Not Supported" ) );
 	}

@@ -59,7 +59,6 @@ import simplealgebra.symbolic.SymbolicAdd;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicMult;
-import simplealgebra.symbolic.SymbolicOps;
 import simplealgebra.symbolic.SymbolicReduction;
 import simplealgebra.symbolic.SymbolicSqrt;
 
@@ -869,7 +868,7 @@ public class TestCovariantDerivativeFlatAsym3D extends TestCase {
 			final SymbolicElem<DoubleElem,DoubleElemFactory> el =
 					ii.getValue();
 			final SymbolicElem<DoubleElem,DoubleElemFactory>
-				el2 = el.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY2 , null);
+				el2 = el.distributeSimplify2();
 	//		System.out.print( " " );
 	//		el2.writeString( System.out );
 	//		System.out.println( "" );

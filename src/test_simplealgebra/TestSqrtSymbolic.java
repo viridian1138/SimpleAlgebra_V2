@@ -42,7 +42,6 @@ import simplealgebra.Sqrt;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicIdentity;
-import simplealgebra.symbolic.SymbolicOps;
 import simplealgebra.symbolic.SymbolicSqrt;
 
 
@@ -85,7 +84,7 @@ public class TestSqrtSymbolic extends TestCase
 		Assert.assertTrue( d1 instanceof SymbolicSqrt );
 		
 		SymbolicElem<DoubleElem,DoubleElemFactory>
-			d2 = d1.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , args);
+			d2 = d1.distributeSimplify();
 		
 		Assert.assertTrue( d2 instanceof SymbolicIdentity );
 		

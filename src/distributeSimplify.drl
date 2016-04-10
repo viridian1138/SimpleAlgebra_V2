@@ -1102,8 +1102,9 @@ end
 
 rule "SymbolicReduction Zero"
       when
-          ez : SymbolicZero( )
+          ez : Elem( )
           tr1 : SymbolicReduction( elem == ez )
+          eval( ez.evalSymbolicZeroApprox( SymbolicElem.EVAL_MODE.SIMPLIFY ) )
           not( Reng( strt == tr1 ) )
           not( Reng( strt == ez ) )
           ds : DroolsSession()

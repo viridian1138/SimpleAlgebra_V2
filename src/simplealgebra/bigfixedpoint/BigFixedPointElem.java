@@ -41,6 +41,7 @@ import simplealgebra.Sqrt;
 import simplealgebra.WriteElemCache;
 import simplealgebra.WriteBigIntegerCache;
 import simplealgebra.symbolic.PrecedenceComparator;
+import simplealgebra.symbolic.SymbolicElem.EVAL_MODE;
 
 /**
  * A fixed-point elem.
@@ -160,6 +161,13 @@ public class BigFixedPointElem<T extends Precision<T>> extends Elem<BigFixedPoin
 		}
 		cache.put(this, this);
 		return( this );
+	}
+	
+	
+	@Override
+	public boolean evalSymbolicZeroApprox( EVAL_MODE mode )
+	{
+		return( val.equals( BigInteger.ZERO ) );
 	}
 	
 	

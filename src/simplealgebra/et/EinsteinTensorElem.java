@@ -52,6 +52,7 @@ import simplealgebra.ga.WriteGaSetCache;
 import simplealgebra.ga.WriteOrdCache;
 import simplealgebra.symbolic.PrecedenceComparator;
 import simplealgebra.symbolic.SymbolicZero;
+import simplealgebra.symbolic.SymbolicElem.EVAL_MODE;
 
 
 
@@ -1183,6 +1184,40 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 			ret.setVal(keys, vals);
 		}
 		return( ret );
+	}
+	
+	
+	@Override
+	public boolean evalSymbolicZeroApprox( EVAL_MODE mode )
+	{
+		if( map.keySet().isEmpty() )
+		{
+			return( true );
+		}
+		
+		switch( mode )
+		{
+			case APPROX:
+			{
+				return( false );
+			}
+			
+			case SIMPLIFY:
+			case SIMPLIFY2:
+			{
+				for( final R val : map.values() )
+				{
+					if( !( val.evalSymbolicZeroApprox( mode ) ) )
+					{
+						return( false );
+					}
+				}
+			}
+			
+		}
+		
+		
+		return( true );
 	}
 	
 	

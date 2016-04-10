@@ -36,6 +36,7 @@ import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.WriteElemCache;
+import simplealgebra.symbolic.SymbolicElem.EVAL_MODE;
 
 /**
  * A symbolic elem for the identity.
@@ -181,6 +182,13 @@ public class SymbolicIdentity<R extends Elem<R,?>, S extends ElemFactory<R,S>> e
 		}
 		cache.put(this, this);
 		return( this );
+	}
+	
+	
+	@Override
+	public boolean evalSymbolicZeroApprox( EVAL_MODE mode )
+	{
+		return( false );
 	}
 	
 

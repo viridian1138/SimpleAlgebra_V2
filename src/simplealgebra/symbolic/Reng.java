@@ -49,7 +49,7 @@ public class Reng<R extends Elem<R,?>, S extends ElemFactory<R,S>> {
 	 * @param _strt The starting point of the refactoring.
 	 * @param _end The result of the refactoring.
 	 */
-	public Reng( SymbolicElem<R, S> _strt , SymbolicElem<R, S> _end )
+	public Reng( R _strt , R _end )
 	{
 		strt = _strt;
 		end = _end;
@@ -60,7 +60,7 @@ public class Reng<R extends Elem<R,?>, S extends ElemFactory<R,S>> {
 	 * 
 	 * @return The starting point of the refactoring.
 	 */
-	public SymbolicElem<R, S> getStrt() {
+	public R getStrt() {
 		return strt;
 	}
 	
@@ -69,7 +69,7 @@ public class Reng<R extends Elem<R,?>, S extends ElemFactory<R,S>> {
 	 * 
 	 * @return The result of the refactoring.
 	 */
-	public SymbolicElem<R, S> getEnd() {
+	public R getEnd() {
 		return end;
 	}
 	
@@ -81,17 +81,25 @@ public class Reng<R extends Elem<R,?>, S extends ElemFactory<R,S>> {
 	 */
 	public String writeDesc( PrintStream ps )
 	{
-		final WriteElemCache<SymbolicElem<R, S>, SymbolicElemFactory<R, S>> cache = getStrt().getFac().generateWriteElemCache();
-		final String a1 = getStrt().writeDesc( cache , ps );
-		final String a2 = getEnd().writeDesc( cache , ps );
+		final WriteElemCache<R, ?> cache = getStrt().getFac().generateWriteElemCache();
+		final String a1 = ( getStrt() ).writeDesc( (WriteElemCache) cache , ps );
+		final String a2 = ( getEnd() ).writeDesc( (WriteElemCache) cache , ps );
 		final String a3 = cache.getIncrementVal();
 		ps.print( Reng.class.getSimpleName() );
-		getStrt().getFac().writeOrdinaryEnclosedType(ps);
+		ps.print("<");
+		( (S)( getStrt().getFac() ) ).writeElemTypeString(ps);
+		ps.print(",");
+		( (S)( getStrt().getFac() ) ).writeElemFactoryTypeString(ps);
+		ps.print(">");
 		ps.print( " " );
 		ps.print( a3 );
 		ps.print( " = new " );
 		ps.print( Reng.class.getSimpleName() );
-		getStrt().getFac().writeOrdinaryEnclosedType(ps);
+		ps.print("<");
+		( (S)( getStrt().getFac() ) ).writeElemTypeString(ps);
+		ps.print(",");
+		( (S)( getStrt().getFac() ) ).writeElemFactoryTypeString(ps);
+		ps.print(">");
 		ps.print( "( " );
 		ps.print( a1 );
 		ps.print( " , " );
@@ -103,12 +111,12 @@ public class Reng<R extends Elem<R,?>, S extends ElemFactory<R,S>> {
 	/**
 	 * The starting point of the refactoring.
 	 */
-	private SymbolicElem<R,S> strt;
+	private R strt;
 	
 	/**
 	 * The result of the refactoring.
 	 */
-	private SymbolicElem<R,S> end;
+	private R end;
 
 }
 

@@ -55,7 +55,6 @@ import simplealgebra.symbolic.SCacheKey;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicIdentity;
-import simplealgebra.symbolic.SymbolicOps;
 
 
 /**
@@ -209,7 +208,7 @@ public class TestInvertLeftSymbolicAssoc extends TestCase
 		final SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>,GeometricAlgebraMultivectorElemFactory<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>>
 				mul = inv.mult( ten );
 		final SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>,GeometricAlgebraMultivectorElemFactory<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>>
-				muls = mul.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null );
+				muls = mul.distributeSimplify();
 		
 		
 		Assert.assertTrue( muls instanceof SymbolicIdentity );

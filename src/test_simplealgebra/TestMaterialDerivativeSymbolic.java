@@ -65,7 +65,6 @@ import simplealgebra.symbolic.SymbolicAdd;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicMult;
-import simplealgebra.symbolic.SymbolicOps;
 import simplealgebra.symbolic.SymbolicSqrt;
 import simplealgebra.symbolic.SymbolicZero;
 
@@ -2486,7 +2485,7 @@ public class TestMaterialDerivativeSymbolic extends TestCase
 				valI = mfTen.getVal( el );
 			Assert.assertTrue( valI != null );
 			final SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>
-				valI2 = valI.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY2 , null);
+				valI2 = valI.distributeSimplify2();
 			System.out.print( "<P>" );
 			valI2.writeMathMLWrapped( comp , System.out );
 			Assert.assertTrue( valI2 != null );

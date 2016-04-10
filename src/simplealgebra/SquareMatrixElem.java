@@ -38,6 +38,7 @@ import simplealgebra.symbolic.PrecedenceComparator;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicIdentity;
 import simplealgebra.symbolic.SymbolicZero;
+import simplealgebra.symbolic.SymbolicElem.EVAL_MODE;
 
 
 /**
@@ -1831,6 +1832,44 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 		}
 		cache.put( this, ret);
 		return( ret );
+	}
+	
+	
+	
+	@Override
+	public boolean evalSymbolicZeroApprox( EVAL_MODE mode )
+	{
+		if( columnMap.keySet().isEmpty() )
+		{
+			return( true );
+		}
+		
+		switch( mode )
+		{
+			case APPROX:
+			{
+				return( false );
+			}
+			
+			case SIMPLIFY:
+			case SIMPLIFY2:
+			{
+				for( final HashMap<BigInteger,R> vl : columnMap.values() )
+				{
+					for( final R val : vl.values() )
+					{
+						if( !( val.evalSymbolicZeroApprox( mode ) ) )
+						{
+							return( false );
+						}
+					}
+				}
+			}
+			
+		}
+		
+		
+		return( true );
 	}
 	
 	

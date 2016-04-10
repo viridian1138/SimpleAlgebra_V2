@@ -30,6 +30,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 
 import simplealgebra.symbolic.PrecedenceComparator;
+import simplealgebra.symbolic.SymbolicElem.EVAL_MODE;
 
 /**
  * An elem for doubles.
@@ -139,6 +140,14 @@ public class DoubleElem extends Elem<DoubleElem, DoubleElemFactory> {
 		
 		return( super.handleOptionalOp(id, args) );
 	}
+	
+	
+	@Override
+	public boolean evalSymbolicZeroApprox( EVAL_MODE mode )
+	{
+		return( d == 0.0 );
+	}
+	
 	
 	
 	@Override

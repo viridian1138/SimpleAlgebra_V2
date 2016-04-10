@@ -49,7 +49,6 @@ import simplealgebra.symbolic.SCacheKey;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicIdentity;
-import simplealgebra.symbolic.SymbolicOps;
 
 
 /**
@@ -203,7 +202,7 @@ public class TestInvertLeftSymbolicNonAssoc extends TestCase
 		final SymbolicElem<EinsteinTensorElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,EinsteinTensorElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
 				mul = inv.mult( ten );
 		final SymbolicElem<EinsteinTensorElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,EinsteinTensorElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
-				muls = mul.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null );
+				muls = mul.distributeSimplify();
 		
 		
 		Assert.assertTrue( muls instanceof SymbolicIdentity );

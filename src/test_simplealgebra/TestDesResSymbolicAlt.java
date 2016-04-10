@@ -1221,7 +1221,7 @@ public class TestDesResSymbolicAlt extends TestCase
 		
 		
 		final SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
-			d2M = det.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY2 , null);
+			d2M = det.distributeSimplify2();
 		
 		
 		
@@ -1343,10 +1343,10 @@ public class TestDesResSymbolicAlt extends TestCase
 				Assert.assertTrue( valI != null );
 		//		valI.writeMathMLWrapped( comp , System.out );
 				final SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
-					valA = valI.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY2 , null);
+					valA = valI.distributeSimplify2();
 		//		valA.writeMathMLWrapped( comp , System.out );
 				final SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
-					val = valA.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
+					val = valA.distributeSimplify();
 				System.out.print( "<P>" );
 				val.writeMathMLWrapped( comp , System.out );
 				System.out.println( "" );

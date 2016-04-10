@@ -22,12 +22,14 @@ package simplealgebra.symbolic
 
 
 
+import simplealgebra.Elem;
 import simplealgebra.SymbolicConjugateLeft;
 import simplealgebra.SymbolicConjugateRight;
 import simplealgebra.SymbolicInvertLeftRevCoeff;
 import simplealgebra.SymbolicInvertRightRevCoeff;
 import simplealgebra.SymbolicMultRevCoeff;
 import simplealgebra.SymbolicTranspose;
+import simplealgebra.ComplexElem;
 import simplealgebra.ComplexElemFactory;
 import simplealgebra.SquareMatrixElemFactory;
 import simplealgebra.ddx.PartialDerivativeOp;
@@ -53,6 +55,7 @@ import simplealgebra.ga.SymbolicWedge;
 import simplealgebra.ga.SymbolicCross;
 import simplealgebra.ga.SymbolicScalar;
 import simplealgebra.ga.GeometricAlgebraMultivectorElemFactory;
+import simplealgebra.meas.ValueWithUncertaintyElem;
 
 
 
@@ -78,10 +81,11 @@ rule "Apply Negate"
           r0 : Reng( )
           p : SymbolicNegate( elem == r0.getStrt() )
           not( Reng( strt == p ) )
+          rend : SymbolicElem() from r0.getEnd()
           ds : DroolsSession()
      then
           // System.out.println( "Apply Negate" );
-          insert( new Reng( p , r0.getEnd().negate().insSym( ds ) ) );
+          insert( new Reng( p , rend.negate().insSym( ds ) ) );
 end
 
 
@@ -94,10 +98,11 @@ rule "Apply Absolute Value"
           r0 : Reng( )
           p : SymbolicAbsoluteValue( elem == r0.getStrt() )
           not( Reng( strt == p ) )
+          rend : SymbolicElem() from r0.getEnd()
           ds : DroolsSession()
      then
           // System.out.println( "Apply Absolute Value" );
-          insert( new Reng( p , new SymbolicAbsoluteValue( r0.getEnd() , p.getFac().getFac() , ds ) ) );
+          insert( new Reng( p , new SymbolicAbsoluteValue( rend , p.getFac().getFac() , ds ) ) );
 end
 
 
@@ -111,10 +116,11 @@ rule "Apply Invert Left"
           r0 : Reng( )
           p : SymbolicInvertLeft( elem == r0.getStrt() )
           not( Reng( strt == p ) )
+          rend : SymbolicElem() from r0.getEnd()
           ds : DroolsSession()
      then
           // System.out.println( "Apply Invert Left" );
-          insert( new Reng( p , new SymbolicInvertLeft( r0.getEnd() , p.getFac().getFac() , ds ) ) );
+          insert( new Reng( p , new SymbolicInvertLeft( rend , p.getFac().getFac() , ds ) ) );
 end
 
 
@@ -128,10 +134,11 @@ rule "Apply Invert Right"
           r0 : Reng( )
           p : SymbolicInvertRight( elem == r0.getStrt() )
           not( Reng( strt == p ) )
+          rend : SymbolicElem() from r0.getEnd()
           ds : DroolsSession()
      then
           // System.out.println( "Apply Invert Right" );
-          insert( new Reng( p , new SymbolicInvertRight( r0.getEnd() , p.getFac().getFac() , ds ) ) );
+          insert( new Reng( p , new SymbolicInvertRight( rend , p.getFac().getFac() , ds ) ) );
 end
 
 
@@ -146,10 +153,11 @@ rule "Apply Reverse Left"
           r0 : Reng( )
           p : SymbolicReverseLeft( elemA == r0.getStrt() )
           not( Reng( strt == p ) )
+          rend : SymbolicElem() from r0.getEnd()
           ds : DroolsSession()
      then
           // System.out.println( "Apply Reverse Left" );
-          insert( new Reng( p , new SymbolicReverseLeft( r0.getEnd() , (GeometricAlgebraMultivectorElemFactory)( p.getFac().getFac() ) , ds ) ) );
+          insert( new Reng( p , new SymbolicReverseLeft( rend , (GeometricAlgebraMultivectorElemFactory)( p.getFac().getFac() ) , ds ) ) );
 end
 
 
@@ -163,10 +171,11 @@ rule "Apply Reverse Right"
           r0 : Reng( )
           p : SymbolicReverseRight( elemA == r0.getStrt() )
           not( Reng( strt == p ) )
+          rend : SymbolicElem() from r0.getEnd()
           ds : DroolsSession()
      then
           // System.out.println( "Apply Reverse Right" );
-          insert( new Reng( p , new SymbolicReverseRight( r0.getEnd() , (GeometricAlgebraMultivectorElemFactory)( p.getFac().getFac() ) , ds ) ) );
+          insert( new Reng( p , new SymbolicReverseRight( rend , (GeometricAlgebraMultivectorElemFactory)( p.getFac().getFac() ) , ds ) ) );
 end
 
 
@@ -181,10 +190,11 @@ rule "Apply Divide By"
           r0 : Reng( )
           p : SymbolicDivideBy( elem == r0.getStrt() )
           not( Reng( strt == p ) )
+          rend : SymbolicElem() from r0.getEnd()
           ds : DroolsSession()
      then
           // System.out.println( "Apply Divide By" );
-          insert( new Reng( p , new SymbolicDivideBy( r0.getEnd() , p.getFac().getFac() , p.getIval() , ds ) ) );
+          insert( new Reng( p , new SymbolicDivideBy( rend , p.getFac().getFac() , p.getIval() , ds ) ) );
 end
 
 
@@ -199,10 +209,11 @@ rule "Apply Mutable"
           r0 : Reng( )
           p : SymbolicMutable( elemA == r0.getStrt() )
           not( Reng( strt == p ) )
+          rend : SymbolicElem() from r0.getEnd()
           ds : DroolsSession()
      then
           // System.out.println( "Apply Mutable" );
-          insert( new Reng( p , new SymbolicMutable( r0.getEnd() , p.getElemB() , p.getFac().getFac() , ds ) ) );
+          insert( new Reng( p , new SymbolicMutable( rend , p.getElemB() , p.getFac().getFac() , ds ) ) );
 end
 
 
@@ -217,10 +228,11 @@ rule "Apply AddA"
           r0 : Reng( )
           p : SymbolicAdd( elemA == r0.getStrt() )
           not( Reng( strt == p ) )
+          rend : SymbolicElem() from r0.getEnd()
           ds : DroolsSession()
      then
           // System.out.println( "Apply AddA" );
-          insert( new Reng( p , r0.getEnd().add( p.getElemB() ).insSym( ds ) ) );
+          insert( new Reng( p , rend.add( p.getElemB() ).insSym( ds ) ) );
 end
 
 
@@ -232,10 +244,11 @@ rule "Apply AddB"
           r0 : Reng( )
           p : SymbolicAdd( elemB == r0.getStrt() )
           not( Reng( strt == p ) )
+          rend : SymbolicElem() from r0.getEnd()
           ds : DroolsSession()
      then
           // System.out.println( "Apply AddB" );
-          insert( new Reng( p , p.getElemA().add( r0.getEnd() ).insSym( ds ) ) );
+          insert( new Reng( p , p.getElemA().add( rend ).insSym( ds ) ) );
 end
 
 
@@ -247,10 +260,11 @@ rule "Apply MultA"
           r0 : Reng( )
           p : SymbolicMult( elemA == r0.getStrt() )
           not( Reng( strt == p ) )
+          rend : SymbolicElem() from r0.getEnd()
           ds : DroolsSession()
      then
           // System.out.println( "Apply MultA" );
-          insert( new Reng( p , r0.getEnd().mult( p.getElemB() ).insSym( ds ) ) );
+          insert( new Reng( p , rend.mult( p.getElemB() ).insSym( ds ) ) );
 end
 
 
@@ -262,10 +276,11 @@ rule "Apply MultB"
           r0 : Reng( )
           p : SymbolicMult( elemB == r0.getStrt() )
           not( Reng( strt == p ) )
+          rend : SymbolicElem() from r0.getEnd()
           ds : DroolsSession()
      then
           // System.out.println( "Apply MultB" );
-          insert( new Reng( p , p.getElemA().mult( r0.getEnd() ).insSym( ds ) ) );
+          insert( new Reng( p , p.getElemA().mult( rend ).insSym( ds ) ) );
 end
 
 
@@ -292,10 +307,11 @@ rule "Apply SymbolicSqrt"
           r0 : Reng( )
           p : SymbolicSqrt( elem == r0.getStrt() )
           not( Reng( strt == p ) )
+          rend : SymbolicElem() from r0.getEnd()
           ds : DroolsSession()
      then
           // System.out.println( "Apply SymbolicSqrt" );
-          insert( new Reng( p , new SymbolicSqrt( r0.getEnd() , p.getFac().getFac() , ds ) ) );
+          insert( new Reng( p , new SymbolicSqrt( rend , p.getFac().getFac() , ds ) ) );
 end
 
 
@@ -307,10 +323,11 @@ rule "Apply SymbolicExponential"
           r0 : Reng( )
           p : SymbolicExponential( elem == r0.getStrt() )
           not( Reng( strt == p ) )
+          rend : SymbolicElem() from r0.getEnd()
           ds : DroolsSession()
      then
           // System.out.println( "Apply SymbolicExponential" );
-          insert( new Reng( p , new SymbolicExponential( r0.getEnd() , p.getFac().getFac() , p.getIval() , ds ) ) );
+          insert( new Reng( p , new SymbolicExponential( rend , p.getFac().getFac() , p.getIval() , ds ) ) );
 end
 
 
@@ -322,10 +339,11 @@ rule "Apply SymbolicSine"
           r0 : Reng( )
           p : SymbolicSine( elem == r0.getStrt() )
           not( Reng( strt == p ) )
+          rend : SymbolicElem() from r0.getEnd()
           ds : DroolsSession()
      then
           // System.out.println( "Apply SymbolicSine" );
-          insert( new Reng( p , new SymbolicSine( r0.getEnd() , p.getFac().getFac() , p.getIval() , ds ) ) );
+          insert( new Reng( p , new SymbolicSine( rend , p.getFac().getFac() , p.getIval() , ds ) ) );
 end
 
 
@@ -337,10 +355,11 @@ rule "Apply SymbolicCosine"
           r0 : Reng( )
           p : SymbolicCosine( elem == r0.getStrt() )
           not( Reng( strt == p ) )
+          rend : SymbolicElem() from r0.getEnd()
           ds : DroolsSession()
      then
           // System.out.println( "Apply SymbolicCosine" );
-          insert( new Reng( p , new SymbolicCosine( r0.getEnd() , p.getFac().getFac() , p.getIval() , ds ) ) );
+          insert( new Reng( p , new SymbolicCosine( rend , p.getFac().getFac() , p.getIval() , ds ) ) );
 end
 
 
@@ -355,10 +374,11 @@ rule "Apply DotA"
           r0 : Reng( )
           p : SymbolicDot( elemA == r0.getStrt() )
           not( Reng( strt == p ) )
+          rend : SymbolicElem() from r0.getEnd()
           ds : DroolsSession()
      then
           // System.out.println( "Apply DotA" );
-          insert( new Reng( p , new SymbolicDot( r0.getEnd() , p.getElemB() , (GeometricAlgebraMultivectorElemFactory)( p.getFac().getFac() ) , ds ) ) );
+          insert( new Reng( p , new SymbolicDot( rend , p.getElemB() , (GeometricAlgebraMultivectorElemFactory)( p.getFac().getFac() ) , ds ) ) );
 end
 
 
@@ -370,10 +390,11 @@ rule "Apply DotB"
           r0 : Reng( )
           p : SymbolicDot( elemB == r0.getStrt() )
           not( Reng( strt == p ) )
+          rend : SymbolicElem() from r0.getEnd()
           ds : DroolsSession()
      then
           // System.out.println( "Apply DotB" );
-          insert( new Reng( p , new SymbolicDot( p.getElemA() , r0.getEnd() , (GeometricAlgebraMultivectorElemFactory)( p.getFac().getFac() ) , ds ) ) );
+          insert( new Reng( p , new SymbolicDot( p.getElemA() , rend , (GeometricAlgebraMultivectorElemFactory)( p.getFac().getFac() ) , ds ) ) );
 end
 
 
@@ -386,10 +407,11 @@ rule "Apply DotHestenesA"
           r0 : Reng( )
           p : SymbolicDotHestenes( elemA == r0.getStrt() )
           not( Reng( strt == p ) )
+          rend : SymbolicElem() from r0.getEnd()
           ds : DroolsSession()
      then
           // System.out.println( "Apply DotHestenesA" );
-          insert( new Reng( p , new SymbolicDotHestenes( r0.getEnd() , p.getElemB() , (GeometricAlgebraMultivectorElemFactory)( p.getFac().getFac() ) , ds ) ) );
+          insert( new Reng( p , new SymbolicDotHestenes( rend , p.getElemB() , (GeometricAlgebraMultivectorElemFactory)( p.getFac().getFac() ) , ds ) ) );
 end
 
 
@@ -401,10 +423,11 @@ rule "Apply DotHestenesB"
           r0 : Reng( )
           p : SymbolicDotHestenes( elemB == r0.getStrt() )
           not( Reng( strt == p ) )
+          rend : SymbolicElem() from r0.getEnd()
           ds : DroolsSession()
      then
           // System.out.println( "Apply DotHestenesB" );
-          insert( new Reng( p , new SymbolicDotHestenes( p.getElemA() , r0.getEnd() , (GeometricAlgebraMultivectorElemFactory)( p.getFac().getFac() ) , ds ) ) );
+          insert( new Reng( p , new SymbolicDotHestenes( p.getElemA() , rend , (GeometricAlgebraMultivectorElemFactory)( p.getFac().getFac() ) , ds ) ) );
 end
 
 
@@ -416,10 +439,11 @@ rule "Apply LeftContractionA"
           r0 : Reng( )
           p : SymbolicLeftContraction( elemA == r0.getStrt() )
           not( Reng( strt == p ) )
+          rend : SymbolicElem() from r0.getEnd()
           ds : DroolsSession()
      then
           // System.out.println( "Apply LeftContractionA" );
-          insert( new Reng( p , new SymbolicLeftContraction( r0.getEnd() , p.getElemB() , (GeometricAlgebraMultivectorElemFactory)( p.getFac().getFac() ) , ds ) ) );
+          insert( new Reng( p , new SymbolicLeftContraction( rend , p.getElemB() , (GeometricAlgebraMultivectorElemFactory)( p.getFac().getFac() ) , ds ) ) );
 end
 
 
@@ -431,10 +455,11 @@ rule "Apply LeftContractionB"
           r0 : Reng( )
           p : SymbolicLeftContraction( elemB == r0.getStrt() )
           not( Reng( strt == p ) )
+          rend : SymbolicElem() from r0.getEnd()
           ds : DroolsSession()
      then
           // System.out.println( "Apply LeftContractionB" );
-          insert( new Reng( p , new SymbolicLeftContraction( p.getElemA() , r0.getEnd() , (GeometricAlgebraMultivectorElemFactory)( p.getFac().getFac() ) , ds ) ) );
+          insert( new Reng( p , new SymbolicLeftContraction( p.getElemA() , rend , (GeometricAlgebraMultivectorElemFactory)( p.getFac().getFac() ) , ds ) ) );
 end
 
 
@@ -446,10 +471,11 @@ rule "Apply RightContractionA"
           r0 : Reng( )
           p : SymbolicRightContraction( elemA == r0.getStrt() )
           not( Reng( strt == p ) )
+          rend : SymbolicElem() from r0.getEnd()
           ds : DroolsSession()
      then
           // System.out.println( "Apply RightContractionA" );
-          insert( new Reng( p , new SymbolicRightContraction( r0.getEnd() , p.getElemB() , (GeometricAlgebraMultivectorElemFactory)( p.getFac().getFac() ) , ds ) ) );
+          insert( new Reng( p , new SymbolicRightContraction( rend , p.getElemB() , (GeometricAlgebraMultivectorElemFactory)( p.getFac().getFac() ) , ds ) ) );
 end
 
 
@@ -461,10 +487,11 @@ rule "Apply RightContractionB"
           r0 : Reng( )
           p : SymbolicRightContraction( elemB == r0.getStrt() )
           not( Reng( strt == p ) )
+          rend : SymbolicElem() from r0.getEnd()
           ds : DroolsSession()
      then
           // System.out.println( "Apply RightContractionB" );
-          insert( new Reng( p , new SymbolicRightContraction( p.getElemA() , r0.getEnd() , (GeometricAlgebraMultivectorElemFactory)( p.getFac().getFac() ) , ds ) ) );
+          insert( new Reng( p , new SymbolicRightContraction( p.getElemA() , rend , (GeometricAlgebraMultivectorElemFactory)( p.getFac().getFac() ) , ds ) ) );
 end
 
 
@@ -476,10 +503,11 @@ rule "Apply Transpose"
           r0 : Reng( )
           p : SymbolicTranspose( elem == r0.getStrt() )
           not( Reng( strt == p ) )
+          rend : SymbolicElem() from r0.getEnd()
           ds : DroolsSession()
      then
           // System.out.println( "Apply Transpose" );
-          insert( new Reng( p , new SymbolicTranspose( r0.getEnd() , (SquareMatrixElemFactory)( p.getFac().getFac() ) , ds ) ) );
+          insert( new Reng( p , new SymbolicTranspose( rend , (SquareMatrixElemFactory)( p.getFac().getFac() ) , ds ) ) );
 end
 
 
@@ -491,10 +519,11 @@ rule "Apply Invert Left Rev Coeff"
           r0 : Reng( )
           p : SymbolicInvertLeftRevCoeff( elem == r0.getStrt() )
           not( Reng( strt == p ) )
+          rend : SymbolicElem() from r0.getEnd()
           ds : DroolsSession()
      then
           // System.out.println( "Apply Invert Left Rev Coeff" );
-          insert( new Reng( p , new SymbolicInvertLeftRevCoeff( r0.getEnd() , (SquareMatrixElemFactory)( p.getFac().getFac() ) , ds ) ) );
+          insert( new Reng( p , new SymbolicInvertLeftRevCoeff( rend , (SquareMatrixElemFactory)( p.getFac().getFac() ) , ds ) ) );
 end
 
 
@@ -506,10 +535,11 @@ rule "Apply Invert Right Rev Coeff"
           r0 : Reng( )
           p : SymbolicInvertRightRevCoeff( elem == r0.getStrt() )
           not( Reng( strt == p ) )
+          rend : SymbolicElem() from r0.getEnd()
           ds : DroolsSession()
      then
           // System.out.println( "Apply Invert Right Rev Coeff" );
-          insert( new Reng( p , new SymbolicInvertRightRevCoeff( r0.getEnd() , (SquareMatrixElemFactory)( p.getFac().getFac() ) , ds ) ) );
+          insert( new Reng( p , new SymbolicInvertRightRevCoeff( rend , (SquareMatrixElemFactory)( p.getFac().getFac() ) , ds ) ) );
 end
 
 
@@ -521,10 +551,11 @@ rule "Apply MultRevCoeffA"
           r0 : Reng( )
           p : SymbolicMultRevCoeff( elemA == r0.getStrt() )
           not( Reng( strt == p ) )
+          rend : SymbolicElem() from r0.getEnd()
           ds : DroolsSession()
      then
           // System.out.println( "Apply MultRevCoeffA" );
-          insert( new Reng( p , new SymbolicMultRevCoeff( r0.getEnd() , p.getElemB() , (SquareMatrixElemFactory)( p.getFac().getFac() ) , ds ) ) );
+          insert( new Reng( p , new SymbolicMultRevCoeff( rend , p.getElemB() , (SquareMatrixElemFactory)( p.getFac().getFac() ) , ds ) ) );
 end
 
 
@@ -536,10 +567,11 @@ rule "Apply MultRevCoeffB"
           r0 : Reng( )
           p : SymbolicMultRevCoeff( elemB == r0.getStrt() )
           not( Reng( strt == p ) )
+          rend : SymbolicElem() from r0.getEnd()
           ds : DroolsSession()
      then
           // System.out.println( "Apply MultRevCoeffB" );
-          insert( new Reng( p , new SymbolicMultRevCoeff( p.getElemA() , r0.getEnd() , (SquareMatrixElemFactory)( p.getFac().getFac() ) , ds ) ) );
+          insert( new Reng( p , new SymbolicMultRevCoeff( p.getElemA() , rend , (SquareMatrixElemFactory)( p.getFac().getFac() ) , ds ) ) );
 end
 
 
@@ -551,10 +583,11 @@ rule "Apply Conjugate Left"
           r0 : Reng( )
           p : SymbolicConjugateLeft( elem == r0.getStrt() )
           not( Reng( strt == p ) )
+          rend : SymbolicElem() from r0.getEnd()
           ds : DroolsSession()
      then
           // System.out.println( "Apply Conjugate Left" );
-          insert( new Reng( p , new SymbolicConjugateLeft( r0.getEnd() , (ComplexElemFactory)( p.getFac().getFac() ) , ds ) ) );
+          insert( new Reng( p , new SymbolicConjugateLeft( rend , (ComplexElemFactory)( p.getFac().getFac() ) , ds ) ) );
 end
 
 
@@ -566,10 +599,11 @@ rule "Apply Conjugate Right"
           r0 : Reng( )
           p : SymbolicConjugateRight( elem == r0.getStrt() )
           not( Reng( strt == p ) )
+          rend : SymbolicElem() from r0.getEnd()
           ds : DroolsSession()
      then
           // System.out.println( "Apply Conjugate Right" );
-          insert( new Reng( p , new SymbolicConjugateRight( r0.getEnd() , (ComplexElemFactory)( p.getFac().getFac() ) , ds ) ) );
+          insert( new Reng( p , new SymbolicConjugateRight( rend , (ComplexElemFactory)( p.getFac().getFac() ) , ds ) ) );
 end
 
 
@@ -582,10 +616,11 @@ rule "Apply WedgeA"
           r0 : Reng( )
           p : SymbolicWedge( elemA == r0.getStrt() )
           not( Reng( strt == p ) )
+          rend : SymbolicElem() from r0.getEnd()
           ds : DroolsSession()
      then
           // System.out.println( "Apply WedgeA" );
-          insert( new Reng( p , new SymbolicWedge( r0.getEnd() , p.getElemB() , (GeometricAlgebraMultivectorElemFactory)( p.getFac().getFac() ) , ds ) ) );
+          insert( new Reng( p , new SymbolicWedge( rend , p.getElemB() , (GeometricAlgebraMultivectorElemFactory)( p.getFac().getFac() ) , ds ) ) );
 end
 
 
@@ -597,10 +632,11 @@ rule "Apply WedgeB"
           r0 : Reng( )
           p : SymbolicWedge( elemB == r0.getStrt() )
           not( Reng( strt == p ) )
+          rend : SymbolicElem() from r0.getEnd()
           ds : DroolsSession()
      then
           // System.out.println( "Apply WedgeB" );
-          insert( new Reng( p , new SymbolicWedge( p.getElemA() , r0.getEnd() , (GeometricAlgebraMultivectorElemFactory)( p.getFac().getFac() ) , ds ) ) );
+          insert( new Reng( p , new SymbolicWedge( p.getElemA() , rend , (GeometricAlgebraMultivectorElemFactory)( p.getFac().getFac() ) , ds ) ) );
 end
 
 
@@ -613,10 +649,11 @@ rule "Apply ScalarA"
           r0 : Reng( )
           p : SymbolicScalar( elemA == r0.getStrt() )
           not( Reng( strt == p ) )
+          rend : SymbolicElem() from r0.getEnd()
           ds : DroolsSession()
      then
           // System.out.println( "Apply ScalarA" );
-          insert( new Reng( p , new SymbolicScalar( r0.getEnd() , p.getElemB() , (GeometricAlgebraMultivectorElemFactory)( p.getFac().getFac() ) , ds ) ) );
+          insert( new Reng( p , new SymbolicScalar( rend , p.getElemB() , (GeometricAlgebraMultivectorElemFactory)( p.getFac().getFac() ) , ds ) ) );
 end
 
 
@@ -628,10 +665,11 @@ rule "Apply ScalarB"
           r0 : Reng( )
           p : SymbolicScalar( elemB == r0.getStrt() )
           not( Reng( strt == p ) )
+          rend : SymbolicElem() from r0.getEnd()
           ds : DroolsSession()
      then
           // System.out.println( "Apply ScalarB" );
-          insert( new Reng( p , new SymbolicScalar( p.getElemA() , r0.getEnd() , (GeometricAlgebraMultivectorElemFactory)( p.getFac().getFac() ) , ds ) ) );
+          insert( new Reng( p , new SymbolicScalar( p.getElemA() , rend , (GeometricAlgebraMultivectorElemFactory)( p.getFac().getFac() ) , ds ) ) );
 end
 
 
@@ -644,10 +682,11 @@ rule "Apply CrossA"
           r0 : Reng( )
           p : SymbolicCross( elemA == r0.getStrt() )
           not( Reng( strt == p ) )
+          rend : SymbolicElem() from r0.getEnd()
           ds : DroolsSession()
      then
           // System.out.println( "Apply CrossA" );
-          insert( new Reng( p , new SymbolicCross( r0.getEnd() , p.getElemB() , (GeometricAlgebraMultivectorElemFactory)( p.getFac().getFac() ) , ds ) ) );
+          insert( new Reng( p , new SymbolicCross( rend , p.getElemB() , (GeometricAlgebraMultivectorElemFactory)( p.getFac().getFac() ) , ds ) ) );
 end
 
 
@@ -659,10 +698,11 @@ rule "Apply CrossB"
           r0 : Reng( )
           p : SymbolicCross( elemB == r0.getStrt() )
           not( Reng( strt == p ) )
+          rend : SymbolicElem() from r0.getEnd()
           ds : DroolsSession()
      then
           // System.out.println( "Apply CrossB" );
-          insert( new Reng( p , new SymbolicCross( p.getElemA() , r0.getEnd() , (GeometricAlgebraMultivectorElemFactory)( p.getFac().getFac() ) , ds ) ) );
+          insert( new Reng( p , new SymbolicCross( p.getElemA() , rend , (GeometricAlgebraMultivectorElemFactory)( p.getFac().getFac() ) , ds ) ) );
 end
 
 
@@ -674,10 +714,11 @@ rule "Apply ReverseLeft"
           r0 : Reng( )
           p : SymbolicReverseLeft( elemA == r0.getStrt() )
           not( Reng( strt == p ) )
+          rend : SymbolicElem() from r0.getEnd()
           ds : DroolsSession()
      then
           // System.out.println( "Apply ReverseLeft" );
-          insert( new Reng( p , new SymbolicReverseLeft( r0.getEnd() , (GeometricAlgebraMultivectorElemFactory)( p.getFac().getFac() ) , ds ) ) );
+          insert( new Reng( p , new SymbolicReverseLeft( rend , (GeometricAlgebraMultivectorElemFactory)( p.getFac().getFac() ) , ds ) ) );
 end
 
 
@@ -689,10 +730,11 @@ rule "Apply ReverseRight"
           r0 : Reng( )
           p : SymbolicReverseRight( elemA == r0.getStrt() )
           not( Reng( strt == p ) )
+          rend : SymbolicElem() from r0.getEnd()
           ds : DroolsSession()
      then
           // System.out.println( "Apply ReverseRight" );
-          insert( new Reng( p , new SymbolicReverseRight( r0.getEnd() , (GeometricAlgebraMultivectorElemFactory)( p.getFac().getFac() ) , ds ) ) );
+          insert( new Reng( p , new SymbolicReverseRight( rend , (GeometricAlgebraMultivectorElemFactory)( p.getFac().getFac() ) , ds ) ) );
 end
 
 
@@ -704,10 +746,11 @@ rule "Apply Symbolic Index Reduction"
           r0 : Reng( )
           p : SymbolicIndexReduction( elem == r0.getStrt() )
           not( Reng( strt == p ) )
+          rend : SymbolicElem() from r0.getEnd()
           ds : DroolsSession()
      then
           // System.out.println( "Apply Symbolic Index Reduction" );
-          insert( new Reng( p , new SymbolicIndexReduction( r0.getEnd() , (EinsteinTensorElemFactory)( p.getFac().getFac() ) ,  p.getContravariantReduce() , p.getCovariantReduce() , ds ) ) );
+          insert( new Reng( p , new SymbolicIndexReduction( rend , (EinsteinTensorElemFactory)( p.getFac().getFac() ) ,  p.getContravariantReduce() , p.getCovariantReduce() , ds ) ) );
 end
 
 
@@ -719,10 +762,11 @@ rule "Apply Symbolic Rank Two Trace"
           r0 : Reng( )
           p : SymbolicRankTwoTrace( elemA == r0.getStrt() )
           not( Reng( strt == p ) )
+          rend : SymbolicElem() from r0.getEnd()
           ds : DroolsSession()
      then
           // System.out.println( "Apply Symbolic Rank Two Trace" );
-          insert( new Reng( p , new SymbolicRankTwoTrace( r0.getEnd() , (EinsteinTensorElemFactory)( p.getFac().getFac() ) , ds ) ) );
+          insert( new Reng( p , new SymbolicRankTwoTrace( rend , (EinsteinTensorElemFactory)( p.getFac().getFac() ) , ds ) ) );
 end
 
 
@@ -734,10 +778,11 @@ rule "Apply Symbolic Regen Contravar"
           r0 : Reng( )
           p : SymbolicRegenContravar( elem == r0.getStrt() )
           not( Reng( strt == p ) )
+          rend : SymbolicElem() from r0.getEnd()
           ds : DroolsSession()
      then
           // System.out.println( "Apply Symbolic Regen Contravar" );
-          insert( new Reng( p , new SymbolicRegenContravar( r0.getEnd() , (EinsteinTensorElemFactory)( p.getFac().getFac() ) , p.getNewContravar() , ds ) ) );
+          insert( new Reng( p , new SymbolicRegenContravar( rend , (EinsteinTensorElemFactory)( p.getFac().getFac() ) , p.getNewContravar() , ds ) ) );
 end
 
 
@@ -749,10 +794,11 @@ rule "Apply Symbolic Regen Covar"
           r0 : Reng( )
           p : SymbolicRegenCovar( elem == r0.getStrt() )
           not( Reng( strt == p ) )
+          rend : SymbolicElem() from r0.getEnd()
           ds : DroolsSession()
      then
           // System.out.println( "Apply Symbolic Regen Covar" );
-          insert( new Reng( p , new SymbolicRegenCovar( r0.getEnd() , (EinsteinTensorElemFactory)( p.getFac().getFac() ) , p.getNewCovar() , ds ) ) );
+          insert( new Reng( p , new SymbolicRegenCovar( rend , (EinsteinTensorElemFactory)( p.getFac().getFac() ) , p.getNewCovar() , ds ) ) );
 end
 
 
@@ -764,10 +810,77 @@ rule "Apply Symbolic Tensor Resym"
           r0 : Reng( )
           p : SymbolicTensorResym( elem == r0.getStrt() )
           not( Reng( strt == p ) )
+          rend : SymbolicElem() from r0.getEnd()
           ds : DroolsSession()
      then
           // System.out.println( "Apply Symbolic Tensor Resym" );
-          insert( new Reng( p , new SymbolicTensorResym( r0.getEnd() , (EinsteinTensorElemFactory)( p.getFac().getFac() ) , p.getReSym() , p.getDim() , ds ) ) );
+          insert( new Reng( p , new SymbolicTensorResym( rend , (EinsteinTensorElemFactory)( p.getFac().getFac() ) , p.getReSym() , p.getDim() , ds ) ) );
+end
+
+
+
+
+
+
+
+
+rule "Apply ComplexA"
+     when
+          r0 : Reng( )
+          p : ComplexElem( re == r0.getStrt() )
+          not( Reng( strt == p ) )
+          ds : DroolsSession()
+     then
+          // System.out.println( "Apply ComplexA" );
+          insert( new Reng( p , ( new ComplexElem( r0.getEnd() , p.getIm() ) ).insElem( ds ) ) );
+end
+
+
+
+
+
+rule "Apply ComplexB"
+     when
+          r0 : Reng( )
+          p : ComplexElem( im == r0.getStrt() )
+          not( Reng( strt == p ) )
+          ds : DroolsSession()
+     then
+          // System.out.println( "Apply ComplexB" );
+          insert( new Reng( p , ( new ComplexElem( p.getRe() , r0.getEnd() ) ).insElem( ds ) ) );
+end
+
+
+
+
+
+
+
+
+rule "Apply ValueWithUncertaintyA"
+     when
+          r0 : Reng( )
+          p : ValueWithUncertaintyElem( value == r0.getStrt() )
+          not( Reng( strt == p ) )
+          ds : DroolsSession()
+     then
+          // System.out.println( "Apply ValueWithUncertaintyA" );
+          insert( new Reng( p , ( new ValueWithUncertaintyElem( r0.getEnd() , p.getUncertainty() ) ).insElem( ds ) ) );
+end
+
+
+
+
+
+rule "Apply ValueWithUncertaintyB"
+     when
+          r0 : Reng( )
+          p : ValueWithUncertaintyElem( uncertainty == r0.getStrt() )
+          not( Reng( strt == p ) )
+          ds : DroolsSession()
+     then
+          // System.out.println( "Apply ValueWithUncertaintyB" );
+          insert( new Reng( p , ( new ValueWithUncertaintyElem( p.getValue() , r0.getEnd() ) ).insElem( ds ) ) );
 end
 
 

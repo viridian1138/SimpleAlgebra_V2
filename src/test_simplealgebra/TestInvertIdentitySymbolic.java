@@ -43,7 +43,6 @@ import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicIdentity;
 import simplealgebra.symbolic.SymbolicInvertLeft;
 import simplealgebra.symbolic.SymbolicInvertRight;
-import simplealgebra.symbolic.SymbolicOps;
 
 
 
@@ -85,7 +84,7 @@ public class TestInvertIdentitySymbolic extends TestCase
 			d1 = d0.invertLeft();
 		
 		SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
-			d2 = d1.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
+			d2 = d1.distributeSimplify();
 		
 		Assert.assertTrue( d2 instanceof SymbolicIdentity );
 		
@@ -116,7 +115,7 @@ public class TestInvertIdentitySymbolic extends TestCase
 			d1 = new SymbolicInvertLeft<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>( d0 , se );
 		
 		SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
-			d2 = d1.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
+			d2 = d1.distributeSimplify();
 		
 		Assert.assertTrue( d2 instanceof SymbolicIdentity );
 		
@@ -148,7 +147,7 @@ public class TestInvertIdentitySymbolic extends TestCase
 			d1 = d0.invertRight();
 		
 		SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
-			d2 = d1.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
+			d2 = d1.distributeSimplify();
 		
 		Assert.assertTrue( d2 instanceof SymbolicIdentity );
 		
@@ -179,7 +178,7 @@ public class TestInvertIdentitySymbolic extends TestCase
 			d1 = new SymbolicInvertRight<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>( d0 , se );
 		
 		SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
-			d2 = d1.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
+			d2 = d1.distributeSimplify();
 		
 		Assert.assertTrue( d2 instanceof SymbolicIdentity );
 		

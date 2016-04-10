@@ -69,7 +69,6 @@ import simplealgebra.symbolic.SCacheKey;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicIdentity;
-import simplealgebra.symbolic.SymbolicOps;
 import simplealgebra.symbolic.SymbolicSqrt;
 import test_simplealgebra.TestMandelbrotSet.LrgPrecision;
 
@@ -906,7 +905,7 @@ public class TestWriteDesc extends TestCase
 		
 		for( final Entry<HashSet<BigInteger>, SymbolicElem<DoubleElem, DoubleElemFactory>> ii : ga3a.getEntrySet() )
 		{
-			final SymbolicElem<DoubleElem, DoubleElemFactory> nv = ii.getValue().handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY2 , null);
+			final SymbolicElem<DoubleElem, DoubleElemFactory> nv = ii.getValue().distributeSimplify2();
 					
 			ga3.setVal( ii.getKey() , nv );
 		}

@@ -58,7 +58,6 @@ import simplealgebra.symbolic.PrecedenceComparator;
 import simplealgebra.symbolic.SCacheKey;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
-import simplealgebra.symbolic.SymbolicOps;
 
 import java.io.*;
 
@@ -1192,7 +1191,7 @@ public class TestGaugeSymbolic extends TestCase
 	
 		
 		SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
-			elemS = elem.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY2 , null);
+			elemS = elem.distributeSimplify2();
 		
 		
 		// System.out.println( elemS.writeString() );

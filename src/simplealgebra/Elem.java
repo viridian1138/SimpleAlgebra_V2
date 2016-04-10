@@ -24,11 +24,29 @@
 
 package simplealgebra;
 
+
 import java.io.PrintStream;
 import java.math.BigInteger;
 import java.util.ArrayList;
 
+import org.kie.api.definition.rule.Rule;
+import org.kie.api.event.rule.BeforeMatchFiredEvent;
+import org.kie.api.event.rule.DefaultAgendaEventListener;
+import org.kie.api.io.ResourceType;
+import org.kie.internal.KnowledgeBase;
+import org.kie.internal.KnowledgeBaseFactory;
+import org.kie.internal.builder.KnowledgeBuilder;
+import org.kie.internal.builder.KnowledgeBuilderFactory;
+import org.kie.internal.io.ResourceFactory;
+import org.kie.internal.runtime.StatefulKnowledgeSession;
+import org.mvel2.optimizers.OptimizerFactory;
+
+import simplealgebra.symbolic.DroolsSession;
+import simplealgebra.symbolic.LoggingConfiguration;
 import simplealgebra.symbolic.PrecedenceComparator;
+import simplealgebra.symbolic.SymbolicElem;
+import simplealgebra.symbolic.SymbolicElem.EVAL_MODE;
+import simplealgebra.symbolic.SymbolicPlaceholder;
 
 
 /**
@@ -204,8 +222,28 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 	 * @throws NotInvertibleException
 	 */
 	public T handleOptionalOp( Object id , ArrayList<T> args ) throws NotInvertibleException
-	{
+	{	
 		throw( new RuntimeException( "Operation Not Supported " + id ) );
+	}
+	
+	
+	/**
+	 * Simplifies a symbolic elem.
+	 * @return The simplified elem.
+	 */
+	public T distributeSimplify()
+	{
+		return( handleDistributeSimplify() );
+	}
+	
+	
+	/**
+	 * Performs a simpler, faster simplification on a symbolic elem.
+	 * @return The simplified elem.
+	 */
+	public T distributeSimplify2()
+	{
+		return( handleDistributeSimplify2() );
 	}
 	
 	
@@ -399,7 +437,309 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 		ps.println( "</html>" );
 	}
 	
+	
+	
+	/**
+	 * Returns approximately whether the elem can be determined to reduce to zero.
+	 * 
+	 * @param mode Mode determining the extent to which the elem will be reduced to determine if it is zero.
+	 * @return  True if the elem can be determined to reduce to zero.
+	 * @throws NotInvertibleException 
+	 */
+	public abstract boolean evalSymbolicZeroApprox( EVAL_MODE mode );
+	
+	
+	
+	/**
+	 * Performs a distribute simplify on the elem.
+	 * 
+	 * @return The result of the simplification.
+	 */
+	protected T handleDistributeSimplify()
+	{
+		T prev = (T)( this );
+		StatefulKnowledgeSession session = null;
+		SymbolicPlaceholder<T,R> place = null;
+		while( true )
+		{
+			try
+			{
+				session = getDistributeSimplifyKnowledgeBase().newStatefulKnowledgeSession();
+		
+				session.insert( new DroolsSession( session ) );
+		
+				if( LoggingConfiguration.LOGGING_ON )
+				{
+					session.insert( new LoggingConfiguration() );
+				}
+				
+				if( LoggingConfiguration.EVENT_LOGGING_ON )
+				{
+					session.addEventListener( generateEventLoggingListener() );
+				}
+			
+				place = new SymbolicPlaceholder<T,R>( prev );
+			
+				place.performInserts( session );
+					
+				session.fireAllRules();
+		
+				T ret = place.getElem();
+		
+				session.dispose();
+			
+				return( ret );
+			}
+			catch( OutOfMemoryError ex )
+			{
+				T ret = place != null ? place.getElem() : null;
+				
+				/*
+				 * Always try to dispose the session after running out of memory.
+				 */
+				try
+				{
+					if( session != null )
+					{
+						session.dispose();
+					}
+				}
+				catch( Throwable ex2 )
+				{
+					// ex2.printStackTrace( System.out );
+				}
+				
+				/*
+				 * If no simplifications were completed, exit with exception.
+				 */
+				if( ( ret == null ) || ( ret == prev ) )
+				{
+					throw( ex );
+				}
+				
+				/*
+				 * If some simplifications completed before the memory limits ran out,
+				 * re-run the session and see if it's possible to get farther on the next run.
+				 */
+				prev = ret;
+				session = null;
+				place = null;
+			}
+		}
+	}
+	
+	
+	/**
+	 * Performs a simpler distribute simplify on the elem.
+	 * 
+	 * @return The result of the simplification.
+	 */
+	protected T handleDistributeSimplify2()
+	{
+		T prev = (T)( this );
+		StatefulKnowledgeSession session = null;
+		SymbolicPlaceholder<T,R> place = null;
+		while( true )
+		{
+			try
+			{
+				session = getDistributeSimplify2KnowledgeBase().newStatefulKnowledgeSession();
+		
+				session.insert( new DroolsSession( session ) );
+			
+				if( LoggingConfiguration.LOGGING_ON )
+				{
+					session.insert( new LoggingConfiguration() );
+				}
+				
+				if( LoggingConfiguration.EVENT_LOGGING_ON )
+				{
+					session.addEventListener( generateEventLoggingListener() );
+				}
+			
+				place = new SymbolicPlaceholder<T,R>( prev );
+			
+				place.performInserts( session );
+					
+				session.fireAllRules();
+		
+				T ret = place.getElem();
+		
+				session.dispose();
+			
+				return( ret );
+			}
+			catch( OutOfMemoryError ex )
+			{
+				T ret = place != null ? place.getElem() : null;
+				
+				/*
+				 * Always try to dispose the session after running out of memory.
+				 */
+				try
+				{
+					if( session != null )
+					{
+						session.dispose();
+					}
+				}
+				catch( Throwable ex2 )
+				{
+					// ex2.printStackTrace( System.out );
+				}
+				
+				/*
+				 * If no simplifications were completed, exit with exception.
+				 */
+				if( ( ret == null ) || ( ret == prev ) )
+				{
+					throw( ex );
+				}
+				
+				/*
+				 * If some simplifications completed before the memory limits ran out,
+				 * re-run the session and see if it's possible to get farther on the next run.
+				 */
+				prev = ret;
+				session = null;
+				place = null;
+			}
+		}
+	}
+	
+	
+	
+	
+	/**
+	 * Inserts this elem into a Drools ( http://drools.org ) session.
+	 * 
+	 * @param session The session in which to insert the elem.
+	 */
+	public void performInserts( StatefulKnowledgeSession session )
+	{
+		session.insert( this );
+	}
+	
+	
+	/**
+	 * Inserts the elem into a Drools ( http://drools.org ) session.
+	 * @param ds The session.
+	 * @return This elem.
+	 */
+	public Elem<T,R> insElem( DroolsSession ds )
+	{
+		ds.insert( this );
+		return( this );
+	}
+	
+	
+	/**
+	 * Generates a listener for logging match events.
+	 * 
+	 * @return The listener for logging match events.
+	 */
+	protected DefaultAgendaEventListener generateEventLoggingListener()
+	{
+		return( new DefaultAgendaEventListener()
+		{
+			@Override
+			public void beforeMatchFired( final BeforeMatchFiredEvent event )
+			{
+				final Rule rule = event.getMatch().getRule();
+				System.out.println( rule.getName() );
+			}
+		} );
+	}
+	
+	
+	
+	
+	/**
+	 * Returns Drools ( http://drools.org ) knowledge base for algebraic simplification.
+	 * 
+	 * @return Drools ( http://drools.org ) knowledge base for algebraic simplification.
+	 */
+	public static KnowledgeBase getDistributeSimplifyKnowledgeBase()
+	{
+		if( distributeSimplifyKnowledgeBase == null )
+		{
+			OptimizerFactory.setDefaultOptimizer( OptimizerFactory.SAFE_REFLECTIVE );
+			
+			KnowledgeBuilder builder = KnowledgeBuilderFactory.newKnowledgeBuilder();
+			
+			// Load in the reng support as a separate cross-cutting concern.
+			builder.add( ResourceFactory.newClassPathResource( "reng.drl" )  , 
+					ResourceType.DRL );
+			
+			builder.add( ResourceFactory.newClassPathResource( "distributeSimplify.drl" )  , 
+					ResourceType.DRL );
+			
+			if( LoggingConfiguration.LOGGING_ON )
+			{
+				builder.add( ResourceFactory.newClassPathResource( "logging.drl" )  , 
+						ResourceType.DRL );
+			}
+			
+			if( builder.hasErrors() )
+			{
+				throw( new RuntimeException( builder.getErrors().toString() ) );
+			}
+			distributeSimplifyKnowledgeBase = KnowledgeBaseFactory.newKnowledgeBase();
+			distributeSimplifyKnowledgeBase.addKnowledgePackages( builder.getKnowledgePackages() );
+		}
+		
+		return( distributeSimplifyKnowledgeBase );
+	}
+	
+	
+	
+	/**
+	 * Returns Drools ( http://drools.org ) knowledge base for algebraic simplification.
+	 * 
+	 * @return Drools ( http://drools.org ) knowledge base for algebraic simplification.
+	 */
+	public static KnowledgeBase getDistributeSimplify2KnowledgeBase()
+	{
+		if( distributeSimplify2KnowledgeBase == null )
+		{
+			OptimizerFactory.setDefaultOptimizer( OptimizerFactory.SAFE_REFLECTIVE );
+			
+			KnowledgeBuilder builder = KnowledgeBuilderFactory.newKnowledgeBuilder();
+			
+			// Load in the reng support as a separate cross-cutting concern.
+			builder.add( ResourceFactory.newClassPathResource( "reng.drl" )  , 
+					ResourceType.DRL );
+			
+			builder.add( ResourceFactory.newClassPathResource( "distributeSimplify2.drl" )  , 
+					ResourceType.DRL );
+			
+			if( LoggingConfiguration.LOGGING_ON )
+			{
+				builder.add( ResourceFactory.newClassPathResource( "logging.drl" )  , 
+						ResourceType.DRL );
+			}
+			
+			if( builder.hasErrors() )
+			{
+				throw( new RuntimeException( builder.getErrors().toString() ) );
+			}
+			distributeSimplify2KnowledgeBase = KnowledgeBaseFactory.newKnowledgeBase();
+			distributeSimplify2KnowledgeBase.addKnowledgePackages( builder.getKnowledgePackages() );
+		}
+		
+		return( distributeSimplify2KnowledgeBase );
+	}
 
+	
+	/**
+	 * Drools ( http://drools.org ) knowledge base for algebraic simplification.
+	 */
+	private static KnowledgeBase distributeSimplifyKnowledgeBase = null;
+	
+	/**
+	 * Drools ( http://drools.org ) knowledge base for algebraic simplification.
+	 */
+	private static KnowledgeBase distributeSimplify2KnowledgeBase = null;
 	
 	
 }

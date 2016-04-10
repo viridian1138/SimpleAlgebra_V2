@@ -65,13 +65,10 @@ public class SymbolicPlaceholderType<R extends Elem<R,?>, S extends ElemFactory<
 	public Object make(HGPersistentHandle handle, LazyRef<HGHandle[]> targetSet,
 			IncidenceSetRef incidenceSet) {
 		HGHandle[] layout = graph.getStore().getLink( handle );
-		SymbolicElem<R,S> elemA = graph.get( layout[ 0 ] );
-		S fac = graph.get( layout[ 1 ] );
+		R elemA = graph.get( layout[ 0 ] );
 		if( elemA == null )
 			throw( new RuntimeException( "Failed" ) );
-		if( fac == null )
-			throw( new RuntimeException( "Failed" ) );
-		return( new SymbolicPlaceholder<R,S>( elemA , fac ) );
+		return( new SymbolicPlaceholder<R,S>( elemA ) );
 	}
 
 	@Override
@@ -84,9 +81,7 @@ public class SymbolicPlaceholderType<R extends Elem<R,?>, S extends ElemFactory<
 	public HGPersistentHandle store(Object instance) {
 		SymbolicPlaceholder<R,S> oid = (SymbolicPlaceholder<R,S>)( instance );
 		HGHandle elemAHandle = hg.assertAtom(graph, oid.getElem() );
-		HGHandle facHandle = hg.assertAtom(graph, oid.getFac().getFac() );
-		HGPersistentHandle[] hn = { elemAHandle.getPersistent() , 
-			facHandle.getPersistent() };
+		HGPersistentHandle[] hn = { elemAHandle.getPersistent() };
 		return( graph.getStore().store( hn ) );
 	}
 	

@@ -59,6 +59,7 @@ import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicMult;
 import simplealgebra.symbolic.SymbolicNegate;
 import simplealgebra.symbolic.SymbolicZero;
+import simplealgebra.symbolic.SymbolicElem.EVAL_MODE;
 
 
 /**
@@ -1458,6 +1459,41 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 		}
 		cache.put(this, ret);
 		return( ret );
+	}
+	
+	
+	
+	@Override
+	public boolean evalSymbolicZeroApprox( EVAL_MODE mode )
+	{
+		if( map.keySet().isEmpty() )
+		{
+			return( true );
+		}
+		
+		switch( mode )
+		{
+			case APPROX:
+			{
+				return( false );
+			}
+			
+			case SIMPLIFY:
+			case SIMPLIFY2:
+			{
+				for( final R val : map.values() )
+				{
+					if( !( val.evalSymbolicZeroApprox( mode ) ) )
+					{
+						return( false );
+					}
+				}
+			}
+			
+		}
+		
+		
+		return( true );
 	}
 	
 	

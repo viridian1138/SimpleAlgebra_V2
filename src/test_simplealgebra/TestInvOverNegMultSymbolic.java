@@ -50,7 +50,6 @@ import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicIdentity;
 import simplealgebra.symbolic.SymbolicNegate;
-import simplealgebra.symbolic.SymbolicOps;
 
 
 
@@ -298,7 +297,7 @@ public class TestInvOverNegMultSymbolic extends TestCase
 			d2 = ( d1 ).mult( b0 );
 		
 		SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
-			d3 = d2.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
+			d3 = d2.distributeSimplify();
 		
 		// System.out.println( d3 );
 		
@@ -362,7 +361,7 @@ public class TestInvOverNegMultSymbolic extends TestCase
 			d2 = ( d1 ).mult( b0 );
 		
 		SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
-			d3 = d2.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
+			d3 = d2.distributeSimplify();
 		
 		// System.out.println( d3 );
 		
@@ -424,7 +423,7 @@ public class TestInvOverNegMultSymbolic extends TestCase
 			d2 = ( a0 ).mult( d1 );
 		
 		SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
-			d3 = d2.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
+			d3 = d2.distributeSimplify();
 		
 		// System.out.println( d3 );
 		
@@ -490,7 +489,7 @@ public class TestInvOverNegMultSymbolic extends TestCase
 			d2 = ( a0 ).mult( d1 );
 		
 		SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
-			d3 = d2.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
+			d3 = d2.distributeSimplify();
 		
 		// System.out.println( d3 );
 		

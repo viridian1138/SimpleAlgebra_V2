@@ -31,38 +31,41 @@
 package test_simplealgebra;
 
 
-import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
-import simplealgebra.AbsoluteValue;
+import simplealgebra.ComplexElem;
+import simplealgebra.ComplexElemFactory;
 import simplealgebra.DoubleElem;
 import simplealgebra.DoubleElemFactory;
 import simplealgebra.Elem;
 import simplealgebra.NotInvertibleException;
+import simplealgebra.SquareMatrixElem;
+import simplealgebra.SquareMatrixElemFactory;
 import simplealgebra.WriteElemCache;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SCacheKey;
-import simplealgebra.symbolic.SymbolicAbsoluteValue;
+import simplealgebra.symbolic.SymbolicAdd;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
-import simplealgebra.symbolic.SymbolicIdentity;
+import simplealgebra.symbolic.SymbolicReduction;
 import simplealgebra.symbolic.SymbolicZero;
 
+import java.io.*;
 
 
 
 /**
- * Tests symbolic reductions of the absolute value.
+ * Verifies that the expression ( a + a ) + ( -a + -a ) simplifies to zero.
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
- * @author tgreen
+ * @author thorngreen
  *
  */
-public class TestAbsoluteValueSymbolic extends TestCase 
+public class TestZeroAcrossCplx extends TestCase 
 {
 
 	
@@ -75,18 +78,22 @@ public class TestAbsoluteValueSymbolic extends TestCase
 	private static class AElem extends SymbolicElem<DoubleElem,DoubleElemFactory>
 	{
 
-		public AElem(DoubleElemFactory _fac) {
+		/**
+		 * Constructs the node.
+		 * 
+		 * @param _fac The factory for the enclosed type.
+		 */
+		public AElem(DoubleElemFactory _fac ) {
 			super(_fac);
 		}
 
 		@Override
-		public DoubleElem eval(
-				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace)
-				throws NotInvertibleException,
+		public DoubleElem eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
 			throw( new RuntimeException( "NotSupported" ) );
 		}
-
+		
+		
 		@Override
 		public DoubleElem evalCached(
 				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace,
@@ -95,16 +102,17 @@ public class TestAbsoluteValueSymbolic extends TestCase
 				MultiplicativeDistributionRequiredException {
 			throw( new RuntimeException( "NotSupported" ) );
 		}
+		
 
 		@Override
-		public DoubleElem evalPartialDerivative(
-				ArrayList<? extends Elem<?, ?>> withRespectTo,
-				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace)
+		public DoubleElem evalPartialDerivative(ArrayList<? extends Elem<?, ?>> withRespectTo , HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace)
 				throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
 			throw( new RuntimeException( "NotSupported" ) );
 		}
-
+		
+		
+		
 		@Override
 		public DoubleElem evalPartialDerivativeCached(
 				ArrayList<? extends Elem<?, ?>> withRespectTo,
@@ -114,6 +122,8 @@ public class TestAbsoluteValueSymbolic extends TestCase
 				MultiplicativeDistributionRequiredException {
 			throw( new RuntimeException( "NotSupported" ) );
 		}
+		
+		
 		
 		@Override
 		public boolean symbolicEquals( SymbolicElem<DoubleElem,DoubleElemFactory> b )
@@ -126,6 +136,10 @@ public class TestAbsoluteValueSymbolic extends TestCase
 			return( false );
 		}
 
+		
+
+		
+
 		@Override
 		public String writeDesc(
 				WriteElemCache<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>> cache,
@@ -133,7 +147,7 @@ public class TestAbsoluteValueSymbolic extends TestCase
 			String st = cache.get( this );
 			if( st == null )
 			{
-				final String sta = fac.writeDesc( (WriteElemCache<DoubleElem,DoubleElemFactory>)( cache.getInnerCache() ) , ps);
+				final String sta = fac.writeDesc( (WriteElemCache<DoubleElem, DoubleElemFactory>) cache.getInnerCache() , ps);
 				st = cache.getIncrementVal();
 				cache.put(this, st);
 				ps.print( AElem.class.getSimpleName() );
@@ -148,116 +162,69 @@ public class TestAbsoluteValueSymbolic extends TestCase
 			return( st );
 		}
 		
+		
 	}
 	
 	
 	/**
-	 * Tests that the absolute value of the identity yields the identity.
+	 * Runs the test.
 	 * 
 	 * @throws NotInvertibleException
 	 */
-	public void testAbsoluteValueIdentity() throws NotInvertibleException
+	public void testZeroAcrossCplx() throws NotInvertibleException
 	{
+		
 		final DoubleElemFactory dl = new DoubleElemFactory();
 		
-		final SymbolicElemFactory<DoubleElem,DoubleElemFactory> ye = 
+		final SymbolicElemFactory<DoubleElem,DoubleElemFactory> se = 
 				new SymbolicElemFactory<DoubleElem,DoubleElemFactory>(dl);
 		
-		SymbolicElem<DoubleElem,DoubleElemFactory>
-			d0 = ye.identity();
+		final ComplexElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> ce =
+				new ComplexElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>( se );
 		
-		final ArrayList<SymbolicElem<DoubleElem,DoubleElemFactory>>
-			args = new ArrayList<SymbolicElem<DoubleElem,DoubleElemFactory>>();
+		final SymbolicElemFactory<ComplexElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,ComplexElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>> se2 =
+				new SymbolicElemFactory<ComplexElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,ComplexElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>( ce );
 		
-		SymbolicElem<DoubleElem,DoubleElemFactory>
-			d1 = d0.handleOptionalOp( AbsoluteValue.ABSOLUTE_VALUE , args);
+		final AElem a0 = new AElem( dl );
 		
-		Assert.assertTrue( d1 instanceof SymbolicAbsoluteValue );
 		
-		SymbolicElem<DoubleElem,DoubleElemFactory>
-			d2 = d1.distributeSimplify();
+		final SymbolicElem<DoubleElem,DoubleElemFactory> a00 = a0.mult( se.zero() );
 		
-		Assert.assertTrue( d2 instanceof SymbolicIdentity );
+		
+		// System.out.println( a00 );
+		
+		
+		final ComplexElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> c0 =
+				new ComplexElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>( a00 , a00 );
+		
+		
+		final SymbolicElem<ComplexElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,ComplexElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>
+			d0 = new SymbolicReduction<ComplexElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,ComplexElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>( c0 , ce );
+		
+		
+		// final SymbolicElem<ComplexElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,ComplexElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>> 
+		//	d0a = d0.add( d0 );
+		
+		
+		final SymbolicElem<ComplexElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,ComplexElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>
+			d1 = d0.distributeSimplify2();
+		
+		
+		// For some reason Drools activates the SymbolicReduction Zero rule and inserts the Reng, but the Reng insertion did not activate the Apply Placeholder rule.
+		
+		
+		System.out.println( "***" );
+		System.out.println( d0 );
+		System.out.println( d1 );
+		
+		
+		
+		Assert.assertTrue( d1 instanceof SymbolicZero );
 		
 	}
 	
-	
-	
-	/**
-	 * Tests that the absolute value of zero yields zero.
-	 * 
-	 * @throws NotInvertibleException
-	 */
-	public void testAbsoluteValueZero() throws NotInvertibleException
-	{
-		final DoubleElemFactory dl = new DoubleElemFactory();
-		
-		final SymbolicElemFactory<DoubleElem,DoubleElemFactory> ye = 
-				new SymbolicElemFactory<DoubleElem,DoubleElemFactory>(dl);
-		
-		SymbolicElem<DoubleElem,DoubleElemFactory>
-			d0 = ye.zero();
-		
-		final ArrayList<SymbolicElem<DoubleElem,DoubleElemFactory>>
-			args = new ArrayList<SymbolicElem<DoubleElem,DoubleElemFactory>>();
-		
-		SymbolicElem<DoubleElem,DoubleElemFactory>
-			d1 = d0.handleOptionalOp( AbsoluteValue.ABSOLUTE_VALUE , args);
-		
-		Assert.assertTrue( d1 instanceof SymbolicAbsoluteValue );
-		
-		SymbolicElem<DoubleElem,DoubleElemFactory>
-			d2 = d1.distributeSimplify();
-		
-		Assert.assertTrue( d2 instanceof SymbolicZero );
-		
-	}
-	
-	
-	
-	/**
-	 * Tests that the absolute value of zero yields zero.
-	 * 
-	 * @throws NotInvertibleException
-	 */
-	public void testDoubleAbsoluteValue() throws NotInvertibleException
-	{
-		final DoubleElemFactory dl = new DoubleElemFactory();
-		
-		final SymbolicElemFactory<DoubleElem,DoubleElemFactory> ye = 
-				new SymbolicElemFactory<DoubleElem,DoubleElemFactory>(dl);
-		
-		SymbolicElem<DoubleElem,DoubleElemFactory>
-			d0 = new AElem( dl );
-		
-		final ArrayList<SymbolicElem<DoubleElem,DoubleElemFactory>>
-			args = new ArrayList<SymbolicElem<DoubleElem,DoubleElemFactory>>();
-		
-		SymbolicElem<DoubleElem,DoubleElemFactory>
-			d1 = d0.handleOptionalOp( AbsoluteValue.ABSOLUTE_VALUE , args);
-		
-		Assert.assertTrue( d1 instanceof SymbolicAbsoluteValue );
-		
-		SymbolicElem<DoubleElem,DoubleElemFactory>
-			d2 = d1.handleOptionalOp( AbsoluteValue.ABSOLUTE_VALUE , args);
-	
-		Assert.assertTrue( d2 instanceof SymbolicAbsoluteValue );
-		
-		SymbolicElem<DoubleElem,DoubleElemFactory>
-			d3 = d2.distributeSimplify();
-		
-		Assert.assertTrue( d3 instanceof SymbolicAbsoluteValue );
-		
-		SymbolicAbsoluteValue<DoubleElem,DoubleElemFactory>
-			d3a = (SymbolicAbsoluteValue<DoubleElem,DoubleElemFactory>)( d3 );
-		
-		Assert.assertTrue( ( d3a.getElem() ) instanceof AElem );
-		
-	}
-	
-	
-
 	
 }
+
 
 

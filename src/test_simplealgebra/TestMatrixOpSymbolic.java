@@ -55,7 +55,6 @@ import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicIdentity;
 import simplealgebra.symbolic.SymbolicNegate;
-import simplealgebra.symbolic.SymbolicOps;
 import simplealgebra.symbolic.SymbolicReduction;
 import simplealgebra.symbolic.SymbolicZero;
 
@@ -189,7 +188,7 @@ public class TestMatrixOpSymbolic extends TestCase
 		Assert.assertTrue( d2 instanceof SymbolicTranspose );
 		
 		SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
-			d2a = d2.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
+			d2a = d2.distributeSimplify();
 		
 		Assert.assertTrue( d2a instanceof SymbolicZero );
 		
@@ -227,7 +226,7 @@ public class TestMatrixOpSymbolic extends TestCase
 		Assert.assertTrue( d2 instanceof SymbolicTranspose );
 		
 		SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
-			d2a = d2.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
+			d2a = d2.distributeSimplify();
 		
 		Assert.assertTrue( d2a instanceof SymbolicNegate );
 		
@@ -273,7 +272,7 @@ public class TestMatrixOpSymbolic extends TestCase
 		Assert.assertTrue( d2 instanceof SymbolicInvertRightRevCoeff );
 		
 		SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
-			d2a = d2.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
+			d2a = d2.distributeSimplify();
 		
 		Assert.assertTrue( d2a instanceof SymbolicIdentity );
 		
@@ -311,7 +310,7 @@ public class TestMatrixOpSymbolic extends TestCase
 		Assert.assertTrue( d2 instanceof SymbolicInvertLeftRevCoeff );
 		
 		SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
-			d2a = d2.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
+			d2a = d2.distributeSimplify();
 		
 		Assert.assertTrue( d2a instanceof SymbolicIdentity );
 		
@@ -349,7 +348,7 @@ public class TestMatrixOpSymbolic extends TestCase
 		Assert.assertTrue( d2 instanceof SymbolicMultRevCoeff );
 		
 		SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
-			d2a = d2.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
+			d2a = d2.distributeSimplify();
 		
 		Assert.assertTrue( d2a instanceof SymbolicZero );
 		
@@ -387,7 +386,7 @@ public class TestMatrixOpSymbolic extends TestCase
 		Assert.assertTrue( d2 instanceof SymbolicMultRevCoeff );
 		
 		SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
-			d2a = d2.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
+			d2a = d2.distributeSimplify();
 		
 		Assert.assertTrue( d2a instanceof SymbolicZero );
 		
@@ -424,7 +423,7 @@ public class TestMatrixOpSymbolic extends TestCase
 		Assert.assertTrue( d2 instanceof SymbolicMultRevCoeff );
 		
 		SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
-			d2a = d2.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
+			d2a = d2.distributeSimplify();
 		
 		Assert.assertTrue( d2a instanceof AElem );
 		
@@ -461,7 +460,7 @@ public class TestMatrixOpSymbolic extends TestCase
 		Assert.assertTrue( d2 instanceof SymbolicMultRevCoeff );
 		
 		SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
-			d2a = d2.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
+			d2a = d2.distributeSimplify();
 		
 		Assert.assertTrue( d2a instanceof AElem );
 		
@@ -493,7 +492,7 @@ public class TestMatrixOpSymbolic extends TestCase
 				new SymbolicReduction<SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>>(d1, ye );
 		
 		SymbolicElem<SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>>
-			d2a = rd.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
+			d2a = rd.distributeSimplify();
 		
 		Assert.assertTrue( d2a instanceof SymbolicIdentity );
 		
@@ -526,7 +525,7 @@ public class TestMatrixOpSymbolic extends TestCase
 				new SymbolicReduction<SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>>(d1, ye );
 		
 		SymbolicElem<SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>>
-			d2a = rd.handleOptionalOp( SymbolicOps.DISTRIBUTE_SIMPLIFY , null);
+			d2a = rd.distributeSimplify();
 		
 		Assert.assertTrue( d2a instanceof SymbolicZero );
 		

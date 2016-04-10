@@ -27,10 +27,13 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashSet;
 
+import org.kie.internal.runtime.StatefulKnowledgeSession;
+
 import simplealgebra.ga.GeometricAlgebraMultivectorElem;
 import simplealgebra.ga.GeometricAlgebraMultivectorElemFactory;
 import simplealgebra.ga.GeometricAlgebraOrd;
 import simplealgebra.symbolic.PrecedenceComparator;
+import simplealgebra.symbolic.SymbolicElem.EVAL_MODE;
 
 /**
  * Complex number for representing e.g. phasors in electrical circuit theory.
@@ -371,6 +374,22 @@ public class ComplexElem<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 		}
 		cache.put(this, this);
 		return( this );
+	}
+	
+	
+	@Override
+	public void performInserts( StatefulKnowledgeSession session )
+	{
+		re.performInserts( session );
+		im.performInserts( session );
+		super.performInserts( session );
+	}
+	
+	
+	@Override
+	public boolean evalSymbolicZeroApprox( EVAL_MODE mode )
+	{
+		return( ( re.evalSymbolicZeroApprox(mode) ) && ( im.evalSymbolicZeroApprox(mode) ) );
 	}
 	
 	
