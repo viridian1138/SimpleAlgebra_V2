@@ -58,14 +58,14 @@ import java.io.*;
 
 
 /**
- * Verifies that the expression 0 * a + ( 0 * a ) * i simplifies to zero.
+ * Verifies that the expression ( a + -a ) + ( a + -a ) * i simplifies to ( zero + zero * i ).
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
  * @author thorngreen
  *
  */
-public class TestZeroAcrossCplx extends TestCase 
+public class TestZeroCplx extends TestCase 
 {
 
 	
@@ -171,7 +171,7 @@ public class TestZeroAcrossCplx extends TestCase
 	 * 
 	 * @throws NotInvertibleException
 	 */
-	public void testZeroAcrossCplx() throws NotInvertibleException
+	public void testZeroCplx() throws NotInvertibleException
 	{
 		
 		final DoubleElemFactory dl = new DoubleElemFactory();
@@ -188,7 +188,7 @@ public class TestZeroAcrossCplx extends TestCase
 		final AElem a0 = new AElem( dl );
 		
 		
-		final SymbolicElem<DoubleElem,DoubleElemFactory> a00 = a0.mult( se.zero() );
+		final SymbolicElem<DoubleElem,DoubleElemFactory> a00 = a0.add( a0.negate() );
 		
 		
 		// System.out.println( a00 );
@@ -198,28 +198,13 @@ public class TestZeroAcrossCplx extends TestCase
 				new ComplexElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>( a00 , a00 );
 		
 		
-		final SymbolicElem<ComplexElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,ComplexElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>
-			d0 = new SymbolicReduction<ComplexElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,ComplexElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>( c0 , ce );
+		final ComplexElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> c1 =
+				c0.distributeSimplify();
+
 		
+		Assert.assertTrue( c1.getRe() instanceof SymbolicZero );
 		
-		// final SymbolicElem<ComplexElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,ComplexElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>> 
-		//	d0a = d0.add( d0 );
-		
-		
-		final SymbolicElem<ComplexElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,ComplexElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>
-			d1 = d0.distributeSimplify2();
-		
-		
-		// For some reason Drools activates the SymbolicReduction Zero rule and inserts the Reng, but the Reng insertion did not activate the Apply Placeholder rule.
-		
-		
-		System.out.println( "***" );
-		System.out.println( d0 );
-		System.out.println( d1 );
-		
-		
-		
-		Assert.assertTrue( d1 instanceof SymbolicZero );
+		Assert.assertTrue( c1.getIm() instanceof SymbolicZero );
 		
 	}
 	
