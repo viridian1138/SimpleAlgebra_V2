@@ -45,6 +45,8 @@ import simplealgebra.NotInvertibleException;
 import simplealgebra.SquareMatrixElem;
 import simplealgebra.SquareMatrixElemFactory;
 import simplealgebra.WriteElemCache;
+import simplealgebra.meas.ValueWithUncertaintyElem;
+import simplealgebra.meas.ValueWithUncertaintyElemFactory;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SCacheKey;
 import simplealgebra.symbolic.SymbolicAdd;
@@ -207,6 +209,52 @@ public class TestZeroCplx extends TestCase
 		Assert.assertTrue( c1.getIm() instanceof SymbolicZero );
 		
 	}
+	
+	
+	
+	/**
+	 * Runs the a similar test for uncertainty.
+	 * 
+	 * @throws NotInvertibleException
+	 */
+	public void testZeroUncertainty() throws NotInvertibleException
+	{
+		
+		final DoubleElemFactory dl = new DoubleElemFactory();
+		
+		final SymbolicElemFactory<DoubleElem,DoubleElemFactory> se = 
+				new SymbolicElemFactory<DoubleElem,DoubleElemFactory>(dl);
+		
+		final ValueWithUncertaintyElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> ce =
+				new ValueWithUncertaintyElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>( se );
+		
+		final SymbolicElemFactory<ValueWithUncertaintyElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,ValueWithUncertaintyElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>> se2 =
+				new SymbolicElemFactory<ValueWithUncertaintyElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,ValueWithUncertaintyElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>( ce );
+		
+		final AElem a0 = new AElem( dl );
+		
+		
+		final SymbolicElem<DoubleElem,DoubleElemFactory> a00 = a0.add( a0.negate() );
+		
+		
+		// System.out.println( a00 );
+		
+		
+		final ValueWithUncertaintyElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> c0 =
+				new ValueWithUncertaintyElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>( a00 , a00 );
+		
+		
+		final ValueWithUncertaintyElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> c1 =
+				c0.distributeSimplify();
+
+		
+		Assert.assertTrue( c1.getValue() instanceof SymbolicZero );
+		
+		Assert.assertTrue( c1.getUncertainty() instanceof SymbolicZero );
+		
+	}
+	
+	
 	
 	
 }

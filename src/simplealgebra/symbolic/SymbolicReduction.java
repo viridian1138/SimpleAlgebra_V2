@@ -197,7 +197,7 @@ public class SymbolicReduction<R extends Elem<R,?>, S extends ElemFactory<R,S>> 
 	}
 	
 	
-	@Override
+/* 	@Override
 	public boolean equals( Object b )
 	{
 		if( b instanceof SymbolicReduction )
@@ -205,10 +205,10 @@ public class SymbolicReduction<R extends Elem<R,?>, S extends ElemFactory<R,S>> 
 			return( this.symbolicEquals( (SymbolicReduction) b ) );
 		}
 		return( false );
-	}
+	} */
 	
 	
-	@Override
+/*	@Override
 	public int hashCode()
 	{
 		if( elem instanceof SymbolicElem )
@@ -216,7 +216,7 @@ public class SymbolicReduction<R extends Elem<R,?>, S extends ElemFactory<R,S>> 
 			return( elem.hashCode() );
 		}
 		return( super.hashCode() );
-	}
+	} */
 	
 	
 	@Override

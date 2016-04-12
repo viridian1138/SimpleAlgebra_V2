@@ -210,12 +210,9 @@ public class TestZeroAcrossCplx extends TestCase
 			d1 = d0.distributeSimplify2();
 		
 		
-		// For some reason Drools activates the SymbolicReduction Zero rule and inserts the Reng, but the Reng insertion did not activate the Apply Placeholder rule.
-		
-		
-		System.out.println( "***" );
-		System.out.println( d0 );
-		System.out.println( d1 );
+//		System.out.println( "***" );
+//		System.out.println( d0 );
+//		System.out.println( d1 );
 		
 		
 		
