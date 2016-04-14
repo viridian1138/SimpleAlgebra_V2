@@ -60,14 +60,14 @@ import java.io.*;
 
 
 /**
- * Verifies that the expression 0 * a + ( 0 * a ) * i simplifies to zero.
+ * Performs tests verifying reduction to zero.
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
  * @author thorngreen
  *
  */
-public class TestZeroAcrossCplx extends TestCase 
+public class TestZeroAcrossElemSymbolic extends TestCase 
 {
 
 	
@@ -169,7 +169,26 @@ public class TestZeroAcrossCplx extends TestCase
 	
 	
 	/**
-	 * Runs the test.
+	 * Verifies that the expression <math display="inline">
+     * <mrow>
+     *  <mfenced open="(" close=")" separators=",">
+     *    <mrow>
+     *      <mn>0</mn>
+     *      <mo>&times;</mo>
+     *      <mi>a</mi>
+     *    </mrow>
+     *  </mfenced>
+     *  <mo>+</mo>
+     *  <mfenced open="(" close=")" separators=",">
+     *    <mrow>
+     *      <mn>0</mn>
+     *      <mo>&times;</mo>
+     *      <mi>a</mi>
+     *    </mrow>
+     *  </mfenced>
+     *   <mo>&ImaginaryI;</mo>
+     *  </mrow>
+     *   </math> simplifies to zero.
 	 * 
 	 * @throws NotInvertibleException
 	 */
@@ -227,7 +246,26 @@ public class TestZeroAcrossCplx extends TestCase
 	
 	
 	/**
-	 * Runs a similar test with uncertainty.
+	 * Verifies that the expression <math display="inline">
+     *  <mrow>
+     *    <mfenced open="(" close=")" separators=",">
+     *      <mrow>
+     *        <mn>0</mn>
+     *        <mo>&times;</mo>
+     *        <mi>a</mi>
+     *       </mrow>
+     *    </mfenced>
+     *     <mo>&PlusMinus;</mo>
+     *    <mfenced open="(" close=")" separators=",">
+     *      <mrow>
+     *        <mn>0</mn>
+     *        <mo>&times;</mo>
+     *        <mi>a</mi>
+     *      </mrow>
+     *    </mfenced>
+     *   </mrow>
+     *  </math> simplifies to zero.
+     *
 	 * 
 	 * @throws NotInvertibleException
 	 */

@@ -60,14 +60,14 @@ import java.io.*;
 
 
 /**
- * Verifies that the expression ( a + -a ) + ( a + -a ) * i simplifies to ( zero + zero * i ).
+ * Performs tests verifying reduction to zero.
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
  * @author thorngreen
  *
  */
-public class TestZeroCplx extends TestCase 
+public class TestZeroElemSymbolic extends TestCase 
 {
 
 	
@@ -169,7 +169,44 @@ public class TestZeroCplx extends TestCase
 	
 	
 	/**
-	 * Runs the test.
+	 * Verifies that the expression <math display="inline">
+     * <mrow>
+     * <mfenced open="(" close=")" separators=",">
+     * <mrow>
+     * <mi>a</mi>
+     * <mo>+</mo>
+     *  <mfenced open="[" close="]" separators=",">
+     *   <mrow>
+     *     <mo>-</mo>
+     *     <mi>a</mi>
+     *   </mrow>
+     * </mfenced>
+     *  </mrow>
+     *   </mfenced>
+     *   <mo>+</mo>
+     *   <mfenced open="(" close=")" separators=",">
+     *   <mrow>
+     *   <mi>a</mi>
+     *    <mo>+</mo>
+     *    <mfenced open="[" close="]" separators=",">
+     *   <mrow>
+     *     <mo>-</mo>
+     *     <mi>a</mi>
+     *   </mrow>
+     *   </mfenced>
+     *    </mrow>
+     *   </mfenced>
+     *   <mo>&ImaginaryI;</mo>
+     *   </mrow>
+     *    </math> simplifies to <math display="inline">
+     *    <mrow>
+     *    <mn>0</mn>
+     *   <mo>+</mo>
+     *    <mn>0</mn>
+     *    <mo>&times;</mo>
+     *     <mo>&ImaginaryI;</mo>
+     *     </mrow>
+     *     </math>.
 	 * 
 	 * @throws NotInvertibleException
 	 */
@@ -213,7 +250,41 @@ public class TestZeroCplx extends TestCase
 	
 	
 	/**
-	 * Runs the a similar test for uncertainty.
+	 * Verifies that the expression <math display="inline">
+     *  <mrow>
+     *    <mfenced open="(" close=")" separators=",">
+     *    <mrow>
+     *    <mi>a</mi>
+     *   <mo>+</mo>
+     *     <mfenced open="[" close="]" separators=",">
+     *     <mrow>
+     *       <mo>-</mo>
+     *        <mi>a</mi>
+     *      </mrow>
+     *     </mfenced>
+     *     </mrow>
+     *     </mfenced>
+     *     <mo>&PlusMinus;</mo>
+     *    <mfenced open="(" close=")" separators=",">
+     *    <mrow>
+     *     <mi>a</mi>
+     *     <mo>+</mo>
+     *     <mfenced open="[" close="]" separators=",">
+     *      <mrow>
+     *     <mo>-</mo>
+     *     <mi>a</mi>
+     *   </mrow>
+     *     </mfenced>
+     *      </mrow>
+     *     </mfenced>
+     *    </mrow>
+     *     </math> simplifies to <math display="inline">
+     *     <mrow>
+     *     <mn>0</mn>
+     *     <mo>&PlusMinus;</mo>
+     *    <mn>0</mn>
+     *      </mrow>
+     *       </math>.
 	 * 
 	 * @throws NotInvertibleException
 	 */
