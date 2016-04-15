@@ -321,6 +321,57 @@ public class TestZeroAcrossElemSymbolic extends TestCase
 	
 	
 	
+	/**
+	 * Tests symbolic reductions to zero throuch empty matrices.
+	 * 
+	 * @throws NotInvertibleException
+	 */
+	public void testZeroAcrossMatrix() throws NotInvertibleException
+	{
+		
+		final DoubleElemFactory dl = new DoubleElemFactory();
+		
+		final SymbolicElemFactory<DoubleElem,DoubleElemFactory> se = 
+				new SymbolicElemFactory<DoubleElem,DoubleElemFactory>(dl);
+		
+		final TestDimensionFive td = new TestDimensionFive();
+		
+		final SquareMatrixElemFactory<TestDimensionFive,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> ce =
+				new SquareMatrixElemFactory<TestDimensionFive,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>( se, td );
+		
+		final SymbolicElemFactory<SquareMatrixElem<TestDimensionFive,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SquareMatrixElemFactory<TestDimensionFive,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>> se2 =
+				new SymbolicElemFactory<SquareMatrixElem<TestDimensionFive,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SquareMatrixElemFactory<TestDimensionFive,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>( ce );
+		
+		
+		final SquareMatrixElem<TestDimensionFive,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> c0 =
+				ce.zero();
+		
+		
+		final SymbolicElem<SquareMatrixElem<TestDimensionFive,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SquareMatrixElemFactory<TestDimensionFive,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>
+			d0 = new SymbolicReduction<SquareMatrixElem<TestDimensionFive,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SquareMatrixElemFactory<TestDimensionFive,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>( c0 , ce );
+		
+		
+		// final SymbolicElem<<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,Factory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>> 
+		//	d0a = d0.add( d0 );
+		
+		
+		final SymbolicElem<SquareMatrixElem<TestDimensionFive,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SquareMatrixElemFactory<TestDimensionFive,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>
+			d1 = d0.distributeSimplify2();
+		
+		
+//		System.out.println( "***" );
+//		System.out.println( d0 );
+//		System.out.println( d1 );
+		
+		
+		
+		Assert.assertTrue( d1 instanceof SymbolicZero );
+		
+	}
+	
+	
+	
+	
 }
 
 
