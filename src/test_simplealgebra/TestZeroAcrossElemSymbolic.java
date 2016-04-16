@@ -45,6 +45,11 @@ import simplealgebra.NotInvertibleException;
 import simplealgebra.SquareMatrixElem;
 import simplealgebra.SquareMatrixElemFactory;
 import simplealgebra.WriteElemCache;
+import simplealgebra.et.EinsteinTensorElem;
+import simplealgebra.et.EinsteinTensorElemFactory;
+import simplealgebra.ga.GeometricAlgebraMultivectorElem;
+import simplealgebra.ga.GeometricAlgebraMultivectorElemFactory;
+import simplealgebra.ga.GeometricAlgebraOrd;
 import simplealgebra.meas.ValueWithUncertaintyElem;
 import simplealgebra.meas.ValueWithUncertaintyElemFactory;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
@@ -322,7 +327,7 @@ public class TestZeroAcrossElemSymbolic extends TestCase
 	
 	
 	/**
-	 * Tests symbolic reductions to zero throuch empty matrices.
+	 * Tests symbolic reductions to zero through empty matrices.
 	 * 
 	 * @throws NotInvertibleException
 	 */
@@ -368,6 +373,120 @@ public class TestZeroAcrossElemSymbolic extends TestCase
 		Assert.assertTrue( d1 instanceof SymbolicZero );
 		
 	}
+	
+	
+	
+	
+	
+
+	
+	/**
+	 * Tests symbolic reductions to zero through empty tensors.
+	 * 
+	 * @throws NotInvertibleException
+	 */
+	public void testZeroAcrossTensor() throws NotInvertibleException
+	{
+		
+		final DoubleElemFactory dl = new DoubleElemFactory();
+		
+		final SymbolicElemFactory<DoubleElem,DoubleElemFactory> se = 
+				new SymbolicElemFactory<DoubleElem,DoubleElemFactory>(dl);
+		
+		final TestDimensionFive td = new TestDimensionFive();
+		
+		final EinsteinTensorElemFactory<TestDimensionFive,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> ce =
+				new EinsteinTensorElemFactory<TestDimensionFive,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>( se );
+		
+		final SymbolicElemFactory<EinsteinTensorElem<TestDimensionFive,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,EinsteinTensorElemFactory<TestDimensionFive,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>> se2 =
+				new SymbolicElemFactory<EinsteinTensorElem<TestDimensionFive,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,EinsteinTensorElemFactory<TestDimensionFive,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>( ce );
+		
+		
+		final EinsteinTensorElem<TestDimensionFive,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> c0 =
+				ce.zero();
+		
+		
+		final SymbolicElem<EinsteinTensorElem<TestDimensionFive,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,EinsteinTensorElemFactory<TestDimensionFive,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>
+			d0 = new SymbolicReduction<EinsteinTensorElem<TestDimensionFive,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,EinsteinTensorElemFactory<TestDimensionFive,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>( c0 , ce );
+		
+		
+		// final SymbolicElem<<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,Factory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>> 
+		//	d0a = d0.add( d0 );
+		
+		
+		final SymbolicElem<EinsteinTensorElem<TestDimensionFive,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,EinsteinTensorElemFactory<TestDimensionFive,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>
+			d1 = d0.distributeSimplify2();
+		
+		
+//		System.out.println( "***" );
+//		System.out.println( d0 );
+//		System.out.println( d1 );
+		
+		
+		
+		Assert.assertTrue( d1 instanceof SymbolicZero );
+		
+	}
+	
+	
+	
+	
+	
+	
+	/**
+	 * Tests symbolic reductions to zero through empty multivectors.
+	 * 
+	 * @throws NotInvertibleException
+	 */
+	public void testZeroAcrossMultivector() throws NotInvertibleException
+	{
+		
+		final DoubleElemFactory dl = new DoubleElemFactory();
+		
+		final SymbolicElemFactory<DoubleElem,DoubleElemFactory> se = 
+				new SymbolicElemFactory<DoubleElem,DoubleElemFactory>(dl);
+		
+		final TestDimensionFive td = new TestDimensionFive();
+		
+		final GeometricAlgebraOrd<TestDimensionFive> ord = new GeometricAlgebraOrd<TestDimensionFive>();
+		
+		final GeometricAlgebraMultivectorElemFactory<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> ce =
+				new GeometricAlgebraMultivectorElemFactory<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>( se, td, ord );
+		
+		final SymbolicElemFactory<GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,GeometricAlgebraMultivectorElemFactory<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>> se2 =
+				new SymbolicElemFactory<GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,GeometricAlgebraMultivectorElemFactory<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>( ce );
+		
+		
+		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> c0 =
+				ce.zero();
+		
+		
+		final SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,GeometricAlgebraMultivectorElemFactory<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>
+			d0 = new SymbolicReduction<GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,GeometricAlgebraMultivectorElemFactory<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>( c0 , ce );
+		
+		
+		// final SymbolicElem<<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,Factory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>> 
+		//	d0a = d0.add( d0 );
+		
+		
+		final SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,GeometricAlgebraMultivectorElemFactory<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>
+			d1 = d0.distributeSimplify2();
+		
+		
+//		System.out.println( "***" );
+//		System.out.println( d0 );
+//		System.out.println( d1 );
+		
+		
+		
+		Assert.assertTrue( d1 instanceof SymbolicZero );
+		
+	}
+	
+	
+	
+	
+	
 	
 	
 	
