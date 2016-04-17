@@ -1897,6 +1897,13 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 				return( false );
 			}
 			
+			
+			if( !( rowMap.get( cnt ).size() == 1 ) )
+			{
+				return( false );
+			}
+			
+			
 			if( !( val.evalSymbolicIdentityApprox( mode ) ) )
 			{
 				return( false );
