@@ -451,6 +451,17 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 	
 	
 	/**
+	 * Returns approximately whether the elem can be determined to reduce to the identity.
+	 * 
+	 * @param mode Mode determining the extent to which the elem will be reduced to determine if it is the identity.
+	 * @return  True if the elem can be determined to reduce to the identity.
+	 * @throws NotInvertibleException 
+	 */
+	public abstract boolean evalSymbolicIdentityApprox( EVAL_MODE mode );
+	
+	
+	
+	/**
 	 * Performs a distribute simplify on the elem.
 	 * 
 	 * @return The result of the simplification.

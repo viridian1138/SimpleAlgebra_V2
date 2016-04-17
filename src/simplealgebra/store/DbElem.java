@@ -189,6 +189,14 @@ public class DbElem<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 	
 	
 	@Override
+	public boolean evalSymbolicIdentityApprox( EVAL_MODE mode )
+	{
+		return( query().evalSymbolicIdentityApprox(mode) );
+	}
+	
+	
+	
+	@Override
 	public String writeDesc( WriteElemCache<DbElem<R,S>,DbElemFactory<R,S>> cache , PrintStream ps )
 	{
 		String st = cache.get( this );

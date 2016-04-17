@@ -363,6 +363,32 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 	
 	
 	
+	@Override
+	public boolean evalSymbolicIdentityApprox( EVAL_MODE mode )
+	{
+		switch( mode )
+		{
+			case APPROX:
+			{
+				return( isSymbolicIdentity() );
+			}
+			
+			case SIMPLIFY:
+			{
+				return( distributeSimplify().isSymbolicIdentity() );
+			}
+			
+			case SIMPLIFY2:
+			{
+				return( this.distributeSimplify2().isSymbolicIdentity() );
+			}
+		}
+		
+		throw( new RuntimeException( "Not Supported" ) );
+	}
+	
+	
+	
 	/**
 	 * Returns approximately whether the elem can be determined to be a symbolic constant.
 	 * 

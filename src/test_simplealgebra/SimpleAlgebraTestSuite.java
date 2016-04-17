@@ -118,6 +118,7 @@ public class SimpleAlgebraTestSuite extends TestSuite {
 		s.addTestSuite( TestAbsValSymbolic.class );
 		s.addTestSuite( TestReductionSymbolic.class );
 		s.addTestSuite( TestZeroAcrossElemSymbolic.class );
+		s.addTestSuite( TestIdentityAcrossElemSymbolic.class );
 		s.addTestSuite( TestZeroElemSymbolic.class );
 		return( s );
 	}

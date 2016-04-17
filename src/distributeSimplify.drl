@@ -1119,8 +1119,9 @@ end
 
 rule "SymbolicReduction Identity"
       when
-          ident : SymbolicIdentity( )
+          ident : Elem( )
           tr1 : SymbolicReduction( elem == ident )
+          eval( ident.evalSymbolicIdentityApprox( SymbolicElem.EVAL_MODE.SIMPLIFY ) )
           not( Reng( strt == tr1 ) )
           not( Reng( strt == ident ) )
           ds : DroolsSession()

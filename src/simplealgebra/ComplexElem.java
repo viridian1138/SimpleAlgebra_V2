@@ -394,6 +394,13 @@ public class ComplexElem<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 	
 	
 	@Override
+	public boolean evalSymbolicIdentityApprox( EVAL_MODE mode )
+	{
+		return( ( re.evalSymbolicIdentityApprox(mode) ) && ( im.evalSymbolicZeroApprox(mode) ) );
+	}
+	
+	
+	@Override
 	public void writeMathML( PrecedenceComparator pc , PrintStream ps )
 	{
 		if( pc.parenNeeded( this ,  re , false ) )

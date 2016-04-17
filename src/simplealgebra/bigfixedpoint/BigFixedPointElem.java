@@ -172,6 +172,13 @@ public class BigFixedPointElem<T extends Precision<T>> extends Elem<BigFixedPoin
 	
 	
 	@Override
+	public boolean evalSymbolicIdentityApprox( EVAL_MODE mode )
+	{
+		return( val.equals( prec.getVal() ) );
+	}
+	
+	
+	@Override
 	public void writeMathML( PrecedenceComparator pc , PrintStream ps )
 	{
 		if( val.equals( BigInteger.ZERO ) )

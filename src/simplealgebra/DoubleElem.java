@@ -149,6 +149,12 @@ public class DoubleElem extends Elem<DoubleElem, DoubleElemFactory> {
 	}
 	
 	
+	@Override
+	public boolean evalSymbolicIdentityApprox( EVAL_MODE mode )
+	{
+		return( d == 1.0 );
+	}
+	
 	
 	@Override
 	public void writeMathML( PrecedenceComparator pc , PrintStream ps )

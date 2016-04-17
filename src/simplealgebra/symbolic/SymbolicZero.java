@@ -220,6 +220,12 @@ public class SymbolicZero<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 		return( true );
 	}
 	
+	@Override
+	public boolean evalSymbolicIdentityApprox( EVAL_MODE mode )
+	{
+		return( false );
+	}
+	
 	/**
 	 * Returns true iff. the parameter is an instance of SymbolicZero.
 	 * 

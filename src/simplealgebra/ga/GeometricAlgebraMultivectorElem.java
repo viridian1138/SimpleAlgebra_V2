@@ -1499,6 +1499,24 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 	
 	
 	@Override
+	public boolean evalSymbolicIdentityApprox( EVAL_MODE mode )
+	{
+		if( map.keySet().size() == 1 )
+		{
+			final R val = map.get( new HashSet<BigInteger>() );
+			
+			if( val != null )
+			{
+				return( val.evalSymbolicIdentityApprox( mode ) );
+			}
+		}
+		
+		return( false );
+	}
+	
+	
+	
+	@Override
 	public String writeDesc( WriteElemCache<GeometricAlgebraMultivectorElem<U,A,R,S>,GeometricAlgebraMultivectorElemFactory<U,A,R,S>> cache , PrintStream ps )
 	{
 		String st = cache.get( this );

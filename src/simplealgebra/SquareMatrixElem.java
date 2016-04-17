@@ -1875,6 +1875,41 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	
 	
 	@Override
+	public boolean evalSymbolicIdentityApprox( EVAL_MODE mode )
+	{
+		if( !( dim.getVal().equals( BigInteger.valueOf( columnMap.keySet().size() ) ) ) )
+		{
+			return( false );
+		}
+		
+		if( !( dim.getVal().equals( BigInteger.valueOf( rowMap.keySet().size() ) ) ) )
+		{
+			return( false );
+		}
+		
+		
+		for( BigInteger cnt = BigInteger.ZERO ; cnt.compareTo( dim.getVal() ) < 0 ; cnt = cnt.add( BigInteger.ONE ) )
+		{
+			final R val = this.get( cnt , cnt );
+			
+			if( val == null )
+			{
+				return( false );
+			}
+			
+			if( !( val.evalSymbolicIdentityApprox( mode ) ) )
+			{
+				return( false );
+			}
+			
+		}
+		
+		return( true );
+	}
+	
+	
+	
+	@Override
 	public String writeDesc( WriteElemCache<SquareMatrixElem<U,R,S>,SquareMatrixElemFactory<U,R,S>> cache , PrintStream ps )
 	{
 		String st = cache.get( this );

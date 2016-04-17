@@ -1222,6 +1222,23 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	
 	
 	@Override
+	public boolean evalSymbolicIdentityApprox( EVAL_MODE mode )
+	{
+		if( ( contravariantIndices.isEmpty() ) && ( covariantIndices.isEmpty() ) )
+		{
+			final R val = map.get( new ArrayList<BigInteger>() );
+			
+			if( val != null )
+			{
+				return( val.evalSymbolicIdentityApprox( mode ) );
+			}
+		}
+		
+		return( false );
+	}
+	
+	
+	@Override
 	public String writeDesc( WriteElemCache<EinsteinTensorElem<Z,R,S>,EinsteinTensorElemFactory<Z,R,S>> cache , PrintStream ps )
 	{
 		String st = cache.get( this );

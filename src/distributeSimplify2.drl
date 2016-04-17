@@ -720,7 +720,7 @@ rule "SymbolicReduction Zero"
       when
           ez : Elem( )
           tr1 : SymbolicReduction( elem == ez )
-           eval( ez.evalSymbolicZeroApprox( SymbolicElem.EVAL_MODE.SIMPLIFY2 ) )
+          eval( ez.evalSymbolicZeroApprox( SymbolicElem.EVAL_MODE.SIMPLIFY2 ) )
           not( Reng( strt == tr1 ) )
           not( Reng( strt == ez ) )
           ds : DroolsSession()
@@ -735,8 +735,9 @@ end
 
 rule "SymbolicReduction Identity"
       when
-          ident : SymbolicIdentity( )
+          ident : Elem( )
           tr1 : SymbolicReduction( elem == ident )
+          eval( ident.evalSymbolicIdentityApprox( SymbolicElem.EVAL_MODE.SIMPLIFY2 ) )
           not( Reng( strt == tr1 ) )
           not( Reng( strt == ident ) )
           ds : DroolsSession()

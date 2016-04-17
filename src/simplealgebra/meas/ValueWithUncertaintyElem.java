@@ -202,6 +202,13 @@ public class ValueWithUncertaintyElem<R extends Elem<R,?>, S extends ElemFactory
 	
 	
 	@Override
+	public boolean evalSymbolicIdentityApprox( EVAL_MODE mode )
+	{
+		return( ( value.evalSymbolicIdentityApprox(mode) ) && ( uncertainty.evalSymbolicZeroApprox(mode) ) );
+	}
+	
+	
+	@Override
 	public void writeMathML( PrecedenceComparator pc , PrintStream ps )
 	{
 		if( pc.parenNeeded( this ,  value , false ) )
