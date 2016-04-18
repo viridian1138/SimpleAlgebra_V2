@@ -33,6 +33,7 @@ package test_simplealgebra;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
@@ -61,6 +62,7 @@ import simplealgebra.symbolic.SymbolicReduction;
 import simplealgebra.symbolic.SymbolicZero;
 
 import java.io.*;
+import java.math.BigInteger;
 
 
 
@@ -171,6 +173,206 @@ public class TestZeroAcrossElemSymbolic extends TestCase
 		
 		
 	}
+	
+	
+	
+	
+	/**
+	 * Node representing the variable to be tested in the expression.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
+	private static class BElem extends SymbolicElem<DoubleElem,DoubleElemFactory>
+	{
+
+		/**
+		 * Constructs the node.
+		 * 
+		 * @param _fac The factory for the enclosed type.
+		 */
+		public BElem(DoubleElemFactory _fac ) {
+			super(_fac);
+		}
+
+		@Override
+		public DoubleElem eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException,
+				MultiplicativeDistributionRequiredException {
+			throw( new RuntimeException( "NotSupported" ) );
+		}
+		
+		
+		@Override
+		public DoubleElem evalCached(
+				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace,
+				HashMap<SCacheKey<DoubleElem, DoubleElemFactory>, DoubleElem> cache)
+				throws NotInvertibleException,
+				MultiplicativeDistributionRequiredException {
+			throw( new RuntimeException( "NotSupported" ) );
+		}
+		
+
+		@Override
+		public DoubleElem evalPartialDerivative(ArrayList<? extends Elem<?, ?>> withRespectTo , HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace)
+				throws NotInvertibleException,
+				MultiplicativeDistributionRequiredException {
+			throw( new RuntimeException( "NotSupported" ) );
+		}
+		
+		
+		
+		@Override
+		public DoubleElem evalPartialDerivativeCached(
+				ArrayList<? extends Elem<?, ?>> withRespectTo,
+				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace,
+				HashMap<SCacheKey<DoubleElem, DoubleElemFactory>, DoubleElem> cache)
+				throws NotInvertibleException,
+				MultiplicativeDistributionRequiredException {
+			throw( new RuntimeException( "NotSupported" ) );
+		}
+		
+		
+		
+		@Override
+		public boolean symbolicEquals( SymbolicElem<DoubleElem,DoubleElemFactory> b )
+		{
+			if( b instanceof BElem )
+			{
+				return( true );
+			}
+			
+			return( false );
+		}
+
+		
+
+		
+
+		@Override
+		public String writeDesc(
+				WriteElemCache<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>> cache,
+				PrintStream ps) {
+			String st = cache.get( this );
+			if( st == null )
+			{
+				final String sta = fac.writeDesc( (WriteElemCache<DoubleElem, DoubleElemFactory>) cache.getInnerCache() , ps);
+				st = cache.getIncrementVal();
+				cache.put(this, st);
+				ps.print( BElem.class.getSimpleName() );
+				ps.print( " " );
+				ps.print( st );
+				ps.print( " = new " );
+				ps.print( BElem.class.getSimpleName() );
+				ps.print( "( " );
+				ps.print( sta );
+				ps.println( " );" );
+			}
+			return( st );
+		}
+		
+		
+	}
+	
+	
+	
+	
+	/**
+	 * Node representing the variable to be tested in the expression.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
+	private static class CElem extends SymbolicElem<DoubleElem,DoubleElemFactory>
+	{
+
+		/**
+		 * Constructs the node.
+		 * 
+		 * @param _fac The factory for the enclosed type.
+		 */
+		public CElem(DoubleElemFactory _fac ) {
+			super(_fac);
+		}
+
+		@Override
+		public DoubleElem eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException,
+				MultiplicativeDistributionRequiredException {
+			throw( new RuntimeException( "NotSupported" ) );
+		}
+		
+		
+		@Override
+		public DoubleElem evalCached(
+				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace,
+				HashMap<SCacheKey<DoubleElem, DoubleElemFactory>, DoubleElem> cache)
+				throws NotInvertibleException,
+				MultiplicativeDistributionRequiredException {
+			throw( new RuntimeException( "NotSupported" ) );
+		}
+		
+
+		@Override
+		public DoubleElem evalPartialDerivative(ArrayList<? extends Elem<?, ?>> withRespectTo , HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace)
+				throws NotInvertibleException,
+				MultiplicativeDistributionRequiredException {
+			throw( new RuntimeException( "NotSupported" ) );
+		}
+		
+		
+		
+		@Override
+		public DoubleElem evalPartialDerivativeCached(
+				ArrayList<? extends Elem<?, ?>> withRespectTo,
+				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace,
+				HashMap<SCacheKey<DoubleElem, DoubleElemFactory>, DoubleElem> cache)
+				throws NotInvertibleException,
+				MultiplicativeDistributionRequiredException {
+			throw( new RuntimeException( "NotSupported" ) );
+		}
+		
+		
+		
+		@Override
+		public boolean symbolicEquals( SymbolicElem<DoubleElem,DoubleElemFactory> b )
+		{
+			if( b instanceof CElem )
+			{
+				return( true );
+			}
+			
+			return( false );
+		}
+
+		
+
+		
+
+		@Override
+		public String writeDesc(
+				WriteElemCache<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>> cache,
+				PrintStream ps) {
+			String st = cache.get( this );
+			if( st == null )
+			{
+				final String sta = fac.writeDesc( (WriteElemCache<DoubleElem, DoubleElemFactory>) cache.getInnerCache() , ps);
+				st = cache.getIncrementVal();
+				cache.put(this, st);
+				ps.print( CElem.class.getSimpleName() );
+				ps.print( " " );
+				ps.print( st );
+				ps.print( " = new " );
+				ps.print( CElem.class.getSimpleName() );
+				ps.print( "( " );
+				ps.print( sta );
+				ps.println( " );" );
+			}
+			return( st );
+		}
+		
+		
+	}
+	
+	
 	
 	
 	/**
@@ -471,6 +673,109 @@ public class TestZeroAcrossElemSymbolic extends TestCase
 		
 		final SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,GeometricAlgebraMultivectorElemFactory<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>
 			d1 = d0.distributeSimplify2();
+		
+		
+//		System.out.println( "***" );
+//		System.out.println( d0 );
+//		System.out.println( d1 );
+		
+		
+		
+		Assert.assertTrue( d1 instanceof SymbolicZero );
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	/**
+	 * Tests that the vector expression <math display="inline">
+     * <mrow>
+     *  <mi>a</mi>
+     *  <mo>&times;</mo>
+     *  <mi>a</mi>
+     *  </mrow>
+     *  </math> reduces to zero.
+	 * 
+	 * @throws NotInvertibleException
+	 */
+	public void testZeroAcrossMultivectorCrossProduct() throws NotInvertibleException
+	{
+		
+		final DoubleElemFactory dl = new DoubleElemFactory();
+		
+		final SymbolicElemFactory<DoubleElem,DoubleElemFactory> se = 
+				new SymbolicElemFactory<DoubleElem,DoubleElemFactory>(dl);
+		
+		final TestDimensionThree td = new TestDimensionThree();
+		
+		final GeometricAlgebraOrd<TestDimensionThree> ord = new GeometricAlgebraOrd<TestDimensionThree>();
+		
+		final GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> ce =
+				new GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>( se, td, ord );
+		
+		final SymbolicElemFactory<GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>> se2 =
+				new SymbolicElemFactory<GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>( ce );
+		
+		
+		final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> c00 =
+				ce.zero();
+		
+		
+		final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> c01 =
+				ce.zero();
+		
+		
+		{
+			final AElem a0 = new AElem( dl );
+			final HashSet<BigInteger> hs = new HashSet<BigInteger>();
+			hs.add( BigInteger.ZERO );
+			c00.setVal( hs , a0 );
+			c01.setVal( hs , a0 );
+		}
+		
+		{
+			final BElem a0 = new BElem( dl );
+			final HashSet<BigInteger> hs = new HashSet<BigInteger>();
+			hs.add( BigInteger.ONE );
+			c00.setVal( hs , a0 );
+			c01.setVal( hs , a0 );
+		}
+		
+		{
+			final CElem a0 = new CElem( dl );
+			final HashSet<BigInteger> hs = new HashSet<BigInteger>();
+			hs.add( BigInteger.valueOf( 2 ) );
+			c00.setVal( hs , a0 );
+			c01.setVal( hs , a0 );
+		}
+		
+		
+		
+		final ArrayList<GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>> args = new ArrayList<GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>();
+		
+		
+		args.add( c01 );
+		
+		
+		final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> c0 =
+				c00.handleOptionalOp( GeometricAlgebraMultivectorElem.GeometricAlgebraMultivectorCmd.CROSS , args );
+		
+		
+		final SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>
+			d0 = new SymbolicReduction<GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>( c0 , ce );
+		
+		
+		// final SymbolicElem<<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,Factory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>> 
+		//	d0a = d0.add( d0 );
+		
+		
+		final SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>
+			d1 = d0.distributeSimplify();
 		
 		
 //		System.out.println( "***" );
