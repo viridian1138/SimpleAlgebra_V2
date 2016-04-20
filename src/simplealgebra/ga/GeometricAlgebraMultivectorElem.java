@@ -36,6 +36,8 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
+import org.kie.internal.runtime.StatefulKnowledgeSession;
+
 import simplealgebra.AbstractCache;
 import simplealgebra.CloneThreadCache;
 import simplealgebra.Elem;
@@ -50,6 +52,8 @@ import simplealgebra.WriteBigIntegerCache;
 import simplealgebra.WriteElemCache;
 import simplealgebra.WriteNumDimensionsCache;
 import simplealgebra.et.EinsteinTensorElem;
+import simplealgebra.symbolic.DroolsSession;
+import simplealgebra.symbolic.LoggingConfiguration;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.PrecedenceComparator;
 import simplealgebra.symbolic.SCacheKey;
@@ -58,6 +62,7 @@ import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicMult;
 import simplealgebra.symbolic.SymbolicNegate;
+import simplealgebra.symbolic.SymbolicPlaceholder;
 import simplealgebra.symbolic.SymbolicZero;
 import simplealgebra.symbolic.SymbolicElem.EVAL_MODE;
 
@@ -1459,6 +1464,130 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 		}
 		cache.put(this, ret);
 		return( ret );
+	}
+	
+	
+	
+	/**
+	 * Cleans enclosed elems that reduce to zero.
+	 * @param mode The extent to simplify whether the enclosed elems are zero.
+	 * @return The cleaned version of the multivector.
+	 */
+	public  GeometricAlgebraMultivectorElem<U, A, R, S> clean( final EVAL_MODE mode )
+	{	
+		if( mode == EVAL_MODE.APPROX )
+		{
+			final GeometricAlgebraMultivectorElem<U, A, R, S> ret = this.getFac().zero();
+			
+			for( Entry<HashSet<BigInteger>,R> ii : map.entrySet() )
+			{
+				if( !( ii.getValue().evalSymbolicZeroApprox( EVAL_MODE.APPROX ) ) )
+				{
+					ret.setVal( ii.getKey() , ii.getValue() );
+				}
+			}
+			
+			return( ret );
+		}
+		
+		GeometricAlgebraMultivectorElem<U, A, R, S> prev = this;
+		StatefulKnowledgeSession session = null;
+		HashMap<HashSet<BigInteger>,SymbolicPlaceholder<R,S>> place = null;
+		while( true )
+		{
+			try
+			{
+				session = mode == EVAL_MODE.SIMPLIFY ?
+						getDistributeSimplifyKnowledgeBase().newStatefulKnowledgeSession() : 
+						getDistributeSimplify2KnowledgeBase().newStatefulKnowledgeSession();
+		
+				session.insert( new DroolsSession( session ) );
+		
+				if( LoggingConfiguration.LOGGING_ON )
+				{
+					session.insert( new LoggingConfiguration() );
+				}
+				
+				if( LoggingConfiguration.EVENT_LOGGING_ON )
+				{
+					session.addEventListener( generateEventLoggingListener() );
+				}
+				
+				place = new HashMap<HashSet<BigInteger>,SymbolicPlaceholder<R,S>>();
+			
+				for( Entry<HashSet<BigInteger>,R> ii : prev.map.entrySet() )
+				{
+					place.put( ii.getKey() , new SymbolicPlaceholder<R,S>( ii.getValue() ) );
+				}
+			
+				for( SymbolicPlaceholder<R,S> ii : place.values() )
+				{
+					ii.performInserts( session );
+				}
+					
+				session.fireAllRules();
+				
+				final GeometricAlgebraMultivectorElem<U, A, R, S> ret = this.getFac().zero();
+		
+				for( Entry<HashSet<BigInteger>,SymbolicPlaceholder<R,S>> ii : place.entrySet() )
+				{
+					if( !( ii.getValue().getElem().evalSymbolicZeroApprox( EVAL_MODE.APPROX ) ) )
+					{
+						ret.setVal( ii.getKey() , ii.getValue().getElem() );
+					}
+				}
+		
+				session.dispose();
+			
+				return( ret );
+			}
+			catch( OutOfMemoryError ex )
+			{
+				GeometricAlgebraMultivectorElem<U, A, R, S> ret = null;
+				if( place != null )
+				{
+					ret = this.getFac().zero();
+					for( Entry<HashSet<BigInteger>,SymbolicPlaceholder<R,S>> ii : place.entrySet() )
+					{
+						if( !( ii.getValue().getElem().evalSymbolicZeroApprox( EVAL_MODE.APPROX ) ) )
+						{
+							ret.setVal( ii.getKey() , ii.getValue().getElem() );
+						}
+					}
+				}
+				
+				/*
+				 * Always try to dispose the session after running out of memory.
+				 */
+				try
+				{
+					if( session != null )
+					{
+						session.dispose();
+					}
+				}
+				catch( Throwable ex2 )
+				{
+					// ex2.printStackTrace( System.out );
+				}
+				
+				/*
+				 * If no simplifications were completed, exit with exception.
+				 */
+				if( ( ret == null ) || ( ret == prev ) )
+				{
+					throw( ex );
+				}
+				
+				/*
+				 * If some simplifications completed before the memory limits ran out,
+				 * re-run the session and see if it's possible to get farther on the next run.
+				 */
+				prev = ret;
+				session = null;
+				place = null;
+			}
+		}
 	}
 	
 	
