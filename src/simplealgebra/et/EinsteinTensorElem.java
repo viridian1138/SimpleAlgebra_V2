@@ -36,6 +36,8 @@ import java.util.TreeSet;
 import java.util.Map.Entry;
 import java.util.Set;
 
+import org.kie.internal.runtime.StatefulKnowledgeSession;
+
 import simplealgebra.AbstractCache;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
@@ -45,12 +47,12 @@ import simplealgebra.NotInvertibleException;
 import simplealgebra.SquareMatrixElem;
 import simplealgebra.WriteBigIntegerCache;
 import simplealgebra.WriteElemCache;
-import simplealgebra.WriteNumDimensionsCache;
 import simplealgebra.ga.GeometricAlgebraMultivectorElem;
 import simplealgebra.ga.GeometricAlgebraMultivectorElemFactory;
-import simplealgebra.ga.WriteGaSetCache;
-import simplealgebra.ga.WriteOrdCache;
+import simplealgebra.symbolic.DroolsSession;
+import simplealgebra.symbolic.LoggingConfiguration;
 import simplealgebra.symbolic.PrecedenceComparator;
+import simplealgebra.symbolic.SymbolicPlaceholder;
 import simplealgebra.symbolic.SymbolicZero;
 import simplealgebra.symbolic.SymbolicElem.EVAL_MODE;
 
@@ -1185,6 +1187,131 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 		}
 		return( ret );
 	}
+	
+	
+	
+	/**
+	 * Cleans enclosed elems that reduce to zero.
+	 * @param mode The extent to simplify whether the enclosed elems are zero.
+	 * @return The cleaned version of the multivector.
+	 */
+	public  EinsteinTensorElem<Z, R, S> clean( final EVAL_MODE mode )
+	{	
+		if( mode == EVAL_MODE.APPROX )
+		{
+			final EinsteinTensorElem<Z, R, S> ret = new EinsteinTensorElem<Z, R, S>( fac , contravariantIndices , covariantIndices );
+			
+			for( Entry<ArrayList<BigInteger>,R> ii : map.entrySet() )
+			{
+				if( !( ii.getValue().evalSymbolicZeroApprox( EVAL_MODE.APPROX ) ) )
+				{
+					ret.setVal( ii.getKey() , ii.getValue() );
+				}
+			}
+			
+			return( ret );
+		}
+		
+		EinsteinTensorElem<Z, R, S> prev = this;
+		StatefulKnowledgeSession session = null;
+		HashMap<ArrayList<BigInteger>,SymbolicPlaceholder<R,S>> place = null;
+		while( true )
+		{
+			try
+			{
+				session = mode == EVAL_MODE.SIMPLIFY ?
+						getDistributeSimplifyKnowledgeBase().newStatefulKnowledgeSession() : 
+						getDistributeSimplify2KnowledgeBase().newStatefulKnowledgeSession();
+		
+				session.insert( new DroolsSession( session ) );
+		
+				if( LoggingConfiguration.LOGGING_ON )
+				{
+					session.insert( new LoggingConfiguration() );
+				}
+				
+				if( LoggingConfiguration.EVENT_LOGGING_ON )
+				{
+					session.addEventListener( generateEventLoggingListener() );
+				}
+				
+				place = new HashMap<ArrayList<BigInteger>,SymbolicPlaceholder<R,S>>();
+			
+				for( Entry<ArrayList<BigInteger>,R> ii : prev.map.entrySet() )
+				{
+					place.put( ii.getKey() , new SymbolicPlaceholder<R,S>( ii.getValue() ) );
+				}
+			
+				for( SymbolicPlaceholder<R,S> ii : place.values() )
+				{
+					ii.performInserts( session );
+				}
+					
+				session.fireAllRules();
+				
+				final EinsteinTensorElem<Z, R, S> ret = new EinsteinTensorElem<Z, R, S>( fac , contravariantIndices , covariantIndices );
+		
+				for( Entry<ArrayList<BigInteger>,SymbolicPlaceholder<R,S>> ii : place.entrySet() )
+				{
+					if( !( ii.getValue().getElem().evalSymbolicZeroApprox( EVAL_MODE.APPROX ) ) )
+					{
+						ret.setVal( ii.getKey() , ii.getValue().getElem() );
+					}
+				}
+		
+				session.dispose();
+			
+				return( ret );
+			}
+			catch( OutOfMemoryError ex )
+			{
+				EinsteinTensorElem<Z, R, S> ret = null;
+				if( place != null )
+				{
+					ret = new EinsteinTensorElem<Z, R, S>( fac , contravariantIndices , covariantIndices );
+					for( Entry<ArrayList<BigInteger>,SymbolicPlaceholder<R,S>> ii : place.entrySet() )
+					{
+						if( !( ii.getValue().getElem().evalSymbolicZeroApprox( EVAL_MODE.APPROX ) ) )
+						{
+							ret.setVal( ii.getKey() , ii.getValue().getElem() );
+						}
+					}
+				}
+				
+				/*
+				 * Always try to dispose the session after running out of memory.
+				 */
+				try
+				{
+					if( session != null )
+					{
+						session.dispose();
+					}
+				}
+				catch( Throwable ex2 )
+				{
+					// ex2.printStackTrace( System.out );
+				}
+				
+				/*
+				 * If no simplifications were completed, exit with exception.
+				 */
+				if( ( ret == null ) || ( ret == prev ) )
+				{
+					throw( ex );
+				}
+				
+				/*
+				 * If some simplifications completed before the memory limits ran out,
+				 * re-run the session and see if it's possible to get farther on the next run.
+				 */
+				prev = ret;
+				session = null;
+				place = null;
+			}
+		}
+	}
+	
 	
 	
 	@Override
