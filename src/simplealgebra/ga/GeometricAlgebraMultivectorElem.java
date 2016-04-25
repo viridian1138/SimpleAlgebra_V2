@@ -1543,6 +1543,7 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 			}
 			catch( OutOfMemoryError ex )
 			{
+				boolean changed = false;
 				GeometricAlgebraMultivectorElem<U, A, R, S> ret = null;
 				if( place != null )
 				{
@@ -1552,6 +1553,11 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 						if( !( ii.getValue().getElem().evalSymbolicZeroApprox( EVAL_MODE.APPROX ) ) )
 						{
 							ret.setVal( ii.getKey() , ii.getValue().getElem() );
+							changed = changed || ( ii.getValue().getElem() != prev.map.get( ii.getKey() ) );
+						}
+						else
+						{
+							changed = true;
 						}
 					}
 				}
@@ -1574,7 +1580,7 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 				/*
 				 * If no simplifications were completed, exit with exception.
 				 */
-				if( ( ret == null ) || ( ret == prev ) )
+				if( ( ret == null ) || !changed )
 				{
 					throw( ex );
 				}

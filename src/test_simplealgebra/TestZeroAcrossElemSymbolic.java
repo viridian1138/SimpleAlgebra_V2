@@ -57,6 +57,7 @@ import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SCacheKey;
 import simplealgebra.symbolic.SymbolicAdd;
 import simplealgebra.symbolic.SymbolicElem;
+import simplealgebra.symbolic.SymbolicElem.EVAL_MODE;
 import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicReduction;
 import simplealgebra.symbolic.SymbolicZero;
@@ -785,6 +786,105 @@ public class TestZeroAcrossElemSymbolic extends TestCase
 		
 		
 		Assert.assertTrue( d1 instanceof SymbolicZero );
+		
+	}
+	
+	
+	
+	
+	
+	
+	/**
+	 * Tests that the vector expression <math display="inline">
+     * <mrow>
+     *  <mi>a</mi>
+     *  <mo>&times;</mo>
+     *  <mi>a</mi>
+     *  </mrow>
+     *  </math> reduces to zero.
+	 * 
+	 * @throws NotInvertibleException
+	 * @throws MultiplicativeDistributionRequiredException 
+	 */
+	public void testZeroAcrossMultivectorCrossProductVect() throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	{
+		
+		final DoubleElemFactory dl = new DoubleElemFactory();
+		
+		final SymbolicElemFactory<DoubleElem,DoubleElemFactory> se = 
+				new SymbolicElemFactory<DoubleElem,DoubleElemFactory>(dl);
+		
+		final TestDimensionThree td = new TestDimensionThree();
+		
+		final GeometricAlgebraOrd<TestDimensionThree> ord = new GeometricAlgebraOrd<TestDimensionThree>();
+		
+		final GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> ce =
+				new GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>( se, td, ord );
+		
+		final SymbolicElemFactory<GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>> se2 =
+				new SymbolicElemFactory<GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>( ce );
+		
+		
+		final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> c00 =
+				ce.zero();
+		
+		
+		final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> c01 =
+				ce.zero();
+		
+		
+		{
+			final AElem a0 = new AElem( dl );
+			final HashSet<BigInteger> hs = new HashSet<BigInteger>();
+			hs.add( BigInteger.ZERO );
+			c00.setVal( hs , a0 );
+			c01.setVal( hs , a0 );
+		}
+		
+		{
+			final BElem a0 = new BElem( dl );
+			final HashSet<BigInteger> hs = new HashSet<BigInteger>();
+			hs.add( BigInteger.ONE );
+			c00.setVal( hs , a0 );
+			c01.setVal( hs , a0 );
+		}
+		
+		{
+			final CElem a0 = new CElem( dl );
+			final HashSet<BigInteger> hs = new HashSet<BigInteger>();
+			hs.add( BigInteger.valueOf( 2 ) );
+			c00.setVal( hs , a0 );
+			c01.setVal( hs , a0 );
+		}
+		
+		
+		
+		final ArrayList<GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>> args = new ArrayList<GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>();
+		
+		
+		args.add( c01 );
+		
+		
+		final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> c0 =
+				c00.handleOptionalOp( GeometricAlgebraMultivectorElem.GeometricAlgebraMultivectorCmd.CROSS , args );
+		
+		
+		final SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>
+			d0 = new SymbolicReduction<GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>( c0 , ce );
+		
+		
+		final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>
+			d1 = d0.eval( null );
+		
+		
+		Assert.assertTrue( d1.getKeySet().iterator().hasNext() );
+		
+			
+		final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>
+			d2 = d1.clean( EVAL_MODE.SIMPLIFY );
+		
+		
+		Assert.assertTrue( !( d2.getKeySet().iterator().hasNext() ) );
 		
 	}
 	

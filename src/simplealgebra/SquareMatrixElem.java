@@ -32,11 +32,16 @@ import java.util.HashMap;
 import java.util.HashSet;
 import java.util.Map.Entry;
 
+import org.kie.internal.runtime.StatefulKnowledgeSession;
+
 import simplealgebra.et.EinsteinTensorElem;
 import simplealgebra.ga.GeometricAlgebraMultivectorElem;
+import simplealgebra.symbolic.DroolsSession;
+import simplealgebra.symbolic.LoggingConfiguration;
 import simplealgebra.symbolic.PrecedenceComparator;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicIdentity;
+import simplealgebra.symbolic.SymbolicPlaceholder;
 import simplealgebra.symbolic.SymbolicZero;
 import simplealgebra.symbolic.SymbolicElem.EVAL_MODE;
 
@@ -1832,6 +1837,145 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 		}
 		cache.put( this, ret);
 		return( ret );
+	}
+	
+	
+	
+	/**
+	 * Cleans enclosed elems that reduce to zero.
+	 * @param mode The extent to simplify whether the enclosed elems are zero.
+	 * @return The cleaned version of the multivector.
+	 */
+	public  SquareMatrixElem<U,R,S> clean( final EVAL_MODE mode )
+	{	
+		if( mode == EVAL_MODE.APPROX )
+		{
+			final SquareMatrixElem<U,R,S> ret = this.getFac().zero();
+			
+			for( Entry<BigInteger,HashMap<BigInteger,R>> ii : this.rowMap.entrySet() )
+			{
+				for( Entry<BigInteger,R> jj : ii.getValue().entrySet() )
+				{
+					if( !( jj.getValue().evalSymbolicZeroApprox( EVAL_MODE.APPROX ) ) )
+					{
+						ret.setVal( ii.getKey() , jj.getKey() , jj.getValue() );
+					}
+				}
+			}
+			
+			return( ret );
+		}
+		
+		SquareMatrixElem<U,R,S> prev = this;
+		StatefulKnowledgeSession session = null;
+		HashMap<ArrayList<BigInteger>,SymbolicPlaceholder<R,S>> place = null;
+		while( true )
+		{
+			try
+			{
+				session = mode == EVAL_MODE.SIMPLIFY ?
+						getDistributeSimplifyKnowledgeBase().newStatefulKnowledgeSession() : 
+						getDistributeSimplify2KnowledgeBase().newStatefulKnowledgeSession();
+		
+				session.insert( new DroolsSession( session ) );
+		
+				if( LoggingConfiguration.LOGGING_ON )
+				{
+					session.insert( new LoggingConfiguration() );
+				}
+				
+				if( LoggingConfiguration.EVENT_LOGGING_ON )
+				{
+					session.addEventListener( generateEventLoggingListener() );
+				}
+				
+				place = new HashMap<ArrayList<BigInteger>,SymbolicPlaceholder<R,S>>();
+			
+				for( Entry<BigInteger,HashMap<BigInteger,R>> ii : prev.rowMap.entrySet() )
+				{
+					for( Entry<BigInteger,R> jj : ii.getValue().entrySet() )
+					{
+						final ArrayList<BigInteger> ar = new ArrayList<BigInteger>();
+						ar.add( ii.getKey() );
+						ar.add( jj.getKey() );
+						place.put( ar , new SymbolicPlaceholder<R,S>( jj.getValue() ) );
+					}
+				}
+			
+				for( SymbolicPlaceholder<R,S> ii : place.values() )
+				{
+					ii.performInserts( session );
+				}
+					
+				session.fireAllRules();
+				
+				final SquareMatrixElem<U,R,S> ret = this.getFac().zero();
+		
+				for( Entry<ArrayList<BigInteger>,SymbolicPlaceholder<R,S>> ii : place.entrySet() )
+				{
+					if( !( ii.getValue().getElem().evalSymbolicZeroApprox( EVAL_MODE.APPROX ) ) )
+					{
+						ret.setVal( ii.getKey().get(0), ii.getKey().get(1) , ii.getValue().getElem() );
+					}
+				}
+		
+				session.dispose();
+			
+				return( ret );
+			}
+			catch( OutOfMemoryError ex )
+			{
+				boolean changed = false;
+				SquareMatrixElem<U,R,S> ret = null;
+				if( place != null )
+				{
+					ret = this.getFac().zero();
+					for( Entry<ArrayList<BigInteger>,SymbolicPlaceholder<R,S>> ii : place.entrySet() )
+					{
+						if( !( ii.getValue().getElem().evalSymbolicZeroApprox( EVAL_MODE.APPROX ) ) )
+						{
+							ret.setVal( ii.getKey().get(0), ii.getKey().get(1) , ii.getValue().getElem() );
+							changed = changed || ( ii.getValue().getElem() != prev.get( ii.getKey().get(0), ii.getKey().get(1) ) );
+						}
+						else
+						{
+							changed = true;
+						}
+					}
+				}
+				
+				/*
+				 * Always try to dispose the session after running out of memory.
+				 */
+				try
+				{
+					if( session != null )
+					{
+						session.dispose();
+					}
+				}
+				catch( Throwable ex2 )
+				{
+					// ex2.printStackTrace( System.out );
+				}
+				
+				/*
+				 * If no simplifications were completed, exit with exception.
+				 */
+				if( ( ret == null ) || !changed )
+				{
+					throw( ex );
+				}
+				
+				/*
+				 * If some simplifications completed before the memory limits ran out,
+				 * re-run the session and see if it's possible to get farther on the next run.
+				 */
+				prev = ret;
+				session = null;
+				place = null;
+			}
+		}
 	}
 	
 	
