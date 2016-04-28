@@ -172,17 +172,17 @@ public class SymbolicMutable<T extends Elem<T,?>, U extends MutableElem<T,U,?>, 
 			final String sta = fac.writeDesc( (WriteElemCache<U,R>)( cache.getInnerCache() ) , ps);
 			cache.applyAuxCache( new WriteMutableCache<T,U,M>( cache.getCacheVal() ) );
 			final String elemAs = elemA.writeDesc( cache , ps);
-			String staMut = ( (WriteMutableCache<T,U,M>)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) WriteMutableCache.class ) ) ).get( elemB );
+			String staMut = ( (WriteMutableCache<T,U,M>)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) ((Class)(WriteMutableCache.class)) ) ) ).get( elemB );
 			if( staMut == null )
 			{
-				staMut = ( (WriteMutableCache<T,U,M>)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) WriteMutableCache.class ) ) ).getIncrementVal();
+				staMut = ( (WriteMutableCache<T,U,M>)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) ((Class)(WriteMutableCache.class)) ) ) ).getIncrementVal();
 				ps.print( "final " );
 				ps.print( elemB.getClass().getSimpleName() );
 				ps.print( staMut );
 				ps.print( " = new " );
 				ps.print( elemB.getClass().getSimpleName() );
 				ps.println( "();" );
-				( (WriteMutableCache<T,U,M>)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) WriteMutableCache.class ) ) ).put(elemB, staMut);
+				( (WriteMutableCache<T,U,M>)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) ((Class)(WriteMutableCache.class)) ) ) ).put(elemB, staMut);
 			}
 			st = cache.getIncrementVal();
 			cache.put(this, st);
