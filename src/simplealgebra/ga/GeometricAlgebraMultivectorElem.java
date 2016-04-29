@@ -1663,7 +1663,7 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 			cache.applyAuxCache( new WriteGaSetCache( cache.getCacheVal() ) );
 			cache.applyAuxCache( new WriteOrdCache( cache.getCacheVal() ) );
 			final String staDim = dim.writeDesc( (WriteNumDimensionsCache)( cache.getAuxCache( WriteNumDimensionsCache.class ) ) , ps);
-			final String staOrd = ord.writeDesc( (WriteOrdCache<U>)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) WriteOrdCache.class ) ) , dim, ps);
+			final String staOrd = ord.writeDesc( (WriteOrdCache<U>)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) ((Class)(WriteOrdCache.class)) ) ) , dim, ps);
 			st = cache.getIncrementVal();
 			cache.put(this, st);
 			this.getFac().writeElemTypeString( ps );

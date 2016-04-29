@@ -297,7 +297,7 @@ public class GeometricAlgebraMultivectorElemFactory<U extends NumDimensions, A e
 			cache.applyAuxCache( new WriteNumDimensionsCache( cache.getCacheVal() ) );
 			cache.applyAuxCache( new WriteOrdCache( cache.getCacheVal() ) );
 			final String sta2 = dim.writeDesc( (WriteNumDimensionsCache)( cache.getAuxCache( WriteNumDimensionsCache.class ) ) , ps);
-			final String sta3 = ord.writeDesc( (WriteOrdCache)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) WriteOrdCache.class ) ) ,dim ,  ps);
+			final String sta3 = ord.writeDesc( (WriteOrdCache)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) ((Class)(WriteOrdCache.class)) ) ) ,dim ,  ps);
 			st = cache.getIncrementVal();
 			cache.putFac(this, st);
 			writeElemFactoryTypeString( ps );

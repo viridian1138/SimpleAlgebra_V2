@@ -250,7 +250,7 @@ public class BigFixedPointElem<T extends Precision<T>> extends Elem<BigFixedPoin
 		{
 			cache.applyAuxCache( new WriteBigIntegerCache( cache.getCacheVal() ) );
 			cache.applyAuxCache( new WritePrecisionCache<T>( cache.getCacheVal() ) );
-			final String sta = prec.writeDesc( (WritePrecisionCache<T>)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) WritePrecisionCache.class ) ) , ps);
+			final String sta = prec.writeDesc( (WritePrecisionCache<T>)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) ((Class)(WritePrecisionCache.class)) ) ) , ps);
 			String stai = ( (WriteBigIntegerCache)( cache.getAuxCache( WriteBigIntegerCache.class ) ) ).writeDesc( val , ps );
 			st = cache.getIncrementVal();
 			cache.put(this, st);

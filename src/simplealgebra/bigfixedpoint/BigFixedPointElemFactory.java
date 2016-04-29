@@ -168,7 +168,7 @@ public class BigFixedPointElemFactory<T extends Precision<T>> extends ElemFactor
 		if( st == null )
 		{
 			cache.applyAuxCache( new WritePrecisionCache<T>( cache.getCacheVal() ) );
-			final String sta = prec.writeDesc( (WritePrecisionCache<T>)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) WritePrecisionCache.class ) ) , ps);
+			final String sta = prec.writeDesc( (WritePrecisionCache<T>)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) ((Class)(WritePrecisionCache.class)) ) ) , ps);
 			st = cache.getIncrementVal();
 			cache.putFac(this, st);
 			writeElemFactoryTypeString( ps );
