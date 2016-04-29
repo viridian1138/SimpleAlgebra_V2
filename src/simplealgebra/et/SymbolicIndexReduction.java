@@ -193,8 +193,8 @@ public class SymbolicIndexReduction<Z extends Object, R extends Elem<R,?>, S ext
 			cache.applyAuxCache( new WriteZSetCache<Z>( cache.getCacheVal() ) );
 			final String elemAs = elem.writeDesc( cache , ps);
 			final String facs = fac.writeDesc( (WriteElemCache)( cache.getInnerCache() ) , ps);
-			String staZSetContravar = ( (WriteZSetCache<Z>)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) WriteZSetCache.class ) ) ).writeDesc( contravariantReduce , ps );
-			String staZSetCovar = ( (WriteZSetCache<Z>)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) WriteZSetCache.class ) ) ).writeDesc( covariantReduce , ps );
+			String staZSetContravar = ( (WriteZSetCache<Z>)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) ((Class)(WriteZSetCache.class)) ) ) ).writeDesc( contravariantReduce , ps );
+			String staZSetCovar = ( (WriteZSetCache<Z>)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) ((Class)(WriteZSetCache.class)) ) ) ).writeDesc( covariantReduce , ps );
 			String sl = cache.getIncrementVal();
 			st = cache.getIncrementVal();
 			cache.put(this, st);

@@ -154,12 +154,12 @@ public class OrdinaryDerivativeFactory<Z extends Object, U extends NumDimensions
 			ecache.applyAuxCache( new WriteNumDimensionsCache( ecache.getCacheVal() ) );
 			ecache.applyAuxCache( new WriteDerivativeRemapCache<Z,R,S>( ecache.getCacheVal() ) );
 			final String facs = fac.writeDesc( (WriteElemCache)( ecache.getInnerCache() ) , ps);
-			final String staiF = dfac.writeDesc( ( (WriteDirectionalDerivativePartialFactoryCache)( ecache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) WriteDirectionalDerivativePartialFactoryCache.class ) ) ) , ps);
+			final String staiF = dfac.writeDesc( ( (WriteDirectionalDerivativePartialFactoryCache)( ecache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) ((Class)(WriteDirectionalDerivativePartialFactoryCache.class)) ) ) ) , ps);
 			final String staDim = dim.writeDesc( (WriteNumDimensionsCache)( ecache.getAuxCache( WriteNumDimensionsCache.class ) ) , ps);
 			String remaps = "null";
 			if( remap != null )
 			{
-				remaps = remap.writeDesc( (WriteDerivativeRemapCache)( ecache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) WriteDerivativeRemapCache.class ) ) , ps);
+				remaps = remap.writeDesc( (WriteDerivativeRemapCache)( ecache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) ((Class)(WriteDerivativeRemapCache.class)) ) ) , ps);
 			}
 			st = cache.getIncrementVal();
 			cache.put(this, st);

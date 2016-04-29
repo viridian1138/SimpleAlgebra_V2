@@ -220,7 +220,7 @@ public class OrdinaryDerivative<Z extends Object, U extends NumDimensions, R ext
 			cache.applyAuxCache( new WriteDirectionalDerivativePartialFactoryCache( cache.getCacheVal() ) );
 			cache.applyAuxCache( new WriteNumDimensionsCache( cache.getCacheVal() ) );
 			final String facs = fac.writeDesc( (WriteElemCache)( cache.getInnerCache() ) , ps);
-			final String staiF = dfac.writeDesc( ( (WriteDirectionalDerivativePartialFactoryCache)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) WriteDirectionalDerivativePartialFactoryCache.class ) ) ) , ps);
+			final String staiF = dfac.writeDesc( ( (WriteDirectionalDerivativePartialFactoryCache)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) ((Class)(WriteDirectionalDerivativePartialFactoryCache.class)) ) ) ) , ps);
 			final String staDim = dim.writeDesc( (WriteNumDimensionsCache)( cache.getAuxCache( WriteNumDimensionsCache.class ) ) , ps);
 			String sl = cache.getIncrementVal();
 			ps.print( "final " );

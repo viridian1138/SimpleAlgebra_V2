@@ -1265,7 +1265,6 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 			}
 			catch( OutOfMemoryError ex )
 			{
-				boolean changed = false;
 				EinsteinTensorElem<Z, R, S> ret = null;
 				if( place != null )
 				{
@@ -1275,11 +1274,6 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 						if( !( ii.getValue().getElem().evalSymbolicZeroApprox( EVAL_MODE.APPROX ) ) )
 						{
 							ret.setVal( ii.getKey() , ii.getValue().getElem() );
-							changed = changed || ( ii.getValue().getElem() != prev.map.get( ii.getKey() ) );
-						}
-						else
-						{
-							changed = true;
 						}
 					}
 				}
@@ -1302,7 +1296,7 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 				/*
 				 * If no simplifications were completed, exit with exception.
 				 */
-				if( ( ret == null ) || !changed )
+				if( ( ret == null ) || ( ret == prev ) )
 				{
 					throw( ex );
 				}
@@ -1381,8 +1375,8 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 			cache.applyAuxCache( new WriteZListCache<Z>( cache.getCacheVal() ) );
 			cache.applyAuxCache( new WriteBigIntegerCache( cache.getCacheVal() ) );
 			cache.applyAuxCache( new WriteEinListCache( cache.getCacheVal() ) ); 
-			String staZListContravar =  ( (WriteZListCache<Z>)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) WriteZListCache.class ) ) ).writeDesc( contravariantIndices , ps );
-			String staZListCovar = ( (WriteZListCache<Z>)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) WriteZListCache.class ) ) ).writeDesc( covariantIndices , ps );
+			String staZListContravar =  ( (WriteZListCache<Z>)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) ((Class)(WriteZListCache.class)) ) ) ).writeDesc( contravariantIndices , ps );
+			String staZListCovar = ( (WriteZListCache<Z>)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) ((Class)(WriteZListCache.class)) ) ) ).writeDesc( covariantIndices , ps );
 			st = cache.getIncrementVal();
 			cache.put(this, st);
 			this.getFac().writeElemTypeString( ps );

@@ -177,7 +177,7 @@ public class SymbolicRegenCovar<Z extends Object, R extends Elem<R,?>, S extends
 			cache.applyAuxCache( new WriteZListCache<Z>( cache.getCacheVal() ) );
 			final String elemAs = elem.writeDesc( cache , ps);
 			final String facs = fac.writeDesc( (WriteElemCache)( cache.getInnerCache() ) , ps);
-			String staZListCovar =  ( (WriteZListCache<Z>)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) WriteZListCache.class ) ) ).writeDesc( newCovar , ps );
+			String staZListCovar =  ( (WriteZListCache<Z>)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) ((Class)(WriteZListCache.class)) ) ) ).writeDesc( newCovar , ps );
 			String sl = cache.getIncrementVal();
 			st = cache.getIncrementVal();
 			cache.put(this, st);

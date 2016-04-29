@@ -177,7 +177,7 @@ public class SymbolicRegenContravar<Z extends Object, R extends Elem<R,?>, S ext
 			cache.applyAuxCache( new WriteZListCache<Z>( cache.getCacheVal() ) );
 			final String elemAs = elem.writeDesc( cache , ps);
 			final String facs = fac.writeDesc( (WriteElemCache)( cache.getInnerCache() ) , ps);
-			String staZListContravar = ( (WriteZListCache<Z>)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) WriteZListCache.class ) ) ).writeDesc( newContravar , ps );
+			String staZListContravar = ( (WriteZListCache<Z>)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) ((Class)(WriteZListCache.class)) ) ) ).writeDesc( newContravar , ps );
 			String sl = cache.getIncrementVal();
 			st = cache.getIncrementVal();
 			cache.put(this, st);
