@@ -223,7 +223,7 @@ public class FlowVectorTensor<Z extends Object, U extends NumDimensions, R exten
 			
 			final String dims = dim.writeDesc( (WriteNumDimensionsCache)( cache.getAuxCache( WriteNumDimensionsCache.class ) )  , ps );
 			
-			final String dfacss = dfac.writeDesc( ( (WriteFlowVectorFactoryCache)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) WriteFlowVectorFactoryCache.class ) ) ) , ps);
+			final String dfacss = dfac.writeDesc( ( (WriteFlowVectorFactoryCache)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) ((Class)(WriteFlowVectorFactoryCache.class)) ) ) ) , ps);
 			
 		
 			

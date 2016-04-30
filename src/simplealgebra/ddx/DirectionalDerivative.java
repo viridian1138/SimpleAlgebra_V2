@@ -278,9 +278,9 @@ public class DirectionalDerivative<U extends NumDimensions, A extends Ord<U>, R 
 			cache.applyAuxCache( new WriteNumDimensionsCache( cache.getCacheVal() ) );
 			cache.applyAuxCache( new WriteOrdCache<U>( cache.getCacheVal() ) );
 			final String facs = fac.writeDesc( (WriteElemCache)( cache.getInnerCache() ) , ps);
-			final String staiF = dfac.writeDesc( ( (WriteDirectionalDerivativePartialFactoryCache)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) WriteDirectionalDerivativePartialFactoryCache.class ) ) ) , ps);
+			final String staiF = dfac.writeDesc( ( (WriteDirectionalDerivativePartialFactoryCache)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) ((Class)(WriteDirectionalDerivativePartialFactoryCache.class)) ) ) ) , ps);
 			final String staDim = dim.writeDesc( (WriteNumDimensionsCache)( cache.getAuxCache( WriteNumDimensionsCache.class ) ) , ps);
-			final String staOrd = ord.writeDesc( (WriteOrdCache<U>)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) WriteOrdCache.class ) ) , dim, ps);
+			final String staOrd = ord.writeDesc( (WriteOrdCache<U>)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) ((Class)(WriteOrdCache.class)) ) ) , dim, ps);
 			st = cache.getIncrementVal();
 			cache.put(this, st);
 			ps.print( DirectionalDerivative.class.getSimpleName() );

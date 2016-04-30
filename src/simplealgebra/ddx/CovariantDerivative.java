@@ -323,21 +323,21 @@ public class CovariantDerivative<Z extends Object, U extends NumDimensions, R ex
 			String coordvs = null;
 			if( coordVecFac != null )
 			{
-				coordvs = coordVecFac.writeDesc( (WriteCoordinateSystemFactoryCache)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) WriteCoordinateSystemFactoryCache.class ) ) , (WriteElemCache) cache , ps );
+				coordvs = coordVecFac.writeDesc( (WriteCoordinateSystemFactoryCache)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) ((Class)(WriteCoordinateSystemFactoryCache.class)) ) ) , (WriteElemCache) cache , ps );
 			}
 		
-			final String temps = temp.writeDesc( (WriteTemporaryIndexFactoryCache)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) WriteTemporaryIndexFactoryCache.class ) ) , ps);
+			final String temps = temp.writeDesc( (WriteTemporaryIndexFactoryCache)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) ((Class)(WriteTemporaryIndexFactoryCache.class)) ) ) , ps);
 			
-			final String metrics = metric.writeDesc( (WriteMetricTensorFactoryCache)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) WriteMetricTensorFactoryCache.class ) ) , ps);
+			final String metrics = metric.writeDesc( (WriteMetricTensorFactoryCache)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) ((Class)(WriteMetricTensorFactoryCache.class)) ) ) , ps);
 			
 			final String dims = odfac.getDim().writeDesc( (WriteNumDimensionsCache)( cache.getAuxCache( WriteNumDimensionsCache.class ) )  , ps );
 			
-			final String dfacs = odfac.getDfac().writeDesc( ( (WriteDirectionalDerivativePartialFactoryCache)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) WriteDirectionalDerivativePartialFactoryCache.class ) ) ) , ps);
+			final String dfacs = odfac.getDfac().writeDesc( ( (WriteDirectionalDerivativePartialFactoryCache)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) ((Class)(WriteDirectionalDerivativePartialFactoryCache.class)) ) ) ) , ps);
 			
 			String remaps = null;
 			if( remap != null )
 			{
-				remaps = remap.writeDesc( (WriteDerivativeRemapCache)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) WriteDerivativeRemapCache.class ) ) , ps);
+				remaps = remap.writeDesc( (WriteDerivativeRemapCache)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) ((Class)(WriteDerivativeRemapCache.class)) ) ) , ps);
 			}
 			
 			

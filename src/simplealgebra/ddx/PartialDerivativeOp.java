@@ -150,7 +150,7 @@ public class PartialDerivativeOp<R extends Elem<R,?>, S extends ElemFactory<R,S>
 		{
 			final String sta = fac.writeDesc( (WriteElemCache<R,S>)( cache.getInnerCache() ) , ps);
 			cache.applyAuxCache( new WriteKListCache<K>( cache.getCacheVal() ) );
-			String staKList = ( (WriteKListCache<K>)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) WriteKListCache.class ) ) ).writeDesc(withRespectTo , (WriteElemCache)( cache.getInnerCache() ) , ps);
+			String staKList = ( (WriteKListCache<K>)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) ((Class)(WriteKListCache.class)) ) ) ).writeDesc(withRespectTo , (WriteElemCache)( cache.getInnerCache() ) , ps);
 			st = cache.getIncrementVal();
 			cache.put(this, st);
 			ps.print( PartialDerivativeOp.class.getSimpleName() );

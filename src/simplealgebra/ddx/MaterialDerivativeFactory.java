@@ -278,17 +278,17 @@ public class MaterialDerivativeFactory<Z extends Object, U extends NumDimensions
 			String coordvs = null;
 			if( cofac.getCoordVecFac() != null )
 			{
-				coordvs = cofac.getCoordVecFac().writeDesc( (WriteCoordinateSystemFactoryCache)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) WriteCoordinateSystemFactoryCache.class ) ) , (WriteElemCache) cache , ps );
+				coordvs = cofac.getCoordVecFac().writeDesc( (WriteCoordinateSystemFactoryCache)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) ((Class)(WriteCoordinateSystemFactoryCache.class)) ) ) , (WriteElemCache) cache , ps );
 			}
-			final String temps = cofac.getTemp().writeDesc( (WriteTemporaryIndexFactoryCache)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) WriteTemporaryIndexFactoryCache.class ) ) , ps);
-			final String metrics = cofac.getMetric().writeDesc( (WriteMetricTensorFactoryCache)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) WriteMetricTensorFactoryCache.class ) ) , ps);
+			final String temps = cofac.getTemp().writeDesc( (WriteTemporaryIndexFactoryCache)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) ((Class)(WriteTemporaryIndexFactoryCache.class)) ) ) , ps);
+			final String metrics = cofac.getMetric().writeDesc( (WriteMetricTensorFactoryCache)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) ((Class)(WriteMetricTensorFactoryCache.class)) ) ) , ps);
 			final String dims = dim.writeDesc( (WriteNumDimensionsCache)( cache.getAuxCache( WriteNumDimensionsCache.class ) )  , ps );
 			
 			
-			final String dfacs = cofac.getOdfac().writeDesc( ( (WriteOrdinaryDerivativeFactoryCache)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) WriteOrdinaryDerivativeFactoryCache.class ) ) ) , (WriteElemCache<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>) cache.getInnerCache() , ps);
+			final String dfacs = cofac.getOdfac().writeDesc( ( (WriteOrdinaryDerivativeFactoryCache)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) ((Class)(WriteOrdinaryDerivativeFactoryCache.class)) ) ) ) , (WriteElemCache<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>) cache.getInnerCache() , ps);
 			
 			
-			final String flfacs = flfac.writeDesc( (WriteFlowVectorFactoryCache)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) WriteFlowVectorFactoryCache.class ) ) , ps );
+			final String flfacs = flfac.writeDesc( (WriteFlowVectorFactoryCache)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) ((Class)(WriteFlowVectorFactoryCache.class)) ) ) , ps );
 			
 			
 			final String derivts = derivT.writeDesc( cache , ps );
@@ -296,7 +296,7 @@ public class MaterialDerivativeFactory<Z extends Object, U extends NumDimensions
 			String remaps = null;
 			if( cofac.getRemap() != null )
 			{
-				remaps = cofac.getRemap().writeDesc( (WriteDerivativeRemapCache)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) WriteDerivativeRemapCache.class ) ) , ps);
+				remaps = cofac.getRemap().writeDesc( (WriteDerivativeRemapCache)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) ((Class)(WriteDerivativeRemapCache.class)) ) ) , ps);
 			}
 			
 			
