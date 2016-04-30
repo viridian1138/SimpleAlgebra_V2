@@ -278,7 +278,7 @@ public abstract class DescentAlgorithmMultiElemInputParam<U extends NumDimension
 			final ArrayList<? extends Elem<?,?>> vaa = (ArrayList<? extends Elem<?,?>>)( new ArrayList() );
 			for( final Elem ela : va )
 			{
-				( (ArrayList<Elem>) vaa ).add( ela );
+				( (ArrayList<Elem>) ((ArrayList)(vaa)) ).add( ela );
 			}
 			( (ArrayList) withRespectTos ).add( vaa );
 		}
