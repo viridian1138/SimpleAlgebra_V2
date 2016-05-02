@@ -265,6 +265,10 @@ Symbolic Ring
 ...http://www.researchgate.net/profile/Benjamin_Keller/publication/2693699_Algorithms_and_Orders_for_Finding_Noncommutative_Grbner_Bases/links/0912f50ab0f81d4678000000.pdf
 
 
+User Interface (UI)
+
+...Krishna, Golden,  "The Best Interface Is No Interface", ISBN 978-0-133-89033-4
+
 Vector Algebra
 
 ...See Geometric Algebra (superset of Vector Algebra)
