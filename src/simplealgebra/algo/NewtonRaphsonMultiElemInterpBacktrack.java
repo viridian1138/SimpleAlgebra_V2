@@ -41,6 +41,7 @@ import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.NumDimensions;
 import simplealgebra.SquareMatrixElem;
+import simplealgebra.algo.DescentAlgorithmMultiElem.DescentInverseFailedException;
 import simplealgebra.ga.GeometricAlgebraMultivectorElem;
 import simplealgebra.ga.GeometricAlgebraOrd;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
@@ -242,7 +243,16 @@ public class NewtonRaphsonMultiElemInterpBacktrack<U extends NumDimensions, R ex
 	protected void performIteration() throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
 		final SquareMatrixElem<U,R,S> derivativeJacobian = evalPartialDerivativeJacobian();
-		final SquareMatrixElem<U,R,S> derivativeJacobianInverse = derivativeJacobian.invertLeft();
+		SquareMatrixElem<U,R,S> derivativeJacobianInverse = null;
+		
+		try
+		{
+			derivativeJacobianInverse = derivativeJacobian.invertLeft();
+		}
+		catch( SquareMatrixElem.NoPivotException ex )
+		{
+			throw( new DescentInverseFailedException( ex.getElemNum() ) );
+		}
 		
 		GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,R,S> iterationOffset =
 				new GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,R,S>(

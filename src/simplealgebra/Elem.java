@@ -460,6 +460,26 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 	public abstract boolean evalSymbolicIdentityApprox( EVAL_MODE mode );
 	
 	
+	/**
+	 * Inserts standard configuration items into a Drools session.
+	 * 
+	 * @param session The session into which to insert the configuration items.
+	 */
+	protected void insertSessionConfigItems( final StatefulKnowledgeSession session )
+	{
+		session.insert( new DroolsSession( session ) );
+		
+		if( LoggingConfiguration.LOGGING_ON )
+		{
+			session.insert( new LoggingConfiguration() );
+		}
+		
+		if( LoggingConfiguration.EVENT_LOGGING_ON )
+		{
+			session.addEventListener( generateEventLoggingListener() );
+		}
+	}
+	
 	
 	/**
 	 * Performs a distribute simplify on the elem.
@@ -477,17 +497,7 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 			{
 				session = getDistributeSimplifyKnowledgeBase().newStatefulKnowledgeSession();
 		
-				session.insert( new DroolsSession( session ) );
-		
-				if( LoggingConfiguration.LOGGING_ON )
-				{
-					session.insert( new LoggingConfiguration() );
-				}
-				
-				if( LoggingConfiguration.EVENT_LOGGING_ON )
-				{
-					session.addEventListener( generateEventLoggingListener() );
-				}
+				insertSessionConfigItems( session );
 			
 				place = new SymbolicPlaceholder<T,R>( prev );
 			
@@ -556,17 +566,7 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 			{
 				session = getDistributeSimplify2KnowledgeBase().newStatefulKnowledgeSession();
 		
-				session.insert( new DroolsSession( session ) );
-			
-				if( LoggingConfiguration.LOGGING_ON )
-				{
-					session.insert( new LoggingConfiguration() );
-				}
-				
-				if( LoggingConfiguration.EVENT_LOGGING_ON )
-				{
-					session.addEventListener( generateEventLoggingListener() );
-				}
+				insertSessionConfigItems( session );
 			
 				place = new SymbolicPlaceholder<T,R>( prev );
 			

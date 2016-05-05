@@ -88,6 +88,75 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 		 */
 		TRANSPOSE
 	};
+	
+	
+	
+	/**
+	 * Exception indicating the failure of the matrix inverse to pivot.
+	 * 
+	 * @author tgreen
+	 *
+	 */
+	public static final class NoPivotException extends NotInvertibleException
+	{
+		/**
+		 * Whether the failure index denotes a row or a column.
+		 */
+		protected boolean isRow;
+		
+		/**
+		 * The row/column of the elem related to the inverse failure.
+		 */
+		protected BigInteger elemNum;
+		
+		/**
+		 * Constructs the exception.
+		 * 
+		 * @param isRow_ Whether the failure index denotes a row or a column.
+		 * @param elemNum_ The row/column of the elem related to the inverse failure.
+		 */
+		public NoPivotException( final boolean isRow_ , final BigInteger elemNum_ )
+		{
+			isRow = isRow_;
+			elemNum = elemNum;
+		}
+		
+		@Override
+		public String toString()
+		{
+			if( isRow )
+			{
+				return( "No Pivot For Row " + elemNum );
+			}
+			else
+			{
+				return( "No Pivot For Column " + elemNum );
+			}
+		}
+		
+		
+		/**
+		 * Returns whether the failure index denotes a row or a column.
+		 * @return Whether the failure index denotes a row or a column.
+		 */
+		public boolean isRow()
+		{
+			return( isRow );
+		}
+		
+		
+		/**
+		 * Returns the row/column of the elem related to the inverse failure.
+		 * 
+		 * @return The row/column of the elem related to the inverse failure.
+		 */
+		public BigInteger getElemNum()
+		{
+			return( elemNum );
+		}
+		
+	};
+	
 
 	
 	/**
@@ -1136,7 +1205,7 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 					cnt = cnt.add( BigInteger.ONE );
 				}
 			}
-			throw( new NotInvertibleException() );
+			throw( new NoPivotException( true , coli ) );
 		}
 	}
 	
@@ -1185,7 +1254,7 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 					cnt = cnt.add( BigInteger.ONE );
 				}
 			}
-			throw( new NotInvertibleException() );
+			throw( new NoPivotException( true , rowi ) );
 		}
 	}
 	
@@ -1233,7 +1302,7 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 					cnt = cnt.add( BigInteger.ONE );
 				}
 			}
-			throw( new NotInvertibleException() );
+			throw( new NoPivotException( false , coli  ) );
 		}
 	}
 	
@@ -1282,7 +1351,7 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 					cnt = cnt.add( BigInteger.ONE );
 				}
 			}
-			throw( new NotInvertibleException() );
+			throw( new NoPivotException( true ,rowi ) );
 		}
 	}
 	
@@ -1840,30 +1909,40 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	}
 	
 	
+	/**
+	 * Cleans enclosed elems that reduce to zero for approx mode.
+	 * @return The cleaned version of the matrix.
+	 */
+	protected SquareMatrixElem<U,R,S> cleanApprox()
+	{
+		final SquareMatrixElem<U,R,S> ret = this.getFac().zero();
+		
+		for( Entry<BigInteger,HashMap<BigInteger,R>> ii : this.rowMap.entrySet() )
+		{
+			for( Entry<BigInteger,R> jj : ii.getValue().entrySet() )
+			{
+				if( !( jj.getValue().evalSymbolicZeroApprox( EVAL_MODE.APPROX ) ) )
+				{
+					ret.setVal( ii.getKey() , jj.getKey() , jj.getValue() );
+				}
+			}
+		}
+		
+		return( ret );
+	}
+	
+	
 	
 	/**
 	 * Cleans enclosed elems that reduce to zero.
 	 * @param mode The extent to simplify whether the enclosed elems are zero.
-	 * @return The cleaned version of the multivector.
+	 * @return The cleaned version of the matrix.
 	 */
 	public  SquareMatrixElem<U,R,S> clean( final EVAL_MODE mode )
 	{	
 		if( mode == EVAL_MODE.APPROX )
 		{
-			final SquareMatrixElem<U,R,S> ret = this.getFac().zero();
-			
-			for( Entry<BigInteger,HashMap<BigInteger,R>> ii : this.rowMap.entrySet() )
-			{
-				for( Entry<BigInteger,R> jj : ii.getValue().entrySet() )
-				{
-					if( !( jj.getValue().evalSymbolicZeroApprox( EVAL_MODE.APPROX ) ) )
-					{
-						ret.setVal( ii.getKey() , jj.getKey() , jj.getValue() );
-					}
-				}
-			}
-			
-			return( ret );
+			return( cleanApprox() );
 		}
 		
 		SquareMatrixElem<U,R,S> prev = this;
@@ -1877,17 +1956,7 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 						getDistributeSimplifyKnowledgeBase().newStatefulKnowledgeSession() : 
 						getDistributeSimplify2KnowledgeBase().newStatefulKnowledgeSession();
 		
-				session.insert( new DroolsSession( session ) );
-		
-				if( LoggingConfiguration.LOGGING_ON )
-				{
-					session.insert( new LoggingConfiguration() );
-				}
-				
-				if( LoggingConfiguration.EVENT_LOGGING_ON )
-				{
-					session.addEventListener( generateEventLoggingListener() );
-				}
+				insertSessionConfigItems( session );
 				
 				place = new HashMap<ArrayList<BigInteger>,SymbolicPlaceholder<R,S>>();
 			

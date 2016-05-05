@@ -64,6 +64,49 @@ import simplealgebra.symbolic.SymbolicElemFactory;
 public abstract class DescentAlgorithmMultiElemRemap<U extends NumDimensions, A extends Ord<U>, R extends Elem<R,?>, S extends ElemFactory<R,S>> {
 	
 	
+	
+	/**
+	 * Exception indicating the failure of the Geometric Algebra descent inverse process.
+	 * 
+	 * @author tgreen
+	 *
+	 */
+	public static final class GeomDescentInverseFailedException extends NotInvertibleException
+	{
+		/**
+		 * The key of the elem. related to the inverse failure.
+		 */
+		protected HashSet<BigInteger> elemNum;
+		
+		/**
+		 * Constructs the exception.
+		 * 
+		 * @param elemNum_ The key of the elem. related to the inverse failure.
+		 */
+		public GeomDescentInverseFailedException( final HashSet<BigInteger> elemNum_ )
+		{
+			elemNum = elemNum;
+		}
+		
+		@Override
+		public String toString()
+		{
+			return( "Geom Descent Inverse Failed For Key " + elemNum );
+		}
+		
+		/**
+		 * Returns the key of the elem. related to the inverse failure.
+		 * 
+		 * @return The key of the elem. related to the inverse failure.
+		 */
+		public HashSet<BigInteger> getElemNum()
+		{
+			return( elemNum );
+		}
+		
+	};
+	
+	
 	/**
 	 * The dimensionality for descent algorithm.
 	 * 
@@ -443,17 +486,26 @@ public abstract class DescentAlgorithmMultiElemRemap<U extends NumDimensions, A 
 	 */
 	public GeometricAlgebraMultivectorElem<U,A,R,S> eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpaceInitialGuess ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
-		GeometricAlgebraMultivectorElem<Adim,GeometricAlgebraOrd<Adim>,R,S> sv = descent.eval(implicitSpaceInitialGuess);
-		GeometricAlgebraMultivectorElem<U,A,R,S> ret =
+		try
+		{
+			GeometricAlgebraMultivectorElem<Adim,GeometricAlgebraOrd<Adim>,R,S> sv = descent.eval(implicitSpaceInitialGuess);
+			GeometricAlgebraMultivectorElem<U,A,R,S> ret =
 				new GeometricAlgebraMultivectorElem<U,A,R,S>( fac , idim , iord );
 		
-		for( final Entry<HashSet<BigInteger>, R> ii : sv.getEntrySet() )
-		{
-			HashSet<BigInteger> key = ii.getKey();
-			ret.setVal( outMapFun.get( key ) , ii.getValue() );
-		}
+			for( final Entry<HashSet<BigInteger>, R> ii : sv.getEntrySet() )
+			{
+				HashSet<BigInteger> key = ii.getKey();
+				ret.setVal( outMapFun.get( key ) , ii.getValue() );
+			}
 		
-		return( ret );
+			return( ret );
+		}
+		catch( DescentAlgorithmMultiElem.DescentInverseFailedException ex )
+		{
+			final HashSet<BigInteger> key = new HashSet<BigInteger>();
+			key.add( ex.getElemNum() );
+			throw( new GeomDescentInverseFailedException( outMapFun.get( key ) ) );
+		}
 	}
 	
 	

@@ -1191,25 +1191,36 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	
 	
 	/**
+	 * Cleans enclosed elems that reduce to zero for approx mode.
+	 * @return The cleaned version of the tensor.
+	 */
+	protected EinsteinTensorElem<Z, R, S> cleanApprox()
+	{
+		final EinsteinTensorElem<Z, R, S> ret = new EinsteinTensorElem<Z, R, S>( fac , contravariantIndices , covariantIndices );
+		
+		for( Entry<ArrayList<BigInteger>,R> ii : map.entrySet() )
+		{
+			if( !( ii.getValue().evalSymbolicZeroApprox( EVAL_MODE.APPROX ) ) )
+			{
+				ret.setVal( ii.getKey() , ii.getValue() );
+			}
+		}
+		
+		return( ret );
+	}
+	
+	
+	
+	/**
 	 * Cleans enclosed elems that reduce to zero.
 	 * @param mode The extent to simplify whether the enclosed elems are zero.
-	 * @return The cleaned version of the multivector.
+	 * @return The cleaned version of the tensor.
 	 */
 	public  EinsteinTensorElem<Z, R, S> clean( final EVAL_MODE mode )
 	{	
 		if( mode == EVAL_MODE.APPROX )
 		{
-			final EinsteinTensorElem<Z, R, S> ret = new EinsteinTensorElem<Z, R, S>( fac , contravariantIndices , covariantIndices );
-			
-			for( Entry<ArrayList<BigInteger>,R> ii : map.entrySet() )
-			{
-				if( !( ii.getValue().evalSymbolicZeroApprox( EVAL_MODE.APPROX ) ) )
-				{
-					ret.setVal( ii.getKey() , ii.getValue() );
-				}
-			}
-			
-			return( ret );
+			return( cleanApprox() );
 		}
 		
 		EinsteinTensorElem<Z, R, S> prev = this;
@@ -1223,17 +1234,7 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 						getDistributeSimplifyKnowledgeBase().newStatefulKnowledgeSession() : 
 						getDistributeSimplify2KnowledgeBase().newStatefulKnowledgeSession();
 		
-				session.insert( new DroolsSession( session ) );
-		
-				if( LoggingConfiguration.LOGGING_ON )
-				{
-					session.insert( new LoggingConfiguration() );
-				}
-				
-				if( LoggingConfiguration.EVENT_LOGGING_ON )
-				{
-					session.addEventListener( generateEventLoggingListener() );
-				}
+				insertSessionConfigItems( session );
 				
 				place = new HashMap<ArrayList<BigInteger>,SymbolicPlaceholder<R,S>>();
 			

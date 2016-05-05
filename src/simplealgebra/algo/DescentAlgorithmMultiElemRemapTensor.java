@@ -47,6 +47,7 @@ import simplealgebra.symbolic.SCacheKey;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim;
+import simplealgebra.algo.DescentAlgorithmMultiElemRemap.GeomDescentInverseFailedException;
 import simplealgebra.et.*;
 
 
@@ -62,6 +63,49 @@ import simplealgebra.et.*;
  * @param <S> The factory for the nested type.
  */
 public abstract class DescentAlgorithmMultiElemRemapTensor<Z extends Object, R extends Elem<R,?>, S extends ElemFactory<R,S>> {
+	
+	
+	
+	/**
+	 * Exception indicating the failure of the tensor descent inverse process.
+	 * 
+	 * @author tgreen
+	 *
+	 */
+	public static final class TensorDescentInverseFailedException extends NotInvertibleException
+	{
+		/**
+		 * The key of the elem. related to the inverse failure.
+		 */
+		protected ArrayList<BigInteger> elemNum;
+		
+		/**
+		 * Constructs the exception.
+		 * 
+		 * @param elemNum_ The key of the elem. related to the inverse failure.
+		 */
+		public TensorDescentInverseFailedException( final ArrayList<BigInteger> elemNum_ )
+		{
+			elemNum = elemNum;
+		}
+		
+		@Override
+		public String toString()
+		{
+			return( "Tensor Descent Inverse Failed For Key " + elemNum );
+		}
+		
+		/**
+		 * Returns the key of the elem. related to the inverse failure.
+		 * 
+		 * @return The key of the elem. related to the inverse failure.
+		 */
+		public ArrayList<BigInteger> getElemNum()
+		{
+			return( elemNum );
+		}
+		
+	};
 	
 	
 	/**
@@ -445,17 +489,26 @@ public abstract class DescentAlgorithmMultiElemRemapTensor<Z extends Object, R e
 	 */
 	public EinsteinTensorElem<Z,R,S> eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpaceInitialGuess ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
-		GeometricAlgebraMultivectorElem<Adim,GeometricAlgebraOrd<Adim>,R,S> sv = descent.eval(implicitSpaceInitialGuess);
-		EinsteinTensorElem<Z,R,S> ret =
+		try
+		{
+			GeometricAlgebraMultivectorElem<Adim,GeometricAlgebraOrd<Adim>,R,S> sv = descent.eval(implicitSpaceInitialGuess);
+			EinsteinTensorElem<Z,R,S> ret =
 				new EinsteinTensorElem<Z,R,S>( fac , contravariantIndices , covariantIndices );
 		
-		for( final Entry<HashSet<BigInteger>, R> ii : sv.getEntrySet() )
-		{
-			HashSet<BigInteger> key = ii.getKey();
-			ret.setVal( outMapFun.get( key ) , ii.getValue() );
-		}
+			for( final Entry<HashSet<BigInteger>, R> ii : sv.getEntrySet() )
+			{
+				HashSet<BigInteger> key = ii.getKey();
+				ret.setVal( outMapFun.get( key ) , ii.getValue() );
+			}
 		
-		return( ret );
+			return( ret );
+		}
+		catch( DescentAlgorithmMultiElem.DescentInverseFailedException ex )
+		{
+			final HashSet<BigInteger> key = new HashSet<BigInteger>();
+			key.add( ex.getElemNum() );
+			throw( new TensorDescentInverseFailedException( outMapFun.get( key ) ) );
+		}
 	}
 	
 	

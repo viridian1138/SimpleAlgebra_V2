@@ -1469,6 +1469,27 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 	
 	
 	/**
+	 * Cleans enclosed elems that reduce to zero for approx mode.
+	 * @return The cleaned version of the multivector.
+	 */
+	protected GeometricAlgebraMultivectorElem<U, A, R, S> cleanApprox()
+	{
+		final GeometricAlgebraMultivectorElem<U, A, R, S> ret = this.getFac().zero();
+		
+		for( Entry<HashSet<BigInteger>,R> ii : map.entrySet() )
+		{
+			if( !( ii.getValue().evalSymbolicZeroApprox( EVAL_MODE.APPROX ) ) )
+			{
+				ret.setVal( ii.getKey() , ii.getValue() );
+			}
+		}
+		
+		return( ret );
+	}
+	
+	
+	
+	/**
 	 * Cleans enclosed elems that reduce to zero.
 	 * @param mode The extent to simplify whether the enclosed elems are zero.
 	 * @return The cleaned version of the multivector.
@@ -1477,17 +1498,7 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 	{	
 		if( mode == EVAL_MODE.APPROX )
 		{
-			final GeometricAlgebraMultivectorElem<U, A, R, S> ret = this.getFac().zero();
-			
-			for( Entry<HashSet<BigInteger>,R> ii : map.entrySet() )
-			{
-				if( !( ii.getValue().evalSymbolicZeroApprox( EVAL_MODE.APPROX ) ) )
-				{
-					ret.setVal( ii.getKey() , ii.getValue() );
-				}
-			}
-			
-			return( ret );
+			return( cleanApprox() );
 		}
 		
 		GeometricAlgebraMultivectorElem<U, A, R, S> prev = this;
@@ -1501,17 +1512,7 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 						getDistributeSimplifyKnowledgeBase().newStatefulKnowledgeSession() : 
 						getDistributeSimplify2KnowledgeBase().newStatefulKnowledgeSession();
 		
-				session.insert( new DroolsSession( session ) );
-		
-				if( LoggingConfiguration.LOGGING_ON )
-				{
-					session.insert( new LoggingConfiguration() );
-				}
-				
-				if( LoggingConfiguration.EVENT_LOGGING_ON )
-				{
-					session.addEventListener( generateEventLoggingListener() );
-				}
+				insertSessionConfigItems( session );
 				
 				place = new HashMap<HashSet<BigInteger>,SymbolicPlaceholder<R,S>>();
 			

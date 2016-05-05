@@ -234,7 +234,16 @@ public class NewtonRaphsonMultiElemNoBacktrack<U extends NumDimensions, R extend
 	protected void performIteration() throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
 		final SquareMatrixElem<U,R,S> derivativeJacobian = evalPartialDerivativeJacobian();
-		final SquareMatrixElem<U,R,S> derivativeJacobianInverse = derivativeJacobian.invertLeft();
+		SquareMatrixElem<U,R,S> derivativeJacobianInverse = null;
+		
+		try
+		{
+			derivativeJacobianInverse = derivativeJacobian.invertLeft();
+		}
+		catch( SquareMatrixElem.NoPivotException ex )
+		{
+			throw( new DescentInverseFailedException( ex.getElemNum() ) );
+		}
 		
 		GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,R,S> iterationOffset =
 				new GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,R,S>(

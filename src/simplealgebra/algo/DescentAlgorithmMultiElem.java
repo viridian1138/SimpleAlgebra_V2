@@ -58,6 +58,48 @@ public abstract class DescentAlgorithmMultiElem<U extends NumDimensions, R exten
 	
 	
 	/**
+	 * Exception indicating the failure of the descent inverse process.
+	 * 
+	 * @author tgreen
+	 *
+	 */
+	public static final class DescentInverseFailedException extends NotInvertibleException
+	{
+		/**
+		 * The key of the elem. related to the inverse failure.
+		 */
+		protected BigInteger elemNum;
+		
+		/**
+		 * Constructs the exception.
+		 * 
+		 * @param elemNum_ The key of the elem. related to the inverse failure.
+		 */
+		public DescentInverseFailedException( final BigInteger elemNum_ )
+		{
+			elemNum = elemNum;
+		}
+		
+		@Override
+		public String toString()
+		{
+			return( "Descent Inverse Failed For Key " + elemNum );
+		}
+		
+		/**
+		 * Returns the key of the elem. related to the inverse failure.
+		 * 
+		 * @return The key of the elem. related to the inverse failure.
+		 */
+		public BigInteger getElemNum()
+		{
+			return( elemNum );
+		}
+		
+	};
+	
+	
+	/**
 	 * Runs the descent algorithm.
 	 * 
 	 * @param implicitSpaceInitialGuess The implicit space for the initial guess.
