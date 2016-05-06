@@ -606,6 +606,38 @@ public abstract class DescentAlgorithmMultiElemRemapTensor<Z extends Object, R e
 	
 	
 	/**
+	 * Evaluates whether the elems appear to be invertible.
+	 * 
+	 * @param zeroRows Set holding all of the empty rows of the Jacobian matrix.
+	 * @param zeroCols Set holding all of the empty columns of the Jacobian matrix.
+	 */
+	protected void printInverseCheck( final HashSet<BigInteger> zeroRows , final HashSet<BigInteger> zeroCols )
+	{
+		final HashSet<ArrayList<BigInteger>> zeroRowsGa = new  HashSet<ArrayList<BigInteger>>();
+		final HashSet<ArrayList<BigInteger>> zeroColsGa = new  HashSet<ArrayList<BigInteger>>();
+		
+		for( final BigInteger ii : zeroRows )
+		{
+			final HashSet<BigInteger> hs = new HashSet<BigInteger>();
+			hs.add( ii );
+			
+			zeroRowsGa.add( this.outMapFun.get( hs ) );
+		}
+		
+		for( final BigInteger ii : zeroCols )
+		{
+			final HashSet<BigInteger> hs = new HashSet<BigInteger>();
+			hs.add( ii );
+			
+			zeroColsGa.add( this.outMapFun.get( hs ) );
+		}
+		
+		System.out.println( zeroRowsGa );
+		System.out.println( zeroColsGa );
+	}
+	
+	
+	/**
 	 * Copies an instance for cloneThread();
 	 * 
 	 * @param in The instance to copy.

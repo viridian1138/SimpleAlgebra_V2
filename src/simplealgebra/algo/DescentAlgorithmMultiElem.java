@@ -31,11 +31,13 @@ package simplealgebra.algo;
 
 import java.math.BigInteger;
 import java.util.HashMap;
+import java.util.HashSet;
 
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.NumDimensions;
+import simplealgebra.SquareMatrixElem;
 import simplealgebra.ga.GeometricAlgebraMultivectorElem;
 import simplealgebra.ga.GeometricAlgebraOrd;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
@@ -141,6 +143,23 @@ public abstract class DescentAlgorithmMultiElem<U extends NumDimensions, R exten
 				return( in.distributeSimplify2() );
 		}
 		throw( new RuntimeException( "Not Supported" ) );
+	}
+	
+	
+	/**
+	 * Estimates whether the rows and columns of the Jacobian matrix appear to be invertible.
+	 * 
+	 * @param derivativeJacobian The Jacobian matrix to check.
+	 */
+	protected void printInverseCheck( final SquareMatrixElem<U,R,S> derivativeJacobian )
+	{
+		final HashSet<BigInteger> zeroRows = new HashSet<BigInteger>();
+		final HashSet<BigInteger> zeroCols = new HashSet<BigInteger>();
+		
+		derivativeJacobian.checkInverse( zeroRows, zeroCols );
+		
+		System.out.println( zeroRows );
+		System.out.println( zeroCols );
 	}
 	
 

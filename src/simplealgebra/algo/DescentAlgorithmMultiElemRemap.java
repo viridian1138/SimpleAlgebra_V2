@@ -683,6 +683,38 @@ public abstract class DescentAlgorithmMultiElemRemap<U extends NumDimensions, A 
 	}
 	
 	
+	/**
+	 * Evaluates whether the elems appear to be invertible.
+	 * 
+	 * @param zeroRows Set holding all of the empty rows of the Jacobian matrix.
+	 * @param zeroCols Set holding all of the empty columns of the Jacobian matrix.
+	 */
+	protected void printInverseCheck( final HashSet<BigInteger> zeroRows , final HashSet<BigInteger> zeroCols )
+	{
+		final HashSet<HashSet<BigInteger>> zeroRowsGa = new  HashSet<HashSet<BigInteger>>();
+		final HashSet<HashSet<BigInteger>> zeroColsGa = new  HashSet<HashSet<BigInteger>>();
+		
+		for( final BigInteger ii : zeroRows )
+		{
+			final HashSet<BigInteger> hs = new HashSet<BigInteger>();
+			hs.add( ii );
+			
+			zeroRowsGa.add( this.outMapFun.get( hs ) );
+		}
+		
+		for( final BigInteger ii : zeroCols )
+		{
+			final HashSet<BigInteger> hs = new HashSet<BigInteger>();
+			hs.add( ii );
+			
+			zeroColsGa.add( this.outMapFun.get( hs ) );
+		}
+		
+		System.out.println( zeroRowsGa );
+		System.out.println( zeroColsGa );
+	}
+	
+	
 	
 	/**
 	 * Produces a clone of the object for threading.  Note that for

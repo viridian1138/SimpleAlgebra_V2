@@ -30,6 +30,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 import java.util.Map.Entry;
 
 import org.kie.internal.runtime.StatefulKnowledgeSession;
@@ -2174,6 +2175,71 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 			}
 		}
 		return( st );
+	}
+	
+	
+	
+	/**
+	 * Estimates whether the rows and columns of the matrix appear to be invertible.
+	 * 
+	 * @param zeroRows Set holding all of the empty rows of the matrix.
+	 * @param zeroCols Set holding all of the empty columns of the matrix.
+	 */
+	public void checkInverse( HashSet<BigInteger> zeroRows, HashSet<BigInteger> zeroCols )
+	{
+		final BigInteger max = dim.getVal();
+		
+		for( BigInteger row = BigInteger.ZERO ; row.compareTo(max) < 0 ; row = row.add( BigInteger.ONE ) )
+		{
+			final HashMap<BigInteger,R> rm = rowMap.get( row );
+			if( rm == null )
+			{
+				zeroRows.add( row );
+			}
+			else
+			{
+				boolean found = false;
+				
+				final Iterator<R> it = rm.values().iterator();
+				
+				while( ( it.hasNext() ) && ( !found ) )
+				{
+					found = found || !( it.next().evalSymbolicZeroApprox( EVAL_MODE.APPROX ) );
+				}
+				
+				if( !found )
+				{
+					zeroRows.add( row );
+				}
+			}
+		}
+		
+		
+		for( BigInteger column = BigInteger.ZERO ; column.compareTo(max) < 0 ; column = column.add( BigInteger.ONE ) )
+		{
+			final HashMap<BigInteger,R> cm = columnMap.get( column );
+			if( cm == null )
+			{
+				zeroCols.add( column );
+			}
+			else
+			{
+				boolean found = false;
+				
+				final Iterator<R> it = cm.values().iterator();
+				
+				while( ( it.hasNext() ) && ( !found ) )
+				{
+					found = found || !( it.next().evalSymbolicZeroApprox( EVAL_MODE.APPROX ) );
+				}
+				
+				if( !found )
+				{
+					zeroCols.add( column );
+				}
+			}
+		}
+		
 	}
 	
 	

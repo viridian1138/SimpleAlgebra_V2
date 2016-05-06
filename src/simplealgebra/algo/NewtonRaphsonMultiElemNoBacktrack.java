@@ -242,6 +242,7 @@ public class NewtonRaphsonMultiElemNoBacktrack<U extends NumDimensions, R extend
 		}
 		catch( SquareMatrixElem.NoPivotException ex )
 		{
+			// printInverseCheck( derivativeJacobian );
 			throw( new DescentInverseFailedException( ex.getElemNum() ) );
 		}
 		
