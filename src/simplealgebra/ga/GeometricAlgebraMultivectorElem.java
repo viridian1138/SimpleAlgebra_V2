@@ -1490,6 +1490,36 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 	
 	
 	/**
+	 * Populates the return elem, and determines if any of the enclosed elems have changed.
+	 * 
+	 * @param prev The previous elem that was operated upon.
+	 * @param place Structure holding all of the participating placeholders.
+	 * @param ret Return elem that is populated.
+	 * @return True iff. any of the enclosed elems have changed.
+	 */
+	protected boolean cleanIterateChanged( final GeometricAlgebraMultivectorElem<U, A, R, S> prev ,
+			final HashMap<HashSet<BigInteger>,SymbolicPlaceholder<R,S>> place ,
+			final GeometricAlgebraMultivectorElem<U, A, R, S> ret )
+	{
+		boolean changed = false;
+		for( Entry<HashSet<BigInteger>,SymbolicPlaceholder<R,S>> ii : place.entrySet() )
+		{
+			if( !( ii.getValue().getElem().evalSymbolicZeroApprox( EVAL_MODE.APPROX ) ) )
+			{
+				ret.setVal( ii.getKey() , ii.getValue().getElem() );
+				changed = changed || ( ii.getValue().getElem() != prev.map.get( ii.getKey() ) );
+			}
+			else
+			{
+				changed = true;
+			}
+		}
+		return( changed );
+	}
+	
+	
+	
+	/**
 	 * Cleans enclosed elems that reduce to zero.
 	 * @param mode The extent to simplify whether the enclosed elems are zero.
 	 * @return The cleaned version of the multivector.
@@ -1549,18 +1579,7 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 				if( place != null )
 				{
 					ret = this.getFac().zero();
-					for( Entry<HashSet<BigInteger>,SymbolicPlaceholder<R,S>> ii : place.entrySet() )
-					{
-						if( !( ii.getValue().getElem().evalSymbolicZeroApprox( EVAL_MODE.APPROX ) ) )
-						{
-							ret.setVal( ii.getKey() , ii.getValue().getElem() );
-							changed = changed || ( ii.getValue().getElem() != prev.map.get( ii.getKey() ) );
-						}
-						else
-						{
-							changed = true;
-						}
-					}
+					changed = cleanIterateChanged( prev , place , ret );
 				}
 				
 				/*

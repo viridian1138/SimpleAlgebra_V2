@@ -1212,6 +1212,36 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	
 	
 	/**
+	 * Populates the return elem, and determines if any of the enclosed elems have changed.
+	 * 
+	 * @param prev The previous elem that was operated upon.
+	 * @param place Structure holding all of the participating placeholders.
+	 * @param ret Return elem that is populated.
+	 * @return True iff. any of the enclosed elems have changed.
+	 */
+	protected boolean cleanIterateChanged( final EinsteinTensorElem<Z, R, S> prev ,
+			final HashMap<ArrayList<BigInteger>,SymbolicPlaceholder<R,S>> place ,
+			final EinsteinTensorElem<Z, R, S> ret )
+	{
+		boolean changed = false;
+		for( Entry<ArrayList<BigInteger>,SymbolicPlaceholder<R,S>> ii : place.entrySet() )
+		{
+			if( !( ii.getValue().getElem().evalSymbolicZeroApprox( EVAL_MODE.APPROX ) ) )
+			{
+				ret.setVal( ii.getKey() , ii.getValue().getElem() );
+				changed = changed || ( ii.getValue().getElem() != prev.map.get( ii.getKey() ) );
+			}
+			else
+			{
+				changed = true;
+			}
+		}
+		return( changed );
+	}
+	
+	
+	
+	/**
 	 * Cleans enclosed elems that reduce to zero.
 	 * @param mode The extent to simplify whether the enclosed elems are zero.
 	 * @return The cleaned version of the tensor.
@@ -1271,18 +1301,7 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 				if( place != null )
 				{
 					ret = new EinsteinTensorElem<Z, R, S>( fac , contravariantIndices , covariantIndices );
-					for( Entry<ArrayList<BigInteger>,SymbolicPlaceholder<R,S>> ii : place.entrySet() )
-					{
-						if( !( ii.getValue().getElem().evalSymbolicZeroApprox( EVAL_MODE.APPROX ) ) )
-						{
-							ret.setVal( ii.getKey() , ii.getValue().getElem() );
-							changed = changed || ( ii.getValue().getElem() != prev.map.get( ii.getKey() ) );
-						}
-						else
-						{
-							changed = true;
-						}
-					}
+					changed = cleanIterateChanged( prev , place , ret );
 				}
 				
 				/*

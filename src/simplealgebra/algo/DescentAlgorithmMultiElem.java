@@ -38,8 +38,11 @@ import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.NumDimensions;
 import simplealgebra.SquareMatrixElem;
+import simplealgebra.WriteBigIntegerCache;
+import simplealgebra.WriteElemCache.IntVal;
 import simplealgebra.ga.GeometricAlgebraMultivectorElem;
 import simplealgebra.ga.GeometricAlgebraOrd;
+import simplealgebra.ga.WriteGaSetCache;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SymbolicElem;
 
@@ -153,13 +156,21 @@ public abstract class DescentAlgorithmMultiElem<U extends NumDimensions, R exten
 	 */
 	protected void printInverseCheck( final SquareMatrixElem<U,R,S> derivativeJacobian )
 	{
+		final IntVal cacheVal = new IntVal();
+		final WriteGaSetCache cache = new WriteGaSetCache( cacheVal );
+		final WriteBigIntegerCache wb = new WriteBigIntegerCache( cacheVal );
+		
 		final HashSet<BigInteger> zeroRows = new HashSet<BigInteger>();
 		final HashSet<BigInteger> zeroCols = new HashSet<BigInteger>();
 		
 		derivativeJacobian.checkInverse( zeroRows, zeroCols );
 		
-		System.out.println( zeroRows );
-		System.out.println( zeroCols );
+		System.out.println( "** zeroRowsGa..." );
+		String stRow = cache.writeDesc( zeroRows , wb, System.out );
+		System.out.println( ">> " + stRow );
+		System.out.println( "** zeroColsGa..." );
+		String stCol = cache.writeDesc( zeroCols , wb, System.out );
+		System.out.println( ">> " + stCol );
 	}
 	
 

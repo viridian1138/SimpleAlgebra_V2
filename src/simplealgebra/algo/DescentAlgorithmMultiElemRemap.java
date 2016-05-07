@@ -41,6 +41,8 @@ import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.NumDimensions;
 import simplealgebra.SquareMatrixElem;
+import simplealgebra.WriteBigIntegerCache;
+import simplealgebra.WriteElemCache.IntVal;
 import simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim;
 import simplealgebra.ga.*;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
@@ -691,6 +693,10 @@ public abstract class DescentAlgorithmMultiElemRemap<U extends NumDimensions, A 
 	 */
 	protected void printInverseCheck( final HashSet<BigInteger> zeroRows , final HashSet<BigInteger> zeroCols )
 	{
+		final IntVal cacheVal = new IntVal();
+		final WriteGaSetCache cache = new WriteGaSetCache( cacheVal );
+		final WriteBigIntegerCache wb = new WriteBigIntegerCache( cacheVal );
+		
 		final HashSet<HashSet<BigInteger>> zeroRowsGa = new  HashSet<HashSet<BigInteger>>();
 		final HashSet<HashSet<BigInteger>> zeroColsGa = new  HashSet<HashSet<BigInteger>>();
 		
@@ -710,8 +716,19 @@ public abstract class DescentAlgorithmMultiElemRemap<U extends NumDimensions, A 
 			zeroColsGa.add( this.outMapFun.get( hs ) );
 		}
 		
-		System.out.println( zeroRowsGa );
-		System.out.println( zeroColsGa );
+		System.out.println( "** zeroRowsGa..." );
+		for( final HashSet<BigInteger> ii : zeroRowsGa )
+		{
+			String stRow = cache.writeDesc( ii , wb, System.out );
+			System.out.println( ">> " + stRow );
+		}
+		System.out.println( "** zeroColsGa..." );
+		for( final HashSet<BigInteger> ii : zeroColsGa )
+		{
+			String stCol = cache.writeDesc( ii , wb, System.out );
+			System.out.println( ">> " + stCol );
+		}
+		
 	}
 	
 	
