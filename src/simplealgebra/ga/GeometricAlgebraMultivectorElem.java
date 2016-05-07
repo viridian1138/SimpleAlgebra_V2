@@ -143,6 +143,52 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 		
 	};
 	
+	
+	/**
+	 * Exception indicating the failure of the multivector to invert.
+	 * 
+	 * @author tgreen
+	 *
+	 */
+	public static final class GaInverseException extends NotInvertibleException
+	{
+		
+		/**
+		 * The index of the elem related to the inverse failure.
+		 */
+		protected HashSet<BigInteger> elemNum;
+		
+		/**
+		 * Constructs the exception.
+		 * 
+		 * @param elemNum_ The index of the elem related to the inverse failure.
+		 */
+		public GaInverseException( final HashSet<BigInteger> elemNum_ )
+		{
+			elemNum = elemNum;
+		}
+		
+		@Override
+		public String toString()
+		{
+			
+			return( "No GA Inverse For Index " + elemNum );
+		}
+		
+		
+		/**
+		 * Returns the index of the elem related to the inverse failure.
+		 * 
+		 * @return The index of the elem related to the inverse failure.
+		 */
+		public HashSet<BigInteger> getElemNum()
+		{
+			return( elemNum );
+		}
+		
+	};
+	
+	
 	/**
 	 * Constructs the elem.
 	 * 
@@ -678,7 +724,18 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 		}
 		
 		
-		SquareMatrixElem<NumDimensions,R,S> sqInv = sq.invertLeft();
+		SquareMatrixElem<NumDimensions,R,S> sqInv;
+		
+		
+		try
+		{
+			sqInv = sq.invertLeft();
+		}
+		catch( SquareMatrixElem.NoPivotException ex )
+		{
+			final HashSet<BigInteger> index = cols.get( ex.getElemNum().intValue() );
+			throw( new GaInverseException( index ) );
+		}
 		
 		
 		GeometricAlgebraMultivectorElemFactory<NumDimensions, GeometricAlgebraOrd<NumDimensions>, R, S> kfac = 
@@ -810,7 +867,18 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 		}
 		
 		
-		SquareMatrixElem<NumDimensions,R,S> sqInv = sq.handleOptionalOp( SquareMatrixElem.SquareMatrixCmd.INVERT_LEFT_REV_COEFF , null);
+		SquareMatrixElem<NumDimensions,R,S> sqInv;
+		
+		
+		try
+		{
+				sqInv = sq.handleOptionalOp( SquareMatrixElem.SquareMatrixCmd.INVERT_LEFT_REV_COEFF , null);
+		}
+		catch( SquareMatrixElem.NoPivotException ex )
+		{
+			final HashSet<BigInteger> index = cols.get( ex.getElemNum().intValue() );
+			throw( new GaInverseException( index ) );
+		}
 		
 		
 		GeometricAlgebraMultivectorElemFactory<NumDimensions, GeometricAlgebraOrd<NumDimensions>, R, S> kfac = 
