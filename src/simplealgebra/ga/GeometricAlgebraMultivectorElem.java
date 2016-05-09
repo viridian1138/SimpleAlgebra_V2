@@ -165,7 +165,7 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 		 */
 		public GaInverseException( final HashSet<BigInteger> elemNum_ )
 		{
-			elemNum = elemNum;
+			elemNum = elemNum_;
 		}
 		
 		@Override

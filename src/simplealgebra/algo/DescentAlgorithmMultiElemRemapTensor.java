@@ -88,7 +88,7 @@ public abstract class DescentAlgorithmMultiElemRemapTensor<Z extends Object, R e
 		 */
 		public TensorDescentInverseFailedException( final ArrayList<BigInteger> elemNum_ )
 		{
-			elemNum = elemNum;
+			elemNum = elemNum_;
 		}
 		
 		@Override
@@ -619,15 +619,15 @@ public abstract class DescentAlgorithmMultiElemRemapTensor<Z extends Object, R e
 		final WriteEinListCache cache = new WriteEinListCache( cacheVal );
 		final WriteBigIntegerCache wb = new WriteBigIntegerCache( cacheVal );
 		
-		final HashSet<ArrayList<BigInteger>> zeroRowsGa = new  HashSet<ArrayList<BigInteger>>();
-		final HashSet<ArrayList<BigInteger>> zeroColsGa = new  HashSet<ArrayList<BigInteger>>();
+		final HashSet<ArrayList<BigInteger>> zeroRowsTensor = new  HashSet<ArrayList<BigInteger>>();
+		final HashSet<ArrayList<BigInteger>> zeroColsTensor = new  HashSet<ArrayList<BigInteger>>();
 		
 		for( final BigInteger ii : zeroRows )
 		{
 			final HashSet<BigInteger> hs = new HashSet<BigInteger>();
 			hs.add( ii );
 			
-			zeroRowsGa.add( this.outMapFun.get( hs ) );
+			zeroRowsTensor.add( this.outMapFun.get( hs ) );
 		}
 		
 		for( final BigInteger ii : zeroCols )
@@ -635,17 +635,17 @@ public abstract class DescentAlgorithmMultiElemRemapTensor<Z extends Object, R e
 			final HashSet<BigInteger> hs = new HashSet<BigInteger>();
 			hs.add( ii );
 			
-			zeroColsGa.add( this.outMapFun.get( hs ) );
+			zeroColsTensor.add( this.outMapFun.get( hs ) );
 		}
 		
-		System.out.println( "** zeroRowsGa..." );
-		for( final ArrayList<BigInteger> ii : zeroRowsGa )
+		System.out.println( "** zeroRowsTensor..." );
+		for( final ArrayList<BigInteger> ii : zeroRowsTensor )
 		{
 			String stRow = cache.writeDesc( ii , wb, System.out );
 			System.out.println( ">> " + stRow );
 		}
-		System.out.println( "** zeroColsGa..." );
-		for( final ArrayList<BigInteger> ii : zeroColsGa )
+		System.out.println( "** zeroColsTensor..." );
+		for( final ArrayList<BigInteger> ii : zeroColsTensor )
 		{
 			String stCol = cache.writeDesc( ii , wb, System.out );
 			System.out.println( ">> " + stCol );

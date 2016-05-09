@@ -283,6 +283,12 @@ public class SymbolicMult<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 	public R evalPartialDerivativeCached( ArrayList<? extends Elem<?, ?>> withRespectTo , 
 			HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace , HashMap<SCacheKey<R, S>, R> cache ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
+		final SCacheKey<R,S> key = new SCacheKey<R,S>( this , implicitSpace , withRespectTo );
+		final R iret = cache.get( key );
+		if( iret != null )
+		{
+			return( iret );
+		}
 		if( elemA instanceof PartialDerivativeOp )
 		{
 			final ArrayList<? extends Elem<?, ?>> newWrt = new ArrayList<Elem<?, ?>>();
@@ -295,12 +301,16 @@ public class SymbolicMult<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 			{
 				neWW.add( ii );
 			}
-			return( elemB.evalPartialDerivativeCached(newWrt, implicitSpace, cache) );
+			final R ret = elemB.evalPartialDerivativeCached(newWrt, implicitSpace, cache);
+			cache.put( key , ret );
+			return( ret );
 		}
 		if( elemA instanceof DerivativeElem )
 		{
 			SymbolicElem<R,S> sym = (SymbolicElem<R,S>)(((DerivativeElem) elemA).evalDerivativeCached( elemA , implicitSpace , cache ) );
-			return( sym.evalPartialDerivativeCached(withRespectTo, implicitSpace, cache) );
+			final R ret = sym.evalPartialDerivativeCached(withRespectTo, implicitSpace, cache);
+			cache.put(key, ret);
+			return( ret );
 		}
 		R lt = null;
 		{
@@ -313,21 +323,27 @@ public class SymbolicMult<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 			{
 				if( elemA instanceof SymbolicNegate )
 				{
-					return( ((SymbolicNegate<R,S>) elemA).getElem().mult(elemB).evalPartialDerivativeCached(withRespectTo, implicitSpace, cache).negate() );
+					final R ret = ((SymbolicNegate<R,S>) elemA).getElem().mult(elemB).evalPartialDerivativeCached(withRespectTo, implicitSpace, cache).negate();
+					cache.put(key, ret);
+					return( ret );
 				}
 				
 				if( elemA instanceof SymbolicAdd )
 				{
 					final SymbolicElem<R,S> ia = ((SymbolicAdd<R,S>) elemA).getElemA();
 					final SymbolicElem<R,S> ib = ((SymbolicAdd<R,S>) elemA).getElemB();
-					return( ( ia.mult( elemB ) ).add( ib.mult( elemB ) ).evalPartialDerivativeCached( withRespectTo , implicitSpace , cache ) );
+					final R ret = ( ia.mult( elemB ) ).add( ib.mult( elemB ) ).evalPartialDerivativeCached( withRespectTo , implicitSpace , cache );
+					cache.put(key, ret);
+					return( ret );
 				}
 				
 				if( elemA instanceof SymbolicMult )
 				{
 					final SymbolicElem<R,S> ia = ((SymbolicMult<R,S>) elemA).getElemA();
 					final SymbolicElem<R,S> ib = ((SymbolicMult<R,S>) elemA).getElemB();
-					return( ( ia.mult( ib.mult( elemB ) ) ).evalPartialDerivativeCached( withRespectTo , implicitSpace , cache ) );
+					final R ret = ( ia.mult( ib.mult( elemB ) ) ).evalPartialDerivativeCached( withRespectTo , implicitSpace , cache );
+					cache.put(key, ret);
+					return( ret );
 				}
 				
 				throw( ex );
@@ -345,21 +361,27 @@ public class SymbolicMult<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 			{
 				if( elemA instanceof SymbolicNegate )
 				{
-					return( ((SymbolicNegate<R,S>) elemA).getElem().mult(elemB).evalPartialDerivativeCached(withRespectTo, implicitSpace, cache).negate() );
+					final R ret = ((SymbolicNegate<R,S>) elemA).getElem().mult(elemB).evalPartialDerivativeCached(withRespectTo, implicitSpace, cache).negate();
+					cache.put(key, ret);
+					return( ret );
 				}
 				
 				if( elemA instanceof SymbolicAdd )
 				{
 					final SymbolicElem<R,S> ia = ((SymbolicAdd<R,S>) elemA).getElemA();
 					final SymbolicElem<R,S> ib = ((SymbolicAdd<R,S>) elemA).getElemB();
-					return( ( ia.mult( elemB ) ).add( ib.mult( elemB ) ).evalPartialDerivativeCached( withRespectTo , implicitSpace , cache ) );
+					final R ret = ( ia.mult( elemB ) ).add( ib.mult( elemB ) ).evalPartialDerivativeCached( withRespectTo , implicitSpace , cache );
+					cache.put(key, ret);
+					return( ret );
 				}
 				
 				if( elemA instanceof SymbolicMult )
 				{
 					final SymbolicElem<R,S> ia = ((SymbolicMult<R,S>) elemA).getElemA();
 					final SymbolicElem<R,S> ib = ((SymbolicMult<R,S>) elemA).getElemB();
-					return( ( ia.mult( ib.mult( elemB ) ) ).evalPartialDerivativeCached( withRespectTo , implicitSpace , cache ) );
+					final R ret = ( ia.mult( ib.mult( elemB ) ) ).evalPartialDerivativeCached( withRespectTo , implicitSpace , cache );
+					cache.put(key, ret);
+					return( ret );
 				}
 				
 				throw( ex );
@@ -367,7 +389,9 @@ public class SymbolicMult<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 			rt = ea.mult( elemB.evalPartialDerivativeCached( withRespectTo , implicitSpace , cache ) );
 		}
 		
-		return( lt.add( rt ) );
+		final R ret = lt.add( rt );
+		cache.put(key, ret);
+		return( ret );
 	}
 	
 	@Override

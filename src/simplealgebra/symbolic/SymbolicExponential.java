@@ -125,15 +125,25 @@ public class SymbolicExponential<R extends Elem<R,?>, S extends ElemFactory<R,S>
 	public R evalPartialDerivativeCached( ArrayList<? extends Elem<?,?>> withRespectTo , 
 			HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace , HashMap<SCacheKey<R, S>, R> cache ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
+		final SCacheKey<R,S> key = new SCacheKey<R,S>( this , implicitSpace , withRespectTo );
+		final R iret = cache.get( key );
+		if( iret != null )
+		{
+			return( iret );
+		}
 		if( ( this.getFac().isMultCommutative() ) && ( this.getFac().isMultAssociative() ) )
 		{
 			final R expV = this.evalCached( implicitSpace , cache );
 			final R dv = elem.evalPartialDerivativeCached( withRespectTo , implicitSpace , cache );
-			return( expV.mult( dv ) );
+			final R ret = expV.mult( dv );
+			cache.put(key, ret);
+			return( ret );
 		}
 		else
 		{
-			return( super.exp( ival ).evalPartialDerivativeCached(withRespectTo, implicitSpace, cache) );
+			final R ret = super.exp( ival ).evalPartialDerivativeCached(withRespectTo, implicitSpace, cache);
+			cache.put(key, ret);
+			return( ret );
 		}
 	}
 	

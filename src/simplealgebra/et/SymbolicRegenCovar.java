@@ -131,8 +131,18 @@ public class SymbolicRegenCovar<Z extends Object, R extends Elem<R,?>, S extends
 			HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace,
 			HashMap<SCacheKey<EinsteinTensorElem<Z, R, S>, EinsteinTensorElemFactory<Z, R, S>>, EinsteinTensorElem<Z, R, S>> cache)
 			throws NotInvertibleException,
-			MultiplicativeDistributionRequiredException {
-		return( elem.evalPartialDerivativeCached( withRespectTo , implicitSpace , cache ).regenCovar( newCovar ) );
+			MultiplicativeDistributionRequiredException 
+	{
+		final SCacheKey<EinsteinTensorElem<Z, R, S>, EinsteinTensorElemFactory<Z, R, S>> key =
+				new SCacheKey<EinsteinTensorElem<Z, R, S>, EinsteinTensorElemFactory<Z, R, S>>( this , implicitSpace , withRespectTo );
+		final EinsteinTensorElem<Z, R, S> iret = cache.get( key );
+		if( iret != null )
+		{
+			return( iret );
+		}
+		final EinsteinTensorElem<Z, R, S> ret = elem.evalPartialDerivativeCached( withRespectTo , implicitSpace , cache ).regenCovar( newCovar );
+		cache.put(key, ret);
+		return( ret );
 	}
 	
 	

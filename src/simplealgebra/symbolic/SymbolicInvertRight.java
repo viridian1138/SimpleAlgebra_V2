@@ -125,10 +125,18 @@ public class SymbolicInvertRight<R extends Elem<R,?>, S extends ElemFactory<R,S>
 	public R evalPartialDerivativeCached(ArrayList<? extends Elem<?, ?>> withRespectTo , 
 			HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace , HashMap<SCacheKey<R, S>, R> cache )
 			throws NotInvertibleException, MultiplicativeDistributionRequiredException {
+		final SCacheKey<R,S> key = new SCacheKey<R,S>( this , implicitSpace , withRespectTo );
+		final R iret = cache.get( key );
+		if( iret != null )
+		{
+			return( iret );
+		}
 		final R aL = elem.invertLeft().evalCached(implicitSpace, cache);
 		final R ap = elem.evalPartialDerivativeCached(withRespectTo, implicitSpace, cache);
 		final R aR = elem.invertRight().evalCached(implicitSpace, cache);
-		return( aL.mult( ap ).mult( aR ).negate() );
+		final R ret = aL.mult( ap ).mult( aR ).negate();
+		cache.put(key, ret);
+		return( ret );
 	}
 	
 	@Override

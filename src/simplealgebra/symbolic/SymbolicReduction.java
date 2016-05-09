@@ -115,19 +115,32 @@ public class SymbolicReduction<R extends Elem<R,?>, S extends ElemFactory<R,S>> 
 	public R evalPartialDerivativeCached( ArrayList<? extends Elem<?,?>> withRespectTo , 
 			HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace , HashMap<SCacheKey<R, S>, R> cache ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
+		final SCacheKey<R,S> key = new SCacheKey<R,S>( this , implicitSpace , withRespectTo );
+		final R iret = cache.get( key );
+		if( iret != null )
+		{
+			return( iret );
+		}
+		
 		if( elem instanceof SymbolicElem )
 		{
 			if( evalSymbolicConstantApprox() )
 			{
-				return( fac.zero() );
+				final R ret = fac.zero();
+				cache.put( key , ret );
+				return( ret );
 			}
 			else
 			{
 				final R partialD = (R)( new PartialDerivativeOp( ( (SymbolicElemFactory) fac ).getFac() , withRespectTo ) );
-				return( partialD.mult( elem ) );
+				final R ret = partialD.mult( elem );
+				cache.put( key , ret );
+				return( ret );
 			}
 		}
-		return( fac.zero() );
+		final R ret = fac.zero();
+		cache.put( key , ret );
+		return( ret );
 	}
 	
 	

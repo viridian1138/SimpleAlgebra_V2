@@ -139,10 +139,18 @@ public class SymbolicAbsoluteValue<R extends Elem<R,?>, S extends ElemFactory<R,
 	public R evalPartialDerivativeCached( ArrayList<? extends Elem<?,?>> withRespectTo , 
 			HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace , HashMap<SCacheKey<R, S>, R> cache ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
+		final SCacheKey<R,S> key = new SCacheKey<R,S>( this , implicitSpace , withRespectTo );
+		final R iret = cache.get( key );
+		if( iret != null )
+		{
+			return( iret );
+		}
 		final R absV = this.evalCached( implicitSpace , cache );
 		final R v = elem.evalCached( implicitSpace , cache );
 		final R dv = elem.evalPartialDerivativeCached( withRespectTo , implicitSpace , cache );
-		return( v.mult( absV.invertLeft() ).mult( dv ) );
+		final R ret = v.mult( absV.invertLeft() ).mult( dv );
+		cache.put(key, ret);
+		return( ret );
 	}
 	
 	

@@ -119,7 +119,7 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 		public NoPivotException( final boolean isRow_ , final BigInteger elemNum_ )
 		{
 			isRow = isRow_;
-			elemNum = elemNum;
+			elemNum = elemNum_;
 		}
 		
 		@Override

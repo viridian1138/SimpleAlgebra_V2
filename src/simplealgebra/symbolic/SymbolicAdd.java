@@ -102,13 +102,21 @@ public class SymbolicAdd<R extends Elem<R,?>, S extends ElemFactory<R,S>> extend
 	public R evalPartialDerivative( ArrayList<? extends Elem<?,?>> withRespectTo , HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
 		return( elemA.evalPartialDerivative( withRespectTo , implicitSpace ).add( elemB.evalPartialDerivative( withRespectTo , implicitSpace ) ) );
-	}
+	} 
 	
 	@Override
 	public R evalPartialDerivativeCached( ArrayList<? extends Elem<?,?>> withRespectTo , 
 			HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace , HashMap<SCacheKey<R, S>, R> cache ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
-		return( elemA.evalPartialDerivativeCached( withRespectTo , implicitSpace , cache ).add( elemB.evalPartialDerivativeCached( withRespectTo , implicitSpace , cache ) ) );
+		final SCacheKey<R,S> key = new SCacheKey<R,S>( this , implicitSpace , withRespectTo );
+		final R iret = cache.get( key );
+		if( iret != null )
+		{
+			return( iret );
+		}
+		final R ret = elemA.evalPartialDerivativeCached( withRespectTo , implicitSpace , cache ).add( elemB.evalPartialDerivativeCached( withRespectTo , implicitSpace , cache ) );
+		cache.put( key , ret );
+		return( ret );
 	}
 	
 	@Override

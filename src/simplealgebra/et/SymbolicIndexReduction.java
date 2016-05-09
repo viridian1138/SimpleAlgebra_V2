@@ -137,8 +137,18 @@ public class SymbolicIndexReduction<Z extends Object, R extends Elem<R,?>, S ext
 			HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace,
 			HashMap<SCacheKey<EinsteinTensorElem<Z, R, S>, EinsteinTensorElemFactory<Z, R, S>>, EinsteinTensorElem<Z, R, S>> cache)
 			throws NotInvertibleException,
-			MultiplicativeDistributionRequiredException {
-		return( elem.evalPartialDerivativeCached( withRespectTo , implicitSpace , cache ).indexReduction( contravariantReduce , covariantReduce ) );
+			MultiplicativeDistributionRequiredException 
+	{
+		final SCacheKey<EinsteinTensorElem<Z, R, S>, EinsteinTensorElemFactory<Z, R, S>> key =
+				new SCacheKey<EinsteinTensorElem<Z, R, S>, EinsteinTensorElemFactory<Z, R, S>>( this , implicitSpace , withRespectTo );
+		final EinsteinTensorElem<Z, R, S> iret = cache.get( key );
+		if( iret != null )
+		{
+			return( iret );
+		}
+		final EinsteinTensorElem<Z, R, S> ret = elem.evalPartialDerivativeCached( withRespectTo , implicitSpace , cache ).indexReduction( contravariantReduce , covariantReduce );
+		cache.put(key, ret);
+		return( ret );
 	}
 
 	

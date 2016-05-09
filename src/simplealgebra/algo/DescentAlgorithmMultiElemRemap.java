@@ -87,7 +87,7 @@ public abstract class DescentAlgorithmMultiElemRemap<U extends NumDimensions, A 
 		 */
 		public GeomDescentInverseFailedException( final HashSet<BigInteger> elemNum_ )
 		{
-			elemNum = elemNum;
+			elemNum = elemNum_;
 		}
 		
 		@Override

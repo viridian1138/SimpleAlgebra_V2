@@ -134,9 +134,17 @@ public class SymbolicSqrt<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 	public R evalPartialDerivativeCached( ArrayList<? extends Elem<?,?>> withRespectTo , 
 			HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace , HashMap<SCacheKey<R, S>, R> cache ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
+		final SCacheKey<R,S> key = new SCacheKey<R,S>( this , implicitSpace , withRespectTo );
+		final R iret = cache.get( key );
+		if( iret != null )
+		{
+			return( iret );
+		}
 		final R sqrtV = this.evalCached( implicitSpace , cache );
 		final R dv = elem.evalPartialDerivativeCached( withRespectTo , implicitSpace , cache );
-		return( ( sqrtV.invertLeft() ).mult( dv ).divideBy( BigInteger.valueOf( 2 ) ) );
+		final R ret = ( sqrtV.invertLeft() ).mult( dv ).divideBy( BigInteger.valueOf( 2 ) );
+		cache.put(key, ret);
+		return( ret );
 	}
 	
 	@Override

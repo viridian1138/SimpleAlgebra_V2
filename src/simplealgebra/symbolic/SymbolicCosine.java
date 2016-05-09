@@ -118,15 +118,25 @@ public class SymbolicCosine<R extends Elem<R,?>, S extends ElemFactory<R,S>> ext
 	public R evalPartialDerivativeCached( ArrayList<? extends Elem<?,?>> withRespectTo , 
 			HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace , HashMap<SCacheKey<R, S>, R> cache ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
+		final SCacheKey<R,S> key = new SCacheKey<R,S>( this , implicitSpace , withRespectTo );
+		final R iret = cache.get( key );
+		if( iret != null )
+		{
+			return( iret );
+		}
 		if( ( this.getFac().isMultCommutative() ) && ( this.getFac().isMultAssociative() ) )
 		{
 			final R cosV = elem.sin( ival ).negate().evalCached( implicitSpace , cache );
 			final R dv = elem.evalPartialDerivativeCached( withRespectTo , implicitSpace , cache );
-			return( cosV.mult( dv ) );
+			final R ret = cosV.mult( dv );
+			cache.put(key, ret);
+			return( ret );
 		}
 		else
 		{
-			return( super.cos( ival ).evalPartialDerivativeCached(withRespectTo, implicitSpace, cache) );
+			final R ret = super.cos( ival ).evalPartialDerivativeCached(withRespectTo, implicitSpace, cache);
+			cache.put(key, ret);
+			return( ret );
 		}
 	}
 	

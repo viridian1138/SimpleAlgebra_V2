@@ -82,7 +82,7 @@ public abstract class DescentAlgorithmMultiElem<U extends NumDimensions, R exten
 		 */
 		public DescentInverseFailedException( final BigInteger elemNum_ )
 		{
-			elemNum = elemNum;
+			elemNum = elemNum_;
 		}
 		
 		@Override

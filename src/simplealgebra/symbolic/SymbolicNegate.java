@@ -107,7 +107,15 @@ public class SymbolicNegate<R extends Elem<R,?>, S extends ElemFactory<R,S>> ext
 	public R evalPartialDerivativeCached( ArrayList<? extends Elem<?,?>> withRespectTo , 
 			HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace , HashMap<SCacheKey<R, S>, R> cache ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
-		return( elem.evalPartialDerivativeCached( withRespectTo , implicitSpace , cache ).negate() );
+		final SCacheKey<R,S> key = new SCacheKey<R,S>( this , implicitSpace , withRespectTo );
+		final R iret = cache.get( key );
+		if( iret != null )
+		{
+			return( iret );
+		}
+		final R ret = elem.evalPartialDerivativeCached( withRespectTo , implicitSpace , cache ).negate();
+		cache.put(key, ret);
+		return( ret );
 	}
 	
 	@Override

@@ -26,6 +26,7 @@
 
 package simplealgebra.symbolic;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 
 import simplealgebra.Elem;
@@ -53,6 +54,11 @@ public class SCacheKey<R extends Elem<R,?>, S extends ElemFactory<R,S>> {
 	 */
 	protected HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace;
 	
+	/**
+	 * The set of partial derivatives that were used in the eval.
+	 */
+	protected ArrayList<? extends Elem<?,?>> withRespectTo;
+	
 	
 	/**
 	 * Constructs the cache key.
@@ -65,13 +71,31 @@ public class SCacheKey<R extends Elem<R,?>, S extends ElemFactory<R,S>> {
 	{
 		elem = _elem;
 		implicitSpace = _implicitSpace;
+		withRespectTo = null;
+	}
+	
+	
+	/**
+	 * Constructs the cache key.
+	 * 
+	 * @param _elem The evaluated node.
+	 * @param _implicitSpace The implicit space for the evaluation of the node.
+	 */
+	public SCacheKey( SymbolicElem<R,S> _elem , 
+			HashMap<? extends Elem<?,?>,? extends Elem<?,?>> _implicitSpace ,
+			ArrayList<? extends Elem<?,?>> _withRespectTo )
+	{
+		elem = _elem;
+		implicitSpace = _implicitSpace;
+		withRespectTo = _withRespectTo;
 	}
 	
 	
 	@Override
 	public int hashCode()
 	{
-		return( implicitSpace != null ? elem.hashCode() + implicitSpace.hashCode() : elem.hashCode() );
+		return( ( implicitSpace != null ? implicitSpace.hashCode() : 0 ) +
+				( withRespectTo != null ? withRespectTo.hashCode() : 0 ) + elem.hashCode() );
 	}
 	
 	
@@ -81,9 +105,9 @@ public class SCacheKey<R extends Elem<R,?>, S extends ElemFactory<R,S>> {
 		if( in instanceof SCacheKey )
 		{
 			SCacheKey<R,S> iin = (SCacheKey<R,S>) in;
-			return( implicitSpace != null ? 
-					( elem.equals( iin.elem ) ) && ( implicitSpace.equals( iin.implicitSpace ) ) :
-						elem.equals( iin.elem ) );
+			return( ( implicitSpace != null ? ( implicitSpace.equals( iin.implicitSpace ) ) : ( iin.implicitSpace == null ) ) &&
+					( withRespectTo != null ? ( withRespectTo.equals( iin.withRespectTo ) ) : ( iin.withRespectTo == null ) ) && 
+					( elem.equals( iin.elem ) ) );
 		}
 		
 		return( false );

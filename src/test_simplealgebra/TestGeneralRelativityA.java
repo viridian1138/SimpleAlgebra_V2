@@ -48,6 +48,7 @@ import simplealgebra.NotInvertibleException;
 import simplealgebra.NumDimensions;
 import simplealgebra.WriteBigIntegerCache;
 import simplealgebra.WriteElemCache;
+import simplealgebra.WriteElemCache.IntVal;
 import simplealgebra.algo.*;
 import simplealgebra.ddx.DirectionalDerivative;
 import simplealgebra.ddx.DirectionalDerivativePartialFactory;
@@ -170,6 +171,14 @@ public class TestGeneralRelativityA extends TestCase {
 				ab.add( BigInteger.valueOf( acnt % TestDimensionFour.FOUR ) );
 				ret.setVal( ab , dd );
 			}
+			else
+			{
+				final DoubleElem dd = new DoubleElem( 1E-6 * rand.nextDouble() );
+				final ArrayList<BigInteger> ab = new ArrayList<BigInteger>();
+				ab.add( BigInteger.valueOf( acnt / TestDimensionFour.FOUR ) );
+				ab.add( BigInteger.valueOf( acnt % TestDimensionFour.FOUR ) );
+				ret.setVal( ab , dd );
+			}
 		}
 		return( ret );
 	}
@@ -195,6 +204,14 @@ public class TestGeneralRelativityA extends TestCase {
 			{
 				final DoubleElem dd = acnt == 0 ? new DoubleElem( - CV * CV * ( 1.0 + ( 0.001 * rand.nextDouble() ) ) )
 					: new DoubleElem( 1.0 + ( 0.001 * rand.nextDouble() ) );
+				final ArrayList<BigInteger> ab = new ArrayList<BigInteger>();
+				ab.add( BigInteger.valueOf( acnt / TestDimensionFour.FOUR ) );
+				ab.add( BigInteger.valueOf( acnt % TestDimensionFour.FOUR ) );
+				ret.setVal( ab , dd );
+			}
+			else
+			{
+				final DoubleElem dd = new DoubleElem( 1E-6 * rand.nextDouble() );
 				final ArrayList<BigInteger> ab = new ArrayList<BigInteger>();
 				ab.add( BigInteger.valueOf( acnt / TestDimensionFour.FOUR ) );
 				ab.add( BigInteger.valueOf( acnt % TestDimensionFour.FOUR ) );
@@ -977,6 +994,31 @@ private boolean calcEq( EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> 
 	
 	return( true );
 }
+
+
+
+private static class SymbolicConstCache
+{
+	
+	protected static HashMap<Double,SymbolicConst> map = new HashMap<Double,SymbolicConst>();
+	
+	public static SymbolicConst get(  DoubleElem in , DoubleElemFactory _fac )
+	{
+		SymbolicConst cnst = map.get( in.getVal() );
+		if( cnst == null )
+		{
+			cnst = new SymbolicConst( in , _fac );
+			map.put( in.getVal() , cnst );
+		}
+		return( cnst );
+	}
+	
+	public static void clearCache()
+	{
+		map.clear();
+	}
+	
+}
 	
 
 
@@ -1043,7 +1085,7 @@ private static class DDirec extends DirectionalDerivativePartialFactory<
 				final SymbolicElem<
 				SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
 				SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>
-					cmul = ( new StelemReduction3L( new StelemReduction2L( new SymbolicConst( 
+					cmul = ( new StelemReduction3L( new StelemReduction2L( SymbolicConstCache.get( 
 							cinv , de2 ) , seA ) , se2A )
 							);
 				ret = cmul.mult( ret );
@@ -1612,7 +1654,16 @@ private static class CNelem extends Nelem<SymbolicElem<DoubleElem,DoubleElemFact
 	@Override
 	public SymbolicElem<DoubleElem,DoubleElemFactory> evalPartialDerivativeCached(ArrayList<? extends Elem<?, ?>> withRespectTo, HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace,
 			HashMap<SCacheKey<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElem<DoubleElem, DoubleElemFactory>> cache ) throws MultiplicativeDistributionRequiredException, NotInvertibleException {
-		return( evalPartialDerivative( withRespectTo , implicitSpace ) );
+		final SCacheKey<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>> key =
+				new SCacheKey<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>( this , implicitSpace , withRespectTo );
+		final SymbolicElem<DoubleElem, DoubleElemFactory> iret = cache.get( key );
+		if( iret != null )
+		{
+			return( iret );
+		}
+		final SymbolicElem<DoubleElem, DoubleElemFactory> ret = evalPartialDerivative( withRespectTo , implicitSpace );
+		cache.put(key, ret);
+		return( ret );
 	}
 	
 
@@ -2154,9 +2205,9 @@ protected void applyDerivativeAction1(
 	}
 	
 	final CoeffNode coeffNodeOutM1 = new CoeffNode(  coeffNodeIn.getNumer().negate() , 
-			coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( genFromConstDbl( 2.0 ) ), hh.getFac() ) ) );
+			coeffNodeIn.getDenom().mult( SymbolicConstCache.get( hh.mult( genFromConstDbl( 2.0 ) ), hh.getFac() ) ) );
 	final CoeffNode coeffNodeOutP1 = new CoeffNode( coeffNodeIn.getNumer() , 
-			coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( genFromConstDbl( 2.0 ) ), hh.getFac() ) ) );
+			coeffNodeIn.getDenom().mult( SymbolicConstCache.get( hh.mult( genFromConstDbl( 2.0 ) ), hh.getFac() ) ) );
 	
 	applyAdd( implicitSpaceOutM1 , coeffNodeOutM1 , implicitSpacesOut );
 	applyAdd( implicitSpaceOutP1 , coeffNodeOutP1 , implicitSpacesOut );
@@ -2203,11 +2254,11 @@ protected void applyDerivativeAction2(
 	}
 	
 	final CoeffNode coeffNodeOutM2 = new CoeffNode(  coeffNodeIn.getNumer() , 
-			coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( hh ).mult( genFromConstDbl( 4.0 ) ) , hh.getFac() ) ) );
+			coeffNodeIn.getDenom().mult( SymbolicConstCache.get( hh.mult( hh ).mult( genFromConstDbl( 4.0 ) ) , hh.getFac() ) ) );
 	final CoeffNode coeffNodeOut = new CoeffNode(  coeffNodeIn.getNumer().negate() , 
-			coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( hh ).mult( genFromConstDbl( 2.0 ) ) , hh.getFac() ) ) );
+			coeffNodeIn.getDenom().mult( SymbolicConstCache.get( hh.mult( hh ).mult( genFromConstDbl( 2.0 ) ) , hh.getFac() ) ) );
 	final CoeffNode coeffNodeOutP2 = new CoeffNode( coeffNodeIn.getNumer() , 
-			coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( hh ).mult( genFromConstDbl( 4.0 ) ) , hh.getFac() ) ) );
+			coeffNodeIn.getDenom().mult( SymbolicConstCache.get( hh.mult( hh ).mult( genFromConstDbl( 4.0 ) ) , hh.getFac() ) ) );
 	
 	applyAdd( implicitSpaceOutM2 , coeffNodeOutM2 , implicitSpacesOut );
 	applyAdd( implicitSpace , coeffNodeOut , implicitSpacesOut );
@@ -2264,14 +2315,14 @@ protected void applyDerivativeAction3(
 		}
 	}
 	
-	final CoeffNode coeffNodeOutM1 = new CoeffNode(  coeffNodeIn.getNumer().mult( new SymbolicConst( genFromConstDbl( 2.0 ) , hh.getFac() ) ) , 
-			coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( hh.mult( hh.mult( genFromConstDbl( 2.0 ) ) ) ), hh.getFac() ) ) );
-	final CoeffNode coeffNodeOutP1 = new CoeffNode( coeffNodeIn.getNumer().negate().mult( new SymbolicConst( genFromConstDbl( 2.0 ) , hh.getFac() ) ) , 
-			coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( hh.mult( hh.mult( genFromConstDbl( 2.0 ) ) ) ), hh.getFac() ) ) );
+	final CoeffNode coeffNodeOutM1 = new CoeffNode(  coeffNodeIn.getNumer().mult( SymbolicConstCache.get( genFromConstDbl( 2.0 ) , hh.getFac() ) ) , 
+			coeffNodeIn.getDenom().mult( SymbolicConstCache.get( hh.mult( hh.mult( hh.mult( genFromConstDbl( 2.0 ) ) ) ), hh.getFac() ) ) );
+	final CoeffNode coeffNodeOutP1 = new CoeffNode( coeffNodeIn.getNumer().negate().mult( SymbolicConstCache.get( genFromConstDbl( 2.0 ) , hh.getFac() ) ) , 
+			coeffNodeIn.getDenom().mult( SymbolicConstCache.get( hh.mult( hh.mult( hh.mult( genFromConstDbl( 2.0 ) ) ) ), hh.getFac() ) ) );
 	final CoeffNode coeffNodeOutM2 = new CoeffNode(  coeffNodeIn.getNumer().negate() , 
-			coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( hh.mult( hh.mult( genFromConstDbl( 2.0 ) ) ) ), hh.getFac() ) ) );
+			coeffNodeIn.getDenom().mult( SymbolicConstCache.get( hh.mult( hh.mult( hh.mult( genFromConstDbl( 2.0 ) ) ) ), hh.getFac() ) ) );
 	final CoeffNode coeffNodeOutP2 = new CoeffNode( coeffNodeIn.getNumer() , 
-			coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( hh.mult( hh.mult( genFromConstDbl( 2.0 ) ) ) ), hh.getFac() ) ) );
+			coeffNodeIn.getDenom().mult( SymbolicConstCache.get( hh.mult( hh.mult( hh.mult( genFromConstDbl( 2.0 ) ) ) ), hh.getFac() ) ) );
 	
 	applyAdd( implicitSpaceOutM1 , coeffNodeOutM1 , implicitSpacesOut );
 	applyAdd( implicitSpaceOutP1 , coeffNodeOutP1 , implicitSpacesOut );
@@ -2335,7 +2386,8 @@ protected void applyAdd(
 	 * @author thorngreen
 	 *
 	 */
-	protected static class StelemDescent extends DescentAlgorithmMultiElemRemapTensorDiag<String,DoubleElem,DoubleElemFactory>
+	protected static class StelemDescent extends DescentAlgorithmMultiElemRemapTensor<String,DoubleElem,DoubleElemFactory>
+	// protected static class StelemDescent extends DescentAlgorithmMultiElemRemapTensorDiag<String,DoubleElem,DoubleElemFactory> !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	{
 
 		
@@ -2682,7 +2734,19 @@ protected static class VEvalElem extends SymbolicElem<EinsteinTensorElem<String,
 			HashMap<SCacheKey<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>, EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>> cache)
 			throws NotInvertibleException,
 			MultiplicativeDistributionRequiredException {
-		return( evalPartialDerivative( withRespectTo , implicitSpace ) );
+		
+		final SCacheKey<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>
+		key = new SCacheKey<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>( this , implicitSpace , withRespectTo );
+		final EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>
+		iret = cache.get( key );
+		if( iret != null )
+		{
+			return( iret );
+		}
+	
+		final EinsteinTensorElem<String, DoubleElem, DoubleElemFactory> ret = evalPartialDerivative( withRespectTo , implicitSpace );
+		cache.put(key, ret);
+		return( ret );
 	}
 
 	@Override
@@ -2845,6 +2909,16 @@ public SymbolicElem<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, E
 		HashMap<SCacheKey<SymbolicElem<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>>, SymbolicElem<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>> cache)
 		throws NotInvertibleException,
 		MultiplicativeDistributionRequiredException {
+	
+	final SCacheKey<SymbolicElem<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>>
+		key = new SCacheKey<SymbolicElem<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>>( this , implicitSpace , withRespectTo );
+	final SymbolicElem<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>
+	iret = cache.get( key );
+	if( iret != null )
+	{
+		return( iret );
+	}	
+	
 	EinsteinTensorElem<String,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> retA = 
 			new EinsteinTensorElem<String,SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>( sefac , dval.getContravariantIndices() , dval.getCovariantIndices() );
 	
@@ -2853,11 +2927,13 @@ public SymbolicElem<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, E
 	
 	for( final Entry<ArrayList<BigInteger>, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> ii : dval.getEntrySet() )
 	{
-		final ArrayList<BigInteger> key = ii.getKey();
-		retA.setVal( key , ii.getValue().evalPartialDerivativeCached( withRespectTo , implicitSpace , cache2 ) );
+		final ArrayList<BigInteger> keyA = ii.getKey();
+		retA.setVal( keyA , ii.getValue().evalPartialDerivativeCached( withRespectTo , implicitSpace , cache2 ) );
 	}
 	
-	return( new VEvalElem( vefac , retA ) );
+	final SymbolicElem<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>> ret = new VEvalElem( vefac , retA );
+	cache.put(key, ret);
+	return( ret );
 }
 
 @Override
@@ -3024,6 +3100,16 @@ public SymbolicElem<SymbolicElem<EinsteinTensorElem<String, DoubleElem, DoubleEl
 		HashMap<SCacheKey<SymbolicElem<SymbolicElem<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>>>, SymbolicElem<SymbolicElem<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>>> cache)
 		throws NotInvertibleException,
 		MultiplicativeDistributionRequiredException {
+	
+	final SCacheKey<SymbolicElem<SymbolicElem<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>>>
+		key = new SCacheKey<SymbolicElem<SymbolicElem<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>>>( this , implicitSpace , withRespectTo );
+	final SymbolicElem<SymbolicElem<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>>
+		iret = cache.get(key);
+	if( iret != null )
+	{
+		return( iret );
+	}
+	
 	EinsteinTensorElem<String,SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>> retA = 
 			new EinsteinTensorElem<String,SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>( sefac , dval.getContravariantIndices() , dval.getCovariantIndices() );
 
@@ -3032,11 +3118,14 @@ public SymbolicElem<SymbolicElem<EinsteinTensorElem<String, DoubleElem, DoubleEl
 	
 	for( final Entry<ArrayList<BigInteger>, SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>> ii : dval.getEntrySet() )
 	{
-		final ArrayList<BigInteger> key = ii.getKey();
-		retA.setVal( key , ii.getValue().evalPartialDerivativeCached( withRespectTo , implicitSpace , cache2 ) );
+		final ArrayList<BigInteger> keyA = ii.getKey();
+		retA.setVal( keyA , ii.getValue().evalPartialDerivativeCached( withRespectTo , implicitSpace , cache2 ) );
 	}
 
-	return( new VEvalElem2( fac.getFac() , sefac.getFac() , vefac , retA ) );
+	final SymbolicElem<SymbolicElem<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>> 
+				ret = new VEvalElem2( fac.getFac() , sefac.getFac() , vefac , retA );
+	cache.put(key, ret);
+	return( ret );
 }
 
 
@@ -3252,7 +3341,7 @@ protected static class TestMetricTensorFactory extends MetricTensorInvertingFact
 
 		for( int acnt = 0 ; acnt < 16 ; acnt++ )
 		{
-			if( ( acnt % TestDimensionFour.FOUR ) == ( acnt / TestDimensionFour.FOUR ) )
+			if( /* ( acnt % TestDimensionFour.FOUR ) == ( acnt / TestDimensionFour.FOUR ) */ true )
 			{
 				final ArrayList<BigInteger> ab = new ArrayList<BigInteger>();
 				ab.add( BigInteger.valueOf( acnt / TestDimensionFour.FOUR ) );
@@ -3861,8 +3950,6 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 		
 		StelemDescent descent = new StelemDescent( param , cache );
 		
-		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! StelemDescent should extend tensor rather than TensorDiag
-		
 		
 		
 		cache = null;
@@ -3875,10 +3962,21 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 		System.out.println( "Reached #9..." );
 		
 		
-		for( int tval = 1 ; tval < ( NUM_T_ITER - 1 ) ; tval++ )
+		try
 		{
-			performIterationT( tval , descent , implicitSpace2 );
+			for( int tval = 1 ; tval < ( NUM_T_ITER - 1 ) ; tval++ )
+			{
+				performIterationT( tval , descent , implicitSpace2 );
+			}
 		}
+		catch( DescentAlgorithmMultiElemRemapTensor.TensorDescentInverseFailedException ex )
+		{
+			final IntVal cacheVal = new IntVal();
+			final WriteEinListCache cacheA = new WriteEinListCache( cacheVal );
+			final WriteBigIntegerCache wb = new WriteBigIntegerCache( cacheVal );
+			cacheA.writeDesc( ex.getElemNum() , wb , System.out );
+		}
+		
 		
 		// System.out.println( "==============================" ); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		// System.out.println( iterArray[ NUM_T_ITER - 1 ][ HALF_X ][ HALF_Y ][ HALF_Z ] ); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
