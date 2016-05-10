@@ -191,6 +191,50 @@ public class TestStelemA extends TestCase {
 	
 	
 	/**
+	 * Cache for symbolic constants.
+	 * 
+	 * @author tgreen
+	 *
+	 */
+	private static class SymbolicConstCache
+	{
+		
+		/**
+		 * Map representing the cache.
+		 */
+		protected static HashMap<Double,SymbolicConst> map = new HashMap<Double,SymbolicConst>();
+		
+		/**
+		 * Returns a cached SymbolicConst representing a DoubleElem.
+		 * 
+		 * @param in The DoubleElem to be represented.
+		 * @param _fac The factory for DoubleElem instances.
+		 * @return The cached SymbolicConst.
+		 */
+		public static SymbolicConst get(  DoubleElem in , DoubleElemFactory _fac )
+		{
+			SymbolicConst cnst = map.get( in.getVal() );
+			if( cnst == null )
+			{
+				cnst = new SymbolicConst( in , _fac );
+				map.put( in.getVal() , cnst );
+			}
+			return( cnst );
+		}
+		
+		/**
+		 * Clears the cache.
+		 */
+		public static void clearCache()
+		{
+			map.clear();
+		}
+		
+	}
+	
+	
+	
+	/**
 	 * Node representing an ordinate of the coordinate space.
 	 * 
 	 * @author thorngreen
@@ -1127,9 +1171,9 @@ public class TestStelemA extends TestCase {
 			}
 			
 			final CoeffNode coeffNodeOutM1 = new CoeffNode(  coeffNodeIn.getNumer().negate() , 
-					coeffNodeIn.getDenom().mult( new SymbolicConst( h.mult( new DoubleElem( 2.0 ) ), h.getFac() ) ) );
+					coeffNodeIn.getDenom().mult( SymbolicConstCache.get( h.mult( new DoubleElem( 2.0 ) ), h.getFac() ) ) );
 			final CoeffNode coeffNodeOutP1 = new CoeffNode( coeffNodeIn.getNumer() , 
-					coeffNodeIn.getDenom().mult( new SymbolicConst( h.mult( new DoubleElem( 2.0 ) ), h.getFac() ) ) );
+					coeffNodeIn.getDenom().mult( SymbolicConstCache.get( h.mult( new DoubleElem( 2.0 ) ), h.getFac() ) ) );
 			
 			applyAdd( implicitSpaceOutM1 , coeffNodeOutM1 , implicitSpacesOut );
 			applyAdd( implicitSpaceOutP1 , coeffNodeOutP1 , implicitSpacesOut );
@@ -1177,11 +1221,11 @@ public class TestStelemA extends TestCase {
 			}
 			
 			final CoeffNode coeffNodeOutM1 = new CoeffNode(  coeffNodeIn.getNumer() , 
-					coeffNodeIn.getDenom().mult( new SymbolicConst( h.mult( h ) , h.getFac() ) ) );
-			final CoeffNode coeffNodeOut = new CoeffNode(  coeffNodeIn.getNumer().negate().mult( new SymbolicConst( new DoubleElem( 2.0 ) , h.getFac() ) ) , 
-					coeffNodeIn.getDenom().mult( new SymbolicConst( h.mult( h ) , h.getFac() ) ) );
+					coeffNodeIn.getDenom().mult( SymbolicConstCache.get( h.mult( h ) , h.getFac() ) ) );
+			final CoeffNode coeffNodeOut = new CoeffNode(  coeffNodeIn.getNumer().negate().mult( SymbolicConstCache.get( new DoubleElem( 2.0 ) , h.getFac() ) ) , 
+					coeffNodeIn.getDenom().mult( SymbolicConstCache.get( h.mult( h ) , h.getFac() ) ) );
 			final CoeffNode coeffNodeOutP1 = new CoeffNode( coeffNodeIn.getNumer() , 
-					coeffNodeIn.getDenom().mult( new SymbolicConst( h.mult( h ) , h.getFac() ) ) );
+					coeffNodeIn.getDenom().mult( SymbolicConstCache.get( h.mult( h ) , h.getFac() ) ) );
 			
 			applyAdd( implicitSpaceOutM1 , coeffNodeOutM1 , implicitSpacesOut );
 			applyAdd( implicitSpace , coeffNodeOut , implicitSpacesOut );
@@ -1238,14 +1282,14 @@ public class TestStelemA extends TestCase {
 				}
 			}
 			
-			final CoeffNode coeffNodeOutM1 = new CoeffNode(  coeffNodeIn.getNumer().mult( new SymbolicConst( new DoubleElem( 2.0 ) , h.getFac() ) ) , 
-					coeffNodeIn.getDenom().mult( new SymbolicConst( h.mult( h.mult( h.mult( new DoubleElem( 2.0 ) ) ) ), h.getFac() ) ) );
-			final CoeffNode coeffNodeOutP1 = new CoeffNode( coeffNodeIn.getNumer().negate().mult( new SymbolicConst( new DoubleElem( 2.0 ) , h.getFac() ) ) , 
-					coeffNodeIn.getDenom().mult( new SymbolicConst( h.mult( h.mult( h.mult( new DoubleElem( 2.0 ) ) ) ), h.getFac() ) ) );
+			final CoeffNode coeffNodeOutM1 = new CoeffNode(  coeffNodeIn.getNumer().mult( SymbolicConstCache.get( new DoubleElem( 2.0 ) , h.getFac() ) ) , 
+					coeffNodeIn.getDenom().mult( SymbolicConstCache.get( h.mult( h.mult( h.mult( new DoubleElem( 2.0 ) ) ) ), h.getFac() ) ) );
+			final CoeffNode coeffNodeOutP1 = new CoeffNode( coeffNodeIn.getNumer().negate().mult( SymbolicConstCache.get( new DoubleElem( 2.0 ) , h.getFac() ) ) , 
+					coeffNodeIn.getDenom().mult( SymbolicConstCache.get( h.mult( h.mult( h.mult( new DoubleElem( 2.0 ) ) ) ), h.getFac() ) ) );
 			final CoeffNode coeffNodeOutM2 = new CoeffNode(  coeffNodeIn.getNumer().negate() , 
-					coeffNodeIn.getDenom().mult( new SymbolicConst( h.mult( h.mult( h.mult( new DoubleElem( 2.0 ) ) ) ), h.getFac() ) ) );
+					coeffNodeIn.getDenom().mult( SymbolicConstCache.get( h.mult( h.mult( h.mult( new DoubleElem( 2.0 ) ) ) ), h.getFac() ) ) );
 			final CoeffNode coeffNodeOutP2 = new CoeffNode( coeffNodeIn.getNumer() , 
-					coeffNodeIn.getDenom().mult( new SymbolicConst( h.mult( h.mult( h.mult( new DoubleElem( 2.0 ) ) ) ), h.getFac() ) ) );
+					coeffNodeIn.getDenom().mult( SymbolicConstCache.get( h.mult( h.mult( h.mult( new DoubleElem( 2.0 ) ) ) ), h.getFac() ) ) );
 			
 			applyAdd( implicitSpaceOutM1 , coeffNodeOutM1 , implicitSpacesOut );
 			applyAdd( implicitSpaceOutP1 , coeffNodeOutP1 , implicitSpacesOut );
@@ -1510,7 +1554,7 @@ public class TestStelemA extends TestCase {
 		SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
 			SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>> m1
 			= m1X.add( m1T.mult( 
-					( new StelemReduction3L( new StelemReduction2L( new SymbolicConst( c.mult( c ) , de ) , se ) , se2 )
+					( new StelemReduction3L( new StelemReduction2L( SymbolicConstCache.get( c.mult( c ) , de ) , se ) , se2 )
 							).invertLeft() ).negate() );
 		
 		

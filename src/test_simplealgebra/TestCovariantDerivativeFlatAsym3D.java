@@ -95,6 +95,49 @@ public class TestCovariantDerivativeFlatAsym3D extends TestCase {
 	
 	
 	/**
+	 * Cache for symbolic constants.
+	 * 
+	 * @author tgreen
+	 *
+	 */
+	private static class SymbolicConstCache
+	{
+		
+		/**
+		 * Map representing the cache.
+		 */
+		protected static HashMap<Double,SymbolicConst> map = new HashMap<Double,SymbolicConst>();
+		
+		/**
+		 * Returns a cached SymbolicConst representing a DoubleElem.
+		 * 
+		 * @param in The DoubleElem to be represented.
+		 * @param _fac The factory for DoubleElem instances.
+		 * @return The cached SymbolicConst.
+		 */
+		public static SymbolicConst get(  DoubleElem in , DoubleElemFactory _fac )
+		{
+			SymbolicConst cnst = map.get( in.getVal() );
+			if( cnst == null )
+			{
+				cnst = new SymbolicConst( in , _fac );
+				map.put( in.getVal() , cnst );
+			}
+			return( cnst );
+		}
+		
+		/**
+		 * Clears the cache.
+		 */
+		public static void clearCache()
+		{
+			map.clear();
+		}
+		
+	}
+	
+	
+	/**
 	 * Node representing an ordinate of the coordinate space.
 	 * 
 	 * @author thorngreen
@@ -706,7 +749,7 @@ public class TestCovariantDerivativeFlatAsym3D extends TestCase {
 				final ArrayList<BigInteger> ab = new ArrayList<BigInteger>();
 				ab.add( BigInteger.valueOf( acnt ) );
 				ab.add( BigInteger.valueOf( acnt ) );
-				SymbolicElem<DoubleElem,DoubleElemFactory> as = new SymbolicConst( new DoubleElem( 1.0 ) , de );
+				SymbolicElem<DoubleElem,DoubleElemFactory> as = SymbolicConstCache.get( new DoubleElem( 1.0 ) , de );
 				g0.setVal( ab , as );
 			}
 			

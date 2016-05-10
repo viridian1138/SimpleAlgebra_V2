@@ -809,6 +809,53 @@ public class TestSchrodingerSpt extends TestCase {
 	
 	
 	/**
+	 * Cache for symbolic constants.
+	 * 
+	 * @author tgreen
+	 *
+	 */
+	private static class SymbolicConstCache
+	{
+		
+		/**
+		 * Map representing the cache.
+		 */
+		protected static HashMap<ArrayList<Double>,SymbolicConst> map = new HashMap<ArrayList<Double>,SymbolicConst>();
+		
+		/**
+		 * Returns a cached SymbolicConst representing a ComplexElem.
+		 * 
+		 * @param in The ComplexElem to be represented.
+		 * @param _fac The factory for ComplexElem instances.
+		 * @return The cached SymbolicConst.
+		 */
+		public static SymbolicConst get(  ComplexElem<DoubleElem,DoubleElemFactory> in , ComplexElemFactory<DoubleElem,DoubleElemFactory> _fac )
+		{
+			final ArrayList<Double> key = new ArrayList<Double>();
+			key.add( in.getRe().getVal() );
+			key.add( in.getIm().getVal() );
+			SymbolicConst cnst = map.get( key );
+			if( cnst == null )
+			{
+				cnst = new SymbolicConst( in , _fac );
+				map.put( key , cnst );
+			}
+			return( cnst );
+		}
+		
+		/**
+		 * Clears the cache.
+		 */
+		public static void clearCache()
+		{
+			map.clear();
+		}
+		
+	}
+	
+	
+	
+	/**
 	 * Defines a directional derivative for the test.
 	 * 
 	 * @author thorngreen
@@ -870,7 +917,7 @@ public class TestSchrodingerSpt extends TestCase {
 					final SymbolicElem<
 					SymbolicElem<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>,
 					SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>>
-						cmul = ( new StelemReduction3L( new StelemReduction2L( new SymbolicConst( 
+						cmul = ( new StelemReduction3L( new StelemReduction2L( SymbolicConstCache.get( 
 								cinv , de2 ) , seA ) , se2A )
 								);
 					ret = cmul.mult( ret );
@@ -1869,9 +1916,9 @@ public class TestSchrodingerSpt extends TestCase {
 			}
 			
 			final CoeffNode coeffNodeOutM1 = new CoeffNode(  coeffNodeIn.getNumer().negate() , 
-					coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( genFromConst( 2.0 ) ), hh.getFac() ) ) );
+					coeffNodeIn.getDenom().mult( SymbolicConstCache.get( hh.mult( genFromConst( 2.0 ) ), hh.getFac() ) ) );
 			final CoeffNode coeffNodeOutP1 = new CoeffNode( coeffNodeIn.getNumer() , 
-					coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( genFromConst( 2.0 ) ), hh.getFac() ) ) );
+					coeffNodeIn.getDenom().mult( SymbolicConstCache.get( hh.mult( genFromConst( 2.0 ) ), hh.getFac() ) ) );
 			
 			applyAdd( implicitSpaceOutM1 , coeffNodeOutM1 , implicitSpacesOut );
 			applyAdd( implicitSpaceOutP1 , coeffNodeOutP1 , implicitSpacesOut );
@@ -1922,11 +1969,11 @@ public class TestSchrodingerSpt extends TestCase {
 			}
 			
 			final CoeffNode coeffNodeOutM1 = new CoeffNode(  coeffNodeIn.getNumer() , 
-					coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( hh ) , hh.getFac() ) ) );
-			final CoeffNode coeffNodeOut = new CoeffNode(  coeffNodeIn.getNumer().negate().mult( new SymbolicConst( genFromConst( 2.0 ) , hh.getFac() ) ) , 
-					coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( hh ) , hh.getFac() ) ) );
+					coeffNodeIn.getDenom().mult( SymbolicConstCache.get( hh.mult( hh ) , hh.getFac() ) ) );
+			final CoeffNode coeffNodeOut = new CoeffNode(  coeffNodeIn.getNumer().negate().mult( SymbolicConstCache.get( genFromConst( 2.0 ) , hh.getFac() ) ) , 
+					coeffNodeIn.getDenom().mult( SymbolicConstCache.get( hh.mult( hh ) , hh.getFac() ) ) );
 			final CoeffNode coeffNodeOutP1 = new CoeffNode( coeffNodeIn.getNumer() , 
-					coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( hh ) , hh.getFac() ) ) );
+					coeffNodeIn.getDenom().mult( SymbolicConstCache.get( hh.mult( hh ) , hh.getFac() ) ) );
 			
 			applyAdd( implicitSpaceOutM1 , coeffNodeOutM1 , implicitSpacesOut );
 			applyAdd( implicitSpace , coeffNodeOut , implicitSpacesOut );
@@ -1985,14 +2032,14 @@ public class TestSchrodingerSpt extends TestCase {
 				}
 			}
 			
-			final CoeffNode coeffNodeOutM1 = new CoeffNode(  coeffNodeIn.getNumer().mult( new SymbolicConst( genFromConst( 2.0 ) , hh.getFac() ) ) , 
-					coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( hh.mult( hh.mult( genFromConst( 2.0 ) ) ) ), hh.getFac() ) ) );
-			final CoeffNode coeffNodeOutP1 = new CoeffNode( coeffNodeIn.getNumer().negate().mult( new SymbolicConst( genFromConst( 2.0 ) , hh.getFac() ) ) , 
-					coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( hh.mult( hh.mult( genFromConst( 2.0 ) ) ) ), hh.getFac() ) ) );
+			final CoeffNode coeffNodeOutM1 = new CoeffNode(  coeffNodeIn.getNumer().mult( SymbolicConstCache.get( genFromConst( 2.0 ) , hh.getFac() ) ) , 
+					coeffNodeIn.getDenom().mult( SymbolicConstCache.get( hh.mult( hh.mult( hh.mult( genFromConst( 2.0 ) ) ) ), hh.getFac() ) ) );
+			final CoeffNode coeffNodeOutP1 = new CoeffNode( coeffNodeIn.getNumer().negate().mult( SymbolicConstCache.get( genFromConst( 2.0 ) , hh.getFac() ) ) , 
+					coeffNodeIn.getDenom().mult( SymbolicConstCache.get( hh.mult( hh.mult( hh.mult( genFromConst( 2.0 ) ) ) ), hh.getFac() ) ) );
 			final CoeffNode coeffNodeOutM2 = new CoeffNode(  coeffNodeIn.getNumer().negate() , 
-					coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( hh.mult( hh.mult( genFromConst( 2.0 ) ) ) ), hh.getFac() ) ) );
+					coeffNodeIn.getDenom().mult( SymbolicConstCache.get( hh.mult( hh.mult( hh.mult( genFromConst( 2.0 ) ) ) ), hh.getFac() ) ) );
 			final CoeffNode coeffNodeOutP2 = new CoeffNode( coeffNodeIn.getNumer() , 
-					coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( hh.mult( hh.mult( genFromConst( 2.0 ) ) ) ), hh.getFac() ) ) );
+					coeffNodeIn.getDenom().mult( SymbolicConstCache.get( hh.mult( hh.mult( hh.mult( genFromConst( 2.0 ) ) ) ), hh.getFac() ) ) );
 			
 			applyAdd( implicitSpaceOutM1 , coeffNodeOutM1 , implicitSpacesOut );
 			applyAdd( implicitSpaceOutP1 , coeffNodeOutP1 , implicitSpacesOut );
@@ -2644,7 +2691,7 @@ public class TestSchrodingerSpt extends TestCase {
 		final SymbolicElem<SymbolicElem<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>,
 			SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>> gtt0
 			= m0T.mult( 
-					( new StelemReduction3L( new StelemReduction2L( new SymbolicConst( II.mult( HBAR ) , de2 ) , se ) , se2 )
+					( new StelemReduction3L( new StelemReduction2L( SymbolicConstCache.get( II.mult( HBAR ) , de2 ) , se ) , se2 )
 							) ).negate();
 		
 		
@@ -2668,7 +2715,7 @@ public class TestSchrodingerSpt extends TestCase {
 		final SymbolicElem<SymbolicElem<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>,
 			SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>> gxxMult
 			=  
-				( new StelemReduction3L( new StelemReduction2L( new SymbolicConst( HBAR.mult( HBAR 
+				( new StelemReduction3L( new StelemReduction2L( SymbolicConstCache.get( HBAR.mult( HBAR 
 							).mult( ( MM.mult( genFromConst( 2.0 ) ) ).invertLeft() ).negate() , de2 ) , se ) , se2 )
 						);
 		

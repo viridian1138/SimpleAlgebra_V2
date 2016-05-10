@@ -997,11 +997,27 @@ private boolean calcEq( EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> 
 
 
 
+/**
+ * Cache for symbolic constants.
+ * 
+ * @author tgreen
+ *
+ */
 private static class SymbolicConstCache
 {
 	
+	/**
+	 * Map representing the cache.
+	 */
 	protected static HashMap<Double,SymbolicConst> map = new HashMap<Double,SymbolicConst>();
 	
+	/**
+	 * Returns a cached SymbolicConst representing a DoubleElem.
+	 * 
+	 * @param in The DoubleElem to be represented.
+	 * @param _fac The factory for DoubleElem instances.
+	 * @return The cached SymbolicConst.
+	 */
 	public static SymbolicConst get(  DoubleElem in , DoubleElemFactory _fac )
 	{
 		SymbolicConst cnst = map.get( in.getVal() );
@@ -1013,6 +1029,9 @@ private static class SymbolicConstCache
 		return( cnst );
 	}
 	
+	/**
+	 * Clears the cache.
+	 */
 	public static void clearCache()
 	{
 		map.clear();

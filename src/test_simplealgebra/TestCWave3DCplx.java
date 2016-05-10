@@ -728,6 +728,53 @@ public class TestCWave3DCplx extends TestCase {
 	
 	
 	/**
+	 * Cache for symbolic constants.
+	 * 
+	 * @author tgreen
+	 *
+	 */
+	private static class SymbolicConstCache
+	{
+		
+		/**
+		 * Map representing the cache.
+		 */
+		protected static HashMap<ArrayList<Double>,SymbolicConst> map = new HashMap<ArrayList<Double>,SymbolicConst>();
+		
+		/**
+		 * Returns a cached SymbolicConst representing a ComplexElem.
+		 * 
+		 * @param in The ComplexElem to be represented.
+		 * @param _fac The factory for ComplexElem instances.
+		 * @return The cached SymbolicConst.
+		 */
+		public static SymbolicConst get(  ComplexElem<DoubleElem,DoubleElemFactory> in , ComplexElemFactory<DoubleElem,DoubleElemFactory> _fac )
+		{
+			final ArrayList<Double> key = new ArrayList<Double>();
+			key.add( in.getRe().getVal() );
+			key.add( in.getIm().getVal() );
+			SymbolicConst cnst = map.get( key );
+			if( cnst == null )
+			{
+				cnst = new SymbolicConst( in , _fac );
+				map.put( key , cnst );
+			}
+			return( cnst );
+		}
+		
+		/**
+		 * Clears the cache.
+		 */
+		public static void clearCache()
+		{
+			map.clear();
+		}
+		
+	}
+	
+	
+	
+	/**
 	 * Defines a directional derivative for the test.
 	 * 
 	 * @author thorngreen
@@ -1754,9 +1801,9 @@ public class TestCWave3DCplx extends TestCase {
 			}
 			
 			final CoeffNode coeffNodeOutM1 = new CoeffNode(  coeffNodeIn.getNumer().negate() , 
-					coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( TWO ), hh.getFac() ) ) );
+					coeffNodeIn.getDenom().mult( SymbolicConstCache.get( hh.mult( TWO ), hh.getFac() ) ) );
 			final CoeffNode coeffNodeOutP1 = new CoeffNode( coeffNodeIn.getNumer() , 
-					coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( TWO ), hh.getFac() ) ) );
+					coeffNodeIn.getDenom().mult( SymbolicConstCache.get( hh.mult( TWO ), hh.getFac() ) ) );
 			
 			applyAdd( implicitSpaceOutM1 , coeffNodeOutM1 , implicitSpacesOut );
 			applyAdd( implicitSpaceOutP1 , coeffNodeOutP1 , implicitSpacesOut );
@@ -1804,11 +1851,11 @@ public class TestCWave3DCplx extends TestCase {
 			}
 			
 			final CoeffNode coeffNodeOutM1 = new CoeffNode(  coeffNodeIn.getNumer() , 
-					coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( hh ) , hh.getFac() ) ) );
-			final CoeffNode coeffNodeOut = new CoeffNode(  coeffNodeIn.getNumer().negate().mult( new SymbolicConst( TWO , hh.getFac() ) ) , 
-					coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( hh ) , hh.getFac() ) ) );
+					coeffNodeIn.getDenom().mult( SymbolicConstCache.get( hh.mult( hh ) , hh.getFac() ) ) );
+			final CoeffNode coeffNodeOut = new CoeffNode(  coeffNodeIn.getNumer().negate().mult( SymbolicConstCache.get( TWO , hh.getFac() ) ) , 
+					coeffNodeIn.getDenom().mult( SymbolicConstCache.get( hh.mult( hh ) , hh.getFac() ) ) );
 			final CoeffNode coeffNodeOutP1 = new CoeffNode( coeffNodeIn.getNumer() , 
-					coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( hh ) , hh.getFac() ) ) );
+					coeffNodeIn.getDenom().mult( SymbolicConstCache.get( hh.mult( hh ) , hh.getFac() ) ) );
 			
 			applyAdd( implicitSpaceOutM1 , coeffNodeOutM1 , implicitSpacesOut );
 			applyAdd( implicitSpace , coeffNodeOut , implicitSpacesOut );
@@ -1863,14 +1910,14 @@ public class TestCWave3DCplx extends TestCase {
 				}
 			}
 			
-			final CoeffNode coeffNodeOutM1 = new CoeffNode(  coeffNodeIn.getNumer().mult( new SymbolicConst( TWO , hh.getFac() ) ) , 
-					coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( hh.mult( hh.mult( TWO ) ) ), hh.getFac() ) ) );
-			final CoeffNode coeffNodeOutP1 = new CoeffNode( coeffNodeIn.getNumer().negate().mult( new SymbolicConst( TWO , hh.getFac() ) ) , 
-					coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( hh.mult( hh.mult( TWO ) ) ), hh.getFac() ) ) );
+			final CoeffNode coeffNodeOutM1 = new CoeffNode(  coeffNodeIn.getNumer().mult( SymbolicConstCache.get( TWO , hh.getFac() ) ) , 
+					coeffNodeIn.getDenom().mult( SymbolicConstCache.get( hh.mult( hh.mult( hh.mult( TWO ) ) ), hh.getFac() ) ) );
+			final CoeffNode coeffNodeOutP1 = new CoeffNode( coeffNodeIn.getNumer().negate().mult( SymbolicConstCache.get( TWO , hh.getFac() ) ) , 
+					coeffNodeIn.getDenom().mult( SymbolicConstCache.get( hh.mult( hh.mult( hh.mult( TWO ) ) ), hh.getFac() ) ) );
 			final CoeffNode coeffNodeOutM2 = new CoeffNode(  coeffNodeIn.getNumer().negate() , 
-					coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( hh.mult( hh.mult( TWO ) ) ), hh.getFac() ) ) );
+					coeffNodeIn.getDenom().mult( SymbolicConstCache.get( hh.mult( hh.mult( hh.mult( TWO ) ) ), hh.getFac() ) ) );
 			final CoeffNode coeffNodeOutP2 = new CoeffNode( coeffNodeIn.getNumer() , 
-					coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( hh.mult( hh.mult( TWO ) ) ), hh.getFac() ) ) );
+					coeffNodeIn.getDenom().mult( SymbolicConstCache.get( hh.mult( hh.mult( hh.mult( TWO ) ) ), hh.getFac() ) ) );
 			
 			applyAdd( implicitSpaceOutM1 , coeffNodeOutM1 , implicitSpacesOut );
 			applyAdd( implicitSpaceOutP1 , coeffNodeOutP1 , implicitSpacesOut );

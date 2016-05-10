@@ -201,7 +201,7 @@ public class TestDiracA extends TestCase {
 		
 		final SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>> gxxMult
 		=  
-			( new StelemReduction3L( new StelemReduction2L( new SymbolicConst( 
+			( new StelemReduction3L( new StelemReduction2L( SymbolicConstCache.get( 
 					genFromConstDbl( 1.0 ) , de ) , seA ) , se2A )
 					);
 		
@@ -268,7 +268,7 @@ public class TestDiracA extends TestCase {
 		
 		final SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>> gxxMult
 		=  
-			( new StelemReduction3L( new StelemReduction2L( new SymbolicConst( 
+			( new StelemReduction3L( new StelemReduction2L( SymbolicConstCache.get( 
 					genFromConstDbl( 1.0 ) , de ) , seA ) , se2A )
 					);
 		
@@ -1162,6 +1162,50 @@ private boolean calcEq( GeometricAlgebraMultivectorElem<TestDimensionFour,Spacet
 	
 	return( true );
 }
+
+
+
+/**
+ * Cache for symbolic constants.
+ * 
+ * @author tgreen
+ *
+ */
+private static class SymbolicConstCache
+{
+	
+	/**
+	 * Map representing the cache.
+	 */
+	protected static HashMap<Double,SymbolicConst> map = new HashMap<Double,SymbolicConst>();
+	
+	/**
+	 * Returns a cached SymbolicConst representing a DoubleElem.
+	 * 
+	 * @param in The DoubleElem to be represented.
+	 * @param _fac The factory for DoubleElem instances.
+	 * @return The cached SymbolicConst.
+	 */
+	public static SymbolicConst get(  DoubleElem in , DoubleElemFactory _fac )
+	{
+		SymbolicConst cnst = map.get( in.getVal() );
+		if( cnst == null )
+		{
+			cnst = new SymbolicConst( in , _fac );
+			map.put( in.getVal() , cnst );
+		}
+		return( cnst );
+	}
+	
+	/**
+	 * Clears the cache.
+	 */
+	public static void clearCache()
+	{
+		map.clear();
+	}
+	
+}
 	
 
 
@@ -1229,7 +1273,7 @@ private static class DDirec extends DirectionalDerivativePartialFactory<
 				final SymbolicElem<
 				SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,
 				SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>
-					cmul = ( new StelemReduction3L( new StelemReduction2L( new SymbolicConst( 
+					cmul = ( new StelemReduction3L( new StelemReduction2L( SymbolicConstCache.get( 
 							cinv , de2 ) , seA ) , se2A )
 							);
 				ret = cmul.mult( ret );
@@ -2323,9 +2367,9 @@ protected void applyDerivativeAction1(
 	}
 	
 	final CoeffNode coeffNodeOutM1 = new CoeffNode(  coeffNodeIn.getNumer().negate() , 
-			coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( genFromConstDbl( 2.0 ) ), hh.getFac() ) ) );
+			coeffNodeIn.getDenom().mult( SymbolicConstCache.get( hh.mult( genFromConstDbl( 2.0 ) ), hh.getFac() ) ) );
 	final CoeffNode coeffNodeOutP1 = new CoeffNode( coeffNodeIn.getNumer() , 
-			coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( genFromConstDbl( 2.0 ) ), hh.getFac() ) ) );
+			coeffNodeIn.getDenom().mult( SymbolicConstCache.get( hh.mult( genFromConstDbl( 2.0 ) ), hh.getFac() ) ) );
 	
 	applyAdd( implicitSpaceOutM1 , coeffNodeOutM1 , implicitSpacesOut );
 	applyAdd( implicitSpaceOutP1 , coeffNodeOutP1 , implicitSpacesOut );
@@ -2372,11 +2416,11 @@ protected void applyDerivativeAction2(
 	}
 	
 	final CoeffNode coeffNodeOutM1 = new CoeffNode(  coeffNodeIn.getNumer() , 
-			coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( hh ) , hh.getFac() ) ) );
-	final CoeffNode coeffNodeOut = new CoeffNode(  coeffNodeIn.getNumer().negate().mult( new SymbolicConst( genFromConstDbl( 2.0 ) , hh.getFac() ) ) , 
-			coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( hh ) , hh.getFac() ) ) );
+			coeffNodeIn.getDenom().mult( SymbolicConstCache.get( hh.mult( hh ) , hh.getFac() ) ) );
+	final CoeffNode coeffNodeOut = new CoeffNode(  coeffNodeIn.getNumer().negate().mult( SymbolicConstCache.get( genFromConstDbl( 2.0 ) , hh.getFac() ) ) , 
+			coeffNodeIn.getDenom().mult( SymbolicConstCache.get( hh.mult( hh ) , hh.getFac() ) ) );
 	final CoeffNode coeffNodeOutP1 = new CoeffNode( coeffNodeIn.getNumer() , 
-			coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( hh ) , hh.getFac() ) ) );
+			coeffNodeIn.getDenom().mult( SymbolicConstCache.get( hh.mult( hh ) , hh.getFac() ) ) );
 	
 	applyAdd( implicitSpaceOutM1 , coeffNodeOutM1 , implicitSpacesOut );
 	applyAdd( implicitSpace , coeffNodeOut , implicitSpacesOut );
@@ -2431,14 +2475,14 @@ protected void applyDerivativeAction3(
 		}
 	}
 	
-	final CoeffNode coeffNodeOutM1 = new CoeffNode(  coeffNodeIn.getNumer().mult( new SymbolicConst( genFromConstDbl( 2.0 ) , hh.getFac() ) ) , 
-			coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( hh.mult( hh.mult( genFromConstDbl( 2.0 ) ) ) ), hh.getFac() ) ) );
-	final CoeffNode coeffNodeOutP1 = new CoeffNode( coeffNodeIn.getNumer().negate().mult( new SymbolicConst( genFromConstDbl( 2.0 ) , hh.getFac() ) ) , 
-			coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( hh.mult( hh.mult( genFromConstDbl( 2.0 ) ) ) ), hh.getFac() ) ) );
+	final CoeffNode coeffNodeOutM1 = new CoeffNode(  coeffNodeIn.getNumer().mult( SymbolicConstCache.get( genFromConstDbl( 2.0 ) , hh.getFac() ) ) , 
+			coeffNodeIn.getDenom().mult( SymbolicConstCache.get( hh.mult( hh.mult( hh.mult( genFromConstDbl( 2.0 ) ) ) ), hh.getFac() ) ) );
+	final CoeffNode coeffNodeOutP1 = new CoeffNode( coeffNodeIn.getNumer().negate().mult( SymbolicConstCache.get( genFromConstDbl( 2.0 ) , hh.getFac() ) ) , 
+			coeffNodeIn.getDenom().mult( SymbolicConstCache.get( hh.mult( hh.mult( hh.mult( genFromConstDbl( 2.0 ) ) ) ), hh.getFac() ) ) );
 	final CoeffNode coeffNodeOutM2 = new CoeffNode(  coeffNodeIn.getNumer().negate() , 
-			coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( hh.mult( hh.mult( genFromConstDbl( 2.0 ) ) ) ), hh.getFac() ) ) );
+			coeffNodeIn.getDenom().mult( SymbolicConstCache.get( hh.mult( hh.mult( hh.mult( genFromConstDbl( 2.0 ) ) ) ), hh.getFac() ) ) );
 	final CoeffNode coeffNodeOutP2 = new CoeffNode( coeffNodeIn.getNumer() , 
-			coeffNodeIn.getDenom().mult( new SymbolicConst( hh.mult( hh.mult( hh.mult( genFromConstDbl( 2.0 ) ) ) ), hh.getFac() ) ) );
+			coeffNodeIn.getDenom().mult( SymbolicConstCache.get( hh.mult( hh.mult( hh.mult( genFromConstDbl( 2.0 ) ) ) ), hh.getFac() ) ) );
 	
 	applyAdd( implicitSpaceOutM1 , coeffNodeOutM1 , implicitSpacesOut );
 	applyAdd( implicitSpaceOutP1 , coeffNodeOutP1 , implicitSpacesOut );
@@ -3670,7 +3714,7 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 		
 		
 		final SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>> energ0 =
-					( new StelemReduction3L( new StelemReduction2L( new SymbolicConst( MM.mult( C ).mult( HBAR.invertLeft() ) , de ) , seA ) , se2A )
+					( new StelemReduction3L( new StelemReduction2L( SymbolicConstCache.get( MM.mult( C ).mult( HBAR.invertLeft() ) , de ) , seA ) , se2A )
 							).negate();
 		
 		
