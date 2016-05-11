@@ -322,12 +322,12 @@ public class NewtonRaphsonMultiElemSimpleBacktrack<U extends NumDimensions, R ex
 	 */
 	protected GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,R,S> evalValues( ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
-		GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,R,S> ret = new GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,R,S>(
+		final GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,R,S> ret = new GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,R,S>(
 				sfac.getFac(), dim, new GeometricAlgebraOrd<U>() );
 		
 		for( final Entry<HashSet<BigInteger>, SymbolicElem<R, S>> ii : evals.getEntrySet() )
 		{
-			HashSet<BigInteger> key = ii.getKey();
+			final HashSet<BigInteger> key = ii.getKey();
 			ret.setVal( key , ii.getValue().eval( implicitSpace ) );
 		}
 		

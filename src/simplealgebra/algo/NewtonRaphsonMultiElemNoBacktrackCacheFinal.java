@@ -175,11 +175,9 @@ public class NewtonRaphsonMultiElemNoBacktrackCacheFinal<U extends NumDimensions
 		for( final Entry<HashSet<BigInteger>, SymbolicElem<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> ii : functions.getEntrySet() )
 		{
 			final HashSet<BigInteger> key = ii.getKey();
-			System.out.print( "&&" );
 			SymbolicElem<R,S> evalF = useCachedEval ? 
 					ii.getValue().evalCached( _param.getImplicitSpaceFirstLevel() , cache ) :
 					ii.getValue().eval( _param.getImplicitSpaceFirstLevel() );
-			System.out.print( "**" );
 			evalF = handleSimplification( evalF , useSimplification );
 			evals.setVal( key , evalF );
 		}
@@ -194,11 +192,9 @@ public class NewtonRaphsonMultiElemNoBacktrackCacheFinal<U extends NumDimensions
 			{
 				final BigInteger key2 = key2A.iterator().next();
 				final SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>> fun = _param.getFunctions().get( key2A );
-				System.out.print( "++" );
 				SymbolicElem<R,S> evalP = useCachedEval ?
 						fun.evalPartialDerivativeCached( withRespectTo , _param.getImplicitSpaceFirstLevel() , cache) :
 						fun.evalPartialDerivative( withRespectTo , _param.getImplicitSpaceFirstLevel() );
-				System.out.print( "==" );
 				evalP = handleSimplification( evalP , useSimplification );
 				if( !( evalP instanceof SymbolicZero<?,?> ) ) // Allow the matrix to be sparse in instances where the derivative is zero.
 				{
@@ -280,10 +276,8 @@ public class NewtonRaphsonMultiElemNoBacktrackCacheFinal<U extends NumDimensions
 		
 		for( final Entry<HashSet<BigInteger>, SymbolicElem<R, S>> ii : evals.getEntrySet() )
 		{
-			HashSet<BigInteger> key = ii.getKey();
-			System.out.print( "@@" );
+			final HashSet<BigInteger> key = ii.getKey();
 			ret.setVal( key , ii.getValue().evalCached( implicitSpace , cache ) );
-			System.out.print( "##" );
 		}
 		
 		return( ret );
@@ -314,9 +308,7 @@ public class NewtonRaphsonMultiElemNoBacktrackCacheFinal<U extends NumDimensions
 			{
 				final BigInteger key = keyA.iterator().next();
 				final SymbolicElem<R,S> pe = partialEvalJacobian.get( key2 , key );
-				System.out.print( "$$" );
 				evalJacobian.setVal( key2 , key , pe.evalCached( implicitSpace , cache ) );
-				System.out.print( "%%" );
 			}
 		}
 		

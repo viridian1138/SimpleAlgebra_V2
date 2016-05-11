@@ -109,7 +109,7 @@ import simplealgebra.symbolic.SymbolicZero;
  * @param <R> The enclosed type for the evaluation.
  * @param <S> The factory for the enclosed type for the evaluation.
  */
-public class NewtonRaphsonMultiElemInterpBacktrack<U extends NumDimensions, R extends Elem<R,?>, S extends ElemFactory<R,S>>
+public class NewtonRaphsonMultiElemInterpBacktrackCacheFinal<U extends NumDimensions, R extends Elem<R,?>, S extends ElemFactory<R,S>>
 	extends DescentAlgorithmMultiElem<U,R,S> {
 	
 	/**
@@ -167,7 +167,7 @@ public class NewtonRaphsonMultiElemInterpBacktrack<U extends NumDimensions, R ex
 	 * @throws NotInvertibleException
 	 * @throws MultiplicativeDistributionRequiredException
 	 */
-	public NewtonRaphsonMultiElemInterpBacktrack( 
+	public NewtonRaphsonMultiElemInterpBacktrackCacheFinal( 
 			final DescentAlgorithmMultiElemInputParam<U,R,S> _param ,
 			final HashMap<SCacheKey<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, SymbolicElem<R, S>> cache )
 					throws NotInvertibleException, MultiplicativeDistributionRequiredException
@@ -334,13 +334,15 @@ public class NewtonRaphsonMultiElemInterpBacktrack<U extends NumDimensions, R ex
 	 */
 	protected GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,R,S> evalValues( ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
+		final HashMap<SCacheKey<R, S>, R> cache = new HashMap<SCacheKey<R, S>, R>();
+		
 		final GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,R,S> ret = new GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,R,S>(
 				sfac.getFac(), dim, new GeometricAlgebraOrd<U>() );
 		
 		for( final Entry<HashSet<BigInteger>, SymbolicElem<R, S>> ii : evals.getEntrySet() )
 		{
 			final HashSet<BigInteger> key = ii.getKey();
-			ret.setVal( key , ii.getValue().eval( implicitSpace ) );
+			ret.setVal( key , ii.getValue().evalCached( implicitSpace , cache ) );
 		}
 		
 		return( ret );
@@ -356,6 +358,8 @@ public class NewtonRaphsonMultiElemInterpBacktrack<U extends NumDimensions, R ex
 	 */
 	protected SquareMatrixElem<U,R,S> evalPartialDerivativeJacobian() throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
+		final HashMap<SCacheKey<R, S>, R> cache = new HashMap<SCacheKey<R, S>, R>();
+		
 		final SquareMatrixElem<U,R,S> evalJacobian = new SquareMatrixElem<U,R,S>( sfac.getFac() , dim );
 		
 		for( final HashSet<BigInteger> key2A : functions.getKeySet() )
@@ -371,7 +375,7 @@ public class NewtonRaphsonMultiElemInterpBacktrack<U extends NumDimensions, R ex
 				final SymbolicElem<R,S> pe = partialEvalJacobian.get( key2 , key );
 				// System.out.println( "*****" );
 				// pe.writeString( System.out );
-				evalJacobian.setVal( key2 , key , pe.eval( implicitSpace ) );
+				evalJacobian.setVal( key2 , key , pe.evalCached( implicitSpace , cache ) );
 				// System.out.println( "-----" );
 			}
 		}
@@ -386,7 +390,7 @@ public class NewtonRaphsonMultiElemInterpBacktrack<U extends NumDimensions, R ex
 	 * @param in The instance to copy.
 	 * @param threadIndex The index of the thread for which to clone.
 	 */
-	protected NewtonRaphsonMultiElemInterpBacktrack( NewtonRaphsonMultiElemInterpBacktrack<U,R,S> in , final BigInteger threadIndex )
+	protected NewtonRaphsonMultiElemInterpBacktrackCacheFinal( NewtonRaphsonMultiElemInterpBacktrackCacheFinal<U,R,S> in , final BigInteger threadIndex )
 	{
 		functions = in.functions.cloneThread(threadIndex);
 		
@@ -416,9 +420,9 @@ public class NewtonRaphsonMultiElemInterpBacktrack<U extends NumDimensions, R ex
 	
 	
 	@Override
-	public NewtonRaphsonMultiElemInterpBacktrack<U,R,S> cloneThread( BigInteger threadIndex )
+	public NewtonRaphsonMultiElemInterpBacktrackCacheFinal<U,R,S> cloneThread( BigInteger threadIndex )
 	{
-		return( new NewtonRaphsonMultiElemInterpBacktrack<U,R,S>( this , threadIndex ) );
+		return( new NewtonRaphsonMultiElemInterpBacktrackCacheFinal<U,R,S>( this , threadIndex ) );
 	}
 	
 
