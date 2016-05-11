@@ -2643,7 +2643,7 @@ protected void applyAdd(
 			sa.setSfac( param.getSfac() );
 			sa.setDim( param.getDim() );
 			
-			return( new NewtonRaphsonMultiElemInterpBacktrack<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim, DoubleElem, DoubleElemFactory>( sa , param.getCache() ) );
+			return( new NewtonRaphsonMultiElemNoBacktrackCacheFinal<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim, DoubleElem, DoubleElemFactory>( sa , param.getCache() ) );
 		}
 		
 	}
@@ -3974,8 +3974,8 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 		cache = null;
 		
 		
-		System.out.println( "S9 I" ); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		System.exit( 0 );
+		// System.out.println( "S9 I" ); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		// System.exit( 0 );
 		
 		
 		System.out.println( "Reached #9..." );
