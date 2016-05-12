@@ -83,11 +83,11 @@ public abstract class DescentAlgorithmMultiElemRemap<U extends NumDimensions, A 
 		/**
 		 * Constructs the exception.
 		 * 
-		 * @param elemNum_ The key of the elem. related to the inverse failure.
+		 * @param _elemNum The key of the elem. related to the inverse failure.
 		 */
-		public GeomDescentInverseFailedException( final HashSet<BigInteger> elemNum_ )
+		public GeomDescentInverseFailedException( final HashSet<BigInteger> _elemNum )
 		{
-			elemNum = elemNum_;
+			elemNum = _elemNum;
 		}
 		
 		@Override

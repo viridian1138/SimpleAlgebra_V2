@@ -161,11 +161,11 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 		/**
 		 * Constructs the exception.
 		 * 
-		 * @param elemNum_ The index of the elem related to the inverse failure.
+		 * @param _elemNum The index of the elem related to the inverse failure.
 		 */
-		public GaInverseException( final HashSet<BigInteger> elemNum_ )
+		public GaInverseException( final HashSet<BigInteger> _elemNum )
 		{
-			elemNum = elemNum_;
+			elemNum = _elemNum;
 		}
 		
 		@Override

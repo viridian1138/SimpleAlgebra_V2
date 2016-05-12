@@ -78,11 +78,11 @@ public abstract class DescentAlgorithmMultiElem<U extends NumDimensions, R exten
 		/**
 		 * Constructs the exception.
 		 * 
-		 * @param elemNum_ The key of the elem. related to the inverse failure.
+		 * @param _elemNum The key of the elem. related to the inverse failure.
 		 */
-		public DescentInverseFailedException( final BigInteger elemNum_ )
+		public DescentInverseFailedException( final BigInteger _elemNum )
 		{
-			elemNum = elemNum_;
+			elemNum = _elemNum;
 		}
 		
 		@Override

@@ -84,11 +84,11 @@ public abstract class DescentAlgorithmMultiElemRemapTensor<Z extends Object, R e
 		/**
 		 * Constructs the exception.
 		 * 
-		 * @param elemNum_ The key of the elem. related to the inverse failure.
+		 * @param _elemNum The key of the elem. related to the inverse failure.
 		 */
-		public TensorDescentInverseFailedException( final ArrayList<BigInteger> elemNum_ )
+		public TensorDescentInverseFailedException( final ArrayList<BigInteger> _elemNum )
 		{
-			elemNum = elemNum_;
+			elemNum = _elemNum;
 		}
 		
 		@Override

@@ -1019,7 +1019,7 @@ public class TestBurgersB extends TestCase {
 			final SCacheKey<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>> key =
 					new SCacheKey<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>( this , implicitSpace , withRespectTo );
 			final SymbolicElem<DoubleElem, DoubleElemFactory> iret = cache.get( key );
-			if( iret != null )
+			if( iret != null ) 
 			{
 				return( iret );
 			}

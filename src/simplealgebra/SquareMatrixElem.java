@@ -113,13 +113,13 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 		/**
 		 * Constructs the exception.
 		 * 
-		 * @param isRow_ Whether the failure index denotes a row or a column.
-		 * @param elemNum_ The row/column of the elem related to the inverse failure.
+		 * @param _isRow Whether the failure index denotes a row or a column.
+		 * @param _elemNum The row/column of the elem related to the inverse failure.
 		 */
-		public NoPivotException( final boolean isRow_ , final BigInteger elemNum_ )
+		public NoPivotException( final boolean _isRow , final BigInteger _elemNum )
 		{
-			isRow = isRow_;
-			elemNum = elemNum_;
+			isRow = _isRow;
+			elemNum = _elemNum;
 		}
 		
 		@Override
