@@ -2057,6 +2057,14 @@ public class TestCWave3DCplx extends TestCase {
 			throw( new RuntimeException( "Not Supported" ) );
 		}
 		
+		@Override
+		protected boolean evalIterationImproved( ComplexElem<DoubleElem,DoubleElemFactory> lastValue , ComplexElem<DoubleElem,DoubleElemFactory> nextValue )
+		{
+			final double distLast = ( lastValue.getRe().getVal() ) * ( lastValue.getRe().getVal() ) + ( lastValue.getIm().getVal() ) * ( lastValue.getIm().getVal() );
+			final double distNext = ( nextValue.getRe().getVal() ) * ( nextValue.getRe().getVal() ) + ( nextValue.getIm().getVal() ) * ( nextValue.getIm().getVal() );
+			return( distNext < distLast );
+		}
+		
 	}
 	
 	

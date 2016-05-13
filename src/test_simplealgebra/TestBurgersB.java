@@ -1748,6 +1748,12 @@ public class TestBurgersB extends TestCase {
 			throw( new RuntimeException( "Not Supported" ) );
 		}
 		
+		@Override
+		protected boolean evalIterationImproved( DoubleElem lastValue , DoubleElem nextValue )
+		{
+			return( Math.abs( nextValue.getVal() ) < Math.abs( lastValue.getVal() ) );
+		}
+		
 	}
 	
 	

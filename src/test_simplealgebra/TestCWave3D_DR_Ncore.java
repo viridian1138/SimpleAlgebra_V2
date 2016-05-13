@@ -2503,6 +2503,12 @@ public class TestCWave3D_DR_Ncore extends TestCase {
 			return( new StelemNewton( this , threadIndex ) );
 		}
 		
+		@Override
+		protected boolean evalIterationImproved( DoubleElem lastValue , DoubleElem nextValue )
+		{
+			return( Math.abs( nextValue.getVal() ) < Math.abs( lastValue.getVal() ) );
+		}
+		
 	}
 	
 	
