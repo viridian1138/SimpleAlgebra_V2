@@ -610,6 +610,30 @@ public class TestDiracA extends TestCase {
 	}
 	
 	
+	/**
+	 * The iteration cache value.
+	 */
+	protected static GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> iterationValueCache = null;
+	
+	
+	/**
+	 * Places the current iteration value in the cache.
+	 */
+	protected static void cacheIterationValue()
+	{
+		iterationValueCache = 
+				(GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>)( tempArray[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] );
+	}
+	
+	
+	/**
+	 * Sets the current iteration value to the value in the cache.
+	 */
+	protected static void retrieveIterationValue()
+	{
+		tempArray[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] = iterationValueCache;
+	}
+	
 	
 	
 	/**
@@ -1714,6 +1738,11 @@ private static class CoeffNode
 			return( st );
 		}
 		
+		protected boolean symbolicCompareIndex( final BNelem in )
+		{
+			return( index.equals( in.index ) );
+		}
+		
 		@Override
 		public boolean symbolicEquals( SymbolicElem<DoubleElem,DoubleElemFactory> b )
 		{
@@ -1738,7 +1767,7 @@ private static class CoeffNode
 						return( false );
 					}
 				}
-				return( true );
+				return( symbolicCompareIndex( bn ) );
 			}
 			return( false );
 		}
@@ -1923,6 +1952,12 @@ private static class CNelem extends Nelem<SymbolicElem<DoubleElem,DoubleElemFact
 //	
 	
 	
+	protected boolean symbolicCompareIndex( final CNelem in )
+	{
+		return( index.equals( in.index ) );
+	}
+	
+	
 	@Override
 	public boolean symbolicEquals( 
 			SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> b )
@@ -1952,7 +1987,7 @@ private static class CNelem extends Nelem<SymbolicElem<DoubleElem,DoubleElemFact
 					return( false );
 				}
 			}
-			return( true );
+			return( symbolicCompareIndex( bn ) );
 		}
 		return( false );
 	}
@@ -2610,9 +2645,22 @@ protected void applyAdd(
 			TestDiracA.setIterationValue( iterationOffset );
 		}
 		
-		@Override protected GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> getIterationValue()
+		@Override
+		protected GeometricAlgebraMultivectorElem<TestDimensionFour,SpacetimeAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> getIterationValue()
 		{
 			return( TestDiracA.getUpdateValue() );
+		}
+		
+		@Override
+		protected void cacheIterationValue()
+		{
+			TestDiracA.cacheIterationValue();
+		}
+		
+		@Override
+		protected void retrieveIterationValue()
+		{
+			TestDiracA.retrieveIterationValue();
 		}
 		
 		/**
@@ -2676,6 +2724,16 @@ protected void applyAdd(
 			protected void setIterationValue(
 					GeometricAlgebraMultivectorElem<simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim, GeometricAlgebraOrd<simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim>, DoubleElem, DoubleElemFactory> iterationOffset) {
 				StelemDescent.this.setIterationValueInternal( iterationOffset );
+			}
+			
+			@Override
+			protected void cacheIterationValue() {
+				StelemDescent.this.cacheIterationValue();
+			}
+			
+			@Override
+			protected void retrieveIterationValue() {
+				StelemDescent.this.retrieveIterationValue();
 			}
 			
 			@Override protected GeometricAlgebraMultivectorElem<simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim, GeometricAlgebraOrd<simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim>, DoubleElem, DoubleElemFactory> getIterationValue()

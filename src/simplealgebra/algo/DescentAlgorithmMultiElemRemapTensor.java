@@ -42,6 +42,7 @@ import simplealgebra.NotInvertibleException;
 import simplealgebra.NumDimensions;
 import simplealgebra.SquareMatrixElem;
 import simplealgebra.WriteBigIntegerCache;
+import simplealgebra.WriteElemCache;
 import simplealgebra.ga.*;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SCacheKey;
@@ -542,6 +543,8 @@ public abstract class DescentAlgorithmMultiElemRemapTensor<Z extends Object, R e
 			ret.setVal( outMapOffset.get( key ) , ii.getValue() );
 		}
 		
+		// iterationOffset.writeDesc( new WriteElemCache() , System.out);
+		
 		performIterationUpdate( ret );
 	}
 	
@@ -581,6 +584,18 @@ public abstract class DescentAlgorithmMultiElemRemapTensor<Z extends Object, R e
 	 * @param value The new value.
 	 */
 	protected abstract void setIterationValue( EinsteinTensorElem<Z,R,S> value );
+	
+	
+	/**
+	 * Caches the current iteration value.
+	 */
+	protected abstract void cacheIterationValue();
+	
+	
+	/**
+	 * Retrieves the current iteration value.
+	 */
+	protected abstract void retrieveIterationValue();
 	
 	
 	

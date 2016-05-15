@@ -1715,6 +1715,11 @@ private static class CoeffNode
 			return( st );
 		}
 		
+		protected boolean symbolicCompareIndex( final BNelemMetric in )
+		{
+			return( index.equals( in.index ) );
+		}
+		
 		@Override
 		public boolean symbolicEquals( SymbolicElem<DoubleElem,DoubleElemFactory> b )
 		{
@@ -1739,7 +1744,7 @@ private static class CoeffNode
 						return( false );
 					}
 				}
-				return( true );
+				return( symbolicCompareIndex( bn ) );
 			}
 			return( false );
 		}
@@ -1904,6 +1909,11 @@ private static class CoeffNode
 			return( st );
 		}
 		
+		protected boolean symbolicCompareIndex( final BNelemConjugateMomentum in )
+		{
+			return( index.equals( in.index ) );
+		}
+		
 		@Override
 		public boolean symbolicEquals( SymbolicElem<DoubleElem,DoubleElemFactory> b )
 		{
@@ -1928,7 +1938,7 @@ private static class CoeffNode
 						return( false );
 					}
 				}
-				return( true );
+				return( symbolicCompareIndex( bn ) );
 			}
 			return( false );
 		}
@@ -2116,6 +2126,12 @@ private static class CNelemMetric extends Nelem<SymbolicElem<DoubleElem,DoubleEl
 //	
 	
 	
+	protected boolean symbolicCompareIndex( final CNelemMetric in )
+	{
+		return( index.equals( in.index ) );
+	}
+	
+	
 	@Override
 	public boolean symbolicEquals( 
 			SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> b )
@@ -2145,7 +2161,7 @@ private static class CNelemMetric extends Nelem<SymbolicElem<DoubleElem,DoubleEl
 					return( false );
 				}
 			}
-			return( true );
+			return( symbolicCompareIndex( bn ) );
 		}
 		return( false );
 	}
@@ -2331,6 +2347,13 @@ public String writeDesc(
 //
 
 
+
+protected boolean symbolicCompareIndex( final CNelemConjugateMomentum in )
+{
+	return( index.equals( in.index ) );
+}
+
+
 @Override
 public boolean symbolicEquals( 
 		SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> b )
@@ -2360,7 +2383,7 @@ public boolean symbolicEquals(
 				return( false );
 			}
 		}
-		return( true );
+		return( symbolicCompareIndex( bn ) );
 	}
 	return( false );
 }

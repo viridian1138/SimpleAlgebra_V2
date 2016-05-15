@@ -580,6 +580,17 @@ public abstract class DescentAlgorithmMultiElemRemap<U extends NumDimensions, A 
 	protected abstract void setIterationValue( GeometricAlgebraMultivectorElem<U,A,R,S> value );
 	
 	
+	/**
+	 * Caches the current iteration value.
+	 */
+	protected abstract void cacheIterationValue( );
+	
+	
+	/**
+	 * Retrieves the current iteration value.
+	 */
+	protected abstract void retrieveIterationValue( );
+	
 	
 	/**
 	 * Gets the current value of the iteration.

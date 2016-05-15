@@ -85,6 +85,17 @@ public abstract class DescentAlgorithmMultiElemInputParam<U extends NumDimension
 	protected abstract GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,R,S> getIterationValue( );
 	
 	
+	/**
+	 * Caches the current iteration value.
+	 */
+	protected abstract void cacheIterationValue();
+	
+	
+	/**
+	 * Retrieves the current iteration value from the cache.
+	 */
+	protected abstract void retrieveIterationValue();
+	
 	
 	/**
 	 * Returns whether the iterations have completed.

@@ -119,6 +119,10 @@ public class TestGeneralRelativityA extends TestCase {
 	 */
 	private static final DoubleElem MM = genFromConstDbl( 2.0 );
 	
+	/**
+	 * Random number multiplier size.
+	 */
+	private static final double RAND_SIZE = 1E-19;
 	
 	
 	/**
@@ -164,8 +168,8 @@ public class TestGeneralRelativityA extends TestCase {
 			{
 				// final DoubleElem dd = acnt == 0 ? 
 				//		new DoubleElem( - ( C.getVal() ) * ( C.getVal() ) ) : new DoubleElem( 1.0 );
-				final DoubleElem dd = acnt == 0 ? new DoubleElem( - CV * CV * ( 1.0 + ( 1E-6 * rand.nextDouble() ) ) )
-					: new DoubleElem( 1.0 + ( 1E-6 * rand.nextDouble() ) );
+				final DoubleElem dd = acnt == 0 ? new DoubleElem( - CV * CV * ( 1.0 + ( RAND_SIZE * rand.nextDouble() ) ) )
+					: new DoubleElem( 1.0 + ( RAND_SIZE * rand.nextDouble() ) );
 				final ArrayList<BigInteger> ab = new ArrayList<BigInteger>();
 				ab.add( BigInteger.valueOf( acnt / TestDimensionFour.FOUR ) );
 				ab.add( BigInteger.valueOf( acnt % TestDimensionFour.FOUR ) );
@@ -173,7 +177,7 @@ public class TestGeneralRelativityA extends TestCase {
 			}
 			else
 			{
-				final DoubleElem dd = new DoubleElem( 1E-6 * rand.nextDouble() );
+				final DoubleElem dd = new DoubleElem( RAND_SIZE * rand.nextDouble() );
 				final ArrayList<BigInteger> ab = new ArrayList<BigInteger>();
 				ab.add( BigInteger.valueOf( acnt / TestDimensionFour.FOUR ) );
 				ab.add( BigInteger.valueOf( acnt % TestDimensionFour.FOUR ) );
@@ -211,7 +215,7 @@ public class TestGeneralRelativityA extends TestCase {
 			}
 			else
 			{
-				final DoubleElem dd = new DoubleElem( 1E-6 * rand.nextDouble() );
+				final DoubleElem dd = new DoubleElem( RAND_SIZE * rand.nextDouble() );
 				final ArrayList<BigInteger> ab = new ArrayList<BigInteger>();
 				ab.add( BigInteger.valueOf( acnt / TestDimensionFour.FOUR ) );
 				ab.add( BigInteger.valueOf( acnt % TestDimensionFour.FOUR ) );
@@ -445,9 +449,32 @@ public class TestGeneralRelativityA extends TestCase {
 	 */
 	protected static void setIterationValue( EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> dbl )
 	{
-		EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> va
-			= (EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>)( tempArray[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] );
 		tempArray[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] = dbl;
+	}
+	
+	
+	/**
+	 * The iteration cache value.
+	 */
+	protected static EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> iterationValueCache = null;
+	
+	
+	/**
+	 * Places the current iteration value in the cache.
+	 */
+	protected static void cacheIterationValue()
+	{
+		iterationValueCache = 
+			(EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>)( tempArray[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] );
+	}
+	
+	
+	/**
+	 * Sets the current iteration value to the value in the cache.
+	 */
+	protected static void retrieveIterationValue()
+	{
+		tempArray[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] = iterationValueCache;
 	}
 	
 	
@@ -1562,6 +1589,11 @@ private static class CoeffNode
 			return( st );
 		}
 		
+		protected boolean symbolicCompareIndex( final BNelem in )
+		{
+			return( index.equals( in.index ) );
+		}
+		
 		@Override
 		public boolean symbolicEquals( SymbolicElem<DoubleElem,DoubleElemFactory> b )
 		{
@@ -1586,7 +1618,7 @@ private static class CoeffNode
 						return( false );
 					}
 				}
-				return( true );
+				return( symbolicCompareIndex( bn ) );
 			}
 			return( false );
 		}
@@ -1759,6 +1791,12 @@ private static class CNelem extends Nelem<SymbolicElem<DoubleElem,DoubleElemFact
 //	
 	
 	
+	protected boolean symbolicCompareIndex( final CNelem in )
+	{
+		return( index.equals( in.index ) );
+	}
+	
+	
 	@Override
 	public boolean symbolicEquals( 
 			SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>> b )
@@ -1788,7 +1826,7 @@ private static class CNelem extends Nelem<SymbolicElem<DoubleElem,DoubleElemFact
 					return( false );
 				}
 			}
-			return( true );
+			return( symbolicCompareIndex( bn ) );
 		}
 		return( false );
 	}
@@ -2463,6 +2501,18 @@ protected void applyAdd(
 		}
 		
 		@Override
+		protected void cacheIterationValue()
+		{
+			TestGeneralRelativityA.cacheIterationValue();
+		}
+		
+		@Override
+		protected void retrieveIterationValue()
+		{
+			TestGeneralRelativityA.retrieveIterationValue();
+		}
+		
+		@Override
 		protected EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> getIterationValue( )
 		{
 			return( TestGeneralRelativityA.getUpdateValue( ) );
@@ -2501,16 +2551,17 @@ protected void applyAdd(
 			
 			final double ntv = nextTotal.getVal();
 			final double ptv = lastTotal.getVal();
-			// System.out.println( ntv + " --- " + ptv );
-			if( ntv < ptv )
-			{
-				return( true );
-			}
-			if( ( ntv - ptv ) < ( 1E-7 * ptv ) )
-			{
-				return( true );
-			}
-			return( false );
+			// System.out.println( ( ntv - ptv ) + " --- " + ntv + " --- " + ptv );
+			// if( ntv < ptv )
+			// {
+			//	return( true );
+			// }
+			// if( ( ntv - ptv ) < ( 1E-7 * ptv ) )
+			// {
+			//	return( true );
+			// }
+			// return( false );
+			return( ntv < ptv );
 		}
 		
 		
@@ -2525,6 +2576,11 @@ protected void applyAdd(
 		{
 			return( true );
 		}
+		
+		protected int getMaxIterationsBacktrack()
+		{
+			return( 400 );
+		}
 	
 		
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -2537,7 +2593,7 @@ protected void applyAdd(
 //				ev = super.evalPartialDerivative();
 //			for( int acnt = 0 ; acnt < 16 ; acnt++ )
 //			{
-//				final DoubleElem dd = new DoubleElem( 1E-6 * ( 2.0 * rand.nextDouble() ) );
+//				final DoubleElem dd = new DoubleElem( RAND_SIZE * ( 2.0 * rand.nextDouble() ) );
 //				final HashSet<BigInteger> hs = new HashSet<BigInteger>();
 //				if( ( acnt & 1 ) != 0 ) hs.add( BigInteger.ZERO );
 //				if( ( acnt & 2 ) != 0 ) hs.add( BigInteger.ONE );
@@ -2569,6 +2625,16 @@ protected void applyAdd(
 			protected void setIterationValue(
 					GeometricAlgebraMultivectorElem<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim, GeometricAlgebraOrd<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim>, DoubleElem, DoubleElemFactory> iterationOffset) {
 				StelemDescent.this.setIterationValueInternal( iterationOffset );
+			}
+			
+			@Override
+			protected void cacheIterationValue() {
+				StelemDescent.this.cacheIterationValue();
+			}
+			
+			@Override
+			protected void retrieveIterationValue() {
+				StelemDescent.this.retrieveIterationValue();
 			}
 			
 			@Override
@@ -2643,7 +2709,7 @@ protected void applyAdd(
 			sa.setSfac( param.getSfac() );
 			sa.setDim( param.getDim() );
 			
-			return( new NewtonRaphsonMultiElemNoBacktrackCacheFinal<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim, DoubleElem, DoubleElemFactory>( sa , param.getCache() ) );
+			return( new NewtonRaphsonMultiElemSimpleBacktrackCacheFinal<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim, DoubleElem, DoubleElemFactory>( sa , param.getCache() ) );
 		}
 		
 	}

@@ -254,6 +254,8 @@ public class NewtonRaphsonMultiElemSimpleBacktrackCacheFinal<U extends NumDimens
 		lastValues.colVectorMultLeftDefault( derivativeJacobianInverse , iterationOffset );
 		iterationOffset = iterationOffset.negate();
 		
+		param.cacheIterationValue();
+		
 		param.performIterationUpdate( iterationOffset );
 		
 		
@@ -265,12 +267,12 @@ public class NewtonRaphsonMultiElemSimpleBacktrackCacheFinal<U extends NumDimens
 		else
 		{
 			int cnt = param.getMaxIterationsBacktrack();
-			iterationOffset = iterationOffset.negate();
+			
 			while( ( cnt > 0 ) && ( nextValues == null ) )
 			{
 				cnt--;
+				param.retrieveIterationValue();
 				iterationOffset = iterationOffset.divideBy( 2 );
-				
 				param.performIterationUpdate( iterationOffset );
 				
 				nextValues = evalIndicatesImprovement();
