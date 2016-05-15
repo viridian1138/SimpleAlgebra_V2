@@ -1589,6 +1589,11 @@ private static class CoeffNode
 			return( st );
 		}
 		
+		/**
+		 * Compares the index in this node to the index in the input node.
+		 * @param in The node with the index to compare.
+		 * @return True iff. the indices are equal, false otherwise.
+		 */
 		protected boolean symbolicCompareIndex( final BNelem in )
 		{
 			return( index.equals( in.index ) );
@@ -1791,6 +1796,11 @@ private static class CNelem extends Nelem<SymbolicElem<DoubleElem,DoubleElemFact
 //	
 	
 	
+	/**
+	 * Compares the index in this node to the index in the input node.
+	 * @param in The node with the index to compare.
+	 * @return True iff. the indices are equal, false otherwise.
+	 */
 	protected boolean symbolicCompareIndex( final CNelem in )
 	{
 		return( index.equals( in.index ) );
@@ -2577,6 +2587,7 @@ protected void applyAdd(
 			return( true );
 		}
 		
+		@Override
 		protected int getMaxIterationsBacktrack()
 		{
 			return( 400 );

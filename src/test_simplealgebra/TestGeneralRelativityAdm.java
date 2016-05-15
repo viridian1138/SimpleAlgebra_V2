@@ -1715,6 +1715,11 @@ private static class CoeffNode
 			return( st );
 		}
 		
+		/**
+		 * Compares the index in this node to the index in the input node.
+		 * @param in The node with the index to compare.
+		 * @return True iff. the indices are equal, false otherwise.
+		 */
 		protected boolean symbolicCompareIndex( final BNelemMetric in )
 		{
 			return( index.equals( in.index ) );
@@ -1909,6 +1914,11 @@ private static class CoeffNode
 			return( st );
 		}
 		
+		/**
+		 * Compares the index in this node to the index in the input node.
+		 * @param in The node with the index to compare.
+		 * @return True iff. the indices are equal, false otherwise.
+		 */
 		protected boolean symbolicCompareIndex( final BNelemConjugateMomentum in )
 		{
 			return( index.equals( in.index ) );
@@ -2126,6 +2136,11 @@ private static class CNelemMetric extends Nelem<SymbolicElem<DoubleElem,DoubleEl
 //	
 	
 	
+	/**
+	 * Compares the index in this node to the index in the input node.
+	 * @param in The node with the index to compare.
+	 * @return True iff. the indices are equal, false otherwise.
+	 */
 	protected boolean symbolicCompareIndex( final CNelemMetric in )
 	{
 		return( index.equals( in.index ) );
@@ -2347,7 +2362,11 @@ public String writeDesc(
 //
 
 
-
+/**
+ * Compares the index in this node to the index in the input node.
+ * @param in The node with the index to compare.
+ * @return True iff. the indices are equal, false otherwise.
+ */
 protected boolean symbolicCompareIndex( final CNelemConjugateMomentum in )
 {
 	return( index.equals( in.index ) );

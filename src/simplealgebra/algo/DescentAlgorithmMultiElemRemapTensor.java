@@ -42,7 +42,6 @@ import simplealgebra.NotInvertibleException;
 import simplealgebra.NumDimensions;
 import simplealgebra.SquareMatrixElem;
 import simplealgebra.WriteBigIntegerCache;
-import simplealgebra.WriteElemCache;
 import simplealgebra.ga.*;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SCacheKey;
@@ -542,8 +541,6 @@ public abstract class DescentAlgorithmMultiElemRemapTensor<Z extends Object, R e
 			HashSet<BigInteger> key = ii.getKey();
 			ret.setVal( outMapOffset.get( key ) , ii.getValue() );
 		}
-		
-		// iterationOffset.writeDesc( new WriteElemCache() , System.out);
 		
 		performIterationUpdate( ret );
 	}
