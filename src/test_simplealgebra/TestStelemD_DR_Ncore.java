@@ -346,6 +346,30 @@ public class TestStelemD_DR_Ncore extends TestCase {
 		{
 			tempArray[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] += dbl.getVal();
 		}
+		
+		
+		/**
+		 * The iteration cache value.
+		 */
+		private double iterationValueCache = 0.0;
+		
+		
+		/**
+		 * Places the current iteration value in the cache.
+		 */
+		protected void cacheIterationValue()
+		{
+			iterationValueCache = tempArray[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ];
+		}
+		
+		
+		/**
+		 * Sets the current iteration value to the value in the cache.
+		 */
+		protected void retrieveIterationValue()
+		{
+			tempArray[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] = iterationValueCache;
+		}
 	
 	
 		/**
@@ -2467,6 +2491,18 @@ public class TestStelemD_DR_Ncore extends TestCase {
 		protected void performIterationUpdate( DoubleElem iterationOffset )
 		{
 			threadContext.performIterationUpdate( iterationOffset );
+		}
+		
+		@Override
+		protected void cacheIterationValue()
+		{
+			threadContext.cacheIterationValue();
+		}
+		
+		@Override
+		protected void retrieveIterationValue()
+		{
+			threadContext.retrieveIterationValue();
 		}
 		
 		/**

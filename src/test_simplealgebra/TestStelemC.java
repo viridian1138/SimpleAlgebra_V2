@@ -274,6 +274,30 @@ public class TestStelemC extends TestCase {
 	
 	
 	/**
+	 * The iteration cache value.
+	 */
+	protected static double iterationValueCache = 0.0;
+	
+	
+	/**
+	 * Places the current iteration value in the cache.
+	 */
+	protected static void cacheIterationValue()
+	{
+		iterationValueCache = tempArray[ NSTPT * 2 ][ NSTPX ][ NSTPY ];
+	}
+	
+	
+	/**
+	 * Sets the current iteration value to the value in the cache.
+	 */
+	protected static void retrieveIterationValue()
+	{
+		tempArray[ NSTPT * 2 ][ NSTPX ][ NSTPY ] = iterationValueCache;
+	}
+	
+	
+	/**
 	 * Returns the result of the Newton-Raphson iterations
 	 * from the temp array.
 	 * 
@@ -1891,6 +1915,18 @@ public class TestStelemC extends TestCase {
 		protected void performIterationUpdate( DoubleElem iterationOffset )
 		{
 			TestStelemC.performIterationUpdate( iterationOffset );
+		}
+		
+		@Override
+		protected void cacheIterationValue()
+		{
+			TestStelemC.cacheIterationValue();
+		}
+		
+		@Override
+		protected void retrieveIterationValue()
+		{
+			TestStelemC.retrieveIterationValue();
 		}
 		
 		/**

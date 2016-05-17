@@ -446,6 +446,35 @@ public class TestGeneralRelativityAdm extends TestCase {
 	}
 	
 	
+	/**
+	 * The iteration cache value.
+	 */
+	protected static final HashMap<ArrayList<BigInteger>,DoubleElem> iterationCacheValueMetric = new HashMap<ArrayList<BigInteger>,DoubleElem>();
+	
+	
+	/**
+	 * Places the current iteration value in the cache.
+	 * @param tensorIndex The tensor index.
+	 */
+	protected static void cacheIterationValueMetric( ArrayList<BigInteger> tensorIndex )
+	{
+		EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> va
+			= (EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>)( tempArrayMetric[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] );
+		iterationCacheValueMetric.put( tensorIndex , va.getVal( tensorIndex ) );
+	}
+	
+	
+	/**
+	 * Sets the current iteration value to the value in the cache.
+	 * @param tensorIndex The tensor index.
+	 */
+	protected static void retrieveIterationValueMetric( ArrayList<BigInteger> tensorIndex )
+	{
+		EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> va
+			= (EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>)( tempArrayMetric[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] );
+		va.setVal( tensorIndex , iterationCacheValueMetric.get( tensorIndex ) );
+	}
+	
 	
 	/**
 	 * Given a change calculated by a descent algorithm iteration,
@@ -473,6 +502,35 @@ public class TestGeneralRelativityAdm extends TestCase {
 		va.setVal( tensorIndex, va.getVal( tensorIndex ).add( dbl ) );
 	}
 	
+	
+	/**
+	 * The iteration cache value.
+	 */
+	protected static final HashMap<ArrayList<BigInteger>,DoubleElem> iterationCacheValueConjugateMomentum = new HashMap<ArrayList<BigInteger>,DoubleElem>();
+	
+	
+	/**
+	 * Places the current iteration value in the cache.
+	 * @param tensorIndex The tensor index.
+	 */
+	protected static void cacheIterationValueConjugateMomentum( ArrayList<BigInteger> tensorIndex )
+	{
+		EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> va
+			= (EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>)( tempArrayConjugateMomentum[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] );
+		iterationCacheValueConjugateMomentum.put( tensorIndex , va.getVal( tensorIndex ) );
+	}
+	
+	
+	/**
+	 * Sets the current iteration value to the value in the cache.
+	 * @param tensorIndex The tensor index.
+	 */
+	protected static void retrieveIterationValueConjugateMomentum( ArrayList<BigInteger> tensorIndex )
+	{
+		EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> va
+			= (EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>)( tempArrayConjugateMomentum[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] );
+		va.setVal( tensorIndex , iterationCacheValueConjugateMomentum.get( tensorIndex ) );
+	}
 	
 	
 	/**
@@ -3686,6 +3744,18 @@ protected void applyAdd(
 			TestGeneralRelativityAdm.performIterationUpdateMetric( iterationOffset , tensorIndex );
 		}
 		
+		@Override
+		protected void cacheIterationValue()
+		{
+			TestGeneralRelativityAdm.cacheIterationValueMetric( tensorIndex );
+		}
+		
+		@Override
+		protected void retrieveIterationValue()
+		{
+			TestGeneralRelativityAdm.retrieveIterationValueMetric( tensorIndex );
+		}
+		
 		/**
 		 * Copies an instance for cloneThread();
 		 * 
@@ -3780,6 +3850,18 @@ protected void applyAdd(
 		protected void performIterationUpdate( DoubleElem iterationOffset )
 		{
 			TestGeneralRelativityAdm.performIterationUpdateConjugateMomentum( iterationOffset , tensorIndex );
+		}
+		
+		@Override
+		protected void cacheIterationValue()
+		{
+			TestGeneralRelativityAdm.cacheIterationValueConjugateMomentum( tensorIndex );
+		}
+		
+		@Override
+		protected void retrieveIterationValue()
+		{
+			TestGeneralRelativityAdm.retrieveIterationValueConjugateMomentum( tensorIndex );
 		}
 		
 		/**

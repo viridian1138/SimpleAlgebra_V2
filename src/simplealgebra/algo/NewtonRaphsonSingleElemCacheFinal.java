@@ -208,6 +208,8 @@ public abstract class NewtonRaphsonSingleElemCacheFinal<R extends Elem<R,?>, S e
 		final R derivative = evalPartialDerivative();
 		R iterationOffset = lastValue.mult( derivative.invertLeft() ).negate();
 		
+		cacheIterationValue();
+		
 		performIterationUpdate( iterationOffset );
 		
 		R nextValue = evalIndicatesImprovement( );
@@ -218,11 +220,12 @@ public abstract class NewtonRaphsonSingleElemCacheFinal<R extends Elem<R,?>, S e
 		else
 		{
 			int cnt = getMaxIterationsBacktrack();
-			iterationOffset = iterationOffset.negate();
 			while( ( cnt > 0 ) && ( nextValue == null ) )
 			{
 				cnt--;
 				iterationOffset = iterationOffset.divideBy( 2 );
+				
+				retrieveIterationValue();
 				
 				performIterationUpdate( iterationOffset );
 				
@@ -354,6 +357,18 @@ public abstract class NewtonRaphsonSingleElemCacheFinal<R extends Elem<R,?>, S e
 	 * @return True iff. the iterations are to complete.
 	 */
 	protected abstract boolean iterationsDone( );
+	
+	
+	/**
+	 * Caches the current iteration value.
+	 */
+	protected abstract void cacheIterationValue();
+	
+	
+	/**
+	 * Retrieves the current iteration value from the cache.
+	 */
+	protected abstract void retrieveIterationValue();
 	
 	
 	/**

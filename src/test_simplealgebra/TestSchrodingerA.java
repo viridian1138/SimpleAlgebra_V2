@@ -375,6 +375,39 @@ public class TestSchrodingerA extends TestCase {
 		tempArrayIm[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] += dbl.getIm().getVal();
 	}
 	
+	
+	/**
+	 * The real iteration cache value.
+	 */
+	protected static double iterationValueCacheRe = 0.0;
+	
+	
+	/**
+	 * The imaginary iteration cache value.
+	 */
+	protected static double iterationValueCacheIm = 0.0;
+	
+	
+	/**
+	 * Places the current iteration value in the cache.
+	 */
+	protected static void cacheIterationValue()
+	{
+		iterationValueCacheRe = tempArrayRe[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ];
+		iterationValueCacheIm = tempArrayIm[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ];
+	}
+	
+	
+	/**
+	 * Sets the current iteration value to the value in the cache.
+	 */
+	protected static void retrieveIterationValue()
+	{
+		tempArrayRe[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] = iterationValueCacheRe;
+		tempArrayIm[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] = iterationValueCacheIm;
+	}
+	
+	
 	/**
 	 * Returns the real component of the result of the Newton-Raphson iterations
 	 * from the temp array.
@@ -2121,6 +2154,18 @@ public class TestSchrodingerA extends TestCase {
 		protected void performIterationUpdate( ComplexElem<DoubleElem, DoubleElemFactory> iterationOffset )
 		{
 			TestSchrodingerA.performIterationUpdate( iterationOffset );
+		}
+		
+		@Override
+		protected void cacheIterationValue()
+		{
+			TestSchrodingerA.cacheIterationValue();
+		}
+		
+		@Override
+		protected void retrieveIterationValue()
+		{
+			TestSchrodingerA.retrieveIterationValue();
 		}
 		
 		/**

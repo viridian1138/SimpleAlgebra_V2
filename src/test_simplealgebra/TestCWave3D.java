@@ -313,6 +313,30 @@ public class TestCWave3D extends TestCase {
 	
 	
 	/**
+	 * The iteration cache value.
+	 */
+	protected static double iterationValueCache = 0.0;
+	
+	
+	/**
+	 * Places the current iteration value in the cache.
+	 */
+	protected static void cacheIterationValue()
+	{
+		iterationValueCache = tempArray[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ];
+	}
+	
+	
+	/**
+	 * Sets the current iteration value to the value in the cache.
+	 */
+	protected static void retrieveIterationValue()
+	{
+		tempArray[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] = iterationValueCache;
+	}
+	
+	
+	/**
 	 * Returns the result of the Newton-Raphson iterations
 	 * from the temp array.
 	 * 
@@ -2000,6 +2024,18 @@ public class TestCWave3D extends TestCase {
 		protected void performIterationUpdate( DoubleElem iterationOffset )
 		{
 			TestCWave3D.performIterationUpdate( iterationOffset );
+		}
+		
+		@Override
+		protected void cacheIterationValue()
+		{
+			TestCWave3D.cacheIterationValue();
+		}
+		
+		@Override
+		protected void retrieveIterationValue()
+		{
+			TestCWave3D.retrieveIterationValue();
 		}
 		
 		/**
