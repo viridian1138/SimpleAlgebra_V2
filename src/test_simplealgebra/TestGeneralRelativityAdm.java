@@ -103,6 +103,11 @@ import simplealgebra.et.*;
 	 */
 	private static final DoubleElem MM = genFromConstDbl( 2.0 );
 	
+	/**
+	 * The number of elements in the rank two tensor.
+	 */
+	private static final int SQ_TENSOR_SZ = ( TestDimensionFour.FOUR ) * ( TestDimensionFour.FOUR );
+	
 	
 	
 	/**
@@ -142,7 +147,7 @@ import simplealgebra.et.*;
 		covariantIndices.add( "v" );
 		EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>
 			ret = new EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>( da , contravariantIndices  , covariantIndices );
-		for( int acnt = 0 ; acnt < 16 ; acnt++ )
+		for( int acnt = 0 ; acnt < SQ_TENSOR_SZ ; acnt++ )
 		{
 			if( ( acnt % TestDimensionFour.FOUR ) == ( acnt / TestDimensionFour.FOUR ) )
 			{
@@ -174,7 +179,7 @@ import simplealgebra.et.*;
 		covariantIndices.add( "v" );
 		EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>
 			ret = new EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>( da , contravariantIndices  , covariantIndices );
-		for( int acnt = 0 ; acnt < 16 ; acnt++ )
+		for( int acnt = 0 ; acnt < SQ_TENSOR_SZ ; acnt++ )
 		{
 			if( ( acnt % TestDimensionFour.FOUR ) == ( acnt / TestDimensionFour.FOUR ) )
 			{
@@ -4984,7 +4989,7 @@ protected static class TestConjugateMomentumTensorFactory4 extends RankTwoNonMet
 			g0 = new EinsteinTensorElem<String,SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>
 				( se3A , contravariantIndices , covariantIndices );
 
-		for( int acnt = 0 ; acnt < 16 ; acnt++ )
+		for( int acnt = 0 ; acnt < SQ_TENSOR_SZ ; acnt++ )
 		{
 			final ArrayList<BigInteger> ab = new ArrayList<BigInteger>();
 			ab.add( BigInteger.valueOf( acnt / TestDimensionFour.FOUR ) );
@@ -5092,7 +5097,7 @@ protected static class TestConjugateMomentumNegativeDerivativeTensorFactory4 ext
 			g0 = new EinsteinTensorElem<String,SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>
 				( se3A , contravariantIndices , covariantIndices );
 
-		for( int acnt = 0 ; acnt < 16 ; acnt++ )
+		for( int acnt = 0 ; acnt < SQ_TENSOR_SZ ; acnt++ )
 		{
 			final ArrayList<BigInteger> ab = new ArrayList<BigInteger>();
 			ab.add( BigInteger.valueOf( acnt / TestDimensionFour.FOUR ) );
@@ -5214,7 +5219,7 @@ protected static class TestMetricTensorFactory4 extends MetricTensorInvertingFac
 			g0 = new EinsteinTensorElem<String,SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>
 				( se3A , contravariantIndices , covariantIndices );
 
-		for( int acnt = 0 ; acnt < 16 ; acnt++ )
+		for( int acnt = 0 ; acnt < SQ_TENSOR_SZ ; acnt++ )
 		{
 			final ArrayList<BigInteger> ab = new ArrayList<BigInteger>();
 			ab.add( BigInteger.valueOf( acnt / TestDimensionFour.FOUR ) );
@@ -5305,7 +5310,7 @@ protected static class TestMetricTensorFactory3 extends MetricTensorInvertingFac
 			g0 = new EinsteinTensorElem<String,SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>
 				( se3A , contravariantIndices , covariantIndices );
 
-		for( int acnt = 0 ; acnt < 16 ; acnt++ )
+		for( int acnt = 0 ; acnt < SQ_TENSOR_SZ ; acnt++ )
 		{
 			if( ( ( acnt % TestDimensionFour.FOUR ) > 0 ) && ( ( acnt / TestDimensionFour.FOUR ) > 0 ) )
 			{
@@ -5419,7 +5424,7 @@ SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>,SymbolicElemFact
 			g0 = new EinsteinTensorElem<String,SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>
 				( se3A , contravariantIndices , covariantIndices );
 
-		for( int acnt = 0 ; acnt < 16 ; acnt++ )
+		for( int acnt = 0 ; acnt < SQ_TENSOR_SZ ; acnt++ )
 		{
 			if( ( ( acnt % TestDimensionFour.FOUR ) > 0 ) && ( ( acnt / TestDimensionFour.FOUR ) > 0 ) )
 			{
@@ -6022,7 +6027,7 @@ protected void performIterationT( final int tval , final StelemNewtonMetric[] de
 		
 		
 		
-		for( int bcnt = 0 ; bcnt < 16 ; bcnt++ )
+		for( int bcnt = 0 ; bcnt < SQ_TENSOR_SZ ; bcnt++ )
 		{
 			final ArrayList<BigInteger> index = new ArrayList<BigInteger>();
 			index.add( BigInteger.valueOf( bcnt / TestDimensionFour.FOUR ) );
@@ -7222,7 +7227,7 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 		
 		final HashMap<ArrayList<BigInteger>, ArrayList<? extends Elem<?, ?>>> wrt3ConjugateMomentum = new HashMap<ArrayList<BigInteger>, ArrayList<? extends Elem<?, ?>>>();
 		{
-			for( int acnt = 0 ; acnt < 16 ; acnt++ )
+			for( int acnt = 0 ; acnt < SQ_TENSOR_SZ ; acnt++ )
 			{
 				final HashMap<Ordinate, BigInteger> coord = new HashMap<Ordinate, BigInteger>();
 				coord.put( new Ordinate( de2 , TV ) , BigInteger.valueOf( 1 ) );
@@ -7285,7 +7290,7 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 		
 		StelemNewtonMetric[] descentMetric = new StelemNewtonMetric[ 9 ];
 		
-		StelemNewtonConjugateMomentum[] descentConjugateMomentum = new StelemNewtonConjugateMomentum[ 16 ];
+		StelemNewtonConjugateMomentum[] descentConjugateMomentum = new StelemNewtonConjugateMomentum[ SQ_TENSOR_SZ ];
 		
 		
 		System.out.println( "Reached #8..." );
@@ -7304,7 +7309,7 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 		}
 		
 		
-		for( int acnt = 0 ; acnt < 16 ; acnt++ )
+		for( int acnt = 0 ; acnt < SQ_TENSOR_SZ ; acnt++ )
 		{
 			final ArrayList<BigInteger> index = new ArrayList<BigInteger>();
 			index.add( BigInteger.valueOf( acnt / TestDimensionFour.FOUR ) );

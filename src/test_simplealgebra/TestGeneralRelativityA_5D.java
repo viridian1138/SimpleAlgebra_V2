@@ -120,6 +120,11 @@ public class TestGeneralRelativityA_5D extends TestCase {
 	private static final DoubleElem MM = genFromConstDbl( 2.0 );
 	
 	/**
+	 * The number of elements in the rank two tensor.
+	 */
+	private static final int SQ_TENSOR_SZ = ( TestDimensionFive.FIVE ) * ( TestDimensionFive.FIVE );
+	
+	/**
 	 * Random number multiplier size.
 	 */
 	private static final double RAND_SIZE = 1E-19;
@@ -162,7 +167,7 @@ public class TestGeneralRelativityA_5D extends TestCase {
 		covariantIndices.add( "v" );
 		EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>
 			ret = new EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>( da , contravariantIndices  , covariantIndices );
-		for( int acnt = 0 ; acnt < 25 ; acnt++ )
+		for( int acnt = 0 ; acnt < SQ_TENSOR_SZ ; acnt++ )
 		{
 			if( ( acnt % TestDimensionFive.FIVE ) == ( acnt / TestDimensionFive.FIVE ) )
 			{
@@ -202,7 +207,7 @@ public class TestGeneralRelativityA_5D extends TestCase {
 		covariantIndices.add( "v" );
 		EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>
 			ret = new EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>( da , contravariantIndices  , covariantIndices );
-		for( int acnt = 0 ; acnt < 25 ; acnt++ )
+		for( int acnt = 0 ; acnt < SQ_TENSOR_SZ ; acnt++ )
 		{
 			if( ( acnt % TestDimensionFive.FIVE ) == ( acnt / TestDimensionFive.FIVE ) )
 			{
@@ -2706,7 +2711,7 @@ protected void applyAdd(
 //		{
 //			EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>
 //				ev = super.evalPartialDerivative();
-//			for( int acnt = 0 ; acnt < 25 ; acnt++ )
+//			for( int acnt = 0 ; acnt < SQ_TENSOR_SZ ; acnt++ )
 //			{
 //				final DoubleElem dd = new DoubleElem( RAND_SIZE * ( 2.0 * rand.nextDouble() ) );
 //				final HashSet<BigInteger> hs = new HashSet<BigInteger>();
@@ -3539,7 +3544,7 @@ protected static class TestMetricTensorFactory extends MetricTensorInvertingFact
 			g0 = new EinsteinTensorElem<String,SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<SymbolicElem<DoubleElem,DoubleElemFactory>,SymbolicElemFactory<DoubleElem,DoubleElemFactory>>>>
 				( se3A , contravariantIndices , covariantIndices );
 
-		for( int acnt = 0 ; acnt < 25 ; acnt++ )
+		for( int acnt = 0 ; acnt < SQ_TENSOR_SZ ; acnt++ )
 		{
 			if( /* ( acnt % TestDimensionFive.FIVE ) == ( acnt / TestDimensionFive.FIVE ) */ true )
 			{
@@ -4143,7 +4148,7 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 		
 		final HashMap<ArrayList<BigInteger>, ArrayList<? extends Elem<?, ?>>> wrt3 = new HashMap<ArrayList<BigInteger>, ArrayList<? extends Elem<?, ?>>>();
 		{
-			for( int acnt = 0 ; acnt < 25 ; acnt++ )
+			for( int acnt = 0 ; acnt < SQ_TENSOR_SZ ; acnt++ )
 			{
 				// if( ( acnt % TestDimensionFive.FIVE ) == ( acnt / TestDimensionFive.FIVE ) )
 				// {
