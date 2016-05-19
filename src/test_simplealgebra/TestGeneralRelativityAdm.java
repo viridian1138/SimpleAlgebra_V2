@@ -79,16 +79,18 @@ import simplealgebra.et.*;
 
 
 /**
- * Test for General Relativity as represented by the ADM Formalism.
+ * Test for General Relativity as represented by the ADM Formalism in 4-D.
  * 
  * See http://en.wikipedia.org/wiki/ADM_formalism
+ * 
+ * @deprecated This is deprecated because the ADM derivation is valid only for 4-D. See instead {@link test_simplealgebra.TestGeneralRelativityA} and {@link test_simplealgebra.TestGeneralRelativityA_5D}.
  *
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
  * @author thorngreen
  *
  */
-public class TestGeneralRelativityAdm extends TestCase {
+@Deprecated public class TestGeneralRelativityAdm extends TestCase {
 	
 	
 	/**

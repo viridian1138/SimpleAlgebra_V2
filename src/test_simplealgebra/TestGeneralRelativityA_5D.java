@@ -95,7 +95,7 @@ import simplealgebra.et.*;
  *       </mrow>
  *   </msub>
  * </mrow>
- * </math> is the Einstein tensor.
+ * </math> is the Einstein tensor in 5-D.
  * 
  * 
  * 
