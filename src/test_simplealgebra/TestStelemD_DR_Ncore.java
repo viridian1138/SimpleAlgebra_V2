@@ -722,7 +722,7 @@ public class TestStelemD_DR_Ncore extends TestCase {
 				for( int ya = -NSTPY ; ya < NSTPY + 1 ; ya++ )
 				{
 					param.setYa( ya );
-					for( int za = -NSTPX ; za < NSTPZ + 1 ; za++ )
+					for( int za = -NSTPZ ; za < NSTPZ + 1 ; za++ )
 					{
 						param.setZa( za );
 						fillTempArrayInner( param ); 
