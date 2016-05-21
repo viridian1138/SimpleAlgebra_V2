@@ -97,9 +97,15 @@ import simplealgebra.et.*;
  * </mrow>
  * </math> is the Einstein tensor in 5-D with a compactified 5th dimension "W".
  * 
+ * The compactification is a 1-dimensional circle as used in
+ * Kaluza-Klein theory.
+ * 
+ * TODO: Implement the modified metric tensor terms in the Kaluza-Klein theory.
  * 
  * 
  * See http://en.wikipedia.org/wiki/Einstein_tensor
+ *
+ * For details on compactification and Kaluza-Klein see http://mafija.fmf.uni-lj.si/seminar/files/2011_2012/KaluzaKlein_theory.pdf
  *
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
@@ -294,6 +300,7 @@ public class TestGeneralRelativityA_5D_Cd extends TestCase {
 	
 	/**
 	 * The number of discretizations on the W-Axis over which to iterate.
+	 * This dimension is smaller because it is a simulated compactified dimension.
 	 */
 	protected static final int NUM_W_ITER = 6;
 	
