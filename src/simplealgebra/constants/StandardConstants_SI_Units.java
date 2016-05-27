@@ -97,7 +97,7 @@ public class StandardConstants_SI_Units {
 	 */
 	 public static final ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory> e =
 			 new ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory>(
-					 new DoubleElem( 1.6021766208E-19 ) , new DoubleElem( 0000000098E-19  ) );
+					 new DoubleElem( 1.6021766208E-19 ) , new DoubleElem( 0.000000098E-19  ) );
 
 	/**
 	 * Electron Mass
