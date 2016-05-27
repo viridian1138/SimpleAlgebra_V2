@@ -67,8 +67,54 @@ public class StandardConstants_SI_Units {
 	public static final ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory> C =
 			new ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory>(
 					new DoubleElem( 299792458.0 ) , new DoubleElem( 0.0 ) );
-	
-	
+
+	/**
+	 * Newtonian Constant of Gravitation
+	 */
+	 public static final ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory> G =
+			 new ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory>(
+					 new DoubleElem( 6.67408E-11 ) , new DoubleElem( 0.00031E-11 ) );
+
+
+	/**
+	 * Electrical Permitivity of Free Space
+	 */
+	 public static final ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory> epsilon_0 =
+			 new ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory>(
+					 new DoubleElem( 8.854187817620E-12 ) , new DoubleElem( 0.0 ) );
+
+
+	/**
+	 * Boltzmann Constant
+	 */
+	 public static final ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory> k =
+			 new ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory>(
+					 new DoubleElem( 1.38064852E-23 ) , new DoubleElem( 0.00000079E-23 ) );
+
+
+	/**
+	 * Elementary Charge
+	 */
+	 public static final ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory> e =
+			 new ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory>(
+					 new DoubleElem( 1.6021766208E-19 ) , new DoubleElem( 0000000098E-19  ) );
+
+	/**
+	 * Electron Mass
+	 */
+	 public static final ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory> me =
+			 new ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory>(
+					 new DoubleElem( 9.10938356E-31 ) , new DoubleElem( 0.00000011E-31  ) );
+
+
+	/**
+	 * Proton Mass
+	 */
+	 public static final ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory> mp =
+			 new ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory>(
+					 new DoubleElem( 1.672621898E-27 ) , new DoubleElem( 0.000000021E-27 ) );
+
+
 	
 	// Standard numeric constants.  Uncertainty represents the accuracy of the JVM-defined constants.
 	
@@ -86,6 +132,43 @@ public class StandardConstants_SI_Units {
 	public static final ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory> E =
 			new ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory>(
 					new DoubleElem( Math.E ) , new DoubleElem( 1E-15 ) );
+
+	/**
+	 * The value of the number four, used to calculate other constants.
+	 */
+	private static final ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory> FOUR =
+			 new ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory>(
+					new DoubleElem( 4.0 ) , new DoubleElem( 0.0 ) );
+
+
+	// Constants that require the use of other constants such as PI.
+
+
+	/**
+	 * Calculates the Coulomb Constant.
+	 * @return The Coulomb Constant.
+	 */
+	private static ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory> calcCoul()
+	{
+		try
+		{
+			return( ( PI.mult( FOUR ).mult( epsilon_0 ) ).invertLeft() );
+		}
+		catch( NotInvertibleException ex )
+		{
+			throw( new RuntimeException( "Failed" ) );
+		}
+	}
+
+
+     	/**
+         * Coulomb Constant
+         */
+         public static final ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory> Coul =
+                         calcCoul();
+
+
+
 
 }
 
