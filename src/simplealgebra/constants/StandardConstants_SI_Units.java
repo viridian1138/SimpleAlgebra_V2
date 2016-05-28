@@ -77,14 +77,6 @@ public class StandardConstants_SI_Units {
 
 
 	/**
-	 * Electrical Permitivity of Free Space
-	 */
-	 public static final ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory> epsilon_0 =
-			 new ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory>(
-					 new DoubleElem( 8.854187817620E-12 ) , new DoubleElem( 0.0 ) );
-
-
-	/**
 	 * Boltzmann Constant
 	 */
 	 public static final ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory> k =
@@ -97,7 +89,7 @@ public class StandardConstants_SI_Units {
 	 */
 	 public static final ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory> e =
 			 new ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory>(
-					 new DoubleElem( 1.6021766208E-19 ) , new DoubleElem( 0.000000098E-19  ) );
+					 new DoubleElem( 1.6021766208E-19 ) , new DoubleElem( 0.0000000098E-19  ) );
 
 	/**
 	 * Electron Mass
@@ -139,6 +131,13 @@ public class StandardConstants_SI_Units {
 	private static final ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory> FOUR =
 			 new ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory>(
 					new DoubleElem( 4.0 ) , new DoubleElem( 0.0 ) );
+	
+	/**
+	 * The value of the number 1E-7, used to calculate other constants.
+	 */
+	private static final ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory> EM7 =
+			 new ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory>(
+					new DoubleElem( 1E-7 ) , new DoubleElem( 0.0 ) );
 
 
 	// Constants that require the use of other constants such as PI.
@@ -167,8 +166,115 @@ public class StandardConstants_SI_Units {
          public static final ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory> Coul =
                          calcCoul();
 
+         
+         
+         /**
+     	 * Calculates the Gravitational Permitivity.
+     	 * @return The Gravitational Permitivity.
+     	 */
+     	private static ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory> calcEpsilon_g()
+     	{
+     		try
+     		{
+     			return( ( PI.mult( FOUR ).mult( G ) ).invertLeft().negate() );
+     		}
+     		catch( NotInvertibleException ex )
+     		{
+     			throw( new RuntimeException( "Failed" ) );
+     		}
+     	}
+     	
+     	
+     	
+     	/**
+         * Gravitational Permitivity of Free Space.
+         */
+         public static final ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory> epsilon_g =
+                         calcEpsilon_g();
+         
+         
+         
+         
+         /**
+      	 * Calculates the Magnetic Permeability.
+      	 * @return The Magnetic Permeability.
+      	 */
+      	private static ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory> calcMu_0()
+      	{
+      		try
+      		{
+      			return( ( EM7.mult( FOUR ).mult( PI ) ).invertLeft().negate() );
+      		}
+      		catch( NotInvertibleException ex )
+      		{
+      			throw( new RuntimeException( "Failed" ) );
+      		}
+      	}
+      	
+      	
+      	
+      	 /**
+          * Magnetic Permeability of Free Space.
+          */
+          public static final ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory> mu_0 =
+                          calcMu_0();
+          
+          
+          
+          
+            /**
+        	 * Calculates the Gravitomagnetic Permeability (presumed).
+        	 * @return The Gravitomagnetic Permeability (presumed).
+        	 */
+        	private static ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory> calcMu_g()
+        	{
+        		try
+        		{
+        			return( ( FOUR.mult( PI ).mult( G ) ).mult( ( C.mult( C ) ).invertLeft() ).negate() );
+        		}
+        		catch( NotInvertibleException ex )
+        		{
+        			throw( new RuntimeException( "Failed" ) );
+        		}
+        	}
+        	
+        	
+        	
+        	
+        	/**
+             * Gravitomagnetic Permeability of Free Space (presumed).
+             */
+             public static final ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory> mu_g =
+                             calcMu_g();
+             
+             
+             
+             /**
+         	 * Calculates the Electrical Permitivity.
+         	 * @return The Electrical Permitivity.
+         	 */
+         	private static ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory> calcEpsilon_0()
+         	{
+         		try
+         		{
+         			return( ( C.mult( C ).mult( mu_0 ) ).invertLeft() );
+         		}
+         		catch( NotInvertibleException ex )
+         		{
+         			throw( new RuntimeException( "Failed" ) );
+         		}
+         	}
+             
+             
+         	
+             /**
+         	 * Electrical Permitivity of Free Space.
+         	 */
+         	 public static final ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory> epsilon_0 =
+         			 calcEpsilon_0();
 
 
 
 }
+
 
