@@ -38,64 +38,115 @@ import simplealgebra.meas.*;
 public class StandardConstants_SI_Units {
 
 	/**
-	 * Planck's Constant.
+	 * Planck's Constant <math display="inline">
+     * <mrow>
+     * <mi>h</mi>
+     * </mrow>
+     * </math>.
 	 */
 	public static final ValueWithUncertaintyElem<DoubleElem, DoubleElemFactory> H = new ValueWithUncertaintyElem<DoubleElem, DoubleElemFactory>(
 			new DoubleElem(6.62606957E-34), new DoubleElem(0.00000029E-34));
 
 	/**
-	 * Planck's Constant over 2 pi.
+	 * Planck's Constant over <math display="inline">
+     * <mrow>
+     * <mn>2</mn>
+     * <mi>&pi;</mi>
+     * </mrow>
+     * </math>, <math display="inline">
+     * <mrow>
+     * <mi>&hbar;</mi>
+     * </mrow>
+     * </math>.
 	 */
 	public static final ValueWithUncertaintyElem<DoubleElem, DoubleElemFactory> HBAR = new ValueWithUncertaintyElem<DoubleElem, DoubleElemFactory>(
 			new DoubleElem(1.054571726E-34), new DoubleElem(0.000000047E-34));
 
 	/**
-	 * Speed of light in vacuum.
+	 * Speed of light in vacuum, <math display="inline">
+     * <mrow>
+     * <mi>c</mi>
+     * </mrow>
+     * </math>.
 	 */
 	public static final ValueWithUncertaintyElem<DoubleElem, DoubleElemFactory> C = new ValueWithUncertaintyElem<DoubleElem, DoubleElemFactory>(
 			new DoubleElem(299792458.0), new DoubleElem(0.0));
 
 	/**
-	 * Newtonian Constant of Gravitation
+	 * Newtonian Constant of Gravitation, <math display="inline">
+     * <mrow>
+     * <mi>G</mi>
+     * </mrow>
+     * </math>.
 	 */
 	public static final ValueWithUncertaintyElem<DoubleElem, DoubleElemFactory> G = new ValueWithUncertaintyElem<DoubleElem, DoubleElemFactory>(
 			new DoubleElem(6.67408E-11), new DoubleElem(0.00031E-11));
 
 	/**
-	 * Boltzmann Constant
+	 * Boltzmann Constant, <math display="inline">
+     * <mrow>
+     * <mi>k</mi>
+     * </mrow>
+     * </math>.
 	 */
-	public static final ValueWithUncertaintyElem<DoubleElem, DoubleElemFactory> k = new ValueWithUncertaintyElem<DoubleElem, DoubleElemFactory>(
+	public static final ValueWithUncertaintyElem<DoubleElem, DoubleElemFactory> K = new ValueWithUncertaintyElem<DoubleElem, DoubleElemFactory>(
 			new DoubleElem(1.38064852E-23), new DoubleElem(0.00000079E-23));
 
 	/**
-	 * Elementary Charge
+	 * Elementary Charge (the charge of the electron <math display="inline">
+     * <mrow>
+     * <mi>e</mi>
+     * </mrow>
+     * </math>)
 	 */
-	public static final ValueWithUncertaintyElem<DoubleElem, DoubleElemFactory> e = new ValueWithUncertaintyElem<DoubleElem, DoubleElemFactory>(
+	public static final ValueWithUncertaintyElem<DoubleElem, DoubleElemFactory> Q_E = new ValueWithUncertaintyElem<DoubleElem, DoubleElemFactory>(
 			new DoubleElem(1.6021766208E-19), new DoubleElem(0.0000000098E-19));
 
 	/**
-	 * Electron Mass
+	 * Electron Mass, <math display="inline">
+     * <mrow>
+     *  <msub>
+     *     <mi>m</mi>
+     *   <mi>e</mi>
+     *  </msub>
+     * </mrow>
+     * </math>
 	 */
-	public static final ValueWithUncertaintyElem<DoubleElem, DoubleElemFactory> me = new ValueWithUncertaintyElem<DoubleElem, DoubleElemFactory>(
+	public static final ValueWithUncertaintyElem<DoubleElem, DoubleElemFactory> M_E = new ValueWithUncertaintyElem<DoubleElem, DoubleElemFactory>(
 			new DoubleElem(9.10938356E-31), new DoubleElem(0.00000011E-31));
 
 	/**
-	 * Proton Mass
+	 * Proton Mass, <math display="inline">
+     * <mrow>
+     *  <msub>
+     *     <mi>m</mi>
+     *   <mi>p</mi>
+     *  </msub>
+     * </mrow>
+     * </math>
 	 */
-	public static final ValueWithUncertaintyElem<DoubleElem, DoubleElemFactory> mp = new ValueWithUncertaintyElem<DoubleElem, DoubleElemFactory>(
+	public static final ValueWithUncertaintyElem<DoubleElem, DoubleElemFactory> M_P = new ValueWithUncertaintyElem<DoubleElem, DoubleElemFactory>(
 			new DoubleElem(1.672621898E-27), new DoubleElem(0.000000021E-27));
 
 	// Standard numeric constants. Uncertainty represents the accuracy of the
 	// JVM-defined constants.
 
 	/**
-	 * Pi.
+	 * <math display="inline">
+     * <mrow>
+     * <mi>&pi;</mi>
+     * </mrow>
+     * </math>.
 	 */
 	public static final ValueWithUncertaintyElem<DoubleElem, DoubleElemFactory> PI = new ValueWithUncertaintyElem<DoubleElem, DoubleElemFactory>(
 			new DoubleElem(Math.PI), new DoubleElem(1E-15));
 
 	/**
-	 * E.
+	 * The natural exponent, <math display="inline">
+     * <mrow>
+     * <mi>e</mi>
+     * </mrow>
+     * </math>.
 	 */
 	public static final ValueWithUncertaintyElem<DoubleElem, DoubleElemFactory> E = new ValueWithUncertaintyElem<DoubleElem, DoubleElemFactory>(
 			new DoubleElem(Math.E), new DoubleElem(1E-15));
@@ -107,7 +158,14 @@ public class StandardConstants_SI_Units {
 			new DoubleElem(4.0), new DoubleElem(0.0));
 
 	/**
-	 * The value of the number 1E-7, used to calculate other constants.
+	 * The value of the number <math display="inline">
+     * <mrow>
+     *  <msup>
+     *     <mn>10</mn>
+     *   <mn>-7</mn>
+     *  </msup>
+     * </mrow>
+     * </math>, used to calculate other constants.
 	 */
 	private static final ValueWithUncertaintyElem<DoubleElem, DoubleElemFactory> EM7 = new ValueWithUncertaintyElem<DoubleElem, DoubleElemFactory>(
 			new DoubleElem(1E-7), new DoubleElem(0.0));

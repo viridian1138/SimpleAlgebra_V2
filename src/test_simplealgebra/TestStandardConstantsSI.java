@@ -72,19 +72,19 @@ public class TestStandardConstantsSI extends TestCase
 		
 		Assert.assertEquals( hg.getValue().getVal() , 6.67E-11 , 0.01E-11 );
 		
-		final ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory> hk = StandardConstants_SI_Units.k;
+		final ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory> hk = StandardConstants_SI_Units.K;
 		
 		Assert.assertEquals( hk.getValue().getVal() , 1.38E-23 , 0.01E-23 );
 		
-		final ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory> he = StandardConstants_SI_Units.e;
+		final ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory> he = StandardConstants_SI_Units.Q_E;
 		
 		Assert.assertEquals( he.getValue().getVal() , 1.60E-19 , 0.01E-19 );
 		
-		final ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory> hme = StandardConstants_SI_Units.me;
+		final ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory> hme = StandardConstants_SI_Units.M_E;
 		
 		Assert.assertEquals( hme.getValue().getVal() , 9.1E-31 , 0.1E-31 );
 		
-		final ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory> hmp = StandardConstants_SI_Units.mp;
+		final ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory> hmp = StandardConstants_SI_Units.M_P;
 		
 		Assert.assertEquals( hmp.getValue().getVal() , 1.67E-27 , 0.01E-27 );
 		
