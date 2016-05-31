@@ -173,7 +173,14 @@ public class StandardConstants_SI_Units {
 	// Constants that require the use of other constants such as PI.
 
 	/**
-	 * Calculates the Gravitational Permitivity.
+	 * Calculates the Gravitational Permitivity  <math display="inline">
+     * <mrow>
+     *  <msub>
+     *     <mi>&epsilon;</mi>
+     *   <mrow><mn>0</mn><mo>,</mo><mi>g</mi></mrow>
+     *  </msub>
+     * </mrow>
+     * </math>.
 	 * 
 	 * @return The Gravitational Permitivity.
 	 */
@@ -186,12 +193,26 @@ public class StandardConstants_SI_Units {
 	}
 
 	/**
-	 * Gravitational Permitivity of Free Space.
+	 * Gravitational Permitivity of Free Space  <math display="inline">
+     * <mrow>
+     *  <msub>
+     *     <mi>&epsilon;</mi>
+     *    <mrow><mn>0</mn><mo>,</mo><mi>g</mi></mrow>
+     *  </msub>
+     * </mrow>
+     * </math>.
 	 */
-	public static final ValueWithUncertaintyElem<DoubleElem, DoubleElemFactory> epsilon_g = calcEpsilon_g();
+	public static final ValueWithUncertaintyElem<DoubleElem, DoubleElemFactory> EPSILON_0G = calcEpsilon_g();
 
 	/**
-	 * Calculates the Magnetic Permeability.
+	 * Calculates the Magnetic Permeability  <math display="inline">
+     * <mrow>
+     *  <msub>
+     *     <mi>&mu;</mi>
+     *   <mn>0</mn>
+     *  </msub>
+     * </mrow>
+     * </math>.
 	 * 
 	 * @return The Magnetic Permeability.
 	 */
@@ -199,13 +220,27 @@ public class StandardConstants_SI_Units {
 		return (EM7.mult(FOUR).mult(PI));
 	}
 
-	/**
-	 * Magnetic Permeability of Free Space.
-	 */
-	public static final ValueWithUncertaintyElem<DoubleElem, DoubleElemFactory> mu_0 = calcMu_0();
+	   /**
+         * Magnetic Permeability of Free Space, <math display="inline">
+     * <mrow>
+     *  <msub>
+     *     <mi>&mu;</mi>
+     *   <mn>0</mn>
+     *  </msub>
+     * </mrow>
+     * </math>.
+         */
+	public static final ValueWithUncertaintyElem<DoubleElem, DoubleElemFactory> MU_0 = calcMu_0();
 
 	/**
-	 * Calculates the Gravitomagnetic Permeability (presumed).
+	 * Calculates the Gravitomagnetic Permeability  <math display="inline">
+     * <mrow>
+     *  <msub>
+     *     <mi>&mu;</mi>
+     *    <mrow><mn>0</mn><mo>,</mo><mi>g</mi></mrow>
+     *  </msub>
+     * </mrow>
+     * </math> (presumed).
 	 * 
 	 * @return The Gravitomagnetic Permeability (presumed).
 	 */
@@ -219,27 +254,48 @@ public class StandardConstants_SI_Units {
 	}
 
 	/**
-	 * Gravitomagnetic Permeability of Free Space (presumed).
+	 * Gravitomagnetic Permeability of Free Space  <math display="inline">
+     * <mrow>
+     *  <msub>
+     *     <mi>&mu;</mi>
+     *    <mrow><mn>0</mn><mo>,</mo><mi>g</mi></mrow>
+     *  </msub>
+     * </mrow>
+     * </math> (presumed).
 	 */
-	public static final ValueWithUncertaintyElem<DoubleElem, DoubleElemFactory> mu_g = calcMu_g();
+	public static final ValueWithUncertaintyElem<DoubleElem, DoubleElemFactory> MU_0G = calcMu_g();
 
 	/**
-	 * Calculates the Electrical Permitivity.
+	 * Calculates the Electrical Permitivity  <math display="inline">
+     * <mrow>
+     *  <msub>
+     *     <mi>&epsilon;</mi>
+     *   <mn>0</mn>
+     *  </msub>
+     * </mrow>
+     * </math>.
 	 * 
 	 * @return The Electrical Permitivity.
 	 */
 	private static ValueWithUncertaintyElem<DoubleElem, DoubleElemFactory> calcEpsilon_0() {
 		try {
-			return ((C.mult(C).mult(mu_0)).invertLeft());
+			return ((C.mult(C).mult(MU_0)).invertLeft());
 		} catch (NotInvertibleException ex) {
 			throw (new RuntimeException("Failed"));
 		}
 	}
 
 	/**
-	 * Electrical Permitivity of Free Space.
+	 * Electrical Permitivity of Free Space  <math display="inline">
+     * <mrow>
+     *  <msub>
+     *     <mi>&epsilon;</mi>
+     *   <mn>0</mn>
+     *  </msub>
+     * </mrow>
+     * </math>.
 	 */
-	public static final ValueWithUncertaintyElem<DoubleElem, DoubleElemFactory> epsilon_0 = calcEpsilon_0();
+	public static final ValueWithUncertaintyElem<DoubleElem, DoubleElemFactory> EPSILON_0 = calcEpsilon_0();
 
 	/**
 	 * Calculates the Coulomb Constant.
@@ -248,7 +304,7 @@ public class StandardConstants_SI_Units {
 	 */
 	private static ValueWithUncertaintyElem<DoubleElem, DoubleElemFactory> calcCoul() {
 		try {
-			return ((PI.mult(FOUR).mult(epsilon_0)).invertLeft());
+			return ((PI.mult(FOUR).mult(EPSILON_0)).invertLeft());
 		} catch (NotInvertibleException ex) {
 			throw (new RuntimeException("Failed"));
 		}
@@ -257,6 +313,6 @@ public class StandardConstants_SI_Units {
 	/**
 	 * Coulomb Constant
 	 */
-	public static final ValueWithUncertaintyElem<DoubleElem, DoubleElemFactory> Coul = calcCoul();
+	public static final ValueWithUncertaintyElem<DoubleElem, DoubleElemFactory> COUL = calcCoul();
 
 }

@@ -96,15 +96,15 @@ public class TestStandardConstantsSI extends TestCase
 		
 		Assert.assertEquals( hE.getValue().getVal() , 2.7 , 0.1 );
 		
-		final ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory> hmu_0 = StandardConstants_SI_Units.mu_0;
+		final ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory> hmu_0 = StandardConstants_SI_Units.MU_0;
 		
 		Assert.assertEquals( hmu_0.getValue().getVal() , 12.566E-7 , 0.001E-7 );
 		
-		final ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory> hep_0 = StandardConstants_SI_Units.epsilon_0;
+		final ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory> hep_0 = StandardConstants_SI_Units.EPSILON_0;
 		
 		Assert.assertEquals( hep_0.getValue().getVal() , 8.85E-12 , 0.01E-12 );
 		
-		final ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory> hcoul = StandardConstants_SI_Units.Coul;
+		final ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory> hcoul = StandardConstants_SI_Units.COUL;
 		
 		Assert.assertEquals( hcoul.getValue().getVal() , 8.99E+9 , 0.01E+9 );
 		
