@@ -79,7 +79,9 @@ public class BigFixedPointElem<T extends Precision<T>> extends Elem<BigFixedPoin
 			throw( new RuntimeException( "NaN" ) );
 		}
 		prec = _prec;
-		final BigDecimal bd = new BigDecimal( vl * prec.getVal().doubleValue() );
+		final BigDecimal vld = new BigDecimal( vl );
+		final BigDecimal pvl = new BigDecimal( prec.getVal() );
+		final BigDecimal bd = vld.multiply( pvl );
 		final BigInteger _val = bd.toBigInteger();
 		val = _val;
 	}

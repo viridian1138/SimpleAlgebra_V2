@@ -31,12 +31,20 @@
 package test_simplealgebra;
 
 
+import java.math.BigInteger;
+
 import junit.framework.Assert;
 import junit.framework.TestCase;
 import simplealgebra.DoubleElem;
 import simplealgebra.DoubleElemFactory;
+import simplealgebra.bigfixedpoint.BigFixedPointElem;
+import simplealgebra.bigfixedpoint.BigFixedPointElemFactory;
+import simplealgebra.bigfixedpoint.Precision;
 import simplealgebra.constants.StandardConstants_SI_Units;
+import simplealgebra.constants.StandardConstants_SI_Units_BigFixed;
 import simplealgebra.meas.ValueWithUncertaintyElem;
+import simplealgebra.prec.DefaultPrecedenceComparator;
+import test_simplealgebra.TestMandelbrotSet.LrgPrecision;
 
 
 
@@ -52,9 +60,129 @@ public class TestStandardConstantsSI extends TestCase
 	
 	
 	/**
-	 * Runs the test.
+	 * Constant containing the number ten.
 	 */
-	public void testStandardConstantsSI()
+	static final BigInteger TEN = BigInteger.valueOf( 10 );
+	
+	
+	/**
+	 * Returns the number <math display="inline">
+     * <mrow>
+     *   <msup>
+     *           <mn>10</mn>
+     *       <mrow>
+     *         <mi>X</mi>
+     *         <mo>+</mo>
+     *         <mn>1</mn>
+     *       </mrow>
+     *   </msup>
+     * </mrow>
+     * </math>, where X is the input parameter.
+	 * 
+	 * @param cnt The input parameter.
+	 * @return The value <math display="inline">
+     * <mrow>
+     *   <msup>
+     *           <mn>10</mn>
+     *       <mrow>
+     *         <mi>X</mi>
+     *         <mo>+</mo>
+     *         <mn>1</mn>
+     *       </mrow>
+     *   </msup>
+     * </mrow>
+     * </math>.
+	 */
+	protected static BigInteger calcVal( final int cnt )
+	{
+		BigInteger ret = TEN;
+		for( int i = 0 ; i < cnt ; i++ )
+		{
+			ret = ret.multiply( TEN );
+		}
+		return( ret );
+	}
+	
+
+	
+	/**
+	 * Constant containing the value <math display="inline">
+     * <mrow>
+     *   <msup>
+     *           <mn>10</mn>
+     *         <mn>801</mn>
+     *   </msup>
+     * </mrow>
+     * </math>.
+	 * 
+	 * Largest possible double is around <math display="inline">
+     * <mrow>
+     *   <msup>
+     *           <mn>10</mn>
+     *         <mn>308</mn>
+     *   </msup>
+     * </mrow>
+     * </math>.
+	 */
+	static final BigInteger baseVal = calcVal( 800 );
+	
+	
+	/**
+	 * Constant containing the square of baseVal, or <math display="inline">
+     * <mrow>
+     *   <msup>
+     *           <mn>10</mn>
+     *         <mn>1602</mn>
+     *   </msup>
+     * </mrow>
+     * </math>.
+	 */
+	protected static final BigInteger finalBaseValSq = baseVal.multiply( baseVal );
+	
+	
+	/**
+	 * Defines a precision of baseVal, or one part in <math display="inline">
+     * <mrow>
+     *   <msup>
+     *           <mn>10</mn>
+     *         <mn>801</mn>
+     *   </msup>
+     * </mrow>
+     * </math>.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
+	protected static final class LrgPrecision extends Precision<LrgPrecision>
+	{
+		@Override
+		public BigInteger getVal()
+		{
+			return( baseVal );
+		}
+		
+		@Override
+		public BigInteger getValSquared()
+		{
+			return( finalBaseValSq );
+		}
+		
+	}
+	
+	
+	/**
+	 * A constant defining the large precision.
+	 */
+	static final LrgPrecision lrgPrecision = new LrgPrecision();
+	
+	
+	
+	
+	
+	/**
+	 * Runs the test for DoubleElem instances.
+	 */
+	public void testStandardConstantsSI_Dbl()
 	{
 		final ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory> hh = StandardConstants_SI_Units.H;
 		
@@ -107,6 +235,23 @@ public class TestStandardConstantsSI extends TestCase
 		final ValueWithUncertaintyElem<DoubleElem,DoubleElemFactory> hcoul = StandardConstants_SI_Units.COUL;
 		
 		Assert.assertEquals( hcoul.getValue().getVal() , 8.99E+9 , 0.01E+9 );
+		
+		
+	}
+	
+	
+	/**
+	 * Runs the test for BigFixedPointElem instances.
+	 */
+	public void testStandardConstantsSI_BigFixed()
+	{
+	
+		final StandardConstants_SI_Units_BigFixed<LrgPrecision> cnst = new StandardConstants_SI_Units_BigFixed<LrgPrecision>( lrgPrecision );
+		
+		
+		final ValueWithUncertaintyElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>> hh = cnst.getH();
+		
+		hh.writeMathML( new DefaultPrecedenceComparator() , System.out );
 		
 		
 	}
