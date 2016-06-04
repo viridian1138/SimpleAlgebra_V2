@@ -41,8 +41,15 @@ import simplealgebra.meas.*;
  */
 public class StandardConstants_SI_Units_BigFixed<T extends Precision<T>> {
 
+	/**
+	 * The precision of the elems.
+	 */
 	protected T prec;
 
+	/**
+	 * Constructs the constants.
+	 * @param _prec The precision of the elems.
+	 */
 	public StandardConstants_SI_Units_BigFixed(T _prec) {
 		prec = _prec;
 		H = calcH();
@@ -64,11 +71,22 @@ public class StandardConstants_SI_Units_BigFixed<T extends Precision<T>> {
 		COUL = calcCoul();
 	}
 
+	/**
+	 * Planck's Constant <math display="inline">
+     * <mrow>
+     * <mi>h</mi>
+     * </mrow>
+     * </math>.
+	 */
 	protected ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> H;
 
 	/**
-	 * Planck's Constant <math display="inline"> <mrow> <mi>h</mi> </mrow>
-	 * </math>.
+	 * Calculates Planck's Constant <math display="inline">
+     * <mrow>
+     * <mi>h</mi>
+     * </mrow>
+     * </math>.
+	 * @return Planck's constant.
 	 */
 	protected ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> calcH() {
 		return (new ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>>(
@@ -76,16 +94,44 @@ public class StandardConstants_SI_Units_BigFixed<T extends Precision<T>> {
 				new BigFixedPointElem<T>(0.00000029E-34, prec)));
 	}
 
+	/**
+	 * Gets Planck's Constant <math display="inline">
+     * <mrow>
+     * <mi>h</mi>
+     * </mrow>
+     * </math>.
+	 * @return Planck's constant.
+	 */
 	public ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> getH() {
 		return (H);
 	}
 
+	/**
+	 * Planck's Constant over <math display="inline">
+     * <mrow>
+     * <mn>2</mn>
+     * <mi>&pi;</mi>
+     * </mrow>
+     * </math>, <math display="inline">
+     * <mrow>
+     * <mi>&hbar;</mi>
+     * </mrow>
+     * </math>.
+	 */
 	protected ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> HBAR;
 
 	/**
-	 * Planck's Constant over <math display="inline"> <mrow> <mn>2</mn>
-	 * <mi>&pi;</mi> </mrow> </math>, <math display="inline"> <mrow>
-	 * <mi>&hbar;</mi> </mrow> </math>.
+	 * Calculates Planck's Constant over <math display="inline">
+     * <mrow>
+     * <mn>2</mn>
+     * <mi>&pi;</mi>
+     * </mrow>
+     * </math>, <math display="inline">
+     * <mrow>
+     * <mi>&hbar;</mi>
+     * </mrow>
+     * </math>.
+	 * @return The Constant.
 	 */
 	protected ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> calcHbar() {
 		return (new ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>>(
@@ -93,15 +139,40 @@ public class StandardConstants_SI_Units_BigFixed<T extends Precision<T>> {
 				new BigFixedPointElem<T>(0.000000047E-34, prec)));
 	}
 
+	/**
+	 * Gets Planck's Constant over <math display="inline">
+     * <mrow>
+     * <mn>2</mn>
+     * <mi>&pi;</mi>
+     * </mrow>
+     * </math>, <math display="inline">
+     * <mrow>
+     * <mi>&hbar;</mi>
+     * </mrow>
+     * </math>.
+	 * @return The Constant.
+	 */
 	public ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> getHbar() {
 		return (HBAR);
 	}
 
+	
+	/**
+	 * Speed of light in vacuum, <math display="inline">
+     * <mrow>
+     * <mi>c</mi>
+     * </mrow>
+     * </math>.
+	 */
 	protected ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> C;
 
 	/**
-	 * Speed of light in vacuum, <math display="inline"> <mrow> <mi>c</mi>
-	 * </mrow> </math>.
+	 * Calculates the Speed of light in vacuum, <math display="inline">
+     * <mrow>
+     * <mi>c</mi>
+     * </mrow>
+     * </math>.
+	 * @return The Constant.
 	 */
 	protected ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> calcC() {
 		return (new ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>>(
@@ -109,15 +180,36 @@ public class StandardConstants_SI_Units_BigFixed<T extends Precision<T>> {
 				new BigFixedPointElem<T>(BigInteger.ZERO, prec)));
 	}
 
+	/**
+	 * Gets the Speed of light in vacuum, <math display="inline">
+     * <mrow>
+     * <mi>c</mi>
+     * </mrow>
+     * </math>.
+	 * @return The Constant.
+	 */
 	public ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> getC() {
 		return (C);
 	}
 
+	
+	
+	/**
+	 * Newtonian Constant of Gravitation, <math display="inline">
+     * <mrow>
+     * <mi>G</mi>
+     * </mrow>
+     * </math>.
+	 */
 	protected ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> G;
 
 	/**
-	 * Newtonian Constant of Gravitation, <math display="inline"> <mrow>
-	 * <mi>G</mi> </mrow> </math>.
+	 * Calculates the Newtonian Constant of Gravitation, <math display="inline">
+     * <mrow>
+     * <mi>G</mi>
+     * </mrow>
+     * </math>.
+	 * @return The Constant.
 	 */
 	protected ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> calcG() {
 		return (new ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>>(
@@ -125,15 +217,35 @@ public class StandardConstants_SI_Units_BigFixed<T extends Precision<T>> {
 				new BigFixedPointElem<T>(0.00031E-11, prec)));
 	}
 
+	/**
+	 * Gets the Newtonian Constant of Gravitation, <math display="inline">
+     * <mrow>
+     * <mi>G</mi>
+     * </mrow>
+     * </math>.
+	 * @return The Constant.
+	 */
 	public ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> getG() {
 		return (G);
 	}
 
+	
+	/**
+	 * Boltzmann Constant, <math display="inline">
+     * <mrow>
+     * <mi>k</mi>
+     * </mrow>
+     * </math>.
+	 */
 	protected ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> K;
 
 	/**
-	 * Boltzmann Constant, <math display="inline"> <mrow> <mi>k</mi> </mrow>
-	 * </math>.
+	 * Calculates the Boltzmann Constant, <math display="inline">
+     * <mrow>
+     * <mi>k</mi>
+     * </mrow>
+     * </math>.
+	 * @return The Constant.
 	 */
 	protected ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> calcK() {
 		return (new ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>>(
@@ -141,15 +253,35 @@ public class StandardConstants_SI_Units_BigFixed<T extends Precision<T>> {
 				new BigFixedPointElem<T>(0.00000079E-23, prec)));
 	}
 
+	/**
+	 * Gets the Boltzmann Constant, <math display="inline">
+     * <mrow>
+     * <mi>k</mi>
+     * </mrow>
+     * </math>.
+	 * @return The Constant.
+	 */
 	public ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> getK() {
 		return (K);
 	}
 
+	
+	/**
+	 * Elementary Charge (the charge of the electron <math display="inline">
+     * <mrow>
+     * <mi>e</mi>
+     * </mrow>
+     * </math>)
+	 */
 	protected ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> Q_E;
 
 	/**
-	 * Elementary Charge (the charge of the electron <math display="inline">
-	 * <mrow> <mi>e</mi> </mrow> </math>)
+	 * Calculates the Elementary Charge (the charge of the electron <math display="inline">
+     * <mrow>
+     * <mi>e</mi>
+     * </mrow>
+     * </math>)
+	 * @return The Constant.
 	 */
 	protected ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> calcQ_E() {
 		return (new ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>>(
@@ -157,15 +289,41 @@ public class StandardConstants_SI_Units_BigFixed<T extends Precision<T>> {
 				new BigFixedPointElem<T>(0.0000000098E-19, prec)));
 	}
 
+	/**
+	 * Gets the Elementary Charge (the charge of the electron <math display="inline">
+     * <mrow>
+     * <mi>e</mi>
+     * </mrow>
+     * </math>)
+	 * @return The Constant.
+	 */
 	public ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> getQ_E() {
 		return (Q_E);
 	}
 
+	
+	/**
+	 * Electron Mass, <math display="inline">
+     * <mrow>
+     *  <msub>
+     *     <mi>m</mi>
+     *   <mi>e</mi>
+     *  </msub>
+     * </mrow>
+     * </math>
+	 */
 	protected ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> M_E;
 
 	/**
-	 * Electron Mass, <math display="inline"> <mrow> <msub> <mi>m</mi>
-	 * <mi>e</mi> </msub> </mrow> </math>
+	 * Calculates the Electron Mass, <math display="inline">
+     * <mrow>
+     *  <msub>
+     *     <mi>m</mi>
+     *   <mi>e</mi>
+     *  </msub>
+     * </mrow>
+     * </math>
+	 * @return The Constant.
 	 */
 	protected ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> calcM_E() {
 		return (new ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>>(
@@ -173,15 +331,44 @@ public class StandardConstants_SI_Units_BigFixed<T extends Precision<T>> {
 				new BigFixedPointElem<T>(0.00000011E-31, prec)));
 	}
 
+	/**
+	 * Gets the Electron Mass, <math display="inline">
+     * <mrow>
+     *  <msub>
+     *     <mi>m</mi>
+     *   <mi>e</mi>
+     *  </msub>
+     * </mrow>
+     * </math>
+	 * @return The Constant.
+	 */
 	public ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> getM_E() {
 		return (M_E);
 	}
 
+	
+	/**
+	 * Proton Mass, <math display="inline">
+     * <mrow>
+     *  <msub>
+     *     <mi>m</mi>
+     *   <mi>p</mi>
+     *  </msub>
+     * </mrow>
+     * </math>
+	 */
 	protected ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> M_P;
 
 	/**
-	 * Proton Mass, <math display="inline"> <mrow> <msub> <mi>m</mi> <mi>p</mi>
-	 * </msub> </mrow> </math>
+	 * Calculates the Proton Mass, <math display="inline">
+     * <mrow>
+     *  <msub>
+     *     <mi>m</mi>
+     *   <mi>p</mi>
+     *  </msub>
+     * </mrow>
+     * </math>
+	 * @return The Constant.
 	 */
 	protected ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> calcM_P() {
 		return (new ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>>(
@@ -189,6 +376,17 @@ public class StandardConstants_SI_Units_BigFixed<T extends Precision<T>> {
 				new BigFixedPointElem<T>(0.000000021E-27, prec)));
 	}
 
+	/**
+	 * Gets the Proton Mass, <math display="inline">
+     * <mrow>
+     *  <msub>
+     *     <mi>m</mi>
+     *   <mi>p</mi>
+     *  </msub>
+     * </mrow>
+     * </math>
+	 * @return The Constant.
+	 */
 	public ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> getM_P() {
 		return (M_P);
 	}
@@ -196,10 +394,23 @@ public class StandardConstants_SI_Units_BigFixed<T extends Precision<T>> {
 	// Standard numeric constants. Uncertainty represents the accuracy of the
 	// JVM-defined constants.
 
+	
+	/**
+	 * <math display="inline">
+     * <mrow>
+     * <mi>&pi;</mi>
+     * </mrow>
+     * </math>.
+	 */
 	protected ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> PI;
 
 	/**
-	 * <math display="inline"> <mrow> <mi>&pi;</mi> </mrow> </math>.
+	 * Calculates <math display="inline">
+     * <mrow>
+     * <mi>&pi;</mi>
+     * </mrow>
+     * </math>.
+	 * @return The Constant.
 	 */
 	protected ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> calcPi() {
 		return (new ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>>(
@@ -207,15 +418,35 @@ public class StandardConstants_SI_Units_BigFixed<T extends Precision<T>> {
 				new BigFixedPointElem<T>(1E-15, prec)));
 	}
 
+	/**
+	 * Gets <math display="inline">
+     * <mrow>
+     * <mi>&pi;</mi>
+     * </mrow>
+     * </math>.
+	 * @return The Constant.
+	 */
 	public ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> getPi() {
 		return (PI);
 	}
 
+	
+	/**
+	 * The natural exponent, <math display="inline">
+     * <mrow>
+     * <mi>e</mi>
+     * </mrow>
+     * </math>.
+	 */
 	protected ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> E;
 
 	/**
-	 * The natural exponent, <math display="inline"> <mrow> <mi>e</mi> </mrow>
-	 * </math>.
+	 * Calculates the natural exponent, <math display="inline">
+     * <mrow>
+     * <mi>e</mi>
+     * </mrow>
+     * </math>.
+	 * @return The Constant.
 	 */
 	protected ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> calcE() {
 		return (new ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>>(
@@ -223,14 +454,27 @@ public class StandardConstants_SI_Units_BigFixed<T extends Precision<T>> {
 				new BigFixedPointElem<T>(1E-15, prec)));
 	}
 
+	/**
+	 * Gets the natural exponent, <math display="inline">
+     * <mrow>
+     * <mi>e</mi>
+     * </mrow>
+     * </math>.
+	 * @return The Constant.
+	 */
 	public ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> getE() {
 		return (E);
 	}
 
+	
+	/**
+	 * The value of the number four, used to calculate other constants.
+	 */
 	protected ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> FOUR;
 
 	/**
-	 * The value of the number four, used to calculate other constants.
+	 * Calculates the value of the number four, used to calculate other constants.
+	 * @return The Constant.
 	 */
 	protected ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> calcFour() {
 		return (new ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>>(
@@ -239,11 +483,29 @@ public class StandardConstants_SI_Units_BigFixed<T extends Precision<T>> {
 				new BigFixedPointElem<T>(BigInteger.ZERO, prec)));
 	}
 
+	
+	/**
+	 * The value of the number <math display="inline">
+     * <mrow>
+     *  <msup>
+     *     <mn>10</mn>
+     *   <mn>-7</mn>
+     *  </msup>
+     * </mrow>
+     * </math>, used to calculate other constants.
+	 */
 	protected ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> EM7;
 
 	/**
-	 * The value of the number <math display="inline"> <mrow> <msup> <mn>10</mn>
-	 * <mn>-7</mn> </msup> </mrow> </math>, used to calculate other constants.
+	 * Calculates the value of the number <math display="inline">
+     * <mrow>
+     *  <msup>
+     *     <mn>10</mn>
+     *   <mn>-7</mn>
+     *  </msup>
+     * </mrow>
+     * </math>, used to calculate other constants.
+	 * @return The Constant.
 	 */
 	protected ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> calcEM7() {
 		return (new ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>>(
@@ -254,10 +516,16 @@ public class StandardConstants_SI_Units_BigFixed<T extends Precision<T>> {
 
 	// Constants that require the use of other constants such as PI.
 
+	
 	/**
-	 * Calculates the Gravitational Permitivity <math display="inline"> <mrow>
-	 * <msub> <mi>&epsilon;</mi> <mrow><mn>0</mn><mo>,</mo><mi>g</mi></mrow>
-	 * </msub> </mrow> </math>.
+	 * Calculates the Gravitational Permitivity  <math display="inline">
+     * <mrow>
+     *  <msub>
+     *     <mi>&epsilon;</mi>
+     *   <mrow><mn>0</mn><mo>,</mo><mi>g</mi></mrow>
+     *  </msub>
+     * </mrow>
+     * </math>.
 	 * 
 	 * @return The Gravitational Permitivity.
 	 */
@@ -270,19 +538,44 @@ public class StandardConstants_SI_Units_BigFixed<T extends Precision<T>> {
 	}
 
 	/**
-	 * Gravitational Permitivity of Free Space <math display="inline"> <mrow>
-	 * <msub> <mi>&epsilon;</mi> <mrow><mn>0</mn><mo>,</mo><mi>g</mi></mrow>
-	 * </msub> </mrow> </math>.
+	 * Gravitational Permitivity of Free Space  <math display="inline">
+     * <mrow>
+     *  <msub>
+     *     <mi>&epsilon;</mi>
+     *    <mrow><mn>0</mn><mo>,</mo><mi>g</mi></mrow>
+     *  </msub>
+     * </mrow>
+     * </math>.
 	 */
 	protected ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> EPSILON_0G;
 
+	/**
+	 * Gets the Gravitational Permitivity  <math display="inline">
+     * <mrow>
+     *  <msub>
+     *     <mi>&epsilon;</mi>
+     *   <mrow><mn>0</mn><mo>,</mo><mi>g</mi></mrow>
+     *  </msub>
+     * </mrow>
+     * </math>.
+	 * 
+	 * @return The Gravitational Permitivity.
+	 */
 	public ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> getEpsilon_g() {
 		return (EPSILON_0G);
 	}
 
+	
+	
 	/**
-	 * Calculates the Magnetic Permeability <math display="inline"> <mrow>
-	 * <msub> <mi>&mu;</mi> <mn>0</mn> </msub> </mrow> </math>.
+	 * Calculates the Magnetic Permeability  <math display="inline">
+     * <mrow>
+     *  <msub>
+     *     <mi>&mu;</mi>
+     *   <mn>0</mn>
+     *  </msub>
+     * </mrow>
+     * </math>.
 	 * 
 	 * @return The Magnetic Permeability.
 	 */
@@ -291,19 +584,44 @@ public class StandardConstants_SI_Units_BigFixed<T extends Precision<T>> {
 	}
 
 	/**
-	 * Magnetic Permeability of Free Space, <math display="inline"> <mrow>
-	 * <msub> <mi>&mu;</mi> <mn>0</mn> </msub> </mrow> </math>.
-	 */
+     * Magnetic Permeability of Free Space, <math display="inline">
+ * <mrow>
+ *  <msub>
+ *     <mi>&mu;</mi>
+ *   <mn>0</mn>
+ *  </msub>
+ * </mrow>
+ * </math>.
+     */
 	protected ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> MU_0;
 
+	/**
+	 * Gets the Magnetic Permeability  <math display="inline">
+     * <mrow>
+     *  <msub>
+     *     <mi>&mu;</mi>
+     *   <mn>0</mn>
+     *  </msub>
+     * </mrow>
+     * </math>.
+	 * 
+	 * @return The Magnetic Permeability.
+	 */
 	public ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> getMu_0() {
 		return (MU_0);
 	}
 
+	
+	
 	/**
-	 * Calculates the Gravitomagnetic Permeability <math display="inline">
-	 * <mrow> <msub> <mi>&mu;</mi> <mrow><mn>0</mn><mo>,</mo><mi>g</mi></mrow>
-	 * </msub> </mrow> </math> (presumed).
+	 * Calculates the Gravitomagnetic Permeability  <math display="inline">
+     * <mrow>
+     *  <msub>
+     *     <mi>&mu;</mi>
+     *    <mrow><mn>0</mn><mo>,</mo><mi>g</mi></mrow>
+     *  </msub>
+     * </mrow>
+     * </math> (presumed).
 	 * 
 	 * @return The Gravitomagnetic Permeability (presumed).
 	 */
@@ -317,19 +635,44 @@ public class StandardConstants_SI_Units_BigFixed<T extends Precision<T>> {
 	}
 
 	/**
-	 * Gravitomagnetic Permeability of Free Space <math display="inline"> <mrow>
-	 * <msub> <mi>&mu;</mi> <mrow><mn>0</mn><mo>,</mo><mi>g</mi></mrow> </msub>
-	 * </mrow> </math> (presumed).
+	 * Gravitomagnetic Permeability of Free Space  <math display="inline">
+     * <mrow>
+     *  <msub>
+     *     <mi>&mu;</mi>
+     *    <mrow><mn>0</mn><mo>,</mo><mi>g</mi></mrow>
+     *  </msub>
+     * </mrow>
+     * </math> (presumed).
 	 */
 	protected ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> MU_0G;
 
+	/**
+	 * Gets the Gravitomagnetic Permeability  <math display="inline">
+     * <mrow>
+     *  <msub>
+     *     <mi>&mu;</mi>
+     *    <mrow><mn>0</mn><mo>,</mo><mi>g</mi></mrow>
+     *  </msub>
+     * </mrow>
+     * </math> (presumed).
+	 * 
+	 * @return The Gravitomagnetic Permeability (presumed).
+	 */
 	public ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> getMu_g() {
 		return (MU_0G);
 	}
 
+	
+	
 	/**
-	 * Calculates the Electrical Permitivity <math display="inline"> <mrow>
-	 * <msub> <mi>&epsilon;</mi> <mn>0</mn> </msub> </mrow> </math>.
+	 * Calculates the Electrical Permitivity  <math display="inline">
+     * <mrow>
+     *  <msub>
+     *     <mi>&epsilon;</mi>
+     *   <mn>0</mn>
+     *  </msub>
+     * </mrow>
+     * </math>.
 	 * 
 	 * @return The Electrical Permitivity.
 	 */
@@ -342,11 +685,29 @@ public class StandardConstants_SI_Units_BigFixed<T extends Precision<T>> {
 	}
 
 	/**
-	 * Electrical Permitivity of Free Space <math display="inline"> <mrow>
-	 * <msub> <mi>&epsilon;</mi> <mn>0</mn> </msub> </mrow> </math>.
+	 * Electrical Permitivity of Free Space  <math display="inline">
+     * <mrow>
+     *  <msub>
+     *     <mi>&epsilon;</mi>
+     *   <mn>0</mn>
+     *  </msub>
+     * </mrow>
+     * </math>.
 	 */
 	protected ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> EPSILON_0;
 
+	/**
+	 * Gets the Electrical Permitivity  <math display="inline">
+     * <mrow>
+     *  <msub>
+     *     <mi>&epsilon;</mi>
+     *   <mn>0</mn>
+     *  </msub>
+     * </mrow>
+     * </math>.
+	 * 
+	 * @return The Electrical Permitivity.
+	 */
 	public ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> getEpsilon_0() {
 		return (EPSILON_0);
 	}
@@ -369,8 +730,14 @@ public class StandardConstants_SI_Units_BigFixed<T extends Precision<T>> {
 	 */
 	protected ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> COUL;
 
+	/**
+	 * Gets the Coulomb Constant.
+	 * 
+	 * @return The Coulomb Constant.
+	 */
 	public ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> getCoul() {
 		return (COUL);
 	}
 
+	
 }
