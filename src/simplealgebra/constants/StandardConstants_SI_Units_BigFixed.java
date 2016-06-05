@@ -413,9 +413,29 @@ public class StandardConstants_SI_Units_BigFixed<T extends Precision<T>> {
 	 * @return The Constant.
 	 */
 	protected ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> calcPi() {
+		
+		final BigInteger TWO = BigInteger.valueOf( 2 );
+		
+		int numBits = 1;
+		BigInteger bitChk = TWO;
+		
+		while( bitChk.compareTo( prec.getVal() ) <= 0 )
+		{
+			bitChk = bitChk.multiply( TWO );
+			numBits ++;
+		}
+		
+		numBits = numBits * 2 + 8;
+		
+		final PiDigits pid = new PiDigits();
+		
+		pid.piDigits( numBits );
+		
+		final BigInteger initVal = pid.getPiNumer().multiply( prec.getVal() ).divide( pid.getPiDenom() );
+		
 		return (new ValueWithUncertaintyElem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>>(
-				new BigFixedPointElem<T>(Math.PI, prec),
-				new BigFixedPointElem<T>(1E-15, prec)));
+				new BigFixedPointElem<T>( initVal , prec ),
+				new BigFixedPointElem<T>( BigInteger.ONE , prec )));
 	}
 
 	/**
