@@ -25,7 +25,7 @@ import java.math.BigInteger;
 
 
 /**
- * Class for calculating the digits of  <math display="inline">
+ * Class for calculating the digits of <math display="inline">
  * <mrow>
  * <mi>&pi;</mi>
  * </mrow>
@@ -42,21 +42,49 @@ public class PiDigits {
 	private static final int SCALE = 10000;
 	
 	
+	/**
+	 * Initial value for the elements of the temporary array.
+	 */
 	private static final int ARRINIT = 2000;
 	
 	
+	/**
+	 * Constant for the number ten.
+	 */
 	private static final BigInteger TEN = BigInteger.valueOf( 10 );
 	
 	
+	/**
+	 * The numerator for <math display="inline">
+     * <mrow>
+     * <mi>&pi;</mi>
+     * </mrow>
+     * </math>.
+	 */
 	protected BigInteger piNumer = BigInteger.ZERO;
 	
 	
+	/**
+	 * The denominator for <math display="inline">
+     * <mrow>
+     * <mi>&pi;</mi>
+     * </mrow>
+     * </math>.  This is always in the form of <math display="inline">
+     * <mrow>
+     *  <msup>
+     *          <mn>10</mn>
+     *        <mi>n</mi>
+     *  </msup>
+     * </mrow>
+     * </math>.
+	 */
 	protected BigInteger piDenom = BigInteger.ONE;
+	
 	
 	
 	void piDigits( int digits )
 	{
-		int[] arr = new int[ digits + 1 ];
+		final int[] arr = new int[ digits + 1 ];
 		int carry = 0;
 		
 		for( int i = 0 ; i <= digits ; ++i )
@@ -81,7 +109,16 @@ public class PiDigits {
 		piNumer = piNumer.multiply( TEN );
 	}
 	
-	
+
+	/**
+	 * Appends a set of digits to the value of <math display="inline">
+     * <mrow>
+     * <mi>&pi;</mi>
+     * </mrow>
+     * </math>.
+	 * 
+	 * @param in The digits to append.
+	 */
 	protected void appendDigits( final String in )
 	{
 		for( int cnt = 0 ; cnt < in.length() ; cnt++ )
@@ -96,7 +133,13 @@ public class PiDigits {
 	
 	
 	/**
-	 * @return the piNumer
+	 * Gets the numerator for <math display="inline">
+     * <mrow>
+     * <mi>&pi;</mi>
+     * </mrow>
+     * </math>.
+	 * 
+	 * @return The numerator.
 	 */
 	public BigInteger getPiNumer() {
 		return piNumer;
@@ -104,7 +147,13 @@ public class PiDigits {
 
 
 	/**
-	 * @return the piDenom
+	 * Gets the denominator for <math display="inline">
+     * <mrow>
+     * <mi>&pi;</mi>
+     * </mrow>
+     * </math>.
+	 * 
+	 * @return The denominator.
 	 */
 	public BigInteger getPiDenom() {
 		return piDenom;
@@ -113,3 +162,4 @@ public class PiDigits {
 	
 	
 }
+
