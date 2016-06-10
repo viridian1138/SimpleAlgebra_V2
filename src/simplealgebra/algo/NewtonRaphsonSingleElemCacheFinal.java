@@ -323,7 +323,7 @@ public abstract class NewtonRaphsonSingleElemCacheFinal<R extends Elem<R,?>, S e
 	 * @param threadIndex The index of the thread for which to clone.
 	 * @return The thread-cloned object, or the same object if immutable.
 	 */
-	public abstract NewtonRaphsonSingleElem<R,S> cloneThread( final BigInteger threadIndex );
+	public abstract NewtonRaphsonSingleElemCacheFinal<R,S> cloneThread( final BigInteger threadIndex );
 	
 	
 	
