@@ -189,6 +189,9 @@ public class TestVelA extends TestCase {
 	
 	
 
+	/**
+	 * Constants in SI units.
+	 */
 	static final StandardConstants_SI_Units_BigFixed<LrgPrecision> CNST = new StandardConstants_SI_Units_BigFixed<LrgPrecision>( lrgPrecision );
 	
 	
@@ -196,9 +199,7 @@ public class TestVelA extends TestCase {
 	
 	
 	/**
-	 * Temporary array in which to generate Newton-Raphson solutions.
-	 * <p>0 = T
-	 * <p>1 = X
+	 * Temporary value in which to generate Newton-Raphson solutions.
 	 */
 	private static BigFixedPointElem<LrgPrecision> tempValue = new BigFixedPointElem<LrgPrecision>( 0.0 , lrgPrecision );
 	
@@ -206,9 +207,9 @@ public class TestVelA extends TestCase {
 	
 	/**
 	 * Given a change calculated by a Newton-Raphson iteration,
-	 * applies the change to the temp array.
+	 * applies the change to the temp value.
 	 * 
-	 * @param dbl The change to apply to the temp array.
+	 * @param dbl The change to apply to the temp value.
 	 */
 	protected static void performIterationUpdate( BigFixedPointElem<LrgPrecision> dbl )
 	{
@@ -242,59 +243,16 @@ public class TestVelA extends TestCase {
 	
 	/**
 	 * Returns the result of the Newton-Raphson iterations
-	 * from the temp array.
+	 * from the temp value.
 	 * 
-	 * @return The value in the temp array.
+	 * @return The temp value.
 	 */
 	protected static BigFixedPointElem<LrgPrecision> getUpdateValue()
 	{
 		return( tempValue );
 	}
 	
-
 	
-	
-	/**
-	 * Cache for symbolic constants.
-	 * 
-	 * @author tgreen
-	 *
-	 */
-	private static class SymbolicConstCache
-	{
-		
-		/**
-		 * Map representing the cache.
-		 */
-		protected static HashMap<BigInteger,SymbolicConst> map = new HashMap<BigInteger,SymbolicConst>();
-		
-		/**
-		 * Returns a cached SymbolicConst representing a BigFixedPointElem<LrgPrecision>.
-		 * 
-		 * @param in The BigFixedPointElem<LrgPrecision> to be represented.
-		 * @param _fac The factory for BigFixedPointElem<LrgPrecision> instances.
-		 * @return The cached SymbolicConst.
-		 */
-		public static SymbolicConst get(  BigFixedPointElem<LrgPrecision> in , BigFixedPointElemFactory<LrgPrecision> _fac )
-		{
-			SymbolicConst cnst = map.get( in.getPrecVal() );
-			if( cnst == null )
-			{
-				cnst = new SymbolicConst( in , _fac );
-				map.put( in.getPrecVal() , cnst );
-			}
-			return( cnst );
-		}
-		
-		/**
-		 * Clears the cache.
-		 */
-		public static void clearCache()
-		{
-			map.clear();
-		}
-		
-	}
 	
 	
 	
@@ -451,10 +409,8 @@ public class TestVelA extends TestCase {
 	
 	
 	/**
-	 * An elem representing a symbolic constant at the level of mapping 
-	 * discretized approximations of the underlying differential
-	 * equation into expressions (e.g. Jacobian slopes)
-	 * for Newton-Raphson evaluations.
+	 * An elem representing a symbolic constant at the level of  
+	 * the original base expression.
 	 * 
 	 * @author thorngreen
 	 *
@@ -487,59 +443,7 @@ public class TestVelA extends TestCase {
 	
 	
 	/**
-	 * A constant coefficient with a numerator and a denominator.
-	 * 	
-	 * @author thorngreen
-	 *
-	 */
-	private static class CoeffNode
-	{
-		/**
-		 * The numerator.
-		 */
-		private SymbolicElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>> numer;
-		
-		/**
-		 * The denominator.
-		 */
-		private SymbolicElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>> denom;
-		
-		/**
-		 * Constructs the coefficient.
-		 * 
-		 * @param _numer The numerator.
-		 * @param _denom The denominator.
-		 */
-		public CoeffNode( SymbolicElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>> _numer , SymbolicElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>> _denom )
-		{
-			numer = _numer;
-			denom = _denom;
-		}
-		
-		/**
-		 * Gets the numerator.
-		 * 
-		 * @return The numerator.
-		 */
-		public SymbolicElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>> getNumer() {
-			return numer;
-		}
-		
-		/**
-		 * Gets the denominator.
-		 * 
-		 * @return The denominator.
-		 */
-		public SymbolicElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>> getDenom() {
-			return denom;
-		}
-		
-	}
-	
-	
-	/**
-	 * Elem representing the discretized equivalent 
-	 * of the value constrained by the differential equation.
+	 * Elem representing the value constrained by the equation in the Newton-Raphson iterations.
 	 * 
 	 * @author thorngreen
 	 *
@@ -632,12 +536,8 @@ public class TestVelA extends TestCase {
 	
 	
 	/**
-	 * Elem representing the symbolic expression for 
-	 * the discretized equivalent
-	 * of the value constrained by the differential equation.
-	 * The partial derivatives of this elem generate
-	 * the slopes for producing Newton-Raphson iterations (e.g. the Jacobian slopes),
-	 * as opposed to partial derivatives for the underlying differential equation.
+	 * Elem representing the value constrained
+	 * by the equation at the level of the original equation.
 	 * 
 	 * @author thorngreen
 	 *
@@ -650,7 +550,6 @@ public class TestVelA extends TestCase {
 		 * Constructs the elem.
 		 * 
 		 * @param _fac The factory for the enclosed type.
-		 * @param _coord Map taking implicit space terms representing ordinates to discrete ordinates of type BigInteger.
 		 */
 		public CNelem(SymbolicElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>> _fac) {
 			super(_fac, new  HashMap<Ordinate, BigInteger>() );
@@ -851,6 +750,17 @@ public class TestVelA extends TestCase {
 	
 	
 	
+	/**
+	 * Returns a symbolic evaluation of a quartic expression.
+	 * @param w Angular frequency.
+	 * @param a Constant coefficient.
+	 * @param ax Linear coefficient.
+	 * @param ax2 Quadratic coefficient.
+	 * @param ax3 Cubic coefficient.
+	 * @param ax4 Quartic coefficient.
+	 * @param x Term over which to evaluate the quartic.
+	 * @return The evaluated quartic expression.
+	 */
 	protected static  SymbolicElem<
 		SymbolicElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,SymbolicElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>
 		handleEval(  SymbolicElem<
@@ -880,6 +790,17 @@ public class TestVelA extends TestCase {
 	
 	
 	
+	/**
+	 * Returns a symbolic evaluation of the expression.
+	 * @param w Angular frequency.
+	 * @param xc Term over which to evaluate.
+	 * @param C The speed of light.
+	 * @param M_E The mass of the electron.
+	 * @param HBAR The angular form of Planck's constant.
+	 * @param se2 Factory for generating elems.
+	 * @return The evaluated expression.
+	 * @throws NotInvertibleException
+	 */
 	protected static  SymbolicElem<
 	SymbolicElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,SymbolicElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>
 	handleEval2(  SymbolicElem<
@@ -1008,7 +929,7 @@ public class TestVelA extends TestCase {
 		
 		
 		
-		for( double ww = 100.0 ; ww < 200.0 ; ww += 1.5 )
+		for( double ww = 10.0 ; ww < 20.0 ; ww += 0.15 )
 		{
 		
 			final BigFixedPointElem<LrgPrecision> wwv = new BigFixedPointElem<LrgPrecision>( ww , lrgPrecision );
