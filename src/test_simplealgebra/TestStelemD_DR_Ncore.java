@@ -3193,7 +3193,7 @@ public class TestStelemD_DR_Ncore extends TestCase {
 		}
 		
 		
-		String databaseLocation = "mydbK";
+		String databaseLocation = DatabasePathForTest.FILESPACE_PATH + "mydbK";
 		
 		
 		

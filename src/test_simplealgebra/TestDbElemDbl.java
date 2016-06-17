@@ -61,7 +61,7 @@ public class TestDbElemDbl extends TestCase {
 		
 		// System.out.println( "Started..." ); 
 		
-		String databaseLocation = "mydb";
+		String databaseLocation = DatabasePathForTest.DATABASE_PATH + "mydb";
 		HyperGraph graph;
 		
 		graph = new HyperGraph( databaseLocation );
@@ -116,7 +116,7 @@ public class TestDbElemDbl extends TestCase {
 	{
 		// System.out.println( "Started..." ); 
 		
-		String databaseLocation = "mydb";
+		String databaseLocation = DatabasePathForTest.DATABASE_PATH + "mydb";
 		HyperGraph graph;
 				
 		graph = new HyperGraph( databaseLocation );

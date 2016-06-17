@@ -2954,7 +2954,7 @@ public class TestCWave3D_DR extends TestCase {
 	{
 		
 		
-		String databaseLocation = "mydbJ";
+		String databaseLocation = DatabasePathForTest.FILESPACE_PATH + "mydbJ";
 		
 		
 		

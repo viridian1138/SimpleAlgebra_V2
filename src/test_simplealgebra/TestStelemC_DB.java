@@ -2590,7 +2590,7 @@ public class TestStelemC_DB extends TestCase {
 		}
 		
 		
-		String databaseLocation = "mydbH";
+		String databaseLocation = DatabasePathForTest.DATABASE_PATH + "mydbH";
 		HyperGraph graph;
 		
 		

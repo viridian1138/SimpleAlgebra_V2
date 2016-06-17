@@ -3189,8 +3189,8 @@ public class TestSchrodingerSpt_DR extends TestCase {
 		}
 		
 		
-		String databaseLocationRe = "mydbRe";
-		String databaseLocationIm = "mydbIm";
+		String databaseLocationRe = DatabasePathForTest.FILESPACE_PATH + "mydbRe";
+		String databaseLocationIm = DatabasePathForTest.FILESPACE_PATH + "mydbIm";
 		
 		
 		

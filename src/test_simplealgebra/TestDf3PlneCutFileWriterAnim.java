@@ -283,7 +283,7 @@ public class TestDf3PlneCutFileWriterAnim extends TestCase {
 		{
 			tval = _tval;
 			
-			String databaseLocation = "mydbK";
+			String databaseLocation = DatabasePathForTest.FILESPACE_PATH + "mydbK";
 			
 			final DbFastArray4D_Param dparam = new DbFastArray4D_Param();
 			dparam.setTmult( TMULT );

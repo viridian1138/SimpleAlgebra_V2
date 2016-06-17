@@ -125,7 +125,7 @@ public class TestRawFileWriter extends TestCase {
 		 */
 		public TstRawFileWriter() throws Throwable
 		{
-			String databaseLocation = "mydbJ";
+			String databaseLocation = DatabasePathForTest.FILESPACE_PATH + "mydbJ";
 			
 			
 			

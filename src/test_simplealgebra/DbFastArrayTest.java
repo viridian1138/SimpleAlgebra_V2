@@ -67,7 +67,7 @@ public class DbFastArrayTest extends TestCase {
 		
 		
 
-		String databaseLocation = "mydbF";
+		String databaseLocation = DatabasePathForTest.DATABASE_PATH + "mydbF";
 		HyperGraph graph;
 		
 		graph = new HyperGraph( databaseLocation );

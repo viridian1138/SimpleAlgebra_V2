@@ -2037,7 +2037,7 @@ public class TestStelemB_DB extends TestCase {
 			System.out.println( "cmxRatio " + cmxRatio );
 		}
 		
-		String databaseLocation = "mydbC";
+		String databaseLocation = DatabasePathForTest.DATABASE_PATH + "mydbC";
 		HyperGraph graph;
 		
 		graph = new HyperGraph( databaseLocation );

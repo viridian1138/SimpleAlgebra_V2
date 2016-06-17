@@ -136,7 +136,7 @@ public class TestRawFileWriterAnim extends TestCase {
 		{
 			tval = _tval;
 			
-			String databaseLocation = "mydbJ";
+			String databaseLocation = DatabasePathForTest.FILESPACE_PATH + "mydbJ";
 			
 			final DbFastArray4D_Param dparam = new DbFastArray4D_Param();
 			dparam.setTmult( TMULT );

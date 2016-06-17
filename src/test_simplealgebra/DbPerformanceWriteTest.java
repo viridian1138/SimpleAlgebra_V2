@@ -100,7 +100,7 @@ public class DbPerformanceWriteTest extends TestCase {
 		
 		
 
-		String databaseLocation = "mydbL";
+		String databaseLocation = DatabasePathForTest.DATABASE_PATH + "mydbL";
 		HyperGraph graph;
 		
 		graph = new HyperGraph( databaseLocation );

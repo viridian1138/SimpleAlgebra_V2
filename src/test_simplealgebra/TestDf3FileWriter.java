@@ -135,7 +135,7 @@ public class TestDf3FileWriter extends TestCase {
 		 */
 		public TstDf3FileWriter() throws Throwable
 		{
-			String databaseLocation = "mydbJ";
+			String databaseLocation = DatabasePathForTest.FILESPACE_PATH + "mydbJ";
 			
 			
 			

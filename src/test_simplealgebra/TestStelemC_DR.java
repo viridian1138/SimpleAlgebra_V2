@@ -2583,7 +2583,7 @@ public class TestStelemC_DR extends TestCase {
 		}
 		
 		
-		String databaseLocation = "mydbH";
+		String databaseLocation = DatabasePathForTest.FILESPACE_PATH + "mydbH";
 		
 		
 		final DbFastArray3D_Param dparam = new DbFastArray3D_Param();

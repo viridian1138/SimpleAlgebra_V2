@@ -3205,7 +3205,7 @@ public class TestCWave3D_DR_Ncore extends TestCase {
 	{
 		
 		
-		String databaseLocation = "mydbK";
+		String databaseLocation = DatabasePathForTest.FILESPACE_PATH + "mydbK";
 		
 		
 		
