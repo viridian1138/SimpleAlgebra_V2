@@ -41,6 +41,9 @@ public class DbFastArray3D_Param {
 	 */
 	HyperGraph graph;
 	
+	/**
+	 * The size of each cell along the T-axis.
+	 */
 	int tmult;
 	
 	/**
@@ -48,12 +51,24 @@ public class DbFastArray3D_Param {
 	 */
 	int xmult;
 	
+	/**
+	 * The size of each cell along the Y-axis.
+	 */
 	int ymult;
 	
+	/**
+	 * The size of the array along the T-axis.
+	 */
 	int tmax;
 	
+	/**
+	 * The size of the array along the X-axis.
+	 */
 	int xmax;
 	
+	/**
+	 * The size of the array along the Y-axis.
+	 */
 	int ymax;
 
 	
@@ -75,26 +90,50 @@ public class DbFastArray3D_Param {
 		this.graph = graph;
 	}
 
+	/**
+	 * Gets the size of each cell along the T-axis.
+	 * @return The size of each cell along the T-axis.
+	 */
 	public int getTmult() {
 		return tmult;
 	}
 
+	/**
+	 * Sets the size of each cell along the T-axis.
+	 * @param tmult The size of each cell along the T-axis.
+	 */
 	public void setTmult(int tmult) {
 		this.tmult = tmult;
 	}
 
+	/**
+	 * Gets the size of each cell along the X-axis.
+	 * @return The size of each cell along the X-axis.
+	 */
 	public int getXmult() {
 		return xmult;
 	}
 
+	/**
+	 * Sets the size of each cell along the X-axis.
+	 * @param xmult The size of each cell along the X-axis.
+	 */
 	public void setXmult(int xmult) {
 		this.xmult = xmult;
 	}
 
+	/**
+	 * Gets the size of each cell along the Y-axis.
+	 * @return The size of each cell along the Y-axis.
+	 */
 	public int getYmult() {
 		return ymult;
 	}
 
+	/**
+	 * Sets the size of each cell along the Y-axis.
+	 * @param ymult The size of each cell along the Y-axis.
+	 */
 	public void setYmult(int ymult) {
 		this.ymult = ymult;
 	}
