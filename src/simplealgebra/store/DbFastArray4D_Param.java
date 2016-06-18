@@ -43,6 +43,9 @@ public class DbFastArray4D_Param {
 	
 	int tmult;
 	
+	/**
+	 * The size of each cell along the X-axis.
+	 */
 	int xmult;
 	
 	int ymult;
