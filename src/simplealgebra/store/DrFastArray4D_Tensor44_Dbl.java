@@ -357,7 +357,7 @@ public class DrFastArray4D_Tensor44_Dbl<Z extends Object> {
 			num_mult *= num_cell;
 		}
 		
-		final EinsteinTensorElem<Z,DoubleElem,DoubleElemFactory> ret = new EinsteinTensorElem<Z,DoubleElem,DoubleElemFactory>(dfac, contravariantIndices, contravariantIndices);
+		final EinsteinTensorElem<Z,DoubleElem,DoubleElemFactory> ret = new EinsteinTensorElem<Z,DoubleElem,DoubleElemFactory>(dfac, contravariantIndices, covariantIndices);
 		
 		
 		file.seek( SZ_TENSOR * index );
