@@ -164,34 +164,66 @@ public class DbFastArray4D_Param {
 		this.zmult = zmult;
 	}
 
+	/**
+	 * Gets the size of the array along the T-axis.
+	 * @return The size of the array along the T-axis.
+	 */
 	public int getTmax() {
 		return tmax;
 	}
 
+	/**
+	 * Sets the size of the array along the T-axis.
+	 * @param tmax The size of the array along the T-axis.
+	 */
 	public void setTmax(int tmax) {
 		this.tmax = tmax;
 	}
 
+	/**
+	 * Gets the size of the array along the X-axis.
+	 * @return The size of the array along the X-axis.
+	 */
 	public int getXmax() {
 		return xmax;
 	}
 
+	/**
+	 * Sets the size of the array along the X-axis.
+	 * @param xmax The size of the array along the X-axis.
+	 */
 	public void setXmax(int xmax) {
 		this.xmax = xmax;
 	}
 
+	/**
+	 * Gets the size of the array along the Y-axis.
+	 * @return The size of the array along the Y-axis.
+	 */
 	public int getYmax() {
 		return ymax;
 	}
 
+	/**
+	 * Sets the size of the array along the Y-axis.
+	 * @param ymax The size of the array along the Y-axis.
+	 */
 	public void setYmax(int ymax) {
 		this.ymax = ymax;
 	}
 
+	/**
+	 * Gets the size of the array along the Z-axis.
+	 * @return The size of the array along the Z-axis.
+	 */
 	public int getZmax() {
 		return zmax;
 	}
 
+	/**
+	 * Sets the size of the array along the Z-axis.
+	 * @param zmax The size of the array along the Z-axis.
+	 */
 	public void setZmax(int zmax) {
 		this.zmax = zmax;
 	}
