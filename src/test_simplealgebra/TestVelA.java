@@ -37,6 +37,7 @@ import java.util.Map.Entry;
 import junit.framework.Assert;
 import junit.framework.TestCase;
 import simplealgebra.AbstractCache;
+import simplealgebra.CloneThreadCache;
 import simplealgebra.Elem;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.WriteBigIntegerCache;
@@ -742,6 +743,13 @@ public class TestVelA extends TestCase {
 		@Override
 		public StelemNewton cloneThread( final BigInteger threadIndex )
 		{
+			throw( new RuntimeException( "Not Supported" ) );
+		}
+
+		@Override
+		public NewtonRaphsonSingleElemCacheFinal<BigFixedPointElem<LrgPrecision>, BigFixedPointElemFactory<LrgPrecision>> cloneThreadCached(
+				CloneThreadCache<SymbolicElem<SymbolicElem<BigFixedPointElem<LrgPrecision>, BigFixedPointElemFactory<LrgPrecision>>, SymbolicElemFactory<BigFixedPointElem<LrgPrecision>, BigFixedPointElemFactory<LrgPrecision>>>, SymbolicElemFactory<SymbolicElem<BigFixedPointElem<LrgPrecision>, BigFixedPointElemFactory<LrgPrecision>>, SymbolicElemFactory<BigFixedPointElem<LrgPrecision>, BigFixedPointElemFactory<LrgPrecision>>>> cache,
+				CloneThreadCache<?, ?> cacheImplicit, BigInteger threadIndex) {
 			throw( new RuntimeException( "Not Supported" ) );
 		}
 		

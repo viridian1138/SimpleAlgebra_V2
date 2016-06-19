@@ -35,6 +35,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
+import simplealgebra.CloneThreadCache;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
@@ -311,6 +312,46 @@ public abstract class NewtonRaphsonSingleElem<R extends Elem<R,?>, S extends Ele
 	
 	
 	/**
+	 * Copies an instance for cloneThreadCached();
+	 * 
+	 * @param in The instance to copy.
+	 * @param cache The cache for cloning elems.
+	 * @param cacheImplicit The cache for cloning implicit space elems.
+	 * @param threadIndex The index of the thread for which to clone.
+	 */
+	protected NewtonRaphsonSingleElem( NewtonRaphsonSingleElem<R,S> in , 
+			final CloneThreadCache<SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,SymbolicElemFactory<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>> cache , 
+			CloneThreadCache<?,?> cacheImplicit , final BigInteger threadIndex )
+	{
+		final CloneThreadCache<SymbolicElem<R,S>,SymbolicElemFactory<R,S>> cacheA = (CloneThreadCache<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>)( cache.getInnerCache() );
+		final CloneThreadCache<R,S> cacheB = (CloneThreadCache<R,S>)( cacheA.getInnerCache() );
+		function = in.function.cloneThreadCached(threadIndex, cache);
+		if( in.lastValue != null )
+		{
+			lastValue = in.lastValue.cloneThreadCached( threadIndex , (CloneThreadCache) cacheB );
+		}
+		
+		if( in.implicitSpace != null )
+		{
+			implicitSpace = (HashMap<? extends Elem<?,?>,? extends Elem<?,?>>)( new HashMap() );
+		
+			for( final Entry<? extends Elem<?,?>,? extends Elem<?,?>> ii : in.implicitSpace.entrySet() )
+			{
+				final Elem<?,?> ikey = ii.getKey();
+				final Elem<?,?> ival = ii.getValue();
+				( (HashMap) implicitSpace ).put( ikey.cloneThreadCached(threadIndex,(CloneThreadCache)(cacheImplicit)) , 
+						ival.cloneThreadCached(threadIndex,(CloneThreadCache)(cacheImplicit)) );
+			}
+		}
+		
+		eval = in.eval.cloneThreadCached( threadIndex , cacheA );
+		
+		partialEval = in.partialEval.cloneThreadCached( threadIndex , cacheA );
+		
+	}
+	
+	
+	/**
 	 * Produces a clone of the object for threading.  Note that for
 	 * OpenJDK thread-safety for BigInteger requires at least version
 	 * 6u14.  See https://bugs.openjdk.java.net/browse/JDK-6348370
@@ -319,6 +360,21 @@ public abstract class NewtonRaphsonSingleElem<R extends Elem<R,?>, S extends Ele
 	 * @return The thread-cloned object, or the same object if immutable.
 	 */
 	public abstract NewtonRaphsonSingleElem<R,S> cloneThread( final BigInteger threadIndex );
+	
+	
+	
+	/**
+	 * Produces a clone of the object for threading.  Note that for
+	 * OpenJDK thread-safety for BigInteger requires at least version
+	 * 6u14.  See https://bugs.openjdk.java.net/browse/JDK-6348370
+	 * 
+	 * @param threadIndex The index of the thread for which to clone.
+	 * @return The thread-cloned object, or the same object if immutable.
+	 */
+	public abstract NewtonRaphsonSingleElem<R,S> cloneThreadCached( 
+			final CloneThreadCache<SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,SymbolicElemFactory<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>> cache , 
+			CloneThreadCache<?,?> cacheImplicit ,
+			final BigInteger threadIndex );
 	
 	
 	

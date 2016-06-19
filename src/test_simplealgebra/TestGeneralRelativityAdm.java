@@ -38,6 +38,7 @@ import java.util.Map.Entry;
 import junit.framework.Assert;
 import junit.framework.TestCase;
 import simplealgebra.AbstractCache;
+import simplealgebra.CloneThreadCache;
 import simplealgebra.ComplexElem;
 import simplealgebra.ComplexElemFactory;
 import simplealgebra.DoubleElem;
@@ -3781,6 +3782,13 @@ protected void applyAdd(
 		}
 		
 		@Override
+		public NewtonRaphsonSingleElem<DoubleElem, DoubleElemFactory> cloneThreadCached(
+				CloneThreadCache<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> cache,
+				CloneThreadCache<?, ?> cacheImplicit, BigInteger threadIndex) {
+			throw( new RuntimeException( "Not Supported" ) );
+		}
+		
+		@Override
 		protected SimplificationType useSimplification()
 		{
 			return( SimplificationType.NONE );
@@ -3885,6 +3893,13 @@ protected void applyAdd(
 		@Override
 		public StelemNewtonConjugateMomentum cloneThread( final BigInteger threadIndex )
 		{
+			throw( new RuntimeException( "Not Supported" ) );
+		}
+		
+		@Override
+		public NewtonRaphsonSingleElem<DoubleElem, DoubleElemFactory> cloneThreadCached(
+				CloneThreadCache<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> cache,
+				CloneThreadCache<?, ?> cacheImplicit, BigInteger threadIndex) {
 			throw( new RuntimeException( "Not Supported" ) );
 		}
 		

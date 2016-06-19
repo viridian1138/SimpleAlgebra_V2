@@ -38,6 +38,7 @@ import java.util.Map.Entry;
 import junit.framework.Assert;
 import junit.framework.TestCase;
 import simplealgebra.AbstractCache;
+import simplealgebra.CloneThreadCache;
 import simplealgebra.DoubleElem;
 import simplealgebra.DoubleElemFactory;
 import simplealgebra.Elem;
@@ -2522,6 +2523,13 @@ public class TestStelemD_DR_Ncore extends TestCase {
 		public StelemNewton cloneThread( final BigInteger threadIndex )
 		{
 			return( new StelemNewton( this , threadIndex ) );
+		}
+
+		@Override
+		public NewtonRaphsonSingleElem<DoubleElem, DoubleElemFactory> cloneThreadCached(
+				CloneThreadCache<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> cache,
+				CloneThreadCache<?, ?> cacheImplicit, BigInteger threadIndex) {
+			throw( new RuntimeException( "Not Supported" ) );
 		}
 		
 	}

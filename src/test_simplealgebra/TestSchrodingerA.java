@@ -38,6 +38,7 @@ import java.util.Map.Entry;
 import junit.framework.Assert;
 import junit.framework.TestCase;
 import simplealgebra.AbstractCache;
+import simplealgebra.CloneThreadCache;
 import simplealgebra.ComplexElem;
 import simplealgebra.ComplexElemFactory;
 import simplealgebra.DoubleElem;
@@ -2182,6 +2183,13 @@ public class TestSchrodingerA extends TestCase {
 		@Override
 		public StelemNewton cloneThread( final BigInteger threadIndex )
 		{
+			throw( new RuntimeException( "Not Supported" ) );
+		}
+		
+		@Override
+		public NewtonRaphsonSingleElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> cloneThreadCached(
+				CloneThreadCache<SymbolicElem<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>> cache,
+				CloneThreadCache<?, ?> cacheImplicit, BigInteger threadIndex) {
 			throw( new RuntimeException( "Not Supported" ) );
 		}
 		
