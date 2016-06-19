@@ -36,6 +36,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
+import simplealgebra.CloneThreadCache;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
@@ -754,6 +755,15 @@ public abstract class DescentAlgorithmMultiElemRemapTensor<Z extends Object, R e
 	 * @return The thread-cloned object, or the same object if immutable.
 	 */
 	public abstract DescentAlgorithmMultiElemRemapTensor<Z,R,S> cloneThread( final BigInteger threadIndex );
+	
+	
+	/**
+	 * Implementation TBD.
+	 */
+	public DescentAlgorithmMultiElemRemapTensor<Z,R,S> cloneThreadCached( final BigInteger threadIndex , CloneThreadCache<EinsteinTensorElem<Z,R,S>,EinsteinTensorElemFactory<Z,R,S>> cache )
+	{
+		throw( new RuntimeException( "Implementation TBD" ) );
+	}
 	
 	
 	
