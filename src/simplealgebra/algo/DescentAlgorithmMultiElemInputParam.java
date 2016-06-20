@@ -35,10 +35,12 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
+import simplealgebra.CloneThreadCache;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NumDimensions;
 import simplealgebra.ga.GeometricAlgebraMultivectorElem;
+import simplealgebra.ga.GeometricAlgebraMultivectorElemFactory;
 import simplealgebra.ga.GeometricAlgebraOrd;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
@@ -272,6 +274,26 @@ public abstract class DescentAlgorithmMultiElemInputParam<U extends NumDimension
 	public abstract DescentAlgorithmMultiElemInputParam<U,R,S> cloneThread( final BigInteger threadIndex );
 	
 	
+
+	
+	
+	
+	/**
+	 * Produces a clone of the object for threading.  Note that for
+	 * OpenJDK thread-safety for BigInteger requires at least version
+	 * 6u14.  See https://bugs.openjdk.java.net/browse/JDK-6348370
+	 * 
+	 * @param threadIndex The index of the thread for which to clone.
+	 * @return The thread-cloned object, or the same object if immutable.
+	 */
+	public abstract DescentAlgorithmMultiElemInputParam<U,R,S> cloneThreadCached(  
+			final CloneThreadCache<GeometricAlgebraMultivectorElem<U, GeometricAlgebraOrd<U>, SymbolicElem<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, SymbolicElemFactory<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>,GeometricAlgebraMultivectorElemFactory<U, GeometricAlgebraOrd<U>, SymbolicElem<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, SymbolicElemFactory<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>> cache , 
+			CloneThreadCache<?,?> cacheImplicit ,
+			final BigInteger threadIndex );
+	
+	
+	
+	
 	
 	/**
 	 * Copies an instance for cloneThread();
@@ -305,6 +327,53 @@ public abstract class DescentAlgorithmMultiElemInputParam<U extends NumDimension
 		}
 		
 		sfac = in.sfac.cloneThread(threadIndex);
+		
+		// The NumDimensions dim is presumed to be immutable.
+		dim = in.dim;
+		
+	}
+	
+	
+	
+	/**
+	 * Copies an instance for cloneThreadCached();
+	 * 
+	 * @param in The instance to copy.
+	 * @param threadIndex The index of the thread for which to clone.
+	 */
+	protected DescentAlgorithmMultiElemInputParam( final DescentAlgorithmMultiElemInputParam<U,R,S> in , 
+			final CloneThreadCache<GeometricAlgebraMultivectorElem<U, GeometricAlgebraOrd<U>, SymbolicElem<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, SymbolicElemFactory<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>,GeometricAlgebraMultivectorElemFactory<U, GeometricAlgebraOrd<U>, SymbolicElem<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, SymbolicElemFactory<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>> cache , 
+			CloneThreadCache<?,?> cacheImplicit ,
+			final BigInteger threadIndex )
+	{
+		final CloneThreadCache<SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,SymbolicElemFactory<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>> cacheA
+			= (CloneThreadCache<SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,SymbolicElemFactory<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>>)( cache.getInnerCache() );
+		final CloneThreadCache<SymbolicElem<R,S>,SymbolicElemFactory<R,S>> cacheB = (CloneThreadCache<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>)( cacheA.getInnerCache() );
+
+		functions = in.functions.cloneThreadCached(threadIndex,cache);
+		
+		withRespectTos = (ArrayList<ArrayList<? extends Elem<?,?>>>)( new ArrayList() );
+		for( final ArrayList<? extends Elem<?,?>> va : in.withRespectTos )
+		{
+			final ArrayList<? extends Elem<?,?>> vaa = (ArrayList<? extends Elem<?,?>>)( new ArrayList() );
+			for( final Elem ela : va )
+			{
+				( (ArrayList<Elem>) ((ArrayList)(vaa)) ).add( ela );
+			}
+			( (ArrayList) withRespectTos ).add( vaa );
+		}
+		
+		
+		implicitSpaceFirstLevel = (HashMap<? extends Elem<?,?>,? extends Elem<?,?>>)( new HashMap() );
+		
+		for( Entry<? extends Elem<?,?>,? extends Elem<?,?>> ii : in.implicitSpaceFirstLevel.entrySet() )
+		{
+			final Elem<?,?> ikey = ii.getKey();
+			final Elem<?,?> ival = ii.getValue();
+			( (HashMap) implicitSpaceFirstLevel ).put( ikey.cloneThreadCached(threadIndex,(CloneThreadCache)cacheImplicit) , ival.cloneThreadCached(threadIndex,(CloneThreadCache)cacheImplicit) );
+		}
+		
+		sfac = in.sfac.cloneThreadCached(threadIndex,cacheB);
 		
 		// The NumDimensions dim is presumed to be immutable.
 		dim = in.dim;

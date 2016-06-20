@@ -3223,17 +3223,30 @@ protected void applyAdd(
 			}
 			
 			
-			protected StelemDescentEnt( StelemDescentEnt in , final BigInteger threadIndex )
+			protected StelemDescentEnt( StelemDescentEnt in , 
+					CloneThreadCache<GeometricAlgebraMultivectorElem<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim, GeometricAlgebraOrd<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim>, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, GeometricAlgebraMultivectorElemFactory<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim, GeometricAlgebraOrd<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim>, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>> cache,
+					CloneThreadCache<?, ?> cacheImplicit ,
+					final BigInteger threadIndex )
 			{
-				super( in , threadIndex );
+				super( in , cache , cacheImplicit , threadIndex );
 			}
 			
 			
 			@Override
 			public StelemDescentEnt cloneThread( final BigInteger threadIndex )
 			{
-				return( new StelemDescentEnt( this , threadIndex ) );
+				throw( new RuntimeException( "Not Supported" ) );
 			}
+
+			@Override
+			public StelemDescentEnt cloneThreadCached(
+					CloneThreadCache<GeometricAlgebraMultivectorElem<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim, GeometricAlgebraOrd<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim>, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, GeometricAlgebraMultivectorElemFactory<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim, GeometricAlgebraOrd<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim>, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>> cache,
+					CloneThreadCache<?, ?> cacheImplicit, BigInteger threadIndex) {
+				return( new StelemDescentEnt( this , cache , cacheImplicit , threadIndex ) );
+			}
+			
+			
+			
 			
 			
 		};
