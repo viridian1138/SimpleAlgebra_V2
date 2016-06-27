@@ -2687,11 +2687,6 @@ protected void applyAdd(
 			return( true );
 		}
 		
-		@Override
-		public StelemDescent cloneThread( final BigInteger threadIndex )
-		{
-			throw( new RuntimeException( "Not Supported" ) );
-		}
 	
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
@@ -2722,7 +2717,7 @@ protected void applyAdd(
 		 * @author thorngreen
 		 *
 		 */
-		protected class StelemDescentEnt extends DescentAlgorithmMultiElemInputParam<simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim, DoubleElem, DoubleElemFactory>
+		protected class StelemDescentEnt extends DescentAlgorithmMultiElemInputParamCallbacks<simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim, DoubleElem, DoubleElemFactory>
 		{
 
 			@Override
@@ -2784,26 +2779,6 @@ protected void applyAdd(
 			{
 				super();
 			}
-			
-			
-			protected StelemDescentEnt( StelemDescentEnt in , final BigInteger threadIndex )
-			{
-				super( in , threadIndex );
-			}
-			
-			
-			@Override
-			public StelemDescentEnt cloneThread( final BigInteger threadIndex )
-			{
-				return( new StelemDescentEnt( this , threadIndex ) );
-			}
-
-			@Override
-			public StelemDescentEnt cloneThreadCached(
-					CloneThreadCache<GeometricAlgebraMultivectorElem<simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim, GeometricAlgebraOrd<simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim>, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, GeometricAlgebraMultivectorElemFactory<simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim, GeometricAlgebraOrd<simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim>, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>> cache,
-					CloneThreadCache<?, ?> cacheImplicit, BigInteger threadIndex) {
-				throw( new RuntimeException( "Not Supported" ) );
-			}
 
 			
 		};
@@ -2813,14 +2788,38 @@ protected void applyAdd(
 		protected DescentAlgorithmMultiElem<simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim, DoubleElem, DoubleElemFactory> genDescent(
 				final GenDescentParam param ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
 			
-			final StelemDescentEnt sa = new StelemDescentEnt();
-			sa.setFunctions( param.getFunctions() );
-			sa.setWithRespectTos( param.getWithRespectTos() );
-			sa.setImplicitSpaceFirstLevel( param.getImplicitSpaceFirstLevel() );
-			sa.setSfac( param.getSfac() );
-			sa.setDim( param.getDim() );
+			final DescentAlgorithmMultiElemInputParam<simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim, DoubleElem, DoubleElemFactory> saa
+				= new DescentAlgorithmMultiElemInputParam<simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim, DoubleElem, DoubleElemFactory>();
 			
-			return( new NewtonRaphsonMultiElemNoBacktrack<simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim, DoubleElem, DoubleElemFactory>( sa , param.getCache() ) );
+			final StelemDescentEnt sa = new StelemDescentEnt();
+			saa.setFunctions( param.getFunctions() );
+			saa.setWithRespectTos( param.getWithRespectTos() );
+			saa.setImplicitSpaceFirstLevel( param.getImplicitSpaceFirstLevel() );
+			saa.setSfac( param.getSfac() );
+			saa.setDim( param.getDim() );
+			saa.setCallbacks( sa );
+			
+			return( new NewtonRaphsonMultiElemNoBacktrack<simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim, DoubleElem, DoubleElemFactory>( saa , param.getCache() ) );
+		}
+
+		@Override
+		protected DescentAlgorithmMultiElemRemap<TestDimensionFour, SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory> cloneThread(
+				DescentAlgorithmMultiElemInputParamCallbacks<simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim, DoubleElem, DoubleElemFactory> _param,
+				BigInteger threadIndex) {
+			throw( new RuntimeException( "Not Supported" ) );
+		}
+
+		@Override
+		protected DescentAlgorithmMultiElemRemap<TestDimensionFour, SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory> cloneThreadCached(
+				DescentAlgorithmMultiElemInputParamCallbacks<simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim, DoubleElem, DoubleElemFactory> _param,
+				CloneThreadCache<GeometricAlgebraMultivectorElem<simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim, GeometricAlgebraOrd<simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim>, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, GeometricAlgebraMultivectorElemFactory<simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim, GeometricAlgebraOrd<simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim>, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>> cache,
+				CloneThreadCache<?, ?> cacheImplicit, BigInteger threadIndex) {
+			throw( new RuntimeException( "Not Supported" ) );
+		}
+
+		@Override
+		protected DescentAlgorithmMultiElemInputParamCallbacks<simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim, DoubleElem, DoubleElemFactory> genCallbacks() {
+			return( new StelemDescentEnt() );
 		}
 		
 	}

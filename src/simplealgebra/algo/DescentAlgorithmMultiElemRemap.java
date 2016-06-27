@@ -36,6 +36,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
+import simplealgebra.CloneThreadCache;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
@@ -522,6 +523,9 @@ public abstract class DescentAlgorithmMultiElemRemap<U extends NumDimensions, A 
 	protected abstract DescentAlgorithmMultiElem<Adim,R,S> genDescent( final GenDescentParam param ) throws NotInvertibleException, MultiplicativeDistributionRequiredException;
 
 	
+	protected abstract DescentAlgorithmMultiElemInputParamCallbacks<Adim,R,S> genCallbacks();
+	
+	
 	
 	/**
 	 * Updates function parameters based on the internal descent algorithm iteration results.
@@ -623,7 +627,8 @@ public abstract class DescentAlgorithmMultiElemRemap<U extends NumDimensions, A 
 	 * @param in The instance to copy.
 	 * @param threadIndex The index of the thread for which to clone.
 	 */
-	public DescentAlgorithmMultiElemRemap( final DescentAlgorithmMultiElemRemap<U,A,R,S> in , final BigInteger threadIndex )
+	public DescentAlgorithmMultiElemRemap( final DescentAlgorithmMultiElemRemap<U,A,R,S> in , 
+			final BigInteger threadIndex )
 	{
 
 		
@@ -677,8 +682,9 @@ public abstract class DescentAlgorithmMultiElemRemap<U extends NumDimensions, A 
 		}
 		
 		
+		DescentAlgorithmMultiElemInputParamCallbacks<Adim,R,S> param = genCallbacks();
 		
-		descent = in.descent.cloneThread(threadIndex);
+		descent = in.descent.cloneThread(param, threadIndex);
 		
 		
 		// The NumDimensions idim is presumed to be immutable.
@@ -694,6 +700,102 @@ public abstract class DescentAlgorithmMultiElemRemap<U extends NumDimensions, A 
 		fac = in.fac.cloneThread(threadIndex);
 				
 	}
+	
+	
+	
+	
+	
+	
+	/**
+	 * Copies an instance for cloneThread();
+	 * 
+	 * @param in The instance to copy.
+	 * @param threadIndex The index of the thread for which to clone.
+	 */
+	public DescentAlgorithmMultiElemRemap( final DescentAlgorithmMultiElemRemap<U,A,R,S> in , 
+			final CloneThreadCache<GeometricAlgebraMultivectorElem<DescentAlgorithmMultiElemRemap.Adim,GeometricAlgebraOrd<DescentAlgorithmMultiElemRemap.Adim>,SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,SymbolicElemFactory<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>>,GeometricAlgebraMultivectorElemFactory<DescentAlgorithmMultiElemRemap.Adim,GeometricAlgebraOrd<DescentAlgorithmMultiElemRemap.Adim>,SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,SymbolicElemFactory<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>>> cache ,
+			CloneThreadCache<?,?> cacheImplicit ,
+			final BigInteger threadIndex )
+	{
+
+		
+		inMapFun = new HashMap<HashSet<BigInteger>,BigInteger>();
+		{
+			for( final Entry<HashSet<BigInteger>, BigInteger> ii : in.inMapFun.entrySet() )
+			{
+				final HashSet<BigInteger> ikey = ii.getKey();
+				final BigInteger ival = ii.getValue();
+				inMapFun.put( (HashSet<BigInteger>)( ikey.clone() ) , ival );
+			}
+		}
+		
+		
+		
+		outMapFun = new HashMap<HashSet<BigInteger>,HashSet<BigInteger>>();
+		{
+			for( final Entry<HashSet<BigInteger>, HashSet<BigInteger>> ii : in.outMapFun.entrySet() )
+			{
+				final HashSet<BigInteger> ikey = ii.getKey();
+				final HashSet<BigInteger> ival = ii.getValue();
+				outMapFun.put( (HashSet<BigInteger>)( ikey.clone() ) , (HashSet<BigInteger>)( ival.clone() ) );
+			}
+		}
+		
+		
+		
+		
+			
+		inMapOffset = new HashMap<HashSet<BigInteger>,HashSet<BigInteger>>();
+		{
+			for( final Entry<HashSet<BigInteger>, HashSet<BigInteger>> ii : in.inMapOffset.entrySet() )
+			{
+				final HashSet<BigInteger> ikey = ii.getKey();
+				final HashSet<BigInteger> ival = ii.getValue();
+				inMapOffset.put( (HashSet<BigInteger>)( ikey.clone() ) , (HashSet<BigInteger>)( ival.clone() ) );
+			}
+ 		}
+		
+		
+		
+		
+		outMapOffset = new HashMap<HashSet<BigInteger>,HashSet<BigInteger>>();
+		{
+			for( Entry<HashSet<BigInteger>, HashSet<BigInteger>> ii : in.outMapOffset.entrySet() )
+			{
+				final HashSet<BigInteger> ikey = ii.getKey();
+				final HashSet<BigInteger> ival = ii.getValue();
+				outMapOffset.put( (HashSet<BigInteger>)( ikey.clone() ) , (HashSet<BigInteger>)( ival.clone() ) );
+			}
+		}
+		
+		
+		DescentAlgorithmMultiElemInputParamCallbacks<Adim,R,S> param = genCallbacks();
+		
+		descent = in.descent.cloneThreadCached(param, cache, cacheImplicit, threadIndex);
+		
+		
+		// The NumDimensions idim is presumed to be immutable.
+		idim = in.idim;
+		
+		
+		// The Ord iord is presumed to be immutable.
+		iord = in.iord;
+		
+		
+		odim = in.odim;
+		
+		
+		final CloneThreadCache<SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,SymbolicElemFactory<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>> cacheB = (CloneThreadCache<SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,SymbolicElemFactory<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>>)( cache.getInnerCache() );
+		final CloneThreadCache<SymbolicElem<R,S>,SymbolicElemFactory<R,S>> cacheC = (CloneThreadCache<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>)( cacheB.getInnerCache() );
+		final CloneThreadCache<R,S> cacheD = (CloneThreadCache<R,S>)( cacheC.getInnerCache() );
+		
+		
+		fac = in.fac.cloneThreadCached(threadIndex, cacheD);
+				
+	}
+	
+	
+	
 	
 	
 	/**
@@ -752,7 +854,26 @@ public abstract class DescentAlgorithmMultiElemRemap<U extends NumDimensions, A 
 	 * @param threadIndex The index of the thread for which to clone.
 	 * @return The thread-cloned object, or the same object if immutable.
 	 */
-	public abstract DescentAlgorithmMultiElemRemap<U,A,R,S> cloneThread( final BigInteger threadIndex );
+	protected abstract DescentAlgorithmMultiElemRemap<U,A,R,S> cloneThread( final DescentAlgorithmMultiElemInputParamCallbacks<Adim,R,S> _param , 
+			final BigInteger threadIndex );
+	
+	
+	
+	
+	
+	/**
+	 * Produces a clone of the object for threading.  Note that for
+	 * OpenJDK thread-safety for BigInteger requires at least version
+	 * 6u14.  See https://bugs.openjdk.java.net/browse/JDK-6348370
+	 * 
+	 * @param threadIndex The index of the thread for which to clone.
+	 * @return The thread-cloned object, or the same object if immutable.
+	 */
+	protected abstract DescentAlgorithmMultiElemRemap<U,A,R,S> cloneThreadCached(
+			final DescentAlgorithmMultiElemInputParamCallbacks<Adim,R,S> _param ,
+			final CloneThreadCache<GeometricAlgebraMultivectorElem<DescentAlgorithmMultiElemRemap.Adim,GeometricAlgebraOrd<DescentAlgorithmMultiElemRemap.Adim>,SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,SymbolicElemFactory<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>>,GeometricAlgebraMultivectorElemFactory<DescentAlgorithmMultiElemRemap.Adim,GeometricAlgebraOrd<DescentAlgorithmMultiElemRemap.Adim>,SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,SymbolicElemFactory<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>>> cache ,
+			CloneThreadCache<?,?> cacheImplicit ,
+			final BigInteger threadIndex );
 	
 	
 	

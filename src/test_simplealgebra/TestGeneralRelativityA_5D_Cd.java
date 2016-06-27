@@ -2658,11 +2658,6 @@ protected void applyAdd(
 			return( TestGeneralRelativityA_5D_Cd.getUpdateValue( ) );
 		}
 		
-		@Override
-		public StelemDescent cloneThread( final BigInteger threadIndex )
-		{
-			throw( new RuntimeException( "Not Supported" ) );
-		}
 		
 		
 		/**
@@ -2753,7 +2748,7 @@ protected void applyAdd(
 		 * @author thorngreen
 		 *
 		 */
-		protected class StelemDescentEnt extends DescentAlgorithmMultiElemInputParam<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim, DoubleElem, DoubleElemFactory>
+		protected class StelemDescentEnt extends DescentAlgorithmMultiElemInputParamCallbacks<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim, DoubleElem, DoubleElemFactory>
 		{
 
 			@Override
@@ -2821,27 +2816,6 @@ protected void applyAdd(
 			}
 			
 			
-			protected StelemDescentEnt( StelemDescentEnt in , final BigInteger threadIndex )
-			{
-				super( in , threadIndex );
-			}
-			
-			
-			@Override
-			public StelemDescentEnt cloneThread( final BigInteger threadIndex )
-			{
-				return( new StelemDescentEnt( this , threadIndex ) );
-			}
-
-			@Override
-			public StelemDescentEnt cloneThreadCached(
-					CloneThreadCache<GeometricAlgebraMultivectorElem<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim, GeometricAlgebraOrd<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim>, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, GeometricAlgebraMultivectorElemFactory<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim, GeometricAlgebraOrd<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim>, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>> cache,
-					CloneThreadCache<?, ?> cacheImplicit, BigInteger threadIndex) {
-				throw( new RuntimeException( "Not Supported" ) );
-			}
-
-			
-			
 			
 		};
 		
@@ -2852,14 +2826,36 @@ protected void applyAdd(
 				throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
 			
-			final StelemDescentEnt sa = new StelemDescentEnt();
-			sa.setFunctions( param.getFunctions() );
-			sa.setWithRespectTos( param.getWithRespectTos() );
-			sa.setImplicitSpaceFirstLevel( param.getImplicitSpaceFirstLevel() );
-			sa.setSfac( param.getSfac() );
-			sa.setDim( param.getDim() );
+			final DescentAlgorithmMultiElemInputParam<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim, DoubleElem, DoubleElemFactory> saa =
+					new DescentAlgorithmMultiElemInputParam<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim, DoubleElem, DoubleElemFactory>();
 			
-			return( new NewtonRaphsonMultiElemSimpleBacktrackCacheFinal<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim, DoubleElem, DoubleElemFactory>( sa , param.getCache() ) );
+			final StelemDescentEnt sa = new StelemDescentEnt();
+			saa.setFunctions( param.getFunctions() );
+			saa.setWithRespectTos( param.getWithRespectTos() );
+			saa.setImplicitSpaceFirstLevel( param.getImplicitSpaceFirstLevel() );
+			saa.setSfac( param.getSfac() );
+			saa.setDim( param.getDim() );
+			saa.setCallbacks( sa );
+			
+			return( new NewtonRaphsonMultiElemSimpleBacktrackCacheFinal<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim, DoubleElem, DoubleElemFactory>( saa , param.getCache() ) );
+		}
+
+		@Override
+		protected DescentAlgorithmMultiElemInputParamCallbacks<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim, DoubleElem, DoubleElemFactory> genCallbacks() {
+			return( new StelemDescentEnt() );
+		}
+
+		@Override
+		public DescentAlgorithmMultiElemRemapTensor<String, DoubleElem, DoubleElemFactory> cloneThread(
+				BigInteger threadIndex) {
+			throw( new RuntimeException( "Not Supported" ) );
+		}
+
+		@Override
+		public DescentAlgorithmMultiElemRemapTensor<String, DoubleElem, DoubleElemFactory> cloneThreadCached(
+				CloneThreadCache<GeometricAlgebraMultivectorElem<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim, GeometricAlgebraOrd<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim>, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, GeometricAlgebraMultivectorElemFactory<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim, GeometricAlgebraOrd<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim>, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>> cache,
+				CloneThreadCache<?, ?> cacheImplicit, BigInteger threadIndex) {
+			throw( new RuntimeException( "Not Supported" ) );
 		}
 		
 	}

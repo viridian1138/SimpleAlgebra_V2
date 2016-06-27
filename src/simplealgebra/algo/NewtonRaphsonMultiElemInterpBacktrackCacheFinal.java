@@ -36,13 +36,16 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
+import simplealgebra.CloneThreadCache;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.NumDimensions;
 import simplealgebra.SquareMatrixElem;
 import simplealgebra.algo.DescentAlgorithmMultiElem.DescentInverseFailedException;
+import simplealgebra.et.EinsteinTensorElem;
 import simplealgebra.ga.GeometricAlgebraMultivectorElem;
+import simplealgebra.ga.GeometricAlgebraMultivectorElemFactory;
 import simplealgebra.ga.GeometricAlgebraOrd;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SCacheKey;
@@ -115,8 +118,7 @@ public class NewtonRaphsonMultiElemInterpBacktrackCacheFinal<U extends NumDimens
 	/**
 	 * The functions over which to evaluate Netwon-Raphson.
 	 */
-	protected GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,
-			SymbolicElemFactory<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>> functions;
+	protected Iterable<HashSet<BigInteger>> functionsKeys;
 	
 	/**
 	 * The last iteration values calculated.
@@ -151,7 +153,7 @@ public class NewtonRaphsonMultiElemInterpBacktrackCacheFinal<U extends NumDimens
 	/**
 	 * Input parameters for the algorithm.
 	 */
-	protected DescentAlgorithmMultiElemInputParam<U,R,S> param;
+	protected DescentAlgorithmMultiElemInputParamCallbacks<U,R,S> param;
 	
 	/**
 	 * Indicates that the iterations stopped because they could no longer proceed.
@@ -172,15 +174,15 @@ public class NewtonRaphsonMultiElemInterpBacktrackCacheFinal<U extends NumDimens
 			final HashMap<SCacheKey<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, SymbolicElem<R, S>> cache )
 					throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
-		functions = _param.getFunctions();
+		functionsKeys = _param.getFunctions().getKeySet();
 		dim = _param.getDim();
 		sfac = _param.getSfac();
-		param = _param;
-		final SimplificationType useSimplification = _param.useSimplification();
-		final boolean useCachedEval = _param.useCachedEval();
+		param = _param.getCallbacks();
+		final SimplificationType useSimplification = param.useSimplification();
+		final boolean useCachedEval = param.useCachedEval();
 		evals = new GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,SymbolicElem<R,S>,SymbolicElemFactory<R,S>>( 
 				_param.getSfac() , _param.getDim() , new GeometricAlgebraOrd<U>() );
-		for( final Entry<HashSet<BigInteger>, SymbolicElem<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> ii : functions.getEntrySet() )
+		for( final Entry<HashSet<BigInteger>, SymbolicElem<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> ii : _param.getFunctions().getEntrySet() )
 		{
 			final HashSet<BigInteger> key = ii.getKey();
 			SymbolicElem<R,S> evalF = useCachedEval ? 
@@ -196,7 +198,7 @@ public class NewtonRaphsonMultiElemInterpBacktrackCacheFinal<U extends NumDimens
 		{
 			final BigInteger key = bcnt;
 			bcnt = bcnt.add( BigInteger.ONE );
-			for( final HashSet<BigInteger> key2A : functions.getKeySet() )
+			for( final HashSet<BigInteger> key2A : functionsKeys )
 			{
 				final BigInteger key2 = key2A.iterator().next();
 				final SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>> fun = _param.getFunctions().get( key2A );
@@ -362,7 +364,7 @@ public class NewtonRaphsonMultiElemInterpBacktrackCacheFinal<U extends NumDimens
 		
 		final SquareMatrixElem<U,R,S> evalJacobian = new SquareMatrixElem<U,R,S>( sfac.getFac() , dim );
 		
-		for( final HashSet<BigInteger> key2A : functions.getKeySet() )
+		for( final HashSet<BigInteger> key2A : functionsKeys )
 		{
 			final BigInteger key2 = key2A.iterator().next();
 			final GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,SymbolicElem<R,S>,SymbolicElemFactory<R,S>> row = 
@@ -390,9 +392,15 @@ public class NewtonRaphsonMultiElemInterpBacktrackCacheFinal<U extends NumDimens
 	 * @param in The instance to copy.
 	 * @param threadIndex The index of the thread for which to clone.
 	 */
-	protected NewtonRaphsonMultiElemInterpBacktrackCacheFinal( NewtonRaphsonMultiElemInterpBacktrackCacheFinal<U,R,S> in , final BigInteger threadIndex )
+	protected NewtonRaphsonMultiElemInterpBacktrackCacheFinal( NewtonRaphsonMultiElemInterpBacktrackCacheFinal<U,R,S> in , 
+			final DescentAlgorithmMultiElemInputParamCallbacks<U,R,S> _param , final BigInteger threadIndex )
 	{
-		functions = in.functions.cloneThread(threadIndex);
+		final HashSet<HashSet<BigInteger>> hsf = new HashSet<HashSet<BigInteger>>();
+		for( HashSet<BigInteger> ii : in.functionsKeys )
+		{
+			hsf.add( (HashSet<BigInteger>)( ii.clone() ) );
+		}
+		functionsKeys = hsf;
 		
 		if( in.lastValues != null )
 		{
@@ -415,14 +423,104 @@ public class NewtonRaphsonMultiElemInterpBacktrackCacheFinal<U extends NumDimens
 		
 		sfac = in.sfac.cloneThread(threadIndex);
 		
-		param = in.param.cloneThread(threadIndex);
+		param = _param;
+	}
+	
+	
+	/**
+	 * Copies an instance for cloneThread();
+	 * 
+	 * @param in The instance to copy.
+	 * @param threadIndex The index of the thread for which to clone.
+	 */
+	protected NewtonRaphsonMultiElemInterpBacktrackCacheFinal( NewtonRaphsonMultiElemInterpBacktrackCacheFinal<U,R,S> in ,  
+			final DescentAlgorithmMultiElemInputParamCallbacks<U,R,S> _param , 
+			final CloneThreadCache<GeometricAlgebraMultivectorElem<U, GeometricAlgebraOrd<U>, SymbolicElem<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, SymbolicElemFactory<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>,GeometricAlgebraMultivectorElemFactory<U, GeometricAlgebraOrd<U>, SymbolicElem<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, SymbolicElemFactory<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>> cache , 
+			CloneThreadCache<?,?> cacheImplicit ,
+			final BigInteger threadIndex )
+	{
+		final CloneThreadCache<SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,SymbolicElemFactory<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>> cacheA
+			= (CloneThreadCache<SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,SymbolicElemFactory<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>>)( cache.getInnerCache() );
+		final CloneThreadCache<SymbolicElem<R,S>,SymbolicElemFactory<R,S>> cacheB = (CloneThreadCache<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>)( cacheA.getInnerCache() );
+		final CloneThreadCache<R,S> cacheC = (CloneThreadCache<R,S>)( cacheB.getInnerCache() );
+
+		final HashSet<HashSet<BigInteger>> hsf = new HashSet<HashSet<BigInteger>>();
+		for( HashSet<BigInteger> ii : in.functionsKeys )
+		{
+			hsf.add( (HashSet<BigInteger>)( ii.clone() ) );
+		}
+		functionsKeys = hsf;
+		
+		if( in.lastValues != null )
+		{
+			lastValues = in.lastValues.getFac().zero();
+			
+			for( final Entry<HashSet<BigInteger>, R> ii : in.lastValues.getEntrySet() )
+			{
+				final HashSet<BigInteger> clkey = (HashSet<BigInteger>)( ii.getKey().clone() );
+				final R clval = (R)( ii.getValue().cloneThreadCached(threadIndex, (CloneThreadCache)( cacheC ) ) );
+				lastValues.setVal( clkey , clval );
+			}
+		}
+		
+		for( final Entry<? extends Elem<?, ?>, ? extends Elem<?, ?>> ii : in.implicitSpace.entrySet() )
+		{
+			final Elem<?,?> ikey = ii.getKey();
+			final Elem<?,?> ival = ii.getValue();
+			( (HashMap) implicitSpace ).put( ikey.cloneThreadCached(threadIndex,(CloneThreadCache)cacheImplicit) , ival.cloneThreadCached(threadIndex,(CloneThreadCache)cacheImplicit) );
+		}
+	
+		
+		for( final Entry<HashSet<BigInteger>, SymbolicElem<R,S>> ii : in.evals.getEntrySet() )
+		{
+			final HashSet<BigInteger> clkey = (HashSet<BigInteger>)( ii.getKey().clone() );
+			final SymbolicElem<R,S> clval = (SymbolicElem<R,S>)( ii.getValue().cloneThreadCached(threadIndex, (CloneThreadCache)( cacheB ) ) );
+			evals.setVal( clkey , clval );
+		}
+		
+		
+		partialEvalJacobian = in.partialEvalJacobian.getFac().zero();
+		final ArrayList<String> contravarIndices = new ArrayList<String>();
+		final ArrayList<String> covarIndices = new ArrayList<String>();
+		covarIndices.add( "u" );
+		covarIndices.add( "v" );
+		EinsteinTensorElem<String, SymbolicElem<R, S>, SymbolicElemFactory<R,S>> tmp = new EinsteinTensorElem<String, SymbolicElem<R, S>, SymbolicElemFactory<R,S>>(	
+				in.partialEvalJacobian.getFac().getFac() , contravarIndices, covarIndices );
+		in.partialEvalJacobian.toRankTwoTensor( tmp );
+		for( final Entry<ArrayList<BigInteger>, SymbolicElem<R, S>> ii : tmp.getEntrySet() )
+		{
+			ArrayList<BigInteger> key = ii.getKey();
+			SymbolicElem<R, S> val = ii.getValue();
+			partialEvalJacobian.setVal( key.get(0) , key.get(1), val.cloneThreadCached(threadIndex, cacheB) );
+		}
+		
+		tmp = null;
+		
+		
+		// It is presumed that the NumDimensions dim is immutable.
+		dim = in.dim;
+		
+		sfac = in.sfac.cloneThreadCached(threadIndex, cacheB);
+		
+		param = _param;
 	}
 	
 	
 	@Override
-	public NewtonRaphsonMultiElemInterpBacktrackCacheFinal<U,R,S> cloneThread( BigInteger threadIndex )
+	public NewtonRaphsonMultiElemInterpBacktrackCacheFinal<U,R,S> cloneThread( final DescentAlgorithmMultiElemInputParamCallbacks<U,R,S> _param , BigInteger threadIndex )
 	{
-		return( new NewtonRaphsonMultiElemInterpBacktrackCacheFinal<U,R,S>( this , threadIndex ) );
+		return( new NewtonRaphsonMultiElemInterpBacktrackCacheFinal<U,R,S>( this , _param , threadIndex ) );
+	}
+	
+	
+	@Override
+	public NewtonRaphsonMultiElemInterpBacktrackCacheFinal<U,R,S> cloneThreadCached(  
+			final DescentAlgorithmMultiElemInputParamCallbacks<U,R,S> _param ,
+			final CloneThreadCache<GeometricAlgebraMultivectorElem<U, GeometricAlgebraOrd<U>, SymbolicElem<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, SymbolicElemFactory<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>,GeometricAlgebraMultivectorElemFactory<U, GeometricAlgebraOrd<U>, SymbolicElem<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, SymbolicElemFactory<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>> cache , 
+			CloneThreadCache<?,?> cacheImplicit ,
+			final BigInteger threadIndex )
+	{
+		return( new NewtonRaphsonMultiElemInterpBacktrackCacheFinal<U,R,S>( this , _param , cache , cacheImplicit , threadIndex ) );
 	}
 	
 

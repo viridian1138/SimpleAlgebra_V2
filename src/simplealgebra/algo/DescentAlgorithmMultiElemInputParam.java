@@ -55,110 +55,11 @@ import simplealgebra.symbolic.SymbolicElemFactory;
  * @param <R> The enclosed type for the evaluation.
  * @param <S> The factory for the enclosed type for the evaluation.
  */
-public abstract class DescentAlgorithmMultiElemInputParam<U extends NumDimensions, R extends Elem<R,?>, S extends ElemFactory<R,S>> {
-	
+public class DescentAlgorithmMultiElemInputParam<U extends NumDimensions, R extends Elem<R,?>, S extends ElemFactory<R,S>> {
 	
 	
 	
 
-	/**
-	 * Updates function parameters based on the iteration.
-	 * 
-	 * @param iterationOffset The amount to which the iteration has estimated the function parameter should change.
-	 */
-	protected abstract void performIterationUpdate( GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,R,S> iterationOffset );
-	
-	
-	
-	/**
-	 * Sets the current value of the iteration.
-	 * 
-	 * @param value The new value.
-	 */
-	protected abstract void setIterationValue( GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,R,S> value );
-	
-	
-	
-	/**
-	 * Gets the current value of the iteration.
-	 * 
-	 * @return The current value.
-	 */
-	protected abstract GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,R,S> getIterationValue( );
-	
-	
-	/**
-	 * Caches the current iteration value.
-	 */
-	protected abstract void cacheIterationValue();
-	
-	
-	/**
-	 * Retrieves the current iteration value from the cache.
-	 */
-	protected abstract void retrieveIterationValue();
-	
-	
-	/**
-	 * Returns whether the iterations have completed.
-	 * 
-	 * @return True iff. the iterations are to complete.
-	 */
-	protected abstract boolean iterationsDone( );
-	
-	
-	/**
-	 * Returns the type of simplification to be used.  
-	 * Override this method to turn off expression simplification.
-	 * 
-	 * @return The type of simplification to be used.
-	 */
-	protected SimplificationType useSimplification()
-	{
-		return( SimplificationType.DISTRIBUTE_SIMPLIFY2 );
-	}
-	
-	
-	/**
-	 * Returns whether cached evals are to be used.
-	 * Override this method to turn on cached evals.
-	 * 
-	 * @return True iff. cached evals are to be used.
-	 */
-	protected boolean useCachedEval()
-	{
-		return( false );
-	}
-	
-	
-	/**
-	 * In the event that an attempted descent algorithm iteration diverges from the desired answer, 
-	 * gets the maximum number of attempts that can be used to backtrack onto the original pre-iteration value.
-	 * 
-	 * @return The maximum number of backtrack iterations.
-	 */
-	protected int getMaxIterationsBacktrack()
-	{
-		return( 100 );
-	}
-	
-	
-	/**
-	 * Returns whether convergence-wise the new function value should be accepted as an improvement over the old function value.
-	 * 
-	 * @param lastValue The old function value.
-	 * @param newValue The new function value.
-	 * @return True iff. the new function value should be accepted as an improvement over the old function value.
-	 */
-	protected boolean evalIterationImproved( GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,R,S> lastValue , 
-			GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,R,S> newValue )
-	{
-		return( true );
-	}
-	
-	
-	
-	
 	
 	
 	/**
@@ -256,131 +157,32 @@ public abstract class DescentAlgorithmMultiElemInputParam<U extends NumDimension
 	
 	
 	
+	
+	
+	/**
+	 * @return the callbacks
+	 */
+	public DescentAlgorithmMultiElemInputParamCallbacks<U,R,S> getCallbacks() {
+		return callbacks;
+	}
+
+	/**
+	 * @param callbacks the callbacks to set
+	 */
+	public void setCallbacks(DescentAlgorithmMultiElemInputParamCallbacks<U,R,S> callbacks) {
+		this.callbacks = callbacks;
+	}
+
+	
+	
+	
 	public DescentAlgorithmMultiElemInputParam( )
 	{
 		
 	}
 
 	
-	
-	/**
-	 * Produces a clone of the object for threading.  Note that for
-	 * OpenJDK thread-safety for BigInteger requires at least version
-	 * 6u14.  See https://bugs.openjdk.java.net/browse/JDK-6348370
-	 * 
-	 * @param threadIndex The index of the thread for which to clone.
-	 * @return The thread-cloned object, or the same object if immutable.
-	 */
-	public abstract DescentAlgorithmMultiElemInputParam<U,R,S> cloneThread( final BigInteger threadIndex );
-	
-	
 
-	
-	
-	
-	/**
-	 * Produces a clone of the object for threading.  Note that for
-	 * OpenJDK thread-safety for BigInteger requires at least version
-	 * 6u14.  See https://bugs.openjdk.java.net/browse/JDK-6348370
-	 * 
-	 * @param threadIndex The index of the thread for which to clone.
-	 * @return The thread-cloned object, or the same object if immutable.
-	 */
-	public abstract DescentAlgorithmMultiElemInputParam<U,R,S> cloneThreadCached(  
-			final CloneThreadCache<GeometricAlgebraMultivectorElem<U, GeometricAlgebraOrd<U>, SymbolicElem<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, SymbolicElemFactory<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>,GeometricAlgebraMultivectorElemFactory<U, GeometricAlgebraOrd<U>, SymbolicElem<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, SymbolicElemFactory<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>> cache , 
-			CloneThreadCache<?,?> cacheImplicit ,
-			final BigInteger threadIndex );
-	
-	
-	
-	
-	
-	/**
-	 * Copies an instance for cloneThread();
-	 * 
-	 * @param in The instance to copy.
-	 * @param threadIndex The index of the thread for which to clone.
-	 */
-	protected DescentAlgorithmMultiElemInputParam( final DescentAlgorithmMultiElemInputParam<U,R,S> in , final BigInteger threadIndex )
-	{
-		functions = in.functions.cloneThread(threadIndex);
-		
-		withRespectTos = (ArrayList<ArrayList<? extends Elem<?,?>>>)( new ArrayList() );
-		for( final ArrayList<? extends Elem<?,?>> va : in.withRespectTos )
-		{
-			final ArrayList<? extends Elem<?,?>> vaa = (ArrayList<? extends Elem<?,?>>)( new ArrayList() );
-			for( final Elem ela : va )
-			{
-				( (ArrayList<Elem>) ((ArrayList)(vaa)) ).add( ela );
-			}
-			( (ArrayList) withRespectTos ).add( vaa );
-		}
-		
-		
-		implicitSpaceFirstLevel = (HashMap<? extends Elem<?,?>,? extends Elem<?,?>>)( new HashMap() );
-		
-		for( Entry<? extends Elem<?,?>,? extends Elem<?,?>> ii : in.implicitSpaceFirstLevel.entrySet() )
-		{
-			final Elem<?,?> ikey = ii.getKey();
-			final Elem<?,?> ival = ii.getValue();
-			( (HashMap) implicitSpaceFirstLevel ).put( ikey.cloneThread(threadIndex) , ival.cloneThread(threadIndex) );
-		}
-		
-		sfac = in.sfac.cloneThread(threadIndex);
-		
-		// The NumDimensions dim is presumed to be immutable.
-		dim = in.dim;
-		
-	}
-	
-	
-	
-	/**
-	 * Copies an instance for cloneThreadCached();
-	 * 
-	 * @param in The instance to copy.
-	 * @param threadIndex The index of the thread for which to clone.
-	 */
-	protected DescentAlgorithmMultiElemInputParam( final DescentAlgorithmMultiElemInputParam<U,R,S> in , 
-			final CloneThreadCache<GeometricAlgebraMultivectorElem<U, GeometricAlgebraOrd<U>, SymbolicElem<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, SymbolicElemFactory<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>,GeometricAlgebraMultivectorElemFactory<U, GeometricAlgebraOrd<U>, SymbolicElem<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, SymbolicElemFactory<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>> cache , 
-			CloneThreadCache<?,?> cacheImplicit ,
-			final BigInteger threadIndex )
-	{
-		final CloneThreadCache<SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,SymbolicElemFactory<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>> cacheA
-			= (CloneThreadCache<SymbolicElem<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>,SymbolicElemFactory<SymbolicElem<R,S>,SymbolicElemFactory<R,S>>>)( cache.getInnerCache() );
-		final CloneThreadCache<SymbolicElem<R,S>,SymbolicElemFactory<R,S>> cacheB = (CloneThreadCache<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>)( cacheA.getInnerCache() );
-
-		functions = in.functions.cloneThreadCached(threadIndex,cache);
-		
-		withRespectTos = (ArrayList<ArrayList<? extends Elem<?,?>>>)( new ArrayList() );
-		for( final ArrayList<? extends Elem<?,?>> va : in.withRespectTos )
-		{
-			final ArrayList<? extends Elem<?,?>> vaa = (ArrayList<? extends Elem<?,?>>)( new ArrayList() );
-			for( final Elem ela : va )
-			{
-				( (ArrayList<Elem>) ((ArrayList)(vaa)) ).add( ela );
-			}
-			( (ArrayList) withRespectTos ).add( vaa );
-		}
-		
-		
-		implicitSpaceFirstLevel = (HashMap<? extends Elem<?,?>,? extends Elem<?,?>>)( new HashMap() );
-		
-		for( Entry<? extends Elem<?,?>,? extends Elem<?,?>> ii : in.implicitSpaceFirstLevel.entrySet() )
-		{
-			final Elem<?,?> ikey = ii.getKey();
-			final Elem<?,?> ival = ii.getValue();
-			( (HashMap) implicitSpaceFirstLevel ).put( ikey.cloneThreadCached(threadIndex,(CloneThreadCache)cacheImplicit) , ival.cloneThreadCached(threadIndex,(CloneThreadCache)cacheImplicit) );
-		}
-		
-		sfac = in.sfac.cloneThreadCached(threadIndex,cacheB);
-		
-		// The NumDimensions dim is presumed to be immutable.
-		dim = in.dim;
-		
-	}
-	
-	
 	
 	/**
 	 * The functions over which to evaluate the descent algorithm.
@@ -407,7 +209,13 @@ public abstract class DescentAlgorithmMultiElemInputParam<U extends NumDimension
 	 * The number of dimensions over which to evaluate the descent algorithm.
 	 */
 	protected U dim;
+	
+	/**
+	 * The set of algorithm callbacks.
+	 */
+	protected DescentAlgorithmMultiElemInputParamCallbacks<U,R,S> callbacks;
 
+	
 }
 
 

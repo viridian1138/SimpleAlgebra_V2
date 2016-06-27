@@ -33,6 +33,7 @@ import java.math.BigInteger;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import simplealgebra.CloneThreadCache;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
@@ -41,10 +42,12 @@ import simplealgebra.SquareMatrixElem;
 import simplealgebra.WriteBigIntegerCache;
 import simplealgebra.WriteElemCache.IntVal;
 import simplealgebra.ga.GeometricAlgebraMultivectorElem;
+import simplealgebra.ga.GeometricAlgebraMultivectorElemFactory;
 import simplealgebra.ga.GeometricAlgebraOrd;
 import simplealgebra.ga.WriteGaSetCache;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SymbolicElem;
+import simplealgebra.symbolic.SymbolicElemFactory;
 
 
 /**
@@ -123,7 +126,22 @@ public abstract class DescentAlgorithmMultiElem<U extends NumDimensions, R exten
 	 * @param threadIndex The index of the thread for which to clone.
 	 * @return The thread-cloned object, or the same object if immutable.
 	 */
-	public abstract DescentAlgorithmMultiElem<U,R,S> cloneThread( final BigInteger threadIndex );
+	public abstract DescentAlgorithmMultiElem<U,R,S> cloneThread( final DescentAlgorithmMultiElemInputParamCallbacks<U,R,S> _param , final BigInteger threadIndex );
+	
+	
+	/**
+	 * Produces a clone of the object for threading.  Note that for
+	 * OpenJDK thread-safety for BigInteger requires at least version
+	 * 6u14.  See https://bugs.openjdk.java.net/browse/JDK-6348370
+	 * 
+	 * @param threadIndex The index of the thread for which to clone.
+	 * @return The thread-cloned object, or the same object if immutable.
+	 */
+	public abstract DescentAlgorithmMultiElem<U,R,S> cloneThreadCached( 
+			final DescentAlgorithmMultiElemInputParamCallbacks<U,R,S> _param ,
+			final CloneThreadCache<GeometricAlgebraMultivectorElem<U, GeometricAlgebraOrd<U>, SymbolicElem<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, SymbolicElemFactory<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>,GeometricAlgebraMultivectorElemFactory<U, GeometricAlgebraOrd<U>, SymbolicElem<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>, SymbolicElemFactory<SymbolicElem<R, S>, SymbolicElemFactory<R, S>>>> cache , 
+			CloneThreadCache<?,?> cacheImplicit ,
+			final BigInteger threadIndex );
 	
 	
 	/**
