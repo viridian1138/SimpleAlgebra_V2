@@ -2841,18 +2841,18 @@ protected void applyAdd(
 		}
 
 		@Override
-		protected DescentAlgorithmMultiElemInputParamCallbacks<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim, DoubleElem, DoubleElemFactory> genCallbacks() {
+		protected StelemDescentEnt genCallbacks() {
 			return( new StelemDescentEnt() );
 		}
 
 		@Override
-		public DescentAlgorithmMultiElemRemapTensor<String, DoubleElem, DoubleElemFactory> cloneThread(
+		public StelemDescent cloneThread(
 				BigInteger threadIndex) {
 			throw( new RuntimeException( "Not Supported" ) );
 		}
 
 		@Override
-		public DescentAlgorithmMultiElemRemapTensor<String, DoubleElem, DoubleElemFactory> cloneThreadCached(
+		public StelemDescent cloneThreadCached(
 				CloneThreadCache<GeometricAlgebraMultivectorElem<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim, GeometricAlgebraOrd<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim>, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, GeometricAlgebraMultivectorElemFactory<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim, GeometricAlgebraOrd<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim>, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>> cache,
 				CloneThreadCache<?, ?> cacheImplicit, BigInteger threadIndex) {
 			throw( new RuntimeException( "Not Supported" ) );

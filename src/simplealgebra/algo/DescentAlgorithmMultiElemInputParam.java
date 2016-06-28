@@ -160,14 +160,16 @@ public class DescentAlgorithmMultiElemInputParam<U extends NumDimensions, R exte
 	
 	
 	/**
-	 * @return the callbacks
+	 * Returns the callbacks for the calling descent algorithm.
+	 * @return The callbacks
 	 */
 	public DescentAlgorithmMultiElemInputParamCallbacks<U,R,S> getCallbacks() {
 		return callbacks;
 	}
 
 	/**
-	 * @param callbacks the callbacks to set
+	 * Sets the callbacks for the calling descent algorithm.
+	 * @param callbacks The callbacks to set
 	 */
 	public void setCallbacks(DescentAlgorithmMultiElemInputParamCallbacks<U,R,S> callbacks) {
 		this.callbacks = callbacks;
@@ -175,7 +177,9 @@ public class DescentAlgorithmMultiElemInputParam<U extends NumDimensions, R exte
 
 	
 	
-	
+	/**
+	 * Constructs the parameter object.
+	 */
 	public DescentAlgorithmMultiElemInputParam( )
 	{
 		

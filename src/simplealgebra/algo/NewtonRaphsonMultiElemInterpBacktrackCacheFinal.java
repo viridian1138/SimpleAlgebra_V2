@@ -390,6 +390,7 @@ public class NewtonRaphsonMultiElemInterpBacktrackCacheFinal<U extends NumDimens
 	 * Copies an instance for cloneThread();
 	 * 
 	 * @param in The instance to copy.
+	 * @param _param The set of callbacks for the cloning descent algorithm.
 	 * @param threadIndex The index of the thread for which to clone.
 	 */
 	protected NewtonRaphsonMultiElemInterpBacktrackCacheFinal( NewtonRaphsonMultiElemInterpBacktrackCacheFinal<U,R,S> in , 
@@ -431,6 +432,9 @@ public class NewtonRaphsonMultiElemInterpBacktrackCacheFinal<U extends NumDimens
 	 * Copies an instance for cloneThread();
 	 * 
 	 * @param in The instance to copy.
+	 * @param _param The set of callbacks for the cloning descent algorithm.
+	 * @param cache The cloning cache to remove duplicates.
+	 * @param cacheImplicit The cloning cache used to remove implicit duplicates.
 	 * @param threadIndex The index of the thread for which to clone.
 	 */
 	protected NewtonRaphsonMultiElemInterpBacktrackCacheFinal( NewtonRaphsonMultiElemInterpBacktrackCacheFinal<U,R,S> in ,  

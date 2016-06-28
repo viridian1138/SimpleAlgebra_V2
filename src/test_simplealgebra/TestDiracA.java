@@ -2803,14 +2803,14 @@ protected void applyAdd(
 		}
 
 		@Override
-		protected DescentAlgorithmMultiElemRemap<TestDimensionFour, SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory> cloneThread(
+		protected StelemDescent cloneThread(
 				DescentAlgorithmMultiElemInputParamCallbacks<simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim, DoubleElem, DoubleElemFactory> _param,
 				BigInteger threadIndex) {
 			throw( new RuntimeException( "Not Supported" ) );
 		}
 
 		@Override
-		protected DescentAlgorithmMultiElemRemap<TestDimensionFour, SpacetimeAlgebraOrd<TestDimensionFour>, DoubleElem, DoubleElemFactory> cloneThreadCached(
+		protected StelemDescent cloneThreadCached(
 				DescentAlgorithmMultiElemInputParamCallbacks<simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim, DoubleElem, DoubleElemFactory> _param,
 				CloneThreadCache<GeometricAlgebraMultivectorElem<simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim, GeometricAlgebraOrd<simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim>, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, GeometricAlgebraMultivectorElemFactory<simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim, GeometricAlgebraOrd<simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim>, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>> cache,
 				CloneThreadCache<?, ?> cacheImplicit, BigInteger threadIndex) {
@@ -2818,7 +2818,7 @@ protected void applyAdd(
 		}
 
 		@Override
-		protected DescentAlgorithmMultiElemInputParamCallbacks<simplealgebra.algo.DescentAlgorithmMultiElemRemap.Adim, DoubleElem, DoubleElemFactory> genCallbacks() {
+		protected StelemDescentEnt genCallbacks() {
 			return( new StelemDescentEnt() );
 		}
 		

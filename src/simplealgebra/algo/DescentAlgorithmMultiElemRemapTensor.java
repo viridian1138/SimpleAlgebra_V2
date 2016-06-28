@@ -759,6 +759,8 @@ public abstract class DescentAlgorithmMultiElemRemapTensor<Z extends Object, R e
 	 * Copies an instance for cloneThread();
 	 * 
 	 * @param in The instance to copy.
+	 * @param cache The cloning cache to remove duplicates.
+	 * @param cacheImplicit The cloning cache used to remove implicit duplicates.
 	 * @param threadIndex The index of the thread for which to clone.
 	 */
 	protected DescentAlgorithmMultiElemRemapTensor( final DescentAlgorithmMultiElemRemapTensor<Z,R,S> in , 
@@ -863,6 +865,8 @@ public abstract class DescentAlgorithmMultiElemRemapTensor<Z extends Object, R e
 	 * OpenJDK thread-safety for BigInteger requires at least version
 	 * 6u14.  See https://bugs.openjdk.java.net/browse/JDK-6348370
 	 * 
+	 * @param cache The cloning cache to remove duplicates.
+	 * @param cacheImplicit The cloning cache used to remove implicit duplicates.
 	 * @param threadIndex The index of the thread for which to clone.
 	 * @return The thread-cloned object, or the same object if immutable.
 	 */

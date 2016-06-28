@@ -160,7 +160,9 @@ public abstract class DescentAlgorithmMultiElemInputParamCallbacks<U extends Num
 	
 	
 	
-	
+	/**
+	 * Constructs the callback object.
+	 */
 	public DescentAlgorithmMultiElemInputParamCallbacks( )
 	{
 		

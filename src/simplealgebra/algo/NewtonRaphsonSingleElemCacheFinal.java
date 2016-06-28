@@ -373,6 +373,8 @@ public abstract class NewtonRaphsonSingleElemCacheFinal<R extends Elem<R,?>, S e
 	 * OpenJDK thread-safety for BigInteger requires at least version
 	 * 6u14.  See https://bugs.openjdk.java.net/browse/JDK-6348370
 	 * 
+	 * @param cache The cloning cache to remove duplicates.
+	 * @param cacheImplicit The cloning cache used to remove implicit duplicates.
 	 * @param threadIndex The index of the thread for which to clone.
 	 * @return The thread-cloned object, or the same object if immutable.
 	 */

@@ -428,6 +428,9 @@ public class NewtonRaphsonMultiElemInterpBacktrack<U extends NumDimensions, R ex
 	 * Copies an instance for cloneThread();
 	 * 
 	 * @param in The instance to copy.
+	 * @param _param The set of callbacks for the cloning descent algorithm.
+	 * @param cache The cloning cache to remove duplicates.
+	 * @param cacheImplicit The cloning cache used to remove implicit duplicates.
 	 * @param threadIndex The index of the thread for which to clone.
 	 */
 	protected NewtonRaphsonMultiElemInterpBacktrack( NewtonRaphsonMultiElemInterpBacktrack<U,R,S> in ,  

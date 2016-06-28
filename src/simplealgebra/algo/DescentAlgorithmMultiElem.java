@@ -123,6 +123,7 @@ public abstract class DescentAlgorithmMultiElem<U extends NumDimensions, R exten
 	 * OpenJDK thread-safety for BigInteger requires at least version
 	 * 6u14.  See https://bugs.openjdk.java.net/browse/JDK-6348370
 	 * 
+	 * @param _param The set of callbacks for the cloning descent algorithm.
 	 * @param threadIndex The index of the thread for which to clone.
 	 * @return The thread-cloned object, or the same object if immutable.
 	 */
@@ -134,6 +135,9 @@ public abstract class DescentAlgorithmMultiElem<U extends NumDimensions, R exten
 	 * OpenJDK thread-safety for BigInteger requires at least version
 	 * 6u14.  See https://bugs.openjdk.java.net/browse/JDK-6348370
 	 * 
+	 * @param _param The set of callbacks for the cloning descent algorithm.
+	 * @param cache The cloning cache to remove duplicates.
+	 * @param cacheImplicit The cloning cache used to remove implicit duplicates.
 	 * @param threadIndex The index of the thread for which to clone.
 	 * @return The thread-cloned object, or the same object if immutable.
 	 */
