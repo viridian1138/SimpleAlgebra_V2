@@ -526,6 +526,10 @@ public abstract class DescentAlgorithmMultiElemRemapTensor<Z extends Object, R e
 	protected abstract DescentAlgorithmMultiElem<Adim,R,S> genDescent( final GenDescentParam param ) throws NotInvertibleException, MultiplicativeDistributionRequiredException;
 	
 	
+	/**
+	 * Returns the callbacks for the calling descent algorithm.
+	 * @return The callbacks for the calling descent algorithm.
+	 */
 	protected abstract DescentAlgorithmMultiElemInputParamCallbacks<Adim,R,S> genCallbacks();
 
 	
