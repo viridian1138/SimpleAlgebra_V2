@@ -342,11 +342,17 @@ public class NewtonRaphsonMultiElemNoBacktrackCacheFinal<U extends NumDimensions
 			lastValues = in.lastValues.cloneThread(threadIndex);
 		}
 		
-		for( final Entry<? extends Elem<?, ?>, ? extends Elem<?, ?>> ii : in.implicitSpace.entrySet() )
+		if( in.implicitSpace != null )
 		{
-			final Elem<?,?> ikey = ii.getKey();
-			final Elem<?,?> ival = ii.getValue();
-			( (HashMap) implicitSpace ).put( ikey.cloneThread(threadIndex) , ival.cloneThread(threadIndex) );
+			implicitSpace = (HashMap<? extends Elem<?,?>,? extends Elem<?,?>>)( new HashMap() );
+			
+			
+			for( final Entry<? extends Elem<?, ?>, ? extends Elem<?, ?>> ii : in.implicitSpace.entrySet() )
+			{
+				final Elem<?,?> ikey = ii.getKey();
+				final Elem<?,?> ival = ii.getValue();
+				( (HashMap) implicitSpace ).put( ikey.cloneThread(threadIndex) , ival.cloneThread(threadIndex) );
+			}
 		}
 		
 		evals = in.evals.cloneThread(threadIndex);
@@ -403,14 +409,21 @@ public class NewtonRaphsonMultiElemNoBacktrackCacheFinal<U extends NumDimensions
 			}
 		}
 		
-		for( final Entry<? extends Elem<?, ?>, ? extends Elem<?, ?>> ii : in.implicitSpace.entrySet() )
+		if( in.implicitSpace != null )
 		{
-			final Elem<?,?> ikey = ii.getKey();
-			final Elem<?,?> ival = ii.getValue();
-			( (HashMap) implicitSpace ).put( ikey.cloneThreadCached(threadIndex,(CloneThreadCache)cacheImplicit) , ival.cloneThreadCached(threadIndex,(CloneThreadCache)cacheImplicit) );
+			implicitSpace = (HashMap<? extends Elem<?,?>,? extends Elem<?,?>>)( new HashMap() );
+			
+			
+			for( final Entry<? extends Elem<?, ?>, ? extends Elem<?, ?>> ii : in.implicitSpace.entrySet() )
+			{
+				final Elem<?,?> ikey = ii.getKey();
+				final Elem<?,?> ival = ii.getValue();
+				( (HashMap) implicitSpace ).put( ikey.cloneThreadCached(threadIndex,(CloneThreadCache)cacheImplicit) , ival.cloneThreadCached(threadIndex,(CloneThreadCache)cacheImplicit) );
+			}
 		}
 	
 		
+		evals = in.evals.getFac().zero();
 		for( final Entry<HashSet<BigInteger>, SymbolicElem<R,S>> ii : in.evals.getEntrySet() )
 		{
 			final HashSet<BigInteger> clkey = (HashSet<BigInteger>)( ii.getKey().clone() );

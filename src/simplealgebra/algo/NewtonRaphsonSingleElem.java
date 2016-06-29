@@ -296,6 +296,7 @@ public abstract class NewtonRaphsonSingleElem<R extends Elem<R,?>, S extends Ele
 		{
 			implicitSpace = (HashMap<? extends Elem<?,?>,? extends Elem<?,?>>)( new HashMap() );
 		
+			
 			for( final Entry<? extends Elem<?,?>,? extends Elem<?,?>> ii : in.implicitSpace.entrySet() )
 			{
 				final Elem<?,?> ikey = ii.getKey();

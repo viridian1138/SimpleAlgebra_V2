@@ -1605,7 +1605,14 @@ private static class Ordinate extends SymbolicElem<EinsteinTensorElem<String,Dou
 	}
 	
 	@Override
-	public Ordinate cloneThread( final BigInteger threadIndex )
+	public Ordinate cloneThreadCached( final BigInteger threadIndex ,
+			CloneThreadCache<SymbolicElem<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<EinsteinTensorElem<String, DoubleElem, DoubleElemFactory>, EinsteinTensorElemFactory<String, DoubleElem, DoubleElemFactory>>> cache)
+	{
+		return( this );
+	}
+	
+	@Override
+	public Ordinate cloneThread( final BigInteger threadIndex)
 	{
 		return( this );
 	}
@@ -1952,18 +1959,25 @@ private static class CoeffNode
 		 * @param in The BNelem to be copied.
 		 * @param threadIndex The thread index.
 		 */
-		public BNelem( final BNelem in , final BigInteger threadIndex )
+		public BNelem( final BNelem in , final BigInteger threadIndex,
+				CloneThreadCache<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>> cache )
 		{
-			super( in , threadIndex );
+			super( in , threadIndex , cache );
 			index = (ArrayList<BigInteger>)( in.index.clone() );
 			final int threadInd = threadIndex.intValue();
 			threadContext = iterationThreadContexts[ threadInd ];
 		}
 		
 		@Override
-		public BNelem cloneThread( final BigInteger threadIndex )
+		public BNelem cloneThreadCached( final BigInteger threadIndex,
+				CloneThreadCache<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>> cache )
 		{
-			return( new BNelem( this , threadIndex ) );
+			BNelem ctmp = (BNelem)( cache.get( this ) );
+			if( ctmp != null )
+			{
+				return( ctmp );
+			}
+			return( new BNelem( this , threadIndex , cache ) );
 		}
 
 		@Override
@@ -2177,8 +2191,14 @@ private static class CNelem extends Nelem<SymbolicElem<DoubleElem,DoubleElemFact
 	
 	
 	@Override
-	public CNelem cloneThread( final BigInteger threadIndex )
+	public CNelem cloneThreadCached( final BigInteger threadIndex,
+			CloneThreadCache<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>> cache )
 	{
+		CNelem ctmp = (CNelem)( cache.get( this ) );
+		if( ctmp != null )
+		{
+			return( ctmp );
+		}
 		return( new CNelem( this , threadIndex ) );
 	}
 	
@@ -2447,8 +2467,15 @@ protected AStelem( AStelem in , final BigInteger threadIndex )
 
 
 @Override
-public AStelem cloneThread( final BigInteger threadIndex )
+public AStelem cloneThreadCached( 
+		final BigInteger threadIndex,
+		CloneThreadCache<SymbolicElem<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>> cache )
 {
+	AStelem ctmp = (AStelem)( cache.get( this ) );
+	if( ctmp != null )
+	{
+		return( ctmp );
+	}
 	return( new AStelem( this , threadIndex ) );
 }
 
@@ -3050,7 +3077,7 @@ protected void applyAdd(
 		}
 		
 		/**
-		 * Copies an instance for cloneThread();
+		 * Copies an instance for cloneThreadCached();
 		 * 
 		 * @param in The instance to copy.
 		 * @param threadIndex The index of the thread for which to clone.
@@ -3259,6 +3286,14 @@ protected void applyAdd(
 				BigInteger threadIndex) {
 			throw( new RuntimeException( "Not Supported" ) );
 		}
+		
+		public StelemDescent cloneThreadCached(
+				CloneThreadCache<?, ?> cacheImplicit, BigInteger threadIndex) {
+			final CloneThreadCache<GeometricAlgebraMultivectorElem<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim, GeometricAlgebraOrd<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim>, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, GeometricAlgebraMultivectorElemFactory<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim, GeometricAlgebraOrd<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim>, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>> cache =
+					new CloneThreadCache<GeometricAlgebraMultivectorElem<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim, GeometricAlgebraOrd<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim>, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, GeometricAlgebraMultivectorElemFactory<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim, GeometricAlgebraOrd<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim>, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>>();
+			return( this.cloneThreadCached(cache, cacheImplicit, threadIndex) );
+		}
+		
 		
 	}
 	
@@ -4915,11 +4950,10 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 		descents[ 0 ] = descent0;
 		for( int hcnt = 1 ; hcnt < NUM_CPU_CORES ; hcnt++ )
 		{
-			throw( new RuntimeException( "Implementation TBD" ) );
-			// CloneThreadCache<GeometricAlgebraMultivectorElem<Adim, GeometricAlgebraOrd<Adim>, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, GeometricAlgebraMultivectorElemFactory<Adim, GeometricAlgebraOrd<Adim>, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>>
-			//	tcache = new CloneThreadCache<GeometricAlgebraMultivectorElem<Adim, GeometricAlgebraOrd<Adim>, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>, GeometricAlgebraMultivectorElemFactory<Adim, GeometricAlgebraOrd<Adim>, SymbolicElem<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<SymbolicElem<DoubleElem, DoubleElemFactory>, SymbolicElemFactory<DoubleElem, DoubleElemFactory>>>>();
-			// CloneThreadCache<?, ?> cacheImplicit = ( CloneThreadCache<?, ?> )( new CloneThreadCache() );
-			// descents[ hcnt ] = descent0.cloneThreadCached(tcache, cacheImplicit, BigInteger.valueOf( hcnt ) );
+			System.out.println( "Thread Cloning..." );
+			CloneThreadCache<?, ?> cacheImplicit = ( CloneThreadCache<?, ?> )( new CloneThreadCache() );
+			descents[ hcnt ] = descent0.cloneThreadCached(cacheImplicit, BigInteger.valueOf( hcnt ) );
+			System.out.println( "Thread Cloned" );
 		}
 		
 		
