@@ -870,7 +870,10 @@ public class TestGeneralRelativityA_DR extends TestCase {
 		{
 			if( ta != NSTPT )
 			{
-				av = iterArray.get( tv , xv , yv , zv );
+				if( ta != NSTPT - 1 )
+				{
+					av = iterArray.get( tv , xv , yv , zv );
+				}
 			}
 			else
 			{

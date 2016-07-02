@@ -369,10 +369,10 @@ public class DrFastArray4D_Tensor44_Dbl<Z extends Object> {
 				indt.add( ii );
 				indt.add( BigInteger.valueOf( j ) );
 				final DoubleElem dbl = new DoubleElem( file.readDouble() );
-				if( dbl.getVal() == 0.0 )
-				{
-					return( null ); // For Now With Metric Tensors !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-				}
+//				if( dbl.getVal() == 0.0 )
+//				{
+//					return( null ); // For Now With Metric Tensors !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//				}
 				ret.setVal( indt , dbl );
 			}
 		}
@@ -436,10 +436,10 @@ public class DrFastArray4D_Tensor44_Dbl<Z extends Object> {
 				indt.add( ii );
 				indt.add( BigInteger.valueOf( j ) );
 				final DoubleElem dbl = vl.getVal( indt );
-				if( dbl.getVal() == 0.0 )
-				{
-					throw( new RuntimeException( "Not Supported" ) ); // For Now With Metric Tensors !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-				}
+//				if( dbl.getVal() == 0.0 )
+//				{
+//					throw( new RuntimeException( "Not Supported" ) ); // For Now With Metric Tensors !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+//				}
 				file.writeDouble( dbl.getVal() );
 			}
 		}
