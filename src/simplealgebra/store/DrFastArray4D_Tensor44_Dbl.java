@@ -185,8 +185,6 @@ public class DrFastArray4D_Tensor44_Dbl<Z extends Object> {
 	 */
 	private DoubleElemFactory dfac;
 	
-
-	
 	
 	
 	/**
@@ -324,6 +322,7 @@ public class DrFastArray4D_Tensor44_Dbl<Z extends Object> {
 	 */
 	public EinsteinTensorElem<Z,DoubleElem,DoubleElemFactory> get( int t , int x , int y , int z ) throws Throwable
 	{	
+		
 		altArrs = !altArrs;
 		final int[] indext = altArrs ? indextA : indextB;
 		final int[] indexx = altArrs ? indexxA : indexxB;
@@ -370,10 +369,14 @@ public class DrFastArray4D_Tensor44_Dbl<Z extends Object> {
 				indt.add( ii );
 				indt.add( BigInteger.valueOf( j ) );
 				final DoubleElem dbl = new DoubleElem( file.readDouble() );
+				if( dbl.getVal() == 0.0 )
+				{
+					return( null ); // For Now With Metric Tensors !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+				}
 				ret.setVal( indt , dbl );
 			}
 		}
-		return( ret );
+		return( ret ); 
 	}
 	
 	
@@ -433,6 +436,10 @@ public class DrFastArray4D_Tensor44_Dbl<Z extends Object> {
 				indt.add( ii );
 				indt.add( BigInteger.valueOf( j ) );
 				final DoubleElem dbl = vl.getVal( indt );
+				if( dbl.getVal() == 0.0 )
+				{
+					throw( new RuntimeException( "Not Supported" ) ); // For Now With Metric Tensors !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+				}
 				file.writeDouble( dbl.getVal() );
 			}
 		}

@@ -58,7 +58,6 @@ import simplealgebra.ddx.PartialDerivativeOp;
 import simplealgebra.stelem.Nelem;
 import simplealgebra.stelem.Stelem;
 import simplealgebra.store.DbFastArray4D_Param;
-import simplealgebra.store.DrFastArray4D_Dbl;
 import simplealgebra.store.DrFastArray4D_Tensor44_Dbl;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SCacheKey;
@@ -4988,7 +4987,7 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 		
 		for( int hcnt = 0 ; hcnt < NUM_CPU_CORES ; hcnt++ )
 		{
-			TestStelemD_DR_Ncore.iterationThreadContexts[ hcnt ].iterArray.close();
+			TestGeneralRelativityA_DR_Ncore.iterationThreadContexts[ hcnt ].iterArray.close();
 		}
 		
 		

@@ -57,7 +57,6 @@ import simplealgebra.ddx.PartialDerivativeOp;
 import simplealgebra.stelem.Nelem;
 import simplealgebra.stelem.Stelem;
 import simplealgebra.store.DbFastArray4D_Param;
-import simplealgebra.store.DrFastArray4D_Dbl;
 import simplealgebra.store.DrFastArray4D_Tensor44_Dbl;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SCacheKey;
@@ -67,7 +66,6 @@ import simplealgebra.symbolic.SymbolicReduction;
 import simplealgebra.ddx.*;
 import simplealgebra.ga.*;
 import simplealgebra.et.*;
-import test_simplealgebra.TestStelemD_DR.TempArrayFillInnerParam;
 
 
 
@@ -4339,7 +4337,7 @@ protected void performIterationT( final int tval , final StelemDescent descent ,
 		//}
 	
 		iterArray.set( tval + 1 , im.getXcnt() , im.getYcnt() , im.getZcnt() , val );
-			
+		
 		
 		
 		im.handleIncrementZa();
