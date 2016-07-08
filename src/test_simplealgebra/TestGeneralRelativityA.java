@@ -844,16 +844,20 @@ public class TestGeneralRelativityA extends TestCase {
 		if( ( tv >= 0 )  && ( xv >= 0 ) && ( yv >= 0 ) && ( zv >= 0 ) &&
 			( tv < NUM_T_ITER ) && ( xv < NUM_X_ITER ) && ( yv < NUM_Y_ITER ) && ( zv < NUM_Z_ITER )  )
 		{
-			if( ta != NSTPT )
-			{
+//			if( ta != NSTPT )
+//			{
 				av = iterArray[ tv ][ xv ][ yv ][ zv ];
-			}
-			else
+//			}
+//			else
+//			{
+//				if( ( xa == 0 ) && ( ya == 0 ) && ( za == 0 ) )
+//				{
+//					av = iterArray[ tv ][ xv ][ yv ][ zv ];
+//				}
+//			}
+			if( av == null )
 			{
-				if( ( xa == 0 ) && ( ya == 0 ) && ( za == 0 ) )
-				{
-					av = iterArray[ tv ][ xv ][ yv ][ zv ];
-				}
+				System.out.println( "nn: " + ( ta + NSTPT ) + " " + ( xa + NSTPX ) + " " + ( ya + NSTPY ) + " " + ( za + NSTPZ ) );
 			}
 		}
 		if( av == null )
@@ -3492,7 +3496,7 @@ protected void initIterArray()
 	System.out.println( "Setting Initial Conditions..." );
 	long atm = System.currentTimeMillis();
 	long atm2 = System.currentTimeMillis();
-	for( int tcnt = 0 ; tcnt < 2 ; tcnt++ )
+	for( int tcnt = 0 ; tcnt < 2 * NSTPT ; tcnt++ )
 	{
 		System.out.println( "Initial - " + tcnt );
 		for( long acnt = 0 ; acnt < ( (long) NUM_X_ITER ) * NUM_Y_ITER * NUM_Z_ITER ; acnt++ )
@@ -3736,9 +3740,9 @@ protected void performIterationT( final int tval , final StelemDescent descent ,
 		}
 				
 				
-		/* Assert.assertTrue( spatialAssertArray[ 0 ][ 0 ][ 0 ][ 0 ] == 0 );
+		Assert.assertTrue( spatialAssertArray[ 0 ][ 0 ][ 0 ][ 0 ] == 0 );
 				
-		Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 1 ] > 0 );
+		/* Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 1 ] > 0 );
 				
 		Assert.assertTrue( spatialAssertArray[ 2 ][ 1 ][ 1 ][ 1 ] > 0 );
 		Assert.assertTrue( spatialAssertArray[ 1 ][ 2 ][ 1 ][ 1 ] > 0 );
@@ -3750,23 +3754,23 @@ protected void performIterationT( final int tval , final StelemDescent descent ,
 		Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 0 ][ 1 ] > 0 );
 		Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 0 ] > 0 ); */
 				
-		// for( int xc = 0 ; xc < 2 * NSTPX - 1 ; xc++ )
-		// {
-		//	for( int yc = 0 ; yc < 2 * NSTPY - 1 ; yc++ )
-		//	{
-		//		for( int zc = 0 ; zc < 2 * NSTPZ - 1 ; zc++ )
-		//		{
-		//			if( ( xc == NSTPX ) && ( yc == NSTPY ) && ( zc == NSTPZ ) )
-		//			{
-		//				Assert.assertTrue( spatialAssertArray[ NSTPT * 2 ][ xc ][ yc ][ zc ] > 0 );
-		//			}
-		//			else
-		//			{
-		//				Assert.assertTrue( spatialAssertArray[ NSTPT * 2 ][ xc ][ yc ][ zc ] == 0 );
-		//			}
-		//		}
-		//	}
-		// }
+		for( int xc = 0 ; xc < 2 * NSTPX - 1 ; xc++ )
+		{
+			for( int yc = 0 ; yc < 2 * NSTPY - 1 ; yc++ )
+			{
+				for( int zc = 0 ; zc < 2 * NSTPZ - 1 ; zc++ )
+				{
+					if( ( xc == NSTPX ) && ( yc == NSTPY ) && ( zc == NSTPZ ) )
+					{
+						Assert.assertTrue( spatialAssertArray[ NSTPT * 2 ][ xc ][ yc ][ zc ] > 0 );
+					}
+					else
+					{
+						Assert.assertTrue( spatialAssertArray[ NSTPT * 2 ][ xc ][ yc ][ zc ] == 0 );
+					}
+				}
+			}
+		}
 		
 		
 		System.out.println( "***  " + im.getXcnt() + "  " + im.getYcnt() + "  " + im.getZcnt() );

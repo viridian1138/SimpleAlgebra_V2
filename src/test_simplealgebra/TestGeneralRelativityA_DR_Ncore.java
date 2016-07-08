@@ -906,20 +906,20 @@ public class TestGeneralRelativityA_DR_Ncore extends TestCase {
 		if( ( tv >= 0 )  && ( xv >= 0 ) && ( yv >= 0 ) && ( zv >= 0 ) &&
 			( tv < NUM_T_ITER ) && ( xv < NUM_X_ITER ) && ( yv < NUM_Y_ITER ) && ( zv < NUM_Z_ITER )  )
 		{
-			if( ta != NSTPT )
-			{
-				if( ta != NSTPT - 1 )
-				{
+//			if( ta != NSTPT )
+//			{
+//				if( ta != NSTPT - 1 )
+//				{
 					av = iterArray.get( tv , xv , yv , zv );
-				}
-			}
-			else
-			{
-				if( ( xa == 0 ) && ( ya == 0 ) && ( za == 0 ) )
-				{
-					av = iterArray.get( tv , xv , yv , zv );
-				}
-			}
+//				}
+//			}
+//			else
+//			{
+//				if( ( xa == 0 ) && ( ya == 0 ) && ( za == 0 ) )
+//				{
+//					av = iterArray.get( tv , xv , yv , zv );
+//				}
+//			}
 		}
 		if( av == null )
 		{
@@ -4058,7 +4058,7 @@ protected void initIterArray() throws Throwable
 	final DrFastArray4D_Tensor44_Dbl iterArray = iterContext.iterArray;
 	long atm = System.currentTimeMillis();
 	long atm2 = System.currentTimeMillis();
-	for( int tcnt = 0 ; tcnt < 2 ; tcnt++ )
+	for( int tcnt = 0 ; tcnt < 2 * NSTPT ; tcnt++ )
 	{
 		System.out.println( "Initial - " + tcnt );
 		for( long acnt = 0 ; acnt < ( (long) NUM_X_ITER ) * NUM_Y_ITER * NUM_Z_ITER ; acnt++ )
@@ -4546,12 +4546,12 @@ protected void performIterationT( final int tval , final StelemDescent[] descent
 					while( !( im.isDone() ) )
 					{
 		
-						atm2 = System.currentTimeMillis();
-						if( atm2 - atm >= 1000 )
-						{
+						// atm2 = System.currentTimeMillis();
+						// if( atm2 - atm >= 1000 )
+						// {
 							System.out.println( ">> " + tval + " / " + im.getXcnt() + " / " + im.getYcnt() + " / " + im.getZcnt() );
-							atm = atm2;
-						}
+						//	atm = atm2;
+						// }
 		
 		
 						im.performTempArrayFill( tval );
@@ -4593,9 +4593,9 @@ protected void performIterationT( final int tval , final StelemDescent[] descent
 						}
 				
 				
-						/* Assert.assertTrue( spatialAssertArray[ 0 ][ 0 ][ 0 ][ 0 ] == 0 );
+						Assert.assertTrue( threadContext.spatialAssertArray[ 0 ][ 0 ][ 0 ][ 0 ] == 0 );
 				
-						Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 1 ] > 0 );
+						/* Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 1 ] > 0 );
 				
 						Assert.assertTrue( spatialAssertArray[ 2 ][ 1 ][ 1 ][ 1 ] > 0 );
 						Assert.assertTrue( spatialAssertArray[ 1 ][ 2 ][ 1 ][ 1 ] > 0 );
