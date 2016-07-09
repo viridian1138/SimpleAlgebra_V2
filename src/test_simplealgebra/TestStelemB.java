@@ -1856,7 +1856,7 @@ public class TestStelemB extends TestCase {
 		System.out.println( "Setting Initial Conditions..." );
 		long atm = System.currentTimeMillis();
 		long atm2 = System.currentTimeMillis();
-		for( int tcnt = 0 ; tcnt < 2 ; tcnt++ )
+		for( int tcnt = 0 ; tcnt < 2 * NSTPT ; tcnt++ )
 		{
 			System.out.println( "Initial - " + tcnt );
 			for( long acnt = 0 ; acnt < NUM_X_ITER ; acnt++ )

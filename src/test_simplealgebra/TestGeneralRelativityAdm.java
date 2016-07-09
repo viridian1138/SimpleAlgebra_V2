@@ -949,19 +949,19 @@ import simplealgebra.et.*;
 		if( ( tv >= 0 )  && ( xv >= 0 ) && ( yv >= 0 ) && ( zv >= 0 ) &&
 			( tv < NUM_T_ITER ) && ( xv < NUM_X_ITER ) && ( yv < NUM_Y_ITER ) && ( zv < NUM_Z_ITER )  )
 		{
-			if( ta != NSTPT )
-			{
+//			if( ta != NSTPT )
+//			{
 				avmet = iterArrayMetric[ tv ][ xv ][ yv ][ zv ];
 				avmom = iterArrayConjugateMomentum[ tv ][ xv ][ yv ][ zv ];
-			}
-			else
-			{
-				if( ( xa == 0 ) && ( ya == 0 ) && ( za == 0 ) )
-				{
-					avmet = iterArrayMetric[ tv ][ xv ][ yv ][ zv ];
-					avmom = iterArrayConjugateMomentum[ tv ][ xv ][ yv ][ zv ];
-				}
-			}
+//			}
+//			else
+//			{
+//				if( ( xa == 0 ) && ( ya == 0 ) && ( za == 0 ) )
+//				{
+//					avmet = iterArrayMetric[ tv ][ xv ][ yv ][ zv ];
+//					avmom = iterArrayConjugateMomentum[ tv ][ xv ][ yv ][ zv ];
+//				}
+//			}
 		}
 		if( avmet == null )
 		{
@@ -5732,7 +5732,7 @@ protected void initIterArray()
 	System.out.println( "Setting Initial Conditions..." );
 	long atm = System.currentTimeMillis();
 	long atm2 = System.currentTimeMillis();
-	for( int tcnt = 0 ; tcnt < 2 ; tcnt++ )
+	for( int tcnt = 0 ; tcnt < 2 * NSTPT ; tcnt++ )
 	{
 		System.out.println( "Initial - " + tcnt );
 		for( long acnt = 0 ; acnt < ( (long) NUM_X_ITER ) * NUM_Y_ITER * NUM_Z_ITER ; acnt++ )

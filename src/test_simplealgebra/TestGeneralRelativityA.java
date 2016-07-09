@@ -855,10 +855,6 @@ public class TestGeneralRelativityA extends TestCase {
 //					av = iterArray[ tv ][ xv ][ yv ][ zv ];
 //				}
 //			}
-			if( av == null )
-			{
-				System.out.println( "nn: " + ( ta + NSTPT ) + " " + ( xa + NSTPX ) + " " + ( ya + NSTPY ) + " " + ( za + NSTPZ ) );
-			}
 		}
 		if( av == null )
 		{
