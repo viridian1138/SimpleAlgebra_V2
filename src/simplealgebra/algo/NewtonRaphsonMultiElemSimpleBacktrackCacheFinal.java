@@ -218,7 +218,7 @@ public class NewtonRaphsonMultiElemSimpleBacktrackCacheFinal<U extends NumDimens
 	 * @throws MultiplicativeDistributionRequiredException
 	 */
 	public GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,R,S> eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpaceInitialGuess ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
-	{
+	{	
 		implicitSpace = implicitSpaceInitialGuess;
 		lastValues = evalValues();
 		while( !( param.iterationsDone() ) )
@@ -533,7 +533,7 @@ public class NewtonRaphsonMultiElemSimpleBacktrackCacheFinal<U extends NumDimens
 			CloneThreadCache<?,?> cacheImplicit ,
 			final BigInteger threadIndex )
 	{
-		return( new NewtonRaphsonMultiElemSimpleBacktrackCacheFinal<U,R,S>( this , param , cache , cacheImplicit , threadIndex ) );
+		return( new NewtonRaphsonMultiElemSimpleBacktrackCacheFinal<U,R,S>( this , _param , cache , cacheImplicit , threadIndex ) );
 	}
 	
 	

@@ -491,7 +491,7 @@ public abstract class DescentAlgorithmMultiElemRemapTensor<Z extends Object, R e
 	 * @throws MultiplicativeDistributionRequiredException
 	 */
 	public EinsteinTensorElem<Z,R,S> eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpaceInitialGuess ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
-	{
+	{	
 		try
 		{
 			GeometricAlgebraMultivectorElem<Adim,GeometricAlgebraOrd<Adim>,R,S> sv = descent.eval(implicitSpaceInitialGuess);

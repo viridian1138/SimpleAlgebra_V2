@@ -1865,6 +1865,12 @@ private static class CoeffNode
 				HashMap<SCacheKey<DoubleElem, DoubleElemFactory>, DoubleElem> cache)
 				throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
+			final SCacheKey<DoubleElem,DoubleElemFactory> key = new SCacheKey<DoubleElem,DoubleElemFactory>(this,implicitSpace);
+			final DoubleElem iret = cache.get(key);
+			if( iret != null )
+			{
+				return( iret );
+			}
 			return( eval( implicitSpace ) );
 		}
 

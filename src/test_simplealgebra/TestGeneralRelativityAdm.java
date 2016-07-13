@@ -5771,30 +5771,6 @@ protected void initIterArray()
 
 
 
-
-/**
- * Initializes the temp array.
- */
-protected void initTempArray()
-{
-	for( int tcnt = 0 ; tcnt < 2 ; tcnt++ )
-	{
-		for( int xcnt = 0 ; xcnt < 2 ; xcnt++ )
-		{
-			for( int ycnt = 0 ; ycnt < 2 ; ycnt++ )
-			{
-				for( int zcnt = 0 ; zcnt < 2 ; zcnt++ )
-				{
-					tempArrayMetric[ tcnt ][ xcnt ][ ycnt ][ zcnt ] = genDiffAll( );
-					tempArrayConjugateMomentum[ tcnt ][ xcnt ][ ycnt ][ zcnt ] = genDiffAll( );
-				}
-			}
-		}
-	}
-}
-
-
-
 /**
  * Increments through the discretized space with cache-locality.
  * 
@@ -6226,9 +6202,6 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 		
 		
 		initIterArray();
-		
-		
-		initTempArray();
 		
 		
 

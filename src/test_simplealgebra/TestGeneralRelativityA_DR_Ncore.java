@@ -165,7 +165,7 @@ public class TestGeneralRelativityA_DR_Ncore extends TestCase {
 	 * Generates a default roughly flat rank 2 metric tensor.
 	 * @return The default roughly flat rank 2 metric tensor.
 	 */
-	private static EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> genDiffAll( )
+	private static synchronized EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> genDiffAll( )
 	{
 		final double CV = C.getVal();
 		DoubleElemFactory da = new DoubleElemFactory();
@@ -205,7 +205,7 @@ public class TestGeneralRelativityA_DR_Ncore extends TestCase {
 	 * Generates a random tensor of rank 2.
 	 * @return The random tensor.
 	 */
-	private static EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> genDiffEnt( )
+	private static synchronized EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> genDiffEnt( )
 	{
 		final double CV = C.getVal();
 		DoubleElemFactory da = new DoubleElemFactory();
@@ -910,7 +910,7 @@ public class TestGeneralRelativityA_DR_Ncore extends TestCase {
 //			{
 //				if( ta != NSTPT - 1 )
 //				{
-					av = iterArray.get( tv , xv , yv , zv );
+					av = null; // av = iterArray.get( tv , xv , yv , zv ); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
 //				}
 //			}
 //			else
@@ -1929,14 +1929,16 @@ private static class CoeffNode
 					threadContext.tempArray[ cols[ 0 ] ][ cols[ 1 ] ][ cols[ 2 ] ][ cols[ 3 ] ];
 			if( val == null )
 			{
-				ret = fac.zero();
+				// ret = fac.zero();
+				throw( new RuntimeException( "Fail A" ) );
 			}
 			else
 			{
 				DoubleElem valA = val.getVal( index );
 				if( valA == null )
 				{
-					ret = fac.zero();
+					// ret = fac.zero();
+					throw( new RuntimeException( "Fail B" ) );
 				}
 				else
 				{
@@ -1952,6 +1954,12 @@ private static class CoeffNode
 				HashMap<SCacheKey<DoubleElem, DoubleElemFactory>, DoubleElem> cache)
 				throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
+			final SCacheKey<DoubleElem,DoubleElemFactory> key = new SCacheKey<DoubleElem,DoubleElemFactory>(this,implicitSpace);
+			final DoubleElem iret = cache.get(key);
+			if( iret != null )
+			{
+				return( iret );
+			}
 			return( eval( implicitSpace ) );
 		}
 		
@@ -4079,7 +4087,7 @@ protected void initIterArray() throws Throwable
 			final double dx = ( x - HALF_X ) / RAD_X;
 			final double dy = ( y - HALF_Y ) / RAD_Y;
 			final double dz = ( z - HALF_Z ) / RAD_Z;
-			if( dx * dx + dy * dy + dz * dz < 1.0 )
+			if( /* dx * dx + dy * dy + dz * dz < 1.0 */ false ) // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
 			{
 				iterArray.set( tcnt , x , y , z , genDiffEnt() );
 			}
@@ -4953,8 +4961,10 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 		for( int hcnt = 1 ; hcnt < NUM_CPU_CORES ; hcnt++ )
 		{
 			System.out.println( "Thread Cloning..." );
+			CloneThreadCache cacheAA = new CloneThreadCache();
 			CloneThreadCache<?, ?> cacheImplicit = ( CloneThreadCache<?, ?> )( new CloneThreadCache() );
-			descents[ hcnt ] = descent0.cloneThreadCached(cacheImplicit, BigInteger.valueOf( hcnt ) );
+			// descents[ hcnt ] = descent0.cloneThreadCached(cacheImplicit, BigInteger.valueOf( hcnt ) );
+			descents[ hcnt ] = new StelemDescent(descent0, cacheAA, cacheImplicit, BigInteger.valueOf( hcnt ) );
 			System.out.println( "Thread Cloned" );
 		}
 		

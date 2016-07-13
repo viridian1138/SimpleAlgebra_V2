@@ -3393,29 +3393,6 @@ protected void initIterArray( final double d1 )
 
 
 
-
-/**
- * Initializes the temp array.
- */
-protected void initTempArray()
-{
-	for( int tcnt = 0 ; tcnt < 2 ; tcnt++ )
-	{
-		for( int xcnt = 0 ; xcnt < 2 ; xcnt++ )
-		{
-			for( int ycnt = 0 ; ycnt < 2 ; ycnt++ )
-			{
-				for( int zcnt = 0 ; zcnt < 2 ; zcnt++ )
-				{
-					tempArray[ tcnt ][ xcnt ][ ycnt ][ zcnt ] = genDiffAll( 1E-8 );
-				}
-			}
-		}
-	}
-}
-
-
-
 /**
  * Increments through the discretized space with cache-locality.
  * 
@@ -3735,9 +3712,6 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 		
 		
 		initIterArray( d1 );
-		
-		
-		initTempArray();
 		
 	
 		

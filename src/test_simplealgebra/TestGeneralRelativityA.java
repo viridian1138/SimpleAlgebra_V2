@@ -1538,6 +1538,12 @@ private static class CoeffNode
 				HashMap<SCacheKey<DoubleElem, DoubleElemFactory>, DoubleElem> cache)
 				throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
+			final SCacheKey<DoubleElem,DoubleElemFactory> key = new SCacheKey<DoubleElem,DoubleElemFactory>(this,implicitSpace);
+			final DoubleElem iret = cache.get(key);
+			if( iret != null )
+			{
+				return( iret );
+			}
 			return( eval( implicitSpace ) );
 		}
 
@@ -3697,7 +3703,7 @@ protected void performIterationT( final int tval , final StelemDescent descent ,
 	for( long acnt = 0 ; acnt < ( ( (long) NUM_X_ITER ) * NUM_Y_ITER * NUM_Z_ITER ) ; acnt++ )
 	{
 		
-		System.out.println( "iter... " + im.getXcnt() + " " + im.getYcnt() + " " + im.getZcnt() );
+		System.out.println( ">> " + tval + " / " + im.getXcnt() + " / " + im.getYcnt() + " / " + im.getZcnt() );
 				
 		fillTempArray( tval , im.getXcnt() , im.getYcnt() , im.getZcnt() );
 		clearSpatialAssertArray();
