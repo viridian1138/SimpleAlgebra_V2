@@ -277,17 +277,17 @@ public class TestGeneralRelativityA_DR extends TestCase {
 	/**
 	 * The number of discretizations on the X-Axis over which to iterate.
 	 */
-	protected static final int NUM_X_ITER = 12;
+	protected static final int NUM_X_ITER = 16;
 	
 	/**
 	 * The number of discretizations on the Y-Axis over which to iterate.
 	 */
-	protected static final int NUM_Y_ITER = 12;
+	protected static final int NUM_Y_ITER = 16;
 	
 	/**
 	 * The number of discretizations on the Z-Axis over which to iterate.
 	 */
-	protected static final int NUM_Z_ITER = 12;
+	protected static final int NUM_Z_ITER = 16;
 	
 	
 	
@@ -354,22 +354,22 @@ public class TestGeneralRelativityA_DR extends TestCase {
 	/**
 	 * The T-Axis cell size.
 	 */
-	protected static final int TMULT = 8;
+	protected static final int TMULT = 4;
 	
 	/**
 	 * The X-Axis cell size.
 	 */
-	protected static final int XMULT = 8;
+	protected static final int XMULT = 4;
 	
 	/**
 	 * The Y-Axis cell size.
 	 */
-	protected static final int YMULT = 8;
+	protected static final int YMULT = 4;
 	
 	/**
 	 * The Z-Axis cell size.
 	 */
-	protected static final int ZMULT = 8;
+	protected static final int ZMULT = 4;
 	
 	
 	
