@@ -38,10 +38,14 @@ import java.util.Map.Entry;
 import simplealgebra.CloneThreadCache;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
+import simplealgebra.NotInvertibleException;
 import simplealgebra.NumDimensions;
+import simplealgebra.SquareMatrixElem;
+import simplealgebra.algo.DescentAlgorithmMultiElem.DescentInverseFailedException;
 import simplealgebra.ga.GeometricAlgebraMultivectorElem;
 import simplealgebra.ga.GeometricAlgebraMultivectorElemFactory;
 import simplealgebra.ga.GeometricAlgebraOrd;
+import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 
@@ -156,6 +160,20 @@ public abstract class DescentAlgorithmMultiElemInputParamCallbacks<U extends Num
 		return( true );
 	}
 	
+	
+	
+	/**
+	 * Handles a failure to invert the Jacobian.
+	 * @param derivativeJacobian The Jacobian matrix to be inverted.
+	 * @param ex The thrown inverse failure exception.
+	 * @throws NotInvertibleException
+	 * @throws MultiplicativeDistributionRequiredException
+	 */
+	protected void handleDescentInverseFailed( final SquareMatrixElem<U,R,S> derivativeJacobian , final SquareMatrixElem.NoPivotException ex )
+			 throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	{
+		throw( new DescentInverseFailedException( ex.getElemNum() ) );
+	}
 	
 	
 	

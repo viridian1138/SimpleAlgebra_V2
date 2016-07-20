@@ -47,6 +47,7 @@ import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.NumDimensions;
+import simplealgebra.SquareMatrixElem;
 import simplealgebra.WriteBigIntegerCache;
 import simplealgebra.WriteElemCache;
 import simplealgebra.WriteElemCache.IntVal;
@@ -910,7 +911,7 @@ public class TestGeneralRelativityA_DR_Ncore extends TestCase {
 //			{
 //				if( ta != NSTPT - 1 )
 //				{
-					av = null; // av = iterArray.get( tv , xv , yv , zv ); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+					av = iterArray.get( tv , xv , yv , zv );
 //				}
 //			}
 //			else
@@ -3250,6 +3251,16 @@ protected void applyAdd(
 			}
 			
 			
+			@Override
+			protected void handleDescentInverseFailed( final SquareMatrixElem<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim,DoubleElem,DoubleElemFactory> derivativeJacobian , final SquareMatrixElem.NoPivotException ex )
+			{
+				System.out.println( "Adjusting For Inverse Failure " + ( ex.getElemNum() ) );
+				DoubleElem d = derivativeJacobian.getVal( ex.getElemNum() , ex.getElemNum() );
+				DoubleElem dd = new DoubleElem( 2.0 * ( d.getVal() ) + 1E-6 );
+				derivativeJacobian.setVal( ex.getElemNum() , ex.getElemNum() , dd );
+			}
+			
+			
 			public StelemDescentEnt()
 			{
 				super();
@@ -4087,7 +4098,7 @@ protected void initIterArray() throws Throwable
 			final double dx = ( x - HALF_X ) / RAD_X;
 			final double dy = ( y - HALF_Y ) / RAD_Y;
 			final double dz = ( z - HALF_Z ) / RAD_Z;
-			if( /* dx * dx + dy * dy + dz * dz < 1.0 */ false ) // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
+			if( dx * dx + dy * dy + dz * dz < 1.0 ) 
 			{
 				iterArray.set( tcnt , x , y , z , genDiffEnt() );
 			}

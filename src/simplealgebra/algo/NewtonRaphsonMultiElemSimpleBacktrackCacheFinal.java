@@ -240,14 +240,17 @@ public class NewtonRaphsonMultiElemSimpleBacktrackCacheFinal<U extends NumDimens
 		final SquareMatrixElem<U,R,S> derivativeJacobian = evalPartialDerivativeJacobian();
 		SquareMatrixElem<U,R,S> derivativeJacobianInverse = null;
 		
-		try
+		while( derivativeJacobianInverse == null )
 		{
-			derivativeJacobianInverse = derivativeJacobian.invertLeft();
-		}
-		catch( SquareMatrixElem.NoPivotException ex )
-		{
-			// printInverseCheck( derivativeJacobian );
-			throw( new DescentInverseFailedException( ex.getElemNum() ) );
+			try
+			{
+				derivativeJacobianInverse = derivativeJacobian.invertLeft();
+			}
+			catch( SquareMatrixElem.NoPivotException ex )
+			{
+				// printInverseCheck( derivativeJacobian );
+				param.handleDescentInverseFailed( derivativeJacobian , ex );
+			}
 		}
 		
 		GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,R,S> iterationOffset =

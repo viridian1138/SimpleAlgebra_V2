@@ -47,6 +47,7 @@ import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.NumDimensions;
+import simplealgebra.SquareMatrixElem;
 import simplealgebra.WriteBigIntegerCache;
 import simplealgebra.WriteElemCache;
 import simplealgebra.WriteElemCache.IntVal;
@@ -2689,6 +2690,16 @@ protected void applyAdd(
 					GeometricAlgebraMultivectorElem<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim, GeometricAlgebraOrd<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim>, DoubleElem, DoubleElemFactory> nextValue ) 
 			{
 				return( StelemDescent.this.evalIterationImproved(lastValue, nextValue) );
+			}
+			
+			
+			@Override
+			protected void handleDescentInverseFailed( final SquareMatrixElem<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim,DoubleElem,DoubleElemFactory> derivativeJacobian , final SquareMatrixElem.NoPivotException ex )
+			{
+				System.out.println( "Adjusting For Inverse Failure " + ( ex.getElemNum() ) );
+				DoubleElem d = derivativeJacobian.getVal( ex.getElemNum() , ex.getElemNum() );
+				DoubleElem dd = new DoubleElem( 2.0 * ( d.getVal() ) + 1E-6 );
+				derivativeJacobian.setVal( ex.getElemNum() , ex.getElemNum() , dd );
 			}
 			
 			
