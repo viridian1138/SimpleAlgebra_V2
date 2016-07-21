@@ -3252,12 +3252,13 @@ protected void applyAdd(
 			
 			
 			@Override
-			protected void handleDescentInverseFailed( final SquareMatrixElem<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim,DoubleElem,DoubleElemFactory> derivativeJacobian , final SquareMatrixElem.NoPivotException ex )
+			protected SquareMatrixElem<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim,DoubleElem,DoubleElemFactory> handleDescentInverseFailed( final SquareMatrixElem<simplealgebra.algo.DescentAlgorithmMultiElemRemapTensor.Adim,DoubleElem,DoubleElemFactory> derivativeJacobian , final SquareMatrixElem.NoPivotException ex )
 			{
 				System.out.println( "Adjusting For Inverse Failure " + ( ex.getElemNum() ) );
-				DoubleElem d = derivativeJacobian.getVal( ex.getElemNum() , ex.getElemNum() );
-				DoubleElem dd = new DoubleElem( 2.0 * ( d.getVal() ) + 1E-6 );
-				derivativeJacobian.setVal( ex.getElemNum() , ex.getElemNum() , dd );
+				// DoubleElem d = derivativeJacobian.getVal( ex.getElemNum() , ex.getElemNum() );
+				// DoubleElem dd = new DoubleElem( 2.0 * ( d.getVal() ) + 1E-6 );
+				// derivativeJacobian.setVal( ex.getElemNum() , ex.getElemNum() , dd );
+				return( derivativeJacobian.getFac().identity() );
 			}
 			
 			

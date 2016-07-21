@@ -166,10 +166,11 @@ public abstract class DescentAlgorithmMultiElemInputParamCallbacks<U extends Num
 	 * Handles a failure to invert the Jacobian.
 	 * @param derivativeJacobian The Jacobian matrix to be inverted.
 	 * @param ex The thrown inverse failure exception.
+	 * @return Altered Jacobian to repair the inverse failure.
 	 * @throws NotInvertibleException
 	 * @throws MultiplicativeDistributionRequiredException
 	 */
-	protected void handleDescentInverseFailed( final SquareMatrixElem<U,R,S> derivativeJacobian , final SquareMatrixElem.NoPivotException ex )
+	protected SquareMatrixElem<U,R,S> handleDescentInverseFailed( final SquareMatrixElem<U,R,S> derivativeJacobian , final SquareMatrixElem.NoPivotException ex )
 			 throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
 		throw( new DescentInverseFailedException( ex.getElemNum() ) );

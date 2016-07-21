@@ -235,7 +235,7 @@ public class NewtonRaphsonMultiElemNoBacktrackCacheFinal<U extends NumDimensions
 	 */
 	protected void performIteration() throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
-		final SquareMatrixElem<U,R,S> derivativeJacobian = evalPartialDerivativeJacobian();
+		SquareMatrixElem<U,R,S> derivativeJacobian = evalPartialDerivativeJacobian();
 		SquareMatrixElem<U,R,S> derivativeJacobianInverse = null;
 		
 		while( derivativeJacobianInverse == null )
@@ -247,7 +247,7 @@ public class NewtonRaphsonMultiElemNoBacktrackCacheFinal<U extends NumDimensions
 			catch( SquareMatrixElem.NoPivotException ex )
 			{
 				// printInverseCheck( derivativeJacobian );
-				param.handleDescentInverseFailed( derivativeJacobian , ex );
+				derivativeJacobian = param.handleDescentInverseFailed( derivativeJacobian , ex );
 			}
 		}
 		

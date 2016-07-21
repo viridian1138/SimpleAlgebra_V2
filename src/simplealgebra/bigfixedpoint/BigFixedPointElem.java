@@ -34,6 +34,7 @@ import java.util.ArrayList;
 
 import simplealgebra.AbsoluteValue;
 import simplealgebra.AbstractCache;
+import simplealgebra.BadCreationException;
 import simplealgebra.CloneThreadCache;
 import simplealgebra.Elem;
 import simplealgebra.NotInvertibleException;
@@ -76,7 +77,7 @@ public class BigFixedPointElem<T extends Precision<T>> extends Elem<BigFixedPoin
 	{
 		if( Double.isNaN( vl ) || Double.isInfinite( vl ) )
 		{
-			throw( new RuntimeException( "NaN" ) );
+			throw( new BadCreationException() );
 		}
 		prec = _prec;
 		final BigDecimal vld = new BigDecimal( vl );
@@ -123,7 +124,7 @@ public class BigFixedPointElem<T extends Precision<T>> extends Elem<BigFixedPoin
 	public BigFixedPointElem<T> divideBy(BigInteger vali) {
 		if( vali.equals( BigInteger.ZERO ) )
 		{
-			throw( new RuntimeException( "NaN" ) );
+			throw( new BadCreationException() );
 		}
 		return( new BigFixedPointElem<T>( val.divide( vali ) , prec ) );
 	}

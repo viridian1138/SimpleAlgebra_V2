@@ -83,7 +83,7 @@ public class DoubleElem extends Elem<DoubleElem, DoubleElemFactory> {
 	public DoubleElem divideBy(BigInteger val) {
 		if( val.equals( BigInteger.ZERO ) )
 		{
-			throw( new RuntimeException( "NaN" ) );
+			throw( new BadCreationException() );
 		}
 		final DoubleElem de = new DoubleElem( d / val.doubleValue() );
 		return( de );
@@ -236,7 +236,7 @@ public class DoubleElem extends Elem<DoubleElem, DoubleElemFactory> {
 	{
 		if( Double.isNaN( _d ) || Double.isInfinite( _d ) )
 		{
-			throw( new RuntimeException( "NaN" ) );
+			throw( new BadCreationException() );
 		}
 		d = _d;
 	}

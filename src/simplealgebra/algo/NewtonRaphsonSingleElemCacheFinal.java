@@ -35,6 +35,7 @@ import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
+import simplealgebra.BadCreationException;
 import simplealgebra.CloneThreadCache;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
@@ -269,16 +270,25 @@ public abstract class NewtonRaphsonSingleElemCacheFinal<R extends Elem<R,?>, S e
 	 */
 	protected R evalIndicatesImprovement(  ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
-		final HashMap<SCacheKey<R, S>, R> cache = new HashMap<SCacheKey<R, S>, R>();
-		
-		R ev = eval.evalCached( implicitSpace , cache  );
-		
-		if( !( evalIterationImproved( lastValue , ev ) ) )
+		try
 		{
-			ev = null;
-		}
+			final HashMap<SCacheKey<R, S>, R> cache = new HashMap<SCacheKey<R, S>, R>();
 		
-		return( ev );
+			R ev = eval.evalCached( implicitSpace , cache  );
+		
+			if( !( evalIterationImproved( lastValue , ev ) ) )
+			{
+				ev = null;
+			}
+		
+			return( ev );
+		}
+		catch( BadCreationException ex )
+		{
+			System.out.print( "Bad Creation evalIndicatesImprovement: " );
+			ex.printStackTrace( System.out );
+			return( null );
+		}
 	}
 	
 	

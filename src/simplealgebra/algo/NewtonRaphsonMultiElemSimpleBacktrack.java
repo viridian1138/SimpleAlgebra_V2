@@ -36,6 +36,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
+import simplealgebra.BadCreationException;
 import simplealgebra.CloneThreadCache;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
@@ -237,7 +238,7 @@ public class NewtonRaphsonMultiElemSimpleBacktrack<U extends NumDimensions, R ex
 	 */
 	protected void performIteration() throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
-		final SquareMatrixElem<U,R,S> derivativeJacobian = evalPartialDerivativeJacobian();
+		SquareMatrixElem<U,R,S> derivativeJacobian = evalPartialDerivativeJacobian();
 		SquareMatrixElem<U,R,S> derivativeJacobianInverse = null;
 		
 		while( derivativeJacobianInverse == null )
@@ -249,7 +250,7 @@ public class NewtonRaphsonMultiElemSimpleBacktrack<U extends NumDimensions, R ex
 			catch( SquareMatrixElem.NoPivotException ex )
 			{
 				// printInverseCheck( derivativeJacobian );
-				param.handleDescentInverseFailed( derivativeJacobian , ex );
+				derivativeJacobian = param.handleDescentInverseFailed( derivativeJacobian , ex );
 			}
 		}
 		
@@ -307,14 +308,23 @@ public class NewtonRaphsonMultiElemSimpleBacktrack<U extends NumDimensions, R ex
 	 */
 	protected GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,R,S> evalIndicatesImprovement( ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
-		GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,R,S> ev = evalValues();
-		
-		if( !( param.evalIterationImproved( lastValues , ev ) ) )
+		try
 		{
-			ev = null;
-		}
+			GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,R,S> ev = evalValues();
 		
-		return( ev );
+			if( !( param.evalIterationImproved( lastValues , ev ) ) )
+			{
+				ev = null;
+			}
+		
+			return( ev );
+		}
+		catch( BadCreationException ex )
+		{
+			System.out.print( "Bad Creation evalIndicatesImprovement: " );
+			ex.printStackTrace( System.out );
+			return( null );
+		}
 	}
 	
 	
