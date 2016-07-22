@@ -121,6 +121,7 @@ public class SimpleAlgebraTestSuite extends TestSuite {
 		s.addTestSuite( TestIdentityAcrossElemSymbolic.class );
 		s.addTestSuite( TestZeroElemSymbolic.class );
 		s.addTestSuite( TestStandardConstantsSI.class );
+		s.addTestSuite( TestDeterminantAsWedge.class );
 		return( s );
 	}
 	
