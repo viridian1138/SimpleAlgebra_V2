@@ -110,7 +110,7 @@ public class TestTwistAltLoop extends TestCase {
 	/**
 	 * The number of points in each quadrant of the isoline.
 	 */
-	static final int CMAX = 40;
+	static final int CMAX = 160;
 	
 	
 	/**
@@ -131,7 +131,7 @@ public class TestTwistAltLoop extends TestCase {
 		 */
 		public Adim( )
 		{
-			dim = BigInteger.valueOf( 4 * CMAX );
+			dim = BigInteger.valueOf( 2 * CMAX );
 		}
 
 		/**
@@ -179,8 +179,18 @@ public class TestTwistAltLoop extends TestCase {
 	 * @param v Blend "v" parameter.
 	 * @return The evaluated value.
 	 */
-	final static double evalCurveBezUv( final double b0 , final double b1 , final double u , final double v )
+	final static double evalCurveBezUv( final double b0 , final double b1 , double u , double v )
 	{
+		if( u < 0.0 )
+		{
+			u = 0.0;
+		}
+		
+		if( v < 0.0 )
+		{
+			v = 0.0;
+		}
+		
 		return( evalCurveBez( b0 , b1 , u / ( u + v ) , v / ( u + v) ) );
 	}
 	
@@ -411,16 +421,18 @@ public class TestTwistAltLoop extends TestCase {
 			
 			for( int cnt = 0 ; cnt < CMAX ; cnt++ )
 			{
-				final double ang = cnt * rang / CMAX;
+				final double ua = ( (double) cnt ) / ( CMAX - 1 );
+				
+				final double ang = ( 1.0 - ua ) * ( -0.4999 * rang ) + ( ua ) * ( 1.4999 * rang );
 				
 				final double[] db = evalSurfTwistRad( ang , cutoff , 
 						b00 , b01 , b10 , b11u , b11v );
 				
 				
-				// System.out.println( ( db[ 0 ] ) + " " + ( db[ 1 ] ) + " " + ( db[ 2 ]) );
+				System.out.println( ( - db[ 0 ] ) + " " + ( db[ 1 ] ) + " " + ( db[ 2 ]) );
 				
 				final GeometricAlgebraMultivectorElem<TestDimensionTwo, GeometricAlgebraOrd<TestDimensionTwo>, DoubleElem, DoubleElemFactory>
-					v = genVect2( se , db[ 0 ] , db[ 1 ] );
+					v = genVect2( se , - db[ 0 ] , db[ 1 ] );
 				
 				final HashSet<BigInteger> hs = new HashSet<BigInteger>();
 				hs.add( vcnt );
@@ -430,50 +442,8 @@ public class TestTwistAltLoop extends TestCase {
 			}
 			
 		}
-		
-		
-		
-		// #############################################################
-		
-		
-		// System.out.println( "///" );
 		
 
-		
-		
-		{
-			final double b00 = 0.0;
-			final double b01 = kvaa; 
-			final double b10 = kvaa;
-			final double b11u = kvaa + kvb; 
-			final double b11v = kvaa + kvb;
-			
-			
-			Assert.assertTrue( Math.abs( b10 - b01 ) < 1E-6 );
-			
-			
-			for( int cnt = 0 ; cnt < CMAX ; cnt++ )
-			{
-				final double ang = cnt * rang / CMAX;
-				
-				final double[] db = evalSurfTwistRad( ang , cutoff , 
-						b00 , b01 , b10 , b11u , b11v );
-				
-				
-				// System.out.println( ( - db[ 1 ] ) + " " + ( db[ 0 ] ) + " " + ( db[ 2 ]) );
-				
-				final GeometricAlgebraMultivectorElem<TestDimensionTwo, GeometricAlgebraOrd<TestDimensionTwo>, DoubleElem, DoubleElemFactory>
-					v = genVect2( se , - db[ 1 ] , db[ 0 ] );
-				
-				final HashSet<BigInteger> hs = new HashSet<BigInteger>();
-				hs.add( vcnt );
-				vect.setVal( hs , v );
-				vcnt = vcnt.add( BigInteger.ONE );
-				
-			}
-			
-		}
-		
 		
 		
 		
@@ -496,16 +466,18 @@ public class TestTwistAltLoop extends TestCase {
 			
 			for( int cnt = 0 ; cnt < CMAX ; cnt++ )
 			{
-				final double ang = cnt * rang / CMAX;
+				final double ua = ( (double) cnt ) / ( CMAX - 1 );
+				
+				final double ang = ( 1.0 - ua ) * ( -0.4999 * rang ) + ( ua ) * ( 1.4999 * rang );
 				
 				final double[] db = evalSurfTwistRad( ang , cutoff , 
 						b00 , b01 , b10 , b11u , b11v );
 				
 				
-				// System.out.println( ( - db[ 0 ] ) + " " + ( - db[ 1 ] ) + " " + ( db[ 2 ]) );
+				System.out.println( ( db[ 0 ] ) + " " + ( - db[ 1 ] ) + " " + ( db[ 2 ]) );
 				
 				final GeometricAlgebraMultivectorElem<TestDimensionTwo, GeometricAlgebraOrd<TestDimensionTwo>, DoubleElem, DoubleElemFactory>
-					v = genVect2( se , - db[ 0 ] , - db[ 1 ] );
+					v = genVect2( se , db[ 0 ] , - db[ 1 ] );
 				
 				final HashSet<BigInteger> hs = new HashSet<BigInteger>();
 				hs.add( vcnt );
@@ -517,52 +489,8 @@ public class TestTwistAltLoop extends TestCase {
 		}
 		
 		
-		
-		
-		
-		// #############################################################
-		
-		
-		// System.out.println( "///" );
 		
 
-		
-		
-		{
-			final double b00 = 0.0;
-			final double b01 = kvaa;
-			final double b10 = kvaa;
-			final double b11u = kvaa - kvb; 
-			final double b11v = kvaa - kvb;
-			
-			
-			Assert.assertTrue( Math.abs( b10 - b01 ) < 1E-6 );
-			
-			
-			for( int cnt = 0 ; cnt < CMAX ; cnt++ )
-			{
-				final double ang = cnt * rang / CMAX;
-				
-				final double[] db = evalSurfTwistRad( ang , cutoff , 
-						b00 , b01 , b10 , b11u , b11v );
-				
-				
-				// System.out.println( ( db[ 1 ] ) + " " + ( - db[ 0 ] ) + " " + ( db[ 2 ]) );
-				
-				final GeometricAlgebraMultivectorElem<TestDimensionTwo, GeometricAlgebraOrd<TestDimensionTwo>, DoubleElem, DoubleElemFactory>
-					v = genVect2( se , db[ 1 ] , - db[ 0 ] );
-				
-				final HashSet<BigInteger> hs = new HashSet<BigInteger>();
-				hs.add( vcnt );
-				vect.setVal( hs , v );
-				vcnt = vcnt.add( BigInteger.ONE );
-				
-			}
-			
-		}
-		
-		
-	
 		
 		
 		
