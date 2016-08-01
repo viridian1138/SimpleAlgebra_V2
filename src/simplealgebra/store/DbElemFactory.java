@@ -74,6 +74,13 @@ public class DbElemFactory<R extends Elem<R,?>, S extends ElemFactory<R,S>> exte
 	
 	
 	@Override
+	public Elem<?,?> totalMagnitudeZero()
+	{
+		return( fac.totalMagnitudeZero() );
+	}
+	
+	
+	@Override
 	public SymbolicElem<DbElem<R, S>, DbElemFactory<R,S>> handleSymbolicOptionalOp( Object id , 
 			ArrayList<SymbolicElem<DbElem<R, S>, DbElemFactory<R,S>>> args )  throws NotInvertibleException
 	{

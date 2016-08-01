@@ -309,6 +309,18 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 	}
 	
 	
+	@Override
+	public Elem<?,?> totalMagnitude()
+	{
+		Elem ret = fac.totalMagnitudeZero();
+		for( final Elem ii : map.values() )
+		{
+			ret = ret.add( ii.totalMagnitude() );
+		}
+		return( ret );
+	}
+	
+	
 	/**
 	 * Represents the left-side term in one symbolic multiplication
 	 * in a multivector multiplication so that the multiplication

@@ -125,6 +125,13 @@ public class ValueWithUncertaintyElem<R extends Elem<R,?>, S extends ElemFactory
 	
 	
 	@Override
+	public Elem<?,?> totalMagnitude()
+	{
+		return( value.totalMagnitude() );
+	}
+	
+	
+	@Override
 	public ValueWithUncertaintyElem<R, S> handleOptionalOp( Object id , ArrayList<ValueWithUncertaintyElem<R, S>> args ) throws NotInvertibleException
 	{
 		if( id instanceof AbsoluteValue )

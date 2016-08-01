@@ -804,6 +804,18 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	}
 	
 	
+	@Override
+	public Elem<?,?> totalMagnitude()
+	{
+		Elem ret = fac.totalMagnitudeZero();
+		for( final Elem ii : map.values() )
+		{
+			ret = ret.add( ii.totalMagnitude() );
+		}
+		return( ret );
+	}
+	
+	
 	/**
 	 * Returns the rank of the tensor.
 	 * 

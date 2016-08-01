@@ -155,6 +155,13 @@ public class SquareMatrixElemFactory<U extends NumDimensions, R extends Elem<R,?
 	
 	
 	@Override
+	public Elem<?,?> totalMagnitudeZero()
+	{
+		return( fac.zero() );
+	}
+	
+	
+	@Override
 	public SquareMatrixElemFactory<U,R,S> cloneThread( final BigInteger threadIndex )
 	{
 		S sfac = fac.cloneThread(threadIndex);

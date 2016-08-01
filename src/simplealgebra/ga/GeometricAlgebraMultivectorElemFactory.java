@@ -87,6 +87,13 @@ public class GeometricAlgebraMultivectorElemFactory<U extends NumDimensions, A e
 	
 	
 	@Override
+	public Elem<?,?> totalMagnitudeZero()
+	{
+		return( fac.zero() );
+	}
+	
+	
+	@Override
 	public boolean isMultCommutative()
 	{
 		return( false );

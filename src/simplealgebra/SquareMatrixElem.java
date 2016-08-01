@@ -345,6 +345,23 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	
 	
 	@Override
+	public Elem<?,?> totalMagnitude()
+	{
+		Elem ret = fac.totalMagnitudeZero();
+		for( final Entry<BigInteger, HashMap<BigInteger, R>> rowie : rowMap.entrySet() )
+		{
+			BigInteger row = rowie.getKey();
+			HashMap<BigInteger,R> subMap = rowie.getValue();
+			for( final R colie : subMap.values() )
+			{
+				ret = ret.add( colie.totalMagnitude() );
+			}
+		}
+		return( ret );
+	}
+	
+	
+	@Override
 	public SquareMatrixElem<U, R, S> mutate( Mutator<R> mutr ) throws NotInvertibleException {
 		SquareMatrixElem<U,R,S> ret = new SquareMatrixElem<U,R,S>(fac,dim);
 		for( final Entry<BigInteger, HashMap<BigInteger, R>> rowie : rowMap.entrySet() )

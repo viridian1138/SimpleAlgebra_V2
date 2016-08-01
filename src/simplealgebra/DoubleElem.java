@@ -40,7 +40,7 @@ import simplealgebra.symbolic.SymbolicElem.EVAL_MODE;
  * @author thorngreen
  *
  */
-public class DoubleElem extends Elem<DoubleElem, DoubleElemFactory> {
+public class DoubleElem extends Elem<DoubleElem, DoubleElemFactory> implements Comparable<DoubleElem> {
 
 	@Override
 	public DoubleElem add(DoubleElem b) {
@@ -104,6 +104,18 @@ public class DoubleElem extends Elem<DoubleElem, DoubleElemFactory> {
 	@Override
 	public DoubleElemFactory getFac() {
 		return( new DoubleElemFactory() );
+	}
+	
+	@Override
+	public DoubleElem totalMagnitude()
+	{
+		return( this.mult( this ) );
+	}
+	
+	@Override
+	public int compareTo( DoubleElem in )
+	{
+		return( Double.valueOf( d ).compareTo( Double.valueOf( in.d ) ) );
 	}
 	
 	@Override

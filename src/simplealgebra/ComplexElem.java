@@ -343,6 +343,15 @@ public class ComplexElem<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 	}
 	
 	
+	@Override 
+	public Elem<?,?> totalMagnitude()
+	{
+		final Elem r1 = re.totalMagnitude();
+		final Elem r2 = im.totalMagnitude();
+		return( r1.add( r2 ) );
+	}
+	
+	
 	@Override
 	public ComplexElem<R,S> cloneThread( final BigInteger threadIndex )
 	{

@@ -66,6 +66,13 @@ public class ComplexElemFactory<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 	
 	
 	@Override
+	public Elem<?,?> totalMagnitudeZero()
+	{
+		return( fac.zero() );
+	}
+	
+	
+	@Override
 	public SymbolicElem<ComplexElem<R, S>, ComplexElemFactory<R,S>> handleSymbolicOptionalOp( Object id , 
 			ArrayList<SymbolicElem<ComplexElem<R, S>, ComplexElemFactory<R,S>>> args )  throws NotInvertibleException
 	{

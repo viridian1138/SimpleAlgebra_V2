@@ -28,6 +28,8 @@ package simplealgebra;
 import java.io.PrintStream;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.HashSet;
 
 import org.kie.api.definition.rule.Rule;
 import org.kie.api.event.rule.BeforeMatchFiredEvent;
@@ -41,10 +43,15 @@ import org.kie.internal.io.ResourceFactory;
 import org.kie.internal.runtime.StatefulKnowledgeSession;
 import org.mvel2.optimizers.OptimizerFactory;
 
+import simplealgebra.algo.NewtonRaphsonSingleElem;
+import simplealgebra.algo.NewtonRaphsonSingleElemFunctional;
 import simplealgebra.symbolic.DroolsSession;
 import simplealgebra.symbolic.LoggingConfiguration;
+import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.PrecedenceComparator;
+import simplealgebra.symbolic.SCacheKey;
 import simplealgebra.symbolic.SymbolicElem;
+import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicElem.EVAL_MODE;
 import simplealgebra.symbolic.SymbolicPlaceholder;
 
@@ -166,6 +173,12 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 	 * @return The factory of the elem.
 	 */
 	public abstract R getFac();
+	
+	/**
+	 * Returns the total magnitude of the elem.  The returned elem, if not null, can be safely cast to Comparable.
+	 * @return The total magnitude of the elem.  The returned elem, if not null, can be safely cast to Comparable. 
+	 */
+	public abstract Elem<?,?> totalMagnitude();
 	
 	
 	
@@ -381,6 +394,333 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 		final T x = (T) this;
 		final T ret = ( x.exp( numIter ) ).add( x.negate().exp( numIter ) ).divideBy( 2 );
 		return( ret );
+	}
+	
+	
+
+	/**
+	 * Evaluator for computing an approximate natural logarithm.
+	 * 
+	 * @author tgreen
+	 *
+	 */
+	protected class LnEvaluator
+	{
+		/**
+		 * The argument for which to take the logarithm.
+		 */
+		protected T inputValue;
+		
+		/**
+		 * Number of iterations to build the underlying exponential approximation.
+		 */
+		protected int numIterExp;
+		
+		/**
+		 * Current best value for the solution.
+		 */
+		protected T evalValue;
+		
+		/**
+		 * Cached solution used for backtracking.
+		 */
+		protected T evalCache;
+		
+		/**
+		 * Number of iterations to attempt to converge to the logarithm.
+		 */
+		protected int numIterLn;
+		
+		
+		/**
+		 * The iteration count for Newton-Raphson iterations.
+		 */
+		protected int intCnt = 0;
+		
+		
+		/**
+		 * Constructs the evaluator.
+		 * @param _inputValue The argument for which to take the logarithm.
+		 * @param _numIterExp Number of iterations to build the underlying exponential approximation.
+	     * @param _numIterLn Number of iterations to attempt to converge to the logarithm.
+		 */
+		public LnEvaluator( T _inputValue, int _numIterExp , int _numIterLn )
+		{
+			inputValue = _inputValue;
+			numIterExp = _numIterExp;
+			numIterLn = _numIterLn;
+		}
+		
+		/**
+		 * Populates the initial guess from which to start the evaluations.
+		 */
+		protected void populateEvalValue()
+		{
+			final T i1 = inputValue.add( getFac().identity().negate() );
+			final T i2 = i1.mult( i1 );
+			final T i3 = i2.mult( i1 );
+			final T val = i1.add( i2.divideBy( 2 ).negate() ).add( i3.divideBy( 3 ) );
+			T evA = val.exp( numIterExp ).add( inputValue.negate() );
+			T evB = inputValue.exp( numIterExp ).add( inputValue.negate() );
+			evalValue = ( (Comparable) evA.totalMagnitude() ).compareTo( evB.totalMagnitude() ) <= 0 ? val : inputValue;
+		}
+		
+		/**
+		 * Evaluates and returns an approximate answer.
+		 * @return The approximate answer.
+		 * @throws NotInvertibleException
+		 * @throws MultiplicativeDistributionRequiredException
+		 */
+		public T performEval() throws NotInvertibleException, MultiplicativeDistributionRequiredException
+		{
+			final AElemVal aelemval = new AElemVal();
+			final AElemPartial aelempartial = new AElemPartial();
+			
+			populateEvalValue();
+			
+			final AEval aeval = new AEval( aelemval , aelempartial );
+			aeval.eval( null );
+			return( evalValue );
+		}
+		
+		
+		/**
+		 * Newton-Raphson evaluator for the function to be solved.
+		 * 
+		 * @author tgreen
+		 *
+		 */
+		private class AEval extends NewtonRaphsonSingleElemFunctional<T,R>
+		{
+
+			/**
+			 * Constructs the evaluator.
+			 * @param _eval The function to be solved.
+			 * @param _partialEval The approximate partial derivative for the function to be solved.
+			 * @throws NotInvertibleException
+			 * @throws MultiplicativeDistributionRequiredException
+			 */
+			public AEval(SymbolicElem<T,R> _eval, SymbolicElem<T,R> _partialEval )
+					throws NotInvertibleException,
+					MultiplicativeDistributionRequiredException {
+				super(_eval, _partialEval, null, null);
+			}
+
+			@Override
+			protected void performIterationUpdate(T iterationOffset) {
+				evalValue = evalValue.add( iterationOffset );
+			}
+
+			@Override
+			protected boolean iterationsDone() {
+				intCnt++;
+				return( intCnt > numIterLn );
+			}
+
+			@Override
+			protected void cacheIterationValue() {
+				evalCache = evalValue;
+			}
+
+			@Override
+			protected void retrieveIterationValue() {
+				evalValue = evalCache;
+			}
+
+			@Override
+			public NewtonRaphsonSingleElem<T, R> cloneThread(
+					BigInteger threadIndex) {
+				throw( new RuntimeException( "Not Supported" ) );
+			}
+
+			@Override
+			public NewtonRaphsonSingleElem<T, R> cloneThreadCached(
+					CloneThreadCache<SymbolicElem<SymbolicElem<T, R>, SymbolicElemFactory<T, R>>, SymbolicElemFactory<SymbolicElem<T, R>, SymbolicElemFactory<T, R>>> cache,
+					CloneThreadCache<?, ?> cacheImplicit, BigInteger threadIndex) {
+				throw( new RuntimeException( "Not Supported" ) );
+			}
+			
+		}
+		
+		
+		/**
+		 * Represents the function to be solved.
+		 * 
+		 * @author thorngreen
+		 *
+		 */
+		private class AElemVal extends SymbolicElem<T, R>
+		{
+
+			/**
+			 * Constructs the elem.
+			 */
+			public AElemVal( ) {
+				super( Elem.this.getFac() );
+			}
+
+			@Override
+			public T eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException,
+					MultiplicativeDistributionRequiredException {
+				return( ( evalValue.exp(numIterExp) ).add( inputValue.negate() ) );
+			}
+			
+			@Override
+			public T evalCached(
+					HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace,
+					HashMap<SCacheKey<T, R>, T> cache)
+					throws NotInvertibleException,
+					MultiplicativeDistributionRequiredException {
+				throw( new RuntimeException( "NotSupported" ) );
+			}
+
+			@Override
+			public T evalPartialDerivative(ArrayList<? extends Elem<?, ?>> withRespectTo , HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace)
+					throws NotInvertibleException,
+					MultiplicativeDistributionRequiredException {
+				throw( new RuntimeException( "NotSupported" ) );
+			}
+			
+			@Override
+			public T evalPartialDerivativeCached(
+					ArrayList<? extends Elem<?, ?>> withRespectTo,
+					HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace,
+					HashMap<SCacheKey<T, R>, T> cache)
+					throws NotInvertibleException,
+					MultiplicativeDistributionRequiredException {
+				throw( new RuntimeException( "NotSupported" ) );
+			}
+
+			@Override
+			public String writeDesc( WriteElemCache<SymbolicElem<T,R>,SymbolicElemFactory<T,R>> cache , PrintStream ps )
+			{
+				String st = cache.get( this );
+				if( st == null )
+				{
+					final String sta = fac.writeDesc( (WriteElemCache<T,R>)( cache.getInnerCache() ) , ps);
+					/* cache.applyAuxCache( new WriteGaSetCache( cache.getCacheVal() ) );
+					final String stair = ( (WriteGaSetCache)( cache.getAuxCache( WriteGaSetCache.class ) ) ).writeDesc(indx, (WriteBigIntegerCache)( cache.getAuxCache( WriteBigIntegerCache.class ) ) , ps);
+					st = cache.getIncrementVal();
+					cache.put(this, st);
+					ps.print( AElemVal.class.getSimpleName() );
+					ps.print( " " );
+					ps.print( st );
+					ps.print( " = new " );
+					ps.print( AElemVal.class.getSimpleName() );
+					ps.print( "( " );
+					ps.print( sta );
+					ps.print( " , " );
+					ps.print( stair );
+					ps.print( " , " );
+					ps.print( col );
+					ps.println( " );" ); */
+				}
+				return( st );
+			}
+			
+
+		}
+		
+		
+		
+		
+		/**
+		 * Represents the approximate derivative of the function to be solved.
+		 * 
+		 * @author thorngreen
+		 *
+		 */
+		private class AElemPartial extends SymbolicElem<T, R>
+		{
+
+			/**
+			 * Constructs the elem.
+			 */
+			public AElemPartial( ) {
+				super( Elem.this.getFac() );
+			}
+
+			@Override
+			public T eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException,
+					MultiplicativeDistributionRequiredException {
+				return( evalValue.exp(numIterExp) );
+			}
+			
+			@Override
+			public T evalCached(
+					HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace,
+					HashMap<SCacheKey<T, R>, T> cache)
+					throws NotInvertibleException,
+					MultiplicativeDistributionRequiredException {
+				throw( new RuntimeException( "NotSupported" ) );
+			}
+
+			@Override
+			public T evalPartialDerivative(ArrayList<? extends Elem<?, ?>> withRespectTo , HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace)
+					throws NotInvertibleException,
+					MultiplicativeDistributionRequiredException {
+				throw( new RuntimeException( "NotSupported" ) );
+			}
+			
+			@Override
+			public T evalPartialDerivativeCached(
+					ArrayList<? extends Elem<?, ?>> withRespectTo,
+					HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace,
+					HashMap<SCacheKey<T, R>, T> cache)
+					throws NotInvertibleException,
+					MultiplicativeDistributionRequiredException {
+				throw( new RuntimeException( "NotSupported" ) );
+			}
+
+			@Override
+			public String writeDesc( WriteElemCache<SymbolicElem<T,R>,SymbolicElemFactory<T,R>> cache , PrintStream ps )
+			{
+				String st = cache.get( this );
+				if( st == null )
+				{
+					final String sta = fac.writeDesc( (WriteElemCache<T,R>)( cache.getInnerCache() ) , ps);
+					/* cache.applyAuxCache( new WriteGaSetCache( cache.getCacheVal() ) );
+					final String stair = ( (WriteGaSetCache)( cache.getAuxCache( WriteGaSetCache.class ) ) ).writeDesc(indx, (WriteBigIntegerCache)( cache.getAuxCache( WriteBigIntegerCache.class ) ) , ps);
+					st = cache.getIncrementVal();
+					cache.put(this, st);
+					ps.print( AElemVal.class.getSimpleName() );
+					ps.print( " " );
+					ps.print( st );
+					ps.print( " = new " );
+					ps.print( AElemVal.class.getSimpleName() );
+					ps.print( "( " );
+					ps.print( sta );
+					ps.print( " , " );
+					ps.print( stair );
+					ps.print( " , " );
+					ps.print( col );
+					ps.println( " );" ); */
+				}
+				return( st );
+			}
+			
+
+		}
+		
+		
+		
+		
+	}
+	
+	
+	
+	/**
+	 * Implements an approximate natural logarithm.
+	 * @param numIterExp Number of iterations to build the underlying exponential approximation.
+	 * @param numIterLn Number of iterations to attempt to converge to the logarithm.
+	 * @return An approximate natural logarithm.
+	 * @throws NotInvertibleException
+	 * @throws MultiplicativeDistributionRequiredException
+	 */
+	public T ln( int numIterExp , int numIterLn ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	{
+		LnEvaluator eval = new LnEvaluator( (T) this , numIterExp , numIterLn );
+		return( eval.performEval() );
 	}
 	
 	

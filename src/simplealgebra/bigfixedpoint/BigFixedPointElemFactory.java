@@ -127,6 +127,13 @@ public class BigFixedPointElemFactory<T extends Precision<T>> extends ElemFactor
 	
 	
 	@Override
+	public BigFixedPointElem<T> totalMagnitudeZero()
+	{
+		return( zero() );
+	}
+	
+	
+	@Override
 	public BigFixedPointElemFactory<T> cloneThread( final BigInteger threadIndex )
 	{
 		final T precs = prec.cloneThread( threadIndex );

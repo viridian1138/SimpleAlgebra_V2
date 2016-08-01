@@ -102,6 +102,13 @@ public class DbElem<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 	public DbElemFactory<R, S> getFac() {
 		return( new DbElemFactory<R,S>( fac , graph ) );
 	}
+	
+	
+	@Override 
+	public Elem<?,?> totalMagnitude()
+	{
+		return( query().totalMagnitude() );
+	}
 
 	
 	/**

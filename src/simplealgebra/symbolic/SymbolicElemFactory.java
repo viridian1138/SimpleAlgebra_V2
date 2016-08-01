@@ -91,6 +91,12 @@ public class SymbolicElemFactory<R extends Elem<R,?>, S extends ElemFactory<R,S>
 		return( fac.isNestedMultAssociative() );
 	}
 	
+	@Override
+	public Elem<?,?> totalMagnitudeZero()
+	{
+		return( fac.totalMagnitudeZero() );
+	}
+	
 	
 	@Override
 	public SymbolicElemFactory<R,S> cloneThread( final BigInteger threadIndex )

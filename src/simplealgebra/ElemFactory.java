@@ -99,6 +99,12 @@ public abstract class ElemFactory<T extends Elem<T,?>, R extends ElemFactory<T,R
 	}
 	
 	/**
+	 * Returns the equivalent of a zero total magnitude for the elem type.
+	 * @return The equivalent of a zero total magnitude for the elem type.
+	 */
+	public abstract Elem<?,?> totalMagnitudeZero();
+	
+	/**
 	 * Handles optional operations that are not supported by all elems.
 	 * 
 	 * @param id The id for the command describing the operation.

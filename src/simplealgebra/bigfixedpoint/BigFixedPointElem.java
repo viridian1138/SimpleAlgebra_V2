@@ -53,7 +53,7 @@ import simplealgebra.symbolic.SymbolicElem.EVAL_MODE;
  *
  * @param <T> The precision of the elem.
  */
-public class BigFixedPointElem<T extends Precision<T>> extends Elem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> {
+public class BigFixedPointElem<T extends Precision<T>> extends Elem<BigFixedPointElem<T>, BigFixedPointElemFactory<T>> implements Comparable<BigFixedPointElem<T>> {
 	
 	/**
 	 * Constructs the elem.
@@ -132,6 +132,18 @@ public class BigFixedPointElem<T extends Precision<T>> extends Elem<BigFixedPoin
 	@Override
 	public BigFixedPointElemFactory<T> getFac() {
 		return( new BigFixedPointElemFactory<T>( prec ) );
+	}
+	
+	@Override
+	public BigFixedPointElem<T> totalMagnitude()
+	{
+		return( this.mult( this ) );
+	}
+	
+	@Override
+	public int compareTo( BigFixedPointElem<T> in )
+	{
+		return( this.val.compareTo( in.val ) );
 	}
 	
 	@Override

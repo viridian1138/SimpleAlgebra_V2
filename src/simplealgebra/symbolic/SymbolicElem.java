@@ -96,7 +96,6 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 			HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace , HashMap<SCacheKey<R,S>,R> cache ) throws NotInvertibleException, MultiplicativeDistributionRequiredException;
 	
 	
-	
 	/**
 	 * Constructs the elem.
 	 * 
@@ -156,6 +155,13 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 	public SymbolicElem<R, S>  cos( int numIter ) {
 		return( new SymbolicCosine<R,S>( this , fac , numIter ) );
 	}
+	
+	@Override
+	public Elem<?,?> totalMagnitude()
+	{
+		throw( new RuntimeException( "Not Supported" ) );
+	}
+	
 	
 	/**
 	 * Expands the exponential function <math display="inline">

@@ -123,6 +123,13 @@ public class ValueWithUncertaintyElemFactory<R extends Elem<R,?>, S extends Elem
 	
 	
 	@Override
+	public Elem<?,?> totalMagnitudeZero()
+	{
+		return( fac.totalMagnitudeZero() );
+	}
+	
+	
+	@Override
 	public ValueWithUncertaintyElemFactory<R,S> cloneThread( final BigInteger threadIndex )
 	{
 		S sfac = fac.cloneThread(threadIndex);

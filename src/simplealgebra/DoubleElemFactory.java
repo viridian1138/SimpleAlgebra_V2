@@ -91,6 +91,12 @@ public class DoubleElemFactory extends ElemFactory<DoubleElem, DoubleElemFactory
 		return( this );
 	}
 	
+	@Override
+	public DoubleElem totalMagnitudeZero()
+	{
+		return( zero() );
+	}
+	
 	
 	@Override
 	public SymbolicElem<DoubleElem, DoubleElemFactory> handleSymbolicOptionalOp( Object id , 
