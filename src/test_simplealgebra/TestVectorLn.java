@@ -30,6 +30,7 @@ import java.util.Random;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
+import simplealgebra.ComplexElem;
 import simplealgebra.DoubleElem;
 import simplealgebra.DoubleElemFactory;
 import simplealgebra.NotInvertibleException;
@@ -91,6 +92,9 @@ public class TestVectorLn extends TestCase {
 			ln = mvA.ln(20, 20);
 		
 		
+		// System.out.println( ( (DoubleElem)( ln.exp( 20 ).add( mvA.negate() ).totalMagnitude() ) ).getVal() );
+		
+		
 		Assert.assertTrue( ln != null );
 		
 		
@@ -119,6 +123,25 @@ public class TestVectorLn extends TestCase {
 		
 		Assert.assertTrue( Math.abs( ln.getVal() - Math.log( 10.0 ) ) < 1E-5 );
 		
+		
+	}
+	
+	
+	
+	/**
+	 * Tests the ability to take an approximate natural logarithm of a negative value
+	 * 
+	 * @throws Throwable
+	 */
+	public void testNegativeLnA() throws Throwable
+	{
+		final ComplexElem<DoubleElem,DoubleElemFactory> cplx = new ComplexElem<DoubleElem,DoubleElemFactory>( new DoubleElem( -10.0 ) , new DoubleElem( 0.0 ) );
+		
+		final ComplexElem<DoubleElem,DoubleElemFactory> ln = cplx.ln(20, 20);
+		
+		Assert.assertTrue( Math.abs( ln.getRe().getVal() - Math.log( 10.0 ) ) < 1E-5 );
+		
+		Assert.assertTrue( Math.abs( ln.getIm().getVal() - Math.PI ) < 1E-5 );
 		
 	}
 	

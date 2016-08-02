@@ -312,6 +312,88 @@ public class ComplexElem<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 	}
 	
 	
+	/**
+	 * Produces one possible initial natural logarithm approximation.
+	 * @param comb Possibility number ranging from zero to 31.
+	 * @param numIterExp The number of iterations for the underlying exponential approximation.
+	 * @return One possible initial natural logarithm approximation.
+	 * @throws NotInvertibleException
+	 */
+	protected ComplexElem<R, S> estimateLnApprox( final int comb , final int numIterExp ) throws NotInvertibleException
+	{
+		final R a0 = ( comb & 1 ) != 0 ? getRe() : getRe().negate();
+		final R a1 = ( comb & 2 ) != 0 ? getIm() : getIm().negate();
+		final R a = a0.add( a1 );
+		
+		final R ident = getFac().getFac().identity();
+		
+		R r0 = ident.add( ident ).add( ident );
+		
+		if( ( comb & 4 ) != 0 )
+		{
+			r0 = r0.negate();
+		}
+		
+		if( ( comb & 8 ) != 0 )
+		{
+			r0 = r0.divideBy( 2 );
+		}
+		
+		if( ( comb & 16 ) != 0 )
+		{
+			r0 = getFac().getFac().zero();
+		}
+		
+		R stval0 = a;
+		R stinit;
+		
+		do
+		{
+			stinit = stval0;
+			stval0 = evalBetterLnApprox( new ComplexElem<R,S>( stval0 , r0 ) , 
+					new ComplexElem<R,S>( stval0.divideBy( 2 ) , r0 ) , numIterExp ).getRe();
+		}
+		while( stval0 != stinit );
+		
+		
+		final R mult2 = ident.add( ident );
+		
+		
+		do
+		{
+			stinit = stval0;
+			stval0 = evalBetterLnApprox( new ComplexElem<R,S>( stval0 , r0 ) , 
+					new ComplexElem<R,S>( stval0.mult( mult2 ) , r0 ) , numIterExp ).getRe();
+		}
+		while( stval0 != stinit );
+		
+		
+		final ComplexElem<R,S> stu = new ComplexElem<R,S>( stval0 , r0 );
+		
+		
+		final ComplexElem<R,S> i1 = ( ( this ).mult( ( stu.negate().exp( numIterExp ) ) ) ).add( getFac().identity().negate() );
+		final ComplexElem<R,S> i2 = i1.mult( i1 );
+		final ComplexElem<R,S> i3 = i2.mult( i1 );
+		final ComplexElem<R,S> val = i1.add( i2.divideBy( 2 ).negate() ).add( i3.divideBy( 3 ) );
+		final ComplexElem<R,S> ret = evalBetterLnApprox( val.add( stu ) , stu , numIterExp );
+		return( ret );
+		
+		
+	}
+	
+	
+	@Override
+	protected ComplexElem<R, S> estimateLnApprox( final int numIterExp ) throws NotInvertibleException
+	{
+		ComplexElem<R, S> stval0 = estimateLnApprox( 0 , numIterExp );
+		for( int cnt = 1 ; cnt < 32 ; cnt++ )
+		{
+			stval0 = evalBetterLnApprox( stval0 , estimateLnApprox( cnt , numIterExp ) , numIterExp );
+		}
+		return( stval0 );
+	}
+	
+	
 	@Override
 	public ComplexElem<R, S> handleOptionalOp( Object id , ArrayList<ComplexElem<R, S>> args ) throws NotInvertibleException
 	{
@@ -341,6 +423,9 @@ public class ComplexElem<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 	public ComplexElemFactory<R, S> getFac() {
 		return( new ComplexElemFactory<R,S>( (S)( re.getFac() ) ) );
 	}
+	
+	
+	
 	
 	
 	@Override 

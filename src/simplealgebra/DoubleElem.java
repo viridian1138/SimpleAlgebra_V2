@@ -90,6 +90,23 @@ public class DoubleElem extends Elem<DoubleElem, DoubleElemFactory> implements C
 	}
 	
 	@Override
+	protected DoubleElem estimateLnApprox( final int numIterExp ) throws NotInvertibleException
+	{
+		if( d > 0 )
+		{
+			try
+			{
+				return( new DoubleElem( Math.log( d ) ) );
+			}
+			catch( Throwable ex )
+			{
+				// Drop Through
+			}
+		}
+		return( super.estimateLnApprox( numIterExp ) );
+	}
+	
+	@Override
 	public DoubleElem cloneThread( final BigInteger threadIndex )
 	{
 		return( this );

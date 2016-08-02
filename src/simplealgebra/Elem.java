@@ -397,6 +397,79 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 	}
 	
 	
+	/**
+	 * Returns the better approximation for a natural logarithm.
+	 * @param s0 One possibility to test.
+	 * @param s1 Another possibility to test.
+	 * @param numIterExp  Number of iterations to build the underlying exponential approximation.
+	 * @return Either s0 or s1, depending on which is better.
+	 */
+	protected T evalBetterLnApprox( final T s0 , final T s1 , final int numIterExp )
+	{
+		T evA;
+		T evB;
+		try
+		{
+			evA = s0.exp( numIterExp ).add( this.negate() );
+		}
+		catch( Throwable ex )
+		{
+			return( s1 );
+		}
+		
+		try
+		{
+			evB = s1.exp( numIterExp ).add( this.negate() );
+		}
+		catch( Throwable ex )
+		{
+			return( s0 );
+		}
+		
+		final T ret = ( (Comparable) evA.totalMagnitude() ).compareTo( evB.totalMagnitude() ) <= 0 ? s0 : s1;
+		return( ret );
+	}
+	
+	
+	/**
+	 * Calculates an initial approximate natural logarithm that can lead to the convergence of the final logarithm calculation.
+	 * @param numIterExp  Number of iterations to build the underlying exponential approximation.
+	 * @return The initial approximate natural logarithm.
+	 */
+	protected T estimateLnApprox( final int numIterExp ) throws NotInvertibleException
+	{
+		T stval0 = (T) this;
+		T stinit;
+		
+		do
+		{
+			stinit = stval0;
+			stval0 = evalBetterLnApprox( stval0 , stval0.divideBy( 2 ) , numIterExp );
+		}
+		while( stval0 != stinit );
+		
+		
+		final T ident = getFac().identity();
+		final T mult2 = ident.add( ident );
+		
+		
+		do
+		{
+			stinit = stval0;
+			stval0 = evalBetterLnApprox( stval0 , stval0.mult( mult2 ) , numIterExp );
+		}
+		while( stval0 != stinit );
+		
+		
+		final T i1 = ( ( (T) this ).mult( ( stval0.negate().exp( numIterExp ) ) ) ).add( getFac().identity().negate() );
+		final T i2 = i1.mult( i1 );
+		final T i3 = i2.mult( i1 );
+		final T val = i1.add( i2.divideBy( 2 ).negate() ).add( i3.divideBy( 3 ) );
+		final T ret = evalBetterLnApprox( val.add( stval0 ) , stval0 , numIterExp );
+		return( ret );
+	}
+	
+	
 
 	/**
 	 * Evaluator for computing an approximate natural logarithm.
@@ -454,15 +527,9 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 		/**
 		 * Populates the initial guess from which to start the evaluations.
 		 */
-		protected void populateEvalValue()
+		protected void populateEvalValue() throws NotInvertibleException
 		{
-			final T i1 = inputValue.add( getFac().identity().negate() );
-			final T i2 = i1.mult( i1 );
-			final T i3 = i2.mult( i1 );
-			final T val = i1.add( i2.divideBy( 2 ).negate() ).add( i3.divideBy( 3 ) );
-			T evA = val.exp( numIterExp ).add( inputValue.negate() );
-			T evB = inputValue.exp( numIterExp ).add( inputValue.negate() );
-			evalValue = ( (Comparable) evA.totalMagnitude() ).compareTo( evB.totalMagnitude() ) <= 0 ? val : inputValue;
+			evalValue = inputValue.estimateLnApprox( numIterExp );
 		}
 		
 		/**
@@ -721,6 +788,53 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 	{
 		LnEvaluator eval = new LnEvaluator( (T) this , numIterExp , numIterLn );
 		return( eval.performEval() );
+	}
+	
+	
+	/**
+	 * Implements an approximate arctangeant.
+	 * @param x The X-coordinate for which to calculate the arctangeant.
+	 * @param numIterExp  Number of iterations to build the underlying exponential approximation.
+	 * @param numIterLn  Number of iterations to build the underlying logarithm approximation.
+	 * @return An approximate arctangeant.
+	 * @throws NotInvertibleException
+	 * @throws MultiplicativeDistributionRequiredException
+	 */
+	public T atan2( final T x , int numIterExp , int numIterLn ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	{
+		final ComplexElem<T,R> cplx = new ComplexElem<T,R>( x , (T) this );
+		final ComplexElem<T,R> ln = cplx.ln(numIterExp, numIterLn);
+		return( ln.getIm() );	
+	}
+	
+	
+	/**
+	 * Implements an approximate arctangeant.
+	 * @param numIterExp  Number of iterations to build the underlying exponential approximation.
+	 * @param numIterLn  Number of iterations to build the underlying logarithm approximation.
+	 * @return An approximate arctangeant.
+	 * @throws NotInvertibleException
+	 * @throws MultiplicativeDistributionRequiredException
+	 */
+	public T atan( int numIterExp , int numIterLn ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	{
+		return( atan2( getFac().identity(), numIterExp, numIterLn ) );
+	}
+	
+	
+	/**
+	 * Calculates the components of the tangeant.
+	 * @param numIter   Number of iterations to build the underlying exponential approximation.
+	 * @return ArrayList containing the components of the tangeant.
+	 */
+	public ArrayList<T> tan2( int numIter )
+	{
+		ComplexElem<T,R> tmp = new ComplexElem<T,R>( getFac().zero() , (T) this );
+		ComplexElem<T,R> btmp = tmp.exp( numIter );
+		ArrayList<T> ret = new ArrayList<T>();
+		ret.add( btmp.getIm() );
+		ret.add( btmp.getRe() );
+		return( ret );
 	}
 	
 	

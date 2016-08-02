@@ -128,6 +128,23 @@ public class BigFixedPointElem<T extends Precision<T>> extends Elem<BigFixedPoin
 		}
 		return( new BigFixedPointElem<T>( val.divide( vali ) , prec ) );
 	}
+	
+	@Override
+	protected BigFixedPointElem<T> estimateLnApprox( final int numIterExp ) throws NotInvertibleException
+	{
+		if( val.compareTo( BigInteger.ZERO ) > 0 )
+		{
+			try
+			{
+				return( new BigFixedPointElem( Math.log( toDouble() ) , prec ) );
+			}
+			catch( Throwable ex )
+			{
+				// Drop Through
+			}
+		}
+		return( super.estimateLnApprox( numIterExp ) );
+	}
 
 	@Override
 	public BigFixedPointElemFactory<T> getFac() {
