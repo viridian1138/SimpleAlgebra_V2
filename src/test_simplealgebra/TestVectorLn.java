@@ -115,10 +115,6 @@ public class TestVectorLn extends TestCase {
 		
 		final DoubleElem ln = d.ln( 20 , 20 );
 		
-		// System.out.println( d.exp( 20 ).getVal() );
-		
-		// System.out.println( ln.getVal() );
-		
 		Assert.assertTrue( ln != null );
 		
 		Assert.assertTrue( Math.abs( ln.getVal() - Math.log( 10.0 ) ) < 1E-5 );
@@ -142,6 +138,54 @@ public class TestVectorLn extends TestCase {
 		Assert.assertTrue( Math.abs( ln.getRe().getVal() - Math.log( 10.0 ) ) < 1E-5 );
 		
 		Assert.assertTrue( Math.abs( ln.getIm().getVal() - Math.PI ) < 1E-5 );
+		
+	}
+	
+	
+	/**
+	 * Tests a simple use of a power function.  Tests <math display="inline">
+     * <mrow>
+     *  <msup>
+     *          <mn>2</mn>
+     *        <mn>3</mn>
+     *  </msup>
+     *  <mo>=</mo>
+     *  <mn>8</mn>
+     * </mrow>
+     * </math>
+	 * 
+	 * @throws Throwable
+	 */
+	public void testSimplePowerFunction() throws Throwable 
+	{
+		final DoubleElem a = new DoubleElem( 2.0 );
+		
+		final DoubleElem b = new DoubleElem( 3.0 );
+		
+		final DoubleElem pow = a.powR(b, 20, 20);
+		
+		Assert.assertTrue( Math.abs( pow.getVal() - 8.0 ) < 1E-5 );
+		
+	}
+	
+	
+	
+	/**
+	 * Tests that using the power function to take the square root of -1 produces the imaginary number.
+	 * 
+	 * @throws Throwable
+	 */
+	public void testPowNegative() throws Throwable
+	{
+		final ComplexElem<DoubleElem,DoubleElemFactory> a = new ComplexElem<DoubleElem,DoubleElemFactory>( new DoubleElem( -1.0 ) , new DoubleElem( 0.0 ) );
+		
+		final ComplexElem<DoubleElem,DoubleElemFactory> b = new ComplexElem<DoubleElem,DoubleElemFactory>( new DoubleElem( 0.5 ) , new DoubleElem( 0.0 ) );
+		
+		final ComplexElem<DoubleElem,DoubleElemFactory> pow = a.powR(b, 20, 20);
+		
+		Assert.assertTrue( Math.abs( pow.getRe().getVal() - 0.0 ) < 1E-5 );
+		
+		Assert.assertTrue( Math.abs( pow.getIm().getVal() - 1.0 ) < 1E-5 );
 		
 	}
 	

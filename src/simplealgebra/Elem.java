@@ -838,6 +838,128 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 	}
 	
 	
+	/**
+	 * Calculates an approximate power function using the formula <math display="inline">
+     * <mrow>
+     *  <msup>
+     *          <mi>a</mi>
+     *        <mi>b</mi>
+     *  </msup>
+     *  <mo>=</mo>
+     *  <msup>
+     *          <mi>e</mi>
+     *      <mrow>
+     *        <mi>b</mi>
+     *        <mfenced open="(" close=")" separators=",">
+     *          <mrow>
+     *            <mi>ln</mi><mo>&ApplyFunction;</mo>
+     *            <mi>a</mi>
+     *          </mrow>
+     *        </mfenced>
+     *      </mrow>
+     *  </msup>
+     * </mrow>
+     * </math>
+	 * 
+	 * @param b The exponent of the power function.
+	 * @param numIterExp  Number of iterations to build the underlying exponential approximation.
+	 * @param numIterLn  Number of iterations to build the underlying logarithm approximation.
+	 * @return The calculated power function.
+	 * @throws NotInvertibleException
+	 * @throws MultiplicativeDistributionRequiredException
+	 */
+	public T powL( final T b , final int numIterExp , final int numIterLn ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	{
+		return( ( b.mult( this.ln(numIterExp, numIterLn) ) ).exp( numIterExp ) );
+	}
+	
+	
+	/**
+	 * Calculates an approximate power function using the formula <math display="inline">
+     * <mrow>
+     *  <msup>
+     *          <mi>a</mi>
+     *        <mi>b</mi>
+     *  </msup>
+     *  <mo>=</mo>
+     *  <msup>
+     *          <mi>e</mi>
+     *      <mrow>
+     *        <mfenced open="(" close=")" separators=",">
+     *          <mrow>
+     *            <mi>ln</mi><mo>&ApplyFunction;</mo>
+     *            <mi>a</mi>
+     *          </mrow>
+     *        </mfenced>
+     *        <mi>b</mi>
+     *      </mrow>
+     *  </msup>
+     * </mrow>
+     * </math>
+	 * 
+	 * @param b The exponent of the power function.
+	 * @param numIterExp  Number of iterations to build the underlying exponential approximation.
+	 * @param numIterLn  Number of iterations to build the underlying logarithm approximation.
+	 * @return The calculated power function.
+	 * @throws NotInvertibleException
+	 * @throws MultiplicativeDistributionRequiredException
+	 */
+	public T powR( final T b , final int numIterExp , final int numIterLn ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	{
+		return( ( ( this.ln(numIterExp, numIterLn) ).mult( b ) ).exp( numIterExp ) );
+	}
+	
+	
+	/**
+	 * Calculates an approximate power function using the formula <math display="inline">
+     * <mrow>
+     *  <msup>
+     *          <mi>a</mi>
+     *        <mi>b</mi>
+     *  </msup>
+     *  <mo>=</mo>
+     *  <msup>
+     *          <mi>e</mi>
+     *        <mfrac>
+     *          <mrow>
+     *            <mi>b</mi>
+     *            <mfenced open="(" close=")" separators=",">
+     *              <mrow>
+     *                <mi>ln</mi><mo>&ApplyFunction;</mo>
+     *                <mi>a</mi>
+     *              </mrow>
+     *            </mfenced>
+     *            <mo>+</mo>
+     *            <mfenced open="(" close=")" separators=",">
+     *              <mrow>
+     *                <mi>ln</mi><mo>&ApplyFunction;</mo>
+     *                <mi>a</mi>
+     *              </mrow>
+     *            </mfenced>
+     *            <mi>b</mi>
+     *          </mrow>
+     *          <mrow>
+     *            <mn>2</mn>
+     *          </mrow>
+     *        </mfrac>
+     *  </msup>
+     * </mrow>
+     * </math>
+	 * 
+	 * @param b The exponent of the power function.
+	 * @param numIterExp  Number of iterations to build the underlying exponential approximation.
+	 * @param numIterLn  Number of iterations to build the underlying logarithm approximation.
+	 * @return The calculated power function.
+	 * @throws NotInvertibleException
+	 * @throws MultiplicativeDistributionRequiredException
+	 */
+	public T powC( final T b , final int numIterExp , final int numIterLn ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	{
+		final T expn = ( ( b.mult( this.ln(numIterExp, numIterLn) ) ).add( ( this.ln(numIterExp, numIterLn) ).mult( b ) ) ).divideBy( 2 );
+		return( expn.exp( numIterExp ) );
+	}
+	
+	
 	
 	/**
 	 * Writes a description of the instance to the output stream.
