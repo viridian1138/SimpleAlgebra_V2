@@ -439,6 +439,54 @@ public class TestVectorLn extends TestCase {
 	
 	
 	
+	/**
+	 * Tests the arcsinh of a positive value.
+	 * 
+	 * @throws Throwable
+	 */
+	public void testAsinhPositive() throws Throwable
+	{
+		final DoubleElem d = new DoubleElem( 5.0 );
+		
+		final DoubleElem asinhd = d.asinh( 20 , 20 );
+		
+		final DoubleElem d2 = asinhd.sinh( 20 );
+		
+		final DoubleElem d3 = sinhTest( asinhd , 20 );
+		
+		Assert.assertTrue( Math.abs( d.getVal() - d2.getVal() ) < 1E-5 );
+		
+		Assert.assertTrue( Math.abs( d.getVal() - d3.getVal() ) < 1E-5 );
+		
+	}
+	
+	
+	
+	
+	/**
+	 * Tests the arcsinh of a negative value.
+	 * 
+	 * @throws Throwable
+	 */
+	public void testAsinhNegative() throws Throwable
+	{
+		final DoubleElem d = new DoubleElem( -5.0 );
+		
+		final DoubleElem asinhd = d.asinh( 20 , 20 );
+		
+		final DoubleElem d2 = asinhd.sinh( 20 );
+		
+		final DoubleElem d3 = sinhTest( asinhd , 20 );
+		
+		Assert.assertTrue( Math.abs( d.getVal() - d2.getVal() ) < 1E-5 );
+		
+		Assert.assertTrue( Math.abs( d.getVal() - d3.getVal() ) < 1E-5 );
+		
+	}
+	
+	
+	
+	
 	
 	
 	

@@ -361,6 +361,24 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 	
 	
 	/**
+	 * Implements an approximate arcsinh function.
+	 * @param numIterExp  Number of iterations to build the underlying exponential approximation.
+	 * @param numIterLn  Number of iterations to build the underlying logarithm approximation.
+	 * @return The approximate arcsinh of the argument.
+	 * @throws NotInvertibleException
+	 * @throws MultiplicativeDistributionRequiredException
+	 */
+	public T asinh( final int numIterExp , final int numIterLn )  throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	{
+		final T x = (T) this;
+		final ComplexElem<T,R> cplx = new ComplexElem<T,R>( getFac().zero() , x );
+		final T ret = cplx.asin( numIterExp , numIterLn ).getIm();
+		return( ret );
+	}
+	
+	
+	
+	/**
 	 * Returns the better approximation for a natural logarithm.
 	 * @param s0 One possibility to test.
 	 * @param s1 Another possibility to test.
