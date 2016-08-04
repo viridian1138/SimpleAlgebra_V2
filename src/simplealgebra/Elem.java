@@ -332,26 +332,7 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 	}
 	
 	/**
-	 * Implements the hyperbolic sine function defined by <math display="inline">
-     * <mrow>
-     *  <mo>sinh(</mo>
-     *  <mi>x</mi>
-     *  <mo>)</mo>
-     *  <mo>=</mo>
-     *  <msup>
-     *          <mo>e</mo>
-     *        <mi>x</mi>
-     *  </msup>
-     *  <mo>-</mo>
-     *  <msup>
-     *          <mo>e</mo>
-     *      <mrow>
-     *        <mo>-</mo>
-     *        <mi>x</mi>
-     *      </mrow>
-     *  </msup>
-     * </mrow>
-     * </math>
+	 * Implements the hyperbolic sine function.
 	 * 
 	 * @param numIter The number of iterations to use in the  calculation.
 	 * @return The hyperbolic sine of the argument.
@@ -359,32 +340,13 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 	public T sinh( int numIter )
 	{
 		final T x = (T) this;
-		final T ret = ( x.exp( numIter ) ).add( x.negate().exp( numIter ).negate() ).divideBy( 2 );
+		final ComplexElem<T,R> cplx = new ComplexElem<T,R>( getFac().zero() , x );
+		final T ret = cplx.sin( numIter ).getIm();
 		return( ret );
 	}
 	
 	/**
-	 * Implements the hyperbolic cosine function defined by <math display="inline">
-     * <mrow>
-     *  <mo>cosh(</mo>
-     *  <mi>x</mi>
-     *  <mo>)</mo>
-     *  <mo>=</mo>
-     *  <msup>
-     *          <mo>e</mo>
-     *        <mi>x</mi>
-     *  </msup>
-     *  <mo>+</mo>
-     *  <msup>
-     *          <mo>e</mo>
-     *      <mrow>
-     *        <mo>-</mo>
-     *        <mi>x</mi>
-     *      </mrow>
-     *  </msup>
-     * </mrow>
-     * </math>
-     *
+	 * Implements the hyperbolic cosine function.
 	 * 
 	 * @param numIter The number of iterations to use in the  calculation.
 	 * @return The hyperbolic cosine of the argument.
@@ -392,7 +354,8 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 	public T cosh( int numIter )
 	{
 		final T x = (T) this;
-		final T ret = ( x.exp( numIter ) ).add( x.negate().exp( numIter ) ).divideBy( 2 );
+		final ComplexElem<T,R> cplx = new ComplexElem<T,R>( getFac().zero() , x );
+		final T ret = cplx.cos( numIter ).getRe();
 		return( ret );
 	}
 	
@@ -957,6 +920,44 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 	{
 		final T expn = ( ( b.mult( this.ln(numIterExp, numIterLn) ) ).add( ( this.ln(numIterExp, numIterLn) ).mult( b ) ) ).divideBy( 2 );
 		return( expn.exp( numIterExp ) );
+	}
+	
+	
+	
+	/**
+	 * Calculates an approximate arcsin.
+	 * @param numIterExp  Number of iterations to build the underlying exponential approximation.
+	 * @param numIterLn  Number of iterations to build the underlying logarithm approximation.
+	 * @return The approximate arcsin.
+	 * @throws NotInvertibleException
+	 * @throws MultiplicativeDistributionRequiredException
+	 */
+	public T asin( final int numIterExp , final int numIterLn ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	{
+		final T identity = getFac().identity();
+		final T thisT = (T) this;
+		final T oppSide = ( identity.add( ( thisT.mult( thisT ) ).negate() ) ).powR( identity.divideBy( 2 ) , numIterExp , numIterLn );
+		final ComplexElem<T,R> cplx = new ComplexElem<T,R>( oppSide , thisT );
+		return( ( cplx.ln(numIterExp, numIterLn) ).getIm() );
+	}
+	
+	
+	
+	/**
+	 * Calculates an approximate arccosine.
+	 * @param numIterExp  Number of iterations to build the underlying exponential approximation.
+	 * @param numIterLn  Number of iterations to build the underlying logarithm approximation.
+	 * @return The approximate arccosine.
+	 * @throws NotInvertibleException
+	 * @throws MultiplicativeDistributionRequiredException
+	 */
+	public T acos( final int numIterExp , final int numIterLn ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	{
+		final T identity = getFac().identity();
+		final T thisT = (T) this;
+		final T oppSide = ( identity.add( ( thisT.mult( thisT ) ).negate() ) ).powR( identity.divideBy( 2 ) , numIterExp , numIterLn );
+		final ComplexElem<T,R> cplx = new ComplexElem<T,R>( thisT , oppSide );
+		return( ( cplx.ln(numIterExp, numIterLn) ).getIm() );
 	}
 	
 	

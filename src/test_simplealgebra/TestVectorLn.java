@@ -51,6 +51,76 @@ public class TestVectorLn extends TestCase {
 	
 	
 	
+	
+	/**
+	 * Implements the hyperbolic sine function defined by <math display="inline">
+     * <mrow>
+     *  <mo>sinh(</mo>
+     *  <mi>x</mi>
+     *  <mo>)</mo>
+     *  <mo>=</mo>
+     *  <msup>
+     *          <mo>e</mo>
+     *        <mi>x</mi>
+     *  </msup>
+     *  <mo>-</mo>
+     *  <msup>
+     *          <mo>e</mo>
+     *      <mrow>
+     *        <mo>-</mo>
+     *        <mi>x</mi>
+     *      </mrow>
+     *  </msup>
+     * </mrow>
+     * </math>
+	 * 
+	 * @param numIter The number of iterations to use in the  calculation.
+	 * @return The hyperbolic sine of the argument.
+	 */
+	private DoubleElem sinhTest( final DoubleElem x , int numIter )
+	{
+		final DoubleElem ret = ( x.exp( numIter ) ).add( x.negate().exp( numIter ).negate() ).divideBy( 2 );
+		return( ret );
+	}
+	
+	
+	
+	/**
+	 * Implements the hyperbolic cosine function defined by <math display="inline">
+     * <mrow>
+     *  <mo>cosh(</mo>
+     *  <mi>x</mi>
+     *  <mo>)</mo>
+     *  <mo>=</mo>
+     *  <msup>
+     *          <mo>e</mo>
+     *        <mi>x</mi>
+     *  </msup>
+     *  <mo>+</mo>
+     *  <msup>
+     *          <mo>e</mo>
+     *      <mrow>
+     *        <mo>-</mo>
+     *        <mi>x</mi>
+     *      </mrow>
+     *  </msup>
+     * </mrow>
+     * </math>
+     *
+	 * 
+	 * @param numIter The number of iterations to use in the  calculation.
+	 * @return The hyperbolic cosine of the argument.
+	 */
+	private DoubleElem coshTest( final DoubleElem x , int numIter )
+	{
+		final DoubleElem ret = ( x.exp( numIter ) ).add( x.negate().exp( numIter ) ).divideBy( 2 );
+		return( ret );
+	}
+	
+	
+	
+	
+	
 	/**
 	 * Tests the ability to take an approximate natural logarithm of a vector.
 	 * 
@@ -188,6 +258,185 @@ public class TestVectorLn extends TestCase {
 		Assert.assertTrue( Math.abs( pow.getIm().getVal() - 1.0 ) < 1E-5 );
 		
 	}
+	
+	
+	
+	/**
+	 * Tests the arcsin of a positive value.
+	 * 
+	 * @throws Throwable
+	 */
+	public void testAsinPositive() throws Throwable
+	{
+		final DoubleElem d = new DoubleElem( 0.7 );
+		
+		final DoubleElem asind = d.asin( 20 , 20 );
+		
+		final DoubleElem d2 = asind.sin( 20 );
+		
+		final double d3 = Math.sin( asind.getVal() );
+		
+		Assert.assertTrue( Math.abs( d.getVal() - d2.getVal() ) < 1E-5 );
+		
+		Assert.assertTrue( Math.abs( d.getVal() - d3 ) < 1E-5 );
+		
+	}
+	
+	
+	
+
+	/**
+	 * Tests the arcsin of a negative value.
+	 * 
+	 * @throws Throwable
+	 */
+	public void testAsinNegative() throws Throwable
+	{
+		final DoubleElem d = new DoubleElem( -0.7 );
+		
+		final DoubleElem asind = d.asin( 20 , 20 );
+		
+		final DoubleElem d2 = asind.sin( 20 );
+		
+		final double d3 = Math.sin( asind.getVal() );
+		
+		Assert.assertTrue( Math.abs( d.getVal() - d2.getVal() ) < 1E-5 );
+		
+		Assert.assertTrue( Math.abs( d.getVal() - d3 ) < 1E-5 );
+		
+	}
+	
+	
+	
+
+	
+	/**
+	 * Tests the arccosine of a positive value.
+	 * 
+	 * @throws Throwable
+	 */
+	public void testAcosPositive() throws Throwable
+	{
+		final DoubleElem d = new DoubleElem( 0.7 );
+		
+		final DoubleElem acosd = d.acos( 20 , 20 );
+		
+		final DoubleElem d2 = acosd.cos( 20 );
+		
+		final double d3 = Math.cos( acosd.getVal() );
+		
+		Assert.assertTrue( Math.abs( d.getVal() - d2.getVal() ) < 1E-5 );
+		
+		Assert.assertTrue( Math.abs( d.getVal() - d3 ) < 1E-5 );
+		
+	}
+	
+	
+	
+
+	/**
+	 * Tests the arccosine of a negative value.
+	 * 
+	 * @throws Throwable
+	 */
+	public void testAcosNegative() throws Throwable
+	{
+		final DoubleElem d = new DoubleElem( -0.7 );
+		
+		final DoubleElem acosd = d.acos( 20 , 20 );
+		
+		final DoubleElem d2 = acosd.cos( 20 );
+		
+		final double d3 = Math.cos( acosd.getVal() );
+		
+		Assert.assertTrue( Math.abs( d.getVal() - d2.getVal() ) < 1E-5 );
+		
+		Assert.assertTrue( Math.abs( d.getVal() - d3 ) < 1E-5 );
+		
+	}
+	
+	
+	
+	
+	
+	/**
+	 * Tests the hyperbolic sine of a positive value.
+	 * 
+	 * @throws Throwable
+	 */
+	public void testSinhPositive() throws Throwable
+	{
+		final DoubleElem d = new DoubleElem( 5.0 );
+		
+		final DoubleElem sinh = d.sinh( 20 );
+		
+		final DoubleElem sinh2 = sinhTest( d , 20 );
+		
+		Assert.assertTrue( Math.abs( sinh.getVal() - sinh2.getVal() ) < 1E-5 );
+		
+	}
+	
+	
+	
+	
+	/**
+	 * Tests the hyperbolic sine of a negative value.
+	 * 
+	 * @throws Throwable
+	 */
+	public void testSinhNegative() throws Throwable
+	{
+		final DoubleElem d = new DoubleElem( -5.0 );
+		
+		final DoubleElem sinh = d.sinh( 20 );
+		
+		final DoubleElem sinh2 = sinhTest( d , 20 );
+		
+		Assert.assertTrue( Math.abs( sinh.getVal() - sinh2.getVal() ) < 1E-5 );
+		
+	}
+	
+	
+	
+	
+	
+	/**
+	 * Tests the hyperbolic cosine of a positive value.
+	 * 
+	 * @throws Throwable
+	 */
+	public void testCoshPositive() throws Throwable
+	{
+		final DoubleElem d = new DoubleElem( 5.0 );
+		
+		final DoubleElem cosh = d.cosh( 20 );
+		
+		final DoubleElem cosh2 = coshTest( d , 20 );
+		
+		Assert.assertTrue( Math.abs( cosh.getVal() - cosh2.getVal() ) < 1E-5 );
+		
+	}
+	
+	
+	
+	/**
+	 * Tests the hyperbolic cosine of a negative value.
+	 * 
+	 * @throws Throwable
+	 */
+	public void testCoshNegative() throws Throwable
+	{
+		final DoubleElem d = new DoubleElem( -5.0 );
+		
+		final DoubleElem cosh = d.cosh( 20 );
+		
+		final DoubleElem cosh2 = coshTest( d , 20 );
+		
+		Assert.assertTrue( Math.abs( cosh.getVal() - cosh2.getVal() ) < 1E-5 );
+		
+	}
+	
+	
 	
 	
 	
