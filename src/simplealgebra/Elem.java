@@ -379,6 +379,24 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 	
 	
 	/**
+	 * Implements an approximate arccosh function.
+	 * @param numIterExp  Number of iterations to build the underlying exponential approximation.
+	 * @param numIterLn  Number of iterations to build the underlying logarithm approximation.
+	 * @return The approximate arccosh of the argument.
+	 * @throws NotInvertibleException
+	 * @throws MultiplicativeDistributionRequiredException
+	 */
+	public T acosh( final int numIterExp , final int numIterLn )  throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	{
+		final T x = (T) this;
+		final ComplexElem<T,R> cplx = new ComplexElem<T,R>( x , getFac().zero() );
+		final T ret = cplx.acos( numIterExp , numIterLn ).getIm();
+		return( ret );
+	}
+	
+	
+	
+	/**
 	 * Returns the better approximation for a natural logarithm.
 	 * @param s0 One possibility to test.
 	 * @param s1 Another possibility to test.

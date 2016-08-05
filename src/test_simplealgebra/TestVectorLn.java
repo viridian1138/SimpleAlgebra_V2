@@ -487,6 +487,53 @@ public class TestVectorLn extends TestCase {
 	
 	
 	
+	/**
+	 * Tests the arccosh of a positive value.
+	 * 
+	 * @throws Throwable
+	 */
+	public void testAcoshPositiveA() throws Throwable
+	{
+		final DoubleElem d = new DoubleElem( 5.0 );
+		
+		final DoubleElem acoshd = d.acosh( 20 , 20 );
+		
+		final DoubleElem d2 = acoshd.cosh( 20 );
+		
+		final DoubleElem d3 = coshTest( acoshd , 20 );
+		
+		Assert.assertTrue( Math.abs( d.getVal() - d2.getVal() ) < 1E-5 );
+		
+		Assert.assertTrue( Math.abs( d.getVal() - d3.getVal() ) < 1E-5 );
+		
+	}
+	
+	
+	
+	/**
+	 * Tests the arccosh of a positive value.
+	 * 
+	 * @throws Throwable
+	 */
+	public void testAcoshPositiveB() throws Throwable
+	{
+		final DoubleElem d = new DoubleElem( 3.0 );
+		
+		final DoubleElem acoshd = d.acosh( 20 , 20 );
+		
+		final DoubleElem d2 = acoshd.cosh( 20 );
+		
+		final DoubleElem d3 = coshTest( acoshd , 20 );
+		
+		Assert.assertTrue( Math.abs( d.getVal() - d2.getVal() ) < 1E-5 );
+		
+		Assert.assertTrue( Math.abs( d.getVal() - d3.getVal() ) < 1E-5 );
+		
+	}
+	
+	
+	
+	
 	
 	
 	
