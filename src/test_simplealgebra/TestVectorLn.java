@@ -533,6 +533,82 @@ public class TestVectorLn extends TestCase {
 	
 	
 	
+	/**
+	 * Verifies that nop 1 with negate=true is similar to division.
+	 * 
+	 * @throws Throwable
+	 */
+	public void nopOneLikeDivision() throws Throwable
+	{
+		final DoubleElem d0 = new DoubleElem( 3.0 );
+		
+		final DoubleElem d1 = new DoubleElem( 5.0 );
+		
+		final DoubleElem d2 = d0.nop(d1, 1, true, 20, 20);
+		
+		Assert.assertTrue( Math.abs( d2.getVal() - ( 3.0 / 5.0) ) < 1E-5 );
+		
+	}
+	
+	
+	
+	/**
+	 * Verifies that nop 1 with negate=false is similar to multiplication.
+	 * 
+	 * @throws Throwable
+	 */
+	public void nopOneLikeMultiplication() throws Throwable
+	{
+		final DoubleElem d0 = new DoubleElem( 3.0 );
+		
+		final DoubleElem d1 = new DoubleElem( 5.0 );
+		
+		final DoubleElem d2 = d0.nop(d1, 1, false, 20, 20);
+		
+		Assert.assertTrue( Math.abs( d2.getVal() - ( 3.0 * 5.0) ) < 1E-5 );
+		
+	}
+	
+	
+	
+	/**
+	 * Verifies that nop 0 with negate=true is similar to subtraction.
+	 * 
+	 * @throws Throwable
+	 */
+	public void nopOneLikeSubtraction() throws Throwable
+	{
+		final DoubleElem d0 = new DoubleElem( 3.0 );
+		
+		final DoubleElem d1 = new DoubleElem( 5.0 );
+		
+		final DoubleElem d2 = d0.nop(d1, 0, true, 20, 20);
+		
+		Assert.assertTrue( Math.abs( d2.getVal() - ( 3.0 - 5.0) ) < 1E-5 );
+		
+	}
+	
+	
+	
+	/**
+	 * Verifies that nop 0 with negate=false is similar to addition.
+	 * 
+	 * @throws Throwable
+	 */
+	public void nopOneLikeAddition() throws Throwable
+	{
+		final DoubleElem d0 = new DoubleElem( 3.0 );
+		
+		final DoubleElem d1 = new DoubleElem( 5.0 );
+		
+		final DoubleElem d2 = d0.nop(d1, 0, false, 20, 20);
+		
+		Assert.assertTrue( Math.abs( d2.getVal() - ( 3.0 + 5.0) ) < 1E-5 );
+		
+	}
+	
+	
+	
 	
 	
 	

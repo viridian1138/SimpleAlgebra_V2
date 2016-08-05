@@ -999,6 +999,66 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 	
 	
 	/**
+	 * Calculates an approximate binary operation using multiple exponentials.
+	 * @param arg The second arg of the operation.
+	 * @param index Index controlling the power of the operation.
+	 * @param negateArg True iff. the second argument should be negated.
+	 * @param numIterExp  Number of iterations to build the underlying exponential approximation.
+	 * @param numIterLn  Number of iterations to build the underlying logarithm approximation.
+	 * @return The result of the calculation.
+	 * @throws NotInvertibleException
+	 * @throws MultiplicativeDistributionRequiredException
+	 */
+	public T nop( final T arg , final int index , final boolean negateArg , final int numIterExp , final int numIterLn ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	{
+		ComplexElem<T,R> a1 = new ComplexElem<T,R>( (T) this , getFac().zero() );
+		ComplexElem<T,R> a2 = new ComplexElem<T,R>( arg , getFac().zero() );
+		
+		
+		if( index > 0 )
+		{
+			for( int cnt = 0 ; cnt < index ; cnt++ )
+			{
+				a1 = a1.ln( numIterExp , numIterLn );
+				a2 = a2.ln( numIterExp , numIterLn );
+			}
+		}
+		else
+		{
+			for( int cnt = 0 ; cnt < -index ; cnt++ )
+			{
+				a1 = a1.exp( numIterExp );
+				a2 = a2.exp( numIterExp );
+			}
+		}
+		
+		
+		ComplexElem<T,R> a3 = a1.add( negateArg ? a2.negate() : a2 );
+		
+		
+		if( index > 0 )
+		{
+			for( int cnt = 0 ; cnt < index ; cnt++ )
+			{
+				a3 = a3.exp( numIterExp );
+			}
+		}
+		else
+		{
+			for( int cnt = 0 ; cnt < -index ; cnt++ )
+			{
+				a3 = a3.ln( numIterExp , numIterLn );
+			}
+		}
+		
+		
+		return( a3.getRe() );
+		
+	}
+	
+	
+	
+	/**
 	 * Writes a description of the instance to the output stream.
 	 * 
 	 * @param cache Instance cache from which to cache objects.
