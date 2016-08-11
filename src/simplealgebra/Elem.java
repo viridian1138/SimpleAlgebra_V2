@@ -425,7 +425,30 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 			return( s0 );
 		}
 		
-		final T ret = ( (Comparable) evA.totalMagnitude() ).compareTo( evB.totalMagnitude() ) <= 0 ? s0 : s1;
+		Comparable evAc;
+		Comparable evBc;
+		
+		try
+		{
+			evAc = (Comparable)( evA.totalMagnitude() );
+		}
+		catch( Throwable ex )
+		{
+			return( s1 );
+		}
+		
+		
+		try
+		{
+			evBc = (Comparable)( evB.totalMagnitude() );
+		}
+		catch( Throwable ex )
+		{
+			return( s0 );
+		}
+		
+		
+		final T ret = evAc.compareTo( evBc ) <= 0 ? s0 : s1;
 		return( ret );
 	}
 	
@@ -664,8 +687,6 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 				if( st == null )
 				{
 					final String sta = fac.writeDesc( (WriteElemCache<T,R>)( cache.getInnerCache() ) , ps);
-					/* cache.applyAuxCache( new WriteGaSetCache( cache.getCacheVal() ) );
-					final String stair = ( (WriteGaSetCache)( cache.getAuxCache( WriteGaSetCache.class ) ) ).writeDesc(indx, (WriteBigIntegerCache)( cache.getAuxCache( WriteBigIntegerCache.class ) ) , ps);
 					st = cache.getIncrementVal();
 					cache.put(this, st);
 					ps.print( AElemVal.class.getSimpleName() );
@@ -674,12 +695,7 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 					ps.print( " = new " );
 					ps.print( AElemVal.class.getSimpleName() );
 					ps.print( "( " );
-					ps.print( sta );
-					ps.print( " , " );
-					ps.print( stair );
-					ps.print( " , " );
-					ps.print( col );
-					ps.println( " );" ); */
+					ps.println( " );" );
 				}
 				return( st );
 			}
@@ -745,22 +761,15 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 				if( st == null )
 				{
 					final String sta = fac.writeDesc( (WriteElemCache<T,R>)( cache.getInnerCache() ) , ps);
-					/* cache.applyAuxCache( new WriteGaSetCache( cache.getCacheVal() ) );
-					final String stair = ( (WriteGaSetCache)( cache.getAuxCache( WriteGaSetCache.class ) ) ).writeDesc(indx, (WriteBigIntegerCache)( cache.getAuxCache( WriteBigIntegerCache.class ) ) , ps);
 					st = cache.getIncrementVal();
 					cache.put(this, st);
-					ps.print( AElemVal.class.getSimpleName() );
+					ps.print( AElemPartial.class.getSimpleName() );
 					ps.print( " " );
 					ps.print( st );
 					ps.print( " = new " );
-					ps.print( AElemVal.class.getSimpleName() );
+					ps.print( AElemPartial.class.getSimpleName() );
 					ps.print( "( " );
-					ps.print( sta );
-					ps.print( " , " );
-					ps.print( stair );
-					ps.print( " , " );
-					ps.print( col );
-					ps.println( " );" ); */
+					ps.println( " );" );
 				}
 				return( st );
 			}
@@ -791,7 +800,7 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 	
 	
 	/**
-	 * Implements an approximate arctangeant.
+	 * Implements an approximate arctangeant in units of radians.
 	 * @param x The X-coordinate for which to calculate the arctangeant.
 	 * @param numIterExp  Number of iterations to build the underlying exponential approximation.
 	 * @param numIterLn  Number of iterations to build the underlying logarithm approximation.
@@ -808,7 +817,7 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 	
 	
 	/**
-	 * Implements an approximate arctangeant.
+	 * Implements an approximate arctangeant in units of radians.
 	 * @param numIterExp  Number of iterations to build the underlying exponential approximation.
 	 * @param numIterLn  Number of iterations to build the underlying logarithm approximation.
 	 * @return An approximate arctangeant.
@@ -822,7 +831,7 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 	
 	
 	/**
-	 * Calculates the components of the tangeant.
+	 * Calculates the components of the tangeant in units of radians.
 	 * @param numIter   Number of iterations to build the underlying exponential approximation.
 	 * @return ArrayList containing the components of the tangeant.
 	 */
@@ -844,7 +853,7 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
      *          <mi>a</mi>
      *        <mi>b</mi>
      *  </msup>
-     *  <mo>=</mo>
+     *  <mo>&asymp;</mo>
      *  <msup>
      *          <mi>e</mi>
      *      <mrow>
@@ -880,7 +889,7 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
      *          <mi>a</mi>
      *        <mi>b</mi>
      *  </msup>
-     *  <mo>=</mo>
+     *  <mo>&asymp;</mo>
      *  <msup>
      *          <mi>e</mi>
      *      <mrow>
@@ -916,7 +925,7 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
      *          <mi>a</mi>
      *        <mi>b</mi>
      *  </msup>
-     *  <mo>=</mo>
+     *  <mo>&asymp;</mo>
      *  <msup>
      *          <mi>e</mi>
      *        <mfrac>
@@ -961,7 +970,7 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 	
 	
 	/**
-	 * Calculates an approximate arcsin.
+	 * Calculates an approximate arcsin in units of radians.
 	 * @param numIterExp  Number of iterations to build the underlying exponential approximation.
 	 * @param numIterLn  Number of iterations to build the underlying logarithm approximation.
 	 * @return The approximate arcsin.
@@ -980,7 +989,7 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 	
 	
 	/**
-	 * Calculates an approximate arccosine.
+	 * Calculates an approximate arccosine in units of radians.
 	 * @param numIterExp  Number of iterations to build the underlying exponential approximation.
 	 * @param numIterLn  Number of iterations to build the underlying logarithm approximation.
 	 * @return The approximate arccosine.
