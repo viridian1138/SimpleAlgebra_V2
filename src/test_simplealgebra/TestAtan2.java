@@ -58,8 +58,136 @@ public class TestAtan2 extends TestCase {
 		{
 			a2 += twop;
 		}
-		Assert.assertTrue( Math.abs( a1 - a2 ) < 1E-3 );
+		Assert.assertTrue( ( Math.abs( a1 - a2 ) < 1E-3 ) || 
+			( ( twop - Math.abs( a1 - a2 ) ) < 1E-3 ) );
 	}
+		
+	
+	
+	/**
+	 * Tests the ability to calculate cosines
+	 * @throws Throwable
+	 */
+	public void testCosine() throws Throwable
+	{
+		final Random rand = new Random( 6666 );
+		for( int cnt = 0 ; cnt < 10000 ; cnt++ )
+		{
+			System.out.println( cnt );
+			final double a = 20.0 * ( rand.nextDouble() ) - 10.0;
+			final double as = Math.cos( a );
+			final DoubleElem da = new DoubleElem( a );
+			final DoubleElem das = da.cos( 20 );
+			Assert.assertTrue( Math.abs( as - das.getVal() ) < 1E-3 );
+		}
+	}
+	
+
+
+	
+	
+	
+	/**
+	 * Tests the ability to calculate sines
+	 * @throws Throwable
+	 */
+	public void testSine() throws Throwable
+	{
+		final Random rand = new Random( 5555 );
+		for( int cnt = 0 ; cnt < 10000 ; cnt++ )
+		{
+			System.out.println( cnt );
+			final double a = 20.0 * ( rand.nextDouble() ) - 10.0;
+			final double as = Math.sin( a );
+			final DoubleElem da = new DoubleElem( a );
+			final DoubleElem das = da.sin( 20 );
+			Assert.assertTrue( Math.abs( as - das.getVal() ) < 1E-3 );
+		}
+	}
+	
+	
+	
+	/**
+	 * Tests the ability to calculate hyperbilic cosines
+	 * @throws Throwable
+	 */
+	public void testCosh() throws Throwable
+	{
+		final Random rand = new Random( 6666 );
+		for( int cnt = 0 ; cnt < 10000 ; cnt++ )
+		{
+			System.out.println( cnt );
+			final double a = 20.0 * ( rand.nextDouble() ) - 10.0;
+			final double as = Math.cosh( a );
+			final DoubleElem da = new DoubleElem( a );
+			final DoubleElem das = da.cosh( 20 );
+			Assert.assertTrue( Math.abs( as - das.getVal() ) < 1E-3 );
+		}
+	}
+	
+	
+	
+	
+	/**
+	 * Tests the ability to calculate hyperbilic sines
+	 * @throws Throwable
+	 */
+	public void testSinh() throws Throwable
+	{
+		final Random rand = new Random( 6666 );
+		for( int cnt = 0 ; cnt < 10000 ; cnt++ )
+		{
+			System.out.println( cnt );
+			final double a = 20.0 * ( rand.nextDouble() ) - 10.0;
+			final double as = Math.sinh( a );
+			final DoubleElem da = new DoubleElem( a );
+			final DoubleElem das = da.sinh( 20 );
+			Assert.assertTrue( Math.abs( as - das.getVal() ) < 1E-3 );
+		}
+	}
+	
+	
+	
+	
+	/**
+	 * Tests the ability to calculate arcsines.
+	 * @throws Throwable
+	 */
+	public void testAsin() throws Throwable
+	{
+		final Random rand = new Random( 4444 );
+		for( int cnt = 0 ; cnt < 10000 ; cnt++ )
+		{
+			System.out.println( cnt );
+			final double x = 2.0 * ( rand.nextDouble() ) - 1.0;
+			final DoubleElem xd = new DoubleElem( x );
+			final DoubleElem asin = xd.asin( 20 , 20 );
+			Assert.assertTrue( Math.abs( x - ( Math.sin( asin.getVal() ) ) ) < 1E-3 );
+		}
+	}
+	
+	
+	
+
+	/**
+	 * Tests the ability to calculate arccosines.
+	 * @throws Throwable
+	 */
+	public void testAcos() throws Throwable
+	{
+		final Random rand = new Random( 4444 );
+		for( int cnt = 0 ; cnt < 10000 ; cnt++ )
+		{
+			System.out.println( cnt );
+			final double x = 2.0 * ( rand.nextDouble() ) - 1.0;
+			final DoubleElem xd = new DoubleElem( x );
+			final DoubleElem acos = xd.acos( 20 , 20 );
+			Assert.assertTrue( Math.abs( x - ( Math.cos( acos.getVal() ) ) ) < 1E-3 );
+		}
+	}
+	
+	
+	
 
 	
 	/**
@@ -74,10 +202,14 @@ public class TestAtan2 extends TestCase {
 			System.out.println( cnt );
 			final double x = 10.0 * ( rand.nextDouble() ) - 5.0;
 			final double y = 10.0 * ( rand.nextDouble() ) - 5.0;
-			final double stdAtan = Math.atan2( y , x );
-			final DoubleElem xd = new DoubleElem( x );
-			final DoubleElem yd = new DoubleElem( y );
-			final DoubleElem atan = yd.atan2( xd , 20 , 20 );
+			if( Math.sqrt( x * x + y * y ) > 1E-2 ) // Skip degenerate cases near the origin
+			{
+				final double stdAtan = Math.atan2( y , x );
+				final DoubleElem xd = new DoubleElem( x );
+				final DoubleElem yd = new DoubleElem( y );
+				final DoubleElem atan = yd.atan2( xd , 25 , 25 );
+				compareAngles( stdAtan , atan.getVal() );
+			}
 		}
 	}
 	
