@@ -108,7 +108,7 @@ public class TestAtan2 extends TestCase {
 	
 	
 	/**
-	 * Tests the ability to calculate hyperbilic cosines
+	 * Tests the ability to calculate hyperbolic cosines
 	 * @throws Throwable
 	 */
 	public void testCosh() throws Throwable
@@ -128,8 +128,50 @@ public class TestAtan2 extends TestCase {
 	
 	
 	
+	
 	/**
-	 * Tests the ability to calculate hyperbilic sines
+	 * Tests the ability to calculate natural exponents.
+	 * @throws Throwable
+	 */
+	public void testExp() throws Throwable
+	{
+		final Random rand = new Random( 5555 );
+		for( int cnt = 0 ; cnt < 10000 ; cnt++ )
+		{
+			System.out.println( cnt );
+			final double a = 20.0 * ( rand.nextDouble() ) - 10.0;
+			final double as = Math.exp( a );
+			final DoubleElem da = new DoubleElem( a );
+			final DoubleElem das = da.exp( 20 );
+			Assert.assertTrue( Math.abs( as - das.getVal() ) < 1E-3 );
+		}
+	}
+	
+	
+	
+	/**
+	 * Tests the ability to calculate natural logarithms.
+	 * @throws Throwable
+	 */
+	public void testLn() throws Throwable
+	{
+		final Random rand = new Random( 5555 );
+		for( int cnt = 0 ; cnt < 10000 ; cnt++ )
+		{
+			System.out.println( cnt );
+			final double a = 20.0 * ( rand.nextDouble() );
+			final double as = Math.log( a );
+			final DoubleElem da = new DoubleElem( a );
+			final DoubleElem das = da.ln( 20 , 20 );
+			Assert.assertTrue( Math.abs( as - das.getVal() ) < 1E-3 );
+		}
+	}
+	
+	
+	
+	
+	/**
+	 * Tests the ability to calculate hyperbolic sines
 	 * @throws Throwable
 	 */
 	public void testSinh() throws Throwable
