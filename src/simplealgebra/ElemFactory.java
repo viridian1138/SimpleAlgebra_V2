@@ -27,6 +27,7 @@ package simplealgebra;
 import java.io.PrintStream;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import simplealgebra.symbolic.SymbolicElem;
 
@@ -159,7 +160,7 @@ public abstract class ElemFactory<T extends Elem<T,?>, R extends ElemFactory<T,R
 	 * @return The thread-cloned object, or the same object if immutable.
 	 */
 	public abstract R cloneThread( final BigInteger threadIndex );
-	
+	 
 	/**
 	 * Produces a clone of the object for threading.  Note that for
 	 * OpenJDK thread-safety for BigInteger requires at least version
@@ -205,8 +206,60 @@ public abstract class ElemFactory<T extends Elem<T,?>, R extends ElemFactory<T,R
 	 * @param ps The stream to which to write the type.
 	 */
 	public abstract void writeElemFactoryTypeString( PrintStream ps );
+	
+	
+	/**
+	 * Returns possible approximations for a unit logarithm.
+	 * @return An iterator of possible approximations for a unit logarithm.
+	 */
+	public Iterator<T> getApproxLnUnit()
+	{
+		return( new Iterator<T>()
+		{
+			/**
+			 * The current index of the iterations.
+			 */
+			protected int index = -1;
+			
+			@Override
+			public boolean hasNext() {
+				return( ( index + 1 ) <= 4 );
+			}
+
+			@Override
+			public T next() {
+				index++;
+				switch( index )
+				{
+					case 0:
+						return( zero() );
+						
+					case 1:
+						return( ( identity().add( identity() ).add( identity() ) ) );
+						
+					case 2:
+						return( ( identity().add( identity() ).add( identity() ) ).negate() );
+						
+					case 3:
+						return( ( identity().add( identity() ).add( identity() ) ).divideBy( 2 ) );
+						
+					case 4:
+						return( ( identity().add( identity() ).add( identity() ) ).negate().divideBy( 2 ) );
+						
+				}
+				throw( new RuntimeException( "Inconsistent" ) );
+			}
+
+			@Override
+			public void remove() {
+				throw( new RuntimeException( "Not Supported" ) );
+			}
+			
+		} );
+	}
 
 	
 	
 }
+
 

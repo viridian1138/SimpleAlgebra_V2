@@ -198,8 +198,22 @@ public abstract class NewtonRaphsonSingleElemFunctional<R extends Elem<R,?>, S e
 	 */
 	protected void performIteration() throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
-		final R derivative = evalPartialDerivative();
-		R iterationOffset = lastValue.mult( derivative.invertLeft() ).negate();
+		R derivative = evalPartialDerivative();
+		R derivativeInverse = null;
+		
+		while( derivativeInverse == null )
+		{
+			try
+			{
+				derivativeInverse = derivative.invertLeft();
+			}
+			catch( NotInvertibleException ex )
+			{
+				derivative = handleDescentInverseFailed( derivative , ex );
+			}
+		}
+		
+		R iterationOffset = lastValue.mult( derivativeInverse ).negate();
 		
 		cacheIterationValue();
 		
@@ -461,9 +475,26 @@ public abstract class NewtonRaphsonSingleElemFunctional<R extends Elem<R,?>, S e
 	{
 		return( 100 );
 	}
+	
+	
+	/**
+	 * Handles a failure to invert the derivative.
+	 * @param derivative The derivative to be inverted.
+	 * @param ex The thrown inverse failure exception.
+	 * @return Altered derivative to repair the inverse failure, or throw NotInvertibleException.
+	 * @throws NotInvertibleException
+	 * @throws MultiplicativeDistributionRequiredException
+	 */
+	protected R handleDescentInverseFailed( R derivative , NotInvertibleException ex )
+		throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	{
+		throw( ex );
+	}
 
 	
+	
 }
+
 
 
 

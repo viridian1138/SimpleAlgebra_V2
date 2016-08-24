@@ -397,7 +397,7 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 	
 	
 	/**
-	 * Returns the better approximation for a natural logarithm.
+	 * Returns the better approximation for a natural logarithm, i.e. the one yielding a result closer to the actual answer.
 	 * @param s0 One possibility to test.
 	 * @param s1 Another possibility to test.
 	 * @param numIterExp  Number of iterations to build the underlying exponential approximation.
@@ -491,8 +491,8 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 		return( ret );
 	}
 	
-	
 
+	
 	/**
 	 * Evaluator for computing an approximate natural logarithm.
 	 * 
@@ -549,7 +549,7 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 		/**
 		 * Populates the initial guess from which to start the evaluations.
 		 */
-		protected void populateEvalValue() throws NotInvertibleException
+		protected void populateEvalValue() throws NotInvertibleException, MultiplicativeDistributionRequiredException
 		{
 			evalValue = inputValue.estimateLnApprox( numIterExp );
 		}
@@ -614,6 +614,12 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 			@Override
 			protected void retrieveIterationValue() {
 				evalValue = evalCache;
+			}
+			
+			@Override
+			protected T handleDescentInverseFailed( T derivative , NotInvertibleException ex )
+			{
+				return( derivative.add( derivative.getFac().identity().divideBy( 1000 ) ) );
 			}
 
 			@Override

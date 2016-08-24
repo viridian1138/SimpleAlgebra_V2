@@ -27,6 +27,7 @@ package simplealgebra;
 import java.io.PrintStream;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 import simplealgebra.symbolic.SymbolicElem;
 
@@ -205,6 +206,58 @@ public class ComplexElemFactory<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 		ps.print( "," );
 		fac.writeElemFactoryTypeString(ps);
 		ps.print( ">" );
+	}
+	
+	
+	@Override
+	public Iterator<ComplexElem<R,S>> getApproxLnUnit()
+	{
+		return( new Iterator<ComplexElem<R,S>>()
+				{
+					/**
+					 * The current real iteration.
+					 */
+					protected Iterator<R> r0 = fac.getApproxLnUnit();
+					
+					/**
+					 * The current imaginary iteration.
+					 */
+					protected Iterator<R> r1 = fac.getApproxLnUnit();
+					
+					/**
+					 * The current state of the real iteration.
+					 */
+					protected R currentR0;
+					
+					@Override
+					public boolean hasNext() {
+						return( ( r1.hasNext() ) || ( r0.hasNext() ) );
+					}
+
+					@Override
+					public ComplexElem<R,S> next() {
+						if( currentR0 == null )
+						{
+							currentR0 = r0.next();
+						}
+						if( r1.hasNext() )
+						{
+							return( new ComplexElem<R,S>( currentR0 , r1.next() ) );
+						}
+						else
+						{
+							currentR0 = r0.next();
+							r1 = fac.getApproxLnUnit();
+							return( new ComplexElem<R,S>( currentR0 , r1.next() ) );
+						}
+					}
+
+					@Override
+					public void remove() {
+						throw( new RuntimeException( "Not Supported" ) );
+					}
+					
+				} );
 	}
 	
 	

@@ -28,11 +28,14 @@ import java.util.Random;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
+import simplealgebra.ComplexElem;
+import simplealgebra.ComplexElemFactory;
 import simplealgebra.DoubleElem;
+import simplealgebra.DoubleElemFactory;
 
 
 /**
- * Tests the ability to calculate arctangeants.
+ * Tests the ability to calculate arctangeants and other related functions.
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
@@ -61,6 +64,76 @@ public class TestAtan2 extends TestCase {
 		Assert.assertTrue( ( Math.abs( a1 - a2 ) < 1E-3 ) || 
 			( ( twop - Math.abs( a1 - a2 ) ) < 1E-3 ) );
 	}
+	
+	
+	
+	
+	/**
+	 * Implements the hyperbolic sine function defined by <math display="inline">
+     * <mrow>
+     *  <mo>sinh(</mo>
+     *  <mi>x</mi>
+     *  <mo>)</mo>
+     *  <mo>=</mo>
+     *  <msup>
+     *          <mo>e</mo>
+     *        <mi>x</mi>
+     *  </msup>
+     *  <mo>-</mo>
+     *  <msup>
+     *          <mo>e</mo>
+     *      <mrow>
+     *        <mo>-</mo>
+     *        <mi>x</mi>
+     *      </mrow>
+     *  </msup>
+     * </mrow>
+     * </math>
+	 * 
+	 * @param numIter The number of iterations to use in the  calculation.
+	 * @return The hyperbolic sine of the argument.
+	 */
+	private DoubleElem sinhTest( final DoubleElem x , int numIter )
+	{
+		final DoubleElem ret = ( x.exp( numIter ) ).add( x.negate().exp( numIter ).negate() ).divideBy( 2 );
+		return( ret );
+	}
+	
+	
+	
+	
+	/**
+	 * Implements the hyperbolic cosine function defined by <math display="inline">
+     * <mrow>
+     *  <mo>sinh(</mo>
+     *  <mi>x</mi>
+     *  <mo>)</mo>
+     *  <mo>=</mo>
+     *  <msup>
+     *          <mo>e</mo>
+     *        <mi>x</mi>
+     *  </msup>
+     *  <mo>+</mo>
+     *  <msup>
+     *          <mo>e</mo>
+     *      <mrow>
+     *        <mo>-</mo>
+     *        <mi>x</mi>
+     *      </mrow>
+     *  </msup>
+     * </mrow>
+     * </math>
+	 * 
+	 * @param numIter The number of iterations to use in the  calculation.
+	 * @return The hyperbolic cosine of the argument.
+	 */
+	private DoubleElem coshTest( final DoubleElem x , int numIter )
+	{
+		final DoubleElem ret = ( x.exp( numIter ) ).add( x.negate().exp( numIter ) ).divideBy( 2 );
+		return( ret );
+	}
+	
+	
 		
 	
 	
@@ -171,6 +244,97 @@ public class TestAtan2 extends TestCase {
 	
 	
 	/**
+	 * Tests the ability to take natural logarithms of complex numbers.
+	 * @throws Throwable
+	 */
+	public void testCplxLn() throws Throwable
+	{
+		final Random rand = new Random( 4444 );
+		for( int cnt = 0 ; cnt < 10000 ; cnt++ )
+		{
+			System.out.println( cnt );
+			
+			final double dd0 = 7.0 * ( rand.nextDouble() ) - 3.5;
+			final double dd1 = 10.0 * ( rand.nextDouble() ) - 5.0;
+			
+			final ComplexElem<DoubleElem,DoubleElemFactory> dda =
+					new ComplexElem<DoubleElem,DoubleElemFactory>( new DoubleElem( dd0 ) , new DoubleElem( dd1 ) );
+			
+			final ComplexElem<DoubleElem,DoubleElemFactory> expd = dda.exp( 20 );
+			
+			final ComplexElem<DoubleElem,DoubleElemFactory> d2 = expd.ln(20, 20);
+			
+			final ComplexElem<DoubleElem,DoubleElemFactory> d3 = d2.exp( 20 );
+			
+			Assert.assertTrue( Math.abs( expd.getRe().getVal() - d3.getRe().getVal() ) < 1E-5 );
+			
+			Assert.assertTrue( Math.abs( expd.getIm().getVal() - d3.getIm().getVal() ) < 1E-5 );
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	/**
+	 * Tests the ability to take natural logarithms of complex numbers.
+	 * @throws Throwable
+	 */
+	public void testCplxDLn() throws Throwable
+	{
+		final Random rand = new Random( 4444 );
+		for( int cnt = 0 ; cnt < 10000 ; cnt++ )
+		{
+			System.out.println( cnt );
+			
+			final double dd0 = 1.75 * ( rand.nextDouble() ) - 0.875;
+			final double dd1 = 1.75 * ( rand.nextDouble() ) - 0.875;
+			final double dd2 = 1.75 * ( rand.nextDouble() ) - 0.875;
+			final double dd3 = 1.75 * ( rand.nextDouble() ) - 0.875;
+			
+			final ComplexElem<DoubleElem,DoubleElemFactory> dda0 =
+					new ComplexElem<DoubleElem,DoubleElemFactory>( new DoubleElem( dd0 ) , new DoubleElem( dd1 ) );
+			
+			final ComplexElem<DoubleElem,DoubleElemFactory> dda1 =
+					new ComplexElem<DoubleElem,DoubleElemFactory>( new DoubleElem( dd2 ) , new DoubleElem( dd3 ) );
+			
+			final ComplexElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> dda =
+					new ComplexElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>( dda0 , dda1 );
+			
+			final ComplexElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> expd = dda.exp( 20 );
+			
+			final ComplexElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> d2 = expd.ln(20, 20);
+			
+			final ComplexElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> d3 = d2.exp( 20 );
+			
+//			System.out.println( expd.getRe().getRe().getVal() );
+//			System.out.println( d3.getRe().getRe().getVal() );
+//			System.out.println( expd.getRe().getIm().getVal() );
+//			System.out.println( d3.getRe().getIm().getVal() );
+//			System.out.println( expd.getIm().getRe().getVal() );
+//			System.out.println( d3.getIm().getRe().getVal() );
+//			System.out.println( expd.getIm().getIm().getVal() );
+//			System.out.println( d3.getIm().getIm().getVal() );
+			
+			Assert.assertTrue( Math.abs( expd.getRe().getRe().getVal() - d3.getRe().getRe().getVal() ) < 1E-5 );
+			
+			Assert.assertTrue( Math.abs( expd.getRe().getIm().getVal() - d3.getRe().getIm().getVal() ) < 1E-5 );
+			
+			Assert.assertTrue( Math.abs( expd.getIm().getRe().getVal() - d3.getIm().getRe().getVal() ) < 1E-5 );
+			
+			Assert.assertTrue( Math.abs( expd.getIm().getIm().getVal() - d3.getIm().getIm().getVal() ) < 1E-5 );
+		}
+	}
+	
+	
+	
+	
+	
+	
+	
+	/**
 	 * Tests the ability to calculate hyperbolic sines
 	 * @throws Throwable
 	 */
@@ -230,7 +394,74 @@ public class TestAtan2 extends TestCase {
 	
 	
 	
-
+	
+	
+	/**
+	 * Tests the ability to calculate inverse hyperbolic cosines.
+	 * @throws Throwable
+	 */
+	public void testAcosh() throws Throwable
+	{
+		final Random rand = new Random( 4444 );
+		for( int cnt = 0 ; cnt < 10000 ; cnt++ )
+		{
+			System.out.println( cnt );
+			
+			final Double dd = 5.0 * ( rand.nextDouble() ) + 1.0;
+			
+			System.out.println( dd );
+			
+			final DoubleElem d = new DoubleElem( dd );
+			
+			final DoubleElem acoshd = d.acosh( 20 , 20 );
+			
+			final DoubleElem d2 = acoshd.cosh( 20 );
+			
+			final DoubleElem d3 = coshTest( acoshd , 20 );
+			
+			System.out.println( "*** " + ( d.getVal() ) + " *** " + ( d2.getVal() ) );
+			Assert.assertTrue( Math.abs( d.getVal() - d2.getVal() ) < 1E-5 );
+			
+			Assert.assertTrue( Math.abs( d.getVal() - d3.getVal() ) < 1E-5 );
+		}
+	}
+	
+	
+	
+	
+	
+	/**
+	 * Tests the ability to calculate inverse hyperbolic sines.
+	 * @throws Throwable
+	 */
+	public void testAsinh() throws Throwable
+	{
+		final Random rand = new Random( 4444 );
+		for( int cnt = 0 ; cnt < 10000 ; cnt++ )
+		{
+			System.out.println( cnt );
+			
+			final Double dd = 10.0 * ( rand.nextDouble() ) - 5.0;
+			
+			System.out.println( dd );
+			
+			final DoubleElem d = new DoubleElem( dd );
+			
+			final DoubleElem asinhd = d.asinh( 20 , 20 );
+			
+			final DoubleElem d2 = asinhd.sinh( 20 );
+			
+			final DoubleElem d3 = sinhTest( asinhd , 20 );
+			
+			System.out.println( "*** " + ( d.getVal() ) + " *** " + ( d2.getVal() ) );
+			Assert.assertTrue( Math.abs( d.getVal() - d2.getVal() ) < 1E-5 );
+			
+			Assert.assertTrue( Math.abs( d.getVal() - d3.getVal() ) < 1E-5 );
+		}
+	}
+	
+	
+	
 	
 	/**
 	 * Tests the ability to calculate arctangents.

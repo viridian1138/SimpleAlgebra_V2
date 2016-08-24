@@ -26,6 +26,7 @@ import java.io.PrintStream;
 import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashSet;
+import java.util.Iterator;
 
 import org.kie.internal.runtime.StatefulKnowledgeSession;
 
@@ -314,12 +315,13 @@ public class ComplexElem<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 	
 	/**
 	 * Produces one possible initial natural logarithm approximation.
-	 * @param comb Possibility number ranging from zero to 31.
+	 * @param comb Possibility number ranging from zero to 3.
+	 * @param currentComb The current unit guess to integrate.
 	 * @param numIterExp The number of iterations for the underlying exponential approximation.
 	 * @return One possible initial natural logarithm approximation.
 	 * @throws NotInvertibleException
 	 */
-	protected ComplexElem<R, S> estimateLnApprox( final int comb , final int numIterExp ) throws NotInvertibleException
+	protected ComplexElem<R, S> estimateLnApprox( final int comb , final ComplexElem<R,S> currentComb , final int numIterExp ) throws NotInvertibleException
 	{
 		final R a0 = ( comb & 1 ) != 0 ? getRe() : getRe().negate();
 		final R a1 = ( comb & 2 ) != 0 ? getIm() : getIm().negate();
@@ -327,24 +329,9 @@ public class ComplexElem<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 		
 		final R ident = getFac().getFac().identity();
 		
-		R r0 = ident.add( ident ).add( ident );
+		final R r0 = currentComb.getIm();
 		
-		if( ( comb & 4 ) != 0 )
-		{
-			r0 = r0.negate();
-		}
-		
-		if( ( comb & 8 ) != 0 )
-		{
-			r0 = r0.divideBy( 2 );
-		}
-		
-		if( ( comb & 16 ) != 0 )
-		{
-			r0 = getFac().getFac().zero();
-		}
-		
-		R stval0 = a;
+		R stval0 = a.add( currentComb.getRe() );
 		R stinit;
 		
 		do
@@ -385,10 +372,11 @@ public class ComplexElem<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 	@Override
 	protected ComplexElem<R, S> estimateLnApprox( final int numIterExp ) throws NotInvertibleException
 	{
-		ComplexElem<R, S> stval0 = estimateLnApprox( 0 , numIterExp );
-		for( int cnt = 1 ; cnt < 32 ; cnt++ )
+		Iterator<ComplexElem<R, S>> it = getFac().getApproxLnUnit();
+		ComplexElem<R, S> stval0 = it.next();
+		while( it.hasNext() )
 		{
-			stval0 = evalBetterLnApprox( stval0 , estimateLnApprox( cnt , numIterExp ) , numIterExp );
+			stval0 = evalBetterLnApprox( stval0 , estimateLnApprox( 1 , it.next() , numIterExp ) , numIterExp );
 		}
 		return( stval0 );
 	}
