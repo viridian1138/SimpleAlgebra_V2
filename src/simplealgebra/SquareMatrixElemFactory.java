@@ -28,6 +28,8 @@ package simplealgebra;
 import java.io.PrintStream;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.Iterator;
 
 import simplealgebra.bigfixedpoint.WritePrecisionCache;
 import simplealgebra.symbolic.SymbolicElem;
@@ -246,6 +248,99 @@ public class SquareMatrixElemFactory<U extends NumDimensions, R extends Elem<R,?
 		ps.print( "," );
 		fac.writeElemFactoryTypeString(ps);
 		ps.print( ">" );
+	}
+	
+	
+	
+	@Override
+	public Iterator<SquareMatrixElem<U,R,S>> getApproxLnUnit()
+	{
+		final BigInteger MAX = this.getDim().getVal();
+		final BigInteger MAXSQ = MAX.multiply( MAX );
+		
+		final HashMap<BigInteger,Iterator<R>> mapi = new HashMap<BigInteger,Iterator<R>>();
+		
+		for( BigInteger i = BigInteger.ZERO ; i.compareTo( MAXSQ ) < 0 ; i = i.add( BigInteger.ONE ) )
+		{
+			mapi.put( i , getFac().getApproxLnUnit() );
+		}
+		
+		final HashMap<BigInteger,R> mapr = new HashMap<BigInteger,R>();
+		
+		
+		for( BigInteger i = BigInteger.ONE ; i.compareTo( MAXSQ ) < 0 ; i = i.add( BigInteger.ONE ) )
+		{
+			mapr.put( i , mapi.get( i ).next() );
+		}
+		
+		
+		return( new Iterator<SquareMatrixElem<U,R,S>>()
+				{
+			
+			
+					/**
+					 * Increments iterators across 
+					 */
+					protected void engageIncrement()
+					{
+						for( BigInteger i = BigInteger.ZERO ; i.compareTo( MAXSQ ) < 0 ; i = i.add( BigInteger.ONE ) )
+						{
+							if( mapi.get( i ).hasNext() )
+							{
+								mapr.put( i , mapi.get( i ).next() );
+								return;
+							}
+							else
+							{
+								mapi.put( i , fac.getApproxLnUnit() );
+								mapr.put( i , mapi.get( i ).next() );
+							}
+						}
+					}
+					
+					
+					@Override
+					public boolean hasNext() 
+					{
+						for( BigInteger i = BigInteger.ZERO ; i.compareTo( MAXSQ ) < 0 ; i = i.add( BigInteger.ONE ) )
+						{
+							if( mapi.get( i ).hasNext() )
+							{
+								return( true );
+							}
+						}
+						return( false );
+					}
+
+					@Override
+					public SquareMatrixElem<U,R,S> next() 
+					{
+						if( mapi.get( BigInteger.ZERO ).hasNext() )
+						{
+							mapr.put( BigInteger.ZERO , mapi.get( BigInteger.ZERO ).next() );
+						}
+						else
+						{
+							engageIncrement();
+							mapi.put( BigInteger.ZERO , fac.getApproxLnUnit() );
+							mapr.put( BigInteger.ZERO , mapi.get( BigInteger.ZERO ).next() );
+						}
+						
+						SquareMatrixElem<U,R,S> ret = zero();
+						for( BigInteger i = BigInteger.ZERO ; i.compareTo( MAXSQ ) < 0 ; i = i.add( BigInteger.ONE ) )
+						{
+							ret.setVal( i.divide( MAX ) , i.mod( MAX ) , mapr.get( i ) );
+						}
+						return( ret );
+						
+					}
+
+					@Override
+					public void remove() {
+						throw( new RuntimeException( "Not Supported" ) );
+					}
+					
+				} );
 	}
 	
 	

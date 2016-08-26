@@ -2363,6 +2363,86 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	}
 	
 	
+	
+	/**
+	 * Generates a matrix for a diagonal "rotated" in the direction of the remaining cells.
+	 * @param st The matrix containing the diagonal.
+	 * @param r0 The matrix containing the remaining cells.
+	 * @return The generated matrix.
+	 */
+	protected SquareMatrixElem<U,R,S> genReRot( SquareMatrixElem<U,R,S> st , SquareMatrixElem<U,R,S> r0 )
+	{
+		final SquareMatrixElem<U,R,S> st0 = getFac().zero().add( r0 );
+		final BigInteger MAX = getFac().getDim().getVal();
+		for( BigInteger i = BigInteger.ZERO ; i.compareTo( MAX ) < 0 ; i = i.add( BigInteger.ONE ) )
+		{
+			st0.setVal( i , i , st.getVal( i , i ) );
+		}
+		return( st0 );
+	}
+	
+	
+	
+	/**
+	 * Produces one possible initial natural logarithm approximation.
+	 * @param currentComb The current unit guess to integrate.
+	 * @param numIterExp The number of iterations for the underlying exponential approximation.
+	 * @return One possible initial natural logarithm approximation.
+	 * @throws NotInvertibleException
+	 */
+	protected SquareMatrixElem<U,R,S> estimateLnApprox( final SquareMatrixElem<U,R,S> currentComb , final int numIterExp ) throws NotInvertibleException
+	{	
+		SquareMatrixElem<U,R,S> stval0 = currentComb;
+		SquareMatrixElem<U,R,S> r0 = currentComb;
+		SquareMatrixElem<U,R,S> stinit;
+		
+		SquareMatrixElem<U,R,S> ident = getFac().identity();
+		
+		do
+		{
+			stinit = genReRot( stval0 , r0 );
+			stval0 = evalBetterLnApprox( stinit , 
+					genReRot( stval0.divideBy( 2 ) , r0 ) , numIterExp );
+		}
+		while( stval0 != stinit );
+		
+		
+		final SquareMatrixElem<U,R,S> mult2 = ident.add( ident );
+		
+		
+		do
+		{
+			stinit = genReRot( stval0 , r0 );
+			stval0 = evalBetterLnApprox( stinit , 
+					genReRot( stval0.mult( mult2 ) , r0 ) , numIterExp );
+		}
+		while( stval0 != stinit ); 
+		
+		
+		final SquareMatrixElem<U,R,S> stu = genReRot( stval0 , r0 );
+		
+		
+		final SquareMatrixElem<U,R,S> ret = stu;
+		return( ret );
+		
+		
+	}
+	
+	
+	@Override
+	protected SquareMatrixElem<U,R,S> estimateLnApprox( final int numIterExp ) throws NotInvertibleException
+	{
+		Iterator<SquareMatrixElem<U,R,S>> it = getFac().getApproxLnUnit();
+		SquareMatrixElem<U,R,S> stval0 = it.next();
+		while( it.hasNext() )
+		{
+			stval0 = evalBetterLnApprox( stval0 , estimateLnApprox( it.next() , numIterExp ) , numIterExp );
+		}
+		return( stval0 );
+	}
+	
+	
+	
 	@Override
 	public SquareMatrixElem<U, R, S> handleOptionalOp( Object id , ArrayList<SquareMatrixElem<U, R, S>> args )  throws NotInvertibleException
 	{
