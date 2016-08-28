@@ -1918,6 +1918,86 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 	
 	
 	
+	
+	
+	/**
+	 * Generates a multivector for a scalar "rotated" in the direction of the remaining cells.
+	 * @param st The multivector containing the scalar.
+	 * @param r0 The multivector containing the remaining cells.
+	 * @return The generated multivector.
+	 */
+	protected GeometricAlgebraMultivectorElem<U,A, R, S> genReRot( GeometricAlgebraMultivectorElem<U,A, R, S> st , GeometricAlgebraMultivectorElem<U,A, R, S> r0 )
+	{
+		final GeometricAlgebraMultivectorElem<U,A, R, S> st0 = getFac().zero().add( r0 );
+		final HashSet<BigInteger> key = new HashSet<BigInteger>();
+		st0.setVal( key , st.getVal( key ) );
+		return( st0 );
+	}
+	
+	
+	
+	/**
+	 * Produces one possible initial natural logarithm approximation.
+	 * @param currentComb The current unit guess to integrate.
+	 * @param numIterExp The number of iterations for the underlying exponential approximation.
+	 * @return One possible initial natural logarithm approximation.
+	 * @throws NotInvertibleException
+	 */
+	protected GeometricAlgebraMultivectorElem<U,A, R, S> estimateLnApprox( final GeometricAlgebraMultivectorElem<U,A, R, S> currentComb , final int numIterExp ) throws NotInvertibleException
+	{	
+		GeometricAlgebraMultivectorElem<U,A, R, S> stval0 = currentComb;
+		GeometricAlgebraMultivectorElem<U,A, R, S> r0 = currentComb;
+		GeometricAlgebraMultivectorElem<U,A, R, S> stinit;
+		
+		GeometricAlgebraMultivectorElem<U,A, R, S> ident = getFac().identity();
+		
+		do
+		{
+			stinit = genReRot( stval0 , r0 );
+			stval0 = evalBetterLnApprox( stinit , 
+					genReRot( stval0.divideBy( 2 ) , r0 ) , numIterExp );
+		}
+		while( stval0 != stinit );
+		
+		
+		final GeometricAlgebraMultivectorElem<U,A, R, S> mult2 = ident.add( ident );
+		
+		
+		do
+		{
+			stinit = genReRot( stval0 , r0 );
+			stval0 = evalBetterLnApprox( stinit , 
+					genReRot( stval0.mult( mult2 ) , r0 ) , numIterExp );
+		}
+		while( stval0 != stinit ); 
+		
+		
+		final GeometricAlgebraMultivectorElem<U,A, R, S> stu = genReRot( stval0 , r0 );
+		
+		
+		final GeometricAlgebraMultivectorElem<U,A, R, S> ret = stu;
+		return( ret );
+		
+		
+	}
+	
+	
+	@Override
+	protected GeometricAlgebraMultivectorElem<U,A, R, S> estimateLnApprox( final int numIterExp ) throws NotInvertibleException
+	{
+		Iterator<GeometricAlgebraMultivectorElem<U,A, R, S>> it = getFac().getApproxLnUnit();
+		GeometricAlgebraMultivectorElem<U,A, R, S> stval0 = it.next();
+		while( it.hasNext() )
+		{
+			stval0 = evalBetterLnApprox( stval0 , estimateLnApprox( it.next() , numIterExp ) , numIterExp );
+		}
+		return( stval0 );
+	}
+	
+	
+	
+	
+	
 	@Override
 	public GeometricAlgebraMultivectorElem<U,A, R, S> handleOptionalOp( Object id , ArrayList<GeometricAlgebraMultivectorElem<U,A, R, S>> args )  throws NotInvertibleException
 	{

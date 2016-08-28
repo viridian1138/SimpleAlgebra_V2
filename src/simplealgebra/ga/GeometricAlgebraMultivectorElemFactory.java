@@ -28,17 +28,16 @@ package simplealgebra.ga;
 import java.io.PrintStream;
 import java.math.BigInteger;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
+import java.util.Iterator;
 
 import simplealgebra.AbstractCache;
 import simplealgebra.CloneThreadCache;
-import simplealgebra.ComplexElemFactory;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.NumDimensions;
-import simplealgebra.SquareMatrixElem;
-import simplealgebra.SquareMatrixElemFactory;
 import simplealgebra.WriteBigIntegerCache;
 import simplealgebra.WriteElemCache;
 import simplealgebra.WriteNumDimensionsCache;
@@ -353,6 +352,130 @@ public class GeometricAlgebraMultivectorElemFactory<U extends NumDimensions, A e
 		fac.writeElemFactoryTypeString(ps);
 		ps.print( ">" );
 	}
+	
+	
+	
+	
+	
+	@Override
+	public Iterator<GeometricAlgebraMultivectorElem<U,A, R, S>> getApproxLnUnit()
+	{
+		final BigInteger MAXD = this.getDim().getVal();
+		
+		BigInteger CDI = BigInteger.ONE;
+		for( BigInteger i = BigInteger.ONE ; i.compareTo( MAXD ) <= 0 ; i = i.add( BigInteger.ONE ) )
+		{
+			CDI = CDI.multiply( BigInteger.valueOf( 2 ) );
+		}
+		
+		final BigInteger MAXDI = CDI;
+		
+		final HashMap<BigInteger,Iterator<R>> mapi = new HashMap<BigInteger,Iterator<R>>();
+		
+		for( BigInteger i = BigInteger.ZERO ; i.compareTo( MAXDI ) < 0 ; i = i.add( BigInteger.ONE ) )
+		{
+			mapi.put( i , getFac().getApproxLnUnit() );
+		}
+		
+		final HashMap<BigInteger,R> mapr = new HashMap<BigInteger,R>();
+		
+		
+		for( BigInteger i = BigInteger.ONE ; i.compareTo( MAXDI ) < 0 ; i = i.add( BigInteger.ONE ) )
+		{
+			mapr.put( i , mapi.get( i ).next() );
+		}
+		
+		
+		return( new Iterator<GeometricAlgebraMultivectorElem<U,A, R, S>>()
+				{
+			
+			
+					/**
+					 * Increments iterators across 
+					 */
+					protected void engageIncrement()
+					{
+						for( BigInteger i = BigInteger.ZERO ; i.compareTo( MAXDI ) < 0 ; i = i.add( BigInteger.ONE ) )
+						{
+							if( mapi.get( i ).hasNext() )
+							{
+								mapr.put( i , mapi.get( i ).next() );
+								return;
+							}
+							else
+							{
+								mapi.put( i , fac.getApproxLnUnit() );
+								mapr.put( i , mapi.get( i ).next() );
+							}
+						}
+					}
+					
+					
+					/**
+					 * Generates the multivector ordinate that corresponds to the supplied index.
+					 * @param index The index of the ordinate.
+					 * @return The corresponding ordinate.
+					 */
+					protected HashSet<BigInteger> genSetFromIndex( BigInteger index )
+					{
+						final BigInteger TWO = BigInteger.valueOf( 2 );
+						final HashSet<BigInteger> ret = new HashSet<BigInteger>();
+						for( BigInteger i = BigInteger.ZERO ; i.compareTo( MAXD ) < 0 ; i = i.add( BigInteger.ONE ) )
+						{
+							if( index.mod( TWO ).compareTo( BigInteger.ZERO ) != 0 )
+							{
+								ret.add( i );
+							}
+							index = index.divide( TWO );
+						}
+						return( ret );
+					}
+					
+					
+					@Override
+					public boolean hasNext() 
+					{
+						for( BigInteger i = BigInteger.ZERO ; i.compareTo( MAXDI ) < 0 ; i = i.add( BigInteger.ONE ) )
+						{
+							if( mapi.get( i ).hasNext() )
+							{
+								return( true );
+							}
+						}
+						return( false );
+					}
+
+					@Override
+					public GeometricAlgebraMultivectorElem<U,A, R, S> next() 
+					{
+						if( mapi.get( BigInteger.ZERO ).hasNext() )
+						{
+							mapr.put( BigInteger.ZERO , mapi.get( BigInteger.ZERO ).next() );
+						}
+						else
+						{
+							engageIncrement();
+							mapi.put( BigInteger.ZERO , fac.getApproxLnUnit() );
+							mapr.put( BigInteger.ZERO , mapi.get( BigInteger.ZERO ).next() );
+						}
+						
+						GeometricAlgebraMultivectorElem<U,A, R, S> ret = zero();
+						for( BigInteger i = BigInteger.ZERO ; i.compareTo( MAXDI ) < 0 ; i = i.add( BigInteger.ONE ) )
+						{
+							ret.setVal( genSetFromIndex( i ) , mapr.get( i ) );
+						}
+						return( ret );
+						
+					}
+
+					@Override
+					public void remove() {
+						throw( new RuntimeException( "Not Supported" ) );
+					}
+					
+				} );
+	}
+	
 	
 	
 	

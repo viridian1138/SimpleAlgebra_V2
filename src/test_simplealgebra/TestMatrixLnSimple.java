@@ -25,6 +25,8 @@
 package test_simplealgebra;
 
 import java.math.BigInteger;
+import java.util.HashSet;
+import java.util.Random;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
@@ -33,10 +35,15 @@ import simplealgebra.DoubleElemFactory;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.SquareMatrixElem;
 import simplealgebra.SquareMatrixElemFactory;
+import simplealgebra.ga.GeometricAlgebraMultivectorElem;
+import simplealgebra.ga.GeometricAlgebraMultivectorElemFactory;
+import simplealgebra.ga.GeometricAlgebraOrd;
+import simplealgebra.prec.DefaultPrecedenceComparator;
 
 
 /**
  * Tests matrix logarithms (and related operations) for some simple test cases.
+ * Also includes some GA logarithm tests.
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
@@ -68,20 +75,14 @@ public class TestMatrixLnSimple extends TestCase {
 		
 		final SquareMatrixElem<TestDimensionTwo,DoubleElem,DoubleElemFactory> lnexp = ln.exp(20);
 		
-		Assert.assertEquals( lnexp.getVal(BigInteger.ZERO , BigInteger.ZERO).getVal() , exp.getVal(BigInteger.ZERO , BigInteger.ZERO).getVal() , 1E-4 );
-		
-		Assert.assertEquals( lnexp.getVal(BigInteger.ZERO , BigInteger.ONE).getVal() , exp.getVal(BigInteger.ZERO , BigInteger.ONE).getVal() , 1E-4 );
-		
-		Assert.assertEquals( lnexp.getVal(BigInteger.ONE , BigInteger.ZERO).getVal() , exp.getVal(BigInteger.ONE , BigInteger.ZERO).getVal() , 1E-4 );
-		
-		Assert.assertEquals( lnexp.getVal(BigInteger.ONE , BigInteger.ONE).getVal() , exp.getVal(BigInteger.ONE , BigInteger.ONE).getVal() , 1E-4 );
+		Assert.assertTrue( ( (DoubleElem)( ( lnexp.add( exp.negate() ) ).totalMagnitude() ) ).getVal() < 1E-4 );
 		
 	}
 	
 	
 	
 	/**
-	 * Test method for a simple square-root of the identity matrix.
+	 * Test method for a simple square-root of a diagonal matrix.
 	 */
 	public void testSimpleMatrixSquareRoot( ) throws Throwable {
 		
@@ -135,17 +136,153 @@ public class TestMatrixLnSimple extends TestCase {
 		
 		final SquareMatrixElem<TestDimensionTwo,DoubleElem,DoubleElemFactory> sqrtSq = sqrt.mult( sqrt );
 		
-		Assert.assertEquals( sqrtSq.getVal(BigInteger.ZERO , BigInteger.ZERO).getVal() , el.getVal(BigInteger.ZERO , BigInteger.ZERO).getVal() , 1E-4 );
-		
-		Assert.assertEquals( sqrtSq.getVal(BigInteger.ZERO , BigInteger.ONE).getVal() , el.getVal(BigInteger.ZERO , BigInteger.ONE).getVal() , 1E-4 );
-		
-		Assert.assertEquals( sqrtSq.getVal(BigInteger.ONE , BigInteger.ZERO).getVal() , el.getVal(BigInteger.ONE , BigInteger.ZERO).getVal() , 1E-4 );
-		
-		Assert.assertEquals( sqrtSq.getVal(BigInteger.ONE , BigInteger.ONE).getVal() , el.getVal(BigInteger.ONE , BigInteger.ONE).getVal() , 1E-4 );
+		Assert.assertTrue( ( (DoubleElem)( ( sqrtSq.add( el.negate() ) ).totalMagnitude() ) ).getVal() < 1E-4 );
 		
 	}
 	
 	
+	
+	
+	/**
+	 * Test method for {@link simplealgebra.Elem#ln(int,int)}.
+	 */
+	public void testGaLnSimpleScalar( ) throws Throwable {
+		
+		final DoubleElemFactory fac = new DoubleElemFactory();
+		
+		final TestDimensionTwo td = new TestDimensionTwo();
+		
+		final GeometricAlgebraOrd<TestDimensionTwo> ord = new GeometricAlgebraOrd<TestDimensionTwo>();
+		
+		final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory> el
+			= new GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory>( fac , td, ord );
+		
+		el.setVal( new HashSet<BigInteger>() , new DoubleElem( 2.0 ) );
+		
+		final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory> exp = el.exp( 20 );
+		
+		final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory> ln = exp.ln(20, 20);
+		
+		final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory> lnexp = ln.exp(20);
+		
+		Assert.assertTrue( ( (DoubleElem)( ( lnexp.add( exp.negate() ) ).totalMagnitude() ) ).getVal() < 1E-4 );
+		
+	}
+	
+	
+	
+	
+	/**
+	 * Test method for a simple square-root of a GA scalar.
+	 */
+	public void testSimpleGaSquareRoot( ) throws Throwable {
+		
+		final DoubleElemFactory fac = new DoubleElemFactory();
+		
+		final TestDimensionTwo td = new TestDimensionTwo();
+		
+		final GeometricAlgebraOrd<TestDimensionTwo> ord = new GeometricAlgebraOrd<TestDimensionTwo>();
+		
+		final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory> el
+			= new GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory>( fac , td, ord );
+		
+		final GeometricAlgebraMultivectorElemFactory<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory> gfac
+			= new GeometricAlgebraMultivectorElemFactory<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory>( fac , td, ord );
+		
+		el.setVal( new HashSet<BigInteger>() , new DoubleElem( 3.0 ) );
+		
+		GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory> sqrt = el.powL( gfac.identity().divideBy( 2 ) , 20 , 20 );
+		
+		final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory> elv
+			= new GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory>( fac , td, ord );
+		
+		elv.setVal( new HashSet<BigInteger>() , new DoubleElem( Math.sqrt( 3.0 ) ) );
+		
+		Assert.assertTrue( ( (DoubleElem)( ( sqrt.add( elv.negate() ) ).totalMagnitude() ) ).getVal() < 1E-4 );
+		
+	}
+	
+	
+	
+	/**
+	 * Test the ability to take the square root of the negative GA scalar.
+	 */
+	public void testGaSquareRootNegativeIdentity( ) throws Throwable {
+		
+		final DoubleElemFactory fac = new DoubleElemFactory();
+		
+		final TestDimensionTwo td = new TestDimensionTwo();
+		
+		final GeometricAlgebraOrd<TestDimensionTwo> ord = new GeometricAlgebraOrd<TestDimensionTwo>();
+		
+		final GeometricAlgebraMultivectorElemFactory<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory> gfac
+			= new GeometricAlgebraMultivectorElemFactory<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory>( fac , td, ord );
+		
+		final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory> el
+			= gfac.identity().negate();
+		
+		GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory> ln 
+			= el.ln( 20 , 20 );
+		
+		final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory> sqrt = el.powL( gfac.identity().divideBy( 2 ) , 20 , 20 );
+		
+		final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory> sqrtSq = sqrt.mult( sqrt );
+		
+		Assert.assertTrue( ( (DoubleElem)( ( sqrtSq.add( el.negate() ) ).totalMagnitude() ) ).getVal() < 1E-4 );
+		
+	}
+	
+	
+	
+	
+	/**
+	 * Tests the ability to take an approximate natural logarithm of a 2-D vector.
+	 * 
+	 * @throws NotInvertibleException
+	 */
+	public void testVectorLnA( ) throws Throwable
+	{
+		Random rand = new Random( 5432 );
+		
+		final TestDimensionTwo td = new TestDimensionTwo();
+		
+		final GeometricAlgebraOrd<TestDimensionTwo> ord = new GeometricAlgebraOrd<TestDimensionTwo>();
+		
+		final DoubleElemFactory dl = new DoubleElemFactory();
+		
+		final GeometricAlgebraMultivectorElemFactory<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory> se = 
+				new GeometricAlgebraMultivectorElemFactory<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory>(dl, td, ord);
+		
+		final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory> mvA = se.zero();
+		
+		final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory> mvB = se.zero();
+		
+		
+		
+		final double[] v0 = { rand.nextDouble() , rand.nextDouble() };
+		
+		
+		
+		for( int cnt = 0 ; cnt < TestDimensionTwo.TWO ; cnt++ )
+		{
+			final HashSet<BigInteger> key = new HashSet<BigInteger>();
+			key.add( BigInteger.valueOf( cnt ) );
+			mvA.setVal( key , new DoubleElem( v0[ cnt ] ) );
+		}
+		
+		
+		
+		final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory> 
+			ln = mvA.ln(20, 20);
+		
+		
+		// System.out.println( ( (DoubleElem)( ln.exp( 20 ).add( mvA.negate() ).totalMagnitude() ) ).getVal() );
+		
+		
+		Assert.assertTrue( ln != null );
+		
+		
+	}
 	
 	
 	
