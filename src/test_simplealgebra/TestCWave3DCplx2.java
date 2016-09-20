@@ -2307,7 +2307,7 @@ public class TestCWave3DCplx2 extends TestCase {
 			if( ( im.getXcnt() == HALF_X ) && ( im.getYcnt() == HALF_Y ) && ( im.getZcnt() == HALF_Z ) )
 			{
 				System.out.println( "******************" );
-				System.out.println( " ( " + im.getXcnt() + " , " + im.getYcnt() + " , " + im.getZcnt() + " ) " );
+				System.out.println( tval + " -- ( " + im.getXcnt() + " , " + im.getYcnt() + " , " + im.getZcnt() + " ) " );
 				System.out.println( Math.sqrt( expectationValue( ivala ) ) );
 				System.out.println( Math.sqrt( expectationValue( vala ) ) );
 				System.out.println( "## " + ( Math.sqrt( expectationValue( err ) ) ) );
@@ -2593,7 +2593,7 @@ public class TestCWave3DCplx2 extends TestCase {
 		
 		
 		final SymbolicElem<SymbolicElem<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>> gt0Viscous
-			= ( ( as.mult( as ).divideBy( 2 ) ).invertLeft() ).mult( pa0T );
+			= ( ( as.mult( as ).divideBy( 2000 /* 20 */ ) ).invertLeft() ).mult( pa0T );
 		
 		
 		final SymbolicElem<SymbolicElem<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>> gtt0
