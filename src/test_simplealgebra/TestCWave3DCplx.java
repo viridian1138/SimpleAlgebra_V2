@@ -271,8 +271,14 @@ public class TestCWave3DCplx extends TestCase {
 	 * 
 	 * See https://en.wikipedia.org/wiki/Predictor%E2%80%93corrector_method
 	 */
-	// protected static final boolean USE_PREDICTOR_CORRECTOR = true;
+	protected static final boolean USE_PREDICTOR_CORRECTOR = false;
 	
+	
+	
+	/**
+	 * Indicates whether a form of nonlinear numerical viscosity should be used while iterating.
+	 */
+	protected static final boolean APPLY_NUMERICAL_VISCOSITY = true;
 	
 	
 	
@@ -388,6 +394,83 @@ public class TestCWave3DCplx extends TestCase {
 	{
 		tempArray[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ][ NSTPZ ] = in;
 	}
+	
+	
+	
+	final static double MAX_CHG = 0.05;
+	
+	/**
+	 * Multiplicative inverse of MAX_CHG.
+	 */
+	final static double I_MAX_CHG = 1.0 / MAX_CHG;
+	
+	/**
+	 * Size of change below which numerical viscosity isn't applied.
+	 */
+	final static double NUMERICAL_VISCOSITY_EXIT_CUTOFF = 1E-5;
+	
+	
+	
+	
+	
+	
+	/**
+	 * Applies a form of nonlinear numerical viscosity.
+	 */
+	protected static DoubleElem applyNumericViscosityRe()
+	{
+		final double delt = ( (DoubleElem)( tempArray[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ].getRe() ) ).getVal()
+			- ( (DoubleElem)( tempArray[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ][ NSTPZ ].getRe() ) ).getVal();
+		final double adelt = Math.abs( delt );
+		if( adelt < NUMERICAL_VISCOSITY_EXIT_CUTOFF )
+		{
+			return( (DoubleElem)( tempArray[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ].getRe() ) );
+		}
+		final double iadelt = 1.0 / adelt;
+		final double iadiv = Math.sqrt( iadelt * iadelt + I_MAX_CHG * I_MAX_CHG );
+		final double adiv = 1.0 / iadiv;
+		return(
+				new DoubleElem( ( (DoubleElem)( tempArray[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ][ NSTPZ ].getRe() ) ).getVal() +
+				( delt > 0.0 ? adiv : -adiv ) ) );
+	}
+	
+	
+	
+	/**
+	 * Applies a form of nonlinear numerical viscosity.
+	 */
+	protected static DoubleElem applyNumericViscosityIm()
+	{
+		final double delt = ( (DoubleElem)( tempArray[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ].getIm() ) ).getVal()
+			- ( (DoubleElem)( tempArray[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ][ NSTPZ ].getIm() ) ).getVal();
+		final double adelt = Math.abs( delt );
+		if( adelt < NUMERICAL_VISCOSITY_EXIT_CUTOFF )
+		{
+			return( (DoubleElem)( tempArray[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ].getIm() ) );
+		}
+		final double iadelt = 1.0 / adelt;
+		final double iadiv = Math.sqrt( iadelt * iadelt + I_MAX_CHG * I_MAX_CHG );
+		final double adiv = 1.0 / iadiv;
+		return(
+				new DoubleElem( ( (DoubleElem)( tempArray[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ][ NSTPZ ].getIm() ) ).getVal() +
+				( delt > 0.0 ? adiv : -adiv ) ) );
+	}
+	
+	
+	
+	/**
+	 * Applies a form of nonlinear numerical viscosity.
+	 */
+	protected static void applyNumericViscosity()
+	{
+		final DoubleElem re = applyNumericViscosityRe();
+		final DoubleElem im = applyNumericViscosityIm();
+		
+		tempArray[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] =
+				new ComplexElem<DoubleElem,DoubleElemFactory>( re , im );
+	}
+	
+	
 	
 	
 	
@@ -2276,7 +2359,7 @@ public class TestCWave3DCplx extends TestCase {
 	protected void performIterationT( final int tval , final StelemNewton newton , final HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace2 ) 
 			throws Throwable
 	{
-		//ComplexElem<DoubleElem,DoubleElemFactory> tmpCorrectionValue = null;
+		ComplexElem<DoubleElem,DoubleElemFactory> tmpCorrectionValue = null;
 		im.restartIncrements();
 		for( long acnt = 0 ; acnt < ( ( (long) NUM_X_ITER ) * NUM_Y_ITER * NUM_Z_ITER ) ; acnt++ )
 		{
@@ -2289,15 +2372,26 @@ public class TestCWave3DCplx extends TestCase {
 		
 			
 			ComplexElem<DoubleElem,DoubleElemFactory> err = newton.eval( implicitSpace2 );
+			
+			if( APPLY_NUMERICAL_VISCOSITY )
+			{
+				applyNumericViscosity();
+			}
 					
 					
-			//if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
-			//{
-			//	tmpCorrectionValue = getCorrectionValue();
-			//	applyPredictorCorrector();
-			//			
-			//	err = newton.eval( implicitSpace2 );
-			//}
+			if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
+			{
+				tmpCorrectionValue = getCorrectionValue();
+				applyPredictorCorrector();
+						
+				
+				err = newton.eval( implicitSpace2 );
+				
+				if( APPLY_NUMERICAL_VISCOSITY )
+				{
+					applyNumericViscosity();
+				}
+			}
 	
 	
 			final ComplexElem<DoubleElem,DoubleElemFactory> vala = TestCWave3DCplx.getUpdateValue();
@@ -2349,10 +2443,10 @@ public class TestCWave3DCplx extends TestCase {
 			
 			Assert.assertTrue( Math.abs( Math.sqrt( expectationValue( err ) ) ) < ( 0.01 * Math.abs( Math.sqrt( expectationValue( vala ) ) ) + 0.01 ) );
 			
-			//if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
-			//{
-			//	resetCorrectionValue( tmpCorrectionValue );
-			//}
+			if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
+			{
+				resetCorrectionValue( tmpCorrectionValue );
+			}
 		
 			iterArray[ tval + 1 ][ im.getXcnt() ][ im.getYcnt() ][ im.getZcnt() ] = vala;
 					

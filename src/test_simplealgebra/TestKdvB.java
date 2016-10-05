@@ -147,7 +147,7 @@ public class TestKdvB extends TestCase {
 	/**
 	 * The number of discretizations on the T-Axis over which to iterate.
 	 */
-	protected static final int NUM_T_ITER = 150;
+	protected static final int NUM_T_ITER = 600;
 	
 	
 	
@@ -199,7 +199,15 @@ public class TestKdvB extends TestCase {
 	 * 
 	 * See https://en.wikipedia.org/wiki/Predictor%E2%80%93corrector_method
 	 */
-	// protected static final boolean USE_PREDICTOR_CORRECTOR = true;
+	protected static final boolean USE_PREDICTOR_CORRECTOR = true;
+	
+	
+	
+	/**
+	 * Indicates whether a form of nonlinear numerical viscosity should be used while iterating.
+	 */
+	protected static final boolean APPLY_NUMERICAL_VISCOSITY = true;
+	
 	
 	
 	
@@ -291,6 +299,45 @@ public class TestKdvB extends TestCase {
 	}
 	
 	
+	
+	final static double MAX_CHG = 0.05;
+	
+	/**
+	 * Multiplicative inverse of MAX_CHG.
+	 */
+	final static double I_MAX_CHG = 1.0 / MAX_CHG;
+	
+	/**
+	 * Size of change below which numerical viscosity isn't applied.
+	 */
+	final static double NUMERICAL_VISCOSITY_EXIT_CUTOFF = 1E-5;
+	
+	
+	
+	
+	/**
+	 * Applies a form of nonlinear numerical viscosity.
+	 */
+	protected static void applyNumericViscosity()
+	{
+		final double delt = tempArray[ NSTPT * 2 ][ NSTPX ]
+			- tempArray[ NSTPT * 2 - 1 ][ NSTPX ];
+		final double adelt = Math.abs( delt );
+		if( adelt < NUMERICAL_VISCOSITY_EXIT_CUTOFF )
+		{
+			return;
+		}
+		final double iadelt = 1.0 / adelt;
+		final double iadiv = Math.sqrt( iadelt * iadelt + I_MAX_CHG * I_MAX_CHG );
+		final double adiv = 1.0 / iadiv;
+		tempArray[ NSTPT * 2 ][ NSTPX ] =
+				tempArray[ NSTPT * 2 - 1 ][ NSTPX ] +
+				( delt > 0.0 ? adiv : -adiv );
+	}
+	
+	
+	
+	
 	/**
 	 * Applies a predictor-corrector process to the temp array.
 	 * 
@@ -306,6 +353,7 @@ public class TestKdvB extends TestCase {
 		tempArray[ NSTPT * 2 - 1 ][ NSTPX ] = 
 				tempArray[ NSTPT * 2 - 2 ][ NSTPX ] + avgSlope;
 	}
+	
 	
 	
 	
@@ -1859,7 +1907,7 @@ public class TestKdvB extends TestCase {
 	protected void performIterationT( final int tval , final StelemNewton newton , final HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace2 ) 
 			throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
-		//double tmpCorrectionValue = 0.0;
+		double tmpCorrectionValue = 0.0;
 		// System.out.println( "//// " + tval );
 		
 		for( int xcnt = 0 ; xcnt < NUM_X_ITER ; xcnt++ )
@@ -1883,15 +1931,26 @@ public class TestKdvB extends TestCase {
 					
 						
 			DoubleElem err = newton.eval( implicitSpace2 );
+			
+			if( APPLY_NUMERICAL_VISCOSITY )
+			{
+				applyNumericViscosity();
+			}
 						
 						
-			//if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
-			//{
-			//	tmpCorrectionValue = getCorrectionValue();
-			//	applyPredictorCorrector();
-			//				
-			//	err = newton.eval( implicitSpace2 );
-			//}
+			if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
+			{
+				tmpCorrectionValue = getCorrectionValue();
+				applyPredictorCorrector();
+							
+				
+				err = newton.eval( implicitSpace2 );
+				
+				if( APPLY_NUMERICAL_VISCOSITY )
+				{
+					applyNumericViscosity();
+				}
+			}
 				
 				
 			final double val = TestKdvB.getUpdateValue();
@@ -1931,10 +1990,10 @@ public class TestKdvB extends TestCase {
 						
 			Assert.assertTrue( Math.abs( err.getVal() ) < ( 0.01 * Math.abs( val ) + 0.01 ) );
 						
-			//if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
-			//{
-			//	resetCorrectionValue( tmpCorrectionValue );
-			//}
+			if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
+			{
+				resetCorrectionValue( tmpCorrectionValue );
+			}
 					
 			iterArray[ tval + 1 ][ xcnt ] = val;
 								
