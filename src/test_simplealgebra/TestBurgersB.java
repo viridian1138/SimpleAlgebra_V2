@@ -299,7 +299,9 @@ public class TestBurgersB extends TestCase {
 	
 	
 
-	
+	/**
+	 * Approximate maximum change allowed by nonlinear viscosity.
+	 */
 	final static double MAX_CHG = 0.05;
 	
 	/**
