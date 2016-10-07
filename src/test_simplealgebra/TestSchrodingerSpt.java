@@ -305,6 +305,13 @@ public class TestSchrodingerSpt extends TestCase {
 	// protected static final boolean USE_PREDICTOR_CORRECTOR = true;
 	
 	
+
+	
+	/**
+	 * Indicates whether a form of nonlinear numerical viscosity should be used while iterating.
+	 */
+	protected static final boolean APPLY_NUMERICAL_VISCOSITY = true;
+	
 	
 	
 	/**
@@ -478,6 +485,86 @@ public class TestSchrodingerSpt extends TestCase {
 	{
 		tempArrayIm[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ][ NSTPZ ] = in;
 	}
+	
+	
+	
+	/**
+	 * Approximate maximum change allowed by nonlinear viscosity.
+	 */
+	final static double MAX_CHG = 0.05;
+	
+	/**
+	 * Multiplicative inverse of MAX_CHG.
+	 */
+	final static double I_MAX_CHG = 1.0 / MAX_CHG;
+	
+	/**
+	 * Size of change below which numerical viscosity isn't applied.
+	 */
+	final static double NUMERICAL_VISCOSITY_EXIT_CUTOFF = 1E-5;
+	
+	
+	
+	
+	
+	
+	/**
+	 * Applies a form of nonlinear numerical viscosity.
+	 */
+	protected static void applyNumericViscosityRe()
+	{
+		final double delt = tempArrayRe[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ]
+			- tempArrayRe[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ][ NSTPZ ];
+		final double adelt = Math.abs( delt );
+		if( adelt < NUMERICAL_VISCOSITY_EXIT_CUTOFF )
+		{
+			return;
+		}
+		final double iadelt = 1.0 / adelt;
+		final double iadiv = Math.sqrt( iadelt * iadelt + I_MAX_CHG * I_MAX_CHG );
+		final double adiv = 1.0 / iadiv;
+		tempArrayRe[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] =
+				tempArrayRe[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ][ NSTPZ ] +
+				( delt > 0.0 ? adiv : -adiv );
+	}
+	
+	
+	
+	/**
+	 * Applies a form of nonlinear numerical viscosity.
+	 */
+	protected static void applyNumericViscosityIm()
+	{
+		final double delt = tempArrayIm[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ]
+			- tempArrayIm[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ][ NSTPZ ];
+		final double adelt = Math.abs( delt );
+		if( adelt < NUMERICAL_VISCOSITY_EXIT_CUTOFF )
+		{
+			return;
+		}
+		final double iadelt = 1.0 / adelt;
+		final double iadiv = Math.sqrt( iadelt * iadelt + I_MAX_CHG * I_MAX_CHG );
+		final double adiv = 1.0 / iadiv;
+		tempArrayIm[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] =
+				tempArrayIm[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ][ NSTPZ ] +
+				( delt > 0.0 ? adiv : -adiv );
+	}
+	
+	
+	
+	/**
+	 * Applies a form of nonlinear numerical viscosity.
+	 */
+	protected static void applyNumericViscosity()
+	{
+		applyNumericViscosityRe();
+		applyNumericViscosityIm();
+	}
+	
+	
+	
+	
+	
 	
 	
 	/**
@@ -2425,6 +2512,11 @@ public class TestSchrodingerSpt extends TestCase {
 		
 			
 			ComplexElem<DoubleElem, DoubleElemFactory> err = newton.eval( implicitSpace2 );
+			
+			if( APPLY_NUMERICAL_VISCOSITY )
+			{
+				applyNumericViscosity();
+			}
 					
 					
 			//if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
@@ -2433,7 +2525,13 @@ public class TestSchrodingerSpt extends TestCase {
 			//	tmpCorrectionValueIm = getCorrectionValueIm();
 			//	applyPredictorCorrector();
 			//			
+			//
 			//	err = newton.eval( implicitSpace2 );
+			//
+			//  if( APPLY_NUMERICAL_VISCOSITY )
+			// {
+			//	applyNumericViscosity();
+			// }
 			//}
 	
 	
