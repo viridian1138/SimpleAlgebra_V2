@@ -198,6 +198,14 @@ public class TestStelemB extends TestCase {
 	// protected static final boolean USE_PREDICTOR_CORRECTOR = true;
 	
 	
+	
+	/**
+	 * Indicates whether a form of nonlinear numerical viscosity should be used while iterating.
+	 */
+	// protected static final boolean APPLY_NUMERICAL_VISCOSITY = true;
+	
+	
+	
 	/**
 	 * Result array over which to iterate.
 	 */
@@ -284,6 +292,47 @@ public class TestStelemB extends TestCase {
 	{
 		tempArray[ NSTPT * 2 - 1 ][ NSTPX ] = in;
 	}
+	
+	
+
+	/**
+	 * Approximate maximum change allowed by nonlinear viscosity.
+	 */
+	final static double MAX_CHG = 0.05;
+	
+	/**
+	 * Multiplicative inverse of MAX_CHG.
+	 */
+	final static double I_MAX_CHG = 1.0 / MAX_CHG;
+	
+	/**
+	 * Size of change below which numerical viscosity isn't applied.
+	 */
+	final static double NUMERICAL_VISCOSITY_EXIT_CUTOFF = 1E-5;
+	
+	
+	
+	
+	/**
+	 * Applies a form of nonlinear numerical viscosity.
+	 */
+	protected static void applyNumericViscosity()
+	{
+		final double delt = tempArray[ NSTPT * 2 ][ NSTPX ]
+			- tempArray[ NSTPT * 2 - 1 ][ NSTPX ];
+		final double adelt = Math.abs( delt );
+		if( adelt < NUMERICAL_VISCOSITY_EXIT_CUTOFF )
+		{
+			return;
+		}
+		final double iadelt = 1.0 / adelt;
+		final double iadiv = Math.sqrt( iadelt * iadelt + I_MAX_CHG * I_MAX_CHG );
+		final double adiv = 1.0 / iadiv;
+		tempArray[ NSTPT * 2 ][ NSTPX ] =
+				tempArray[ NSTPT * 2 - 1 ][ NSTPX ] +
+				( delt > 0.0 ? adiv : -adiv );
+	}
+	
 	
 	
 	/**
@@ -1916,13 +1965,24 @@ public class TestStelemB extends TestCase {
 			
 			DoubleElem err = newton.eval( implicitSpace2 );
 			
+			// if( APPLY_NUMERICAL_VISCOSITY )
+			// {
+			//	applyNumericViscosity();
+			// }
+			
 			
 			//if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
 			//{
 			//	tmpCorrectionValue = getCorrectionValue();
 			//	applyPredictorCorrector();
 			//	
+			//
 			//	err = newton.eval( implicitSpace2 );
+			//
+			// if( APPLY_NUMERICAL_VISCOSITY )
+			// {
+			//	applyNumericViscosity();
+			// }
 			//}
 	
 	

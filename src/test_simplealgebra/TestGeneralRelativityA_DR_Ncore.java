@@ -413,9 +413,16 @@ public class TestGeneralRelativityA_DR_Ncore extends TestCase {
 	// protected static final boolean USE_PREDICTOR_CORRECTOR = true;
 	
 	
-	
 
 	
+	/**
+	 * Indicates whether a form of nonlinear numerical viscosity should be used while iterating.
+	 */
+	protected static final boolean APPLY_NUMERICAL_VISCOSITY = true;
+	
+	
+	
+
 	/**
 	 * Discretized index for the T-Axis.
 	 */
@@ -586,11 +593,75 @@ public class TestGeneralRelativityA_DR_Ncore extends TestCase {
 	
 	
 	/**
+	 * Approximate maximum change allowed by nonlinear viscosity.
+	 */
+	final static double MAX_CHG = 0.05;
+	
+	/**
+	 * Multiplicative inverse of MAX_CHG.
+	 */
+	final static double I_MAX_CHG = 1.0 / MAX_CHG;
+	
+	/**
+	 * Size of change below which numerical viscosity isn't applied.
+	 */
+	final static double NUMERICAL_VISCOSITY_EXIT_CUTOFF = 1E-5;
+	
+	
+	
+	
+	
+	/**
+	 * Applies a form of nonlinear numerical viscosity.
+	 */
+	protected DoubleElem applyNumericViscosityVal( ArrayList<BigInteger> index )
+	{
+		final double delt = ( (EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>)( tempArray[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] ) ).getVal( index ).getVal()
+			- ( (EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>)( tempArray[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ][ NSTPZ ] ) ).getVal( index ).getVal();
+		final double adelt = Math.abs( delt );
+		if( adelt < NUMERICAL_VISCOSITY_EXIT_CUTOFF )
+		{
+			return( ( (EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>)( tempArray[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] ) ).getVal( index ) );
+		}
+		final double iadelt = 1.0 / adelt;
+		final double iadiv = Math.sqrt( iadelt * iadelt + I_MAX_CHG * I_MAX_CHG );
+		final double adiv = 1.0 / iadiv;
+		return( new DoubleElem(
+				( (EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>)( tempArray[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ][ NSTPZ ] ) ).getVal( index ).getVal() +
+				( delt > 0.0 ? adiv : -adiv ) ) );
+	}
+	
+	
+	
+	/**
+	 * Applies a form of nonlinear numerical viscosity.
+	 */
+	public void applyNumericViscosity()
+	{
+		EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> vam
+			= (EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>)( tempArray[ 0 ][ NSTPX ][ NSTPY ][ NSTPZ ] );
+		EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> vl = new EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>(
+				vam.getFac().getFac(), 
+				vam.getContravariantIndices(), vam.getCovariantIndices());
+		for( ArrayList<BigInteger> index : vam.getKeySet() )
+		{
+			vl.setVal( index , applyNumericViscosityVal( index ) );
+		}
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	/**
 	 * Applies a predictor-corrector process to the temp array.
 	 * 
 	 * See https://en.wikipedia.org/wiki/Predictor%E2%80%93corrector_method
 	 */
-	protected void applyPredictorCorrector()
+	public void applyPredictorCorrector()
 	{
 		EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> vam2
 			= (EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>)( tempArray[ NSTPT * 2 - 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] );
@@ -4587,14 +4658,26 @@ protected void performIterationT( final int tval , final StelemDescent[] descent
 	
 		
 						EinsteinTensorElem<String,DoubleElem, DoubleElemFactory> err = descent.eval( implicitSpace2 );
+						
+						if( APPLY_NUMERICAL_VISCOSITY )
+						{
+							threadContext.applyNumericViscosity();
+						}
 				
 				
+						
 						//if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
 						//{
 						//	tmpCorrectionValue = getCorrectionValue();
-						//	applyPredictorCorrector();
+						//	threadContext.applyPredictorCorrector();
+						//
 						//			
 						//	err = descent.eval( implicitSpace2 );
+						//
+						//  if( APPLY_NUMERICAL_VISCOSITY )
+						// {
+						//	threadContext.applyNumericViscosity();
+						// }
 						//}
 						
 
