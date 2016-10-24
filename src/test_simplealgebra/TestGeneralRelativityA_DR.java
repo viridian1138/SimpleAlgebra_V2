@@ -4438,7 +4438,7 @@ protected void performIterationT( final int tval , final StelemDescent descent ,
 		//	resetCorrectionValue( tmpCorrectionValue );
 		//}
 	
-		iterArray.set( tval + 1 , im.getXcnt() , im.getYcnt() , im.getZcnt() , val );
+		iterArray.set( tval + NSTPT , im.getXcnt() , im.getYcnt() , im.getZcnt() , val );
 		
 		
 		

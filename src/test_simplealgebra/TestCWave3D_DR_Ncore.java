@@ -3089,7 +3089,7 @@ public class TestCWave3D_DR_Ncore extends TestCase {
 							//	resetCorrectionValue( tmpCorrectionValue );
 							//}
 		
-							threadContext.iterArray.set( tval + 1 , im.getXcnt() , im.getYcnt() , im.getZcnt() , val );
+							threadContext.iterArray.set( tval + NSTPT , im.getXcnt() , im.getYcnt() , im.getZcnt() , val );
 				
 			
 			

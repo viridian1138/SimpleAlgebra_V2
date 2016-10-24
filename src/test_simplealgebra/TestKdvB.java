@@ -1998,7 +1998,7 @@ public class TestKdvB extends TestCase {
 				resetCorrectionValue( tmpCorrectionValue );
 			}
 					
-			iterArray[ tval + 1 ][ xcnt ] = val;
+			iterArray[ tval + NSTPT ][ xcnt ] = val;
 								
 		}
 	}

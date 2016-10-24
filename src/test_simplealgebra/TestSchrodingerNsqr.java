@@ -2783,10 +2783,10 @@ public class TestSchrodingerNsqr extends TestCase {
 			//	resetCorrectionValueIm( tmpCorrectionValueIm );
 			//}
 		
-			iterArrayReRe[ tval + 1 ][ im.getXcnt() ][ im.getYcnt() ][ im.getZcnt() ] = val.getRe().getRe().getVal();
-			iterArrayReIm[ tval + 1 ][ im.getXcnt() ][ im.getYcnt() ][ im.getZcnt() ] = val.getRe().getIm().getVal();
-			iterArrayImRe[ tval + 1 ][ im.getXcnt() ][ im.getYcnt() ][ im.getZcnt() ] = val.getIm().getRe().getVal();
-			iterArrayImIm[ tval + 1 ][ im.getXcnt() ][ im.getYcnt() ][ im.getZcnt() ] = val.getIm().getIm().getVal();
+			iterArrayReRe[ tval + NSTPT ][ im.getXcnt() ][ im.getYcnt() ][ im.getZcnt() ] = val.getRe().getRe().getVal();
+			iterArrayReIm[ tval + NSTPT ][ im.getXcnt() ][ im.getYcnt() ][ im.getZcnt() ] = val.getRe().getIm().getVal();
+			iterArrayImRe[ tval + NSTPT ][ im.getXcnt() ][ im.getYcnt() ][ im.getZcnt() ] = val.getIm().getRe().getVal();
+			iterArrayImIm[ tval + NSTPT ][ im.getXcnt() ][ im.getYcnt() ][ im.getZcnt() ] = val.getIm().getIm().getVal();
 			
 			
 			

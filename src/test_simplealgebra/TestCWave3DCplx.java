@@ -2451,7 +2451,7 @@ public class TestCWave3DCplx extends TestCase {
 				resetCorrectionValue( tmpCorrectionValue );
 			}
 		
-			iterArray[ tval + 1 ][ im.getXcnt() ][ im.getYcnt() ][ im.getZcnt() ] = vala;
+			iterArray[ tval + NSTPT ][ im.getXcnt() ][ im.getYcnt() ][ im.getZcnt() ] = vala;
 					
 			
 			

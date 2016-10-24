@@ -2028,7 +2028,7 @@ public class TestStelemB extends TestCase {
 			//	resetCorrectionValue( tmpCorrectionValue );
 			//}
 		
-			iterArray[ tval + 1 ][ xcnt ] = val;
+			iterArray[ tval + NSTPT ][ xcnt ] = val;
 					
 		}
 		

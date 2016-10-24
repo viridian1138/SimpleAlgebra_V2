@@ -3163,8 +3163,8 @@ public class TestSchrodingerSpt_DR extends TestCase {
 			//	resetCorrectionValueIm( tmpCorrectionValueIm );
 			//}
 		
-			iterArrayRe.set( tval + 1 , im.getXcnt() , im.getYcnt() , im.getZcnt() , val.getRe().getVal() );
-			iterArrayIm.set( tval + 1 , im.getXcnt() , im.getYcnt() , im.getZcnt() , val.getIm().getVal() );
+			iterArrayRe.set( tval + NSTPT , im.getXcnt() , im.getYcnt() , im.getZcnt() , val.getRe().getVal() );
+			iterArrayIm.set( tval + NSTPT , im.getXcnt() , im.getYcnt() , im.getZcnt() , val.getIm().getVal() );
 			
 			
 			im.handleIncrementZa();

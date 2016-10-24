@@ -2239,7 +2239,7 @@ public class TestStelemC extends TestCase {
 			//	resetCorrectionValue( tmpCorrectionValue );
 			//}
 		
-			iterArray[ tval + 1 ][ im.getXcnt() ][ im.getYcnt() ] = val;
+			iterArray[ tval + NSTPT ][ im.getXcnt() ][ im.getYcnt() ] = val;
 			
 			
 			

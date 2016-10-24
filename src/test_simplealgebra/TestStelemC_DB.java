@@ -2586,7 +2586,7 @@ public class TestStelemC_DB extends TestCase {
 			//	resetCorrectionValue( tmpCorrectionValue );
 			//}
 		
-			iterArray.set( tval + 1 , im.getXcnt() , im.getYcnt() , val );
+			iterArray.set( tval + NSTPT , im.getXcnt() , im.getYcnt() , val );
 			
 			
 			

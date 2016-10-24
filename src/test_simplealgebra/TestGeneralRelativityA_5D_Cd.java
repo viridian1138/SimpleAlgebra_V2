@@ -4025,7 +4025,7 @@ protected void performIterationT( final int tval , final StelemDescent descent ,
 		//	resetCorrectionValue( tmpCorrectionValue );
 		//}
 	
-		iterArray[ tval + 1 ][ im.getXcnt() ][ im.getYcnt() ][ im.getZcnt() ][ im.getWcnt() ] = val;
+		iterArray[ tval + NSTPT ][ im.getXcnt() ][ im.getYcnt() ][ im.getZcnt() ][ im.getWcnt() ] = val;
 			
 		
 		

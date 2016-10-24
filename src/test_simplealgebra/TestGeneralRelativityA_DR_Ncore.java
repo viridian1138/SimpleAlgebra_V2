@@ -639,7 +639,7 @@ public class TestGeneralRelativityA_DR_Ncore extends TestCase {
 	public void applyNumericViscosity()
 	{
 		EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> vam
-			= (EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>)( tempArray[ 0 ][ NSTPX ][ NSTPY ][ NSTPZ ] );
+			= (EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>)( tempArray[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ][ NSTPZ ] );
 		EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> vl = new EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>(
 				vam.getFac().getFac(), 
 				vam.getContravariantIndices(), vam.getCovariantIndices());
@@ -647,7 +647,7 @@ public class TestGeneralRelativityA_DR_Ncore extends TestCase {
 		{
 			vl.setVal( index , applyNumericViscosityVal( index ) );
 		}
-		
+		tempArray[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ] = vl;
 	}
 	
 	
@@ -1014,7 +1014,17 @@ public class TestGeneralRelativityA_DR_Ncore extends TestCase {
 			{
 				for( int za = 0 ; za < NSTPZ * 2 + 1 ; za++ )
 				{
-					tempArray[ NSTPT * 2 ][ xa ][ ya ][ za ] = tempArray[ NSTPT * 2 - 1 ][ xa ][ ya ][ za ];
+					final EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> vam
+						= (EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>)( tempArray[ NSTPT * 2 - 1 ][ xa ][ ya ][ za ] );
+					final EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> vl = 
+						new EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>(
+						vam.getFac().getFac(), 
+						vam.getContravariantIndices(), vam.getCovariantIndices());
+					for( final Entry<ArrayList<BigInteger>, DoubleElem> i : vam.getEntrySet() )
+					{
+						vl.setVal( i.getKey() , i.getValue() );
+					}
+					tempArray[ NSTPT * 2 ][ xa ][ ya ][ za ] = vl;
 				}
 			}
 		}
@@ -4655,6 +4665,11 @@ protected void performIterationT( final int tval , final StelemDescent[] descent
 							ival = threadContext.getUpdateValue();
 		
 		
+						
+						{
+							System.out.println( "ival rd: " + ( Math.sqrt( calcMagnitudeSq( ival ) ) ) );
+						}
+						
 	
 		
 						EinsteinTensorElem<String,DoubleElem, DoubleElemFactory> err = descent.eval( implicitSpace2 );
@@ -4730,6 +4745,9 @@ protected void performIterationT( final int tval , final StelemDescent[] descent
 		
 		
 						System.out.println( "***  " + im.getXcnt() + "  " + im.getYcnt() + "  " + im.getZcnt() );
+						{
+							System.out.println( "ival after: " + ( Math.sqrt( calcMagnitudeSq( ival ) ) ) );
+						}
 						System.out.println( calcMagnitudeSq( val ) );
 						System.out.println( calcMagnitudeSq( err ) );
 						// Assert.assertTrue( Math.abs( Math.sqrt( calcMagnitudeSq( err ) ) ) < ( 0.01 * Math.abs( Math.sqrt( calcMagnitudeSq( val ) ) ) + 0.01 ) );
@@ -4739,8 +4757,16 @@ protected void performIterationT( final int tval , final StelemDescent[] descent
 						//	resetCorrectionValue( tmpCorrectionValue );
 						//}
 	
-						threadContext.iterArray.set( tval + 1 , im.getXcnt() , im.getYcnt() , im.getZcnt() , val );
+						threadContext.iterArray.set( tval + NSTPT , im.getXcnt() , im.getYcnt() , im.getZcnt() , val );
 			
+						
+						{
+							final EinsteinTensorElem<String,DoubleElem, DoubleElemFactory> um = 
+								threadContext.iterArray.get( tval + NSTPT , im.getXcnt() , im.getYcnt() , im.getZcnt() );
+						
+							System.out.println( "final verif: " + ( Math.sqrt( calcMagnitudeSq( um ) ) ) );
+						}
+						
 		
 		
 						im.handleIncrementZa();
@@ -4761,6 +4787,7 @@ protected void performIterationT( final int tval , final StelemDescent[] descent
 	
 	CpuInfo.start( runn );
 	CpuInfo.wait( runn , b );
+	
 	
 }
 

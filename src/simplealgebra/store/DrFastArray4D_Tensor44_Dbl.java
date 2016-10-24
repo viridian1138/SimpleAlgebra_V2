@@ -376,6 +376,10 @@ public class DrFastArray4D_Tensor44_Dbl<Z extends Object> {
 				ret.setVal( indt , dbl );
 			}
 		}
+		if( file.getFilePointer() != ( SZ_TENSOR * ( index + 1 ) ) )
+		{
+			throw( new RuntimeException( "Internal Error" ) );
+		}
 		return( ret ); 
 	}
 	
@@ -443,6 +447,10 @@ public class DrFastArray4D_Tensor44_Dbl<Z extends Object> {
 				file.writeDouble( dbl.getVal() );
 			}
 		}
+		if( file.getFilePointer() != ( SZ_TENSOR * ( index + 1 ) ) )
+		{
+			throw( new RuntimeException( "Internal Error" ) );
+		}
 	}
 	
 	
@@ -459,13 +467,11 @@ public class DrFastArray4D_Tensor44_Dbl<Z extends Object> {
 	/**
 	 * Flushes the contents of the previous array writes.
 	 * 
-	 * @param path The file path to the array.  Must match the original file path given to the constructor.
 	 * @throws Throwable
 	 */
-	public void flush( final String path ) throws Throwable
+	public void flush( ) throws Throwable
 	{
-		file.close();
-		file = new RandomAccessFile( path , "rw" );
+		file.getFD().sync();
 	}
 	
 	

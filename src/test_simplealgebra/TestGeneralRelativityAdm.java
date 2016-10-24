@@ -6103,11 +6103,11 @@ protected void performIterationT( final int tval , final StelemNewtonMetric[] de
 			//	resetCorrectionValue( tmpCorrectionValue );
 			//}
 		
-			if( iterArrayConjugateMomentum[ tval + 1 ][ im.getXcnt() ][ im.getYcnt() ][ im.getZcnt() ] == null )
+			if( iterArrayConjugateMomentum[ tval + NSTPT ][ im.getXcnt() ][ im.getYcnt() ][ im.getZcnt() ] == null )
 			{
-				iterArrayConjugateMomentum[ tval + 1 ][ im.getXcnt() ][ im.getYcnt() ][ im.getZcnt() ] = genZero();
+				iterArrayConjugateMomentum[ tval + NSTPT ][ im.getXcnt() ][ im.getYcnt() ][ im.getZcnt() ] = genZero();
 			}
-			( iterArrayConjugateMomentum[ tval + 1 ][ im.getXcnt() ][ im.getYcnt() ][ im.getZcnt() ] ).setVal( index , val );
+			( iterArrayConjugateMomentum[ tval + NSTPT ][ im.getXcnt() ][ im.getYcnt() ][ im.getZcnt() ] ).setVal( index , val );
 				
 			
 		}
