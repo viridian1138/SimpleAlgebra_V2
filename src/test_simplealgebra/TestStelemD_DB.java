@@ -3255,7 +3255,7 @@ public class TestStelemD_DB extends TestCase {
 		final ArrayList<Elem<?, ?>> wrt3 = new ArrayList<Elem<?, ?>>();
 		{
 			final HashMap<Ordinate, BigInteger> coord = new HashMap<Ordinate, BigInteger>();
-			coord.put( new Ordinate( de , TV ) , BigInteger.valueOf( 1 ) );
+			coord.put( new Ordinate( de , TV ) , BigInteger.valueOf( NSTPT ) );
 			coord.put( new Ordinate( de , XV ) , BigInteger.valueOf( 0 ) );
 			coord.put( new Ordinate( de , YV ) , BigInteger.valueOf( 0 ) );
 			coord.put( new Ordinate( de , ZV ) , BigInteger.valueOf( 0 ) );
@@ -3267,7 +3267,7 @@ public class TestStelemD_DB extends TestCase {
 		StelemNewton newton = new StelemNewton( s0 , wrt3 , implicitSpace2 );
 		
 		
-		for( int tval = 1 ; tval < ( NUM_T_ITER - 1 ) ; tval++ )
+		for( int tval = 1 ; tval < ( NUM_T_ITER - NSTPT ) ; tval++ )
 		{
 			performIterationT( tval , newton , implicitSpace2 );
 		}

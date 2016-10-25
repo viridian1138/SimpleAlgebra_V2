@@ -4260,7 +4260,7 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 				// if( ( acnt % TestDimensionFive.FIVE ) == ( acnt / TestDimensionFive.FIVE ) )
 				// {
 					final HashMap<Ordinate, BigInteger> coord = new HashMap<Ordinate, BigInteger>();
-					coord.put( new Ordinate( de2 , TV ) , BigInteger.valueOf( 1 ) );
+					coord.put( new Ordinate( de2 , TV ) , BigInteger.valueOf( 1 /* NSTPT */ ) );
 					coord.put( new Ordinate( de2 , XV ) , BigInteger.valueOf( 0 ) );
 					coord.put( new Ordinate( de2 , YV ) , BigInteger.valueOf( 0 ) );
 					coord.put( new Ordinate( de2 , ZV ) , BigInteger.valueOf( 0 ) );
@@ -4318,7 +4318,7 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 		
 		try
 		{
-			for( int tval = 1 ; tval < ( NUM_T_ITER - 1 ) ; tval++ )
+			for( int tval = 1 ; tval < ( NUM_T_ITER - NSTPT ) ; tval++ )
 			{
 				performIterationT( tval , descent , implicitSpace2 );
 			}
