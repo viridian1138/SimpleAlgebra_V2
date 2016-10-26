@@ -637,7 +637,7 @@ public class TestGeneralRelativityA_5D extends TestCase {
 	protected static void applyNumericViscosity()
 	{
 		EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> vam
-			= (EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>)( tempArray[ 0 ][ NSTPX ][ NSTPY ][ NSTPZ ][ NSTPW ] );
+			= (EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>)( tempArray[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ][ NSTPZ ][ NSTPW ] );
 		EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> vl = new EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>(
 				vam.getFac().getFac(), 
 				vam.getContravariantIndices(), vam.getCovariantIndices());
@@ -645,6 +645,8 @@ public class TestGeneralRelativityA_5D extends TestCase {
 		{
 			vl.setVal( index , applyNumericViscosityVal( index ) );
 		}
+		
+		tempArray[ NSTPT * 2 ][ NSTPX ][ NSTPY ][ NSTPZ ][ NSTPW ] = vl;
 		
 	}
 	
@@ -1076,7 +1078,18 @@ public class TestGeneralRelativityA_5D extends TestCase {
 				{
 					for( int wa = 0 ; wa < NSTPW * 2 + 1 ; wa++ )
 					{
-						tempArray[ NSTPT * 2 ][ xa ][ ya ][ za ][ wa ] = tempArray[ NSTPT * 2 - 1 ][ xa ][ ya ][ za ][ wa ];
+						final EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> vam
+							= (EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>)( 
+								tempArray[ NSTPT * 2 - 1 ][ xa ][ ya ][ za ][ wa ] );
+						final EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> vl = 
+								new EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>(
+										vam.getFac().getFac(), 
+										vam.getContravariantIndices(), vam.getCovariantIndices());
+						for( final Entry<ArrayList<BigInteger>, DoubleElem> i : vam.getEntrySet() )
+						{
+							vl.setVal( i.getKey() , i.getValue() );
+						}
+						tempArray[ NSTPT * 2 ][ xa ][ ya ][ za ][wa ] = vl;
 					}
 				}
 			}

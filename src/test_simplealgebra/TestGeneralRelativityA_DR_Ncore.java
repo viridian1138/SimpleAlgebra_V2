@@ -1015,7 +1015,8 @@ public class TestGeneralRelativityA_DR_Ncore extends TestCase {
 				for( int za = 0 ; za < NSTPZ * 2 + 1 ; za++ )
 				{
 					final EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> vam
-						= (EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>)( tempArray[ NSTPT * 2 - 1 ][ xa ][ ya ][ za ] );
+						= (EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>)( 
+								tempArray[ NSTPT * 2 - 1 ][ xa ][ ya ][ za ] );
 					final EinsteinTensorElem<String,DoubleElem,DoubleElemFactory> vl = 
 						new EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>(
 						vam.getFac().getFac(), 
