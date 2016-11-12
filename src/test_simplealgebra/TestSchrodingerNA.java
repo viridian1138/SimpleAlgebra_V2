@@ -72,10 +72,31 @@ import simplealgebra.ddx.*;
 
 /**
  * 
- * NOTE: THESE DOCS NEED TO BE UPDATED
- * 
  * Tests the ability to numerically evaluate the differential equation <math display="inline">
  * <mrow>
+ *    <mo>-</mo>
+ *   <mfrac>
+ *     <mrow>
+ *       <msup>
+ *               <mi>&hbar;</mi>
+ *             <mn>3</mn>
+ *       </msup>
+ *       <mi>G</mi>
+ *     </mrow>
+ *     <mrow>
+ *       <mn>2</mn>
+ *       <mi>m</mi>
+ *        <msup>
+ *               <mi>c</mi>
+ *             <mn>3</mn>
+ *       </msup>
+ *     </mrow>
+ *   </mfrac>
+ *   <msup>
+ *           <mo>&nabla;</mo>
+ *         <mn>4</mn>
+ *   </msup>
+ *   <mi>&Psi;</mi>
  *   <mo>-</mo>
  *   <mfrac>
  *     <mrow>
@@ -120,6 +141,14 @@ import simplealgebra.ddx.*;
  * </mrow>
  * </math> and <math display="inline">
  * <mrow>
+ *  <mi>G</mi>
+ * </mrow>
+ * </math> and <math display="inline">
+ * <mrow>
+ *  <mi>c</mi>
+ * </mrow>
+ * </math> and <math display="inline">
+ * <mrow>
  *  <mi>&hbar;</mi>
  * </mrow>
  * </math> are arbitrary constants and <math display="inline">
@@ -149,7 +178,7 @@ public class TestSchrodingerNA extends TestCase {
 	/**
 	 * Arbitrary constant.
 	 */
-	private static final ComplexElem<DoubleElem,DoubleElemFactory> GG = genFromConst( 0.01 );
+	private static final ComplexElem<DoubleElem,DoubleElemFactory> GG = genFromConst( 1E-6 );
 	
 	/**
 	 * Arbitrary constant.
