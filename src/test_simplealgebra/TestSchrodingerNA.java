@@ -178,7 +178,7 @@ public class TestSchrodingerNA extends TestCase {
 	/**
 	 * Arbitrary constant.
 	 */
-	private static final ComplexElem<DoubleElem,DoubleElemFactory> GG = genFromConst( 1E-6 );
+	private static final ComplexElem<DoubleElem,DoubleElemFactory> GG = genFromConst( 0.01 );
 	
 	/**
 	 * Arbitrary constant.
@@ -349,7 +349,7 @@ public class TestSchrodingerNA extends TestCase {
 	/**
 	 * Indicates whether a form of nonlinear numerical viscosity should be used while iterating.
 	 */
-	protected static final boolean APPLY_NUMERICAL_VISCOSITY = true;
+	protected static final boolean APPLY_NUMERICAL_VISCOSITY = false;
 	
 	
 	
