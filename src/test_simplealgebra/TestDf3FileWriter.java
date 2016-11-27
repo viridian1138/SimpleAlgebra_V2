@@ -47,6 +47,31 @@ public class TestDf3FileWriter extends TestCase {
 	
 	
 	
+	
+	/**
+	 * The number of discretizations on the T-Axis.
+	 */
+	protected static final int NUM_T_ITER = 400;
+	
+	/**
+	 * The number of discretizations on the X-Axis.
+	 */
+	protected static final int NUM_X_ITER = 200;
+	
+	/**
+	 * The number of discretizations on the Y-Axis.
+	 */
+	protected static final int NUM_Y_ITER = 200;
+	
+	/**
+	 * The number of discretizations on the Z-Axis.
+	 */
+	protected static final int NUM_Z_ITER = 200;
+	
+	
+
+	
+	
 	/**
 	 * Sample writer to test.
 	 * 
@@ -70,28 +95,7 @@ public class TestDf3FileWriter extends TestCase {
 		 * Boolean indicating whether to output the absolute value of the input quantities.
 		 */
 		protected static final boolean USE_ABSOLUTE_VALUE = true;
-		
-		
-		
-		/**
-		 * The number of discretizations on the T-Axis.
-		 */
-		protected static final int NUM_T_ITER = 400;
-		
-		/**
-		 * The number of discretizations on the X-Axis.
-		 */
-		protected static final int NUM_X_ITER = 200;
-		
-		/**
-		 * The number of discretizations on the Y-Axis.
-		 */
-		protected static final int NUM_Y_ITER = 200;
-		
-		/**
-		 * The number of discretizations on the Z-Axis.
-		 */
-		protected static final int NUM_Z_ITER = 200;
+
 		
 		
 		/**
@@ -185,7 +189,7 @@ public class TestDf3FileWriter extends TestCase {
 
 		@Override
 		protected int getZEnd() {
-			return( 200 );
+			return( NUM_Z_ITER );
 		}
 
 		@Override
@@ -195,7 +199,7 @@ public class TestDf3FileWriter extends TestCase {
 
 		@Override
 		protected int getYEnd() {
-			return( 100 );
+			return( NUM_Y_ITER / 2 );
 		}
 
 		@Override
@@ -205,7 +209,7 @@ public class TestDf3FileWriter extends TestCase {
 
 		@Override
 		protected int getXEnd() {
-			return( 200 );
+			return( NUM_X_ITER );
 		}
 		
 		

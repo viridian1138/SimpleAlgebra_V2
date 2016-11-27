@@ -27,11 +27,24 @@ package test_simplealgebra;
 import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
 import java.io.FileOutputStream;
+import java.math.BigInteger;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.Iterator;
+import java.util.Map.Entry;
 
 import junit.framework.TestCase;
+import simplealgebra.DoubleElem;
+import simplealgebra.DoubleElemFactory;
+import simplealgebra.Mutator;
+import simplealgebra.NotInvertibleException;
+import simplealgebra.Sqrt;
 import simplealgebra.constants.CpuInfo;
+import simplealgebra.et.EinsteinTensorElem;
+import simplealgebra.ga.GeometricAlgebraMultivectorElem;
+import simplealgebra.ga.GeometricAlgebraOrd;
 import simplealgebra.store.DbFastArray4D_Param;
-import simplealgebra.store.DrFastArray4D_Dbl;
+import simplealgebra.store.DrFastArray4D_Tensor44_Dbl;
 import simplealgebra.store.RawFileWriter;
 
 
@@ -44,32 +57,130 @@ import simplealgebra.store.RawFileWriter;
  * @author thorngreen
  *
  */
-public class TestDf3PlneFileWriterAnim extends TestCase {
+public class TestDf3TensorPlneCutFileWriterAnim extends TestCase {
+	
 	
 	
 	
 	/**
 	 * The number of discretizations on the T-Axis.
 	 */
-	protected static final int NUM_T_ITER = 200;
+	protected static final int NUM_T_ITER = 9;
 	
 	/**
 	 * The number of discretizations on the X-Axis.
 	 */
-	protected static final int NUM_X_ITER = 200;
+	protected static final int NUM_X_ITER = 16;
 	
 	/**
 	 * The number of discretizations on the Y-Axis.
 	 */
-	protected static final int NUM_Y_ITER = 200;
+	protected static final int NUM_Y_ITER = 16;
 	
 	/**
 	 * The number of discretizations on the Z-Axis.
 	 */
-	protected static final int NUM_Z_ITER = 200;
+	protected static final int NUM_Z_ITER = 16;
+	
+	
+	
+	/**
+	 * Generates a 3-D vector from its ordinates.
+	 * @param x The X-Ordinate.
+	 * @param y The Y-Ordinate.
+	 * @param z The Z-Ordinate.
+	 * @return The 3-D vector.
+	 */
+	protected static GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> convToVector( double x , double y , double z )
+	{
+		final DoubleElemFactory de = new DoubleElemFactory();
+		final TestDimensionThree td = new TestDimensionThree();
+		final GeometricAlgebraOrd<TestDimensionThree> ord = new GeometricAlgebraOrd<TestDimensionThree>( );
+		final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
+			ret = new GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>(de, td, ord);
+		
+		{
+			final HashSet<BigInteger> h = new HashSet<BigInteger>();
+			h.add( BigInteger.ZERO );
+			ret.setVal( h , new DoubleElem( x ) );
+		}
+		
+		{
+			final HashSet<BigInteger> h = new HashSet<BigInteger>();
+			h.add( BigInteger.ONE );
+			ret.setVal( h , new DoubleElem( y ) );
+		}
+		
+		{
+			final HashSet<BigInteger> h = new HashSet<BigInteger>();
+			h.add( BigInteger.valueOf( 2 ) );
+			ret.setVal( h , new DoubleElem( z ) );
+		}
+		
+		return( ret );
+	}
+	
+	
 	
 	
 
+	/**
+	 * Generates the unit vector from the input.
+	 * @param in The input vector.
+	 * @return The unit vector.
+	 */
+	protected static GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> calcUnit( GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> in )
+		throws NotInvertibleException
+	{
+		final DoubleElemFactory de = new DoubleElemFactory();
+				
+		DoubleElem total = de.zero();
+		
+		for( final DoubleElem dd : in.getValueSet() )
+		{
+			total = total.add( dd.mult( dd ) );
+		}
+		
+		// final ArrayList<DoubleElem> args = new ArrayList<DoubleElem>();
+		
+		final DoubleElem invSqrtTotal = ( new DoubleElem( Math.sqrt( total.getVal() ) ) ).invertLeft();
+		
+		final Mutator<DoubleElem> mutr = new Mutator<DoubleElem>()
+		{
+
+			@Override
+			public DoubleElem mutate(DoubleElem in)
+					throws NotInvertibleException {
+				return( in.mult( invSqrtTotal ) );
+			}
+
+			@Override
+			public boolean exposesDerivatives() {
+				return( false );
+			}
+
+			@Override
+			public String writeString() {
+				return( "Mult" );
+			}
+
+			@Override
+			public Mutator<DoubleElem> cloneThread(BigInteger threadIndex) {
+				throw( new RuntimeException( "Not Supported" ) );
+			}
+			
+		};
+		
+		
+		final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
+			ret = in.mutate( mutr );
+		
+		
+		return( ret );
+		
+	}
+	
+	
 	
 	
 	/**
@@ -90,36 +201,59 @@ public class TestDf3PlneFileWriterAnim extends TestCase {
 		/**
 		 * The center value to potentially be subtracted.
 		 */
-		protected static final double CENTER_VALUE = 0.05; // 0.0;
+		protected static final double CENTER_VALUE = -0.004 * 0.004; // 0.0;
+		
+		
+		
 
 		
 		
 		/**
 		 * The T-Axis cell size.
 		 */
-		protected static final int TMULT = 8;
+		protected static final int TMULT = 4;
 		
 		/**
 		 * The X-Axis cell size.
 		 */
-		protected static final int XMULT = 8;
+		protected static final int XMULT = 4;
 		
 		/**
 		 * The Y-Axis cell size.
 		 */
-		protected static final int YMULT = 8;
+		protected static final int YMULT = 4;
 		
 		/**
 		 * The Z-Axis cell size.
 		 */
-		protected static final int ZMULT = 8;
+		protected static final int ZMULT = 4;
+		
+		
+		
+		/**
+		 * The vector for the center point.
+		 */
+		protected final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
+			CNTR_OFFSET = convToVector( 0.5 * NUM_X_ITER , 0.5 * NUM_Y_ITER , 0.5 * NUM_Z_ITER ).negate();
+		
+		
+		/**
+		 * The vector for the viewer position.
+		 */
+		protected final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
+			VIEWER_DIR = calcUnit( convToVector( 2.0 , 1.0 , 0.0 ) );
+		
+		
+		
+		protected final double DOT_PRODUCT_MIN_COSINE =
+			Math.cos( Math.toRadians( 60.0 ) );
 		
 		
 		
 		/**
 		 * Result array over which to get data.
 		 */
-		protected DrFastArray4D_Dbl iterArray = null;
+		protected DrFastArray4D_Tensor44_Dbl iterArray = null;
 		
 		
 		/**
@@ -134,6 +268,14 @@ public class TestDf3PlneFileWriterAnim extends TestCase {
 		protected double maxVal = 1.0;
 		
 		
+		/**
+		 * The unit vector to the viewer.
+		 */
+		protected ArrayList<GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>>
+			unitToViewerArg;
+		
+		
+		
 		
 		/**
 		 * Constructs the writer.
@@ -144,6 +286,15 @@ public class TestDf3PlneFileWriterAnim extends TestCase {
 		public TstDf3FileWriterAnim( final int _tval ) throws Throwable
 		{
 			tval = _tval;
+			
+			
+			final DoubleElemFactory de = new DoubleElemFactory();
+			
+			final ArrayList<String> contravariantIndices = new ArrayList<String>();
+			final ArrayList<String> covariantIndices = new ArrayList<String>();
+			covariantIndices.add( "u" );
+			covariantIndices.add( "v" );
+			
 			
 			String databaseLocation = DatabasePathForTest.FILESPACE_PATH + "mydbJ";
 			
@@ -157,7 +308,19 @@ public class TestDf3PlneFileWriterAnim extends TestCase {
 			dparam.setYmax( NUM_Y_ITER );
 			dparam.setZmax( NUM_Z_ITER );
 			
-			iterArray = new DrFastArray4D_Dbl( dparam , databaseLocation );
+			iterArray = new DrFastArray4D_Tensor44_Dbl( dparam , de, 
+					(ArrayList<BigInteger>)(contravariantIndices.clone()), 
+					(ArrayList<BigInteger>)(covariantIndices.clone()), 
+					databaseLocation );
+			
+			final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> 
+				unitToViewer = calcUnit( VIEWER_DIR );
+		
+			unitToViewerArg = new ArrayList<GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>>();
+			
+			unitToViewerArg.add( unitToViewer );
+			
+			
 		}
 
 		
@@ -170,9 +333,36 @@ public class TestDf3PlneFileWriterAnim extends TestCase {
 		@Override
 		protected double getVal( int t, int x, int y, int z)
 				throws Throwable {
-			final double d0 = iterArray.get(t, x, y, z);
-			final double d1 = USE_CENTER ? d0 - CENTER_VALUE : d0;
-			return( d1 / maxVal );
+			try
+			{
+				final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
+					posOffset = convToVector( x , y , z ).add( CNTR_OFFSET );
+				final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
+					unitOffset = calcUnit( posOffset );
+				final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
+					dotp = unitOffset.handleOptionalOp( GeometricAlgebraMultivectorElem.GeometricAlgebraMultivectorCmd.DOT , unitToViewerArg );
+				final DoubleElem dotResult = dotp.get( new HashSet<BigInteger>() );
+				if( dotResult.getVal() < DOT_PRODUCT_MIN_COSINE )
+				{
+					final EinsteinTensorElem<String,DoubleElem,DoubleElemFactory>
+						dret = iterArray.get(t, x, y, z);
+					final ArrayList<BigInteger> index = new ArrayList<BigInteger>();
+					index.add( BigInteger.ZERO );
+					index.add( BigInteger.ZERO );
+					final DoubleElem d0a = dret.getVal( index );
+					final double d0 = d0a.getVal();
+					final double d1 = USE_CENTER ? d0 - CENTER_VALUE : d0;
+					return( d1 / maxVal );
+				}
+				else
+				{
+					return( 0.0 );
+				}
+			}
+			catch( NotInvertibleException ex )
+			{
+				return( 0.0 );
+			}
 		}
 
 		@Override
@@ -344,8 +534,6 @@ public class TestDf3PlneFileWriterAnim extends TestCase {
 		
 		
 		// System.out.println( "Started..." ); 
-		
-		// System.out.println( "Started..." ); 
 		for( int ccnt = 0 ; ccnt < numCores ; ccnt++ )
 		{
 			final int core = ccnt;
@@ -373,27 +561,27 @@ public class TestDf3PlneFileWriterAnim extends TestCase {
 					}
 					catch( Error ex  ) { ex.printStackTrace( System.out ); }
 					catch( Throwable ex ) { ex.printStackTrace( System.out ); }
-							
+					
 					synchronized( this )
 					{
 						b[ core ] = true;
 						this.notify();
 					}
-							
+					
 				}
 			};
 		}
-				
-				
+		
+		
 		CpuInfo.start( runn );
 		CpuInfo.wait( runn , b );
-				
-				
+		
+		
 	}
-			
+	
 
 	
-	
+
 	
 }
 

@@ -60,6 +60,30 @@ public class TestDf3PlneCutFileWriterAnim extends TestCase {
 	
 	
 	
+	
+	/**
+	 * The number of discretizations on the T-Axis.
+	 */
+	protected static final int NUM_T_ITER = 200;
+	
+	/**
+	 * The number of discretizations on the X-Axis.
+	 */
+	protected static final int NUM_X_ITER = 200;
+	
+	/**
+	 * The number of discretizations on the Y-Axis.
+	 */
+	protected static final int NUM_Y_ITER = 200;
+	
+	/**
+	 * The number of discretizations on the Z-Axis.
+	 */
+	protected static final int NUM_Z_ITER = 200;
+	
+
+	
+	
 	/**
 	 * Generates a 3-D vector from its ordinates.
 	 * @param x The X-Ordinate.
@@ -180,28 +204,6 @@ public class TestDf3PlneCutFileWriterAnim extends TestCase {
 		protected static final double CENTER_VALUE = 0.05; // 0.0;
 		
 		
-		
-		
-		
-		/**
-		 * The number of discretizations on the T-Axis.
-		 */
-		protected static final int NUM_T_ITER = 200;
-		
-		/**
-		 * The number of discretizations on the X-Axis.
-		 */
-		protected static final int NUM_X_ITER = 200;
-		
-		/**
-		 * The number of discretizations on the Y-Axis.
-		 */
-		protected static final int NUM_Y_ITER = 200;
-		
-		/**
-		 * The number of discretizations on the Z-Axis.
-		 */
-		protected static final int NUM_Z_ITER = 200;
 		
 		
 		/**
@@ -360,7 +362,7 @@ public class TestDf3PlneCutFileWriterAnim extends TestCase {
 
 		@Override
 		protected int getZEnd() {
-			return( 200 );
+			return( NUM_Z_ITER );
 		}
 
 		@Override
@@ -370,7 +372,7 @@ public class TestDf3PlneCutFileWriterAnim extends TestCase {
 
 		@Override
 		protected int getYEnd() {
-			return( 200 );
+			return( NUM_Y_ITER );
 		}
 
 		@Override
@@ -380,7 +382,7 @@ public class TestDf3PlneCutFileWriterAnim extends TestCase {
 
 		@Override
 		protected int getXEnd() {
-			return( 200 );
+			return( NUM_X_ITER );
 		}
 		
 		
@@ -501,7 +503,7 @@ public class TestDf3PlneCutFileWriterAnim extends TestCase {
 		final Runnable[] runn = new Runnable[ numCores ];
 		final boolean[] b = CpuInfo.createBool( false );
 		
-		final int T_MAX = 200;
+		final int T_MAX = NUM_T_ITER;
 		
 		final int T_OFFSET = 0;
 		
