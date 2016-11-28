@@ -1963,6 +1963,7 @@ public class TestSchrodingerNA extends TestCase {
 				HashMap<HashMap<Ordinate, BigInteger>,CoeffNode> implicitSpacesMid = new HashMap<HashMap<Ordinate, BigInteger>,CoeffNode>();
 				applyDerivativeAction(implicitSpacesIn, node, 3, hh, implicitSpacesMid);
 				applyDerivativeAction(implicitSpacesMid, node, numDerivatives-3, hh, implicitSpacesOut);
+				return;
 			}
 			
 			for( final Entry<HashMap<Ordinate, BigInteger>,CoeffNode> ii : implicitSpacesIn.entrySet() )
@@ -2000,17 +2001,6 @@ public class TestSchrodingerNA extends TestCase {
 						applyDerivativeAction3( 
 							implicitSpace , coeffNodeIn ,
 							node , hh , implicitSpacesOut );
-					}
-					break;
-					
-				case 4: // For Now...
-					{
-						applyDerivativeAction3( 
-								implicitSpace , coeffNodeIn ,
-								node , hh , implicitSpacesOut );
-						applyDerivativeAction1( 
-								implicitSpace , coeffNodeIn ,
-								node , hh , implicitSpacesOut );
 					}
 					break;
 					

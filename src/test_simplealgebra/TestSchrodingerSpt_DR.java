@@ -2289,6 +2289,7 @@ public class TestSchrodingerSpt_DR extends TestCase {
 				HashMap<HashMap<Ordinate, BigInteger>,CoeffNode> implicitSpacesMid = new HashMap<HashMap<Ordinate, BigInteger>,CoeffNode>();
 				applyDerivativeAction(implicitSpacesIn, node, 3, hh, implicitSpacesMid);
 				applyDerivativeAction(implicitSpacesMid, node, numDerivatives-3, hh, implicitSpacesOut);
+				return;
 			}
 			
 			for( final Entry<HashMap<Ordinate, BigInteger>,CoeffNode> ii : implicitSpacesIn.entrySet() )

@@ -2390,6 +2390,7 @@ protected void applyDerivativeAction( HashMap<HashMap<Ordinate, BigInteger>,Coef
 		HashMap<HashMap<Ordinate, BigInteger>,CoeffNode> implicitSpacesMid = new HashMap<HashMap<Ordinate, BigInteger>,CoeffNode>();
 		applyDerivativeAction(implicitSpacesIn, node, 3, hh, implicitSpacesMid);
 		applyDerivativeAction(implicitSpacesMid, node, numDerivatives-3, hh, implicitSpacesOut);
+		return;
 	}
 	
 	for( final Entry<HashMap<Ordinate, BigInteger>,CoeffNode> ii : implicitSpacesIn.entrySet() )
