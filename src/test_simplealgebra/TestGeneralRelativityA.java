@@ -2354,10 +2354,20 @@ protected void applyDerivativeAction1(
 		final BigInteger valAe = ii.getValue();
 		if( node.symbolicEquals( ae ) )
 		{
-			final BigInteger valAeM1 = valAe.subtract( BigInteger.ONE );
-			final BigInteger valAeP1 = valAe.add( BigInteger.ONE );
-			implicitSpaceOutM1.put( ae , valAeM1 );
-			implicitSpaceOutP1.put( ae , valAeP1 );
+			if( ae.getCol() != TV )
+			{
+				final BigInteger valAeM1 = valAe.subtract( BigInteger.ONE );
+				final BigInteger valAeP1 = valAe.add( BigInteger.ONE );
+				implicitSpaceOutM1.put( ae , valAeM1 );
+				implicitSpaceOutP1.put( ae , valAeP1 );
+			}
+			else
+			{
+				final BigInteger valAeM1 = valAe;
+				final BigInteger valAeP1 = valAe.add( BigInteger.valueOf( 2 ) );
+				implicitSpaceOutM1.put( ae , valAeM1 );
+				implicitSpaceOutP1.put( ae , valAeP1 );
+			}
 		}
 		else
 		{
@@ -4124,7 +4134,7 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 				// if( ( acnt % TestDimensionFour.FOUR ) == ( acnt / TestDimensionFour.FOUR ) )
 				// {
 					final HashMap<Ordinate, BigInteger> coord = new HashMap<Ordinate, BigInteger>();
-					coord.put( new Ordinate( de2 , TV ) , BigInteger.valueOf( 1 /* NSTPT */ ) );
+					coord.put( new Ordinate( de2 , TV ) , BigInteger.valueOf( NSTPT ) );
 					coord.put( new Ordinate( de2 , XV ) , BigInteger.valueOf( 0 ) );
 					coord.put( new Ordinate( de2 , YV ) , BigInteger.valueOf( 0 ) );
 					coord.put( new Ordinate( de2 , ZV ) , BigInteger.valueOf( 0 ) );
