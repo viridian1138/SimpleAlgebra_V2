@@ -78,7 +78,7 @@ public class SymbolicRankTwoTrace<Z extends Object, R extends Elem<R,?>, S exten
 	
 	
 	/**
-	 * Constructs the trace for use in a Drools ( http://drools.org ) session.
+	 * Constructs the trace for use in a Drools ( <A href="http://drools.org">http://drools.org</A> ) session.
 	 * 
 	 * @param _elemA The argument of the trace.
 	 * @param _fac The factory for the enclosed type.

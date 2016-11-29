@@ -70,7 +70,7 @@ public class SymbolicReduction<R extends Elem<R,?>, S extends ElemFactory<R,S>> 
 	}
 	
 	/**
-	 * Constructs the reduction for use in a Drools ( http://drools.org ) session.
+	 * Constructs the reduction for use in a Drools ( <A href="http://drools.org">http://drools.org</A> ) session.
 	 * 
 	 * @param _elem The enclosed elem.
 	 * @param _fac The enclosed factory.

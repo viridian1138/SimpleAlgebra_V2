@@ -30,7 +30,7 @@ import simplealgebra.ElemFactory;
 
 
 /**
- * Node for building in Drools ( http://drools.org ) the transitive closure
+ * Node for building in Drools ( <A href="http://drools.org">http://drools.org</A> ) the transitive closure
  * of all additions in the same addition tree.
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.

@@ -147,7 +147,7 @@ public class MaterialDerivativeFactory<Z extends Object, U extends NumDimensions
 	
 	
 	/**
-	 * Constructs the tensor factory for use in a Drools ( http://drools.org ) session.
+	 * Constructs the tensor factory for use in a Drools ( <A href="http://drools.org">http://drools.org</A> ) session.
 	 * 
 	 * @param param Object defining the set of input parameters.
 	 * @param ds The Drools session.

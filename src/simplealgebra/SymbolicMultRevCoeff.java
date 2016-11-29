@@ -78,7 +78,7 @@ public class SymbolicMultRevCoeff<U extends NumDimensions, R extends Elem<R,?>, 
 	}
 	
 	/**
-	 * Constructs the elem for use in a Drools ( http://drools.org ) session.
+	 * Constructs the elem for use in a Drools ( <A href="http://drools.org">http://drools.org</A> ) session.
 	 * 
 	 * @param _elemA The left-side argument of the multiplication.
 	 * @param _elemB The right-side argument of the multiplication.

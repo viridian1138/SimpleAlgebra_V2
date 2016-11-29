@@ -119,7 +119,7 @@ public class SymbolicConjugateLeft<R extends Elem<R,?>, S extends ElemFactory<R,
 	
 	
 	/**
-	 * Constructs the elem for use in a Drools ( http://drools.org ) session.
+	 * Constructs the elem for use in a Drools ( <A href="http://drools.org">http://drools.org</A> ) session.
 	 * 
 	 * @param _elem The nested elem.
 	 * @param _fac The factory for the nested elem.

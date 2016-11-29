@@ -66,7 +66,7 @@ public class SymbolicAdd<R extends Elem<R,?>, S extends ElemFactory<R,S>> extend
 	}
 	
 	/**
-	 * Constructs the elem for use in a Drools ( http://drools.org ) session.
+	 * Constructs the elem for use in a Drools ( <A href="http://drools.org">http://drools.org</A> ) session.
 	 * 
 	 * @param _elemA The left argument of the addition.
 	 * @param _elemB The right argument of the addition.
@@ -301,7 +301,7 @@ public class SymbolicAdd<R extends Elem<R,?>, S extends ElemFactory<R,S>> extend
 	 * 
 	 * @param elA An elem in the addition tree under this elem.
 	 * @param elB An elem in the addition tree under this elem which is the negation of elA.
-	 * @param ds The Drools ( http://drools.org ) session in which to simplify the addition.
+	 * @param ds The Drools ( <A href="http://drools.org">http://drools.org</A> ) session in which to simplify the addition.
 	 * @return The simplified expression, with elA and elB replaced by zero.
 	 */
 	public SymbolicElem<R, S> handleAddSimplify( SymbolicElem<R, S> elA , SymbolicElem<R, S> elB , DroolsSession ds )
@@ -322,7 +322,7 @@ public class SymbolicAdd<R extends Elem<R,?>, S extends ElemFactory<R,S>> extend
 	 * Simplifies the addition of a set of elems.
 	 * 
 	 * @param elS The set of elems that are to be replaced by zero.
-	 * @param ds The Drools ( http://drools.org ) session in which to simplify the addition.
+	 * @param ds The Drools ( <A href="http://drools.org">http://drools.org</A> ) session in which to simplify the addition.
 	 * @return The simplified expression.
 	 */
 	public SymbolicElem<R, S> handleAddSimplify( HashSet<SymbolicElem<R, S>> elS , DroolsSession ds )

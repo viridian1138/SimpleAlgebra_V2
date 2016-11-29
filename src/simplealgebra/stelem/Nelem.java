@@ -71,7 +71,7 @@ public abstract class Nelem<R extends Elem<R,?>, S extends ElemFactory<R,S>, K e
 	}
 	
 	/**
-	 * Constructs the elem. for use in a Drools ( http://drools.org ) session.
+	 * Constructs the elem. for use in a Drools ( <A href="http://drools.org">http://drools.org</A> ) session.
 	 * 
 	 * @param _fac The factory for the enclosed type.
 	 * @param _coord Map taking implicit space terms to discrete ordinates of type BigInteger.

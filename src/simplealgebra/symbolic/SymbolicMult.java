@@ -71,7 +71,7 @@ public class SymbolicMult<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 	}
 	
 	/**
-	 * Constructs the multiplication for use in a Drools ( http://drools.org ) session.
+	 * Constructs the multiplication for use in a Drools ( <A href="http://drools.org">http://drools.org</A> ) session.
 	 * 
 	 * @param _elemA The left argument of the multiplication.
 	 * @param _elemB The right argument of the multiplication.

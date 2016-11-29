@@ -93,7 +93,7 @@ public class DirectionalDerivative<U extends NumDimensions, A extends Ord<U>, R 
 	}
 	
 	/**
-	 * Constructs the directional derivative for use in a Drools ( http://drools.org ) session.
+	 * Constructs the directional derivative for use in a Drools ( <A href="http://drools.org">http://drools.org</A> ) session.
 	 * 
 	 * @param _fac Factory for the enclosed type.
 	 * @param _dim The number of dimensions over which to express the directional derivative.

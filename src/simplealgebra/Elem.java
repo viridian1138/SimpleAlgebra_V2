@@ -1310,7 +1310,7 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 	
 	
 	/**
-	 * Inserts this elem into a Drools ( http://drools.org ) session.
+	 * Inserts this elem into a Drools ( <A href="http://drools.org">http://drools.org</A> ) session.
 	 * 
 	 * @param session The session in which to insert the elem.
 	 */
@@ -1321,7 +1321,7 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 	
 	
 	/**
-	 * Inserts the elem into a Drools ( http://drools.org ) session.
+	 * Inserts the elem into a Drools ( <A href="http://drools.org">http://drools.org</A> ) session.
 	 * @param ds The session.
 	 * @return This elem.
 	 */
@@ -1354,9 +1354,9 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 	
 	
 	/**
-	 * Returns Drools ( http://drools.org ) knowledge base for algebraic simplification.
+	 * Returns Drools ( <A href="http://drools.org">http://drools.org</A> ) knowledge base for algebraic simplification.
 	 * 
-	 * @return Drools ( http://drools.org ) knowledge base for algebraic simplification.
+	 * @return Drools ( <A href="http://drools.org">http://drools.org</A> ) knowledge base for algebraic simplification.
 	 */
 	public static KnowledgeBase getDistributeSimplifyKnowledgeBase()
 	{
@@ -1393,9 +1393,9 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 	
 	
 	/**
-	 * Returns Drools ( http://drools.org ) knowledge base for algebraic simplification.
+	 * Returns Drools ( <A href="http://drools.org">http://drools.org</A> ) knowledge base for algebraic simplification.
 	 * 
-	 * @return Drools ( http://drools.org ) knowledge base for algebraic simplification.
+	 * @return Drools ( <A href="http://drools.org">http://drools.org</A> ) knowledge base for algebraic simplification.
 	 */
 	public static KnowledgeBase getDistributeSimplify2KnowledgeBase()
 	{
@@ -1431,12 +1431,12 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 
 	
 	/**
-	 * Drools ( http://drools.org ) knowledge base for algebraic simplification.
+	 * Drools ( <A href="http://drools.org">http://drools.org</A> ) knowledge base for algebraic simplification.
 	 */
 	private static KnowledgeBase distributeSimplifyKnowledgeBase = null;
 	
 	/**
-	 * Drools ( http://drools.org ) knowledge base for algebraic simplification.
+	 * Drools ( <A href="http://drools.org">http://drools.org</A> ) knowledge base for algebraic simplification.
 	 */
 	private static KnowledgeBase distributeSimplify2KnowledgeBase = null;
 	

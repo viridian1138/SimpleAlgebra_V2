@@ -87,7 +87,7 @@ public class SymbolicDotHestenes<U extends NumDimensions, A extends Ord<U>, R ex
 	
 	
 	/**
-	 * Constructs the "Hestenes" dot product for use in a Drools ( http://drools.org ) session.
+	 * Constructs the "Hestenes" dot product for use in a Drools ( <A href="http://drools.org">http://drools.org</A> ) session.
 	 * 
 	 * @param _elemA The left argument of the dot product.
 	 * @param _elemB The right argument of the dot product.

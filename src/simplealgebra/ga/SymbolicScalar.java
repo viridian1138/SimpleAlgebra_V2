@@ -87,7 +87,7 @@ public class SymbolicScalar<U extends NumDimensions, A extends Ord<U>, R extends
 	
 	
 	/**
-	 * Constructs the scalar product for use in a Drools ( http://drools.org ) session.
+	 * Constructs the scalar product for use in a Drools ( <A href="http://drools.org">http://drools.org</A> ) session.
 	 * 
 	 * @param _elemA The left argument of the scalar product.
 	 * @param _elemB The right argument of the scalar product.

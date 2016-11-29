@@ -39,7 +39,7 @@ import java.util.HashMap;
  * @param <T> The object type.
  * @param <R> The factory for the object type.
  * @param <A> The mapping of the object type.
- * @param <A> The mapping of the factory for the object type.
+ * @param <B> The mapping of the factory for the object type.
  */
 public abstract class AbstractCache<T extends Object, R extends Object, A extends Object, B extends Object>
 {

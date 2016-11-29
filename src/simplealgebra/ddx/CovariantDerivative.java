@@ -161,7 +161,7 @@ public class CovariantDerivative<Z extends Object, U extends NumDimensions, R ex
 	
 	
 	/**
-	 * Constructs the tensor factory for use in a Drools ( http://drools.org ) session.
+	 * Constructs the tensor factory for use in a Drools ( <A href="http://drools.org">http://drools.org</A> ) session.
 	 * 
 	 * @param param The input parameter for the factory.
 	 * @param ds The Drools session.

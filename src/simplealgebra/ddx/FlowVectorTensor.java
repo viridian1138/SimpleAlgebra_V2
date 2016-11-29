@@ -89,7 +89,7 @@ public class FlowVectorTensor<Z extends Object, U extends NumDimensions, R exten
 	}
 	
 	/**
-	 * Constructs the flow vector tensor for use in a Drools ( http://drools.org ) session.
+	 * Constructs the flow vector tensor for use in a Drools ( <A href="http://drools.org">http://drools.org</A> ) session.
 	 * 
 	 * @param _fac Factory for the enclosed type.
 	 * @param _index The tensor index for the flow vector.

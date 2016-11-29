@@ -87,7 +87,7 @@ public class SymbolicDot<U extends NumDimensions, A extends Ord<U>, R extends El
 	
 	
 	/**
-	 * Constructs the dot product for use in a Drools ( http://drools.org ) session.
+	 * Constructs the dot product for use in a Drools ( <A href="http://drools.org">http://drools.org</A> ) session.
 	 * 
 	 * @param _elemA The left argument of the dot product.
 	 * @param _elemB The right argument of the dot product.

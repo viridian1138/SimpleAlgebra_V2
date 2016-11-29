@@ -87,7 +87,7 @@ public class SymbolicRightContraction<U extends NumDimensions, A extends Ord<U>,
 	
 	
 	/**
-	 * Constructs the right contraction product for use in a Drools ( http://drools.org ) session.
+	 * Constructs the right contraction product for use in a Drools ( <A href="http://drools.org">http://drools.org</A> ) session.
 	 * 
 	 * @param _elemA The left argument of the right contraction product.
 	 * @param _elemB The right argument of the right contraction product.

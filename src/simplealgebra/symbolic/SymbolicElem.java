@@ -207,7 +207,7 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 	
 	
 	/**
-	 * Inserts the elem into a Drools ( http://drools.org ) session.
+	 * Inserts the elem into a Drools ( <A href="http://drools.org">http://drools.org</A> ) session.
 	 * @param ds The session.
 	 * @return This elem.
 	 */

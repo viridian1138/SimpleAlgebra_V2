@@ -87,7 +87,7 @@ public class SymbolicCross<U extends NumDimensions, A extends Ord<U>, R extends 
 	
 	
 	/**
-	 * Constructs the cross product for use in a Drools ( http://drools.org ) session.
+	 * Constructs the cross product for use in a Drools ( <A href="http://drools.org">http://drools.org</A> ) session.
 	 * 
 	 * @param _elemA The left argument of the cross product.
 	 * @param _elemB The right argument of the cross product.

@@ -89,7 +89,7 @@ public class SymbolicMutable<T extends Elem<T,?>, U extends MutableElem<T,U,?>, 
 	}
 	
 	/**
-	 * Constructs the elem. for use in a Drools ( http://drools.org ) session.
+	 * Constructs the elem. for use in a Drools ( <A href="http://drools.org">http://drools.org</A> ) session.
 	 * 
 	 * @param _elemA The enclosed elem.
 	 * @param _elemB The mutator for the enclosed elem.

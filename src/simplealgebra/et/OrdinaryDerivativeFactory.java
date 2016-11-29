@@ -95,7 +95,7 @@ public class OrdinaryDerivativeFactory<Z extends Object, U extends NumDimensions
 	}
 	
 	/**
-	 * Constructs the tensor factory for use in a Drools ( http://drools.org ) session.
+	 * Constructs the tensor factory for use in a Drools ( <A href="http://drools.org">http://drools.org</A> ) session.
 	 * 
 	 * @param _fac The factory for the enclosed type.
 	 * @param _dim The number of dimensions for the index.

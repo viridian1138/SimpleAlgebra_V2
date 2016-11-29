@@ -87,7 +87,7 @@ public class SymbolicLeftContraction<U extends NumDimensions, A extends Ord<U>, 
 	
 	
 	/**
-	 * Constructs the left contraction product for use in a Drools ( http://drools.org ) session.
+	 * Constructs the left contraction product for use in a Drools ( <A href="http://drools.org">http://drools.org</A> ) session.
 	 * 
 	 * @param _elemA The left argument of the left contraction product.
 	 * @param _elemB The right argument of the left contraction product.

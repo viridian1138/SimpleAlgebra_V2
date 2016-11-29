@@ -32,7 +32,7 @@ import simplealgebra.WriteElemCache;
 
 
 /**
- * Configuration for logging in a Drools ( http://drools.org ) session.  This configuration
+ * Configuration for logging in a Drools ( <A href="http://drools.org">http://drools.org</A> ) session.  This configuration
  * and its related rule can be added to a Drools in a fashion similar to adding a cross-cutting
  * concern to an aspect-oriented system.
  * 

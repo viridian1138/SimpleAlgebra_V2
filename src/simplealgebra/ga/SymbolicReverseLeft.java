@@ -87,7 +87,7 @@ public class SymbolicReverseLeft<U extends NumDimensions, A extends Ord<U>, R ex
 	
 	
 	/**
-	 * Constructs the elem. for use in a Drools ( http://drools.org ) session.
+	 * Constructs the elem. for use in a Drools ( <A href="http://drools.org">http://drools.org</A> ) session.
 	 * 
 	 * @param _elemA The enclosed elem.
 	 * @param _fac The factory for the enclosed elem.

@@ -77,7 +77,7 @@ public class SymbolicRegenCovar<Z extends Object, R extends Elem<R,?>, S extends
 	
 	
 	/**
-	 * Constructs the elem for use in a Drools ( http://drools.org ) session.
+	 * Constructs the elem for use in a Drools ( <A href="http://drools.org">http://drools.org</A> ) session.
 	 * 
 	 * @param _elem The argument.
 	 * @param _fac The factory for the enclosed type.

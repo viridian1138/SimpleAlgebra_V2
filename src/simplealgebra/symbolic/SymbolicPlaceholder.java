@@ -55,7 +55,7 @@ public class SymbolicPlaceholder<R extends Elem<R,?>, S extends ElemFactory<R,S>
 	}
 	
 	/**
-	 * Constructs the placeholder for use in a Drools ( http://drools.org ) session.
+	 * Constructs the placeholder for use in a Drools ( <A href="http://drools.org">http://drools.org</A> ) session.
 	 * 
 	 * @param _elem The enclosed elem.
 	 * @param ds The Drools session.
@@ -89,7 +89,7 @@ public class SymbolicPlaceholder<R extends Elem<R,?>, S extends ElemFactory<R,S>
 	
 	
 	/**
-	 * Inserts this elem into a Drools ( http://drools.org ) session.
+	 * Inserts this elem into a Drools ( <A href="http://drools.org">http://drools.org</A> ) session.
 	 * 
 	 * @param session The session in which to insert the elem.
 	 */

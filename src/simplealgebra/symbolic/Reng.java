@@ -32,7 +32,7 @@ import simplealgebra.WriteElemCache;
 
 
 /**
- * Rule engine node.  Used to represent a symbolic refactoring in Drools ( http://drools.org ).
+ * Rule engine node.  Used to represent a symbolic refactoring in Drools ( <A href="http://drools.org">http://drools.org</A> ).
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

@@ -200,9 +200,15 @@ public abstract class NewtonRaphsonSingleElemFunctional<R extends Elem<R,?>, S e
 	{
 		R derivative = evalPartialDerivative();
 		R derivativeInverse = null;
+		int maxCnt = 0;
 		
 		while( derivativeInverse == null )
 		{
+			maxCnt++;
+			if( maxCnt > 5 )
+			{
+				throw( new RuntimeException( "Failed." ) );
+			}
 			try
 			{
 				derivativeInverse = derivative.invertLeft();
