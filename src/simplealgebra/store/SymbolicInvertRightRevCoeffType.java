@@ -45,7 +45,7 @@ import simplealgebra.NumDimensions;
 
 
 /**
- * HyperGraph type for storing SymbolicInvertRightRevCoeff instances.
+ * HyperGraph ( <A href="http://hypergraphdb.org">http://hypergraphdb.org</A> ) type for storing SymbolicInvertRightRevCoeff instances.
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

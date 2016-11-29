@@ -40,7 +40,7 @@ import simplealgebra.MultLeftMutator;
 
 
 /**
- * HyperGraph type for storing MultLeftMutator instances.
+ * HyperGraph ( <A href="http://hypergraphdb.org">http://hypergraphdb.org</A> ) type for storing MultLeftMutator instances.
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

@@ -36,7 +36,7 @@ import org.hypergraphdb.type.HGAtomTypeBase;
 
 
 /**
- * HyperGraph type for storing RelPayload instances.
+ * HyperGraph ( <A href="http://hypergraphdb.org">http://hypergraphdb.org</A> ) type for storing RelPayload instances.
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

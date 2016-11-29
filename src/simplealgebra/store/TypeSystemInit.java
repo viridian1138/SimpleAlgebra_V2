@@ -74,7 +74,7 @@ import simplealgebra.symbolic.db.SymbolicZeroType;
 
 
 /**
- * Common initializer for HyperGraph types.
+ * Common initializer for HyperGraph ( <A href="http://hypergraphdb.org">http://hypergraphdb.org</A> ) types.
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

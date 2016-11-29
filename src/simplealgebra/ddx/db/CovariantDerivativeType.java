@@ -52,7 +52,7 @@ import simplealgebra.symbolic.SymbolicElemFactory;
 
 
 /**
- * HyperGraph type for storing CovariantDerivative instances.
+ * HyperGraph ( <A href="http://hypergraphdb.org">http://hypergraphdb.org</A> ) type for storing CovariantDerivative instances.
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

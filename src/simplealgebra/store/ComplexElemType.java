@@ -41,7 +41,7 @@ import simplealgebra.ElemFactory;
 
 
 /**
- * HyperGraph type for storing ComplexElem instances.
+ * HyperGraph ( <A href="http://hypergraphdb.org">http://hypergraphdb.org</A> ) type for storing ComplexElem instances.
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

@@ -42,7 +42,7 @@ import simplealgebra.bigfixedpoint.Precision;
 
 
 /**
- * HyperGraph type for storing BigFixedPointElemFactory instances.
+ * HyperGraph ( <A href="http://hypergraphdb.org">http://hypergraphdb.org</A> ) type for storing BigFixedPointElemFactory instances.
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

@@ -46,7 +46,7 @@ import simplealgebra.symbolic.SymbolicElemFactory;
 
 
 /**
- * HyperGraph type for storing FlowVectorTensor instances.
+ * HyperGraph ( <A href="http://hypergraphdb.org">http://hypergraphdb.org</A> ) type for storing FlowVectorTensor instances.
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
