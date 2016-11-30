@@ -44,7 +44,7 @@ import simplealgebra.store.TypeSystemInit;
 
 
 /**  
- * Simple test of the QueryIterable class.
+ * Simple test of the QueryIterable class.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

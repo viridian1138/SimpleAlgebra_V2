@@ -123,7 +123,7 @@ import simplealgebra.ddx.*;
  * <mrow>
  *  <mi>V</mi>
  * </mrow>
- * </math> is zero.
+ * </math> is zero.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

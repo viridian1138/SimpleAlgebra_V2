@@ -44,7 +44,7 @@ import simplealgebra.meas.ValueWithUncertaintyElemFactory;
 
 /**
  * 
- * Test for phasors as used in Electrical Engineering (with experimental uncertainty added).
+ * Test for phasors as used in Electrical Engineering (with experimental uncertainty added).  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
  * 
  * Phasor example from:

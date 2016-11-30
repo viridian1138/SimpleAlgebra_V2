@@ -48,7 +48,7 @@ import simplealgebra.symbolic.SymbolicElemFactory;
 
 
 /**
- * Tests generation of absolute value expressions.
+ * Tests generation of absolute value expressions.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

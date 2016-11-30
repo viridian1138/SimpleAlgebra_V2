@@ -117,7 +117,7 @@ import simplealgebra.ga.*;
  * <mrow>
  *  <mi>c</mi>
  * </mrow>
- * </math> are arbitrary constants.
+ * </math> are arbitrary constants.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
  * 
  * 

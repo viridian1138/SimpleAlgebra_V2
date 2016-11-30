@@ -48,7 +48,7 @@ import simplealgebra.symbolic.SymbolicIdentity;
 
 
 /**
- * Tests symbolic double divide-by.
+ * Tests symbolic double divide-by.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

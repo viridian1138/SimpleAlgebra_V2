@@ -29,7 +29,7 @@ import junit.framework.TestSuite;
 import junit.textui.TestRunner;
 
 /**
- * Runs standard tests for SimpleAlgebra.
+ * Runs standard tests for SimpleAlgebra.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

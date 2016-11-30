@@ -63,7 +63,7 @@ import java.io.*;
 
 
 /**
- * Tests the ability to construct a gauge.
+ * Tests the ability to construct a gauge.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

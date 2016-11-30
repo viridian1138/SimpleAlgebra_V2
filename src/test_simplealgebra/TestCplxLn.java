@@ -40,7 +40,7 @@ import simplealgebra.ga.GeometricAlgebraOrd;
 
 
 /**
- * Tests the ability to take an approximate natural logarithm of a vector.
+ * Tests the ability to take an approximate natural logarithm of a vector.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

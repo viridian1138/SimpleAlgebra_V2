@@ -64,7 +64,7 @@ import java.io.*;
 
 
 /**
- * Tests the ability to generate terms with the determinant of the metric tensor.
+ * Tests the ability to generate terms with the determinant of the metric tensor.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

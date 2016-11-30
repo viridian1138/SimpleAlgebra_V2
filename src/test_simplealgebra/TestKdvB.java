@@ -115,6 +115,8 @@ import simplealgebra.ddx.*;
  *
  *
  * See http://en.wikipedia.org/wiki/Korteweg-de_Vries_equation
+ * 
+ *   Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  *
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

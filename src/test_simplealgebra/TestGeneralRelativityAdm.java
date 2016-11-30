@@ -80,7 +80,7 @@ import simplealgebra.et.*;
 
 
 /**
- * Test for General Relativity as represented by the ADM Formalism in 4-D.
+ * Test for General Relativity as represented by the ADM Formalism in 4-D.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
  * See http://en.wikipedia.org/wiki/ADM_formalism
  * 

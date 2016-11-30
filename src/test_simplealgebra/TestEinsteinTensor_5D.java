@@ -65,7 +65,7 @@ import simplealgebra.ddx.*;
  * See http://en.wikipedia.org/wiki/Kaluza%E2%80%93Klein_theory
  * 
  * The related problem of how to make one of the dimensions compactified
- * is solved outside of the scope of this test.
+ * is solved outside of the scope of this test.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

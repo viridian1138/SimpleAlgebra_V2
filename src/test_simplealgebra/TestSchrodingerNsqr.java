@@ -124,7 +124,7 @@ import simplealgebra.ddx.*;
  * <mrow>
  *  <mi>V</mi>
  * </mrow>
- * </math> is zero.  This version uses quantities that allow for negative probability densities.
+ * </math> is zero.  This version uses quantities that allow for negative probability densities.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

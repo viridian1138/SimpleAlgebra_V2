@@ -39,7 +39,7 @@ import simplealgebra.store.TypeSystemInit;
 
 
 /**
- * Verifies that separate instances of BaseDbArray_SingleWrite remain independent.
+ * Verifies that separate instances of BaseDbArray_SingleWrite remain independent.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

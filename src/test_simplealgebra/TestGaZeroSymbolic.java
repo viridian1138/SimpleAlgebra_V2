@@ -71,7 +71,7 @@ import simplealgebra.symbolic.SymbolicZero;
 
 
 /**
- * Tests GA products with zero.
+ * Tests GA products with zero.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

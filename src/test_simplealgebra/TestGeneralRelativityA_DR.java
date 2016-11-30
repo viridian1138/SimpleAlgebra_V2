@@ -99,7 +99,7 @@ import simplealgebra.et.*;
  *       </mrow>
  *   </msub>
  * </mrow>
- * </math> is the Einstein tensor in 4-D.
+ * </math> is the Einstein tensor in 4-D.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
  * 
  * 

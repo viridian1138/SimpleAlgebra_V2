@@ -76,7 +76,7 @@ import test_simplealgebra.TestMandelbrotSet.LrgPrecision;
 
 
 /**
- * Tests for writing elems to a PrintStream.
+ * Tests for writing elems to a PrintStream.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

@@ -40,7 +40,7 @@ import simplealgebra.ga.*;
 
 
 /**
- * Tests the dot product between two vectors.
+ * Tests the dot product between two vectors.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

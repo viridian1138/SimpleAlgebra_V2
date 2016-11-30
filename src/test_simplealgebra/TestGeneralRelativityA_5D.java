@@ -96,7 +96,7 @@ import simplealgebra.et.*;
  *       </mrow>
  *   </msub>
  * </mrow>
- * </math> is the Einstein tensor in 5-D.
+ * </math> is the Einstein tensor in 5-D.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
  * 
  * 

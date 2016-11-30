@@ -111,7 +111,7 @@ import simplealgebra.ddx.*;
  * </mrow>
  * </math>
  *
- * in dimensions (x, t) where "v" is an arbitrary constant.
+ * in dimensions (x, t) where "v" is an arbitrary constant.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  *
  *
  * See http://en.wikipedia.org/wiki/Burgers'_equation

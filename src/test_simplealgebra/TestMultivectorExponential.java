@@ -53,6 +53,8 @@ import simplealgebra.ga.*;
  * 
  * (http://przyrbwn.icm.edu.pl/app/pdf/116/a116z219.pdf)
  * 
+ *   Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
+ * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
  * @author thorngreen

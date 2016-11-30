@@ -40,7 +40,7 @@ import simplealgebra.ga.*;
 
 
 /**
- * Tests the wedge product between a vector and a scalar.
+ * Tests the wedge product between a vector and a scalar.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

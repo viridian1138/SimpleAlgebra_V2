@@ -71,7 +71,7 @@ import simplealgebra.symbolic.SymbolicSqrt;
 
 /**
  * Test the ability to generate the asymmetric terms of a covariant
- * derivative over a flat metric.
+ * derivative over a flat metric.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

@@ -45,7 +45,7 @@ import simplealgebra.ga.GeometricAlgebraOrd;
 /**
  * Tests the ability to compute a matrix determinant as a series of wedge
  * products.  See Chapter 5, Equation 1.34 of "New Foundations for Classical Mechanics"
- * by David Hestenes.
+ * by David Hestenes.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

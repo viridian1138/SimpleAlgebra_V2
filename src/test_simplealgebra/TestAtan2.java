@@ -35,7 +35,7 @@ import simplealgebra.DoubleElemFactory;
 
 
 /**
- * Tests the ability to calculate arctangeants and other related functions.
+ * Tests the ability to calculate arctangeants and other related functions.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

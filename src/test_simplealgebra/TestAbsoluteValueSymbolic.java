@@ -55,7 +55,7 @@ import simplealgebra.symbolic.SymbolicZero;
 
 
 /**
- * Tests symbolic reductions of the absolute value.
+ * Tests symbolic reductions of the absolute value.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

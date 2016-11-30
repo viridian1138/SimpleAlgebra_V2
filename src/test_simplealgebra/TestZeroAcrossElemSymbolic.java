@@ -68,7 +68,7 @@ import java.math.BigInteger;
 
 
 /**
- * Performs tests verifying reduction to zero.
+ * Performs tests verifying reduction to zero.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

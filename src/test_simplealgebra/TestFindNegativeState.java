@@ -48,7 +48,7 @@ import simplealgebra.symbolic.SymbolicElemFactory;
 
 
 /**
- *  Tests the ability to find a p where p * ln( p ) is negative.
+ *  Tests the ability to find a p where p * ln( p ) is negative.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

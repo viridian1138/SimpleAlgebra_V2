@@ -40,7 +40,7 @@ import simplealgebra.ga.SpacetimeAlgebraOrd;
 
 
 /**
- * Tests the ability to invert a Spacetime Algebra multivector in 5-D.
+ * Tests the ability to invert a Spacetime Algebra multivector in 5-D.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

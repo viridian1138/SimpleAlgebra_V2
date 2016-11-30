@@ -70,7 +70,7 @@ import simplealgebra.symbolic.*;
  * </math> is a tensor index.  This produces a rank-one tensor
  * with a set of partial derivative operators.  The name of the
  * particular index to be used is passed into the class as a
- * parameter.
+ * parameter.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

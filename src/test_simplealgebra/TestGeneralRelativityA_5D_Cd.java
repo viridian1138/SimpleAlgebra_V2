@@ -99,7 +99,7 @@ import simplealgebra.et.*;
  * </math> is the Einstein tensor in 5-D with a compactified 5th dimension "W".
  * 
  * The compactification is a 1-dimensional circle as used in
- * Kaluza-Klein theory.
+ * Kaluza-Klein theory.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
  * TODO: Implement the modified metric tensor terms in the Kaluza-Klein theory.
  * 

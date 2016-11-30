@@ -38,7 +38,7 @@ import simplealgebra.ga.GeometricAlgebraMultivectorElemFactory;
 
 
 /**
- * Tests the generation of elems that have different left/right inverses, and inverses thereof.
+ * Tests the generation of elems that have different left/right inverses, and inverses thereof.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
  * Note: unlike standard Geometric Algebra elems, this Ord produces a non-standard elem that is not associative.  Hence, operations that rely on associativity may not work properly.
  * 

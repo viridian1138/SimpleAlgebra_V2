@@ -51,7 +51,7 @@ import simplealgebra.store.DrFastArray2D_Dbl;
 
 
 /**
- * Test for accurate generation of the Mandelbrot set.
+ * Test for accurate generation of the Mandelbrot set.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
  * See http://en.wikipedia.org/wiki/Mandelbrot_set
  * 

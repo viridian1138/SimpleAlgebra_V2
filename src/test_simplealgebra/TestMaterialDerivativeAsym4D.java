@@ -80,7 +80,7 @@ import simplealgebra.symbolic.SymbolicZero;
 
 /**
  * Tests the ability to generate the asymmetric terms of
- * a material derivative in 4-D.
+ * a material derivative in 4-D.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

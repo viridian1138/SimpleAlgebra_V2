@@ -50,7 +50,7 @@ import simplealgebra.store.TypeSystemInit;
 
 
 /**  
- * Tests compound query that performs a join between a query of multivectors and a query of tensors.
+ * Tests compound query that performs a join between a query of multivectors and a query of tensors.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

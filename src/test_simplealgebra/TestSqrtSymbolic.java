@@ -48,7 +48,7 @@ import simplealgebra.symbolic.SymbolicSqrt;
 
 
 /**
- * Tests that the square-root of the identity yields the identity.
+ * Tests that the square-root of the identity yields the identity.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

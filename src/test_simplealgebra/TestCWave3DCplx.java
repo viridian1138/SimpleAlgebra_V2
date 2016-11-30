@@ -113,7 +113,7 @@ import simplealgebra.ddx.*;
  * </mrow>
  * </math>
  *
- * in dimensions (x, y, z, t) where c is complex.
+ * in dimensions (x, y, z, t) where c is complex.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  *
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

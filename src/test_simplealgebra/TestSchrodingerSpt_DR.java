@@ -126,7 +126,7 @@ import simplealgebra.ddx.*;
  * <mrow>
  *  <mi>V</mi>
  * </mrow>
- * </math> is zero.
+ * </math> is zero.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
  * 
  * Uses direct-access file iteration arrays to test the ability to support datasets larger than available RAM.

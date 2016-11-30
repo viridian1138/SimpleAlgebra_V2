@@ -41,6 +41,8 @@ import simplealgebra.NotInvertibleException;
  * </mrow>
  * </math>, sin( x ) and cos( x )
  * 
+ *   Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
+ * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
  * @author thorngreen

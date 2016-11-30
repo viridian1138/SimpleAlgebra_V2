@@ -69,7 +69,7 @@ import simplealgebra.symbolic.SymbolicSqrt;
 
 /**
  * Tests the ability to generate a covariant derivative in 4-D where
- * only a single component of the metric tensor is non-flat.
+ * only a single component of the metric tensor is non-flat.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

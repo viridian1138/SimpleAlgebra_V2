@@ -43,7 +43,7 @@ import simplealgebra.prec.DefaultPrecedenceComparator;
 
 /**
  * Tests matrix logarithms (and related operations) for some simple test cases.
- * Also includes some GA logarithm tests.
+ * Also includes some GA logarithm tests.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

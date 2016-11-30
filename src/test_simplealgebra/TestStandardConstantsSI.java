@@ -47,7 +47,7 @@ import simplealgebra.meas.ValueWithUncertaintyElem;
 
 
 /**
- * Verifies the set of SI constants.
+ * Verifies the set of SI constants.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
  * @author thorngreen
  *

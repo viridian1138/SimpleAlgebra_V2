@@ -38,7 +38,7 @@ import simplealgebra.ga.Ord;
 
 
 /**
- * Defines multiplication rules for a test algebra where left/right inverses are different.  This should be used for tests only, and only in 2-D.
+ * Defines multiplication rules for a test algebra where left/right inverses are different.  This should be used for tests only, and only in 2-D.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
  * Note: unlike standard Geometric Algebra elems, this Ord produces a non-standard elem that is not associative.  Hence, operations that rely on associativity may not work properly.
  * 

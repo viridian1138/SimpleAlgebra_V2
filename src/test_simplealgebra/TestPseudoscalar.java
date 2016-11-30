@@ -44,7 +44,7 @@ import simplealgebra.symbolic.SymbolicNegate;
 
 
 /**
- * Tests pseudoscalar identities.
+ * Tests pseudoscalar identities.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

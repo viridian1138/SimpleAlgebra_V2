@@ -45,6 +45,7 @@ import simplealgebra.SquareMatrixElem;
  * </mrow>
  * </math> for complex-number matrices.
  * 
+ *   Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
  * Test cases are adapted from http://people.sc.fsu.edu/~jburkardt/m_src/test_matrix_exponential/test_matrix_exponential.html
  * 

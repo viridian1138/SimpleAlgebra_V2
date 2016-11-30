@@ -55,7 +55,7 @@ import java.io.*;
 
 
 /**
- * Verifies that the expression ( a + a ) + ( -a + -a ) simplifies to zero.
+ * Verifies that the expression ( a + a ) + ( -a + -a ) simplifies to zero.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

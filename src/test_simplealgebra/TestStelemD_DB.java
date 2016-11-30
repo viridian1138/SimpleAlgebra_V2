@@ -115,7 +115,7 @@ import simplealgebra.ddx.*;
  * </mrow>
  * </math>
  *
- * in dimensions (x, y, z, t) where "c" is an arbitrary constant.
+ * in dimensions (x, y, z, t) where "c" is an arbitrary constant.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
  * Uses an external-database iteration array to test the ability to support datasets larger than available RAM.
  *

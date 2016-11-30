@@ -60,7 +60,7 @@ import simplealgebra.symbolic.SymbolicNegate;
 
 
 /**
- * Performs a right invert, and then verifies that the right invert contains no left invert terms.
+ * Performs a right invert, and then verifies that the right invert contains no left invert terms.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

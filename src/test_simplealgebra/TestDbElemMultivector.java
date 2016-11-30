@@ -50,7 +50,7 @@ import simplealgebra.store.TypeSystemInit;
 
 
 /**
- * Tests basic multivector persistence operations.
+ * Tests basic multivector persistence operations.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

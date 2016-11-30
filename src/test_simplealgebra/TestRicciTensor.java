@@ -60,7 +60,7 @@ import simplealgebra.ddx.*;
 
 
 /**
- * Tests the ability to generate Ricci tensors.
+ * Tests the ability to generate Ricci tensors.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

@@ -42,7 +42,7 @@ import simplealgebra.ga.*;
 
 /**
  * 
- * Test for phasors as used in Electrical Engineering.
+ * Test for phasors as used in Electrical Engineering.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
  * 
  * Phasor example from:

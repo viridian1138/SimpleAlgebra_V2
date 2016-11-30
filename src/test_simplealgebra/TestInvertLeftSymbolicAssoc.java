@@ -66,7 +66,7 @@ import simplealgebra.symbolic.SymbolicIdentity;
  *  </msup>
  *  <mi>a</mi>
  *  </mrow>
- * </math> reduces to the identity for an associative elem.
+ * </math> reduces to the identity for an associative elem.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

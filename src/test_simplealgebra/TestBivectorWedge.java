@@ -40,7 +40,7 @@ import simplealgebra.ga.*;
 
 
 /**
- * Tests the wedge product between two bivectors.
+ * Tests the wedge product between two bivectors.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

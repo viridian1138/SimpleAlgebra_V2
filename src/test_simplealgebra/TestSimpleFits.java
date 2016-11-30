@@ -48,7 +48,7 @@ import java.util.*;
 
 
 /**
- * Tests the generation of simple fits.
+ * Tests the generation of simple fits.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

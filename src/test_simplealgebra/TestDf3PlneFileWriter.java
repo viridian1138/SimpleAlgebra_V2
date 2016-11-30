@@ -36,7 +36,7 @@ import simplealgebra.store.RawFileWriter;
 
 
 /**  
- * Simple test of the RawFileWriter class for DF3.
+ * Simple test of the RawFileWriter class for DF3.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

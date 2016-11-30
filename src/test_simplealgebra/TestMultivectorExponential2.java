@@ -39,7 +39,7 @@ import simplealgebra.ga.GeometricAlgebraOrd;
 import simplealgebra.prec.DefaultPrecedenceComparator;
 
 /**
- * Tests exponentials across a five-dimensional complex space.
+ * Tests exponentials across a five-dimensional complex space.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
  * @author tgreen
  *
