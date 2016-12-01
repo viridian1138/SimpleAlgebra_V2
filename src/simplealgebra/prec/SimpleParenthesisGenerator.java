@@ -38,7 +38,7 @@ import simplealgebra.symbolic.ParenthesisGenerator;
 
 
 /**
- * Simple class for MathML ( http://www.w3.org/Math/ ) parenthesis generation.
+ * Simple class for W3C MathML ( <A href="http://www.w3.org/Math/">http://www.w3.org/Math/</A> ) parenthesis generation.
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

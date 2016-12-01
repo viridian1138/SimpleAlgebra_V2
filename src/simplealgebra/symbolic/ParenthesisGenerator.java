@@ -36,7 +36,7 @@ import simplealgebra.ElemFactory;
 
 
 /**
- *  Handles MathML ( http://www.w3.org/Math/ ) parenthesis generation.
+ *  Handles W3C MathML ( <A href="http://www.w3.org/Math/">http://www.w3.org/Math/</A> ) parenthesis generation.
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
@@ -47,14 +47,14 @@ public abstract class ParenthesisGenerator extends Object {
 	
 
 	/**
-	 * Generates a MathML ( http://www.w3.org/Math/ ) open parenthesis.
+	 * Generates a W3C MathML ( <A href="http://www.w3.org/Math/">http://www.w3.org/Math/</A> ) open parenthesis.
 	 * 
 	 * @param ps The stream to which to write the parenthesis.
 	 */
 	public abstract void handleParenthesisOpen( PrintStream ps );
 	
 	/**
-	 * Generates a MathML ( http://www.w3.org/Math/ ) close parenthesis.
+	 * Generates a W3C MathML ( <A href="http://www.w3.org/Math/">http://www.w3.org/Math/</A> ) close parenthesis.
 	 * 
 	 * @param ps The stream to which to write the parenthesis.
 	 */

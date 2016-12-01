@@ -84,7 +84,7 @@ import simplealgebra.symbolic.SymbolicPlaceholder;
  * of the elem type commute.  Otherwise, it is possible that multiplications
  * of the elem type do not commute.  
  * <P>
- * <P> See http://en.wikipedia.org/wiki/noncommutative_ring
+ * <P> See <A href="http://en.wikipedia.org/wiki/noncommutative_ring">http://en.wikipedia.org/wiki/noncommutative_ring</A>
  * <P>
  * <P>
  * <P> If the isMultAssociative() method of the elem's type's factory returns true, then all multiplications 
@@ -227,7 +227,7 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 	 * optional command for an outer product.  A runtime exception
 	 * should be thrown upon receipt of a command that is not supported.
 	 * <P>
-	 * <P> See http://en.wikipedia.org/wiki/command_pattern
+	 * <P> See <A href="http://en.wikipedia.org/wiki/command_pattern">http://en.wikipedia.org/wiki/command_pattern</A>
 	 * 
 	 * @param id The identifier of the command to be executed.
 	 * @param args The arguments of the command.
@@ -1085,7 +1085,7 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 	
 	
 	/**
-	 * Writes MathML ( http://www.w3.org/Math/ ) presentation tags describing the elem to a print stream.
+	 * Writes W3C MathML ( <A href="http://www.w3.org/Math/">http://www.w3.org/Math/</A> ) presentation tags describing the elem to a print stream.
 	 * @param pc A description of how to assign precedence for converting to infix notation.
 	 * @param ps The print stream to which to write the tags.
 	 */
@@ -1095,7 +1095,7 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 	}
 
 	/**
-	 * Writes MathML ( http://www.w3.org/Math/ ) presentation tags describing the elem, wrapped in the top-level math tag, to a print stream.
+	 * Writes W3C MathML ( <A href="http://www.w3.org/Math/">http://www.w3.org/Math/</A> ) presentation tags describing the elem, wrapped in the top-level math tag, to a print stream.
 	 * @param pc A description of how to assign precedence for converting to infix notation.
 	 * @param ps The print stream to which to write the tags.
 	 */
@@ -1107,7 +1107,7 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 	}
 	
 	/**
-	 * Writes a self-contained HTML file containing MathML ( http://www.w3.org/Math/ ) presentation tags describing the elem.
+	 * Writes a self-contained HTML file containing W3C MathML ( <A href="http://www.w3.org/Math/">http://www.w3.org/Math/</A> ) presentation tags describing the elem.
 	 * @param pc A description of how to assign precedence for converting to infix notation.
 	 * @param ps The print stream to which to write the tags.
 	 */

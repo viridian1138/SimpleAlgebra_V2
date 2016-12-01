@@ -34,7 +34,7 @@ package simplealgebra.store;
 
 
 /**
- * Stores the context for a DaqHg (Drools As a Query language for HyperGraphDB) query.
+ * Stores the context for a DaqHg (Drools As a Query language for HyperGraphDB) query.  Uses Drools ( <A href="http://drools.org">http://drools.org</A> ) and HyperGraph ( <A href="http://hypergraphdb.org">http://hypergraphdb.org</A> ).
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

@@ -64,7 +64,7 @@ public abstract class PrecedenceComparator extends Object {
 	
 
 	/**
-	 * Handles MathML ( http://www.w3.org/Math/ ) presentations that are not supported.
+	 * Handles W3C MathML ( <A href="http://www.w3.org/Math/">http://www.w3.org/Math/</A> ) presentations that are not supported.
 	 * 
 	 * @param elem The unsupported element.
 	 */
