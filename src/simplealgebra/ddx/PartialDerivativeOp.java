@@ -61,6 +61,8 @@ import simplealgebra.symbolic.SymbolicElemFactory;
  * </mrow>
  * </math> as used in Calculus.
  * 
+ * See <A href="http://en.wikipedia.org/wiki/Partial_derivative">http://en.wikipedia.org/wiki/Partial_derivative</A>
+ * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
  * @author thorngreen

@@ -97,7 +97,7 @@ import simplealgebra.symbolic.SymbolicElemFactory;
  * 
  * 
  * 
- * <P>See http://en.wikipedia.org/wiki/material_derivative
+ * <P>See <A href="http://en.wikipedia.org/wiki/material_derivative">http://en.wikipedia.org/wiki/material_derivative</A>
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
