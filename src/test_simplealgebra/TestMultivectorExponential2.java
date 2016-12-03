@@ -49,8 +49,6 @@ public class TestMultivectorExponential2 extends TestCase {
 	
 	/**
 	 * Tests an exponential across a five-dimensional complex space.
-	 * 
-	 * @author tgreen
 	 *
 	 */
 	public void testMultivectorExponential2()

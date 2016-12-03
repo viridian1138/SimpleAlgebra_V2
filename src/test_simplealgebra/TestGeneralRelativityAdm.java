@@ -3711,9 +3711,9 @@ protected void applyAdd(
 		/**
 		 * Constructs the evaluator.
 		 * 
-		 * @param _function The function over which to evaluate Netwon-Raphson.
-		 * @param _withRespectTo The variable over which to evaluate the derivative of the function.
-		 * @param implicitSpaceFirstLevel The initial implicit space over which to take the function and its derivative.
+		 * @param param Specifies parameters over which to construct the evalvator.
+		 * @param _tensorIndex The tensor index over which to evaluate.
+		 * @param cache Cache to be used for symbolic evaluations.
 		 * @throws NotInvertibleException
 		 * @throws MultiplicativeDistributionRequiredException
 		 */
@@ -3826,9 +3826,9 @@ protected void applyAdd(
 		/**
 		 * Constructs the evaluator.
 		 * 
-		 * @param _function The function over which to evaluate Netwon-Raphson.
-		 * @param _withRespectTo The variable over which to evaluate the derivative of the function.
-		 * @param implicitSpaceFirstLevel The initial implicit space over which to take the function and its derivative.
+		 * @param param Specifies parameters over which to construct the evalvator.
+		 * @param _tensorIndex The tensor index over which to evaluate.
+		 * @param cache Cache to be used for symbolic evaluations.
 		 * @throws NotInvertibleException
 		 * @throws MultiplicativeDistributionRequiredException
 		 */
