@@ -83,8 +83,8 @@ import simplealgebra.symbolic.SymbolicElemFactory;
  * </mrow>
  * </math> is the ordinary derivative.
  * 
- * 
- * <P> See http://en.wikipedia.org/wiki/Maxwell%27s_equations_in_curved_spacetime
+ * <P>
+ * <P> See <A href="http://en.wikipedia.org/wiki/Maxwell%27s_equations_in_curved_spacetime">http://en.wikipedia.org/wiki/Maxwell%27s_equations_in_curved_spacetime</A>
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

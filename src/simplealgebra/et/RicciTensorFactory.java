@@ -71,6 +71,9 @@ import simplealgebra.symbolic.SymbolicElemFactory;
  * </mrow>
  * </math> term is the Riemann tensor.
  * 
+ * <P>
+ * <P> See <A href="http://en.wikipedia.org/wiki/Ricci_curvature">http://en.wikipedia.org/wiki/Ricci_curvature</A>
+ * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
  * @author thorngreen

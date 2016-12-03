@@ -38,8 +38,8 @@ import simplealgebra.symbolic.SymbolicElem;
 /**
  * Factory for the square of the speed of light added to some other potential term.
  * 
- * 
- * http://physics.stackexchange.com/questions/33950/what-is-the-equation-of-the-gravitational-potential-in-general-relativity
+ * <P>
+ * <P> See <A href="http://physics.stackexchange.com/questions/33950/what-is-the-equation-of-the-gravitational-potential-in-general-relativity">http://physics.stackexchange.com/questions/33950/what-is-the-equation-of-the-gravitational-potential-in-general-relativity</A>
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

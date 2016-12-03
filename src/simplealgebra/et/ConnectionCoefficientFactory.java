@@ -133,8 +133,8 @@ import simplealgebra.symbolic.SymbolicElemFactory;
  * </mrow>
  * </math> terms refer to the inverse of the metric tensor.
  * 
- * 
- * See http://en.wikipedia.org/wiki/Levi-Civita_connection
+ * <P>
+ * <P> See <A href="http://en.wikipedia.org/wiki/Levi-Civita_connection">http://en.wikipedia.org/wiki/Levi-Civita_connection</A>
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

@@ -103,8 +103,8 @@ import simplealgebra.symbolic.SymbolicElemFactory;
  * </math> is the Ricci tensor.
  *
  *
- *
- * See http://en.wikipedia.org/wiki/Einstein_tensor
+ * <P>
+ * <P> See <A href="http://en.wikipedia.org/wiki/Einstein_tensor">http://en.wikipedia.org/wiki/Einstein_tensor</A>
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

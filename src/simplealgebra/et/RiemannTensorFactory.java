@@ -118,7 +118,7 @@ import simplealgebra.symbolic.SymbolicElemFactory;
  * <mrow>
  *  <mi>&Gamma;</mi>
  * </mrow>
- * </math> terms are connection coefficients. See http://en.wikipedia.org/wiki/Einstein%E2%80%93Hilbert_action
+ * </math> terms are connection coefficients. See <A href="http://en.wikipedia.org/wiki/Einstein%E2%80%93Hilbert_action">http://en.wikipedia.org/wiki/Einstein%E2%80%93Hilbert_action</A>
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

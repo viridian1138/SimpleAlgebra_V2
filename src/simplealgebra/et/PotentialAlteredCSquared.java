@@ -40,7 +40,7 @@ import simplealgebra.symbolic.SymbolicElemFactory;
 /**
  * Factory for generating the speed of light squared plus a potential term as
  * described in:
- * http://physics.stackexchange.com/questions/33950/what-is-the-equation-of-the-gravitational-potential-in-general-relativity
+ * <A href="http://physics.stackexchange.com/questions/33950/what-is-the-equation-of-the-gravitational-potential-in-general-relativity">http://physics.stackexchange.com/questions/33950/what-is-the-equation-of-the-gravitational-potential-in-general-relativity</A>
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

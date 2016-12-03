@@ -48,7 +48,8 @@ import simplealgebra.symbolic.SymbolicElemFactory;
 /**
  * Symbolic elem for the trace of a rank-two tensor.
  * 
- * See https://en.wikipedia.org/wiki/Trace_(linear_algebra)
+ * <P>
+ * <P> See <A href="https://en.wikipedia.org/wiki/Trace_(linear_algebra)">https://en.wikipedia.org/wiki/Trace_(linear_algebra)</A>
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

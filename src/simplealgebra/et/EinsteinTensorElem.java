@@ -63,10 +63,10 @@ import simplealgebra.symbolic.SymbolicElem.EVAL_MODE;
  * Note that not all elements in the einstein summation convention are tensors in that not all elements in 
  * the einstein summation convention are coordinate-independent.  However, the definitions in this class 
  * can represent any sum or product in the einstein summation convention.
- * 
- * See http://en.wikipedia.org/wiki/tensor
- * 
- * See http://en.wikipedia.org/wiki/Einstein_Notation
+ * <P>
+ * <P> See <A href="http://en.wikipedia.org/wiki/tensor">http://en.wikipedia.org/wiki/tensor</A>
+ * <P>
+ * <P> See <A href="http://en.wikipedia.org/wiki/Einstein_Notation">http://en.wikipedia.org/wiki/Einstein_Notation</A>
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

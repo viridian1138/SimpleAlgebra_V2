@@ -66,6 +66,9 @@ import simplealgebra.symbolic.SymbolicElemFactory;
  * </mrow>
  * </math> term is the Ricci tensor.
  * 
+ * <P>
+ * <P> See <A href="http://en.wikipedia.org/wiki/Scalar_curvature">http://en.wikipedia.org/wiki/Scalar_curvature</A>
+ * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
  * @author thorngreen
