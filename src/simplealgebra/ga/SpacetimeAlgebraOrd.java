@@ -40,6 +40,9 @@ import simplealgebra.NumDimensions;
 /**
  * Defines multiplication rules for Spacetime Algebra.
  * 
+ * <P>
+ * <P> See <A href="http://en.wikipedia.org/wiki/Spacetime_algebra">http://en.wikipedia.org/wiki/Spacetime_algebra</A>
+ * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
  * @author thorngreen

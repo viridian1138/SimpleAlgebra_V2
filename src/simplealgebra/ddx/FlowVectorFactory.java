@@ -36,7 +36,8 @@ import simplealgebra.symbolic.SymbolicElem;
 /**
  * Factory for mapping a flow vector to its set of components.
  * 
- * See <A href="http://en.wikipedia.org/wiki/Flow_velocity">http://en.wikipedia.org/wiki/Flow_velocity</A>
+ * <P>
+ * <P> See <A href="http://en.wikipedia.org/wiki/Flow_velocity">http://en.wikipedia.org/wiki/Flow_velocity</A>
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

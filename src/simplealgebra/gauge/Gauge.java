@@ -40,7 +40,8 @@ import simplealgebra.symbolic.SymbolicElem;
 /**
  * Factory for returning the components of a gauge.
  * 
- * See http://en.wikipedia.org/wiki/Gauge_fixing
+ * <P>
+ * <P> See <A href="http://en.wikipedia.org/wiki/Gauge_fixing">http://en.wikipedia.org/wiki/Gauge_fixing</A>
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

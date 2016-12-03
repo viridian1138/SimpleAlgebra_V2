@@ -56,6 +56,9 @@ import simplealgebra.symbolic.SymbolicElemFactory;
  * </mrow>
  * </math> over multivectors.
  * 
+ * <P>
+ * <P> See <A href="http://en.wikipedia.org/wiki/Dot_product">http://en.wikipedia.org/wiki/Dot_product</A>
+ * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
  * @author thorngreen

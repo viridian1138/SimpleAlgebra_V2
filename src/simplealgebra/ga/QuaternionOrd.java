@@ -41,6 +41,9 @@ import simplealgebra.NumDimensions;
 /**
  * Defines multiplication rules for a quaternion algebra.
  * 
+ * <P>
+ * <P> See <A href="http://en.wikipedia.org/wiki/Quaternion">http://en.wikipedia.org/wiki/Quaternion</A>
+ * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
  * @author thorngreen

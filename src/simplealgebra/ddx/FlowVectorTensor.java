@@ -55,7 +55,8 @@ import simplealgebra.symbolic.SymbolicElemFactory;
 /**
  * Implements a tensor for a flow vector.
  * 
- * See <A href="http://en.wikipedia.org/wiki/Flow_velocity">http://en.wikipedia.org/wiki/Flow_velocity</A>
+ * <P>
+ * <P> See <A href="http://en.wikipedia.org/wiki/Flow_velocity">http://en.wikipedia.org/wiki/Flow_velocity</A>
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

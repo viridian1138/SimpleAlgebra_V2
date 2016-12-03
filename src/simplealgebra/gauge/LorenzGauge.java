@@ -61,7 +61,8 @@ import simplealgebra.symbolic.SymbolicElemFactory;
  * </mrow>
  * </math>
  * 
- * <P> See http://en.wikipedia.org/wiki/Lorenz_gauge_condition
+ * <P>
+ * <P> See <A href="http://en.wikipedia.org/wiki/Lorenz_gauge_condition">http://en.wikipedia.org/wiki/Lorenz_gauge_condition</A>
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 

@@ -71,6 +71,9 @@ import simplealgebra.symbolic.SymbolicElem.EVAL_MODE;
  * A sparse representation of an elem similar to a Geometric Algebra multivector.  The precise
  * elem that is produced depends on the Ord.
  * 
+ * <P>
+ * <P> See <A href="http://en.wikipedia.org/wiki/Geometric_algebra">http://en.wikipedia.org/wiki/Geometric_algebra</A>
+ * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
  * @author thorngreen

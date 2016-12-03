@@ -54,7 +54,7 @@ import simplealgebra.symbolic.SymbolicElemFactory;
  *   <mo>*</mo>
  *   <mi>B</mi>
  * </mrow>
- * </math> over multivectors.
+ * </math> over multivectors.  See "Geometric Algebra for Computer Scientists" by L. Dorst.
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
