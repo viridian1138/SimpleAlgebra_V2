@@ -145,17 +145,18 @@ public class TestStelemC_DR extends TestCase {
 	/**
 	 * The number of discretizations on the T-Axis over which to iterate.
 	 */
-	protected static final int NUM_T_ITER = 400;
+	protected static final int NUM_T_ITER = IterConstants.LRG_ITER_T;
 	
 	/**
 	 * The number of discretizations on the X-Axis over which to iterate.
 	 */
-	protected static final int NUM_X_ITER = 200;
+	protected static final int NUM_X_ITER = IterConstants.LRG_ITER_X;
 	
 	/**
 	 * The number of discretizations on the Y-Axis over which to iterate.
 	 */
-	protected static final int NUM_Y_ITER = 200;
+	protected static final int NUM_Y_ITER = IterConstants.LRG_ITER_Y;
+	
 	
 	
 	

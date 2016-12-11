@@ -199,22 +199,22 @@ public class TestSchrodingerSpt_DR extends TestCase {
 	/**
 	 * The number of discretizations on the T-Axis over which to iterate.
 	 */
-	protected static final int NUM_T_ITER = 20;
+	protected static final int NUM_T_ITER = IterConstants.LRG_ITER_T;
 	
 	/**
 	 * The number of discretizations on the X-Axis over which to iterate.
 	 */
-	protected static final int NUM_X_ITER = 25;
+	protected static final int NUM_X_ITER = IterConstants.LRG_ITER_X;
 	
 	/**
 	 * The number of discretizations on the Y-Axis over which to iterate.
 	 */
-	protected static final int NUM_Y_ITER = 10;
+	protected static final int NUM_Y_ITER = IterConstants.LRG_ITER_Y;
 	
 	/**
 	 * The number of discretizations on the Z-Axis over which to iterate.
 	 */
-	protected static final int NUM_Z_ITER = 10;
+	protected static final int NUM_Z_ITER = IterConstants.LRG_ITER_Z;
 	
 	
 	
