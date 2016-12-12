@@ -241,17 +241,17 @@ public class TestSchrodingerNA_DR extends TestCase {
 	/**
 	 * The number of discretizations on the X-Axis over which to iterate.
 	 */
-	protected static final int NUM_X_ITER = 25;
+	protected static final int NUM_X_ITER = IterConstants.LRG_ITER_X; // 25
 	
 	/**
 	 * The number of discretizations on the Y-Axis over which to iterate.
 	 */
-	protected static final int NUM_Y_ITER = 10;
+	protected static final int NUM_Y_ITER = IterConstants.LRG_ITER_Y; // 10
 	
 	/**
 	 * The number of discretizations on the Z-Axis over which to iterate.
 	 */
-	protected static final int NUM_Z_ITER = 10;
+	protected static final int NUM_Z_ITER = IterConstants.LRG_ITER_Z; // 10
 	
 	
 	
