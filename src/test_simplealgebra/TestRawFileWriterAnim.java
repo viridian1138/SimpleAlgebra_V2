@@ -70,25 +70,28 @@ public class TestRawFileWriterAnim extends TestCase {
 		
 		
 		
+		
 		/**
 		 * The number of discretizations on the T-Axis.
 		 */
-		protected static final int NUM_T_ITER = 400;
+		protected static final int NUM_T_ITER = IterConstants.LRG_ITER_T;
 		
 		/**
 		 * The number of discretizations on the X-Axis.
 		 */
-		protected static final int NUM_X_ITER = 200;
+		protected static final int NUM_X_ITER = IterConstants.LRG_ITER_X;
 		
 		/**
 		 * The number of discretizations on the Y-Axis.
 		 */
-		protected static final int NUM_Y_ITER = 200;
+		protected static final int NUM_Y_ITER = IterConstants.LRG_ITER_Y;
 		
 		/**
 		 * The number of discretizations on the Z-Axis.
 		 */
-		protected static final int NUM_Z_ITER = 200;
+		protected static final int NUM_Z_ITER = IterConstants.LRG_ITER_Z;
+		
+
 		
 		
 		/**
