@@ -45,6 +45,11 @@ public class IterConstants
 	public static final boolean LRG_ITER_SW = false;
 	
 	/**
+	 * Controls whether to use a larger T-Axis iteration count.
+	 */
+	public static final boolean USE_LARGER_LRG_T = true;
+	
+	/**
 	 * The number of discretizations on the X-Axis over which to iterate.
 	 */
 	public static final int LRG_ITER_X = LRG_ITER_SW ? 200 : 20;
@@ -62,7 +67,8 @@ public class IterConstants
 	/**
 	 * The number of discretizations on the T-Axis over which to iterate.
 	 */
-	public static final int LRG_ITER_T = LRG_ITER_SW ? 200 : 40; // 400
+	public static final int LRG_ITER_T = LRG_ITER_SW ? 
+			( USE_LARGER_LRG_T ? 400 : 200 ) : 40; // 400
 	
 			
 }

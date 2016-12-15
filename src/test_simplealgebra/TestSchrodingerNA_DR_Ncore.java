@@ -241,7 +241,7 @@ public class TestSchrodingerNA_DR_Ncore extends TestCase {
 	/**
 	 * The number of discretizations on the T-Axis over which to iterate.
 	 */
-	protected static final int NUM_T_ITER = 400;
+	protected static final int NUM_T_ITER = IterConstants.LRG_ITER_T; // 400;
 	
 	/**
 	 * The number of discretizations on the X-Axis over which to iterate.
