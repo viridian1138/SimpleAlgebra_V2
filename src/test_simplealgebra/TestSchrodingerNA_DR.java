@@ -377,7 +377,7 @@ public class TestSchrodingerNA_DR extends TestCase {
 	/**
 	 * Indicates whether a form of nonlinear numerical viscosity should be used while iterating.
 	 */
-	protected static final boolean APPLY_NUMERICAL_VISCOSITY = false;
+	protected static final boolean APPLY_NUMERICAL_VISCOSITY = true;
 	
 	
 	
@@ -567,7 +567,7 @@ public class TestSchrodingerNA_DR extends TestCase {
 	/**
 	 * Size of change below which numerical viscosity isn't applied.
 	 */
-	final static double NUMERICAL_VISCOSITY_EXIT_CUTOFF = 1E-5;
+	final static double NUMERICAL_VISCOSITY_EXIT_CUTOFF = 10000.0;
 	
 	
 	
@@ -2648,7 +2648,7 @@ public class TestSchrodingerNA_DR extends TestCase {
 			for( long acnt = 0 ; acnt < ( (long) NUM_X_ITER ) * NUM_Y_ITER * NUM_Z_ITER ; acnt++ )
 			{
 				atm2 = System.currentTimeMillis();
-				if( atm2 - atm >= 1000 )
+				if( atm2 - atm >= IterConstants.INIT_UPDATE_DELAY )
 				{
 					System.out.println( ">> " + acnt );
 					atm = atm2;

@@ -246,17 +246,17 @@ public class TestSchrodingerNA_DR_Ncore extends TestCase {
 	/**
 	 * The number of discretizations on the X-Axis over which to iterate.
 	 */
-	protected static final int NUM_X_ITER = IterConstants.LRG_ITER_X; // 25
+	protected static final int NUM_X_ITER = 50; // IterConstants.LRG_ITER_X; // 25
 	
 	/**
 	 * The number of discretizations on the Y-Axis over which to iterate.
 	 */
-	protected static final int NUM_Y_ITER = IterConstants.LRG_ITER_Y; // 10
+	protected static final int NUM_Y_ITER = 50; // IterConstants.LRG_ITER_Y; // 10
 	
 	/**
 	 * The number of discretizations on the Z-Axis over which to iterate.
 	 */
-	protected static final int NUM_Z_ITER = IterConstants.LRG_ITER_Z; // 10
+	protected static final int NUM_Z_ITER = 50; // IterConstants.LRG_ITER_Z; // 10
 	
 	
 	
@@ -382,7 +382,7 @@ public class TestSchrodingerNA_DR_Ncore extends TestCase {
 	/**
 	 * Indicates whether a form of nonlinear numerical viscosity should be used while iterating.
 	 */
-	protected static final boolean APPLY_NUMERICAL_VISCOSITY = false;
+	protected static final boolean APPLY_NUMERICAL_VISCOSITY = true;
 	
 	
 	
@@ -577,7 +577,7 @@ public class TestSchrodingerNA_DR_Ncore extends TestCase {
 	/**
 	 * Size of change below which numerical viscosity isn't applied.
 	 */
-	final static double NUMERICAL_VISCOSITY_EXIT_CUTOFF = 1E-5;
+	final static double NUMERICAL_VISCOSITY_EXIT_CUTOFF = 10000.0;
 	
 	
 	
@@ -2856,7 +2856,7 @@ public class TestSchrodingerNA_DR_Ncore extends TestCase {
 			for( long acnt = 0 ; acnt < ( (long) NUM_X_ITER ) * NUM_Y_ITER * NUM_Z_ITER ; acnt++ )
 			{
 				atm2 = System.currentTimeMillis();
-				if( atm2 - atm >= 1000 )
+				if( atm2 - atm >= IterConstants.INIT_UPDATE_DELAY )
 				{
 					System.out.println( ">> " + acnt );
 					atm = atm2;
@@ -2897,7 +2897,6 @@ public class TestSchrodingerNA_DR_Ncore extends TestCase {
 	 *
 	 */
 	protected static class IncrementManager
-		// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! Lots Of Work Still Needed Here !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	{
 		/**
 		 * The thread context for the iterations.
@@ -3335,10 +3334,9 @@ public class TestSchrodingerNA_DR_Ncore extends TestCase {
 						{
 			
 							atm2 = System.currentTimeMillis();
-							if( atm2 - atm >= 1000 )
+							if( atm2 - atm >= IterConstants.ITER_UPDATE_DELAY )
 							{
-								// System.out.println( ">> " + tval + " / " + im.getXcnt() + " / " + im.getYcnt() + " / " + im.getZcnt() );
-									// !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+								System.out.println( ">> " + tval + " / " + im.getXcnt() + " / " + im.getYcnt() + " / " + im.getZcnt() );
 								atm = atm2;
 							}
 			
@@ -3359,10 +3357,10 @@ public class TestSchrodingerNA_DR_Ncore extends TestCase {
 			
 							ComplexElem<DoubleElem, DoubleElemFactory> err = newton.eval( implicitSpace2 );
 							
-							// if( APPLY_NUMERICAL_VISCOSITY )
-							// {
-							//	threadContext.applyNumericViscosity();
-							// }
+							if( APPLY_NUMERICAL_VISCOSITY )
+							{
+								threadContext.applyNumericViscosity();
+							}
 			
 			
 							//if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )

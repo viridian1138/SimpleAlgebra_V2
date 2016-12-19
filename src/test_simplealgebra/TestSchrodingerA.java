@@ -2579,7 +2579,7 @@ public class TestSchrodingerA extends TestCase {
 			for( long acnt = 0 ; acnt < ( (long) NUM_X_ITER ) * NUM_Y_ITER * NUM_Z_ITER ; acnt++ )
 			{
 				atm2 = System.currentTimeMillis();
-				if( atm2 - atm >= 1000 )
+				if( atm2 - atm >= IterConstants.INIT_UPDATE_DELAY )
 				{
 					System.out.println( ">> " + acnt );
 					atm = atm2;

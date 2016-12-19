@@ -69,6 +69,16 @@ public class IterConstants
 	 */
 	public static final int LRG_ITER_T = LRG_ITER_SW ? 
 			( USE_LARGER_LRG_T ? 400 : 200 ) : 40; // 400
+			
+	/**
+	 * Delay in ms between printed iteration updates.		
+	 */
+	public static final int ITER_UPDATE_DELAY = 15000;
+	
+	/**
+	 * Delay in ms between initialization updates.
+	 */
+	public static final int INIT_UPDATE_DELAY = 2000;
 	
 			
 }

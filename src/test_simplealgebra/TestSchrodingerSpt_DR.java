@@ -3064,7 +3064,7 @@ public class TestSchrodingerSpt_DR extends TestCase {
 		{
 			
 			atm2 = System.currentTimeMillis();
-			if( atm2 - atm >= 1000 )
+			if( atm2 - atm >= IterConstants.ITER_UPDATE_DELAY )
 			{
 				System.out.println( ">> " + tval + " / " + im.getXcnt() + " / " + im.getYcnt() + " / " + im.getZcnt() );
 				atm = atm2;
@@ -3192,7 +3192,7 @@ public class TestSchrodingerSpt_DR extends TestCase {
 			for( long acnt = 0 ; acnt < ( (long) NUM_X_ITER ) * NUM_Y_ITER * NUM_Z_ITER ; acnt++ )
 			{
 				atm2 = System.currentTimeMillis();
-				if( atm2 - atm >= 1000 )
+				if( atm2 - atm >= IterConstants.INIT_UPDATE_DELAY )
 				{
 					System.out.println( ">> " + acnt );
 					atm = atm2;
