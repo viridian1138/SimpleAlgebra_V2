@@ -567,7 +567,7 @@ public class TestSchrodingerNA_DR_Ncore extends TestCase {
 	/**
 	 * Approximate maximum change allowed by nonlinear viscosity.
 	 */
-	final static double MAX_CHG = 0.05;
+	final static double MAX_CHG = 10000.0;
 	
 	/**
 	 * Multiplicative inverse of MAX_CHG.
@@ -577,7 +577,7 @@ public class TestSchrodingerNA_DR_Ncore extends TestCase {
 	/**
 	 * Size of change below which numerical viscosity isn't applied.
 	 */
-	final static double NUMERICAL_VISCOSITY_EXIT_CUTOFF = 10000.0;
+	final static double NUMERICAL_VISCOSITY_EXIT_CUTOFF = 20.0;
 	
 	
 	
