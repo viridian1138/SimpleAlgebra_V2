@@ -1,0 +1,88 @@
+
+
+//$$strtCprt
+//
+// Simple Algebra 
+// 
+// Copyright (C) 2014 Thornton Green
+// 
+// This program is free software; you can redistribute it and/or modify it under the terms of the GNU General Public License as
+// published by the Free Software Foundation; either version 3 of the License, or (at your option) any later version.
+// This program is distributed in the hope that it will be useful, but WITHOUT ANY WARRANTY; without even the implied warranty 
+// of MERCHANTABILITY or FITNESS FOR A PARTICULAR PURPOSE. See the GNU General Public License for more details.
+// You should have received a copy of the GNU General Public License along with this program; if not, 
+// see <http://www.gnu.org/licenses>.
+// Additional permission under GNU GPL version 3 section 7
+//
+//
+//$$endCprt
+
+package test_simplealgebra.sort_test
+
+
+
+
+import java.lang.Comparable;
+import simplealgebra.DoubleElem;
+import simplealgebra.symbolic.DroolsSession;
+import test_simplealgebra.sort_test.SortNode;
+import test_simplealgebra.sort_test.SortReng;
+import test_simplealgebra.sort_test.SortPlaceholder;
+
+
+
+
+
+
+rule "Apply Placeholder"
+     when
+          r0 : SortReng( )
+          p : SortPlaceholder( elem == r0.getStrt() )
+     then
+          // System.out.println( "Apply Placeholder" );
+          modify( p ){ setElem( r0.getEnd() ) };
+end
+
+
+
+
+
+
+
+rule "Apply SortNode"
+     when
+          r0 : SortReng( )
+          p : SortNode( next == r0.getStrt() )
+          not( SortReng( strt == p ) )
+          rend : SortNode() from r0.getEnd()
+          ds : DroolsSession()
+     then
+          // System.out.println( "Apply SortNode" );
+          insert( new SortReng( p , p.applyReng( rend , ds ) ) );
+end
+
+
+
+
+
+
+
+rule "Compare And Sort"
+     when
+          p0 : SortNode( )
+          p1 : SortNode( ) from p0.next;
+          not( SortReng( strt == p0 ) )
+          not( SortReng( strt == p1 ) )
+          ds : DroolsSession()
+          eval( p0.compareTo( p1 ) > 0 );
+     then
+          // System.out.println( "Compare And Sort " + p0.sortValue );
+          insert( new SortReng( p0 , p0.applySort( p1 , ds ) ) );
+end
+
+
+
+
+
+
+
