@@ -32,13 +32,13 @@ import simplealgebra.symbolic.DroolsSession;
 
 /**
  * Serves as a placeholder for a SortNode as part of TestSort.
+ * Uses Drools ( <A href="http://drools.org">http://drools.org</A> ).
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
  * @author thorngreen
  *
- * @param <R> The enclosed type.
- * @param <S> The factory for the enclosed type.
+ * @param <R> The comparable type of the sort nodes.
  */
 public class SortPlaceholder<R extends Comparable<?>>
 {

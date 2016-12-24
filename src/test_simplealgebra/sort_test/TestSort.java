@@ -47,8 +47,10 @@ import junit.framework.TestCase;
 
 
 /**
- * Tests whether Drools constructs a sorting algorithm from a set of heuristics.
+ * Verifies that Drools ( <A href="http://drools.org">http://drools.org</A> ) constructs a sorting algorithm from a set of heuristics.
  * Note: this is only intended to be notional, and one should use something different when efficient execution is desired.
+ * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
  * @author tgreen
  *
@@ -58,7 +60,7 @@ public class TestSort extends TestCase {
 
 	
 	/**
-	 * Tests whether Drools constructs a sorting algorithm from a set of heuristics.
+	 * Verifies that Drools ( <A href="http://drools.org">http://drools.org</A> ) constructs a sorting algorithm from a set of heuristics.
 	 * Note: this is only intended to be notional, and one should use something different when efficient execution is desired.
 	 */
 	public void testSort()

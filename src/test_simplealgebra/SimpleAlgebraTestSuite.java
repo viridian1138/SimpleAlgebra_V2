@@ -24,6 +24,7 @@
 
 package test_simplealgebra;
 
+import test_simplealgebra.sort_test.TestSort;
 import junit.framework.Test;
 import junit.framework.TestSuite;
 import junit.textui.TestRunner;
@@ -124,6 +125,7 @@ public class SimpleAlgebraTestSuite extends TestSuite {
 		s.addTestSuite( TestDeterminantAsWedge.class );
 		s.addTestSuite( TestCplxLn.class );
 		s.addTestSuite( TestMatrixLnSimple.class );
+		s.addTestSuite( TestSort.class );
 		return( s );
 	}
 	

@@ -30,10 +30,24 @@ package test_simplealgebra.sort_test;
 import simplealgebra.symbolic.DroolsSession;
 
 
-
+/**
+ * Single node to be sorted in a list of nodes as part of TestSort.
+ * Uses Drools ( <A href="http://drools.org">http://drools.org</A> ).
+ * 
+ * This documentation should be viewed using Firefox version 33.1.1 or above.
+ * 
+ * @author tgreen
+ *
+ * @param <R> The comparable type of the sort nodes.
+ */
 public class SortNode<R extends Comparable<?> > implements Comparable<SortNode<R>> {
 	
 	
+	/**
+	 * Constructs the sorting node.
+	 * @param _sortValue The value represented by the node.
+	 * @param _next The next node in the list.
+	 */
 	public SortNode( R _sortValue , SortNode<R> _next )
 	{
 		sortValue = _sortValue;
@@ -41,6 +55,12 @@ public class SortNode<R extends Comparable<?> > implements Comparable<SortNode<R
 	}
 
 	
+	/**
+	 * Applies the sorting of adjacent nodes.
+	 * @param p1 The previous adjacent node.
+	 * @param ds The rule session.
+	 * @return The new sort node.
+	 */
 	public SortNode<R> applySort( SortNode<R> p1 , DroolsSession ds )
 	{
 		SortNode<R> p1p = new SortNode<R>( sortValue , p1.next );
@@ -51,6 +71,12 @@ public class SortNode<R extends Comparable<?> > implements Comparable<SortNode<R
 	}
 	
 	
+	/**
+	 * Applies Drools ( <A href="http://drools.org">http://drools.org</A> ) a rule engine node update.
+	 * @param nxt The new next node.
+	 * @param ds The rule session.
+	 * @return The new sort node.
+	 */
 	public SortNode<R> applyReng( SortNode<R> nxt , DroolsSession ds )
 	{
 		SortNode<R> p0 = new SortNode<R>( sortValue , nxt );
@@ -59,9 +85,15 @@ public class SortNode<R extends Comparable<?> > implements Comparable<SortNode<R
 	}
 	
 	
-	public R sortValue = null;
+	/**
+	 * The value being sorted.
+	 */
+	protected R sortValue = null;
 	
 	
+	/**
+	 * The next value in the list.  Kept public so that Drools ( <A href="http://drools.org">http://drools.org</A> ) can have direct access.
+	 */
 	public SortNode<R> next = null;
 
 
