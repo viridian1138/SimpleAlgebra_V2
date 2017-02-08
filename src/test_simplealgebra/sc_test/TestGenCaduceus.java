@@ -53,22 +53,49 @@ import test_simplealgebra.TestDimensionThree;
 public class TestGenCaduceus extends TestCase {
 	
 	
+	/**
+	 * The length pf the coil.
+	 */
 	public static final DoubleElem SHELL_LENGTH = new DoubleElem( 100.0 );
 	
+	/**
+	 * The radius of the outer shell of the coil.
+	 */
 	public static final DoubleElem OUTER_SHELL_RADIUS = new DoubleElem( 0.25 * ( SHELL_LENGTH.getVal() ) );
 	
+	/**
+	 * The radius of the inner shell of the coil.
+	 */
 	public static final DoubleElem INNER_SHELL_RADIUS = new DoubleElem( 0.20 * ( SHELL_LENGTH.getVal() ) );
 
+	/**
+	 * The radius of small spheres used to build convex hulls.
+	 */
 	public static final DoubleElem HULL_SPHERE_RADIUS = new DoubleElem( 0.0001 );
 	
+	/**
+	 * The radius of the winding pulled from the outside of the coil.
+	 */
 	public static final DoubleElem WINDING_GROOVE_RADIUS = new DoubleElem( 1.5 );
 	
+	/**
+	 * The number of windings for the coil.
+	 */
 	public static final int NUM_WINDINGS = 10;
 	
+	/**
+	 * The constant PI.
+	 */
 	public static final DoubleElem PI = new DoubleElem( Math.PI );
 	
+	/**
+	 * The constant 2.0.
+	 */
 	public static final DoubleElem TWO = new DoubleElem( Math.PI );
 	
+	/**
+	 * The number of vertices around which to rotate 360 degrees.
+	 */
 	public static final int MAX_ROT_DIVISIONS = 360;
 	
 	
