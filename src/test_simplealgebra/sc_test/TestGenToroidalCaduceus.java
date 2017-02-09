@@ -43,7 +43,7 @@ import test_simplealgebra.TestDimensionThree;
 
 
 /**
- * Tests the ability to produce rotations to generate an OpenSCAD caduceus coil form.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
+ * Tests the ability to produce rotations to generate an OpenSCAD toroidal caduceus coil form.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
@@ -54,16 +54,17 @@ public class TestGenToroidalCaduceus extends TestCase {
 	
 	
 	/**
-	 * The radius of the outer shell of the coil.
+	 * The radius of the larger circle of the toroid.
 	 */
 	public static final DoubleElem OUTER_SHELL_RADIUS = new DoubleElem( 100.0 );
 	
-	
+	/**
+	 * The radius of the smaller circle of the toroid.
+	 */
 	public static final DoubleElem INNER_TORUS_RADIUS = new DoubleElem( 0.125 * ( OUTER_SHELL_RADIUS.getVal() ) );
 	
-	
 	/**
-	 * The radius of the inner shell of the coil.
+	 * The radius of the hollow inner shell of the coil.
 	 */
 	public static final DoubleElem INNER_SHELL_RADIUS = new DoubleElem( 0.04 * ( OUTER_SHELL_RADIUS.getVal() ) );
 
@@ -149,6 +150,12 @@ public class TestGenToroidalCaduceus extends TestCase {
 	
 	
 	
+	/**
+	 * Generates a spinor with bivectors along X-Y.
+	 * @param fac The multivector factory.
+	 * @param rval The radian angle of the spin.
+	 * @return The generated spinor.
+	 */
 	protected GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> genSpinA(
 			final GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> fac ,
 			final DoubleElem rval )
@@ -166,6 +173,12 @@ public class TestGenToroidalCaduceus extends TestCase {
 	
 	
 	
+	/**
+	 * Generates the derivative of a spinor with bivectors along X-Y.
+	 * @param fac The multivector factory.
+	 * @param rval The radian angle of the spin.
+	 * @return The generated spinor derivative.
+	 */
 	protected GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> genSpinA2(
 			final GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> fac ,
 			final DoubleElem rval )
@@ -185,6 +198,13 @@ public class TestGenToroidalCaduceus extends TestCase {
 	
 	
 	
+	/**
+	 * Generates a spinor.
+	 * @param tvDot Unit vector perpendicular to the spin bivector.
+	 * @param fac Multivector factory.
+	 * @param rvalD The radian angle of the spin.
+	 * @return The generated spinor.
+	 */
 	protected GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> genSpinB(
 			final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> tvDot ,
 			final GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> fac ,
@@ -199,6 +219,12 @@ public class TestGenToroidalCaduceus extends TestCase {
 	
 	
 	
+	/**
+	 * Generates a vector along the X-Axis.
+	 * @param fac Multivector factory.
+	 * @param rval The value of the vector.
+	 * @return The generated vector.
+	 */
 	protected GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> genXval(
 			final GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> fac ,
 			final DoubleElem rval )
@@ -213,6 +239,12 @@ public class TestGenToroidalCaduceus extends TestCase {
 	
 	
 	
+	/**
+	 * Generates a vector along the Y-Axis.
+	 * @param fac Multivector factory.
+	 * @param rval The value of the vector.
+	 * @return The generated vector.
+	 */
 	protected GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> genYval(
 			final GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> fac ,
 			final DoubleElem rval )
@@ -226,7 +258,12 @@ public class TestGenToroidalCaduceus extends TestCase {
 	}
 	
 	
-	
+	/**
+	 * Generates a scalar.
+	 * @param fac Multivector factory.
+	 * @param rval The value of the scalar.
+	 * @return The generated scalar.
+	 */
 	protected GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> genVal(
 			final GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> fac ,
 			final DoubleElem rval )
@@ -240,6 +277,12 @@ public class TestGenToroidalCaduceus extends TestCase {
 	
 	
 	
+	/**
+	 * Generates a trivector.
+	 * @param fac The multivector factory.
+	 * @param rval The value of the trivector.
+	 * @return The generated trivector.
+	 */
 	protected GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> genIm(
 			final GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> fac ,
 			final DoubleElem rval )
@@ -258,7 +301,7 @@ public class TestGenToroidalCaduceus extends TestCase {
 	
 	
 	/**
-	 * Tests the ability to produce rotations to generate an OpenSCAD caduceus coil form.
+	 * Tests the ability to produce rotations to generate an OpenSCAD toroidal caduceus coil form.
 	 */
 	public void testGenToroidalCaduceus() throws Throwable
 	{

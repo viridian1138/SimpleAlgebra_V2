@@ -149,7 +149,12 @@ public class TestGenCaduceus extends TestCase {
 	}
 	
 	
-	
+	/**
+	 * Generates a spinor with bivectors along Y-Z.
+	 * @param fac The multivector factory.
+	 * @param rval The radian angle of the spin.
+	 * @return The generated spinor.
+	 */
 	protected GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> genSpin(
 			final GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> fac ,
 			final DoubleElem rval )
@@ -167,6 +172,12 @@ public class TestGenCaduceus extends TestCase {
 	
 	
 	
+	/**
+	 * Generates a vector along the X-Axis.
+	 * @param fac Multivector factory.
+	 * @param rval The value of the vector.
+	 * @return The generated vector.
+	 */
 	protected GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> genXval(
 			final GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> fac ,
 			final DoubleElem rval )
@@ -181,6 +192,12 @@ public class TestGenCaduceus extends TestCase {
 	
 	
 	
+	/**
+	 * Generates a vector along the Y-Axis.
+	 * @param fac Multivector factory.
+	 * @param rval The value of the vector.
+	 * @return The generated vector.
+	 */
 	protected GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> genYval(
 			final GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> fac ,
 			final DoubleElem rval )
