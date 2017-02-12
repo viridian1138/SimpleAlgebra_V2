@@ -56,7 +56,7 @@ public class TestGenToroidalCaduceus extends TestCase {
 	/**
 	 * The radius of the larger circle of the toroid.
 	 */
-	public static final DoubleElem OUTER_SHELL_RADIUS = new DoubleElem( 100.0 );
+	public static final DoubleElem OUTER_SHELL_RADIUS = new DoubleElem( 50.0 );
 	
 	/**
 	 * The radius of the smaller circle of the toroid.
@@ -81,7 +81,7 @@ public class TestGenToroidalCaduceus extends TestCase {
 	/**
 	 * The number of windings for the coil.
 	 */
-	public static final int NUM_WINDINGS = 10;
+	public static final int NUM_WINDINGS = 20;
 	
 	/**
 	 * The constant PI.
@@ -96,7 +96,12 @@ public class TestGenToroidalCaduceus extends TestCase {
 	/**
 	 * The number of vertices around which to rotate 360 degrees.
 	 */
-	public static final int MAX_ROT_DIVISIONS = 20;
+	public static final int MAX_ROT_DIVISIONS = 40;
+	
+	/**
+	 * The radius the making the windings partially recessed.
+	 */
+	public static final DoubleElem INNER_TORUS_RADIUS_RECESSED = new DoubleElem( INNER_TORUS_RADIUS.getVal() - 0.4 * ( WINDING_GROOVE_RADIUS.getVal() ) );
 	
 	
 	
@@ -519,9 +524,9 @@ public class TestGenToroidalCaduceus extends TestCase {
 				final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
 					tvC1 = genSpinB( tvBdot , fac , rvalC1 ).mult( tvB );
 				final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
-					strtC0 = tvC0.mult( genVal( fac , INNER_TORUS_RADIUS ) );
+					strtC0 = tvC0.mult( genVal( fac , INNER_TORUS_RADIUS_RECESSED ) );
 				final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
-					strtC1 = tvC1.mult( genVal( fac , INNER_TORUS_RADIUS ) );
+					strtC1 = tvC1.mult( genVal( fac , INNER_TORUS_RADIUS_RECESSED ) );
 				
 				final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
 					pt0 = strtA.add( strtC0 );
@@ -584,9 +589,9 @@ public class TestGenToroidalCaduceus extends TestCase {
 				final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
 					tvD1 = genSpinB( tvBdot , fac , rvalD1 ).mult( tvB );
 				final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
-					strtD0 = tvD0.mult( genVal( fac , INNER_TORUS_RADIUS ) );
+					strtD0 = tvD0.mult( genVal( fac , INNER_TORUS_RADIUS_RECESSED ) );
 				final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
-					strtD1 = tvD1.mult( genVal( fac , INNER_TORUS_RADIUS ) );
+					strtD1 = tvD1.mult( genVal( fac , INNER_TORUS_RADIUS_RECESSED ) );
 				
 				final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
 					pt0 = strtA.add( strtD0 );

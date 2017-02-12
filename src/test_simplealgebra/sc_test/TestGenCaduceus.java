@@ -99,6 +99,12 @@ public class TestGenCaduceus extends TestCase {
 	public static final int MAX_ROT_DIVISIONS = 360;
 	
 	
+	/**
+	 * The radius the making the windings partially recessed.
+	 */
+	public static final DoubleElem OUTER_SHELL_RADIUS_RECESSED = new DoubleElem( OUTER_SHELL_RADIUS.getVal() - 0.75 * ( WINDING_GROOVE_RADIUS.getVal() ) );
+	
+	
 	
 	/**
 	 * Writes a point in OpenSCAD format.
@@ -335,7 +341,7 @@ public class TestGenCaduceus extends TestCase {
 		
 		{
 			GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
-				yv = genYval( fac , OUTER_SHELL_RADIUS  );
+				yv = genYval( fac , OUTER_SHELL_RADIUS_RECESSED );
 			
 			for( int j = 0 ; j < MAX_ROT_DIVISIONS * NUM_WINDINGS ; j++ )
 			{
@@ -369,7 +375,7 @@ public class TestGenCaduceus extends TestCase {
 		
 		{
 			GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
-				yv = genYval( fac , OUTER_SHELL_RADIUS  );
+				yv = genYval( fac , OUTER_SHELL_RADIUS_RECESSED  );
 			
 			for( int j = 0 ; j < MAX_ROT_DIVISIONS * NUM_WINDINGS ; j++ )
 			{
