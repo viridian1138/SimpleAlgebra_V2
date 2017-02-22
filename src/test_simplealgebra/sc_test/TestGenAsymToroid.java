@@ -116,6 +116,16 @@ public class TestGenAsymToroid extends TestCase {
 		genCenterCurvePoint( GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> fac , 
 				double ua )
 	{
+		while( ua > 1.0 )
+		{
+			ua -= 1.0;
+		}
+		
+		while( ua < 0.0 )
+		{
+			ua += 1.0;
+		}
+		
 		final DoubleElem rval = new DoubleElem( 2.0 * Math.PI * ua );
 		
 		double ub = ua < 0.5 ? 2.0 * ua : 1.0 - ( 2.0 * ( ua - 0.5 ) );
@@ -173,6 +183,47 @@ public class TestGenAsymToroid extends TestCase {
 	
 	
 	
+	/**
+	 * Returns the numerical derivative of the curve center point.
+	 * @param fac Factory for creating multivectors.
+	 * @param ua The parameter from zero to one around the shape.
+	 * @param The delta for the numerical derivative.
+	 * @return The derivative.
+	 */
+	protected GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
+		genCenterCurveDerivative( GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> fac , 
+				double ua , double delta )
+	{
+		final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
+			pl = genCenterCurvePoint( fac , ua + delta );
+		final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
+			ne = genCenterCurvePoint( fac , ua - delta );
+		final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
+			xv = genVal( fac , new DoubleElem( 1.0 / ( 2.0 * delta ) ) );
+		return( ( pl.add( ne.negate() ) ).mult( xv ) );
+	}
+	
+	
+	/**
+	 * Returns the numerical unit derivative of the curve center point.
+	 * @param fac Factory for creating multivectors.
+	 * @param ua The parameter from zero to one around the shape.
+	 * @param The delta for the numerical derivative.
+	 * @return The derivative.
+	 */
+	protected GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
+		genUnitCenterCurveDerivative( GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> fac , 
+			double ua , double delta )
+	{
+		final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
+			dv = genCenterCurveDerivative( fac , ua , delta );
+		final DoubleElem d = (DoubleElem)( dv.totalMagnitude() );
+		final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
+			xv = genVal( fac , new DoubleElem( 1.0 / ( Math.sqrt( d.getVal() ) ) ) );
+		return( dv.mult( xv ) );
+	}
+	
+	
 	
 	/**
 	 * Writes a point in OpenSCAD format.
@@ -220,31 +271,6 @@ public class TestGenAsymToroid extends TestCase {
 		
 		ps.println( " ] " );
 		
-	}
-	
-	
-	
-	/**
-	 * Generates the derivative of a spinor with bivectors along X-Y.
-	 * @param fac The multivector factory.
-	 * @param rval The radian angle of the spin.
-	 * @return The generated spinor derivative.
-	 */
-	protected GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> genSpinA2(
-			final GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> fac ,
-			final DoubleElem rval )
-	{
-		GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
-			spin = fac.zero();
-		final HashSet<BigInteger> xv = new HashSet<BigInteger>();
-		xv.add( BigInteger.ZERO );
-		xv.add( BigInteger.ONE );
-		spin.setVal( xv ,  rval );
-		GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
-			vec = spin.exp( 20 );
-		spin.setVal( xv ,  new DoubleElem( 1.0 ) );
-		vec = vec.mult( spin );
-		return( vec );
 	}
 	
 	
@@ -381,10 +407,6 @@ public class TestGenAsymToroid extends TestCase {
 		{
 			final DoubleElem rvalA = new DoubleElem( 2.0 * Math.PI * j / MAX_ROT_DIVISIONS );
 			final DoubleElem rvalB = new DoubleElem( 2.0 * Math.PI * ( j + 1 ) / MAX_ROT_DIVISIONS );
-			final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
-				svAdot = genSpinA2( fac , rvalA );
-			final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
-				svBdot = genSpinA2( fac , rvalB );
 			GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
 				xvRad = genXval( fac , OUTER_SHELL_RADIUS  );
 			GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
@@ -399,7 +421,7 @@ public class TestGenAsymToroid extends TestCase {
 					final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
 						tvA = this.genCenterCurvePoint( fac , ( (double) j ) / MAX_ROT_DIVISIONS );
 					final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
-						tvAdot = svAdot.mult( xvU );
+						tvAdot = this.genUnitCenterCurveDerivative(fac, ( (double) j ) / MAX_ROT_DIVISIONS , 1.0  / ( MAX_ROT_DIVISIONS * NUM_WINDINGS ) );
 					final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
 						strtA = tvA.mult( genVal( fac , OUTER_SHELL_RADIUS ) );
 					final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
@@ -424,7 +446,7 @@ public class TestGenAsymToroid extends TestCase {
 					final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
 						tvB = this.genCenterCurvePoint( fac , ( (double) ( j + 1 ) ) / MAX_ROT_DIVISIONS );
 					final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
-						tvBdot = svBdot.mult( xvU );
+						tvBdot = this.genUnitCenterCurveDerivative(fac, ( (double) ( j + 1 ) ) / MAX_ROT_DIVISIONS , 1.0  / ( MAX_ROT_DIVISIONS * NUM_WINDINGS ) );
 					final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
 						strtB = tvB.mult( genVal( fac , OUTER_SHELL_RADIUS ) );
 					final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
@@ -455,10 +477,6 @@ public class TestGenAsymToroid extends TestCase {
 		{
 			final DoubleElem rvalA = new DoubleElem( 2.0 * Math.PI * j / MAX_ROT_DIVISIONS );
 			final DoubleElem rvalB = new DoubleElem( 2.0 * Math.PI * ( j + 1 ) / MAX_ROT_DIVISIONS );
-			final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
-				svAdot = genSpinA2( fac , rvalA );
-			final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
-				svBdot = genSpinA2( fac , rvalB );
 			GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
 				xvRad = genXval( fac , OUTER_SHELL_RADIUS  );
 			GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
@@ -473,7 +491,7 @@ public class TestGenAsymToroid extends TestCase {
 					final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
 						tvA = this.genCenterCurvePoint( fac , ( (double) j ) / MAX_ROT_DIVISIONS );
 					final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
-						tvAdot = svAdot.mult( xvU );
+						tvAdot = this.genUnitCenterCurveDerivative( fac , ( (double) j ) / MAX_ROT_DIVISIONS , 1.0  / ( MAX_ROT_DIVISIONS * NUM_WINDINGS ) );
 					final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
 						strtA = tvA.mult( genVal( fac , OUTER_SHELL_RADIUS ) );
 					final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
@@ -498,7 +516,7 @@ public class TestGenAsymToroid extends TestCase {
 					final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
 						tvB = this.genCenterCurvePoint( fac , ( (double) ( j + 1 ) ) / MAX_ROT_DIVISIONS );
 					final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
-						tvBdot = svBdot.mult( xvU );
+						tvBdot = this.genUnitCenterCurveDerivative( fac , ( (double) ( j + 1 ) ) / MAX_ROT_DIVISIONS , 1.0  / ( MAX_ROT_DIVISIONS * NUM_WINDINGS ) );
 					final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
 						strtB = tvB.mult( genVal( fac , OUTER_SHELL_RADIUS ) );
 					final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
@@ -526,13 +544,7 @@ public class TestGenAsymToroid extends TestCase {
 			{
 				final double u0 = ( (double) j ) / ( MAX_ROT_DIVISIONS * NUM_WINDINGS );
 				final double u1 = ( (double) ( j + 1 ) ) / ( MAX_ROT_DIVISIONS * NUM_WINDINGS );
-				final DoubleElem rvalA = new DoubleElem( 2.0 * Math.PI * ( (double) j ) / ( MAX_ROT_DIVISIONS * NUM_WINDINGS ) );
-				final DoubleElem rvalB =  new DoubleElem( 2.0 * Math.PI * ( (double) ( j + 1 ) ) / ( MAX_ROT_DIVISIONS * NUM_WINDINGS ) );
 				
-				final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
-					svAdot = genSpinA2( fac , rvalA );
-				final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
-					svBdot = genSpinA2( fac , rvalB );
 				GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
 					xvRad = genXval( fac , OUTER_SHELL_RADIUS  );
 				GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
@@ -546,9 +558,9 @@ public class TestGenAsymToroid extends TestCase {
 				final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
 					tvB =  this.genCenterCurvePoint( fac , u1 );
 				final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
-					tvAdot = svAdot.mult( xvU );
+					tvAdot = this.genUnitCenterCurveDerivative( fac , u0 , 1.0  / ( MAX_ROT_DIVISIONS * NUM_WINDINGS ) );
 				final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
-					tvBdot = svBdot.mult( xvU );
+					tvBdot = this.genUnitCenterCurveDerivative( fac , u1 , 1.0  / ( MAX_ROT_DIVISIONS * NUM_WINDINGS ) );
 				final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
 					strtA = tvA.mult( genVal( fac , OUTER_SHELL_RADIUS ) );
 				final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
@@ -572,7 +584,7 @@ public class TestGenAsymToroid extends TestCase {
 				ps.print( "translate( " ); writePoint( false , pt0 , ps ); ps.println( " ) sphere( r=" + ( WINDING_GROOVE_RADIUS.getVal() ) + " ); " );
 				ps.print( "translate( " ); writePoint( false , pt1 , ps ); ps.println( " ) sphere( r=" + ( WINDING_GROOVE_RADIUS.getVal() ) + " ); " );
 				
-				ps.println( "}" ); // Hull
+				ps.println( "}" ); 
 			}
 		}
 		
@@ -587,56 +599,49 @@ public class TestGenAsymToroid extends TestCase {
 			{
 				final double u0 = ( (double) j ) / ( MAX_ROT_DIVISIONS * NUM_WINDINGS );
 				final double u1 = ( (double) ( j + 1 ) ) / ( MAX_ROT_DIVISIONS * NUM_WINDINGS );
-				final DoubleElem rvalA = new DoubleElem( 2.0 * Math.PI * ( (double) j ) / ( MAX_ROT_DIVISIONS * NUM_WINDINGS ) );
-				final DoubleElem rvalB =  new DoubleElem( 2.0 * Math.PI * ( (double) ( j + 1 ) ) / ( MAX_ROT_DIVISIONS * NUM_WINDINGS ) );
 				
-				final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
-					svAdot = genSpinA2( fac , rvalA );
-				final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
-					svBdot = genSpinA2( fac , rvalB );
 				GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
 					xvRad = genXval( fac , OUTER_SHELL_RADIUS  );
 				GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
 					xvU = genXval( fac , new DoubleElem( 1.0 ) );
 				
 				
-				final DoubleElem rvalD0 = new DoubleElem( -2.0 * Math.PI * j / MAX_ROT_DIVISIONS );
-				final DoubleElem rvalD1 = new DoubleElem( -2.0 * Math.PI * ( j + 1 ) / MAX_ROT_DIVISIONS );
+				final DoubleElem rvalC0 = new DoubleElem( - 2.0 * Math.PI * j / MAX_ROT_DIVISIONS );
+				final DoubleElem rvalC1 = new DoubleElem( - 2.0 * Math.PI * ( j + 1 ) / MAX_ROT_DIVISIONS );
 				final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
 					tvA = this.genCenterCurvePoint( fac , u0 );
 				final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
-					tvB = this.genCenterCurvePoint( fac , u1 );
+					tvB =  this.genCenterCurvePoint( fac , u1 );
 				final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
-					tvAdot = svAdot.mult( xvU );
+					tvAdot = this.genUnitCenterCurveDerivative( fac , u0 , 1.0  / ( MAX_ROT_DIVISIONS * NUM_WINDINGS ) );
 				final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
-					tvBdot = svBdot.mult( xvU );
+					tvBdot = this.genUnitCenterCurveDerivative( fac , u1 , 1.0  / ( MAX_ROT_DIVISIONS * NUM_WINDINGS ) );
 				final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
 					strtA = tvA.mult( genVal( fac , OUTER_SHELL_RADIUS ) );
 				final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
 					strtB = tvB.mult( genVal( fac , OUTER_SHELL_RADIUS ) );
 				final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
-					tvD0 = genSpinB( tvAdot , fac , rvalD0 ).mult( tvA );
+					tvC0 = genSpinB( tvAdot , fac , rvalC0 ).mult( tvA );
 				final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
-					tvD1 = genSpinB( tvBdot , fac , rvalD1 ).mult( tvB );
+					tvC1 = genSpinB( tvBdot , fac , rvalC1 ).mult( tvB );
 				final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
-					strtD0 = tvD0.mult( genVal( fac , INNER_TORUS_RADIUS_RECESSED ) );
+					strtC0 = tvC0.mult( genVal( fac , INNER_TORUS_RADIUS_RECESSED ) );
 				final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
-					strtD1 = tvD1.mult( genVal( fac , INNER_TORUS_RADIUS_RECESSED ) );
+					strtC1 = tvC1.mult( genVal( fac , INNER_TORUS_RADIUS_RECESSED ) );
 				
 				final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
-					pt0 = strtA.add( strtD0 );
+					pt0 = strtA.add( strtC0 );
 				final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
-					pt1 = strtB.add( strtD1 );
+					pt1 = strtB.add( strtC1 );
 				
 				ps.println( "hull() { " );
 				
 				ps.print( "translate( " ); writePoint( false , pt0 , ps ); ps.println( " ) sphere( r=" + ( WINDING_GROOVE_RADIUS.getVal() ) + " ); " );
 				ps.print( "translate( " ); writePoint( false , pt1 , ps ); ps.println( " ) sphere( r=" + ( WINDING_GROOVE_RADIUS.getVal() ) + " ); " );
 				
-				ps.println( "}" ); // Hull
+				ps.println( "}" ); 
 			}
 		}
-			
 		
 		
 		
