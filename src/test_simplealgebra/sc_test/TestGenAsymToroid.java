@@ -395,6 +395,25 @@ public class TestGenAsymToroid extends TestCase {
 		final PrintStream ps = new PrintStream( fo );
 		
 		
+		double[] parms = new double[ MAX_ROT_DIVISIONS * NUM_WINDINGS + 1 ];
+		
+		
+		double dsum = 0.0;
+		for( int j = 0 ; j < MAX_ROT_DIVISIONS * NUM_WINDINGS ; j++ )
+		{
+			final double u0 = ( (double) j ) / ( MAX_ROT_DIVISIONS * NUM_WINDINGS );
+			final double u1 = ( (double) ( j + 1 ) ) / ( MAX_ROT_DIVISIONS * NUM_WINDINGS );
+			final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
+				tvA = this.genCenterCurvePoint( fac , u0 );
+			final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
+				tvB =  this.genCenterCurvePoint( fac , u1 );
+			final DoubleElem db = (DoubleElem)( ( tvA.add( tvB.negate() ) ).totalMagnitude() );
+			parms[ j ] = dsum;
+			dsum += db.getVal();
+		}
+		parms[ MAX_ROT_DIVISIONS * NUM_WINDINGS ] = dsum;
+		
+		
 		
 		ps.println( "" );
 		ps.println( "difference() { " );
@@ -551,8 +570,8 @@ public class TestGenAsymToroid extends TestCase {
 					xvU = genXval( fac , new DoubleElem( 1.0 ) );
 				
 				
-				final DoubleElem rvalC0 = new DoubleElem( 2.0 * Math.PI * j / MAX_ROT_DIVISIONS );
-				final DoubleElem rvalC1 = new DoubleElem( 2.0 * Math.PI * ( j + 1 ) / MAX_ROT_DIVISIONS );
+				final DoubleElem rvalC0 = new DoubleElem( 2.0 * Math.PI * ( parms[ j ] / dsum ) *  NUM_WINDINGS );
+				final DoubleElem rvalC1 = new DoubleElem( 2.0 * Math.PI * ( parms[ j + 1 ] / dsum ) * NUM_WINDINGS );
 				final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
 					tvA = this.genCenterCurvePoint( fac , u0 );
 				final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
@@ -606,8 +625,8 @@ public class TestGenAsymToroid extends TestCase {
 					xvU = genXval( fac , new DoubleElem( 1.0 ) );
 				
 				
-				final DoubleElem rvalC0 = new DoubleElem( - 2.0 * Math.PI * j / MAX_ROT_DIVISIONS );
-				final DoubleElem rvalC1 = new DoubleElem( - 2.0 * Math.PI * ( j + 1 ) / MAX_ROT_DIVISIONS );
+				final DoubleElem rvalC0 = new DoubleElem( - 2.0 * Math.PI * ( parms[ j ] / dsum ) *  NUM_WINDINGS );
+				final DoubleElem rvalC1 = new DoubleElem( - 2.0 * Math.PI * ( parms[ j + 1 ] / dsum ) * NUM_WINDINGS );
 				final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
 					tvA = this.genCenterCurvePoint( fac , u0 );
 				final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
