@@ -198,7 +198,17 @@ public class TestSchrodingerNB_DR_Ncore extends TestCase {
 	/**
 	 * Arbitrary constant.
 	 */
-	private static final double vSlope = 10.0;
+	private static final double VSTRTA = 0.1;
+	
+	/**
+	 * Arbitrary constant.
+	 */
+	private static final double VSTRTB = 1E+10;
+	
+	/**
+	 * Arbitrary constant.
+	 */
+	public static final double EXPNT = 0.001;
 	
 	/**
 	 * Constant representing the imaginary number.
@@ -246,7 +256,7 @@ public class TestSchrodingerNB_DR_Ncore extends TestCase {
 	/**
 	 * The number of discretizations on the T-Axis over which to iterate.
 	 */
-	protected static final int NUM_T_ITER = IterConstants.LRG_ITER_T; // 400;
+	protected static final int NUM_T_ITER = 400; // 10; // IterConstants.LRG_ITER_T; // 400; // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	
 	/**
 	 * The number of discretizations on the X-Axis over which to iterate.
@@ -268,7 +278,7 @@ public class TestSchrodingerNB_DR_Ncore extends TestCase {
 	/**
 	 * Size of the T-Axis discretization.
 	 */
-	protected static final ComplexElem<DoubleElem,DoubleElemFactory> T_HH = genFromConst( 0.0025 );
+	protected static final ComplexElem<DoubleElem,DoubleElemFactory> T_HH = genFromConst( 0.0001 /* 0.0025 */ ); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	
 	/**
 	 * Size of the X-Axis discretization.
@@ -451,9 +461,9 @@ public class TestSchrodingerNB_DR_Ncore extends TestCase {
 	
 	
 	/**
-	 * The current Z iteration location. Used for calculating potentials.
+	 * The current Y iteration location. Used for calculating potentials.
 	 */
-	protected double tempZLocn = 0.0;
+	protected double tempYLocn = 0.0;
 	
 	
 	
@@ -1787,9 +1797,15 @@ public class TestSchrodingerNB_DR_Ncore extends TestCase {
 		public ComplexElem<DoubleElem,DoubleElemFactory> eval(HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace)
 				throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
-			final double ZHALF = NUM_Z_ITER / 2.0;
-			final DoubleElem re = new DoubleElem( vSlope * ( threadContext.tempZLocn - ZHALF ) * TOTAL_Z_AXIS_SIZE / NUM_Z_ITER );
+			final double YHALF = NUM_Y_ITER / 2.0;
+			final double u = ( threadContext.tempYLocn - YHALF ) / YHALF;
+			final double uua = Math.pow( Math.abs( u ) , EXPNT );
+			final double uu = u < 0.0 ? -uua : uua;
+			final double uz = ( uu + 1.0 ) / 2.0;
+			final double expn = ( 1.0 - uz ) * ( Math.log( VSTRTA ) ) + ( uz ) * ( Math.log( VSTRTB ) );
+			final DoubleElem re = new DoubleElem( Math.exp( expn ) );
 			return( new ComplexElem<DoubleElem,DoubleElemFactory>( re , new DoubleElem( 0.0 ) ) );
+			
 		}
 		
 		@Override
@@ -3074,10 +3090,9 @@ public class TestSchrodingerNB_DR_Ncore extends TestCase {
 			Iterator<Ordinate> it = wrt.iterator();
 			Ordinate wr = it.next();
 			
-			if( wr.getCol() == 3  )
+			if( wr.getCol() == 2  )
 			{
-				SymbolicConst aa = SymbolicConstCache.get( new ComplexElem<DoubleElem,DoubleElemFactory>( new DoubleElem( vSlope ) , new DoubleElem( 0.0 ) ) , fac.getFac().getFac() );
-				return( new StelemReduction2L( aa , fac.getFac() ) );
+				throw( new RuntimeException( "Not Supported..." ) );
 			}
 			
 			return( fac.zero() );
@@ -3091,9 +3106,6 @@ public class TestSchrodingerNB_DR_Ncore extends TestCase {
 				HashMap<SCacheKey<SymbolicElem<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>>, SymbolicElem<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>> cache)
 				throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
-			// TODO Auto-generated method stub
-			// return null;
-			// skjfklsafsdjfklsdjflkdjslkf
 			throw( new RuntimeException( "Not Supported" ) );
 		}
 				
@@ -3762,7 +3774,7 @@ public class TestSchrodingerNB_DR_Ncore extends TestCase {
 			
 			
 							im.performTempArrayFill( tval );
-							threadContext.tempZLocn = im.getZcnt();
+							threadContext.tempYLocn = im.getYcnt();
 			
 			
 							threadContext.clearSpatialAssertArray();
