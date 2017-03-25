@@ -286,7 +286,7 @@ public class TestDf3CplxPlneSlcFileWriterAnim extends TestCase {
 			iterArrayIm = new DrFastArray4D_Dbl( dparam , databaseLocationIm );
 			
 			
-			slcVal = NUM_Z_ITER - NUM_Z_ITER * tval / NUM_T_ITER;
+			slcVal = NUM_Y_ITER - NUM_Y_ITER * _tval / NUM_T_ITER;
 			
 		}
 
@@ -302,7 +302,7 @@ public class TestDf3CplxPlneSlcFileWriterAnim extends TestCase {
 				throws Throwable {
 			try
 			{
-				if( z > slcVal )
+				if( y > slcVal )
 				{
 					final double d0re = iterArrayRe.get(t, x, y, z);
 					final double d0im = iterArrayIm.get(t, x, y, z);
