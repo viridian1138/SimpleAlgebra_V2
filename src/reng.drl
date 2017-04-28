@@ -204,6 +204,24 @@ end
 
 
 
+rule "Apply Random"
+     when
+          r0 : Reng( )
+          p : SymbolicRandom( elem == r0.getStrt() )
+          not( Reng( strt == p ) )
+          rend : SymbolicElem() from r0.getEnd()
+          ds : DroolsSession()
+     then
+          // System.out.println( "Apply Random" );
+          insert( new Reng( p , new SymbolicRandom( rend , p.getFac().getFac() , p.getIval() , ds ) ) );
+end
+
+
+
+
+
+
+
 rule "Apply Mutable"
      when
           r0 : Reng( )

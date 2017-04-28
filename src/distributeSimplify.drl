@@ -1001,6 +1001,23 @@ end
 
 
 
+// This simplification has a parallel implementation in SymbolicZero.random()
+rule "Random OF Zero --> Zero"
+      when
+          a : SymbolicZero( )
+          b : SymbolicRandom( elem == a )
+          not( Reng( strt == b ) )
+          not( Reng( strt == a ) )
+          ds : DroolsSession()
+      then
+          // System.out.println( "Random OF Zero --> Zero" );
+          insert( new Reng( b , a ) );
+end
+
+
+
+
+
 
 rule "Partial Derivative Of Constant B --> Zero"
       when

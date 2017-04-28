@@ -619,6 +619,7 @@ public class DefaultPrecedenceComparator extends PrecedenceComparator {
 			hs.add( new MultiCharIdentOperator( SymbolicCosine.class ) );
 			hs.add( new MultiCharIdentOperator( SymbolicIdentity.class ) );
 			hs.add( new MultiCharIdentOperator( SymbolicZero.class ) );
+			hs.add( new MultiCharIdentOperator( SymbolicRandom.class ) );
 			
 			operatorPrecedenceParent.add( hs );
 		}
@@ -631,6 +632,7 @@ public class DefaultPrecedenceComparator extends PrecedenceComparator {
 			hs.add( new MultiCharIdentOperator( SymbolicCosine.class ) );
 			hs.add( new MultiCharIdentOperator( SymbolicIdentity.class ) );
 			hs.add( new MultiCharIdentOperator( SymbolicZero.class ) );
+			hs.add( new MultiCharIdentOperator( SymbolicRandom.class ) );
 			
 			operatorPrecedenceChild.add( hs );
 		}

@@ -38,6 +38,7 @@ import simplealgebra.BadCreationException;
 import simplealgebra.CloneThreadCache;
 import simplealgebra.Elem;
 import simplealgebra.NotInvertibleException;
+import simplealgebra.PrimitiveRandom;
 import simplealgebra.Sqrt;
 import simplealgebra.WriteElemCache;
 import simplealgebra.WriteBigIntegerCache;
@@ -127,6 +128,11 @@ public class BigFixedPointElem<T extends Precision<T>> extends Elem<BigFixedPoin
 			throw( new BadCreationException() );
 		}
 		return( new BigFixedPointElem<T>( val.divide( vali ) , prec ) );
+	}
+	
+	@Override
+	public BigFixedPointElem<T> random(PrimitiveRandom in) {
+		return( new BigFixedPointElem<T>( in.nextRandom( val ) , prec ) );
 	}
 	
 	@Override

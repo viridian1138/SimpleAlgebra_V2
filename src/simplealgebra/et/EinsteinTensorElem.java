@@ -44,6 +44,7 @@ import simplealgebra.ElemFactory;
 import simplealgebra.MutableElem;
 import simplealgebra.Mutator;
 import simplealgebra.NotInvertibleException;
+import simplealgebra.PrimitiveRandom;
 import simplealgebra.SquareMatrixElem;
 import simplealgebra.WriteBigIntegerCache;
 import simplealgebra.WriteElemCache;
@@ -799,6 +800,19 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 			ArrayList<BigInteger> el = ii.getKey();
 			R vali = ii.getValue();
 			ret.setVal(el, vali.divideBy(val) );
+		}
+		return( ret );
+	}
+	
+	
+	@Override
+	public EinsteinTensorElem<Z, R, S> random(PrimitiveRandom in) {
+		EinsteinTensorElem<Z,R,S> ret = new EinsteinTensorElem<Z,R,S>(fac, contravariantIndices, covariantIndices );
+		for( final Entry<ArrayList<BigInteger>,R> ii : map.entrySet() )
+		{
+			ArrayList<BigInteger> el = ii.getKey();
+			R vali = ii.getValue();
+			ret.setVal(el, vali.random(in) );
 		}
 		return( ret );
 	}
@@ -1632,7 +1646,6 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 	 * The covariant indices of the tensor.
 	 */
 	private ArrayList<Z> covariantIndices;
-	
 
 }
 

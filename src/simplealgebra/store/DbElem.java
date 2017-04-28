@@ -34,6 +34,7 @@ import simplealgebra.CloneThreadCache;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
+import simplealgebra.PrimitiveRandom;
 import simplealgebra.WriteElemCache;
 import simplealgebra.symbolic.SymbolicElem.EVAL_MODE;
 
@@ -83,6 +84,13 @@ public class DbElem<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 	public DbElem<R, S> divideBy(BigInteger val) {
 		return( new DbElem<R,S>( query().divideBy( val ) , graph ) );
 	}
+	
+	@Override
+	public DbElem<R, S> random(PrimitiveRandom in) {
+		return( new DbElem<R,S>( query().random(in) , graph ) );
+	}
+	
+	
 	
 	
 	@Override
@@ -260,6 +268,7 @@ public class DbElem<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 	 * The stored DB base reference.
 	 */
 	protected HGHandle hbase = null;
+
 
 }
 

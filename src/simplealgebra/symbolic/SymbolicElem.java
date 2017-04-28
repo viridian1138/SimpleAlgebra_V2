@@ -35,6 +35,7 @@ import java.util.Iterator;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
+import simplealgebra.PrimitiveRandom;
 
 /**
  * A symbolic elem.
@@ -154,6 +155,11 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 	@Override
 	public SymbolicElem<R, S>  cos( int numIter ) {
 		return( new SymbolicCosine<R,S>( this , fac , numIter ) );
+	}
+	
+	@Override
+	public SymbolicElem<R, S> random( PrimitiveRandom in ) {
+		return( new SymbolicRandom<R,S>( this , fac , in ) );
 	}
 	
 	@Override

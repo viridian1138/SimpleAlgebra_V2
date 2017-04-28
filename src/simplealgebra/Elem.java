@@ -168,6 +168,14 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 	public abstract T divideBy( BigInteger val );
 	
 	/**
+	 * Generates a random elem using this elem as a bound.
+	 * 
+	 * @param in Random number generator for primitives.
+	 * @return The random elem.
+	 */
+	public abstract T random( PrimitiveRandom in );
+	
+	/**
 	 * Returns the factory of the elem.
 	 * 
 	 * @return The factory of the elem.

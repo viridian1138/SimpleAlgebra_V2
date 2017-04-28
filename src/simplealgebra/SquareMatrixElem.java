@@ -1564,6 +1564,25 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 		}
 		return( ret );
 	}
+	
+	
+	@Override
+	public SquareMatrixElem<U, R, S> random(PrimitiveRandom in) {
+		SquareMatrixElem<U,R,S> ret = new SquareMatrixElem<U,R,S>(fac,dim);
+		for( final Entry<BigInteger, HashMap<BigInteger, R>> rowie : rowMap.entrySet() )
+		{
+			BigInteger row = rowie.getKey();
+			HashMap<BigInteger,R> subMap = rowie.getValue();
+			for( final Entry<BigInteger, R> colie : subMap.entrySet() )
+			{
+				BigInteger col = colie.getKey();
+				R vali = colie.getValue();
+				ret.setVal(row, col, vali.random(in) );
+			}
+		}
+		return( ret );
+	}
+	
 
 	@Override
 	public SquareMatrixElemFactory<U, R, S> getFac() {

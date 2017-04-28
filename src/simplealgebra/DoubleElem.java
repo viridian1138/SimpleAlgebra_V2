@@ -90,6 +90,12 @@ public class DoubleElem extends Elem<DoubleElem, DoubleElemFactory> implements C
 	}
 	
 	@Override
+	public DoubleElem random( PrimitiveRandom in )
+	{
+		return( new DoubleElem( in.nextRandom( d ) ) );
+	}
+	
+	@Override
 	protected DoubleElem estimateLnApprox( final int numIterExp ) throws NotInvertibleException
 	{
 		if( d > 0 )

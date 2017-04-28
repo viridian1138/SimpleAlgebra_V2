@@ -35,6 +35,7 @@ package test_simplealgebra;
 import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.Random;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
@@ -42,6 +43,7 @@ import simplealgebra.DoubleElem;
 import simplealgebra.DoubleElemFactory;
 import simplealgebra.Elem;
 import simplealgebra.NotInvertibleException;
+import simplealgebra.PrimitiveRandom;
 import simplealgebra.SquareMatrixElem;
 import simplealgebra.SquareMatrixElemFactory;
 import simplealgebra.SymbolicInvertLeftRevCoeff;
@@ -55,6 +57,7 @@ import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicIdentity;
 import simplealgebra.symbolic.SymbolicNegate;
+import simplealgebra.symbolic.SymbolicRandom;
 import simplealgebra.symbolic.SymbolicReduction;
 import simplealgebra.symbolic.SymbolicZero;
 
@@ -186,6 +189,42 @@ public class TestMatrixOpSymbolic extends TestCase
 			d2 = d1.handleOptionalOp( SquareMatrixElem.SquareMatrixCmd.TRANSPOSE , params );
 		
 		Assert.assertTrue( d2 instanceof SymbolicTranspose );
+		
+		SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
+			d2a = d2.distributeSimplify();
+		
+		Assert.assertTrue( d2a instanceof SymbolicZero );
+		
+	}
+	
+	
+	
+	/**
+	 * Tests that the random of zero reduces to zero.
+	 * 
+	 * @throws NotInvertibleException
+	 */
+	public void testRandomZeroA() throws NotInvertibleException
+	{
+		final TestDimensionFour td = new TestDimensionFour();
+		
+		final DoubleElemFactory dl = new DoubleElemFactory();
+		
+		final SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory> se = 
+				new SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>(dl, td);
+		
+		final SymbolicElemFactory<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>> ye = 
+				new SymbolicElemFactory<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>(se);
+		
+		SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
+			d1 = ye.zero();
+		
+		PrimitiveRandom pr = PrimitiveRandom.genRand( new Random( 123L ) );
+		
+		SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
+			d2 = new SymbolicRandom<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>(d1, se, pr);
+		
+		Assert.assertTrue( d2 instanceof SymbolicRandom );
 		
 		SymbolicElem<SquareMatrixElem<TestDimensionFour,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<TestDimensionFour,DoubleElem,DoubleElemFactory>>
 			d2a = d2.distributeSimplify();

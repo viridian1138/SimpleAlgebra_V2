@@ -46,6 +46,7 @@ import simplealgebra.MutableElem;
 import simplealgebra.Mutator;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.NumDimensions;
+import simplealgebra.PrimitiveRandom;
 import simplealgebra.SquareMatrixElem;
 import simplealgebra.SquareMatrixElemFactory;
 import simplealgebra.WriteBigIntegerCache;
@@ -294,6 +295,19 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 			HashSet<BigInteger> el = ii.getKey();
 			R vali = ii.getValue();
 			ret.setVal(el, vali.negate() );
+		}
+		return( ret );
+	}
+	
+	
+	@Override
+	public GeometricAlgebraMultivectorElem<U, A, R, S> random(PrimitiveRandom in) {
+		GeometricAlgebraMultivectorElem<U,A,R,S> ret = new GeometricAlgebraMultivectorElem<U,A,R,S>(fac,dim,ord);
+		for( final Entry<HashSet<BigInteger>,R> ii : map.entrySet() )
+		{
+			HashSet<BigInteger> el = ii.getKey();
+			R vali = ii.getValue();
+			ret.setVal(el, vali.random(in) );
 		}
 		return( ret );
 	}

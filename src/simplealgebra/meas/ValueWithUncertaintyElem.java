@@ -33,6 +33,7 @@ import simplealgebra.ElemFactory;
 import simplealgebra.MutableElem;
 import simplealgebra.Mutator;
 import simplealgebra.NotInvertibleException;
+import simplealgebra.PrimitiveRandom;
 import simplealgebra.WriteElemCache;
 import simplealgebra.symbolic.PrecedenceComparator;
 import simplealgebra.symbolic.SymbolicElem.EVAL_MODE;
@@ -121,6 +122,12 @@ public class ValueWithUncertaintyElem<R extends Elem<R,?>, S extends ElemFactory
 	@Override
 	public ValueWithUncertaintyElem<R, S> divideBy(BigInteger val) {
 		return( new ValueWithUncertaintyElem<R,S>( value.divideBy(val) , uncertainty.divideBy(val) ) );
+	}
+	
+	
+	@Override
+	public ValueWithUncertaintyElem<R, S> random(PrimitiveRandom in) {
+		return( new ValueWithUncertaintyElem<R,S>( value.random(in) , uncertainty ) );
 	}
 	
 	

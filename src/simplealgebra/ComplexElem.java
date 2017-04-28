@@ -312,6 +312,11 @@ public class ComplexElem<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 		return( new ComplexElem<R,S>( re.divideBy(val) , im.divideBy(val) ) );
 	}
 	
+	@Override
+	public ComplexElem<R, S> random( PrimitiveRandom in ) {
+		return( new ComplexElem<R,S>( re.random(in) , im.random(in) ) );
+	}
+	
 	
 	/**
 	 * Produces one possible initial natural logarithm approximation.

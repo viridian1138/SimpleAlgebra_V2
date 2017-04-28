@@ -59,6 +59,7 @@ import simplealgebra.meas.db.ValueWithUncertaintyElemFactoryType;
 import simplealgebra.meas.db.ValueWithUncertaintyElemType;
 import simplealgebra.symbolic.db.SymbolicAbsoluteValueType;
 import simplealgebra.symbolic.db.SymbolicAddType;
+import simplealgebra.symbolic.db.SymbolicRandomType;
 import simplealgebra.symbolic.db.SymbolicDivideByType;
 import simplealgebra.symbolic.db.SymbolicElemFactoryType;
 import simplealgebra.symbolic.db.SymbolicIdentityType;
@@ -97,6 +98,7 @@ public class TypeSystemInit {
 		DbElemType.initType( graph );
 		DbElemFactoryType.initType( graph );
 		RelPayloadType.initType( graph );
+		DefaultPrimitiveRandomType.initType( graph );
 		
 		BigFixedPointElemType.initType( graph );
 		BigFixedPointElemFactoryType.initType( graph );
@@ -134,6 +136,7 @@ public class TypeSystemInit {
 		
 		SymbolicAbsoluteValueType.initType( graph );
 		SymbolicAddType.initType( graph );
+		SymbolicRandomType.initType( graph );
 		SymbolicDivideByType.initType( graph );
 		SymbolicElemFactoryType.initType( graph );
 		SymbolicIdentityType.initType( graph );

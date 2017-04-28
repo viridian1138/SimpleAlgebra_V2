@@ -35,6 +35,7 @@ import simplealgebra.CloneThreadCache;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
+import simplealgebra.PrimitiveRandom;
 import simplealgebra.WriteElemCache;
 import simplealgebra.symbolic.SymbolicElem.EVAL_MODE;
 
@@ -277,6 +278,13 @@ public class SymbolicZero<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 		// This simplification has a parallel implementation in the "DivideBy OF Zero --> Zero" rules in 
 		// distributeSimplify.drl and distributeSimplify2.drl
 		return( BigInteger.ZERO.compareTo( val ) != 0 ? this : super.divideBy( val ) );
+	}
+	
+	@Override
+	public SymbolicElem<R, S> random(PrimitiveRandom val) {
+		// This simplification has a parallel implementation in the "Random OF Zero --> Zero" rules in 
+		// distributeSimplify.drl and distributeSimplify2.drl
+		return( this );
 	}
 
 }
