@@ -24,6 +24,8 @@
 
 package test_simplealgebra;
 
+import java.util.Random;
+
 import junit.framework.TestCase;
 
 import org.hypergraphdb.HGHandle;
@@ -32,6 +34,7 @@ import org.hypergraphdb.HyperGraph;
 import simplealgebra.DoubleElem;
 import simplealgebra.DoubleElemFactory;
 import simplealgebra.NotInvertibleException;
+import simplealgebra.PrimitiveRandom;
 import simplealgebra.store.SegmentedTransactionManager;
 import simplealgebra.store.TypeSystemInit;
 import simplealgebra.symbolic.SymbolicElem;
@@ -74,6 +77,28 @@ public class TestDbElemSym extends TestCase {
 	
 	
 	/**
+	 * Generates a test symbolic expression to evaluate persistence/retrieval.
+	 * 
+	 * @return The test symbolic expression.
+	 */
+	protected SymbolicElem<DoubleElem,DoubleElemFactory> genSymB()
+	{
+		final DoubleElemFactory de = new DoubleElemFactory();
+		
+		final SymbolicIdentity<DoubleElem,DoubleElemFactory> ident = new SymbolicIdentity<DoubleElem,DoubleElemFactory>( de );
+		
+		final PrimitiveRandom pr = PrimitiveRandom.genRand( new Random( 5432L ) );
+		
+		final SymbolicElem<DoubleElem,DoubleElemFactory> aident = ident.random( pr );
+		
+		final SymbolicElem<DoubleElem,DoubleElemFactory> nident = aident.negate();
+		
+		return( nident );
+	}
+	
+	
+	
+	/**
 	 * Test method for symbolic persistence.
 	 */
 	public void testSymPersistenceA() throws NotInvertibleException
@@ -93,6 +118,68 @@ public class TestDbElemSym extends TestCase {
 		
 		
 		HGHandle hndl = graph.add( genSymA() );
+		
+		// HGHandle hndl2 = graph.add( genSymFac() );
+		
+		
+		SymbolicElem<DoubleElem,DoubleElemFactory>
+			sym = graph.get( hndl );
+		
+//		GeometricAlgebraMultivectorElemFactory<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,
+//				ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
+//			ga2 = graph.get( hndl2 );
+		
+		
+//		Assert.assertTrue( et.getContravariantIndices().size() == 0 );
+		
+//		Assert.assertTrue( et.getCovariantIndices().size() == 2 );
+		
+//		int cnt = 0;
+//		Iterator<HashSet<BigInteger>> it = ga.getKeyIterator();
+//		while( it.hasNext() )
+//		{
+//			HashSet<BigInteger> key = it.next();
+//			Assert.assertTrue( ga.getVal( key ) != null );
+//			cnt++;
+//		}
+//		
+//		
+//		Assert.assertTrue( cnt == 2 );
+		
+		
+		SegmentedTransactionManager.commitSegmentedTransaction( graph );
+		
+		
+		graph.close();
+		
+		
+	}
+	
+	
+	
+	
+	
+	
+	/**
+	 * Test method for symbolic persistence.
+	 */
+	public void testSymPersistenceB() throws NotInvertibleException
+	{
+		
+		// System.out.println( "Started..." ); 
+		
+		String databaseLocation = DatabasePathForTest.DATABASE_PATH + "mydb";
+		HyperGraph graph;
+				
+		graph = new HyperGraph( databaseLocation );
+				
+		TypeSystemInit.initType( graph );
+		
+		
+		SegmentedTransactionManager.beginSegmentedTransaction( graph );
+		
+		
+		HGHandle hndl = graph.add( genSymB() );
 		
 		// HGHandle hndl2 = graph.add( genSymFac() );
 		

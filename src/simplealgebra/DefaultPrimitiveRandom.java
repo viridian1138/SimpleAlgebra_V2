@@ -22,6 +22,7 @@ import java.io.PrintStream;
 import java.lang.reflect.Field;
 import java.math.BigInteger;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicLong;
 
 /**
  * A derfault primitive random number generator.
@@ -78,8 +79,12 @@ public class DefaultPrimitiveRandom extends PrimitiveRandom {
 			ps.print(" = PrimitiveRandom.genRand( new java.util.Random( ");
 			try {
 				Field field = Random.class.getDeclaredField("seed");
+				boolean acc = field.isAccessible();
 				field.setAccessible(true);
-				ps.print( field.getLong(rand) + "L" );
+				AtomicLong rnda = (AtomicLong)( field.get( rand ) );
+				Long rnd = rnda.get();
+				ps.print( rnd + "L" );
+				field.setAccessible( acc );
 			} catch (Throwable ex) {
 				ex.printStackTrace(System.out);
 			}

@@ -28,6 +28,7 @@ package simplealgebra.store;
 
 import java.lang.reflect.Field;
 import java.util.Random;
+import java.util.concurrent.atomic.AtomicLong;
 
 import org.hypergraphdb.HGHandle;
 import org.hypergraphdb.HGPersistentHandle;
@@ -78,8 +79,11 @@ public class DefaultPrimitiveRandomType extends HGAtomTypeBase {
 		Random rand = ( (DefaultPrimitiveRandom) instance ).getRand();
 		try {
 			Field field = Random.class.getDeclaredField("seed");
+			boolean acc = field.isAccessible();
 			field.setAccessible(true);
-			Long rnd = field.getLong( rand );
+			AtomicLong rnda = (AtomicLong)( field.get( rand ) );
+			Long rnd = rnda.get();
+			field.setAccessible( acc );
 			return( type.store( rnd ) );
 		} catch (Throwable ex) {
 			ex.printStackTrace(System.out);
