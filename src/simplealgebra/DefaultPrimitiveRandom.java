@@ -97,20 +97,13 @@ public class DefaultPrimitiveRandom extends PrimitiveRandom {
 	public BigInteger nextRandom(BigInteger max) {
 
 		final BigInteger imax = max.abs();
-
-		final int MVAL = 10;
-		final BigInteger BMVAL = BigInteger.valueOf(MVAL);
-
-		BigInteger st = BigInteger.valueOf(rand.nextInt(MVAL));
-		BigInteger stm = BMVAL;
-
-		while (stm.compareTo(imax) < 0) {
-			stm = stm.multiply(BMVAL);
-			st = (st.multiply(BMVAL))
-					.add(BigInteger.valueOf(rand.nextInt(MVAL)));
+		
+		BigInteger iret = new BigInteger( imax.bitLength() , rand );
+		while( iret.compareTo( imax ) >= 0 )
+		{
+			iret = new BigInteger( imax.bitLength() , rand );
 		}
 
-		BigInteger iret = st.mod(imax);
 		if (max.compareTo(BigInteger.ZERO) < 0) {
 			iret = iret.negate();
 		}
