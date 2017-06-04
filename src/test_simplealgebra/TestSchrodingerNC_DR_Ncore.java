@@ -3761,6 +3761,8 @@ public class TestSchrodingerNC_DR_Ncore extends TestCase {
 		final TestSchrodingerNC_DR_Ncore.IterationThreadContext iterContext = iterationThreadContexts[ 0 ];
 		final DrFastArray4D_Dbl iterArrayRe = iterContext.iterArrayRe;
 		final DrFastArray4D_Dbl iterArrayIm = iterContext.iterArrayIm;
+		final Random rrand = new Random( 1001 );
+		final double PI2 = 2.0 * Math.PI;
 		long atm = System.currentTimeMillis();
 		long atm2 = System.currentTimeMillis();
 		for( int tcnt = 0 ; tcnt < 2 * NSTPT ; tcnt++ )
@@ -3786,7 +3788,10 @@ public class TestSchrodingerNC_DR_Ncore extends TestCase {
 				final double dz = ( z - HALF_Z ) / RAD_Z;
 				if( dx * dx + dy * dy + dz * dz < 1.0 )
 				{
-					iterArrayRe.set( tcnt , x , y , z , 10000.0 * ( d1 * d1 ) );
+					final double mag = 10000.0 * ( d1 * d1 );
+					final double ph = PI2 * ( rrand.nextDouble() );
+					iterArrayRe.set( tcnt , x , y , z , mag * ( Math.cos( ph ) ) );
+					iterArrayIm.set( tcnt , x , y , z , mag * ( Math.sin( ph ) ) );
 				}
 				else
 				{
