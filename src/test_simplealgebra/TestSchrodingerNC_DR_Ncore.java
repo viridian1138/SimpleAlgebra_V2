@@ -3796,8 +3796,9 @@ public class TestSchrodingerNC_DR_Ncore extends TestCase {
 				else
 				{
 					iterArrayRe.set( tcnt , x , y , z , 0.0 );
+					iterArrayIm.set( tcnt , x , y , z , 0.0 );
 				}
-				iterArrayIm.set( tcnt , x , y , z , 0.0 );
+				
 			}
 		}
 		System.out.println( "Initial Conditions Set..." );
