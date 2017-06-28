@@ -1899,6 +1899,8 @@ public class TestSchrodingerNC_DR_Ncore extends TestCase {
 		
 	}
 	
+
+	
 	
 	/**
 	 * Elem representing an altering value.
@@ -1917,7 +1919,6 @@ public class TestSchrodingerNC_DR_Ncore extends TestCase {
 		public BAelem(ComplexElemFactory<DoubleElem,DoubleElemFactory> _fac, int _threadIndex ) {
 			super(_fac, new HashMap<Ordinate, BigInteger>() );
 			threadI = _threadIndex;
-			rand = new Random( 54321L + _threadIndex );
 		}
 		
 		
@@ -1931,11 +1932,6 @@ public class TestSchrodingerNC_DR_Ncore extends TestCase {
 		 * column indices have been initialized.
 		 */
 		protected final boolean[] assertCols = new boolean[ 4 ];
-		
-		/**
-		 * Random number generator.
-		 */
-		protected Random rand;
 		
 		/**
 		 * Thread index.
@@ -1961,6 +1957,10 @@ public class TestSchrodingerNC_DR_Ncore extends TestCase {
 				if( ( threadContext.tempXLocn % 2 == 0 ) && ( threadContext.tempYLocn % 2 == 0 ) && ( threadContext.tempZLocn % 2 == 0 ) && ( threadContext.tempTLocn % 2 == 0 ) )
 				{
 					final double d1 = Math.sqrt( X_HH.getRe().getVal() * X_HH.getRe().getVal() + Y_HH.getRe().getVal() * Y_HH.getRe().getVal() + Z_HH.getRe().getVal() * Z_HH.getRe().getVal() );
+					
+					final long rseed = ( 2748833L * threadContext.tempXLocn ) + ( 2749247L * threadContext.tempYLocn ) + ( 2749679L * threadContext.tempZLocn ) + ( 2750159L * threadContext.tempTLocn ) + 54321L;
+					final Random rand = new Random( rseed );
+					rand.nextInt();
 			
 					final double dx = ( 0.0 + threadContext.tempXLocn - HALF_X ) / RAD_X;
 					final double dy = ( 0.0 + threadContext.tempYLocn - HALF_Y ) / RAD_Y;
@@ -2020,7 +2020,6 @@ public class TestSchrodingerNC_DR_Ncore extends TestCase {
 			super( in , threadIndex );
 			final int threadInd = threadIndex.intValue();
 			this.threadI = threadInd;
-			rand = new Random( 54321L + threadInd );
 		}
 		
 		
