@@ -66,6 +66,7 @@ import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicReduction;
 import simplealgebra.ga.*;
 import simplealgebra.ddx.*;
+import test_simplealgebra.TestSchrodingerNC_DR_Ncore;
 
 
 
@@ -1977,16 +1978,28 @@ public class TestSchrodingerNC_DR_Ncore extends TestCase {
 							new ComplexElem<DoubleElem,DoubleElemFactory>( new DoubleElem( tempRe ) , new DoubleElem( tempIm ) );
 					final ComplexElem<DoubleElem,DoubleElemFactory>
 						ra1 = new ComplexElem<DoubleElem,DoubleElemFactory>( new DoubleElem( 0.0 ) , new DoubleElem( 2.0 * Math.PI * ( rand.nextDouble() ) ) );
-					final ComplexElem<DoubleElem,DoubleElemFactory>
-						ra2 = new ComplexElem<DoubleElem,DoubleElemFactory>( new DoubleElem( 0.0 ) , new DoubleElem( 2.0 * Math.PI * ( rand.nextDouble() ) ) );
+					
 					final ComplexElem<DoubleElem,DoubleElemFactory>
 						magTp = new ComplexElem<DoubleElem,DoubleElemFactory>( new DoubleElem( dval - Math.sqrt( tempRe * tempRe + tempIm * tempIm ) ) , new DoubleElem( 0.0 ) );
-					final ComplexElem<DoubleElem,DoubleElemFactory> rb1 = tmp.add( magTp.mult( ra1.exp( 15 ) ) );
-					final ComplexElem<DoubleElem,DoubleElemFactory> rb2 = tmp.add( magTp.mult( ra2.exp( 15 ) ) );
-					final DoubleElem d1a = (DoubleElem)( rb1.totalMagnitude() );
-					final DoubleElem d2a = (DoubleElem)( rb2.totalMagnitude() );
-					final ComplexElem<DoubleElem,DoubleElemFactory>
-						ret = Math.abs( d1a.getVal() - dval ) < Math.abs( d2a.getVal() - dval ) ? rb1 : rb2;
+					
+					ComplexElem<DoubleElem,DoubleElemFactory> rb1 = tmp.add( magTp.mult( ra1.exp( 15 ) ) );
+					DoubleElem d1a = (DoubleElem)( rb1.totalMagnitude() );
+					ComplexElem<DoubleElem,DoubleElemFactory>
+						ret = rb1;
+					
+					for( int count = 0 ; count < 10 ; count++ )
+					{
+						final ComplexElem<DoubleElem,DoubleElemFactory>
+							ra2 = new ComplexElem<DoubleElem,DoubleElemFactory>( new DoubleElem( 0.0 ) , new DoubleElem( 2.0 * Math.PI * ( rand.nextDouble() ) ) );
+						final ComplexElem<DoubleElem,DoubleElemFactory> rb2 = tmp.add( magTp.mult( ra2.exp( 15 ) ) );
+						final DoubleElem d2a = (DoubleElem)( rb2.totalMagnitude() );
+						if( Math.abs( d2a.getVal() - dval ) < Math.abs( d1a.getVal() - dval ) )
+						{
+							ret = rb2;
+							rb1 = rb2;
+							d1a = d2a;
+						}
+					}
 					return( ret );
 				}
 			}
