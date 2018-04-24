@@ -33,6 +33,7 @@ import org.kie.internal.runtime.StatefulKnowledgeSession;
 import simplealgebra.ga.GeometricAlgebraMultivectorElem;
 import simplealgebra.ga.GeometricAlgebraMultivectorElemFactory;
 import simplealgebra.ga.GeometricAlgebraOrd;
+import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.PrecedenceComparator;
 import simplealgebra.symbolic.SymbolicElem.EVAL_MODE;
 
@@ -374,15 +375,171 @@ public class ComplexElem<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 	}
 	
 	
+	
+	/**
+	 * Returns a series approximation of asinh for the imaginary part of the complex number.
+	 * @return A series approximation of asinh for the imaginary part of the complex number.
+	 * @throws NotInvertibleException
+	 */
+	protected ComplexElem<R, S> asinhPortionSeries( ) throws NotInvertibleException
+	{
+		
+		final ComplexElem<R,S> x = new ComplexElem<R,S>( getFac().getFac().zero() , this.getIm() );
+		
+		final ComplexElem<R,S> x2 = x.mult( x );
+		final ComplexElem<R,S> x3 = x2.mult( x );
+		final ComplexElem<R,S> x4 = x3.mult( x );
+		final ComplexElem<R,S> x5 = x4.mult( x );
+		final ComplexElem<R,S> x6 = x5.mult( x );
+		final ComplexElem<R,S> x7 = x6.mult( x );
+		final ComplexElem<R,S> x8 = x7.mult( x );
+		final ComplexElem<R,S> x9 = x8.mult( x );
+		
+		final ComplexElem<R,S> c3 = getFac().identity().divideBy( 1 ).invertLeft().divideBy( 6 ).negate();
+		
+		final ComplexElem<R,S> c5 = getFac().identity().divideBy( 3 ).invertLeft().divideBy( 40 );
+		
+		final ComplexElem<R,S> c7 = getFac().identity().divideBy( 5 ).invertLeft().divideBy( 112 ).negate();
+		
+		final ComplexElem<R,S> c9 = getFac().identity().divideBy( 35 ).invertLeft().divideBy( 1152 );
+		
+		final ComplexElem<R,S> ret = ( x ).add( c3.mult( x3 ) ).add( c5.mult( x5 ) ).add( c7.mult( x7 ) ).add( c9.mult( x9 ) );
+		
+		return( ret );
+	}
+	
+	
+	
+	
 	@Override
 	protected ComplexElem<R, S> estimateLnApprox( final int numIterExp ) throws NotInvertibleException
 	{
-		Iterator<ComplexElem<R, S>> it = getFac().getApproxLnUnit();
-		ComplexElem<R, S> stval0 = it.next();
-		while( it.hasNext() )
+		
+		ComplexElem<R, S> stval0 = getFac().identity();
+		
+		
+		try
 		{
-			stval0 = evalBetterLnApprox( stval0 , estimateLnApprox( 1 , it.next() , numIterExp ) , numIterExp );
+			final R rin = re.ln( numIterExp , numIterExp );
+			final ComplexElem<R,S> tst = new ComplexElem<R,S>( rin , getFac().getFac().zero() );
+			stval0 = evalBetterLnApprox( stval0 , tst , numIterExp );
 		}
+		catch( NotInvertibleException ex ) 
+		{
+			// Do Nothing.
+		}
+		catch( MultiplicativeDistributionRequiredException ex ) 
+		{
+			// Do Nothing.
+		}
+		catch( BadCreationException ex )
+		{
+			// Do Nothing.
+		}
+		
+		
+		try
+		{
+			final R rin = ( re.negate() ).ln( numIterExp , numIterExp );
+			final R PI = getFac().getFac().identity().divideBy( 314159265 ).invertLeft().divideBy( 100000000 );
+			final ComplexElem<R,S> tst = new ComplexElem<R,S>( rin , PI );
+			stval0 = evalBetterLnApprox( stval0 , tst , numIterExp );
+		}
+		catch( NotInvertibleException ex ) 
+		{
+			// Do Nothing.
+		}
+		catch( MultiplicativeDistributionRequiredException ex ) 
+		{
+			// Do Nothing.
+		}
+		catch( BadCreationException ex )
+		{
+			// Do Nothing.
+		}
+		
+		
+		
+		final R magSq = re.mult( re ).add( im.mult( im ) );
+		
+		final ArrayList<ComplexElem<R,S>> magLns = new ArrayList<ComplexElem<R,S>>();
+		
+		
+		
+		try
+		{
+			final R rin = magSq.ln( numIterExp , numIterExp );
+			final ComplexElem<R,S> tst = new ComplexElem<R,S>( rin , getFac().getFac().zero() );
+			magLns.add( tst );
+		}
+		catch( NotInvertibleException ex ) 
+		{
+			// Do Nothing.
+		}
+		catch( MultiplicativeDistributionRequiredException ex ) 
+		{
+			// Do Nothing.
+		}
+		catch( BadCreationException ex )
+		{
+			// Do Nothing.
+		}
+		
+		
+		
+		try
+		{
+			final R rin = ( magSq.negate() ).ln( numIterExp , numIterExp );
+			final R PI = getFac().getFac().identity().divideBy( 314159265 ).invertLeft().divideBy( 100000000 );
+			final ComplexElem<R,S> tst = new ComplexElem<R,S>( rin , PI );
+			magLns.add( tst );
+		}
+		catch( NotInvertibleException ex ) 
+		{
+			// Do Nothing.
+		}
+		catch( MultiplicativeDistributionRequiredException ex ) 
+		{
+			// Do Nothing.
+		}
+		catch( BadCreationException ex )
+		{
+			// Do Nothing.
+		}
+		
+	
+		final ArrayList<ComplexElem<R,S>[]> dirs = new ArrayList<ComplexElem<R,S>[]>();
+		
+		for( final ComplexElem<R,S> magLn : magLns )
+		{
+			ComplexElem<R,S> multp = ( magLn.divideBy( 2 ).negate() ).exp( numIterExp );
+			ComplexElem[] dirA = { magLn , multp.mult( this ) };
+			dirs.add( (ComplexElem<R,S>[]) dirA );
+			if( !( getFac().isMultCommutative() ) )
+			{
+				ComplexElem[] dirB = { magLn , this.mult( multp ) };
+				dirs.add( (ComplexElem<R,S>[]) dirB );
+			}
+			
+		}
+		
+		
+		for( final ComplexElem<R,S>[] dirl : dirs )
+		{
+			final ComplexElem<R,S> magLn = dirl[ 0 ];
+			final ComplexElem<R,S> dir = dirl[ 1 ];
+			final ComplexElem<R,S> refAng = dir.asinhPortionSeries( );
+			
+			stval0 = evalBetterLnApprox( stval0 , magLn.add( refAng ) , numIterExp );
+			
+			final R PI = getFac().getFac().identity().divideBy( 314159265 ).invertLeft().divideBy( 100000000 );
+			final ComplexElem<R,S> iPI = new ComplexElem<R,S>( getFac().getFac().zero() , PI );
+			
+			stval0 = evalBetterLnApprox( stval0 , magLn.add( iPI ).add( refAng.negate() ) , numIterExp );
+			
+		}
+		
+		
 		return( stval0 );
 	}
 	

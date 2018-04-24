@@ -285,7 +285,7 @@ public class TestAtan2 extends TestCase {
 	public void testCplxDLn() throws Throwable
 	{
 		final Random rand = new Random( 4444 );
-		for( int cnt = 0 ; cnt < 10000 ; cnt++ )
+		for( int cnt = 0 ; cnt < 8000 ; cnt++ )
 		{
 			System.out.println( cnt );
 			

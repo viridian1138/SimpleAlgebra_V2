@@ -251,6 +251,7 @@ public abstract class NewtonRaphsonSingleElemFunctional<R extends Elem<R,?>, S e
 			else
 			{
 				// No suitable iteration can be found.
+				retrieveIterationValue();
 				lastValue = eval.eval( implicitSpace );
 			}
 		}
