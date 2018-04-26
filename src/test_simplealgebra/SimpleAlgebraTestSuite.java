@@ -126,6 +126,7 @@ public class SimpleAlgebraTestSuite extends TestSuite {
 		s.addTestSuite( TestCplxLn.class );
 		s.addTestSuite( TestMatrixLnSimple.class );
 		s.addTestSuite( TestSort.class );
+		s.addTestSuite( TestMultivectorLn.class );
 		return( s );
 	}
 	

@@ -39,6 +39,7 @@ import java.util.TreeSet;
 import org.kie.internal.runtime.StatefulKnowledgeSession;
 
 import simplealgebra.AbstractCache;
+import simplealgebra.BadCreationException;
 import simplealgebra.CloneThreadCache;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
@@ -1938,76 +1939,253 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 	
 	
 	/**
-	 * Generates a multivector for a scalar "rotated" in the direction of the remaining cells.
-	 * @param st The multivector containing the scalar.
-	 * @param r0 The multivector containing the remaining cells.
-	 * @return The generated multivector.
-	 */
-	protected GeometricAlgebraMultivectorElem<U,A, R, S> genReRot( GeometricAlgebraMultivectorElem<U,A, R, S> st , GeometricAlgebraMultivectorElem<U,A, R, S> r0 )
-	{
-		final GeometricAlgebraMultivectorElem<U,A, R, S> st0 = getFac().zero().add( r0 );
-		final HashSet<BigInteger> key = new HashSet<BigInteger>();
-		st0.setVal( key , st.getVal( key ) );
-		return( st0 );
-	}
-	
-	
-	
-	/**
-	 * Produces one possible initial natural logarithm approximation.
-	 * @param currentComb The current unit guess to integrate.
-	 * @param numIterExp The number of iterations for the underlying exponential approximation.
-	 * @return One possible initial natural logarithm approximation.
+	 * Returns a series approximation of asinh for the non-scalar part of a multivector.
+	 * @return A series approximation of asinh for the non-scalar part of a multivector.
 	 * @throws NotInvertibleException
 	 */
-	protected GeometricAlgebraMultivectorElem<U,A, R, S> estimateLnApprox( final GeometricAlgebraMultivectorElem<U,A, R, S> currentComb , final int numIterExp ) throws NotInvertibleException
-	{	
-		GeometricAlgebraMultivectorElem<U,A, R, S> stval0 = currentComb;
-		GeometricAlgebraMultivectorElem<U,A, R, S> r0 = currentComb;
-		GeometricAlgebraMultivectorElem<U,A, R, S> stinit;
+	protected GeometricAlgebraMultivectorElem<U,A, R, S> asinhPortionSeries( ) throws NotInvertibleException
+	{
 		
-		GeometricAlgebraMultivectorElem<U,A, R, S> ident = getFac().identity();
+		final GeometricAlgebraMultivectorElem<U,A, R, S> x = getFac().zero();
 		
-		do
+		for( final Entry<HashSet<BigInteger>, R> i : this.getEntrySet() )
 		{
-			stinit = genReRot( stval0 , r0 );
-			stval0 = evalBetterLnApprox( stinit , 
-					genReRot( stval0.divideBy( 2 ) , r0 ) , numIterExp );
+			if( !( i.getKey().isEmpty() ) )
+			{
+				x.setVal( i.getKey() , i.getValue() );
+			}
 		}
-		while( stval0 != stinit );
 		
+		final GeometricAlgebraMultivectorElem<U,A, R, S> x2 = x.mult( x );
+		final GeometricAlgebraMultivectorElem<U,A, R, S> x3 = x2.mult( x );
+		final GeometricAlgebraMultivectorElem<U,A, R, S> x4 = x3.mult( x );
+		final GeometricAlgebraMultivectorElem<U,A, R, S> x5 = x4.mult( x );
+		final GeometricAlgebraMultivectorElem<U,A, R, S> x6 = x5.mult( x );
+		final GeometricAlgebraMultivectorElem<U,A, R, S> x7 = x6.mult( x );
+		final GeometricAlgebraMultivectorElem<U,A, R, S> x8 = x7.mult( x );
+		final GeometricAlgebraMultivectorElem<U,A, R, S> x9 = x8.mult( x );
 		
-		final GeometricAlgebraMultivectorElem<U,A, R, S> mult2 = ident.add( ident );
+		final GeometricAlgebraMultivectorElem<U,A, R, S> c3 = getFac().identity().divideBy( 1 ).invertLeft().divideBy( 6 ).negate();
 		
+		final GeometricAlgebraMultivectorElem<U,A, R, S> c5 = getFac().identity().divideBy( 3 ).invertLeft().divideBy( 40 );
 		
-		do
-		{
-			stinit = genReRot( stval0 , r0 );
-			stval0 = evalBetterLnApprox( stinit , 
-					genReRot( stval0.mult( mult2 ) , r0 ) , numIterExp );
-		}
-		while( stval0 != stinit ); 
+		final GeometricAlgebraMultivectorElem<U,A, R, S> c7 = getFac().identity().divideBy( 5 ).invertLeft().divideBy( 112 ).negate();
 		
+		final GeometricAlgebraMultivectorElem<U,A, R, S> c9 = getFac().identity().divideBy( 35 ).invertLeft().divideBy( 1152 );
 		
-		final GeometricAlgebraMultivectorElem<U,A, R, S> stu = genReRot( stval0 , r0 );
+		final GeometricAlgebraMultivectorElem<U,A, R, S> ret = ( x ).add( c3.mult( x3 ) ).add( c5.mult( x5 ) ).add( c7.mult( x7 ) ).add( c9.mult( x9 ) );
 		
-		
-		final GeometricAlgebraMultivectorElem<U,A, R, S> ret = stu;
 		return( ret );
-		
-		
 	}
 	
 	
 	@Override
 	protected GeometricAlgebraMultivectorElem<U,A, R, S> estimateLnApprox( final int numIterExp ) throws NotInvertibleException
-	{
-		Iterator<GeometricAlgebraMultivectorElem<U,A, R, S>> it = getFac().getApproxLnUnit();
-		GeometricAlgebraMultivectorElem<U,A, R, S> stval0 = it.next();
-		while( it.hasNext() )
+{
+		
+		GeometricAlgebraMultivectorElem<U,A, R, S> stval0 = getFac().identity();
+		
+		
+		final GeometricAlgebraMultivectorElem<U,A, R, S> rer = getFac().zero();
+		final GeometricAlgebraMultivectorElem<U,A, R, S> imr = getFac().zero();
+		
+		for( final Entry<HashSet<BigInteger>, R> i : this.getEntrySet() )
 		{
-			stval0 = evalBetterLnApprox( stval0 , estimateLnApprox( it.next() , numIterExp ) , numIterExp );
+			if( !( i.getKey().isEmpty() ) )
+			{
+				imr.setVal( i.getKey() , i.getValue() );
+			}
+			else
+			{
+				rer.setVal( i.getKey() , i.getValue() );
+			}
 		}
+		
+		final R re = rer.getVal( new HashSet<BigInteger>() );
+		
+		
+		
+		final ArrayList<HashSet<BigInteger>> ims = new ArrayList<HashSet<BigInteger>>();
+		
+		
+		{
+			final GeometricAlgebraMultivectorElem<U,A, R, S> tmult = this.mult( this ).mult( this ).mult( this ).mult( this );
+			for( final Entry<HashSet<BigInteger>, R> i : tmult.getEntrySet() )
+			{
+				final HashSet<BigInteger> el = new HashSet<BigInteger>();
+				final boolean negate = ord.calcOrd( i.getKey() , i.getKey() , el , dim );
+				if( ( negate ) && ( el.isEmpty() ) )
+				{
+					ims.add( i.getKey() );
+				}
+			}
+		}
+		
+		
+		if( ims.isEmpty() )
+		{
+			BigInteger cnt = BigInteger.ZERO;
+			while( ( ims.isEmpty() ) && ( cnt.compareTo( dim.getVal() ) < 0 ) )
+			{
+				BigInteger cnt2 = cnt;
+				while( ( ims.isEmpty() ) && ( cnt2.compareTo( dim.getVal() ) < 0 ) )
+				{
+					HashSet<BigInteger> hs = new HashSet<BigInteger>();
+					hs.add( cnt );
+					hs.add( cnt2 );
+					final HashSet<BigInteger> el = new HashSet<BigInteger>();
+					final boolean negate = ord.calcOrd( hs , hs , el , dim );
+					if( ( negate ) && ( el.isEmpty() ) )
+					{
+						ims.add( hs );
+					}
+					cnt2 = cnt2.add( BigInteger.ONE );
+				}
+				cnt = cnt.add( BigInteger.ONE );
+			}
+		}
+		
+		
+		
+		try
+		{
+			final R rin = re.ln( numIterExp , numIterExp );
+			final GeometricAlgebraMultivectorElem<U,A, R, S> tst = getFac().zero();
+			tst.setVal( new HashSet<BigInteger>() , rin );
+			stval0 = evalBetterLnApprox( stval0 , tst , numIterExp );
+		}
+		catch( NotInvertibleException ex ) 
+		{
+			// Do Nothing.
+		}
+		catch( MultiplicativeDistributionRequiredException ex ) 
+		{
+			// Do Nothing.
+		}
+		catch( BadCreationException ex )
+		{
+			// Do Nothing.
+		}
+		
+		
+		try
+		{
+			final R rin = ( re.negate() ).ln( numIterExp , numIterExp );
+			final R PI = getFac().getFac().identity().divideBy( 314159265 ).invertLeft().divideBy( 100000000 );
+			for( HashSet<BigInteger> i : ims )
+			{
+				final GeometricAlgebraMultivectorElem<U,A, R, S> tst = getFac().zero();
+				tst.setVal( new HashSet<BigInteger>() , rin );
+				tst.setVal( i , PI );
+				stval0 = evalBetterLnApprox( stval0 , tst , numIterExp );
+			}
+		}
+		catch( NotInvertibleException ex ) 
+		{
+			// Do Nothing.
+		}
+		catch( MultiplicativeDistributionRequiredException ex ) 
+		{
+			// Do Nothing.
+		}
+		catch( BadCreationException ex )
+		{
+			// Do Nothing.
+		}
+		
+		
+		
+		final R magSq = re.mult( re ).add( imr.mult( imr ).getVal( new HashSet<BigInteger>() ).negate() );
+		
+		final ArrayList<GeometricAlgebraMultivectorElem<U,A, R, S>> magLns = new ArrayList<GeometricAlgebraMultivectorElem<U,A, R, S>>();
+		
+		
+		
+		try
+		{
+			final R rin = magSq.ln( numIterExp , numIterExp );
+			final GeometricAlgebraMultivectorElem<U,A, R, S> tst = getFac().zero();
+			tst.setVal( new HashSet<BigInteger>() , rin );
+			magLns.add( tst );
+		}
+		catch( NotInvertibleException ex ) 
+		{
+			// Do Nothing.
+		}
+		catch( MultiplicativeDistributionRequiredException ex ) 
+		{
+			// Do Nothing.
+		}
+		catch( BadCreationException ex )
+		{
+			// Do Nothing.
+		}
+		
+		
+		
+		try
+		{
+			final R rin = ( magSq.negate() ).ln( numIterExp , numIterExp );
+			final R PI = getFac().getFac().identity().divideBy( 314159265 ).invertLeft().divideBy( 100000000 );
+			for( HashSet<BigInteger> i : ims )
+			{
+				final GeometricAlgebraMultivectorElem<U,A, R, S> tst = getFac().zero();
+				tst.setVal( new HashSet<BigInteger>() , rin );
+				tst.setVal( i , PI );
+				magLns.add( tst );
+			}
+		}
+		catch( NotInvertibleException ex ) 
+		{
+			// Do Nothing.
+		}
+		catch( MultiplicativeDistributionRequiredException ex ) 
+		{
+			// Do Nothing.
+		}
+		catch( BadCreationException ex )
+		{
+			// Do Nothing.
+		}
+		
+	
+		final ArrayList<GeometricAlgebraMultivectorElem<U,A, R, S>[]> dirs = new ArrayList<GeometricAlgebraMultivectorElem<U,A, R, S>[]>();
+		
+		for( final GeometricAlgebraMultivectorElem<U,A, R, S> magLn : magLns )
+		{
+			GeometricAlgebraMultivectorElem<U,A, R, S> multp = ( magLn.divideBy( 2 ).negate() ).exp( numIterExp );
+			GeometricAlgebraMultivectorElem[] dirA = { magLn , multp.mult( this ) };
+			dirs.add( (GeometricAlgebraMultivectorElem<U,A, R, S>[]) dirA );
+			if( !( getFac().isMultCommutative() ) )
+			{
+				GeometricAlgebraMultivectorElem[] dirB = { magLn , this.mult( multp ) };
+				dirs.add( (GeometricAlgebraMultivectorElem<U,A, R, S>[]) dirB );
+			}
+			
+		}
+		
+		
+		for( final GeometricAlgebraMultivectorElem<U,A, R, S>[] dirl : dirs )
+		{
+			final GeometricAlgebraMultivectorElem<U,A, R, S> magLn = dirl[ 0 ];
+			final GeometricAlgebraMultivectorElem<U,A, R, S> dir = dirl[ 1 ];
+			final GeometricAlgebraMultivectorElem<U,A, R, S> refAng = dir.asinhPortionSeries( );
+			
+			stval0 = evalBetterLnApprox( stval0 , magLn.add( refAng ) , numIterExp );
+			
+			final R PI = getFac().getFac().identity().divideBy( 314159265 ).invertLeft().divideBy( 100000000 );
+			
+			for( HashSet<BigInteger> i : ims )
+			{
+				final GeometricAlgebraMultivectorElem<U,A, R, S> iPI = getFac().zero();
+				iPI.setVal( i , PI );
+				stval0 = evalBetterLnApprox( stval0 , magLn.add( iPI ).add( refAng.negate() ) , numIterExp );
+			}
+			
+			
+		}
+		
+		
 		return( stval0 );
 	}
 	
