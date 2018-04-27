@@ -1979,6 +1979,52 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 	}
 	
 	
+	
+	
+	/**
+	 * Finds all possible multiplication results that square negative.
+	 * 
+	 * @param ims The set into which to write the results.
+	 */
+	protected void findImComponents( ArrayList<HashSet<BigInteger>> ims )
+	{
+		GeometricAlgebraMultivectorElem<U,A, R, S> tmult = this.mult( this ).mult( this ).mult( this ).mult( this );
+		
+		final HashSet<HashSet<BigInteger>> allTerms = new HashSet<HashSet<BigInteger>>();
+		
+		int prevCnt = -1;
+		boolean done = false;
+		
+		while( !done )
+		{
+			tmult = tmult.mult( this );
+			for( final HashSet<BigInteger> i : tmult.getKeySet() )
+			{
+				allTerms.add( i );
+			}
+			done = prevCnt == allTerms.size();
+			prevCnt = allTerms.size();
+		}
+		
+		
+		
+		for( HashSet<BigInteger> i : allTerms )
+		{
+			final HashSet<BigInteger> el = new HashSet<BigInteger>();
+			final boolean negate = ord.calcOrd( i , i , el , dim );
+			if( ( negate ) && ( el.isEmpty() ) )
+			{
+				ims.add( i );
+			}
+		}
+		
+		
+		
+	}
+	
+	
+	
+	
 	@Override
 	protected GeometricAlgebraMultivectorElem<U,A, R, S> estimateLnApprox( final int numIterExp ) throws NotInvertibleException
 {
@@ -2008,18 +2054,7 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 		final ArrayList<HashSet<BigInteger>> ims = new ArrayList<HashSet<BigInteger>>();
 		
 		
-		{
-			final GeometricAlgebraMultivectorElem<U,A, R, S> tmult = this.mult( this ).mult( this ).mult( this ).mult( this );
-			for( final Entry<HashSet<BigInteger>, R> i : tmult.getEntrySet() )
-			{
-				final HashSet<BigInteger> el = new HashSet<BigInteger>();
-				final boolean negate = ord.calcOrd( i.getKey() , i.getKey() , el , dim );
-				if( ( negate ) && ( el.isEmpty() ) )
-				{
-					ims.add( i.getKey() );
-				}
-			}
-		}
+		findImComponents( ims );
 		
 		
 		if( ims.isEmpty() )

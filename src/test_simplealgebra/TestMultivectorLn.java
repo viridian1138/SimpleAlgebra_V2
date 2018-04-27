@@ -88,6 +88,62 @@ public class TestMultivectorLn extends TestCase {
 		
 	}
 	
+	
+	
+public void testMultivectorLnProduct( ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
+		
+		final DoubleElemFactory fac = new DoubleElemFactory();
+		
+		final TestDimensionFive td = new TestDimensionFive();
+		
+		final HashSet<BigInteger> e1 = new HashSet<BigInteger>();
+		final HashSet<BigInteger> e2 = new HashSet<BigInteger>();
+		final HashSet<BigInteger> e3 = new HashSet<BigInteger>();
+		
+		e1.add( BigInteger.ONE );
+		e2.add( BigInteger.valueOf( 2 ) );
+		e3.add( BigInteger.valueOf( 3 ) );
+		
+		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> eA
+			= new GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory>( fac , td , new GeometricAlgebraOrd<TestDimensionFive>() );
+		
+		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> eB
+			= new GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory>( fac , td , new GeometricAlgebraOrd<TestDimensionFive>() );
+		
+		eA.setVal( e1 ,  new DoubleElem( 0.7 ) );
+		eA.setVal( e2 ,  new DoubleElem( 0.4 ) );
+		
+		eB.setVal( e2 ,  new DoubleElem( 0.55 ) );
+		eB.setVal( e3 ,  new DoubleElem( 0.33 ) );
+		
+		
+		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> el = eA.mult( eB.invertLeft() );
+		
+		
+		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> ln
+			= el.ln( 20 , 20 );
+		
+		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> exp = ln.exp( 20 );
+		
+		
+		for( final Entry<HashSet<BigInteger>, DoubleElem> ii : exp.getEntrySet() )
+		{
+			HashSet<BigInteger> h = ii.getKey();
+			Assert.assertEquals( el.getVal( ii.getKey() ).getVal()  , ii.getValue().getVal() , 1E-5 );
+		}
+		
+		
+		for( final Entry<HashSet<BigInteger>, DoubleElem> ii : el.getEntrySet() )
+		{
+			HashSet<BigInteger> h = ii.getKey();
+			Assert.assertEquals( exp.getVal( ii.getKey() ).getVal()  , ii.getValue().getVal() , 1E-5 );
+		}
+		
+		
+	}
+	
+	
+	
 
 }
 
