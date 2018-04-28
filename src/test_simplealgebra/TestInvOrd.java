@@ -112,6 +112,16 @@ public class TestInvOrd<U extends NumDimensions> extends Ord<U> {
 	
 	
 	
+	@Override
+	public HashSet<BigInteger> suggestNegativeSquare( U dim )
+	{	
+		return( null );	
+	}
+	
+	
+		
+	
+	
 
 }
 

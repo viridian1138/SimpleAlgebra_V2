@@ -1940,6 +1940,7 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 	
 	/**
 	 * Returns a series approximation of asinh for the non-scalar part of a multivector.
+	 * See <A href="http://www.efunda.com/math/taylor_series/inverse_hyperbolic.cfm">http://www.efunda.com/math/taylor_series/inverse_hyperbolic.cfm</A>
 	 * @return A series approximation of asinh for the non-scalar part of a multivector.
 	 * @throws NotInvertibleException
 	 */
@@ -1986,7 +1987,7 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 	 * 
 	 * @param ims The set into which to write the results.
 	 */
-	protected void findImComponents( ArrayList<HashSet<BigInteger>> ims )
+	protected void findImComponents( TreeSet<OrderedBasis> ims )
 	{
 		GeometricAlgebraMultivectorElem<U,A, R, S> tmult = this.mult( this ).mult( this ).mult( this ).mult( this );
 		
@@ -2014,13 +2015,79 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 			final boolean negate = ord.calcOrd( i , i , el , dim );
 			if( ( negate ) && ( el.isEmpty() ) )
 			{
-				ims.add( i );
+				ims.add( new OrderedBasis( i ) );
 			}
 		}
 		
 		
 		
 	}
+	
+	
+	
+	/**
+	 * Node used to enforce an ordering upon the evaluation of logarithm indices.
+	 * @author tgreen
+	 *
+	 */
+	protected static class OrderedBasis implements Comparable<OrderedBasis>
+	{
+		
+		/**
+		 * Constructs the OrderedBasis.
+		 * @param _set The basis element represented in the ordering.
+		 */
+		public OrderedBasis( final HashSet<BigInteger> _set )
+		{
+			set = _set;
+		}
+		
+		
+		/**
+		 * Gets the basis element represented in the ordering.
+		 * @return The basis element represented in the ordering.
+		 */
+		public HashSet<BigInteger> getSet()
+		{
+			return( set );
+		}
+		
+		
+		/**
+		 * The basis element represented in the ordering.
+		 */
+		protected HashSet<BigInteger> set;
+
+
+		@Override
+		public int compareTo( OrderedBasis arg0 ) {
+			
+			if( set.size() != arg0.getSet().size() )
+			{
+				return( ( new Integer( - set.size() ) ).compareTo( new Integer( - arg0.getSet().size() ) ) );
+			}
+			
+			TreeSet<BigInteger> as = new TreeSet<BigInteger>( set );
+			TreeSet<BigInteger> as0 = new TreeSet<BigInteger>( arg0.getSet() );
+			
+			Iterator<BigInteger> its = as.iterator();
+			Iterator<BigInteger> its0 = as0.descendingIterator();
+			
+			while( its.hasNext() )
+			{
+				final int cmp = its.next().compareTo( its0.next() );
+				if( cmp != 0 )
+				{
+					return( cmp );
+				}
+			}
+			
+			return( 0 );
+		}
+		
+		
+	}
+	
 	
 	
 	
@@ -2051,7 +2118,7 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 		
 		
 		
-		final ArrayList<HashSet<BigInteger>> ims = new ArrayList<HashSet<BigInteger>>();
+		final TreeSet<OrderedBasis> ims = new TreeSet<OrderedBasis>();
 		
 		
 		findImComponents( ims );
@@ -2062,7 +2129,7 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 			final HashSet<BigInteger> hs = ord.suggestNegativeSquare( dim );
 			if( hs != null )
 			{
-				ims.add( hs );
+				ims.add( new OrderedBasis( hs ) );
 			}
 		}
 		
@@ -2093,11 +2160,11 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 		{
 			final R rin = ( re.negate() ).ln( numIterExp , numIterExp );
 			final R PI = getFac().getFac().identity().divideBy( 314159265 ).invertLeft().divideBy( 100000000 );
-			for( HashSet<BigInteger> i : ims )
+			for( OrderedBasis i : ims )
 			{
 				final GeometricAlgebraMultivectorElem<U,A, R, S> tst = getFac().zero();
 				tst.setVal( new HashSet<BigInteger>() , rin );
-				tst.setVal( i , PI );
+				tst.setVal( i.getSet() , PI );
 				stval0 = evalBetterLnApprox( stval0 , tst , numIterExp );
 			}
 		}
@@ -2148,11 +2215,11 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 		{
 			final R rin = ( magSq.negate() ).ln( numIterExp , numIterExp );
 			final R PI = getFac().getFac().identity().divideBy( 314159265 ).invertLeft().divideBy( 100000000 );
-			for( HashSet<BigInteger> i : ims )
+			for( OrderedBasis i : ims )
 			{
 				final GeometricAlgebraMultivectorElem<U,A, R, S> tst = getFac().zero();
 				tst.setVal( new HashSet<BigInteger>() , rin );
-				tst.setVal( i , PI );
+				tst.setVal( i.getSet() , PI );
 				magLns.add( tst );
 			}
 		}
@@ -2196,10 +2263,10 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 			
 			final R PI = getFac().getFac().identity().divideBy( 314159265 ).invertLeft().divideBy( 100000000 );
 			
-			for( HashSet<BigInteger> i : ims )
+			for( OrderedBasis i : ims )
 			{
 				final GeometricAlgebraMultivectorElem<U,A, R, S> iPI = getFac().zero();
-				iPI.setVal( i , PI );
+				iPI.setVal( i.getSet() , PI );
 				stval0 = evalBetterLnApprox( stval0 , magLn.add( iPI ).add( refAng.negate() ) , numIterExp );
 			}
 			

@@ -378,6 +378,7 @@ public class ComplexElem<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 	
 	/**
 	 * Returns a series approximation of asinh for the imaginary part of the complex number.
+	 * See <A href="http://www.efunda.com/math/taylor_series/inverse_hyperbolic.cfm">http://www.efunda.com/math/taylor_series/inverse_hyperbolic.cfm</A>
 	 * @return A series approximation of asinh for the imaginary part of the complex number.
 	 * @throws NotInvertibleException
 	 */
