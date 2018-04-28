@@ -57,6 +57,15 @@ public abstract class Ord<U extends NumDimensions> {
 	 */
 	public abstract boolean calcOrd( HashSet<BigInteger> ka , HashSet<BigInteger> kb , HashSet<BigInteger> el , U dim );
 	
+	
+	/**
+	 * Suggests a basis element that squares negative.
+	 * @param dim The number of dimensions.
+	 * @return The basis element that squares negative, or null if none found.
+	 */
+	public abstract HashSet<BigInteger> suggestNegativeSquare( U dim );
+	
+	
 	/**
 	 * Writes the type of the dimension.
 	 * 

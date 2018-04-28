@@ -134,6 +134,53 @@ public class GeometricAlgebraOrd<U extends NumDimensions> extends Ord<U> {
 		return( negate );
 	}
 	
+	
+	
+	
+	@Override
+	public HashSet<BigInteger> suggestNegativeSquare( U dim )
+	{
+
+		
+		{
+			HashSet<BigInteger> k0 = new HashSet<BigInteger>();
+			
+			for( BigInteger i = BigInteger.ZERO ; i.compareTo( dim.getVal() ) < 0 ; i = i.add( BigInteger.ONE )  )
+			{
+				k0.add( i );
+			}
+			
+			HashSet<BigInteger> el = new HashSet<BigInteger>();
+			final boolean negate = calcOrd( k0 , k0 , el , dim );
+			if( negate && ( el.size() == 0 ) )
+			{
+				return( k0 );
+			}
+		}
+		
+		
+		if( dim.getVal().compareTo( BigInteger.valueOf( 2 ) ) >= 0 )
+		{
+			HashSet<BigInteger> k0 = new HashSet<BigInteger>();
+			
+			k0.add( BigInteger.ZERO );
+			k0.add( BigInteger.ONE );
+			
+			HashSet<BigInteger> el = new HashSet<BigInteger>();
+			final boolean negate = calcOrd( k0 , k0 , el , dim );
+			if( negate && ( el.size() == 0 ) )
+			{
+				return( k0 );
+			}
+		}
+		
+		
+		return( null );
+		
+	}
+	
+	
+	
 
 }
 

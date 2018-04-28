@@ -52,7 +52,7 @@ import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 public class TestMultivectorLn extends TestCase {
 
 	/**
-	 * Simple test for a multivector log for a 5-D multivector.
+	 * Simple test for a multivector log for a 5-D multivector equal to the scalar -3.
 	 * @throws MultiplicativeDistributionRequiredException 
 	 */
 	public void testMultivectorLnSimple( ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
@@ -89,7 +89,16 @@ public class TestMultivectorLn extends TestCase {
 	}
 	
 	
-	
+
+/**
+ * Creates a transform el = eA * inverse( eB ) so that multiplying
+ * el on the right by eB produces eA.  Then tests the ability to
+ * take the log of the transform el so that the transform el can
+ * be expresented in logarithmic space.
+ * 	
+ * @throws NotInvertibleException
+ * @throws MultiplicativeDistributionRequiredException
+ */
 public void testMultivectorLnProduct( ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
 		
 		final DoubleElemFactory fac = new DoubleElemFactory();
@@ -117,7 +126,7 @@ public void testMultivectorLnProduct( ) throws NotInvertibleException, Multiplic
 		eB.setVal( e3 ,  new DoubleElem( 0.33 ) );
 		
 		
-		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> el = eA.mult( eB.invertLeft() );
+		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> el = eA.mult( eB.invertRight() );
 		
 		
 		final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> ln
@@ -141,6 +150,67 @@ public void testMultivectorLnProduct( ) throws NotInvertibleException, Multiplic
 		
 		
 	}
+
+
+
+
+
+
+
+/**
+ * Tests the ability to take the log of e to the power of a vector.
+ * @throws NotInvertibleException
+ * @throws MultiplicativeDistributionRequiredException
+ */
+public void testEVectorLn( ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
+	
+	final DoubleElemFactory fac = new DoubleElemFactory();
+	
+	final TestDimensionFive td = new TestDimensionFive();
+	
+	final HashSet<BigInteger> e1 = new HashSet<BigInteger>();
+	final HashSet<BigInteger> e2 = new HashSet<BigInteger>();
+	final HashSet<BigInteger> e3 = new HashSet<BigInteger>();
+	
+	e1.add( BigInteger.ONE );
+	e2.add( BigInteger.valueOf( 2 ) );
+	e3.add( BigInteger.valueOf( 3 ) );
+	
+	final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> eB
+		= new GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory>( fac , td , new GeometricAlgebraOrd<TestDimensionFive>() );
+	
+	eB.setVal( e2 ,  new DoubleElem( 0.55 ) );
+	eB.setVal( e3 ,  new DoubleElem( 0.33 ) );
+	
+	
+	final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> el = eB.exp( 20 );
+	
+	
+	final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> ln
+		= el.ln( 20 , 20 );
+	
+	final GeometricAlgebraMultivectorElem<TestDimensionFive,GeometricAlgebraOrd<TestDimensionFive>,DoubleElem,DoubleElemFactory> exp = ln.exp( 20 );
+	
+	
+	for( final Entry<HashSet<BigInteger>, DoubleElem> ii : exp.getEntrySet() )
+	{
+		HashSet<BigInteger> h = ii.getKey();
+		Assert.assertEquals( el.getVal( ii.getKey() ).getVal()  , ii.getValue().getVal() , 1E-5 );
+	}
+	
+	
+	for( final Entry<HashSet<BigInteger>, DoubleElem> ii : el.getEntrySet() )
+	{
+		HashSet<BigInteger> h = ii.getKey();
+		Assert.assertEquals( exp.getVal( ii.getKey() ).getVal()  , ii.getValue().getVal() , 1E-5 );
+	}
+	
+	
+}
+
+
+
+
 	
 	
 	

@@ -2059,24 +2059,10 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 		
 		if( ims.isEmpty() )
 		{
-			BigInteger cnt = BigInteger.ZERO;
-			while( ( ims.isEmpty() ) && ( cnt.compareTo( dim.getVal() ) < 0 ) )
+			final HashSet<BigInteger> hs = ord.suggestNegativeSquare( dim );
+			if( hs != null )
 			{
-				BigInteger cnt2 = cnt;
-				while( ( ims.isEmpty() ) && ( cnt2.compareTo( dim.getVal() ) < 0 ) )
-				{
-					HashSet<BigInteger> hs = new HashSet<BigInteger>();
-					hs.add( cnt );
-					hs.add( cnt2 );
-					final HashSet<BigInteger> el = new HashSet<BigInteger>();
-					final boolean negate = ord.calcOrd( hs , hs , el , dim );
-					if( ( negate ) && ( el.isEmpty() ) )
-					{
-						ims.add( hs );
-					}
-					cnt2 = cnt2.add( BigInteger.ONE );
-				}
-				cnt = cnt.add( BigInteger.ONE );
+				ims.add( hs );
 			}
 		}
 		
