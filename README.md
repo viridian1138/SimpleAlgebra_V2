@@ -112,6 +112,8 @@ GA (Geometric Algebra)
 
 ...http://przyrbwn.icm.edu.pl/APP/PDF/116/a116z219.pdf
 
+...Green, Thornton, "Research Issues of Geometry-Based Visual Languages and Some Solutions", Dissertation, Arizona State University, 1999.
+
 Java
 
 ...http://en.wikipedia.org/wiki/Java_(programming_language)
