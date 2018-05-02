@@ -71,6 +71,8 @@ public class TestCurveAffineInvariantMetric extends TestCase {
  * 
  * This produces a curve that interpolates b0 at u=0, and interpolates b1 at u=1.
  * 
+ * The curve is also tangent to d0 at u=0, and tangent to d1 at u=1.
+ * 
  * 
  * @throws NotInvertibleException
  * @throws MultiplicativeDistributionRequiredException
@@ -228,6 +230,164 @@ public void testCurveAffineInvariantMetric( ) throws NotInvertibleException, Mul
 
 	
 }
+
+
+
+
+
+
+
+/**
+ * Same test as testCurveAffineInvariantMetric(), but with a slightly simpler formula.
+ * 
+ * 
+ * @throws NotInvertibleException
+ * @throws MultiplicativeDistributionRequiredException
+ */
+public void testCurveAffineInvariantMetricRevised( ) throws NotInvertibleException, MultiplicativeDistributionRequiredException {
+	
+	final DoubleElemFactory fac = new DoubleElemFactory();
+	
+	final TestDimensionTwo td = new TestDimensionTwo();
+	
+	final HashSet<BigInteger> sca = new HashSet<BigInteger>();
+	final HashSet<BigInteger> e0 = new HashSet<BigInteger>();
+	final HashSet<BigInteger> e1 = new HashSet<BigInteger>();
+	
+	e0.add( BigInteger.ZERO );
+	e1.add( BigInteger.ONE );
+	
+	
+	
+	final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory> b0
+		= new GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory>( fac , td , new GeometricAlgebraOrd<TestDimensionTwo>() );
+	
+	b0.setVal( e0 ,  new DoubleElem( 0.33 ) );
+	b0.setVal( e1 ,  new DoubleElem( 0.33 ) );
+	
+	
+	
+	final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory> b1
+		= new GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory>( fac , td , new GeometricAlgebraOrd<TestDimensionTwo>() );
+	
+	b1.setVal( e0 ,  new DoubleElem( 0.55 ) );
+	b1.setVal( e1 ,  new DoubleElem( 0.35 ) );
+	
+
+	
+	
+	
+	
+	final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory> d0
+		= new GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory>( fac , td , new GeometricAlgebraOrd<TestDimensionTwo>() );
+	
+	d0.setVal( e0 ,  new DoubleElem( 0.33 ) );
+	d0.setVal( e1 ,  new DoubleElem( 0.80 ) );
+	
+	
+	
+	final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory> d1
+		= new GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory>( fac , td , new GeometricAlgebraOrd<TestDimensionTwo>() );
+	
+	d1.setVal( e0 ,  new DoubleElem( 0.33 ) );
+	d1.setVal( e1 ,  new DoubleElem( -0.70 ) );
+	
+	
+	final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory> ddelta
+		= b1.add( b0.negate() );
+	
+
+	
+	DoubleElem d0l = (DoubleElem)( d0.totalMagnitude() );
+	DoubleElem d1l = (DoubleElem)( d1.totalMagnitude() );
+	DoubleElem ddeltal = (DoubleElem)( ddelta.totalMagnitude() );
+	
+	
+	final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory> d0lm
+		= new GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory>( fac , td , new GeometricAlgebraOrd<TestDimensionTwo>() );
+
+	d0lm.setVal( sca ,  d0l.powR( new DoubleElem( -0.5 ), 20 , 20 ) );
+	
+	
+	final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory> d1lm
+		= new GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory>( fac , td , new GeometricAlgebraOrd<TestDimensionTwo>() );
+
+	d1lm.setVal( sca ,  d1l.powR( new DoubleElem( -0.5 ), 20 , 20 ) );
+	
+	
+	final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory> ddeltalm
+		= new GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory>( fac , td , new GeometricAlgebraOrd<TestDimensionTwo>() );
+
+	ddeltalm.setVal( sca ,  ddeltal.powR( new DoubleElem( -0.5 ), 20 , 20 ) );
+	
+
+	
+	final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory> t0
+		= d0.mult( d0lm );
+	
+	final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory> t1
+		= d1.mult( d1lm );
+	
+	final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory> tdelta
+		= ddelta.mult( ddeltalm );
+	
+	
+	
+	final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory> ln_tdelta_t0
+		= ( ( tdelta.invertLeft() ).mult( t0 ) ).ln( 20 , 20 );
+	
+	final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory> ln_tdelta_t1
+		= ( ( tdelta.invertLeft() ).mult( t1 ) ).ln( 20 , 20 );
+
+
+
+	
+	
+	
+	final int MAX = 10;
+	
+	
+	for( int cnt = 0 ; cnt <= MAX ; cnt++ )
+	{
+		
+		final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory> u
+			= new GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory>( fac , td , new GeometricAlgebraOrd<TestDimensionTwo>() );
+	
+		u.setVal( sca ,  new DoubleElem( (double) cnt / MAX ) );
+		
+		
+		final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory> one_minus_u
+			= u.getFac().identity().add( u.negate() );
+		
+		
+		final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory> termA
+			= ddelta.mult( ( one_minus_u.mult( ln_tdelta_t0 ) ).exp( 20 ) );
+		
+		final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory> termB
+			= u.mult( ln_tdelta_t1 ).sinh( 20 );
+		
+		final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory> termCa
+			= ( u.mult( ln_tdelta_t1 ) ).add( ( one_minus_u.mult( ln_tdelta_t0 ) ).negate() );
+		
+		final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory> termC
+			= termCa.sinh( 20 );
+		
+		final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory> p
+			= ( termA.mult( termB ).mult( termC.invertLeft() ) ).add( b0 );
+		
+		
+		System.out.print( p.getVal( e0 ).getVal() );
+		System.out.print( "  " );
+		System.out.println( p.getVal( e1 ).getVal() );
+
+		
+	}
+	
+
+
+	
+}
+
 
 
 
