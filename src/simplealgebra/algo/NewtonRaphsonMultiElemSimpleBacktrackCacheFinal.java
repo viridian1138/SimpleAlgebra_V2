@@ -291,6 +291,7 @@ public class NewtonRaphsonMultiElemSimpleBacktrackCacheFinal<U extends NumDimens
 			else
 			{
 				// No suitable iteration can be found.
+				param.retrieveIterationValue();
 				lastValues = evalValues();
 			}
 		}

@@ -253,6 +253,7 @@ public abstract class NewtonRaphsonSingleElem<R extends Elem<R,?>, S extends Ele
 			else
 			{
 				// No suitable iteration can be found.
+				retrieveIterationValue();
 				lastValue = eval.eval( implicitSpace );
 			}
 		}

@@ -291,6 +291,7 @@ public class NewtonRaphsonMultiElemSimpleBacktrack<U extends NumDimensions, R ex
 			else
 			{
 				// No suitable iteration can be found.
+				param.retrieveIterationValue();
 				lastValues = evalValues();
 			}
 		}

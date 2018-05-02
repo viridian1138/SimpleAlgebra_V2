@@ -254,6 +254,7 @@ public abstract class NewtonRaphsonSingleElemCacheFinal<R extends Elem<R,?>, S e
 			else
 			{
 				// No suitable iteration can be found.
+				retrieveIterationValue();
 				final HashMap<SCacheKey<R, S>, R> cache = new HashMap<SCacheKey<R, S>, R>();
 				lastValue = eval.evalCached( implicitSpace , cache );
 			}
