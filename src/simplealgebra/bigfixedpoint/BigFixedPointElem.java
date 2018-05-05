@@ -392,7 +392,14 @@ public class BigFixedPointElem<T extends Precision<T>> extends Elem<BigFixedPoin
 	 */
 	public double toDouble( )
 	{
-		return( ( val.doubleValue() ) / ( prec.getVal().doubleValue() ) );
+		BigInteger val = this.val;
+		BigInteger prec = this.prec.getVal();
+		while( ( Double.isNaN( prec.doubleValue() ) ) || ( Double.isInfinite( prec.doubleValue() ) ) )
+		{
+			val = val.divide( BigInteger.valueOf( 2 ) );
+			prec = prec.divide( BigInteger.valueOf( 2 ) );
+		}
+		return( ( val.doubleValue() ) / ( prec.doubleValue() ) );
 	}
 	
 	
