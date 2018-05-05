@@ -146,10 +146,11 @@ public class BigFixedPointElem<T extends Precision<T>> extends Elem<BigFixedPoin
 			}
 			catch( Throwable ex )
 			{
-				// Drop Through
+				return( super.estimateLnApprox( numIterExp ) );
 			}
 		}
-		return( super.estimateLnApprox( numIterExp ) );
+		// return( super.estimateLnApprox( numIterExp ) );
+		throw( new NotInvertibleException() );
 	}
 
 	@Override

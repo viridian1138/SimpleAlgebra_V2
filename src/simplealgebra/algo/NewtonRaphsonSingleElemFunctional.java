@@ -123,6 +123,11 @@ public abstract class NewtonRaphsonSingleElemFunctional<R extends Elem<R,?>, S e
 	 */
 	protected SymbolicElem<R,S> partialEval;
 	
+	/**
+	 * Indicates that the iterations stopped because they could no longer proceed.
+	 */
+	protected boolean iterationsStopped = false;
+	
 	
 	/**
 	 * Constructs the evaluator.
@@ -181,9 +186,10 @@ public abstract class NewtonRaphsonSingleElemFunctional<R extends Elem<R,?>, S e
 	 */
 	public R eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpaceInitialGuess ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
+		iterationsStopped = false;
 		implicitSpace = implicitSpaceInitialGuess;
 		lastValue = eval.eval( implicitSpace );
-		while( !( iterationsDone() ) )
+		while( !( iterationsDone() ) && !iterationsStopped )
 		{
 			performIteration();
 		}
@@ -253,6 +259,7 @@ public abstract class NewtonRaphsonSingleElemFunctional<R extends Elem<R,?>, S e
 				// No suitable iteration can be found.
 				retrieveIterationValue();
 				lastValue = eval.eval( implicitSpace );
+				iterationsStopped = true;
 			}
 		}
 	}

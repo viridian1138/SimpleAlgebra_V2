@@ -127,6 +127,11 @@ public abstract class NewtonRaphsonSingleElemCacheFinal<R extends Elem<R,?>, S e
 	 */
 	protected SymbolicElem<R,S> partialEval;
 	
+	/**
+	 * Indicates that the iterations stopped because they could no longer proceed.
+	 */
+	protected boolean iterationsStopped = false;
+	
 	
 	/**
 	 * Constructs the evaluator.
@@ -188,11 +193,12 @@ public abstract class NewtonRaphsonSingleElemCacheFinal<R extends Elem<R,?>, S e
 	 */
 	public R eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpaceInitialGuess ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
+		iterationsStopped = false;
 		final HashMap<SCacheKey<R, S>, R> cache = new HashMap<SCacheKey<R, S>, R>();
 		
 		implicitSpace = implicitSpaceInitialGuess;
 		lastValue = eval.evalCached( implicitSpace , cache );
-		while( !( iterationsDone() ) )
+		while( !( iterationsDone() ) && !iterationsStopped )
 		{
 			performIteration();
 		}
@@ -257,6 +263,7 @@ public abstract class NewtonRaphsonSingleElemCacheFinal<R extends Elem<R,?>, S e
 				retrieveIterationValue();
 				final HashMap<SCacheKey<R, S>, R> cache = new HashMap<SCacheKey<R, S>, R>();
 				lastValue = eval.evalCached( implicitSpace , cache );
+				iterationsStopped = true;
 			}
 		}
 	}

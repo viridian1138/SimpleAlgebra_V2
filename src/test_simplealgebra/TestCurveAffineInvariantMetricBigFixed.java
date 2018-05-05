@@ -37,6 +37,7 @@ import java.util.Random;
 import junit.framework.Assert;
 import junit.framework.TestCase;
 import simplealgebra.NotInvertibleException;
+import simplealgebra.WriteElemCache;
 import simplealgebra.bigfixedpoint.BigFixedPointElem;
 import simplealgebra.bigfixedpoint.BigFixedPointElemFactory;
 import simplealgebra.bigfixedpoint.Precision;
@@ -192,6 +193,12 @@ public class TestCurveAffineInvariantMetricBigFixed extends TestCase {
 	
 
 	
+	/**
+	 * The number of levels to iterate when evaluating.
+	 */
+	static final int LEVEL = 64;
+	
+	
 	
 
 /**
@@ -280,19 +287,19 @@ public void testCurveAffineInvariantMetric( ) throws NotInvertibleException, Mul
 	final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>> d0lm
 		= new GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>( fac , td , new GeometricAlgebraOrd<TestDimensionTwo>() );
 
-	d0lm.setVal( sca ,  d0l.powR( buildElem( -5 , 10 ) , 64 , 64 ) );
+	d0lm.setVal( sca ,  d0l.powR( buildElem( -5 , 10 ) , LEVEL , LEVEL ) );
 	
 	
 	final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>> d1lm
 		= new GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>( fac , td , new GeometricAlgebraOrd<TestDimensionTwo>() );
 
-	d1lm.setVal( sca ,  d1l.powR( buildElem( -5 , 10 ) , 64 , 64 ) );
+	d1lm.setVal( sca ,  d1l.powR( buildElem( -5 , 10 ) , LEVEL , LEVEL ) );
 	
 	
 	final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>> ddeltalm
 		= new GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>( fac , td , new GeometricAlgebraOrd<TestDimensionTwo>() );
 
-	ddeltalm.setVal( sca ,  ddeltal.powR( buildElem( -5 , 10 ) , 64 , 64 ) );
+	ddeltalm.setVal( sca ,  ddeltal.powR( buildElem( -5 , 10 ) , LEVEL , LEVEL ) );
 	
 
 	
@@ -308,10 +315,10 @@ public void testCurveAffineInvariantMetric( ) throws NotInvertibleException, Mul
 	
 	
 	final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>> ln_tdelta_t0
-		= ( ( tdelta.invertLeft() ).mult( t0 ) ).ln( 64 , 64 );
+		= ( ( tdelta.invertLeft() ).mult( t0 ) ).ln( LEVEL , LEVEL );
 	
 	final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>> ln_tdelta_t1
-		= ( ( tdelta.invertLeft() ).mult( t1 ) ).ln( 64 , 64 );
+		= ( ( tdelta.invertLeft() ).mult( t1 ) ).ln( LEVEL , LEVEL );
 	
 	
 	
@@ -341,16 +348,16 @@ public void testCurveAffineInvariantMetric( ) throws NotInvertibleException, Mul
 		
 		
 		final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>> termA
-			= ddelta.mult( ( one_minus_u.mult( ln_tdelta_t0 ) ).exp( 64 ) );
+			= ddelta.mult( ( one_minus_u.mult( ln_tdelta_t0 ) ).exp( LEVEL ) );
 		
 		final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>> termB
-			= ( im.negate().mult( u ).mult( ln_tdelta_t1 ) ).sin( 64 );
+			= ( im.negate().mult( u ).mult( ln_tdelta_t1 ) ).sin( LEVEL );
 		
 		final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>> termCa
 			= ( u.mult( ln_tdelta_t1 ) ).add( ( one_minus_u.mult( ln_tdelta_t0 ) ).negate() );
 		
 		final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>> termC
-			= ( im.negate().mult( termCa ) ).sin( 64 );
+			= ( im.negate().mult( termCa ) ).sin( LEVEL );
 		
 		final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>> p
 			= ( termA.mult( termB ).mult( termC.invertLeft() ) ).add( b0 );
@@ -443,19 +450,19 @@ public void testCurveAffineInvariantMetricRevised( ) throws NotInvertibleExcepti
 	final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>> d0lm
 		= new GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>( fac , td , new GeometricAlgebraOrd<TestDimensionTwo>() );
 
-	d0lm.setVal( sca ,  d0l.powR( buildElem( -5 , 10 ) , 64 , 64 ) );
+	d0lm.setVal( sca ,  d0l.powR( buildElem( -5 , 10 ) , LEVEL , LEVEL ) );
 	
 	
 	final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>> d1lm
 		= new GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>( fac , td , new GeometricAlgebraOrd<TestDimensionTwo>() );
 
-	d1lm.setVal( sca ,  d1l.powR( buildElem( -5 , 10 ) , 64 , 64 ) );
+	d1lm.setVal( sca ,  d1l.powR( buildElem( -5 , 10 ) , LEVEL , LEVEL ) );
 	
 	
 	final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>> ddeltalm
 		= new GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>( fac , td , new GeometricAlgebraOrd<TestDimensionTwo>() );
 
-	ddeltalm.setVal( sca ,  ddeltal.powR( buildElem( -5 , 10 ) , 64 , 64 ) );
+	ddeltalm.setVal( sca ,  ddeltal.powR( buildElem( -5 , 10 ) , LEVEL , LEVEL ) );
 	
 
 	
@@ -471,10 +478,10 @@ public void testCurveAffineInvariantMetricRevised( ) throws NotInvertibleExcepti
 	
 	
 	final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>> ln_tdelta_t0
-		= ( ( tdelta.invertLeft() ).mult( t0 ) ).ln( 64 , 64 );
+		= ( ( tdelta.invertLeft() ).mult( t0 ) ).ln( LEVEL , LEVEL );
 	
 	final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>> ln_tdelta_t1
-		= ( ( tdelta.invertLeft() ).mult( t1 ) ).ln( 64 , 64 );
+		= ( ( tdelta.invertLeft() ).mult( t1 ) ).ln( LEVEL , LEVEL );
 
 
 
@@ -498,16 +505,16 @@ public void testCurveAffineInvariantMetricRevised( ) throws NotInvertibleExcepti
 		
 		
 		final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>> termA
-			= ddelta.mult( ( one_minus_u.mult( ln_tdelta_t0 ) ).exp( 64 ) );
+			= ddelta.mult( ( one_minus_u.mult( ln_tdelta_t0 ) ).exp( LEVEL ) );
 		
 		final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>> termB
-			= u.mult( ln_tdelta_t1 ).sinh( 64 );
+			= u.mult( ln_tdelta_t1 ).sinh( LEVEL );
 		
 		final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>> termCa
 			= ( u.mult( ln_tdelta_t1 ) ).add( ( one_minus_u.mult( ln_tdelta_t0 ) ).negate() );
 		
 		final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>> termC
-			= termCa.sinh( 64 );
+			= termCa.sinh( LEVEL );
 		
 		final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>> p
 			= ( termA.mult( termB ).mult( termC.invertLeft() ) ).add( b0 );

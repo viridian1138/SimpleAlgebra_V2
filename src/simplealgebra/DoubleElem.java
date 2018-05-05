@@ -106,10 +106,11 @@ public class DoubleElem extends Elem<DoubleElem, DoubleElemFactory> implements C
 			}
 			catch( Throwable ex )
 			{
-				// Drop Through
+				return( super.estimateLnApprox( numIterExp ) );
 			}
 		}
-		return( super.estimateLnApprox( numIterExp ) );
+		// return( super.estimateLnApprox( numIterExp ) );
+		throw( new NotInvertibleException() );
 	}
 	
 	@Override

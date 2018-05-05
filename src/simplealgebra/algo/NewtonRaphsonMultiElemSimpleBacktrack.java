@@ -157,6 +157,12 @@ public class NewtonRaphsonMultiElemSimpleBacktrack<U extends NumDimensions, R ex
 	protected DescentAlgorithmMultiElemInputParamCallbacks<U,R,S> param;
 	
 	/**
+	 * Indicates that the iterations stopped because they could no longer proceed.
+	 */
+	protected boolean iterationsStopped = false;
+	
+	
+	/**
 	 * Constructs the evaluator.
 	 * 
 	 * @param _param The input parameters for the evaluator.
@@ -220,9 +226,10 @@ public class NewtonRaphsonMultiElemSimpleBacktrack<U extends NumDimensions, R ex
 	 */
 	public GeometricAlgebraMultivectorElem<U,GeometricAlgebraOrd<U>,R,S> eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpaceInitialGuess ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
+		iterationsStopped = false;
 		implicitSpace = implicitSpaceInitialGuess;
 		lastValues = evalValues();
-		while( !( param.iterationsDone() ) )
+		while( !( param.iterationsDone() ) && !iterationsStopped )
 		{
 			performIteration();
 		}
@@ -293,6 +300,7 @@ public class NewtonRaphsonMultiElemSimpleBacktrack<U extends NumDimensions, R ex
 				// No suitable iteration can be found.
 				param.retrieveIterationValue();
 				lastValues = evalValues();
+				iterationsStopped = true;
 			}
 		}
 		
