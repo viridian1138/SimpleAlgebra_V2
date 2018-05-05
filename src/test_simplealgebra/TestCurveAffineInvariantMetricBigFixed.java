@@ -44,7 +44,6 @@ import simplealgebra.bigfixedpoint.Precision;
 import simplealgebra.ga.GeometricAlgebraMultivectorElem;
 import simplealgebra.ga.GeometricAlgebraOrd;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
-import test_simplealgebra.TestMandelbrotSet.LrgPrecision;
 
 
 
