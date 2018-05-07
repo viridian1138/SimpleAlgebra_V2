@@ -395,7 +395,8 @@ public class BigFixedPointElem<T extends Precision<T>> extends Elem<BigFixedPoin
 	{
 		BigInteger val = this.val;
 		BigInteger prec = this.prec.getVal();
-		while( ( Double.isNaN( prec.doubleValue() ) ) || ( Double.isInfinite( prec.doubleValue() ) ) )
+		while( ( Double.isNaN( prec.doubleValue() ) ) || ( Double.isInfinite( prec.doubleValue() ) ) ||
+				( Double.isNaN( val.doubleValue() ) ) || ( Double.isInfinite( val.doubleValue() ) ) )
 		{
 			val = val.divide( BigInteger.valueOf( 2 ) );
 			prec = prec.divide( BigInteger.valueOf( 2 ) );
