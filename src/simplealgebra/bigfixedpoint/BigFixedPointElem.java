@@ -146,7 +146,20 @@ public class BigFixedPointElem<T extends Precision<T>> extends Elem<BigFixedPoin
 			}
 			catch( Throwable ex )
 			{
-				return( super.estimateLnApprox( numIterExp ) );
+				try
+				{
+					final long bitLength = val.bitLength();
+					final long precBitLength = prec.getVal().bitLength();
+					final BigInteger prval = ( BigInteger.valueOf( bitLength - precBitLength ) ).multiply( prec.getVal() );
+					final BigFixedPointElem<T> prd = new BigFixedPointElem<T>( prval , prec );
+					final BigFixedPointElem<T> prmul = new BigFixedPointElem<T>( 2.0 / Math.E , prec );
+					final BigFixedPointElem<T> ret = prd.mult( prmul );
+					return( ret );
+				}
+				catch( Throwable ex2 )
+				{
+					return( super.estimateLnApprox( numIterExp ) );
+				}
 			}
 		}
 		// return( super.estimateLnApprox( numIterExp ) );
