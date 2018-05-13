@@ -395,11 +395,24 @@ public class BigFixedPointElem<T extends Precision<T>> extends Elem<BigFixedPoin
 	{
 		BigInteger val = this.val;
 		BigInteger prec = this.prec.getVal();
-		while( ( Double.isNaN( prec.doubleValue() ) ) || ( Double.isInfinite( prec.doubleValue() ) ) ||
+		if( ( Double.isNaN( prec.doubleValue() ) ) || ( Double.isInfinite( prec.doubleValue() ) ) ||
 				( Double.isNaN( val.doubleValue() ) ) || ( Double.isInfinite( val.doubleValue() ) ) )
 		{
-			val = val.divide( BigInteger.valueOf( 2 ) );
-			prec = prec.divide( BigInteger.valueOf( 2 ) );
+			
+			final BigInteger dval = ( ( new BigDecimal( Double.MAX_VALUE ) ).toBigInteger() ).multiply( prec );
+			final BigInteger vvalv = ( val.divide( dval ).abs().add( BigInteger.ONE ) );
+			final BigInteger vvalp = ( prec.divide( dval ).abs().add( BigInteger.ONE ) );
+			final BigInteger vval = vvalv.compareTo( vvalp ) > 0 ? vvalv : vvalp;
+			
+			val = val.divide( vval );
+			prec = prec.divide( vval );
+			
+			while( ( Double.isNaN( prec.doubleValue() ) ) || ( Double.isInfinite( prec.doubleValue() ) ) ||
+					( Double.isNaN( val.doubleValue() ) ) || ( Double.isInfinite( val.doubleValue() ) ) )
+			{
+				val = val.divide( BigInteger.valueOf( 2 ) );
+				prec = prec.divide( BigInteger.valueOf( 2 ) );
+			}
 		}
 		return( ( val.doubleValue() ) / ( prec.doubleValue() ) );
 	}
