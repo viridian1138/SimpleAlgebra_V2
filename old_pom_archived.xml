@@ -14,10 +14,6 @@
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
   </properties>
   
-  <build>
-    <defaultGoal>dependency:resolve</defaultGoal>
-  </build>
-  
   <repositories>
     <repository>
       <id>hypergraphdb</id>
@@ -48,27 +44,27 @@
       <dependency>
         <groupId>org.drools</groupId>
         <artifactId>knowledge-api</artifactId>
-        <version>6.3.0.Final</version>
+        <version>6.0.1.Final</version>
       </dependency>
       <dependency>
         <groupId>org.drools</groupId>
         <artifactId>drools-core</artifactId>
-        <version>6.3.0.Final</version>
+        <version>6.0.1.Final</version>
       </dependency>
       <dependency>
         <groupId>org.drools</groupId>
         <artifactId>drools-compiler</artifactId>
-        <version>6.3.0.Final</version>
+        <version>6.0.1.Final</version>
       </dependency>
       <dependency>
         <groupId>org.drools</groupId>
         <artifactId>drools-persistence-jpa</artifactId>
-        <version>6.3.0.Final</version>
+        <version>6.0.1.Final</version>
       </dependency>
       <dependency>
         <groupId>org.drools</groupId>
         <artifactId>drools-verifier</artifactId>
-        <version>6.3.0.Final</version>
+        <version>6.0.1.Final</version>
       </dependency>
   </dependencies>
 </project>
