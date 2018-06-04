@@ -8,7 +8,7 @@
   <packaging>jar</packaging>
 
   <name>SimpleAlgebra</name>
-  <url>http://maven.apache.org</url>
+  <url>https://github.com/viridian1138/SimpleAlgebra_V2/blob/master/pom.xml</url>
 
   <properties>
     <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
