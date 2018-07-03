@@ -166,8 +166,7 @@ public class TestOptimizeObjBarrier extends TestCase
 	
 	
 	/**
-	 * A symbolic elem representing a constant value
-	 * at the base Newton-Raphson evaluation level.
+	 * A symbolic elem representing a constant value.
 	 * 
 	 * @author thorngreen
 	 *
