@@ -1051,6 +1051,15 @@ public class TestStelemC_DR_Exp_NN extends TestCase {
 		}
 		
 		
+		for( int x = 0 ; x < ( 2 * NSTPX + 1 ) ; x++ )
+		{
+			for( int y = 0 ; y < ( 2 * NSTPY + 1 ) ; y++ )
+			{
+				tempArrayGen[ ( 2 * NSTPT + 1 ) - 2 ][ x ][ y ] = tempArrayGen[ ( 2 * NSTPT + 1 ) - 1 ][ x ][ y ];
+			}
+		}
+		
+		
 	}
 	
 	

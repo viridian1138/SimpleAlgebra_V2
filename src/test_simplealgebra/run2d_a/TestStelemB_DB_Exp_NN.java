@@ -933,6 +933,13 @@ public class TestStelemB_DB_Exp_NN extends TestCase {
 			}
 		}
 		
+		
+		for( int x = 0 ; x < ( 2 * NSTPX + 1 ) ; x++ )
+		{
+			tempArrayGen[ ( 2 * NSTPT + 1 ) - 2 ][ x ] = tempArrayGen[ ( 2 * NSTPT + 1 ) - 1 ][ x ];
+		}
+		
+		
 	}
 	
 	
