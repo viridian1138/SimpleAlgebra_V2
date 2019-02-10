@@ -50,12 +50,13 @@ import simplealgebra.NumDimensions;
 import simplealgebra.WriteBigIntegerCache;
 import simplealgebra.WriteElemCache;
 import simplealgebra.algo.NewtonRaphsonSingleElem;
+import simplealgebra.constants.CpuInfo;
 import simplealgebra.ddx.DirectionalDerivativePartialFactory;
 import simplealgebra.ddx.PartialDerivativeOp;
-import simplealgebra.ga.GeometricAlgebraMultivectorElem;
-import simplealgebra.ga.GeometricAlgebraMultivectorElemFactory;
 import simplealgebra.stelem.Nelem;
 import simplealgebra.stelem.Stelem;
+import simplealgebra.store.DbFastArray3D_Param;
+import simplealgebra.store.DrFastArray3D_Dbl;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SCacheKey;
 import simplealgebra.symbolic.SymbolicElem;
@@ -135,6 +136,12 @@ import simplealgebra.ddx.*;
  */
 public class TestSchrodingerCdim extends TestCase {
 	
+
+	
+	/**
+	 * The number of CPU Cores.
+	 */
+	static final int NUM_CPU_CORES = CpuInfo.NUM_CPU_CORES;
 	
 	/**
 	 * Constant representing the number zero.
@@ -187,17 +194,17 @@ public class TestSchrodingerCdim extends TestCase {
 	/**
 	 * The number of discretizations on the T-Axis over which to iterate.
 	 */
-	protected static final int NUM_T_ITER = 400;
+	protected static final int NUM_T_ITER = 400; // IterConstants.LRG_ITER_T; // 400;
 	
 	/**
 	 * The number of discretizations on the X-Axis over which to iterate (real component of the X-axis)..
 	 */
-	protected static final int NUM_X_ITER = 25;
+	protected static final int NUM_X_ITER = 50; // IterConstants.LRG_ITER_X; // 25
 	
 	/**
 	 * The number of discretizations on the XI-Axis over which to iterate (imaginary component of the X-axis)..
 	 */
-	protected static final int NUM_XI_ITER = 10;
+	protected static final int NUM_XI_ITER = 50; // IterConstants.LRG_ITER_X; // 25
 	
 	
 	
@@ -247,6 +254,29 @@ public class TestSchrodingerCdim extends TestCase {
 	
 	
 	
+
+	
+	
+	/**
+	 * The T-Axis cell size.
+	 */
+	protected static final int TMULT = 8;
+	
+	/**
+	 * The X-Axis cell size.
+	 */
+	protected static final int XMULT = 8;
+	
+	/**
+	 * The XI-Axis cell size.
+	 */
+	protected static final int XIMULT = 8;
+	
+	
+	
+	
+	
+	
 	
 	/**
 	 * Temp step size in the T-direction.
@@ -283,17 +313,6 @@ public class TestSchrodingerCdim extends TestCase {
 	
 	
 	
-	/**
-	 * Result array of real values over which to iterate.
-	 */
-	protected static double[][][] iterArrayRe = new double[ NUM_T_ITER ][ NUM_X_ITER ][ NUM_XI_ITER ];
-	
-	/**
-	 * Result array of imaginary values over which to iterate.
-	 */
-	protected static double[][][] iterArrayIm = new double[ NUM_T_ITER ][ NUM_X_ITER ][ NUM_XI_ITER ];
-	
-	
 	
 	/**
 	 * Discretized index for the T-Axis.
@@ -312,13 +331,32 @@ public class TestSchrodingerCdim extends TestCase {
 	
 	
 	
+	
+	
+	protected static class IterationThreadContext
+	{
+	
+	
+		/**
+		 * Result array of real values over which to iterate.
+		 */
+		protected DrFastArray3D_Dbl iterArrayRe = null;
+		
+		/**
+		 * Result array of imaginary values over which to iterate.
+		 */
+		protected DrFastArray3D_Dbl iterArrayIm = null;
+		
+
+	
+	
 	/**
 	 * Temporary array of real values in which to generate Newton-Raphson solutions.
 	 * <p>0 = T
 	 * <p>1 = X
 	 * <p>2 = XI
 	 */
-	private static double[][][] tempArrayRe = new double[ NSTPT * 2 + 1 ][ NSTPX * 2 + 1 ][ NSTPXI * 2 + 1 ];
+	private double[][][] tempArrayRe = new double[ NSTPT * 2 + 1 ][ NSTPX * 2 + 1 ][ NSTPXI * 2 + 1 ];
 	
 	
 	/**
@@ -327,7 +365,23 @@ public class TestSchrodingerCdim extends TestCase {
 	 * <p>1 = X
 	 * <p>2 = XI
 	 */
-	private static double[][][] tempArrayIm = new double[ NSTPT * 2 + 1 ][ NSTPX * 2 + 1 ][ NSTPXI * 2 + 1 ];
+	private double[][][] tempArrayIm = new double[ NSTPT * 2 + 1 ][ NSTPX * 2 + 1 ][ NSTPXI * 2 + 1 ];
+	
+	
+	/**
+	 * The current X iteration location. Used for calculating potentials.
+	 */
+	protected int tempXLocn = 0;
+	
+	/**
+	 * The current XI iteration location. Used for calculating potentials.
+	 */
+	protected int tempXILocn = 0;
+	
+	/**
+	 * The current T iteration location. Used for calculating potentials.
+	 */
+	protected int tempTLocn = 0;
 	
 	
 	
@@ -338,7 +392,7 @@ public class TestSchrodingerCdim extends TestCase {
 	 * 
 	 * @param dbl The change to apply to the temp array.
 	 */
-	protected static void performIterationUpdate( ComplexElem<DoubleElem, DoubleElemFactory> dbl )
+	protected void performIterationUpdate( ComplexElem<DoubleElem, DoubleElemFactory> dbl )
 	{
 		tempArrayRe[ NSTPT * 2 ][ NSTPX ][ NSTPXI ] += dbl.getRe().getVal();
 		tempArrayIm[ NSTPT * 2 ][ NSTPX ][ NSTPXI ] += dbl.getIm().getVal();
@@ -348,19 +402,19 @@ public class TestSchrodingerCdim extends TestCase {
 	/**
 	 * The real iteration cache value.
 	 */
-	protected static double iterationValueCacheRe = 0.0;
+	protected double iterationValueCacheRe = 0.0;
 	
 	
 	/**
 	 * The imaginary iteration cache value.
 	 */
-	protected static double iterationValueCacheIm = 0.0;
+	protected double iterationValueCacheIm = 0.0;
 	
 	
 	/**
 	 * Places the current iteration value in the cache.
 	 */
-	protected static void cacheIterationValue()
+	protected void cacheIterationValue()
 	{
 		iterationValueCacheRe = tempArrayRe[ NSTPT * 2 ][ NSTPX ][ NSTPXI ];
 		iterationValueCacheIm = tempArrayIm[ NSTPT * 2 ][ NSTPX ][ NSTPXI ];
@@ -370,7 +424,7 @@ public class TestSchrodingerCdim extends TestCase {
 	/**
 	 * Sets the current iteration value to the value in the cache.
 	 */
-	protected static void retrieveIterationValue()
+	protected void retrieveIterationValue()
 	{
 		tempArrayRe[ NSTPT * 2 ][ NSTPX ][ NSTPXI ] = iterationValueCacheRe;
 		tempArrayIm[ NSTPT * 2 ][ NSTPX ][ NSTPXI ] = iterationValueCacheIm;
@@ -383,7 +437,7 @@ public class TestSchrodingerCdim extends TestCase {
 	 * 
 	 * @return The real value in the temp array.
 	 */
-	protected static double getUpdateValueRe()
+	protected double getUpdateValueRe()
 	{
 		return( tempArrayRe[ NSTPT * 2 ][ NSTPX ][ NSTPXI ] );
 	}
@@ -395,7 +449,7 @@ public class TestSchrodingerCdim extends TestCase {
 	 * 
 	 * @return The imaginary value in the temp array.
 	 */
-	protected static double getUpdateValueIm()
+	protected double getUpdateValueIm()
 	{
 		return( tempArrayIm[ NSTPT * 2 ][ NSTPX ][ NSTPXI ] );
 	}
@@ -406,7 +460,7 @@ public class TestSchrodingerCdim extends TestCase {
 	 * 
 	 * @return The real value in the temp array.
 	 */
-	protected static double getCorrectionValueRe()
+	protected double getCorrectionValueRe()
 	{
 		return( tempArrayRe[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPXI ] );
 	}
@@ -418,7 +472,7 @@ public class TestSchrodingerCdim extends TestCase {
 	 * 
 	 * @return The imaginary value in the temp array.
 	 */
-	protected static double getCorrectionValueIm()
+	protected double getCorrectionValueIm()
 	{
 		return( tempArrayIm[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPXI ] );
 	}
@@ -430,7 +484,7 @@ public class TestSchrodingerCdim extends TestCase {
 	 * 
 	 * @param in The value to which to reset.
 	 */
-	protected static void resetCorrectionValueRe( final double in )
+	protected void resetCorrectionValueRe( final double in )
 	{
 		tempArrayRe[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPXI ] = in;
 	}
@@ -442,7 +496,7 @@ public class TestSchrodingerCdim extends TestCase {
 	 * 
 	 * @param in The value to which to reset.
 	 */
-	protected static void resetCorrectionValueIm( final double in )
+	protected void resetCorrectionValueIm( final double in )
 	{
 		tempArrayIm[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPXI ] = in;
 	}
@@ -472,7 +526,7 @@ public class TestSchrodingerCdim extends TestCase {
 	/**
 	 * Applies a form of nonlinear numerical viscosity.
 	 */
-	protected static void applyNumericViscosityRe()
+	protected void applyNumericViscosityRe()
 	{
 		final double delt = tempArrayRe[ NSTPT * 2 ][ NSTPX ][ NSTPXI ]
 			- tempArrayRe[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPXI ];
@@ -494,7 +548,7 @@ public class TestSchrodingerCdim extends TestCase {
 	/**
 	 * Applies a form of nonlinear numerical viscosity.
 	 */
-	protected static void applyNumericViscosityIm()
+	protected void applyNumericViscosityIm()
 	{
 		final double delt = tempArrayIm[ NSTPT * 2 ][ NSTPX ][ NSTPXI ]
 			- tempArrayIm[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPXI ];
@@ -516,7 +570,7 @@ public class TestSchrodingerCdim extends TestCase {
 	/**
 	 * Applies a form of nonlinear numerical viscosity.
 	 */
-	protected static void applyNumericViscosity()
+	protected void applyNumericViscosity()
 	{
 		applyNumericViscosityRe();
 		applyNumericViscosityIm();
@@ -533,7 +587,7 @@ public class TestSchrodingerCdim extends TestCase {
 	 * 
 	 * See https://en.wikipedia.org/wiki/Predictor%E2%80%93corrector_method
 	 */
-	protected static void applyPredictorCorrector()
+	protected void applyPredictorCorrector()
 	{
 		final double slopePrevRe = tempArrayRe[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPXI ]
 				- tempArrayRe[ NSTPT * 2 - 2 ][ NSTPX ][ NSTPXI ];
@@ -727,7 +781,7 @@ public class TestSchrodingerCdim extends TestCase {
 	 * 
 	 * @param param Input parameter describing where to get the element.
 	 */
-	protected static void fillTempArrayInner( TempArrayFillInnerParam param )
+	protected void fillTempArrayInner( TempArrayFillInnerParam param ) throws Throwable
 	{
 		final int tcnt = param.getTcnt();
 		final int xcnt = param.getXcnt();
@@ -745,12 +799,30 @@ public class TestSchrodingerCdim extends TestCase {
 		if( ( tv >= 0 )  && ( xv >= 0 ) && ( xiv >= 0 ) &&
 			( tv < NUM_T_ITER ) && ( xv < NUM_X_ITER ) && ( xiv < NUM_XI_ITER )  )
 		{
-			avRe = iterArrayRe[ tv ][ xv ][ xiv ];
-			avIm = iterArrayIm[ tv ][ xv ][ xiv ];
+			avRe = iterArrayRe.get( tv , xv , xiv );
+			avIm = iterArrayIm.get( tv , xv , xiv );
 		}
 		tempArrayRe[ ta + NSTPT ][ xa + NSTPX ][ xia + NSTPXI ] = avRe;
 		tempArrayIm[ ta + NSTPT ][ xa + NSTPX ][ xia + NSTPXI ] = avIm;
 		
+	}
+	
+	
+
+	/**
+	 * Overlays an initial seed value into the temp array that serves as the starting point for Newton-Raphson iterations.
+	 */
+	protected void overlayInitialSeedForIterations()
+	{
+		// Overlay initial seed for iterations.
+		for( int xa = 0 ; xa < NSTPX * 2 + 1 ; xa++ )
+		{
+			for( int xia = 0 ; xia < NSTPXI * 2 + 1 ; xia++ )
+			{
+				tempArrayRe[ NSTPT * 2 ][ xa ][ xia ] = tempArrayRe[ NSTPT * 2 - 1 ][ xa ][ xia ];
+				tempArrayIm[ NSTPT * 2 ][ xa ][ xia ] = tempArrayIm[ NSTPT * 2 - 1 ][ xa ][ xia ];
+			}
+		}
 	}
 	
 	
@@ -763,7 +835,7 @@ public class TestSchrodingerCdim extends TestCase {
 	 * @param xcnt The X-Axis index for the center in the iter array.
 	 * @param xicnt The XI-Axis index for the center in the iter array.
 	 */
-	protected static void fillTempArray( final int tcnt , final int xcnt , final int xicnt )
+	protected void fillTempArray( final int tcnt , final int xcnt , final int xicnt ) throws Throwable
 	{
 		final TempArrayFillInnerParam param = new TempArrayFillInnerParam();
 		
@@ -786,17 +858,168 @@ public class TestSchrodingerCdim extends TestCase {
 		}
 		
 		
-		// Overlay initial seed for iterations.
-		for( int xa = 0 ; xa < NSTPX * 2 + 1 ; xa++ )
-		{
-			for( int xia = 0 ; xia < NSTPXI * 2 + 1 ; xia++ )
-			{
-				tempArrayRe[ NSTPT * 2 ][ xa ][ xia ] = tempArrayRe[ NSTPT * 2 - 1 ][ xa ][ xia ];
-				tempArrayIm[ NSTPT * 2 ][ xa ][ xia ] = tempArrayIm[ NSTPT * 2 - 1 ][ xa ][ xia ];
-			}
-		}
+		overlayInitialSeedForIterations();
 				
 	}
+	
+	
+	
+	
+	
+	
+	
+	
+	/**
+	 * Fills the temp array with elements from the iter array, assuming a shift by one in Y.
+	 * This should be faster because a temp array shift is much faster than refreshing from the file store.
+	 * 
+	 * @param tcnt The T-Axis index for the center in the iter array.
+	 * @param xcnt The X-Axis index for the center in the iter array.
+	 * @param xicnt The XI-Axis index for the center in the iter array.
+	 */
+	protected void fillTempArrayShiftXIup( final int tcnt , final int xcnt , final int xicnt ) throws Throwable
+	{
+		for( int ta = 0 ; ta < 2 * NSTPT + 1 ; ta++ )
+		{
+			for( int xa = 0 ; xa < 2 * NSTPX + 1 ; xa++ )
+			{
+				for( int xia = 0 ; xia < 2 * NSTPXI ; xia++ )
+				{
+					tempArrayRe[ ta ][ xa ][ xia ] = tempArrayRe[ ta ][ xa ][ xia + 1 ]; 
+					tempArrayIm[ ta ][ xa ][ xia ] = tempArrayIm[ ta ][ xa ][ xia + 1 ];
+				}
+			}
+		}
+		
+		final TempArrayFillInnerParam param = new TempArrayFillInnerParam();
+		
+		param.setTcnt( tcnt );
+		param.setXcnt( xcnt );
+		param.setXIcnt( xicnt );
+		param.setXIa( NSTPXI );
+		
+		for( int ta = -NSTPT ; ta < NSTPT ; ta++ )
+		{
+			param.setTa( ta );
+			for( int xa = -NSTPX ; xa < NSTPX + 1 ; xa++ )
+			{
+				param.setXa( xa );
+				fillTempArrayInner( param ); 
+			}
+		}
+		
+		
+		overlayInitialSeedForIterations();
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/**
+	 * Fills the temp array with elements from the iter array, assuming a shift by one in Y.
+	 * This should be faster because a temp array shift is much faster than refreshing from the file store.
+	 * 
+	 * @param tcnt The T-Axis index for the center in the iter array.
+	 * @param xcnt The X-Axis index for the center in the iter array.
+	 * @param xicnt The XI-Axis index for the center in the iter array.
+	 */
+	protected void fillTempArrayShiftXIdown( final int tcnt , final int xcnt , final int xicnt ) throws Throwable
+	{
+		for( int ta = 0 ; ta < 2 * NSTPT + 1 ; ta++ )
+		{
+			for( int xa = 0 ; xa < 2 * NSTPX + 1 ; xa++ )
+			{
+				for( int xia = 2 * NSTPXI ; xia > 0 ; xia-- )
+				{
+					tempArrayRe[ ta ][ xa ][ xia ] = tempArrayRe[ ta ][ xa ][ xia - 1 ]; 
+					tempArrayIm[ ta ][ xa ][ xia ] = tempArrayIm[ ta ][ xa ][ xia - 1 ]; 
+				}
+			}
+		}
+		
+		final TempArrayFillInnerParam param = new TempArrayFillInnerParam();
+		
+		param.setTcnt( tcnt );
+		param.setXcnt( xcnt );
+		param.setXIcnt( xicnt );
+		param.setXIa( -NSTPXI );
+		
+		for( int ta = -NSTPT ; ta < NSTPT ; ta++ )
+		{
+			param.setTa( ta );
+			for( int xa = -NSTPX ; xa < NSTPX + 1 ; xa++ )
+			{
+				param.setXa( xa );
+				fillTempArrayInner( param ); 
+			}
+		}
+		
+		
+		overlayInitialSeedForIterations();
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/**
+	 * Fills the temp array with elements from the iter array, assuming a shift by one in X.
+	 * This should be faster because a temp array shift is much faster than refreshing from the file store.
+	 * 
+	 * @param tcnt The T-Axis index for the center in the iter array.
+	 * @param xcnt The X-Axis index for the center in the iter array.
+	 * @param xicnt The XI-Axis index for the center in the iter array.
+	 */
+	protected void fillTempArrayShiftXup( final int tcnt , final int xcnt , final int xicnt ) throws Throwable
+	{
+		for( int ta = 0 ; ta < 2 * NSTPT + 1 ; ta++ )
+		{
+			for( int xa = 0 ; xa < 2 * NSTPX ; xa++ )
+			{
+				for( int xia = 0 ; xia < 2 * NSTPXI + 1 ; xia++ )
+				{
+					tempArrayRe[ ta ][ xa ][ xia ] = tempArrayRe[ ta ][ xa + 1 ][ xia ]; 
+					tempArrayIm[ ta ][ xa ][ xia ] = tempArrayIm[ ta ][ xa + 1 ][ xia ]; 
+				}
+			}
+		}
+		
+		final TempArrayFillInnerParam param = new TempArrayFillInnerParam();
+		
+		param.setTcnt( tcnt );
+		param.setXcnt( xcnt );
+		param.setXIcnt( xicnt );
+		param.setXa( NSTPX );
+		
+		for( int ta = -NSTPT ; ta < NSTPT ; ta++ )
+		{
+			param.setTa( ta );
+			for( int xia = -NSTPXI ; xia < NSTPXI + 1 ; xia++ )
+			{
+				param.setXIa( xia );
+				fillTempArrayInner( param ); 
+			}
+		}
+		
+		
+		overlayInitialSeedForIterations();
+		
+	}
+	
+	
 	
 	
 	
@@ -804,13 +1027,13 @@ public class TestSchrodingerCdim extends TestCase {
 	/**
 	 * Test array used to verify that the entire temp array has been filled.
 	 */
-	private static int[][][] spatialAssertArray = new int[ NSTPT * 2 + 1 ][ NSTPX * 2 + 1 ][ NSTPXI * 2 + 1 ];
+	private int[][][] spatialAssertArray = new int[ NSTPT * 2 + 1 ][ NSTPX * 2 + 1 ][ NSTPXI * 2 + 1 ];
 	
 	
 	/**
 	 * Clears the test array used to verify that the entire temp array has been filled.
 	 */
-	protected static void clearSpatialAssertArray( )
+	protected void clearSpatialAssertArray( )
 	{
 		for( int ta = -NSTPT ; ta < NSTPT + 1 ; ta++ )
 		{
@@ -823,6 +1046,47 @@ public class TestSchrodingerCdim extends TestCase {
 			}
 		}
 	}
+	
+	
+	
+	
+	
+	} // IterationThreadContext
+	
+	
+	
+	
+
+	
+	
+
+	
+	/**
+	 * In itializes the iteration thread contexts.
+	 * @return An array of initialized iteration thread contexts.
+	 */
+	protected static TestSchrodingerCdim.IterationThreadContext[] initIterationThreadContext()
+	{
+		final TestSchrodingerCdim.IterationThreadContext[] ret = new TestSchrodingerCdim.IterationThreadContext[ NUM_CPU_CORES ];
+		for( int cnt = 0 ; cnt < NUM_CPU_CORES ; cnt++ )
+		{
+			ret[ cnt ] = new TestSchrodingerCdim.IterationThreadContext();
+		}
+		return( ret );
+	}
+	
+	
+	
+	
+	
+	/**
+	 * The array of iteration thread contexts for multi-threading.
+	 */
+	protected static TestSchrodingerCdim.IterationThreadContext[] iterationThreadContexts = initIterationThreadContext();
+	
+	
+	
+	
 	
 	
 	
@@ -1014,6 +1278,14 @@ public class TestSchrodingerCdim extends TestCase {
 				throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
 			throw( new RuntimeException( "NotSupported" ) );
+		}
+		
+
+		
+		@Override
+		public Ordinate cloneThread( final BigInteger threadIndex )
+		{
+			return( this );
 		}
 
 		@Override
@@ -1243,6 +1515,633 @@ public class TestSchrodingerCdim extends TestCase {
 	}
 	
 	
+	
+	
+	
+
+	
+	/**
+	 * Elem representing the discretized equivalent 
+	 * of the complex number potential.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
+	private static class BVelem extends Nelem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>,Ordinate>
+	{
+
+		/**
+		 * The thread context in which to evaluate.
+		 */
+		protected TestSchrodingerCdim.IterationThreadContext threadContext;
+		
+		/**
+		 * Constructs the elem.
+		 * 
+		 * @param _fac The factory for the enclosed type.
+		 */
+		public BVelem(ComplexElemFactory<DoubleElem,DoubleElemFactory> _fac, int _threadIndex ) {
+			super(_fac, new HashMap<Ordinate, BigInteger>() );
+			threadContext = iterationThreadContexts[ _threadIndex ];
+		}
+		
+		
+		/**
+		 * Column indices in the discretized space.
+		 */
+		protected final int[] cols = new int[ 4 ];
+		
+		/**
+		 * Assertion booleans used to verify that all
+		 * column indices have been initialized.
+		 */
+		protected final boolean[] assertCols = new boolean[ 4 ];
+		
+
+		@Override
+		public ComplexElem<DoubleElem,DoubleElemFactory> eval(HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace)
+				throws NotInvertibleException,
+				MultiplicativeDistributionRequiredException {
+//			final double YHALF = NUM_Y_ITER / 2.0;
+//			// final DoubleElem re = new DoubleElem( ( vSlope * ( threadContext.tempYLocn - YHALF ) * TOTAL_Y_AXIS_SIZE / NUM_Y_ITER ) + vStart );
+//			// System.out.println( re.getVal() );
+//			final DoubleElem re = ( threadContext.tempYLocn > YHALF ) ? new DoubleElem( 1E+10 ) : new DoubleElem( 0.0 );
+//			// System.out.println( re.getVal() );
+//			return( new ComplexElem<DoubleElem,DoubleElemFactory>( re , new DoubleElem( 0.0 ) ) );
+			
+			
+			final double XIHALF = NUM_XI_ITER / 2.0;
+			final double u = ( threadContext.tempXLocn - XIHALF ) / XIHALF;
+			final double uua = Math.pow( Math.abs( u ) , 0.001 );
+			final double uu = u < 0.0 ? -uua : uua;
+			final double uz = ( uu + 1.0 ) / 2.0;
+			final double expn = ( 1.0 - uz ) * ( Math.log( 0.1 ) ) + ( uz ) * ( Math.log( 1E+10 ) );
+			// final DoubleElem re = new DoubleElem( ( vSlope * ( threadContext.tempYLocn - YHALF ) * TOTAL_Y_AXIS_SIZE / NUM_Y_ITER ) + vStart );
+			// System.out.println( re.getVal() );
+			final DoubleElem re = new DoubleElem( Math.exp( expn ) );
+			// System.out.println( re.getVal() );
+			return( new ComplexElem<DoubleElem,DoubleElemFactory>( re , new DoubleElem( 0.0 ) ) );
+			
+		}
+		
+		@Override
+		public ComplexElem<DoubleElem, DoubleElemFactory> evalCached(
+				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace,
+				HashMap<SCacheKey<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, ComplexElem<DoubleElem, DoubleElemFactory>> cache)
+				throws NotInvertibleException,
+				MultiplicativeDistributionRequiredException {
+			return( eval( implicitSpace ) );
+		}
+		
+		/**
+		 * Copies the BVelem for threading.
+		 * 
+		 * @param in The BVelem to be copied.
+		 * @param threadIndex The thread index.
+		 */
+		public BVelem( final BVelem in , final BigInteger threadIndex )
+		{
+			super( in , threadIndex );
+			final int threadInd = threadIndex.intValue();
+			threadContext = iterationThreadContexts[ threadInd ];
+		}
+		
+		
+		@Override
+		public BVelem cloneThread( final BigInteger threadIndex )
+		{
+			return( new BVelem( this , threadIndex ) );
+		}
+
+		@Override
+		public String writeDesc(
+				WriteElemCache<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> cache,
+				PrintStream ps) {
+			String st = cache.get( this );
+			if( st == null )
+			{
+				final String sta = fac.writeDesc( (WriteElemCache<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>)( cache.getInnerCache() ) , ps);
+				cache.applyAuxCache( new WriteBigIntegerCache( cache.getCacheVal() ) );
+				st = cache.getIncrementVal();
+				cache.put(this, st);
+				ps.print( BVelem.class.getSimpleName() );
+				ps.print( " " );
+				ps.print( st );
+				ps.print( " = new " );
+				ps.print( BVelem.class.getSimpleName() );
+				ps.print( "( " );
+				ps.print( sta );
+				ps.println( " );" );
+			}
+			return( st );
+		}
+		
+		@Override
+		public boolean symbolicEquals( SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> b )
+		{
+			if( b instanceof BVelem )
+			{
+				return( true );
+			}
+			return( false );
+		}
+		
+		
+	}
+	
+
+
+	
+	
+	
+	
+
+	
+	
+	/**
+	 * Elem representing an altering value.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
+//	private static class BAelem extends Nelem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>,Ordinate>
+//	{
+//		
+//		/**
+//		 * Constructs the elem.
+//		 * 
+//		 * @param _fac The factory for the enclosed type.
+//		 */
+//		public BAelem(ComplexElemFactory<DoubleElem,DoubleElemFactory> _fac, int _threadIndex ) {
+//			super(_fac, new HashMap<Ordinate, BigInteger>() );
+//			threadI = _threadIndex;
+//		}
+//		
+//		
+//		/**
+//		 * Column indices in the discretized space.
+//		 */
+//		protected final int[] cols = new int[ 4 ];
+//		
+//		/**
+//		 * Assertion booleans used to verify that all
+//		 * column indices have been initialized.
+//		 */
+//		protected final boolean[] assertCols = new boolean[ 4 ];
+//		
+//		/**
+//		 * Thread index.
+//		 */
+//		protected int threadI;
+//		
+//
+//		@Override
+//		public ComplexElem<DoubleElem,DoubleElemFactory> eval(HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace)
+//				throws NotInvertibleException,
+//				MultiplicativeDistributionRequiredException {
+//			
+//			TestSchrodingerCdim.IterationThreadContext threadContext = iterationThreadContexts[ threadI ];
+//			
+//			if( threadContext == null )
+//			{
+//				System.out.println( "Thread Context Fail" );
+//				throw( new RuntimeException( "Thread Context Fail." ) );
+//			}
+//			
+//			try
+//			{
+//				if( ( threadContext.tempXLocn % 2 == 0 ) && ( threadContext.tempYLocn % 2 == 0 ) && ( threadContext.tempZLocn % 2 == 0 ) && ( threadContext.tempTLocn % 2 == 0 ) )
+//				{
+//					final double d1 = Math.sqrt( X_HH.getRe().getVal() * X_HH.getRe().getVal() + Y_HH.getRe().getVal() * Y_HH.getRe().getVal() + Z_HH.getRe().getVal() * Z_HH.getRe().getVal() );
+//					
+//					final long rseed = ( 2748833L * threadContext.tempXLocn ) + ( 2749247L * threadContext.tempYLocn ) + ( 2749679L * threadContext.tempZLocn ) + ( 2750159L * threadContext.tempTLocn ) + 54321L;
+//					final Random rand = new Random( rseed );
+//					rand.nextInt();
+//			
+//					final double dx = ( 0.0 + threadContext.tempXLocn - HALF_X ) / RAD_X;
+//					final double dy = ( 0.0 + threadContext.tempYLocn - HALF_Y ) / RAD_Y;
+//					final double dz = ( 0.0 + threadContext.tempZLocn - HALF_Z ) / RAD_Z;
+//					double dval = 0.0;
+//					if( dx * dx + dy * dy + dz * dz < 1.0 )
+//					{
+//						dval = 10000.0 * ( d1 * d1 );
+//					}
+//			
+//					final double tempRe = threadContext.tempArrayRe[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ][ NSTPZ ];
+//					final double tempIm = threadContext.tempArrayIm[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ][ NSTPZ ];
+//					final ComplexElem<DoubleElem,DoubleElemFactory> tmp =
+//							new ComplexElem<DoubleElem,DoubleElemFactory>( new DoubleElem( tempRe ) , new DoubleElem( tempIm ) );
+//					final ComplexElem<DoubleElem,DoubleElemFactory>
+//						ra1 = new ComplexElem<DoubleElem,DoubleElemFactory>( new DoubleElem( 0.0 ) , new DoubleElem( 2.0 * Math.PI * ( rand.nextDouble() ) ) );
+//					
+//					final ComplexElem<DoubleElem,DoubleElemFactory>
+//						magTp = new ComplexElem<DoubleElem,DoubleElemFactory>( new DoubleElem( dval - Math.sqrt( tempRe * tempRe + tempIm * tempIm ) ) , new DoubleElem( 0.0 ) );
+//					
+//					ComplexElem<DoubleElem,DoubleElemFactory> rb1 = tmp.add( magTp.mult( ra1.exp( 15 ) ) );
+//					DoubleElem d1a = (DoubleElem)( rb1.totalMagnitude() );
+//					ComplexElem<DoubleElem,DoubleElemFactory>
+//						ret = rb1;
+//					
+//					for( int count = 0 ; count < 10 ; count++ )
+//					{
+//						final ComplexElem<DoubleElem,DoubleElemFactory>
+//							ra2 = new ComplexElem<DoubleElem,DoubleElemFactory>( new DoubleElem( 0.0 ) , new DoubleElem( 2.0 * Math.PI * ( rand.nextDouble() ) ) );
+//						final ComplexElem<DoubleElem,DoubleElemFactory> rb2 = tmp.add( magTp.mult( ra2.exp( 15 ) ) );
+//						final DoubleElem d2a = (DoubleElem)( rb2.totalMagnitude() );
+//						if( Math.abs( d2a.getVal() - dval ) < Math.abs( d1a.getVal() - dval ) )
+//						{
+//							ret = rb2;
+//							rb1 = rb2;
+//							d1a = d2a;
+//						}
+//					}
+//					return( ret );
+//				}
+//			}
+//			catch( Throwable ex )
+//			{
+//				ex.printStackTrace( System.out );
+//				throw( new RuntimeException( ex ) );
+//			}
+//			
+//			return( new ComplexElem<DoubleElem,DoubleElemFactory>( new DoubleElem( 0.0 ) , new DoubleElem( 0.0 ) ) );
+//		}
+//		
+//		
+//		@Override
+//		public ComplexElem<DoubleElem, DoubleElemFactory> evalCached(
+//				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace,
+//				HashMap<SCacheKey<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, ComplexElem<DoubleElem, DoubleElemFactory>> cache)
+//				throws NotInvertibleException,
+//				MultiplicativeDistributionRequiredException {
+//			return( eval( implicitSpace ) );
+//		}
+//		
+//		/**
+//		 * Copies the BAelem for threading.
+//		 * 
+//		 * @param in The BAelem to be copied.
+//		 * @param threadIndex The thread index.
+//		 */
+//		public BAelem( final BAelem in , final BigInteger threadIndex )
+//		{
+//			super( in , threadIndex );
+//			final int threadInd = threadIndex.intValue();
+//			this.threadI = threadInd;
+//		}
+//		
+//		
+//		@Override
+//		public BAelem cloneThread( final BigInteger threadIndex )
+//		{
+//			return( new BAelem( this , threadIndex ) );
+//		}
+//
+//		@Override
+//		public String writeDesc(
+//				WriteElemCache<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> cache,
+//				PrintStream ps) {
+//			String st = cache.get( this );
+//			if( st == null )
+//			{
+//				final String sta = fac.writeDesc( (WriteElemCache<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>)( cache.getInnerCache() ) , ps);
+//				cache.applyAuxCache( new WriteBigIntegerCache( cache.getCacheVal() ) );
+//				st = cache.getIncrementVal();
+//				cache.put(this, st);
+//				ps.print( BAelem.class.getSimpleName() );
+//				ps.print( " " );
+//				ps.print( st );
+//				ps.print( " = new " );
+//				ps.print( BAelem.class.getSimpleName() );
+//				ps.print( "( " );
+//				ps.print( sta );
+//				ps.println( " );" );
+//			}
+//			return( st );
+//		}
+//		
+//		@Override
+//		public boolean symbolicEquals( SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> b )
+//		{
+//			if( b instanceof BAelem )
+//			{
+//				return( true );
+//			}
+//			return( false );
+//		}
+//		
+//		
+//	}
+//	
+//	
+	
+	
+	
+	
+
+	
+	/**
+	 * Elem representing the symbolic expression for 
+	 * the discretized equivalent
+	 * of the complex number potential.
+	 * The partial derivatives of this elem generate
+	 * the slopes for producing Newton-Raphson iterations (e.g. the Jacobian slopes),
+	 * as opposed to partial derivatives for the underlying differential equation.
+	 * 
+	 * @author thorngreen
+	 *
+	 */	
+	private static class CVelem extends Nelem<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,
+		SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,Ordinate>
+	{
+
+		/**
+		 * The thread index for the elem.
+		 */
+		protected int threadIndex;
+		
+		/**
+		 * Constructs the elem.
+		 * 
+		 * @param _fac The factory for the enclosed type.
+		 */
+		public CVelem(SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> _fac ) {
+			super(_fac, new HashMap<Ordinate, BigInteger>() );
+			threadIndex = 0;
+		}
+
+		@Override
+		public SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> eval(HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace)
+				throws NotInvertibleException,
+				MultiplicativeDistributionRequiredException {
+			return( new BVelem( fac.getFac() , threadIndex ) );
+		}
+		
+		
+		@Override
+		public SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> evalCached(
+				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace,
+				HashMap<SCacheKey<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> cache)
+				throws NotInvertibleException,
+				MultiplicativeDistributionRequiredException {
+			final SCacheKey<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> key =
+					new SCacheKey<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>( this , implicitSpace );
+			final SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> iret = cache.get( key );
+			if( iret != null )
+			{
+				return( iret );
+			}
+			final SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> ret = eval( implicitSpace );
+			cache.put(key, ret);
+			return( ret );
+		}
+		
+		
+		@Override
+		public SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> evalPartialDerivative(ArrayList<? extends Elem<?, ?>> withRespectTo, HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws MultiplicativeDistributionRequiredException, NotInvertibleException {
+			if( withRespectTo.size() > 1 )
+			{
+				return( fac.zero() );
+			}
+			Iterator<? extends Elem<?,?>> it = withRespectTo.iterator();
+			CNelem wrt = (CNelem)( it.next() );
+			// final boolean cond = this.symbolicEquals( wrt );
+			// return( cond ? fac.identity() : fac.zero() );
+			return( fac.zero() );
+		}
+		
+		
+		@Override
+		public SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> evalPartialDerivativeCached(ArrayList<? extends Elem<?, ?>> withRespectTo, HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace,
+				HashMap<SCacheKey<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> cache) throws MultiplicativeDistributionRequiredException, NotInvertibleException {
+			final SCacheKey<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>> key =
+					new SCacheKey<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>( this , implicitSpace , withRespectTo );
+			final SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> iret = cache.get( key );
+			if( iret != null ) 
+			{
+				return( iret );
+			}
+			final SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> ret = evalPartialDerivative( withRespectTo , implicitSpace );
+			cache.put(key, ret);
+			return( ret );
+		}
+		
+		/**
+		 * Copies the CVelem for threading.
+		 * 
+		 * @param in The CVelem to be copied.
+		 * @param _threadIndex The thread index.
+		 */
+		public CVelem( final CVelem in , final BigInteger _threadIndex )
+		{
+			super( in , _threadIndex );
+			final int threadInd = _threadIndex.intValue();
+			threadIndex = threadInd;
+		}
+		
+		
+		@Override
+		public CVelem cloneThread( final BigInteger threadIndex )
+		{
+			return( new CVelem( this , threadIndex ) );
+		}
+		
+
+		@Override
+		public String writeDesc(
+				WriteElemCache<SymbolicElem<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>> cache,
+				PrintStream ps) {
+			String st = cache.get( this );
+			if( st == null )
+			{
+				final String sta = fac.writeDesc( (WriteElemCache<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>)( cache.getInnerCache() ) , ps);
+				cache.applyAuxCache( new WriteBigIntegerCache( cache.getCacheVal() ) );
+				st = cache.getIncrementVal();
+				cache.put(this, st);
+				ps.print( CVelem.class.getSimpleName() );
+				ps.print( " " );
+				ps.print( st );
+				ps.print( " = new " );
+				ps.print( CVelem.class.getSimpleName() );
+				ps.print( "( " );
+				ps.print( sta );
+				ps.println( " );" );
+			}
+			return( st );
+		}
+		
+		
+		@Override
+		public boolean symbolicEquals( 
+				SymbolicElem<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>> b )
+		{
+			if( b instanceof CVelem )
+			{
+				return( true );
+			}
+			return( false );
+		}
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/**
+	 * Elem representing the symbolic expression for 
+	 * an altering value.
+	 * The partial derivatives of this elem generate
+	 * the slopes for producing Newton-Raphson iterations (e.g. the Jacobian slopes),
+	 * as opposed to partial derivatives for the underlying differential equation.
+	 * 
+	 * @author thorngreen
+	 *
+	 */	
+//	private static class CAelem extends Nelem<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,
+//		SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,Ordinate>
+//	{
+//
+//		/**
+//		 * The thread index for the elem.
+//		 */
+//		protected int threadIndex;
+//		
+//		/**
+//		 * Constructs the elem.
+//		 * 
+//		 * @param _fac The factory for the enclosed type.
+//		 */
+//		public CAelem(SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> _fac ) {
+//			super(_fac, new HashMap<Ordinate, BigInteger>() );
+//			threadIndex = 0;
+//		}
+//
+//		@Override
+//		public SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> eval(HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace)
+//				throws NotInvertibleException,
+//				MultiplicativeDistributionRequiredException {
+//			return( new BAelem( fac.getFac() , threadIndex ) );
+//		}
+//		
+//		
+//		@Override
+//		public SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> evalCached(
+//				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace,
+//				HashMap<SCacheKey<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> cache)
+//				throws NotInvertibleException,
+//				MultiplicativeDistributionRequiredException {
+//			final SCacheKey<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> key =
+//					new SCacheKey<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>( this , implicitSpace );
+//			final SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> iret = cache.get( key );
+//			if( iret != null )
+//			{
+//				return( iret );
+//			}
+//			final SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> ret = eval( implicitSpace );
+//			cache.put(key, ret);
+//			return( ret );
+//		}
+//		
+//		
+//		@Override
+//		public SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> evalPartialDerivative(ArrayList<? extends Elem<?, ?>> withRespectTo, HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws MultiplicativeDistributionRequiredException, NotInvertibleException {
+//			if( withRespectTo.size() > 1 )
+//			{
+//				return( fac.zero() );
+//			}
+//			Iterator<? extends Elem<?,?>> it = withRespectTo.iterator();
+//			CNelem wrt = (CNelem)( it.next() );
+//			// final boolean cond = this.symbolicEquals( wrt );
+//			// return( cond ? fac.identity() : fac.zero() );
+//			return( fac.zero() );
+//		}
+//		
+//		
+//		@Override
+//		public SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> evalPartialDerivativeCached(ArrayList<? extends Elem<?, ?>> withRespectTo, HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace,
+//				HashMap<SCacheKey<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> cache) throws MultiplicativeDistributionRequiredException, NotInvertibleException {
+//			final SCacheKey<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>> key =
+//					new SCacheKey<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>( this , implicitSpace , withRespectTo );
+//			final SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> iret = cache.get( key );
+//			if( iret != null ) 
+//			{
+//				return( iret );
+//			}
+//			final SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> ret = evalPartialDerivative( withRespectTo , implicitSpace );
+//			cache.put(key, ret);
+//			return( ret );
+//		}
+//		
+//		/**
+//		 * Copies the CAelem for threading.
+//		 * 
+//		 * @param in The CAelem to be copied.
+//		 * @param _threadIndex The thread index.
+//		 */
+//		public CAelem( final CAelem in , final BigInteger _threadIndex )
+//		{
+//			super( in , _threadIndex );
+//			final int threadInd = _threadIndex.intValue();
+//			threadIndex = threadInd;
+//		}
+//		
+//		
+//		@Override
+//		public CAelem cloneThread( final BigInteger threadIndex )
+//		{
+//			return( new CAelem( this , threadIndex ) );
+//		}
+//		
+//
+//		@Override
+//		public String writeDesc(
+//				WriteElemCache<SymbolicElem<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>> cache,
+//				PrintStream ps) {
+//			String st = cache.get( this );
+//			if( st == null )
+//			{
+//				final String sta = fac.writeDesc( (WriteElemCache<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>)( cache.getInnerCache() ) , ps);
+//				cache.applyAuxCache( new WriteBigIntegerCache( cache.getCacheVal() ) );
+//				st = cache.getIncrementVal();
+//				cache.put(this, st);
+//				ps.print( CAelem.class.getSimpleName() );
+//				ps.print( " " );
+//				ps.print( st );
+//				ps.print( " = new " );
+//				ps.print( CAelem.class.getSimpleName() );
+//				ps.print( "( " );
+//				ps.print( sta );
+//				ps.println( " );" );
+//			}
+//			return( st );
+//		}
+//		
+//		
+//		@Override
+//		public boolean symbolicEquals( 
+//				SymbolicElem<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>> b )
+//		{
+//			if( b instanceof CAelem )
+//			{
+//				return( true );
+//			}
+//			return( false );
+//		}
+//		
+//	}
+//	
+//	
+	
+	
+	
+	
+	
+	
 	/**
 	 * Elem representing the discretized equivalent 
 	 * of the complex number constrained by the differential equation.
@@ -1254,13 +2153,19 @@ public class TestSchrodingerCdim extends TestCase {
 	{
 
 		/**
+		 * The thread context in which to evaluate.
+		 */
+		protected TestSchrodingerCdim.IterationThreadContext threadContext;
+		
+		/**
 		 * Constructs the elem.
 		 * 
 		 * @param _fac The factory for the enclosed type.
 		 * @param _coord Map taking implicit space terms representing ordinates to discrete ordinates of type BigInteger.
 		 */
-		public BNelem(ComplexElemFactory<DoubleElem,DoubleElemFactory> _fac, HashMap<Ordinate, BigInteger> _coord) {
+		public BNelem(ComplexElemFactory<DoubleElem,DoubleElemFactory> _fac, HashMap<Ordinate, BigInteger> _coord, int _threadIndex ) {
 			super(_fac, _coord);
+			threadContext = iterationThreadContexts[ _threadIndex ];
 		}
 		
 		
@@ -1295,12 +2200,12 @@ public class TestSchrodingerCdim extends TestCase {
 				cols[ keyCoord.getCol() ] = coordVal.intValue() + offset;
 				assertCols[ keyCoord.getCol() ] = true;
 			}
-			( spatialAssertArray[ cols[ 0 ] ][ cols[ 1 ] ][ cols[ 2 ] ] )++;
+			( threadContext.spatialAssertArray[ cols[ 0 ] ][ cols[ 1 ] ][ cols[ 2 ] ] )++;
 			Assert.assertTrue( assertCols[ 0 ] );
 			Assert.assertTrue( assertCols[ 1 ] );
 			Assert.assertTrue( assertCols[ 2 ] );
-			final DoubleElem re = new DoubleElem( TestSchrodingerCdim.tempArrayRe[ cols[ 0 ] ][ cols[ 1 ] ][ cols[ 2 ] ] );
-			final DoubleElem im = new DoubleElem( TestSchrodingerCdim.tempArrayIm[ cols[ 0 ] ][ cols[ 1 ] ][ cols[ 2 ] ] );
+			final DoubleElem re = new DoubleElem( threadContext.tempArrayRe[ cols[ 0 ] ][ cols[ 1 ] ][ cols[ 2 ] ] );
+			final DoubleElem im = new DoubleElem( threadContext.tempArrayIm[ cols[ 0 ] ][ cols[ 1 ] ][ cols[ 2 ] ] );
 			return( new ComplexElem<DoubleElem,DoubleElemFactory>( re , im ) );
 		}
 		
@@ -1312,7 +2217,29 @@ public class TestSchrodingerCdim extends TestCase {
 				MultiplicativeDistributionRequiredException {
 			return( eval( implicitSpace ) );
 		}
+		
 
+		/**
+		 * Copies the BNelem for threading.
+		 * 
+		 * @param in The BNelem to be copied.
+		 * @param threadIndex The thread index.
+		 */
+		public BNelem( final BNelem in , final BigInteger threadIndex )
+		{
+			super( in , threadIndex );
+			final int threadInd = threadIndex.intValue();
+			threadContext = iterationThreadContexts[ threadInd ];
+		}
+		
+		
+		@Override
+		public BNelem cloneThread( final BigInteger threadIndex )
+		{
+			return( new BNelem( this , threadIndex ) );
+		}
+
+		
 		@Override
 		public String writeDesc(
 				WriteElemCache<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> cache,
@@ -1403,6 +2330,11 @@ public class TestSchrodingerCdim extends TestCase {
 	{
 
 		/**
+		 * The thread index for the elem.
+		 */
+		protected int threadIndex;
+		
+		/**
 		 * Constructs the elem.
 		 * 
 		 * @param _fac The factory for the enclosed type.
@@ -1410,13 +2342,14 @@ public class TestSchrodingerCdim extends TestCase {
 		 */
 		public CNelem(SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> _fac, HashMap<Ordinate, BigInteger> _coord) {
 			super(_fac, _coord);
+			threadIndex = 0;
 		}
 
 		@Override
 		public SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> eval(HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace)
 				throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
-			return( new BNelem( fac.getFac() , coord ) );
+			return( new BNelem( fac.getFac() , coord , threadIndex ) );
 		}
 		
 		
@@ -1465,6 +2398,26 @@ public class TestSchrodingerCdim extends TestCase {
 			final SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> ret = evalPartialDerivative( withRespectTo , implicitSpace );
 			cache.put(key, ret);
 			return( ret );
+		}
+		
+		/**
+		 * Copies the CNelem for threading.
+		 * 
+		 * @param in The CNelem to be copied.
+		 * @param _threadIndex The thread index.
+		 */
+		public CNelem( final CNelem in , final BigInteger _threadIndex )
+		{
+			super( in , _threadIndex );
+			final int threadInd = _threadIndex.intValue();
+			threadIndex = threadInd;
+		}
+		
+		
+		@Override
+		public CNelem cloneThread( final BigInteger threadIndex )
+		{
+			return( new CNelem( this , threadIndex ) );
 		}
 		
 
@@ -1655,6 +2608,25 @@ public class TestSchrodingerCdim extends TestCase {
 					eval( implicitSpace );
 			cache.put(key, ret);
 			return( ret );
+		}
+		
+		
+		/**
+		 * Copies the AStelem for threading.
+		 * @param in The AStelem to be copied.
+		 * @param threadIndex The thread index.
+		 */
+		protected AStelem( AStelem in , final BigInteger threadIndex )
+		{
+			super( in , threadIndex );
+		}
+		
+		
+		
+		@Override
+		public AStelem cloneThread( final BigInteger threadIndex )
+		{
+			return( new AStelem( this , threadIndex ) );
 		}
 		
 
@@ -2119,6 +3091,297 @@ public class TestSchrodingerCdim extends TestCase {
 	
 	
 	
+	
+	
+	
+	
+
+	
+	
+	
+	
+	/**
+	 * An elem defining a potential that is evaluated over the discretized space of the test.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
+	private class AVtelem extends SymbolicElem<SymbolicElem<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>,
+		SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>>
+	{
+		/**
+		 * Constructs the elem.
+		 * 
+		 * @param _fac The factory for the enclosed type.
+		 */
+		public AVtelem(SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>, 
+				SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>> _fac) {
+			super(_fac);
+		}
+
+		@Override
+		public SymbolicElem<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>, 
+			SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>> eval(
+				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace)
+				throws NotInvertibleException,
+				MultiplicativeDistributionRequiredException {	
+			return( new CVelem( fac.getFac() ) );
+		}
+		
+		
+		@Override
+		public SymbolicElem<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> evalCached(
+				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace,
+				HashMap<SCacheKey<SymbolicElem<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>>, SymbolicElem<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>> cache)
+				throws NotInvertibleException,
+				MultiplicativeDistributionRequiredException {
+			final SCacheKey<SymbolicElem<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>> key =
+					new SCacheKey<SymbolicElem<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>>( this , implicitSpace );
+			final SymbolicElem<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> iret = cache.get( key );
+			if( iret != null )
+			{
+				return( iret );
+			}
+			final SymbolicElem<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> ret =
+					eval( implicitSpace );
+			cache.put(key, ret);
+			return( ret );
+		}
+		
+		
+		
+		/**
+		 * Copies the AVtelem for threading.
+		 * @param in The AVtelem to be copied.
+		 * @param threadIndex The thread index.
+		 */
+		protected AVtelem( AVtelem in , final BigInteger threadIndex )
+		{
+			super( in.getFac().getFac().cloneThread(threadIndex) );
+		}
+		
+		
+		
+		@Override
+		public AVtelem cloneThread( final BigInteger threadIndex )
+		{
+			return( new AVtelem( this , threadIndex ) );
+		}
+
+		
+		
+
+		@Override
+		public String writeDesc(
+				WriteElemCache<SymbolicElem<SymbolicElem<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>>, SymbolicElemFactory<SymbolicElem<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>>> cache,
+				PrintStream ps) {
+			String st = cache.get( this );
+			if( st == null )
+			{
+				cache.applyAuxCache( new WriteBigIntegerCache( cache.getCacheVal() ) );
+				final String sta = fac.writeDesc( (WriteElemCache< SymbolicElem<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> , SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> >>)( cache.getInnerCache() ) , ps);
+				st = cache.getIncrementVal();
+				cache.put(this, st);
+				ps.print( AVtelem.class.getSimpleName() );
+				ps.print( " " );
+				ps.print( st );
+				ps.print( " = new " );
+				ps.print( AVtelem.class.getSimpleName() );
+				ps.print( "( " );
+				ps.print( sta );
+				ps.println( " );" );
+			}
+			return( st );
+		}
+
+		@Override
+		public SymbolicElem<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> evalPartialDerivative(
+				ArrayList<? extends Elem<?, ?>> withRespectTo,
+				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace)
+				throws NotInvertibleException,
+				MultiplicativeDistributionRequiredException {
+			
+			ArrayList<Ordinate> wrt = (ArrayList<Ordinate>) withRespectTo;
+			if( wrt.size() > 1 )
+			{
+				return( fac.zero() );
+			}
+			Iterator<Ordinate> it = wrt.iterator();
+			Ordinate wr = it.next();
+			
+			if( wr.getCol() == 2  )
+			{
+				throw( new RuntimeException( "Not Supported..." ) );
+			}
+			
+			return( fac.zero() );
+			
+		} 
+
+		@Override
+		public SymbolicElem<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> evalPartialDerivativeCached(
+				ArrayList<? extends Elem<?, ?>> withRespectTo,
+				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace,
+				HashMap<SCacheKey<SymbolicElem<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>>, SymbolicElem<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>> cache)
+				throws NotInvertibleException,
+				MultiplicativeDistributionRequiredException {
+			throw( new RuntimeException( "Not Supported" ) );
+		}
+				
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/**
+	 * An elem defining an altering value.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
+//	private class AAtelem extends SymbolicElem<SymbolicElem<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>,
+//		SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>>
+//	{
+//		/**
+//		 * Constructs the elem.
+//		 * 
+//		 * @param _fac The factory for the enclosed type.
+//		 */
+//		public AAtelem(SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>, 
+//				SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>> _fac) {
+//			super(_fac);
+//		}
+//
+//		@Override
+//		public SymbolicElem<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>, 
+//			SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>> eval(
+//				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace)
+//				throws NotInvertibleException,
+//				MultiplicativeDistributionRequiredException {	
+//			return( new CAelem( fac.getFac() ) );
+//		}
+//		
+//		
+//		@Override
+//		public SymbolicElem<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> evalCached(
+//				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace,
+//				HashMap<SCacheKey<SymbolicElem<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>>, SymbolicElem<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>> cache)
+//				throws NotInvertibleException,
+//				MultiplicativeDistributionRequiredException {
+//			final SCacheKey<SymbolicElem<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>> key =
+//					new SCacheKey<SymbolicElem<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>>( this , implicitSpace );
+//			final SymbolicElem<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> iret = cache.get( key );
+//			if( iret != null )
+//			{
+//				return( iret );
+//			}
+//			final SymbolicElem<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> ret =
+//					eval( implicitSpace );
+//			cache.put(key, ret);
+//			return( ret );
+//		}
+//		
+//		
+//		
+//		/**
+//		 * Copies the AAtelem for threading.
+//		 * @param in The AAtelem to be copied.
+//		 * @param threadIndex The thread index.
+//		 */
+//		protected AAtelem( AAtelem in , final BigInteger threadIndex )
+//		{
+//			super( in.getFac().getFac().cloneThread(threadIndex) );
+//		}
+//		
+//		
+//		
+//		@Override
+//		public AAtelem cloneThread( final BigInteger threadIndex )
+//		{
+//			return( new AAtelem( this , threadIndex ) );
+//		}
+//
+//		
+//		
+//
+//		@Override
+//		public String writeDesc(
+//				WriteElemCache<SymbolicElem<SymbolicElem<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>>, SymbolicElemFactory<SymbolicElem<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>>> cache,
+//				PrintStream ps) {
+//			String st = cache.get( this );
+//			if( st == null )
+//			{
+//				cache.applyAuxCache( new WriteBigIntegerCache( cache.getCacheVal() ) );
+//				final String sta = fac.writeDesc( (WriteElemCache< SymbolicElem<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> , SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> >>)( cache.getInnerCache() ) , ps);
+//				st = cache.getIncrementVal();
+//				cache.put(this, st);
+//				ps.print( AAtelem.class.getSimpleName() );
+//				ps.print( " " );
+//				ps.print( st );
+//				ps.print( " = new " );
+//				ps.print( AAtelem.class.getSimpleName() );
+//				ps.print( "( " );
+//				ps.print( sta );
+//				ps.println( " );" );
+//			}
+//			return( st );
+//		}
+//
+//		@Override
+//		public SymbolicElem<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> evalPartialDerivative(
+//				ArrayList<? extends Elem<?, ?>> withRespectTo,
+//				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace)
+//				throws NotInvertibleException,
+//				MultiplicativeDistributionRequiredException {
+//			
+//			ArrayList<Ordinate> wrt = (ArrayList<Ordinate>) withRespectTo;
+//			if( wrt.size() > 1 )
+//			{
+//				return( fac.zero() );
+//			}
+//			Iterator<Ordinate> it = wrt.iterator();
+//			Ordinate wr = it.next();
+//			
+//			if( wr.getCol() == 2  )
+//			{
+//				throw( new RuntimeException( "Not Supported..." ) );
+//			}
+//			
+//			return( fac.zero() );
+//			
+//		} 
+//
+//		@Override
+//		public SymbolicElem<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> evalPartialDerivativeCached(
+//				ArrayList<? extends Elem<?, ?>> withRespectTo,
+//				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace,
+//				HashMap<SCacheKey<SymbolicElem<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>>, SymbolicElem<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>> cache)
+//				throws NotInvertibleException,
+//				MultiplicativeDistributionRequiredException {
+//			throw( new RuntimeException( "Not Supported" ) );
+//		}
+//				
+//		
+//	}
+//	
+//	
+	
+	
+	
+	
+	
+	
+	
+	
 	/**
 	 * Newton-Raphson evaluator for the test.
 	 * 
@@ -2140,13 +3403,38 @@ public class TestSchrodingerCdim extends TestCase {
 		public StelemNewton(
 				SymbolicElem<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> _function,
 				ArrayList<? extends Elem<?, ?>> _withRespectTo, 
-				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpaceFirstLevel)
+				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpaceFirstLevel,
+				final int threadIndex)
 				throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
 			super(_function, _withRespectTo, implicitSpaceFirstLevel, null);
 			// System.out.println( "**" );
 			// System.out.println( this.partialEval.writeString() );
+			threadContext = TestSchrodingerCdim.iterationThreadContexts[ threadIndex ];
 		}
+		
+		/**
+		 * Constructs the evaluator.
+		 * 
+		 * @param _function The function over which to evaluate Netwon-Raphson.
+		 * @param _withRespectTo The variable over which to evaluate the derivative of the function.
+		 * @param implicitSpaceFirstLevel The initial implicit space over which to take the function and its derivative.
+		 * @throws NotInvertibleException
+		 * @throws MultiplicativeDistributionRequiredException
+		 */
+		public StelemNewton(
+				SymbolicElem<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>> _function,
+				ArrayList<? extends Elem<?, ?>> _withRespectTo, 
+				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpaceFirstLevel)
+				throws NotInvertibleException,
+				MultiplicativeDistributionRequiredException {
+			this(_function,_withRespectTo,implicitSpaceFirstLevel,0);
+		}
+		
+		/**
+		 * The thread context for the iterations.
+		 */
+		protected TestSchrodingerCdim.IterationThreadContext threadContext;
 		
 		/**
 		 * The iteration count for Newton-Raphson iterations.
@@ -2169,19 +3457,19 @@ public class TestSchrodingerCdim extends TestCase {
 		@Override
 		protected void performIterationUpdate( ComplexElem<DoubleElem, DoubleElemFactory> iterationOffset )
 		{
-			TestSchrodingerCdim.performIterationUpdate( iterationOffset );
+			threadContext.performIterationUpdate( iterationOffset );
 		}
 		
 		@Override
 		protected void cacheIterationValue()
 		{
-			TestSchrodingerCdim.cacheIterationValue();
+			threadContext.cacheIterationValue();
 		}
 		
 		@Override
 		protected void retrieveIterationValue()
 		{
-			TestSchrodingerCdim.retrieveIterationValue();
+			threadContext.retrieveIterationValue();
 		}
 		
 		/**
@@ -2193,12 +3481,14 @@ public class TestSchrodingerCdim extends TestCase {
 		protected StelemNewton( final StelemNewton in , final BigInteger threadIndex )
 		{
 			super( in , threadIndex );
+			final int threadInd = threadIndex.intValue();
+			threadContext = TestSchrodingerCdim.iterationThreadContexts[ threadInd ];
 		}
 		
 		@Override
 		public StelemNewton cloneThread( final BigInteger threadIndex )
 		{
-			throw( new RuntimeException( "Not Supported" ) );
+			return( new StelemNewton( this , threadIndex ) );
 		}
 		
 		@Override
@@ -2241,6 +3531,55 @@ public class TestSchrodingerCdim extends TestCase {
 		return( mult.getRe().getVal() );
 	}
 	
+
+	
+	
+	/**
+	 * Initializes the iter array.
+	 * 
+	 * @param d1 The dimensional size to be used for the initialization.
+	 */
+	protected void initIterArray( final double d1 ) throws Throwable
+	{
+		System.out.println( "Setting Initial Conditions..." );
+		final TestSchrodingerCdim.IterationThreadContext iterContext = iterationThreadContexts[ 0 ];
+		final DrFastArray3D_Dbl iterArrayRe = iterContext.iterArrayRe;
+		final DrFastArray3D_Dbl iterArrayIm = iterContext.iterArrayIm;
+		long atm = System.currentTimeMillis();
+		long atm2 = System.currentTimeMillis();
+		for( int tcnt = 0 ; tcnt < 2 * NSTPT ; tcnt++ )
+		{
+			System.out.println( "Initial - " + tcnt );
+			for( long acnt = 0 ; acnt < ( (long) NUM_X_ITER ) * NUM_XI_ITER ; acnt++ )
+			{
+				atm2 = System.currentTimeMillis();
+				if( atm2 - atm >= IterConstants.INIT_UPDATE_DELAY )
+				{
+					System.out.println( ">> " + acnt );
+					atm = atm2;
+				}
+				
+				long ac = acnt;
+				final int xi = (int)( ac % NUM_XI_ITER );
+				ac = ac / NUM_XI_ITER;
+				final int x = (int)( ac % NUM_X_ITER );
+				final double dx = ( x - HALF_X ) / RAD_X;
+				final double dxi = ( xi - HALF_XI ) / RAD_XI;
+				if( dx * dx + dxi * dxi < 1.0 )
+				{
+					iterArrayRe.set( tcnt , x , xi , 10000.0 * ( d1 * d1 ) );
+				}
+				else
+				{
+					iterArrayRe.set( tcnt , x , xi , 0.0 );
+				}
+				iterArrayIm.set( tcnt , x , xi , 0.0 );
+			}
+		}
+		System.out.println( "Initial Conditions Set..." );
+	}
+	
+	
 	
 	
 	/**
@@ -2253,6 +3592,12 @@ public class TestSchrodingerCdim extends TestCase {
 	 */
 	protected static class IncrementManager
 	{
+		
+		/**
+		 * The thread context for the iterations.
+		 */
+		protected TestSchrodingerCdim.IterationThreadContext threadContext; // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! sttop here IncrementManager !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11
+		
 		/**
 		 * The current discretized X-coordinate.
 		 */
@@ -2263,15 +3608,123 @@ public class TestSchrodingerCdim extends TestCase {
 		 */
 		protected int xicnt = 0;
 		
+		/**
+		 * The XI-coordinate of the start of the swatch.
+		 */
+		protected int xistrt = 0;
 		
 		/**
-		 * Handles the base increment from the X-Axis.  At the point the increment
+		 * The X-coordinate of the start of the swatch.
+		 */
+		protected int xstrt = 0;
+		
+		/**
+		 * The number of XI-coordinates to count down to the boundary a standard-size swatch.
+		 */
+		protected int xidn = XIMULT - 1;
+		
+		/**
+		 * The number of X-coordinates to count down to the boundary a standard-size swatch.
+		 */
+		protected int xdn = XMULT - 1;
+		
+		/**
+		 * Indicates that the current increment is only in the X-direction.
+		 */
+		protected boolean xMoveOnly = false;
+		
+		/**
+		 * Indicates that the current increment is only in the XI-direction.
+		 */
+		protected boolean xiMoveOnly = false;
+		
+		/**
+		 * Indicates whether the XI-Axis increment is up or down.
+		 */
+		protected boolean xiMoveUp = true;
+		
+		
+		/**
+		 * Constructs the increment manager.
+		 * 
+		 * @param threadIndex The thread index of the increments.
+		 */
+		public IncrementManager( final int threadIndex )
+		{
+			threadContext = iterationThreadContexts[ threadIndex ];
+		}
+		
+		
+		/**
+		 * Returns whether the iterations are done.
+		 * @return True iff. the iterations are complete.
+		 */
+		public boolean isDone()
+		{
+			return( xstrt >= NUM_X_ITER );
+		}
+		
+		
+		/**
+		 * Increments to the next swatch.
+		 */
+		public void handleSwatchIncrementSingle()
+		{
+			xiMoveUp = true;
+			if( ( xistrt + ( XIMULT - 1 ) ) < ( NUM_XI_ITER - 1 ) )
+			{
+				xicnt = xistrt + XIMULT;
+				xistrt = xicnt;
+				xidn = XIMULT - 1;
+				xcnt = xstrt;
+				xdn = XMULT - 1;
+				}
+				else
+				{
+					xicnt = 0;
+					xistrt = 0;
+					xidn = XIMULT - 1;
+					xcnt = xstrt + XMULT;
+					xstrt = xcnt;
+					xdn = XMULT - 1;
+				}
+		}
+		
+		
+		
+		/**
+		 * Increments to the next thread-swatch.
+		 */
+		protected void handleSwatchIncrement()
+		{
+			for( int cnt = 0 ; cnt < NUM_CPU_CORES ; cnt++ )
+			{
+				handleSwatchIncrementSingle();
+			}
+		}
+		
+		
+		
+		/**
+		 * Handles the increment from the X-Axis.  At the point the increment
 		 * reaches a swatch boundary, other axes are potentially incremented.
 		 */
-		public void handleIncrementXa()
+		protected void handleIncrementXa()
 		{
-			xicnt = 0;
-			xcnt++;
+			
+			if( ( xdn > 0 ) && ( xcnt < ( NUM_X_ITER - 1 ) ) )
+			{
+				xMoveOnly = true;
+				xcnt++;
+				xdn--;
+				xiMoveUp = !xiMoveUp;
+				xidn = XIMULT - 1;
+			}
+			else
+			{
+				handleSwatchIncrement();
+			}
+			
 		}
 		
 		
@@ -2281,15 +3734,70 @@ public class TestSchrodingerCdim extends TestCase {
 		 */
 		public void handleIncrementXIa()
 		{
-			if( xicnt < ( NUM_XI_ITER - 1 ) )
+			if( xiMoveUp )
 			{
-				xicnt++;
+				if( ( xidn > 0 ) && ( xicnt < ( NUM_XI_ITER - 1 ) ) )
+				{
+					xiMoveOnly = true;
+					xicnt++;
+					xidn--;
+				}
+				else
+				{
+					handleIncrementXa();
+				}
 			}
 			else
 			{
-				handleIncrementXa();
+				if( ( xidn > 0 ) && ( xicnt > xistrt ) )
+				{
+					xiMoveOnly = true;
+					xicnt--;
+					xidn--;
+				}
+				else
+				{
+					handleIncrementXa();
+				}
 			}
 		}
+		
+		
+		
+		
+		/**
+		 * Performs the temp array fill for the most recently calculated increment.  Selects a
+		 * cache-efficient algorithm for performing the fill.
+		 * 
+		 * @param tval The current T-Axis iteration value.
+		 * @throws Throwable
+		 */
+		public void performTempArrayFill( final int tval ) throws Throwable
+		{
+			if( xiMoveOnly )
+			{
+				if( xiMoveUp )
+				{
+					threadContext.fillTempArrayShiftXIup( tval , xcnt , xicnt );
+				}
+				else
+				{
+					threadContext.fillTempArrayShiftXIdown( tval , xcnt , xicnt );
+				}
+			}
+			else
+			{
+				if( xMoveOnly )
+				{
+					threadContext.fillTempArrayShiftXup( tval , xcnt , xicnt );
+				}
+				else
+				{
+					threadContext.fillTempArray( tval , xcnt , xicnt );
+				}
+			}
+		}
+		
 		
 		
 		/**
@@ -2299,6 +3807,13 @@ public class TestSchrodingerCdim extends TestCase {
 		{
 			xcnt = 0;
 			xicnt = 0;
+			xistrt = 0;
+			xstrt = 0;
+			xidn = XIMULT - 1;
+			xdn = XMULT - 1;
+			xiMoveUp = true;
+			xMoveOnly = false;
+			xiMoveOnly = false;
 		}
 		
 		
@@ -2328,11 +3843,28 @@ public class TestSchrodingerCdim extends TestCase {
 	}
 
 	
+	/**
+	 * Initializes the IncrementManager instances.
+	 * 
+	 * @return The initialized IncrementManager instances.
+	 */
+	protected static IncrementManager[] initIncrementManager()
+	{
+		IncrementManager[] ima = new IncrementManager[ NUM_CPU_CORES ];
+		for( int cnt = 0 ; cnt < NUM_CPU_CORES ; cnt++ )
+		{
+			final IncrementManager im = new IncrementManager( cnt );
+			ima[ cnt ] = im;
+		}
+		return( ima );
+	}
+	
+	
 	
 	/**
-	 * Instance of the IncrementManager used by the performIterationT() method.
+	 * Instances of the IncrementManager used by the performIterationT() method.
 	 */
-	protected final IncrementManager im = new IncrementManager();
+	protected static final IncrementManager[] ims = initIncrementManager();
 	
 	
 	
@@ -2340,164 +3872,171 @@ public class TestSchrodingerCdim extends TestCase {
 	 * Performs descent iterations for one value of T.
 	 * 
 	 * @param tval The value of T over which to iterate.
-	 * @param newton The descent algorithm to use for the iterations.
+	 * @param newtons The descent algorithms to use for the iterations.
 	 * @param implicitSpace2 The implicit space over which to iterate.
 	 * @throws NotInvertibleException
 	 * @throws MultiplicativeDistributionRequiredException
 	 */
-	protected void performIterationT( final int tval , final StelemNewton newton , final HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace2 ) 
-			throws Throwable
+	protected void performIterationT( final int tval , final StelemNewton[] newtons , final HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace2 ) 
+			throws NotInvertibleException, MultiplicativeDistributionRequiredException, Throwable
 	{
-		//double tmpCorrectionValueRe = 0.0;
-		//double tmpCorrectionValueIm = 0.0;
-		im.restartIncrements();
-		for( long acnt = 0 ; acnt < ( ( (long) NUM_X_ITER ) * NUM_XI_ITER ) ; acnt++ )
+		final int numCores = CpuInfo.NUM_CPU_CORES;
+		final Runnable[] runn = new Runnable[ numCores ];
+		final boolean[] b = CpuInfo.createBool( false );
+		for( int ccnt = 0 ; ccnt < NUM_CPU_CORES ; ccnt++ )
 		{
-			fillTempArray( tval , im.getXcnt() , im.getXIcnt() );
-			clearSpatialAssertArray();
+			final int core = ccnt;
+			final IncrementManager im = ims[ core ];
+			final StelemNewton newton = newtons[ core ];
+			final TestSchrodingerCdim.IterationThreadContext threadContext = iterationThreadContexts[ core ];
+			runn[ core ] = new Runnable()
+			{
+				@Override
+				public void run()
+				{
+					try
+					{
+						//double tmpCorrectionValue = 0.0;
+						im.restartIncrements();
+						for( int acnt = 0 ; acnt < core ; acnt++ )
+						{
+							im.handleSwatchIncrementSingle();
+						}
+						
+						long atm = System.currentTimeMillis();
+						long atm2 = System.currentTimeMillis();
+						while( !( im.isDone() ) )
+						{
+			
+							atm2 = System.currentTimeMillis();
+							if( atm2 - atm >= IterConstants.ITER_UPDATE_DELAY )
+							{
+								System.out.println( ">> " + tval + " / " + im.getXcnt() + " / " + im.getXIcnt() );
+								atm = atm2;
+							}
+			
+			
+							im.performTempArrayFill( tval );
+							threadContext.tempXLocn = im.getXcnt();
+							threadContext.tempXILocn = im.getXIcnt();
+							threadContext.tempTLocn = tval;
+			
+			
+							threadContext.clearSpatialAssertArray();
 	
 			
-			final ComplexElem<DoubleElem,DoubleElemFactory> ival =
-					new ComplexElem<DoubleElem,DoubleElemFactory>(
-							new DoubleElem( TestSchrodingerCdim.getUpdateValueRe() ) , 
-							new DoubleElem( TestSchrodingerCdim.getUpdateValueIm() ) );
+							final ComplexElem<DoubleElem,DoubleElemFactory> ival =
+									new ComplexElem<DoubleElem,DoubleElemFactory>(
+											new DoubleElem( threadContext.getUpdateValueRe() ) , 
+											new DoubleElem( threadContext.getUpdateValueIm() ) );
+			
+			
 		
 			
-			ComplexElem<DoubleElem, DoubleElemFactory> err = newton.eval( implicitSpace2 );
+							ComplexElem<DoubleElem, DoubleElemFactory> err = newton.eval( implicitSpace2 );
+							
+							if( APPLY_NUMERICAL_VISCOSITY )
+							{
+								threadContext.applyNumericViscosity();
+							}
 			
-			if( APPLY_NUMERICAL_VISCOSITY )
-			{
-				applyNumericViscosity();
-			}
-					
-					
-			//if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
-			//{
-			//	tmpCorrectionValueRe = getCorrectionValueRe();
-			//	tmpCorrectionValueIm = getCorrectionValueIm();
-			//	applyPredictorCorrector();
-			//			
-			//
-			//	err = newton.eval( implicitSpace2 );
-			//
-			//  if( APPLY_NUMERICAL_VISCOSITY )
-			// {
-			//	applyNumericViscosity();
-			// }
-			//}
+			
+							//if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
+							//{
+							//	tmpCorrectionValue = threadContext.getCorrectionValue();
+							//	threadContext.applyPredictorCorrector();
+							//	
+							//
+							//	err = newton.eval( implicitSpace2 );
+							//
+							// if( APPLY_NUMERICAL_VISCOSITY )
+							// {
+							//	threadContext.applyNumericViscosity();
+							// }
+							//}
 	
 	
-			final ComplexElem<DoubleElem,DoubleElemFactory> val =
-					new ComplexElem<DoubleElem,DoubleElemFactory>(
-							new DoubleElem( TestSchrodingerCdim.getUpdateValueRe() ) , 
-							new DoubleElem( TestSchrodingerCdim.getUpdateValueIm() ) );
+							final ComplexElem<DoubleElem,DoubleElemFactory> val =
+									new ComplexElem<DoubleElem,DoubleElemFactory>(
+											new DoubleElem( threadContext.getUpdateValueRe() ) , 
+											new DoubleElem( threadContext.getUpdateValueIm() ) );
+									
+							
+							if( ( im.getXcnt() == HALF_X ) && ( im.getXIcnt() == HALF_XI ) )
+							{
+								System.out.println( "******************" );
+								System.out.println( " ( " + im.getXcnt() + " , " + im.getXIcnt() + " ) " );
+								System.out.println( expectationValue( ival ) );
+								System.out.println( expectationValue( val ) );
+								System.out.println( "## " + ( expectationValue( err ) ) );
+							}
 					
+					
+							/* Assert.assertTrue( spatialAssertArray[ 0 ][ 0 ][ 0 ][ 0 ] == 0 );
+					
+							Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 1 ] > 0 );
+					
+							Assert.assertTrue( spatialAssertArray[ 2 ][ 1 ][ 1 ][ 1 ] > 0 );
+							Assert.assertTrue( spatialAssertArray[ 1 ][ 2 ][ 1 ][ 1 ] > 0 );
+							Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 2 ][ 1 ] > 0 );
+							Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 2 ] > 0 );
+					
+							Assert.assertTrue( spatialAssertArray[ 0 ][ 1 ][ 1 ][ 1 ] > 0 );
+							Assert.assertTrue( spatialAssertArray[ 1 ][ 0 ][ 1 ][ 1 ] > 0 );
+							Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 0 ][ 1 ] > 0 );
+							Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ][ 0 ] > 0 ); */
 			
-			if( ( im.getXcnt() == HALF_X ) && ( im.getXIcnt() == HALF_XI ) )
-			{
-				System.out.println( "******************" );
-				System.out.println( " ( " + im.getXcnt() + " , " + im.getXIcnt() + " ) " );
-				System.out.println( expectationValue( ival ) );
-				System.out.println( expectationValue( val ) );
-				System.out.println( "## " + ( expectationValue( err ) ) );
-			}
-					
-					
-			Assert.assertTrue( spatialAssertArray[ 0 ][ 0 ][ 0 ] == 0 );
-					
-			Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 1 ] > 0 );
-					
-			Assert.assertTrue( spatialAssertArray[ 2 ][ 1 ][ 1 ] > 0 );
-			Assert.assertTrue( spatialAssertArray[ 1 ][ 2 ][ 1 ] > 0 );
-			Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 2 ] > 0 );
-					
-			Assert.assertTrue( spatialAssertArray[ 0 ][ 1 ][ 1 ] > 0 );
-			Assert.assertTrue( spatialAssertArray[ 1 ][ 0 ][ 1 ] > 0 );
-			Assert.assertTrue( spatialAssertArray[ 1 ][ 1 ][ 0 ] > 0 );
-					
-			// for( int xc = 0 ; xc < 2 * NSTPX - 1 ; xc++ )
-			// {
-			//	for( int yc = 0 ; yc < 2 * NSTPY - 1 ; yc++ )
-			//	{
-			//		for( int zc = 0 ; zc < 2 * NSTPZ - 1 ; zc++ )
-			//		{
-			//			if( ( xc == NSTPX ) && ( yc == NSTPY ) && ( zc == NSTPZ ) )
-			//			{
-			//				Assert.assertTrue( spatialAssertArray[ NSTPT * 2 ][ xc ][ yc ][ zc ] > 0 );
-			//			}
-			//			else
-			//			{
-			//				Assert.assertTrue( spatialAssertArray[ NSTPT * 2 ][ xc ][ yc ][ zc ] == 0 );
-			//			}
-			//		}
-			//	}
-			// }
+							// for( int xc = 0 ; xc < 2 * NSTPX - 1 ; xc++ )
+							// {
+							//	for( int yc = 0 ; yc < 2 * NSTPY - 1 ; yc++ )
+							//	{
+							//		for( int zc = 0 ; zc < 2 * NSTPZ - 1 ; zc++ )
+							//		{
+							//			if( ( xc == NSTPX ) && ( yc == NSTPY ) && ( zc == NSTPZ ) )
+							//			{
+							//				Assert.assertTrue( spatialAssertArray[ NSTPT * 2 ][ xc ][ yc ][ zc ] > 0 );
+							//			}
+							//			else
+							//			{
+							//				Assert.assertTrue( spatialAssertArray[ NSTPT * 2 ][ xc ][ yc ][ zc ] == 0 );
+							//			}
+							//		}
+							//	}
+							// }
 			
 			
-			Assert.assertTrue( Math.abs( Math.sqrt( expectationValue( err ) ) ) < ( 0.01 * Math.abs( Math.sqrt( expectationValue( val ) ) ) + 0.01 ) );
-			
-			//if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
-			//{
-			//	resetCorrectionValueRe( tmpCorrectionValueRe );
-			//	resetCorrectionValueIm( tmpCorrectionValueIm );
-			//}
+							Assert.assertTrue( Math.abs( Math.sqrt( expectationValue( err ) ) ) < ( 0.01 * Math.abs( Math.sqrt( expectationValue( val ) ) ) + 0.01 ) );
+							
+							//if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
+							//{
+							//	threadContext.resetCorrectionValue( tmpCorrectionValue );
+							//}
 		
-			iterArrayRe[ tval + NSTPT ][ im.getXcnt() ][ im.getXIcnt() ] = val.getRe().getVal();
-			iterArrayIm[ tval + NSTPT ][ im.getXcnt() ][ im.getXIcnt() ] = val.getIm().getVal();
+							threadContext.iterArrayRe.set( tval + NSTPT , im.getXcnt() , im.getXIcnt() , val.getRe().getVal() );
+							threadContext.iterArrayIm.set( tval + NSTPT , im.getXcnt() , im.getXIcnt() , val.getIm().getVal() );
 			
 			
 			
-			im.handleIncrementXIa();
-			
+							im.handleIncrementXIa();
+							
+						}
+					}
+					catch( Error ex  ) { ex.printStackTrace( System.out ); }
+					catch( Throwable ex ) { ex.printStackTrace( System.out ); }
+						
+					synchronized( this )
+					{
+						b[ core ] = true;
+						this.notify();
+					}			
+				}
+			};		
 		}
-				
+		
+		CpuInfo.start( runn );
+		CpuInfo.wait( runn , b );
+		
 	}
-	
-	
-	
-	
-	/**
-	 * Initializes the iter array.
-	 * 
-	 * @param d1 The dimensional size to be used for the initialization.
-	 */
-	protected void initIterArray( final double d1 )
-	{
-		System.out.println( "Setting Initial Conditions..." );
-		long atm = System.currentTimeMillis();
-		long atm2 = System.currentTimeMillis();
-		for( int tcnt = 0 ; tcnt < 2 * NSTPT ; tcnt++ )
-		{
-			System.out.println( "Initial - " + tcnt );
-			for( long acnt = 0 ; acnt < ( (long) NUM_X_ITER ) * NUM_XI_ITER ; acnt++ )
-			{
-				atm2 = System.currentTimeMillis();
-				if( atm2 - atm >= IterConstants.INIT_UPDATE_DELAY )
-				{
-					System.out.println( ">> " + acnt );
-					atm = atm2;
-				}
-				
-				long ac = acnt;
-				final int xi = (int)( ac % NUM_XI_ITER );
-				ac = ac / NUM_XI_ITER;
-				final int x = (int)( ac % NUM_X_ITER );
-				final double dx = ( x - HALF_X ) / RAD_X;
-				final double dxi = ( xi - HALF_XI ) / RAD_XI;
-				if( dx * dx + dxi * dxi < 1.0 )
-				{
-					iterArrayRe[ tcnt ][ x ][ xi ] = 10000.0 * ( d1 * d1 );
-				}
-				else
-				{
-					iterArrayRe[ tcnt ][ x ][ xi ] = 0.0;
-				}
-				iterArrayIm[ tcnt ][ x ][ xi ] = 0.0;
-			}
-		}
-		System.out.println( "Initial Conditions Set..." );
-	}
-	
 	
 	
 	
@@ -2563,6 +4102,25 @@ public class TestSchrodingerCdim extends TestCase {
 	 */	
 	public void testStelemSimple() throws Throwable
 	{
+		String databaseLocationRe = DatabasePathForTest.FILESPACE_PATH + "mydbRe";
+		String databaseLocationIm = DatabasePathForTest.FILESPACE_PATH + "mydbIm";
+		
+		
+		
+		final DbFastArray3D_Param dparam = new DbFastArray3D_Param();
+		dparam.setTmult( TMULT );
+		dparam.setXmult( XMULT );
+		dparam.setYmult( XIMULT );
+		dparam.setTmax( NUM_T_ITER );
+		dparam.setXmax( NUM_X_ITER );
+		dparam.setYmax( NUM_XI_ITER );
+		
+		for( int hcnt = 0 ; hcnt < NUM_CPU_CORES ; hcnt++ )
+		{
+			TestSchrodingerCdim.iterationThreadContexts[ hcnt ].iterArrayRe = new DrFastArray3D_Dbl( dparam , databaseLocationRe );
+			TestSchrodingerCdim.iterationThreadContexts[ hcnt ].iterArrayIm = new DrFastArray3D_Dbl( dparam , databaseLocationIm );
+		}
+		
 		final Random rand = new Random( 3344 );
 		
 		final double d1 = Math.sqrt( X_HH.getRe().getVal() * X_HH.getRe().getVal() + XI_HH.getRe().getVal() * XI_HH.getRe().getVal() );
@@ -2707,6 +4265,15 @@ public class TestSchrodingerCdim extends TestCase {
 		//	SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>> m1
 		//	= m1X.add( gtt0 );
 		
+		final SymbolicElem<SymbolicElem<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>,
+			SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>> vslope0
+			= as.mult( new AVtelem( se2 ) );
+	
+	
+//		final SymbolicElem<SymbolicElem<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>,
+//			SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>> vslope1
+//			= new AAtelem( se2 );
+		
 		
 		final GeometricAlgebraMultivectorElem<
 			TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>, 
@@ -2718,6 +4285,25 @@ public class TestSchrodingerCdim extends TestCase {
 					SymbolicElemFactory<SymbolicElem<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>>>
 					( gtt0 , se3 , tdim , ord );
 		
+//		final GeometricAlgebraMultivectorElem<
+//			TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>, 
+//			SymbolicElem<SymbolicElem<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>>, 
+//			SymbolicElemFactory<SymbolicElem<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>>>
+//				vslopeV = new GeometricAlgebraMultivectorElem<
+//					TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>, 
+//					SymbolicElem<SymbolicElem<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>>, 
+//					SymbolicElemFactory<SymbolicElem<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>>>
+//					( vslope0.add( vslope1 ) , se3 , tdim , ord );
+		
+		final GeometricAlgebraMultivectorElem<
+		TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>, 
+		SymbolicElem<SymbolicElem<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>>, 
+		SymbolicElemFactory<SymbolicElem<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>>>
+			vslopeV = new GeometricAlgebraMultivectorElem<
+				TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>, 
+				SymbolicElem<SymbolicElem<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>>, 
+				SymbolicElemFactory<SymbolicElem<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>>>
+				( vslope0 , se3 , tdim , ord );
 		
 		
 		final SymbolicElem<SymbolicElem<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>,
@@ -2742,7 +4328,7 @@ public class TestSchrodingerCdim extends TestCase {
 			TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>, 
 			SymbolicElem<SymbolicElem<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>>, 
 			SymbolicElemFactory<SymbolicElem<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>,SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>>>
-				mg1 = ( gxx1.mult( gxxMultV ) ).add( gtt );
+				mg1 = ( gxx1.mult( gxxMultV ) ).add( vslopeV ).add( gtt );
 		
 		
 		
@@ -2783,18 +4369,33 @@ public class TestSchrodingerCdim extends TestCase {
 		
 		
 		
-		StelemNewton newton = new StelemNewton( s0 , wrt3 , implicitSpace2 );
+		final StelemNewton newton0 = new StelemNewton( s0 , wrt3 , implicitSpace2 );
+		final StelemNewton[] newtons = new StelemNewton[ NUM_CPU_CORES ];
+		newtons[ 0 ] = newton0;
+		for( int hcnt = 1 ; hcnt < NUM_CPU_CORES ; hcnt++ )
+		{
+			newtons[ hcnt ] = newton0.cloneThread( BigInteger.valueOf( hcnt ) );
+		}
 		
 		
 		for( int tval = 1 ; tval < ( NUM_T_ITER - NSTPT ) ; tval++ )
 		{
-			performIterationT( tval , newton , implicitSpace2 );	
+			performIterationT( tval , newtons , implicitSpace2 );	
 		}
 		
 		
 		// System.out.println( "==============================" ); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
-		// System.out.println( iterArray[ NUM_T_ITER - 1 ][ HALF-X ][ HALF_Y ][ HALF_Z ] ); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		// System.out.println( TestSchrodingerCdim.iterationThreadContexts[ 0 ].iterArray[ NUM_T_ITER - 1 ][ HALF-X ][ HALF_Y ][ HALF_Z ] ); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		// Assert.assertTrue( Math.abs( val - ( -1.450868 ) ) < 0.01 ); !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+		
+		
+		for( int hcnt = 0 ; hcnt < NUM_CPU_CORES ; hcnt++ )
+		{
+			TestSchrodingerCdim.iterationThreadContexts[ hcnt ].iterArrayRe.close();
+			TestSchrodingerCdim.iterationThreadContexts[ hcnt ].iterArrayRe.close();
+		}
+		
+		
 		
 	}
 	
