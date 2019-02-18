@@ -199,12 +199,12 @@ public class TestSchrodingerCdim extends TestCase {
 	/**
 	 * The number of discretizations on the X-Axis over which to iterate (real component of the X-axis)..
 	 */
-	protected static final int NUM_X_ITER = 50; // IterConstants.LRG_ITER_X; // 25
+	protected static final int NUM_X_ITER = 200; // 50; // IterConstants.LRG_ITER_X; // 25
 	
 	/**
 	 * The number of discretizations on the XI-Axis over which to iterate (imaginary component of the X-axis)..
 	 */
-	protected static final int NUM_XI_ITER = 50; // IterConstants.LRG_ITER_X; // 25
+	protected static final int NUM_XI_ITER = 200; // 50; // IterConstants.LRG_ITER_X; // 25
 	
 	
 	
