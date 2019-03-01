@@ -313,7 +313,12 @@ public class DrFastArray4D_Dbl {
 		
 		
 		file.seek( SZ_DBL * index );
-		return( file.readDouble() );
+		final double ret = file.readDouble();
+		if( file.getFilePointer() != ( SZ_DBL * ( index + 1 ) ) )
+		{
+			throw( new RuntimeException( "Internal Error" ) );
+		}
+		return( ret );
 	}
 	
 	
@@ -365,6 +370,10 @@ public class DrFastArray4D_Dbl {
 		
 		file.seek( SZ_DBL * index );
 		file.writeDouble( val );
+		if( file.getFilePointer() != ( SZ_DBL * ( index + 1 ) ) )
+		{
+			throw( new RuntimeException( "Internal Error" ) );
+		}
 	}
 	
 	
@@ -381,13 +390,11 @@ public class DrFastArray4D_Dbl {
 	/**
 	 * Flushes the contents of the previous array writes.
 	 * 
-	 * @param path The file path to the array.  Must match the original file path given to the constructor.
 	 * @throws Throwable
 	 */
-	public void flush( final String path ) throws Throwable
+	public void flush( ) throws Throwable
 	{
-		file.close();
-		file = new RandomAccessFile( path , "rw" );
+		file.getFD().sync();
 	}
 	
 	

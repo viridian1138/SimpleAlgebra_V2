@@ -322,17 +322,17 @@ public class TestSchrodingerCdimBN extends TestCase {
 	/**
 	 * The number of discretizations on the T-Axis over which to iterate.
 	 */
-	protected static final int NUM_T_ITER = 400; // IterConstants.LRG_ITER_T; // 400;
+	protected static final int NUM_T_ITER = 800; // IterConstants.LRG_ITER_T; // 400;
 	
 	/**
 	 * The number of discretizations on the X-Axis over which to iterate (real component of the X-axis)..
 	 */
-	protected static final int NUM_X_ITER = 200; // 50; // IterConstants.LRG_ITER_X; // 25
+	protected static final int NUM_X_ITER = 400; // 50; // IterConstants.LRG_ITER_X; // 25
 	
 	/**
 	 * The number of discretizations on the XI-Axis over which to iterate (imaginary component of the X-axis)..
 	 */
-	protected static final int NUM_XI_ITER = 200; // 50; // IterConstants.LRG_ITER_X; // 25
+	protected static final int NUM_XI_ITER = 400; // 50; // IterConstants.LRG_ITER_X; // 25
 	
 	
 	
@@ -3704,7 +3704,7 @@ public class TestSchrodingerCdimBN extends TestCase {
 				final int x = (int)( ac % NUM_X_ITER );
 				final double dx = ( x - HALF_X ) / RAD_X;
 				final double dxi = ( xi - HALF_XI ) / RAD_XI;
-				if( dx * dx + dxi * dxi < 1.0 )
+				if( ( dx * dx < 1.0 ) && ( xi == HALF_XI ) )
 				{
 					iterArrayRe.set( tcnt , x , xi , 10000.0 * ( d1 * d1 ) );
 				}
@@ -3735,7 +3735,7 @@ public class TestSchrodingerCdimBN extends TestCase {
 		/**
 		 * The thread context for the iterations.
 		 */
-		protected TestSchrodingerCdimBN.IterationThreadContext threadContext; // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! sttop here IncrementManager !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!11
+		protected TestSchrodingerCdimBN.IterationThreadContext threadContext;
 		
 		/**
 		 * The current discretized X-coordinate.
@@ -3873,6 +3873,8 @@ public class TestSchrodingerCdimBN extends TestCase {
 		 */
 		public void handleIncrementXIa()
 		{
+			xiMoveOnly = false;
+			xMoveOnly = false;
 			if( xiMoveUp )
 			{
 				if( ( xidn > 0 ) && ( xicnt < ( NUM_XI_ITER - 1 ) ) )
