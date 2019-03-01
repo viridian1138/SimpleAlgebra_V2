@@ -62,7 +62,6 @@ import simplealgebra.symbolic.SCacheKey;
 import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 import simplealgebra.symbolic.SymbolicReduction;
-import test_simplealgebra.TestSchrodingerCdimBN.IterationThreadContext.TempArrayFillInnerParam;
 import simplealgebra.ga.*;
 import simplealgebra.ddx.*;
 
