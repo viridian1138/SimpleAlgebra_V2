@@ -2350,6 +2350,8 @@ public class TestStelemC_DR extends TestCase {
 		 */
 		public void handleIncrementYa()
 		{
+			yMoveOnly = false;
+			xMoveOnly = false;
 			if( yMoveUp )
 			{
 				if( ( ydn > 0 ) && ( ycnt < ( NUM_Y_ITER - 1 ) ) )
