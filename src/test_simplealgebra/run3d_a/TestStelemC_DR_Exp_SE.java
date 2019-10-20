@@ -77,14 +77,14 @@ import test_simplealgebra.TestDimensionTwo;
 
 
 /**
- * Experimental version of TestStelemC_DR that uses TensorFlow-trained neural networks.
- *
- * This documentation should be viewed using Firefox version 33.1.1 or above.
- * 
- * @author thorngreen
- *
- */
-public class TestStelemC_DR_Exp_NN extends TestCase {
+* Experimental version of TestStelemC_DR that uses anti-aliasing as a potential alternative to neural network derivatives.
+*
+* This documentation should be viewed using Firefox version 33.1.1 or above.
+* 
+* @author thorngreen
+*
+*/
+public class TestStelemC_DR_Exp_SE extends TestCase {
 	
 	
 	/**
@@ -109,7 +109,7 @@ public class TestStelemC_DR_Exp_NN extends TestCase {
 	/**
 	 * The number of discretizations on the T-Axis over which to iterate.
 	 */
-	protected static final int NUM_T_ITER = IterConstants.LRG_ITER_T;
+	protected static final int NUM_T_ITER = 1600; /* IterConstants.LRG_ITER_T; */
 	
 	/**
 	 * The number of discretizations on the X-Axis over which to iterate.
@@ -210,13 +210,20 @@ public class TestStelemC_DR_Exp_NN extends TestCase {
 	 */
 	protected static final int NSTPY = 2;
 	
+	/**
+	 * Boolean controlling use of antialias.
+	 */
+	protected static final boolean USE_ANTIALIAS = true;
 	
 	/**
-	 * Indicates whether predictor-corrector should be used while iterating.
-	 * 
-	 * See https://en.wikipedia.org/wiki/Predictor%E2%80%93corrector_method
+	 * Coefficient for the antialias contribution.
 	 */
-	// protected static final boolean USE_PREDICTOR_CORRECTOR = false; /* true; */
+	protected static final double ANTIALIAS_COEFF = 0.25;
+	
+	/**
+	 * Coefficient for the antialias cell_cutoff.
+	 */
+	protected static final double ANTIALIAS_CUTOFF = 1E-40;
 	
 	
 	
@@ -252,22 +259,12 @@ public class TestStelemC_DR_Exp_NN extends TestCase {
 	
 	
 	/**
-	 * Temporary array in which to store the current Newton-Raphson load state.
-	 * <p>0 = T
-	 * <p>1 = X
-	 * <p>2 = Y
-	 */
-	private static double[][][] tempArrayLoad = new double[ NSTPT * 2 + 1 ][ NSTPX * 2 + 1 ][ NSTPY * 2 + 1 ];
-	
-	
-	
-	/**
 	 * Temporary array in which to generate Newton-Raphson solutions.
 	 * <p>0 = T
 	 * <p>1 = X
 	 * <p>2 = Y
 	 */
-	private static double[][][] tempArrayGen = new double[ NSTPT * 2 + 1 ][ NSTPX * 2 + 1 ][ NSTPY * 2 + 1 ];
+	private static double[][][] tempArray = new double[ NSTPT * 2 + 1 ][ NSTPX * 2 + 1 ][ NSTPY * 2 + 1 ];
 	
 	
 	
@@ -279,7 +276,7 @@ public class TestStelemC_DR_Exp_NN extends TestCase {
 	 */
 	protected static void performIterationUpdate( DoubleElem dbl )
 	{
-		tempArrayGen[ NSTPT * 2 ][ NSTPX ][ NSTPY ] += dbl.getVal();
+		tempArray[ NSTPT * 2 ][ NSTPX ][ NSTPY ] += dbl.getVal();
 	}
 	
 	
@@ -294,7 +291,7 @@ public class TestStelemC_DR_Exp_NN extends TestCase {
 	 */
 	protected static void cacheIterationValue()
 	{
-		iterationValueCache = tempArrayGen[ NSTPT * 2 ][ NSTPX ][ NSTPY ];
+		iterationValueCache = tempArray[ NSTPT * 2 ][ NSTPX ][ NSTPY ];
 	}
 	
 	
@@ -303,7 +300,7 @@ public class TestStelemC_DR_Exp_NN extends TestCase {
 	 */
 	protected static void retrieveIterationValue()
 	{
-		tempArrayGen[ NSTPT * 2 ][ NSTPX ][ NSTPY ] = iterationValueCache;
+		tempArray[ NSTPT * 2 ][ NSTPX ][ NSTPY ] = iterationValueCache;
 	}
 	
 	
@@ -315,7 +312,7 @@ public class TestStelemC_DR_Exp_NN extends TestCase {
 	 */
 	protected static double getUpdateValue()
 	{
-		return( tempArrayGen[ NSTPT * 2 ][ NSTPX ][ NSTPY ] );
+		return( tempArray[ NSTPT * 2 ][ NSTPX ][ NSTPY ] );
 	}
 	
 	
@@ -343,8 +340,8 @@ public class TestStelemC_DR_Exp_NN extends TestCase {
 	 */
 	protected static void applyNumericViscosity()
 	{
-		final double delt = tempArrayGen[ NSTPT * 2 ][ NSTPX ][ NSTPY ]
-			- tempArrayGen[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ];
+		final double delt = tempArray[ NSTPT * 2 ][ NSTPX ][ NSTPY ]
+			- tempArray[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ];
 		final double adelt = Math.abs( delt );
 		if( adelt < NUMERICAL_VISCOSITY_EXIT_CUTOFF )
 		{
@@ -353,8 +350,8 @@ public class TestStelemC_DR_Exp_NN extends TestCase {
 		final double iadelt = 1.0 / adelt;
 		final double iadiv = Math.sqrt( iadelt * iadelt + I_MAX_CHG * I_MAX_CHG );
 		final double adiv = 1.0 / iadiv;
-		tempArrayGen[ NSTPT * 2 ][ NSTPX ][ NSTPY ] =
-				tempArrayGen[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ] +
+		tempArray[ NSTPT * 2 ][ NSTPX ][ NSTPY ] =
+				tempArray[ NSTPT * 2 - 1 ][ NSTPX ][ NSTPY ] +
 				( delt > 0.0 ? adiv : -adiv );
 	}
 	
@@ -559,451 +556,363 @@ public class TestStelemC_DR_Exp_NN extends TestCase {
 		{
 			av = iterArray.get( tv , xv , yv );
 		}
-		tempArrayLoad[ ta + NSTPT ][ xa + NSTPX ][ ya + NSTPY ] = av;
+		tempArray[ ta + NSTPT ][ xa + NSTPX ][ ya + NSTPY ] = av;
 		
 	}
 	
 	
 	
-
-	
 	/**
-	 * Node representing a TensorFlow-generated neural network.
+	 * Node for applying antialias filtering.
 	 * 
 	 * @author tgreen
 	 *
 	 */
-	protected static class NeuralNode
-	{
-		protected double[][] wvals_h1;
-		protected double[][] wvals_h2;
-		protected double[][] wvals_h3;
-		protected double[][] wvals_h4;
-		protected double[][] wvals_out;
-	
-	
-		protected double[] bvals_h1;
-		protected double[] bvals_h2;
-		protected double[] bvals_h3;
-		protected double[] bvals_h4;
-		protected double[] bvals_out;
-		
-		
-		protected double[] tvals_h1;
-		protected double[] tvals_h2;
-		protected double[] tvals_h3;
-		protected double[] tvals_h4;
-		
-		
-		/**
-		 * Evaluates the neural network.
-		 * @param in The neural network input values.
-		 * @return The result of evaluationg the neural network.
-		 */
-		public double eval( final double[] in )
-		{
-			
-			for( int i = 0 ; i < tvals_h1.length ; i++ )
-			{
-				tvals_h1[ i ] = 0.0;
-			}
-			
-			
-			for( int i = 0 ; i < in.length ; i++ )
-			{
-				for( int j = 0 ; j < tvals_h1.length ; j++ )
-				{
-					tvals_h1[ j ] += wvals_h1[ i ][ j ] * in[ i ];
-				}
-			}
-			
-			for( int i = 0 ; i < tvals_h1.length ; i++ )
-			{
-				tvals_h1[ i ] = Math.max( 0.0 , tvals_h1[ i ] + bvals_h1[ i ] );
-			}
-			
-			
-			for( int i = 0 ; i < tvals_h2.length ; i++ )
-			{
-				tvals_h2[ i ] = 0.0;
-			}
-			
-			
-			for( int i = 0 ; i < tvals_h1.length ; i++ )
-			{
-				for( int j = 0 ; j < tvals_h2.length ; j++ )
-				{
-					tvals_h2[ j ] += wvals_h2[ i ][ j ] * tvals_h1[ i ];
-				}
-			}
-			
-			for( int i = 0 ; i < tvals_h2.length ; i++ )
-			{
-				tvals_h2[ i ] = Math.max( 0.0 , tvals_h2[ i ] + bvals_h2[ i ] );
-			}
-			
-			
-			for( int i = 0 ; i < tvals_h3.length ; i++ )
-			{
-				tvals_h3[ i ] = 0.0;
-			}
-			
-			
-			for( int i = 0 ; i < tvals_h2.length ; i++ )
-			{
-				for( int j = 0 ; j < tvals_h3.length ; j++ )
-				{
-					tvals_h3[ j ] += wvals_h3[ i ][ j ] * tvals_h2[ i ];
-				}
-			}
-			
-			
-			for( int i = 0 ; i < tvals_h3.length ; i++ )
-			{
-				tvals_h3[ i ] = Math.max( 0.0 , tvals_h3[ i ] + bvals_h3[ i ] );
-			}
-			
-			
-			for( int i = 0 ; i < tvals_h4.length ; i++ )
-			{
-				tvals_h4[ i ] = 0.0;
-			}
-			
-			
-			for( int i = 0 ; i < tvals_h3.length ; i++ )
-			{
-				for( int j = 0 ; j < tvals_h4.length ; j++ )
-				{
-					tvals_h4[ j ] += wvals_h4[ i ][ j ] * tvals_h3[ i ];
-				}
-			}
-			
-			
-			for( int i = 0 ; i < tvals_h4.length ; i++ )
-			{
-				tvals_h4[ i ] = Math.max( 0.0 , tvals_h4[ i ] + bvals_h4[ i ] );
-			}
-			
-			
-			double out = 0.0;
-			
-			
-			
-			for( int i = 0 ; i < tvals_h4.length ; i++ )
-			{
-				out += wvals_out[ i ][ 0 ] * tvals_h4[ i ];
-			}
-			
-			
-			
-			out = Math.max( 0.0 , out + bvals_out[ 0 ] );
-			
-			
-			
-			return( out );
-			
-			
-			
-		}
-		
-		
-	}
-	
-	
-	
-	
-	protected static NeuralNode loadNeuralNode( String wfile , String bfile ) throws Throwable
-	{
-		NeuralNode node = new NeuralNode();
-		
-		{
-			LineNumberReader li = new LineNumberReader( new InputStreamReader( TestStelemC_DR_Exp_NN.class.getResourceAsStream( wfile ) ) );
-			
-			
-			{
-				
-				li.readLine();
-				
-				final int maxI = Integer.parseInt( li.readLine() );
-				final int maxJ = Integer.parseInt( li.readLine() );
-				
-				node.wvals_h1 = new double[ maxI ][ maxJ ];
-				
-				for( int i = 0 ; i < maxI ; i++ )
-				{
-					for( int j = 0 ; j < maxJ ; j++ )
-					{
-						node.wvals_h1[ i ][ j ] = Double.parseDouble( li.readLine() );
-					}
-				}
-				
-			}
-			
-			
-			
-			{
-				
-				li.readLine();
-				
-				final int maxI = Integer.parseInt( li.readLine() );
-				final int maxJ = Integer.parseInt( li.readLine() );
-				
-				node.wvals_h2 = new double[ maxI ][ maxJ ];
-				
-				for( int i = 0 ; i < maxI ; i++ )
-				{
-					for( int j = 0 ; j < maxJ ; j++ )
-					{
-						node.wvals_h2[ i ][ j ] = Double.parseDouble( li.readLine() );
-					}
-				}
-				
-			}
-			
-			
-			
-			
-			
-			{
-				
-				li.readLine();
-				
-				final int maxI = Integer.parseInt( li.readLine() );
-				final int maxJ = Integer.parseInt( li.readLine() );
-				
-				node.wvals_h3 = new double[ maxI ][ maxJ ];
-				
-				for( int i = 0 ; i < maxI ; i++ )
-				{
-					for( int j = 0 ; j < maxJ ; j++ )
-					{
-						node.wvals_h3[ i ][ j ] = Double.parseDouble( li.readLine() );
-					}
-				}
-				
-			}
-			
-			
-			
-			
-			
-			
-			{
-				
-				li.readLine();
-				
-				final int maxI = Integer.parseInt( li.readLine() );
-				final int maxJ = Integer.parseInt( li.readLine() );
-				
-				node.wvals_h4 = new double[ maxI ][ maxJ ];
-				
-				for( int i = 0 ; i < maxI ; i++ )
-				{
-					for( int j = 0 ; j < maxJ ; j++ )
-					{
-						node.wvals_h4[ i ][ j ] = Double.parseDouble( li.readLine() );
-					}
-				}
-				
-			}
-			
-			
-			
-			
-			
-			{
-				
-				li.readLine();
-				
-				final int maxI = Integer.parseInt( li.readLine() );
-				final int maxJ = Integer.parseInt( li.readLine() );
-				
-				node.wvals_out = new double[ maxI ][ maxJ ];
-				
-				for( int i = 0 ; i < maxI ; i++ )
-				{
-					for( int j = 0 ; j < maxJ ; j++ )
-					{
-						node.wvals_out[ i ][ j ] = Double.parseDouble( li.readLine() );
-					}
-				}
-				
-			}
-			
-			
-
-			
-		}
-		
-		
-		
-		
-		
-		
-		{
-			LineNumberReader li = new LineNumberReader( new InputStreamReader( TestStelemC_DR_Exp_NN.class.getResourceAsStream( bfile ) ) );
-			
-			
-			{
-				
-				li.readLine();
-				
-				final int maxI = Integer.parseInt( li.readLine() );
-				
-				node.bvals_h1 = new double[ maxI ];
-				node.tvals_h1 = new double[ maxI ];
-				
-				for( int i = 0 ; i < maxI ; i++ )
-				{
-					node.bvals_h1[ i ] = Double.parseDouble( li.readLine() );
-				}
-				
-			}
-			
-			
-			
-			{
-				
-				li.readLine();
-				
-				final int maxI = Integer.parseInt( li.readLine() );
-				
-				node.bvals_h2 = new double[ maxI ];
-				node.tvals_h2 = new double[ maxI ];
-				
-				for( int i = 0 ; i < maxI ; i++ )
-				{
-					node.bvals_h2[ i ] = Double.parseDouble( li.readLine() );
-				}
-				
-			}
-			
-			
-			
-			
-			
-			{
-				
-				li.readLine();
-				
-				final int maxI = Integer.parseInt( li.readLine() );
-				
-				node.bvals_h3 = new double[ maxI ];
-				node.tvals_h3 = new double[ maxI ];
-				
-				for( int i = 0 ; i < maxI ; i++ )
-				{
-					node.bvals_h3[ i ] = Double.parseDouble( li.readLine() );
-				}
-				
-			}
-			
-			
-			
-			
-			
-			
-			{
-				
-				li.readLine();
-				
-				final int maxI = Integer.parseInt( li.readLine() );
-				
-				node.bvals_h4 = new double[ maxI ];
-				node.tvals_h4 = new double[ maxI ];
-				
-				for( int i = 0 ; i < maxI ; i++ )
-				{
-					node.bvals_h4[ i ] = Double.parseDouble( li.readLine() );
-				}
-				
-			}
-			
-			
-			
-			
-			
-			{
-				
-				li.readLine();
-				
-				final int maxI = Integer.parseInt( li.readLine() );
-				
-				node.bvals_out = new double[ maxI ];
-				
-				for( int i = 0 ; i < maxI ; i++ )
-				{
-					node.bvals_out[ i ] = Double.parseDouble( li.readLine() );
-				}
-				
-			}
-			
-			
-
-			
-		}
-		
-		
-		
-		return( node );
-		
-	}
-	
-	
-	
-	
-	
-	
-	protected static final NeuralNode[][][] nodes = new NeuralNode[ NSTPT * 2 + 1 ][ NSTPX * 2 + 1 ][ NSTPY * 2 + 1 ];
-	
-	protected static final double[] nnvals = new double[ ( ( 2 * NSTPT + 1 ) - 1 ) * ( 2 * NSTPX + 1 ) * ( 2 * NSTPY + 1 ) ];
-
-	protected static double nnAbsMax = 0.0;
-	
-	
-	
-	
-	
-	
-	protected static void evalNnNode( final int t , final int x , final int y )
+	protected static class FiltNode
 	{
 		
+		protected int at = 0;
+		protected int ax = 0;
+		protected int ay = 0;
 		
-		// System.out.print( out[ t ][ x ] + " // " );
+		protected int bt;
+		protected int bx;
+		protected int by;
+		
+		protected boolean btPos = true;
+		protected boolean bxPos = true;
+		protected boolean byPos = true;
+		
+		protected int aibt;
+		protected int aibx;
+		protected int aiby;
 		
 		
-		if( nodes[ t ][ x ][ y ] != null )
+		
+		protected final double bvals[][][] = new double[ NSTPT * 2 + 1 ][ NSTPX * 2 + 1 ][ NSTPY * 2 + 1 ];
+		
+		
+		
+		public FiltNode( int ibt , int ibx , int iby )
 		{
-			
-			final NeuralNode node = nodes[ t ][ x ][ y ];
-			
-			tempArrayGen[ t ][ x ][ y ] = node.eval( nnvals ) * nnAbsMax;
-			
+			bt = ibt + ( NSTPT + 1 );
+			bx = ibx + NSTPX;
+			by = iby + NSTPY;
+			aibt = bt;
+			aibx = bx;
+			aiby = by;
 		}
-		else
+		
+		
+		
+		public void integrateValues( CoeffNode nodei ,
+				HashMap<HashMap<Ordinate, BigInteger>,CoeffNode> implicitSpacesOut ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 		{
-			tempArrayGen[ t ][ x ][ y ] = tempArrayLoad[ t ][ x ][ y ];
+			System.out.println( "Integrate Values B..." );
+			
+			double sum = 0.0;
+			for( int t = 0 ; t < NSTPT * 2 + 1 ; t++ )
+			{
+				for( int x = 0 ; x < NSTPX * 2 + 1 ; x++ )
+				{
+					for( int y = 0 ; y < NSTPY * 2 + 1 ; y++ )
+					{
+						sum += bvals[ t ][ x ][ y ];
+						/* if( Math.abs( bvals[ t ][ x ][ y ] ) < 1E-10 )
+						{
+							bvals[ t ][ x ][ y ] = 0.0;
+						} */
+					}
+				}
+			}
+			
+			for( int t = 0 ; t < NSTPT * 2 + 1 ; t++ )
+			{
+				for( int x = 0 ; x < NSTPX * 2 + 1 ; x++ )
+				{
+					for( int y = 0 ; y < NSTPY * 2 + 1 ; y++ )
+					{
+						bvals[ t ][ x ][ y ] = bvals[ t ][ x ][ y ] / sum;
+					}
+				}
+			}
+			
+			for( int t = 0 ; t < NSTPT * 2 + 1 ; t++ )
+			{
+				for( int x = 0 ; x < NSTPX * 2 + 1 ; x++ )
+				{
+					for( int y = 0 ; y < NSTPY * 2 + 1 ; y++ )
+					{
+						final double dv = bvals[ t ][ x ][ y ];
+						System.out.print( dv + " " );
+						if( Math.abs( dv ) > ANTIALIAS_CUTOFF )
+						{
+						final HashMap<Ordinate, BigInteger> ht = new HashMap<Ordinate, BigInteger>();
+						ht.put( new Ordinate( nodei.getNumer().getFac().getFac() , TV ) , BigInteger.valueOf( t - ( NSTPT + 1 ) ) );
+						ht.put( new Ordinate( nodei.getNumer().getFac().getFac() , XV ) , BigInteger.valueOf( x - NSTPX ) );
+						ht.put( new Ordinate( nodei.getNumer().getFac().getFac() , YV ) , BigInteger.valueOf( y - NSTPY ) );
+						CoeffNode ci = implicitSpacesOut.get( ht );
+						if( ci == null )
+						{
+							final CoeffNode co = new CoeffNode( nodei.getNumer().mult( SymbolicConstCache.get( new DoubleElem( dv ) , nodei.getNumer().getFac().getFac() )  ) , 
+									nodei.getDenom() );
+							implicitSpacesOut.put( ht , co );
+						}
+						else
+						{
+							final CoeffNode prev = ci;
+							final CoeffNode node = new CoeffNode( nodei.getNumer().mult( SymbolicConstCache.get( new DoubleElem( dv ) , nodei.getNumer().getFac().getFac() )  ) , 
+									nodei.getDenom() );
+							
+							if( prev.getDenom().eval( null ).getVal() == node.getDenom().eval( null ).getVal() )
+							{
+								SymbolicElem<DoubleElem,DoubleElemFactory> outN = node.getNumer().add( prev.getNumer() );
+								CoeffNode nxt = new CoeffNode( outN , prev.getDenom() );
+								implicitSpacesOut.put( ht , nxt );
+							}
+							else
+							{
+								SymbolicElem<DoubleElem,DoubleElemFactory> outDenom = prev.getDenom().mult( node.getDenom() );
+							
+								SymbolicElem<DoubleElem,DoubleElemFactory> outNumer = ( node.getDenom().mult( prev.getNumer() ) ).add( prev.getDenom().mult( node.getNumer() ) );
+							
+								CoeffNode nxt = new CoeffNode( outNumer , outDenom );
+							
+								implicitSpacesOut.put( ht , nxt );
+							}
+						}
+						}
+					}
+					System.out.println( "" );
+				}
+			}
 		}
 		
 		
-		// System.out.println( out[ t ][ x ] );
+		
+		protected void addEval()
+		{
+			// System.out.println( "%%% " + at + " " + ax + " " + ay );
+			final double FRACT_PI = Math.PI / 2.0;
+			double paramT = FRACT_PI * at;
+			double paramX = FRACT_PI * ax;
+			double paramY = FRACT_PI * ay;
+			double valT = Math.abs( paramT ) < 0.0001 ? 1.0 : 0.0; // Math.sin( paramT ) / paramT;
+			double valX = Math.abs( paramX ) < 0.0001 ? 1.0 : ANTIALIAS_COEFF * Math.sin( paramX ) / paramX;
+			double valY = Math.abs( paramY ) < 0.0001 ? 1.0 : ANTIALIAS_COEFF * Math.sin( paramY ) / paramY;
+			bvals[ bt ][ bx ][ by ] += valT * valX * valY;
+		}
 		
 		
-	}
-	
-	
-	
-	
-	
-	
-	
-	// Fix derivatives !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!1
-	
+		
+		protected void moveOneT( final boolean ipos )
+		{
+			boolean pos = ipos;
+			if( !btPos ) pos = !pos;
+			if( pos )
+			{
+				bt++;
+				if( bt >= NSTPT * 2 + 1 )
+				{
+					bt = NSTPT * 2 - 1;
+					btPos = !btPos;
+				}
+			}
+			else
+			{
+				bt--;
+				if( bt < 0 )
+				{
+					bt = 1;
+					btPos = !btPos;
+				}
+			}
+		}
+		
+		
+		
+		protected void moveOneX( final boolean ipos )
+		{
+			boolean pos = ipos;
+			if( !bxPos ) pos = !pos;
+			if( pos )
+			{
+				bx++;
+				if( bx >= NSTPX * 2 + 1 )
+				{
+					bx = NSTPX * 2 - 1;
+					bxPos = !bxPos;
+				}
+			}
+			else
+			{
+				bx--;
+				if( bx < 0 )
+				{
+					bx = 1;
+					bxPos = !bxPos;
+				}
+			}
+		}
+		
+		
+		
+		protected void moveOneY( final boolean ipos )
+		{
+			boolean pos = ipos;
+			if( !byPos ) pos = !pos;
+			if( pos )
+			{
+				by++;
+				if( by >= NSTPY * 2 + 1 )
+				{
+					by = NSTPY * 2 - 1;
+					byPos = !byPos;
+				}
+			}
+			else
+			{
+				by--;
+				if( by < 0 )
+				{
+					by = 1;
+					byPos = !byPos;
+				}
+			}
+		}
+		
+		
+		
+		protected void diffT( int atp )
+		{
+			bt = aibt;
+			if( atp == 0  )
+			{
+				at = 0;
+				return;
+			}
+			
+			btPos = true;
+			final int CYCLE_SZ = 2 * ( NSTPT * 2 + 1 ) - 2;
+			
+			if( atp > 0 )
+			{
+				final int mv = atp % CYCLE_SZ;
+				for( int cnt = 0 ; cnt < mv ; cnt++ )
+				{
+					moveOneT( true );
+				}
+			}
+			
+			if( atp < 0 )
+			{
+				final int mv = (-atp) % CYCLE_SZ;
+				for( int cnt = 0 ; cnt < mv ; cnt++ )
+				{
+					moveOneT( false );
+				}
+			}
+			
+			at = atp;
+		}
+		
+		
+		
+		protected void diffX( int axp )
+		{
+			bx = aibx;
+			if( axp == 0  )
+			{
+				ax = 0;
+				return;
+			}
+			
+			bxPos = true;
+			final int CYCLE_SZ = 2 * ( NSTPX * 2 + 1 ) - 2;
+			
+			if( axp > 0 )
+			{
+				final int mv = axp % CYCLE_SZ;
+				for( int cnt = 0 ; cnt < mv ; cnt++ )
+				{
+					moveOneX( true );
+				}
+			}
+			
+			if( axp < 0 )
+			{
+				final int mv = (-axp) % CYCLE_SZ;
+				for( int cnt = 0 ; cnt < mv ; cnt++ )
+				{
+					moveOneX( false );
+				}
+			}
+			
+			ax = axp;
+		}
+		
+		
+		
+		protected void diffY( int ayp )
+		{
+			by = aiby;
+			if( ayp == 0  )
+			{
+				ay = 0;
+				return;
+			}
+			
+			byPos = true;
+			final int CYCLE_SZ = 2 * ( NSTPY * 2 + 1 ) - 2;
+			
+			if( ayp > 0 )
+			{
+				final int mv = ayp % CYCLE_SZ;
+				for( int cnt = 0 ; cnt < mv ; cnt++ )
+				{
+					moveOneY( true );
+				}
+			}
+			
+			if( ayp < 0 )
+			{
+				final int mv = (-ayp) % CYCLE_SZ;
+				for( int cnt = 0 ; cnt < mv ; cnt++ )
+				{
+					moveOneY( false );
+				}
+			}
+			
+			ay = ayp;
+		}
+		
+		
+		
+		public void applyValues()
+		{
+			for( int t = -100 ; t <= 100 ; t++ )
+			{
+				diffT( t );
+				for( int x = -100 ; x <= 100 ; x++ )
+				{
+					diffX( x );
+					for( int y = -100 ; y <= 100 ; y++ )
+					{
+						diffY( y );
+						addEval();
+					}
+				}
+			}
+			System.out.println( "End Value Apply... " + ( bvals[ aibt ][ aibx ][ aiby ] ) );
+		}
+		
+		
+		
+		
+		
+	}	
 
 	
-	
-	
-
 	
 	
 	
@@ -1013,53 +922,14 @@ public class TestStelemC_DR_Exp_NN extends TestCase {
 	 */
 	protected static void overlayInitialSeedForIterations()
 	{
-		
-		
 		// Overlay initial seed for iterations.
-		nnAbsMax = 0.0;
-		
-		for( int t = 0 ; t < ( ( NSTPT * 2 + 1 ) - 1 ) ; t++ )
+		for( int xa = 0 ; xa < NSTPX * 2 + 1 ; xa++ )
 		{
-			for( int x = 0 ; x < ( 2 * NSTPX + 1 ) ; x++ )
+			for( int ya = 0 ; ya < NSTPY * 2 + 1 ; ya++ )
 			{
-				for( int y = 0 ; y < ( 2 * NSTPY + 1 ) ; y++ )
-				{
-					nnvals[ ( 2 * NSTPX + 1 ) * ( 2 * NSTPY + 1 ) * t + ( 2 * NSTPY + 1 ) * x + y ] = tempArrayLoad[ t ][ x ][ y ];
-					nnAbsMax = Math.max( nnAbsMax ,  Math.abs( nnvals[ ( 2 * NSTPX + 1 ) * ( 2 * NSTPY + 1 ) * t + ( 2 * NSTPY + 1 ) * x + y ] ) );
-				}
+				tempArray[ NSTPT * 2 ][ xa ][ ya ] = tempArray[ NSTPT * 2 - 1 ][ xa ][ ya ];
 			}
 		}
-		
-		
-		
-		if( nnAbsMax < 1E-30 )
-		{
-			nnAbsMax = 1E-30;
-		}
-		
-		
-		// Overlay initial seed for iterations.
-		for( int t = 0 ; t < ( 2 * NSTPT + 1 ) ; t++ )
-		{
-			for( int x = 0 ; x < ( 2 * NSTPX + 1 ) ; x++ )
-			{
-				for( int y = 0 ; y < ( 2 * NSTPY + 1 ) ; y++ )
-				{
-					evalNnNode( t , x , y );
-				}
-			}
-		}
-		
-		
-		for( int x = 0 ; x < ( 2 * NSTPX + 1 ) ; x++ )
-		{
-			for( int y = 0 ; y < ( 2 * NSTPY + 1 ) ; y++ )
-			{
-				tempArrayGen[ ( 2 * NSTPT + 1 ) - 2 ][ x ][ y ] = tempArrayGen[ ( 2 * NSTPT + 1 ) - 1 ][ x ][ y ];
-			}
-		}
-		
-		
 	}
 	
 	
@@ -1119,7 +989,7 @@ public class TestStelemC_DR_Exp_NN extends TestCase {
 			{
 				for( int ya = 0 ; ya < 2 * NSTPY ; ya++ )
 				{
-					tempArrayLoad[ ta ][ xa ][ ya ] = tempArrayLoad[ ta ][ xa ][ ya + 1 ]; 
+					tempArray[ ta ][ xa ][ ya ] = tempArray[ ta ][ xa ][ ya + 1 ]; 
 				}
 			}
 		}
@@ -1165,7 +1035,7 @@ public class TestStelemC_DR_Exp_NN extends TestCase {
 			{
 				for( int ya = 2 * NSTPY ; ya > 0 ; ya-- )
 				{
-					tempArrayLoad[ ta ][ xa ][ ya ] = tempArrayLoad[ ta ][ xa ][ ya - 1 ]; 
+					tempArray[ ta ][ xa ][ ya ] = tempArray[ ta ][ xa ][ ya - 1 ]; 
 				}
 			}
 		}
@@ -1211,7 +1081,7 @@ public class TestStelemC_DR_Exp_NN extends TestCase {
 			{
 				for( int ya = 0 ; ya < 2 * NSTPY + 1 ; ya++ )
 				{
-					tempArrayLoad[ ta ][ xa ][ ya ] = tempArrayLoad[ ta ][ xa + 1 ][ ya ]; 
+					tempArray[ ta ][ xa ][ ya ] = tempArray[ ta ][ xa + 1 ][ ya ]; 
 				}
 			}
 		}
@@ -1702,7 +1572,7 @@ public class TestStelemC_DR_Exp_NN extends TestCase {
 			Assert.assertTrue( assertCols[ 0 ] );
 			Assert.assertTrue( assertCols[ 1 ] );
 			Assert.assertTrue( assertCols[ 2 ] );
-			return( new DoubleElem( TestStelemC_DR_Exp_NN.tempArrayGen[ cols[ 0 ] ][ cols[ 1 ] ][ cols[ 2 ] ] ) );
+			return( new DoubleElem( TestStelemC_DR_Exp_SE.tempArray[ cols[ 0 ] ][ cols[ 1 ] ][ cols[ 2 ] ] ) );
 		}
 		
 		@Override
@@ -1999,13 +1869,30 @@ public class TestStelemC_DR_Exp_NN extends TestCase {
 			}
 			
 			
+			int numTDerivatives = 0;
+			
+			
 			{
 				for( Entry<Ordinate,BigInteger> ii : partialMap.entrySet() )
 				{
 					HashMap<HashMap<Ordinate, BigInteger>,CoeffNode> spacesB = new HashMap<HashMap<Ordinate, BigInteger>,CoeffNode>();
 					final Ordinate ae = ii.getKey();
 					final BigInteger numDerivs = ii.getValue();
+					if( ae.getCol() == TV )
+					{
+						numTDerivatives +=  numDerivs.intValue();
+					}
 					applyDerivativeAction( spacesA , ae , numDerivs.intValue() , HH[ ae.getCol() ] , spacesB );
+					spacesA = spacesB;
+				}
+			}
+			
+			
+			{
+				if( USE_ANTIALIAS && ( numTDerivatives < 2 ) )
+				{
+					HashMap<HashMap<Ordinate, BigInteger>,CoeffNode> spacesB = new HashMap<HashMap<Ordinate, BigInteger>,CoeffNode>();
+					applyFilterAction( spacesA , spacesB );
 					spacesA = spacesB;
 				}
 			}
@@ -2096,140 +1983,168 @@ public class TestStelemC_DR_Exp_NN extends TestCase {
 		
 		
 		/**
+		 * Applies antialias filtering.
+		 * @param implicitSpacesIn The input implicit space containing the discretized approximation function.
+		 * @param implicitSpacesOut The output implicit space containing the discretized approximation function with the derivatives applied.
+		 * @throws NotInvertibleException
+		 * @throws MultiplicativeDistributionRequiredException
+		 */
+		protected void applyFilterAction( HashMap<HashMap<Ordinate, BigInteger>,CoeffNode> implicitSpacesIn , 
+				HashMap<HashMap<Ordinate, BigInteger>,CoeffNode> implicitSpacesOut ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+		{
+			for( final Entry<HashMap<Ordinate,BigInteger>,CoeffNode> ent : implicitSpacesIn.entrySet() )
+			{
+				final int[] coords = { -1 , -1 , -1 };
+				final HashMap<Ordinate,BigInteger> ent2 = ent.getKey();
+				for( Entry<Ordinate,BigInteger> e2 : ent2.entrySet() )
+				{
+					coords[ e2.getKey().getCol() ] = e2.getValue().intValue();
+				}
+				System.out.println( "Running Fill... " + ( coords[ 0 ] ) + " " + ( coords[ 1 ] ) + " " + (  coords[ 2 ] ) );
+				FiltNode fn = new FiltNode( coords[ 0 ] , coords[ 1 ] , coords[ 2 ] );
+				fn.applyValues();
+				System.out.println( "Integrate Values A..." );
+				fn.integrateValues( ent.getValue() , implicitSpacesOut );
+			}
+			
+		}
+		
+		
+		/**
 		 * * Applies a discretized approximation of a derivative using the following rules where "N"
 		 * is the number of derivatives and "h" is the size of the discretization:
 		 * <P>
 		 * <P> N = 0 -- Zero derivatives have been taken so simply return the original value of  the elem.
 		 * <P>
 		 * <P> N = 1 -- Use the first derivative formula <math display="inline">
-         * <mrow>
-         *   <mfrac>
-         *     <mrow>
-         *       <mi>F</mi><mo>&ApplyFunction;</mo>
-         *       <mfenced open="(" close=")" separators=",">
-         *         <mrow>
-         *           <mi>x</mi>
-         *           <mo>+</mo>
-         *           <mi>h</mi>
-         *         </mrow>
-         *       </mfenced>
-         *       <mo>-</mo>
-         *       <mi>F</mi><mo>&ApplyFunction;</mo>
-         *       <mfenced open="(" close=")" separators=",">
-         *         <mrow>
-         *           <mi>x</mi>
-         *           <mo>-</mo>
-         *           <mi>h</mi>
-         *         </mrow>
-         *       </mfenced>
-         *     </mrow>
-         *     <mrow>
-         *       <mn>2</mn>
-         *       <mi>h</mi>
-         *     </mrow>
-         *   </mfrac>
-         * </mrow>
-         * </math>
+       * <mrow>
+       *   <mfrac>
+       *     <mrow>
+       *       <mi>F</mi><mo>&ApplyFunction;</mo>
+       *       <mfenced open="(" close=")" separators=",">
+       *         <mrow>
+       *           <mi>x</mi>
+       *           <mo>+</mo>
+       *           <mi>h</mi>
+       *         </mrow>
+       *       </mfenced>
+       *       <mo>-</mo>
+       *       <mi>F</mi><mo>&ApplyFunction;</mo>
+       *       <mfenced open="(" close=")" separators=",">
+       *         <mrow>
+       *           <mi>x</mi>
+       *           <mo>-</mo>
+       *           <mi>h</mi>
+       *         </mrow>
+       *       </mfenced>
+       *     </mrow>
+       *     <mrow>
+       *       <mn>2</mn>
+       *       <mi>h</mi>
+       *     </mrow>
+       *   </mfrac>
+       * </mrow>
+       * </math>
 		 * <P>
 		 * <P> (See http://en.wikipedia.org/wiki/Numerical_differentiation)
 		 * <P>
 		 * <P> N = 2 -- Use the second derivative formula <math display="inline">
-         * <mrow>
-         *   <mfrac>
-         *     <mrow>
-         *       <mi>F</mi><mo>&ApplyFunction;</mo>
-         *       <mfenced open="(" close=")" separators=",">
-         *         <mrow>
-         *           <mi>x</mi>
-         *           <mo>+</mo>
-         *           <mi>h</mi>
-         *         </mrow>
-         *       </mfenced>
-         *       <mo>-</mo>
-         *       <mn>2</mn>
-         *       <mi>F</mi><mo>&ApplyFunction;</mo>
-         *       <mfenced open="(" close=")" separators=",">
-         *         <mrow>
-         *           <mi>x</mi>
-         *         </mrow>
-         *       </mfenced>
-         *       <mo>+</mo>
-         *       <mi>F</mi><mo>&ApplyFunction;</mo>
-         *       <mfenced open="(" close=")" separators=",">
-         *         <mrow>
-         *           <mi>x</mi>
-         *           <mo>-</mo>
-         *           <mi>h</mi>
-         *         </mrow>
-         *       </mfenced>
-         *     </mrow>
-         *     <mrow>
-         *       <msup>
-         *               <mi>h</mi>
-         *             <mn>2</mn>
-         *       </msup>
-         *     </mrow>
-         *   </mfrac>
-         * </mrow>
-         * </math>
+       * <mrow>
+       *   <mfrac>
+       *     <mrow>
+       *       <mi>F</mi><mo>&ApplyFunction;</mo>
+       *       <mfenced open="(" close=")" separators=",">
+       *         <mrow>
+       *           <mi>x</mi>
+       *           <mo>+</mo>
+       *           <mi>h</mi>
+       *         </mrow>
+       *       </mfenced>
+       *       <mo>-</mo>
+       *       <mn>2</mn>
+       *       <mi>F</mi><mo>&ApplyFunction;</mo>
+       *       <mfenced open="(" close=")" separators=",">
+       *         <mrow>
+       *           <mi>x</mi>
+       *         </mrow>
+       *       </mfenced>
+       *       <mo>+</mo>
+       *       <mi>F</mi><mo>&ApplyFunction;</mo>
+       *       <mfenced open="(" close=")" separators=",">
+       *         <mrow>
+       *           <mi>x</mi>
+       *           <mo>-</mo>
+       *           <mi>h</mi>
+       *         </mrow>
+       *       </mfenced>
+       *     </mrow>
+       *     <mrow>
+       *       <msup>
+       *               <mi>h</mi>
+       *             <mn>2</mn>
+       *       </msup>
+       *     </mrow>
+       *   </mfrac>
+       * </mrow>
+       * </math>
 		 * <P>
 		 * <P> (See http://en.wikipedia.org/wiki/Second_derivative)
 		 * <P>
 		 * <P> N = 3 -- Use the third derivative formula <math display="inline">
-         * <mrow>
-         *   <mfrac>
-         *     <mrow>
-         *       <mo>-</mo>
-         *       <mi>F</mi><mo>&ApplyFunction;</mo>
-         *       <mfenced open="(" close=")" separators=",">
-         *         <mrow>
-         *           <mi>x</mi>
-         *           <mo>-</mo>
-         *           <mn>2</mn>
-         *           <mi>h</mi>
-         *         </mrow>
-         *       </mfenced>
-         *       <mo>+</mo>
-         *       <mn>2</mn>
-         *       <mi>F</mi><mo>&ApplyFunction;</mo>
-         *       <mfenced open="(" close=")" separators=",">
-         *         <mrow>
-         *           <mi>x</mi>
-         *           <mo>-</mo>
-         *           <mi>h</mi>
-         *         </mrow>
-         *       </mfenced>
-         *       <mo>-</mo>
-         *       <mn>2</mn>
-         *       <mi>F</mi><mo>&ApplyFunction;</mo>
-         *       <mfenced open="(" close=")" separators=",">
-         *         <mrow>
-         *           <mi>x</mi>
-         *           <mo>-</mo>
-         *           <mi>h</mi>
-         *         </mrow>
-         *       </mfenced>
-         *       <mo>+</mo>
-         *       <mi>F</mi><mo>&ApplyFunction;</mo>
-         *       <mfenced open="(" close=")" separators=",">
-         *         <mrow>
-         *           <mi>x</mi>
-         *           <mo>+</mo>
-         *           <mn>2</mn>
-         *           <mi>h</mi>
-         *         </mrow>
-         *       </mfenced>
-         *     </mrow>
-         *     <mrow>
-         *       <mn>2</mn>
-         *       <msup>
-         *               <mi>h</mi>
-         *             <mn>3</mn>
-         *       </msup>
-         *     </mrow>
-         *   </mfrac>
-         * </mrow>
-         * </math>
+       * <mrow>
+       *   <mfrac>
+       *     <mrow>
+       *       <mo>-</mo>
+       *       <mi>F</mi><mo>&ApplyFunction;</mo>
+       *       <mfenced open="(" close=")" separators=",">
+       *         <mrow>
+       *           <mi>x</mi>
+       *           <mo>-</mo>
+       *           <mn>2</mn>
+       *           <mi>h</mi>
+       *         </mrow>
+       *       </mfenced>
+       *       <mo>+</mo>
+       *       <mn>2</mn>
+       *       <mi>F</mi><mo>&ApplyFunction;</mo>
+       *       <mfenced open="(" close=")" separators=",">
+       *         <mrow>
+       *           <mi>x</mi>
+       *           <mo>-</mo>
+       *           <mi>h</mi>
+       *         </mrow>
+       *       </mfenced>
+       *       <mo>-</mo>
+       *       <mn>2</mn>
+       *       <mi>F</mi><mo>&ApplyFunction;</mo>
+       *       <mfenced open="(" close=")" separators=",">
+       *         <mrow>
+       *           <mi>x</mi>
+       *           <mo>-</mo>
+       *           <mi>h</mi>
+       *         </mrow>
+       *       </mfenced>
+       *       <mo>+</mo>
+       *       <mi>F</mi><mo>&ApplyFunction;</mo>
+       *       <mfenced open="(" close=")" separators=",">
+       *         <mrow>
+       *           <mi>x</mi>
+       *           <mo>+</mo>
+       *           <mn>2</mn>
+       *           <mi>h</mi>
+       *         </mrow>
+       *       </mfenced>
+       *     </mrow>
+       *     <mrow>
+       *       <mn>2</mn>
+       *       <msup>
+       *               <mi>h</mi>
+       *             <mn>3</mn>
+       *       </msup>
+       *     </mrow>
+       *   </mfrac>
+       * </mrow>
+       * </math>
 		 * <P>
 		 * <P> (See http://www.geometrictools.com/Documentation/FiniteDifferences.pdf)
 		 * <P>
@@ -2561,19 +2476,19 @@ public class TestStelemC_DR_Exp_NN extends TestCase {
 		@Override
 		protected void performIterationUpdate( DoubleElem iterationOffset )
 		{
-			TestStelemC_DR_Exp_NN.performIterationUpdate( iterationOffset );
+			TestStelemC_DR_Exp_SE.performIterationUpdate( iterationOffset );
 		}
 		
 		@Override
 		protected void cacheIterationValue()
 		{
-			TestStelemC_DR_Exp_NN.cacheIterationValue();
+			TestStelemC_DR_Exp_SE.cacheIterationValue();
 		}
 		
 		@Override
 		protected void retrieveIterationValue()
 		{
-			TestStelemC_DR_Exp_NN.retrieveIterationValue();
+			TestStelemC_DR_Exp_SE.retrieveIterationValue();
 		}
 		
 		/**
@@ -2828,6 +2743,7 @@ public class TestStelemC_DR_Exp_NN extends TestCase {
 					fillTempArray( tval , xcnt , ycnt );
 				}
 			}
+			// fillTempArray( tval , xcnt , ycnt ); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 			
 		}
 		
@@ -2900,7 +2816,6 @@ public class TestStelemC_DR_Exp_NN extends TestCase {
 	protected void performIterationT( final int tval , final StelemNewton newton , final HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace2 ) 
 			throws NotInvertibleException, MultiplicativeDistributionRequiredException, Throwable
 	{
-		//double tmpCorrectionValue = 0.0;
 		im.restartIncrements();
 		long atm = System.currentTimeMillis();
 		long atm2 = System.currentTimeMillis();
@@ -2921,7 +2836,7 @@ public class TestStelemC_DR_Exp_NN extends TestCase {
 			clearSpatialAssertArray();
 	
 			
-			final double ival = TestStelemC_DR_Exp_NN.getUpdateValue();
+			final double ival = TestStelemC_DR_Exp_SE.getUpdateValue();
 			
 			
 		
@@ -2932,24 +2847,9 @@ public class TestStelemC_DR_Exp_NN extends TestCase {
 			// {
 			//	applyNumericViscosity();
 			// }
-			
-			
-			//if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
-			//{
-			//	tmpCorrectionValue = getCorrectionValue();
-			//	applyPredictorCorrector();
-			//	
-			//
-			//	err = newton.eval( implicitSpace2 );
-			//
-			// if( APPLY_NUMERICAL_VISCOSITY )
-			// {
-			//	applyNumericViscosity();
-			// }
-			//}
 	
 	
-			final double val = TestStelemC_DR_Exp_NN.getUpdateValue();
+			final double val = TestStelemC_DR_Exp_SE.getUpdateValue();
 			
 			if( ( im.getXcnt() == HALF_X ) && ( im.getYcnt() == HALF_Y ) )
 			{
@@ -2991,10 +2891,6 @@ public class TestStelemC_DR_Exp_NN extends TestCase {
 			
 			// Assert.assertTrue( Math.abs( err.getVal() ) < ( 0.01 * Math.abs( val ) + 0.01 ) );
 			
-			//if( USE_PREDICTOR_CORRECTOR && ( tval > 1 ) )
-			//{
-			//	resetCorrectionValue( tmpCorrectionValue );
-			//}
 		
 			iterArray.set( tval + NSTPT , im.getXcnt() , im.getYcnt() , val );
 			
@@ -3003,70 +2899,6 @@ public class TestStelemC_DR_Exp_NN extends TestCase {
 			im.handleIncrementYa();
 					
 		}
-		
-	}
-	
-	
-	
-
-	
-	
-	protected static void loadNeuralNet() throws Throwable
-{
-		
-		
-		final int[] cntrVals = { ( 2 * NSTPT + 1 ) - 1 , ( ( 2 * NSTPX + 1 ) - 1 ) / 2 , ( ( 2 * NSTPY + 1 ) - 1 ) / 2 };
-		
-		
-		
-		for( int t = 0 ; t < ( 2 * NSTPT + 1 ) ; t++ )
-		{
-			final int x = cntrVals[ 1 ];
-			final int y = cntrVals[ 2 ];
-			if( nodes[ t ][ x ][ y ] == null )
-			{
-				nodes[ t ][ x ][ y ] =  loadNeuralNode( "wvals_txt_" + t + "_" + x + "_" + y + "_.txt" , "bvals_txt_" + t + "_" + x + "_" + y + "_.txt" );
-			}
-		}
-		
-		
-		
-		for( int x = 0 ; x < ( 2 * NSTPX + 1 ) ; x++ )
-		{
-			final int t = cntrVals[ 0 ];
-			final int y = cntrVals[ 2 ];
-			if( nodes[ t ][ x ][ y ] == null )
-			{
-				nodes[ t ][ x ][ y ] =  loadNeuralNode( "wvals_txt_" + t + "_" + x + "_" + y + "_.txt" , "bvals_txt_" + t + "_" + x + "_" + y + "_.txt" );
-			}
-		}
-		
-		
-		
-		for( int y = 0 ; y < ( 2 * NSTPY + 1 ) ; y++ )
-		{
-			final int t = cntrVals[ 0 ];
-			final int x = cntrVals[ 1 ];
-			if( nodes[ t ][ x ][ y ] == null )
-			{
-				nodes[ t ][ x ][ y ] =  loadNeuralNode( "wvals_txt_" + t + "_" + x + "_" + y + "_.txt" , "bvals_txt_" + t + "_" + x + "_" + y + "_.txt" );
-			}
-		}
-		
-		
-		
-		/* System.out.println( node.wvals_h1[ 15 ][ 15 ] );
-		System.out.println( node.wvals_h2[ 15 ][ 15 ] );
-		System.out.println( node.wvals_h3[ 15 ][ 15 ] );
-		System.out.println( node.wvals_h4[ 15 ][ 15 ] );
-		System.out.println( node.wvals_out[ 15 ][ 0 ] );
-		
-		System.out.println( node.bvals_h1[ 15 ] );
-		System.out.println( node.bvals_h2[ 15 ] );
-		System.out.println( node.bvals_h3[ 15 ] );
-		System.out.println( node.bvals_h4[ 15 ] );
-		System.out.println( node.bvals_out[ 0 ] ); */
-		
 		
 	}
 	
@@ -3132,8 +2964,6 @@ public class TestStelemC_DR_Exp_NN extends TestCase {
 		{
 			System.out.println( "cmxRatio " + cmxRatio );
 		}
-		
-		loadNeuralNet();
 		
 		
 		String databaseLocation = DatabasePathForTest.FILESPACE_PATH + "mydbH";
