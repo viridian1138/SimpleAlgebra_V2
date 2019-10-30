@@ -230,10 +230,9 @@ public class TestNewtonianBasins extends TestCase {
 	static final BigInteger N = BigInteger.valueOf( 60 /* 512 */ );
 	
 	/**
-	 * Constant defining the zoom ratio for the Newtonian Basin execution.
+	 * Constant defining the zoom ratio for the Newtonian Basin execution.  Set by each test.
 	 */
-	static final BigFixedPointElem<LrgPrecision> ZOOM
-		= buildElem( N , BigInteger.valueOf( 4L ) );
+	static BigFixedPointElem<LrgPrecision> ZOOM;
 	
 	/**
 	 * The X-Y resolution for the Newtonian Basin iterations.
@@ -370,6 +369,77 @@ public class TestNewtonianBasins extends TestCase {
 	
 	
 	
+	/**
+	 * Elem representing a constant.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
+	private static class BConst extends SymbolicElem<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>
+	{
+		
+		/**
+		 * The constant value.
+		 */
+		ComplexElem<BigFixedPointElem<LrgPrecision>, BigFixedPointElemFactory<LrgPrecision>> val;
+
+		/**
+		 * Constructs the elem.
+		 * @param _fac The input factory.
+		 */
+		public BConst(
+				ComplexElem<BigFixedPointElem<LrgPrecision>, BigFixedPointElemFactory<LrgPrecision>> val ,
+				ComplexElemFactory<BigFixedPointElem<LrgPrecision>, BigFixedPointElemFactory<LrgPrecision>> _fac) {
+			super(_fac);
+			this.val = val;
+		}
+
+		@Override
+		public ComplexElem<BigFixedPointElem<LrgPrecision>, BigFixedPointElemFactory<LrgPrecision>> eval(
+				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace)
+				throws NotInvertibleException, MultiplicativeDistributionRequiredException {
+			return( val );
+		}
+
+		@Override
+		public ComplexElem<BigFixedPointElem<LrgPrecision>, BigFixedPointElemFactory<LrgPrecision>> evalCached(
+				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace,
+				HashMap<SCacheKey<ComplexElem<BigFixedPointElem<LrgPrecision>, BigFixedPointElemFactory<LrgPrecision>>, ComplexElemFactory<BigFixedPointElem<LrgPrecision>, BigFixedPointElemFactory<LrgPrecision>>>, ComplexElem<BigFixedPointElem<LrgPrecision>, BigFixedPointElemFactory<LrgPrecision>>> cache)
+				throws NotInvertibleException, MultiplicativeDistributionRequiredException {
+			return( this.eval(implicitSpace) );
+		}
+
+		@Override
+		public ComplexElem<BigFixedPointElem<LrgPrecision>, BigFixedPointElemFactory<LrgPrecision>> evalPartialDerivative(
+				ArrayList<? extends Elem<?, ?>> withRespectTo,
+				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace)
+				throws NotInvertibleException, MultiplicativeDistributionRequiredException {
+			throw( new RuntimeException( "NotSupported" ) );
+		}
+
+		@Override
+		public ComplexElem<BigFixedPointElem<LrgPrecision>, BigFixedPointElemFactory<LrgPrecision>> evalPartialDerivativeCached(
+				ArrayList<? extends Elem<?, ?>> withRespectTo,
+				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace,
+				HashMap<SCacheKey<ComplexElem<BigFixedPointElem<LrgPrecision>, BigFixedPointElemFactory<LrgPrecision>>, ComplexElemFactory<BigFixedPointElem<LrgPrecision>, BigFixedPointElemFactory<LrgPrecision>>>, ComplexElem<BigFixedPointElem<LrgPrecision>, BigFixedPointElemFactory<LrgPrecision>>> cache)
+				throws NotInvertibleException, MultiplicativeDistributionRequiredException {
+			throw( new RuntimeException( "NotSupported" ) );
+		}
+
+		@Override
+		public String writeDesc(
+				WriteElemCache<SymbolicElem<ComplexElem<BigFixedPointElem<LrgPrecision>, BigFixedPointElemFactory<LrgPrecision>>, ComplexElemFactory<BigFixedPointElem<LrgPrecision>, BigFixedPointElemFactory<LrgPrecision>>>, SymbolicElemFactory<ComplexElem<BigFixedPointElem<LrgPrecision>, BigFixedPointElemFactory<LrgPrecision>>, ComplexElemFactory<BigFixedPointElem<LrgPrecision>, BigFixedPointElemFactory<LrgPrecision>>>> cache,
+				PrintStream ps) {
+			throw( new RuntimeException( "NotSupported" ) );
+		}
+		
+	}
+	
+	
+	
+	
+	
+	
 	
 	/**
 	 * Elem representing the symbolic expression for 
@@ -414,6 +484,82 @@ public class TestNewtonianBasins extends TestCase {
 				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace)
 				throws NotInvertibleException, MultiplicativeDistributionRequiredException {
 			return( fac.identity() );
+		}
+
+		@Override
+		public SymbolicElem<ComplexElem<BigFixedPointElem<LrgPrecision>, BigFixedPointElemFactory<LrgPrecision>>, ComplexElemFactory<BigFixedPointElem<LrgPrecision>, BigFixedPointElemFactory<LrgPrecision>>> evalPartialDerivativeCached(
+				ArrayList<? extends Elem<?, ?>> withRespectTo,
+				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace,
+				HashMap<SCacheKey<SymbolicElem<ComplexElem<BigFixedPointElem<LrgPrecision>, BigFixedPointElemFactory<LrgPrecision>>, ComplexElemFactory<BigFixedPointElem<LrgPrecision>, BigFixedPointElemFactory<LrgPrecision>>>, SymbolicElemFactory<ComplexElem<BigFixedPointElem<LrgPrecision>, BigFixedPointElemFactory<LrgPrecision>>, ComplexElemFactory<BigFixedPointElem<LrgPrecision>, BigFixedPointElemFactory<LrgPrecision>>>>, SymbolicElem<ComplexElem<BigFixedPointElem<LrgPrecision>, BigFixedPointElemFactory<LrgPrecision>>, ComplexElemFactory<BigFixedPointElem<LrgPrecision>, BigFixedPointElemFactory<LrgPrecision>>>> cache)
+				throws NotInvertibleException, MultiplicativeDistributionRequiredException {
+			return( evalPartialDerivative( withRespectTo , implicitSpace ) );
+		}
+
+		@Override
+		public String writeDesc(
+				WriteElemCache<SymbolicElem<SymbolicElem<ComplexElem<BigFixedPointElem<LrgPrecision>, BigFixedPointElemFactory<LrgPrecision>>, ComplexElemFactory<BigFixedPointElem<LrgPrecision>, BigFixedPointElemFactory<LrgPrecision>>>, SymbolicElemFactory<ComplexElem<BigFixedPointElem<LrgPrecision>, BigFixedPointElemFactory<LrgPrecision>>, ComplexElemFactory<BigFixedPointElem<LrgPrecision>, BigFixedPointElemFactory<LrgPrecision>>>>, SymbolicElemFactory<SymbolicElem<ComplexElem<BigFixedPointElem<LrgPrecision>, BigFixedPointElemFactory<LrgPrecision>>, ComplexElemFactory<BigFixedPointElem<LrgPrecision>, BigFixedPointElemFactory<LrgPrecision>>>, SymbolicElemFactory<ComplexElem<BigFixedPointElem<LrgPrecision>, BigFixedPointElemFactory<LrgPrecision>>, ComplexElemFactory<BigFixedPointElem<LrgPrecision>, BigFixedPointElemFactory<LrgPrecision>>>>> cache,
+				PrintStream ps) {
+			throw( new RuntimeException( "NotSupported" ) );
+		}
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	/**
+	 * Elem representing the symbolic expression for 
+	 * a constant.
+	 * The partial derivatives of this elem generate
+	 * the slopes for producing Newton-Raphson iterations (e.g. the Jacobian slopes),
+	 * as opposed to partial derivatives for the underlying differential equation.
+	 * 
+	 * @author thorngreen
+	 *
+	 */	
+	private static class CConst extends SymbolicElem<SymbolicElem<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>,SymbolicElemFactory<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>>
+	{
+		
+		/**
+		 * The constant value.
+		 */
+		ComplexElem<BigFixedPointElem<LrgPrecision>, BigFixedPointElemFactory<LrgPrecision>> val;
+
+		/**
+		 * Constructs the elem.
+		 * @param _fac The input factory.
+		 */
+		public CConst(
+				ComplexElem<BigFixedPointElem<LrgPrecision>, BigFixedPointElemFactory<LrgPrecision>> val ,
+				SymbolicElemFactory<ComplexElem<BigFixedPointElem<LrgPrecision>, BigFixedPointElemFactory<LrgPrecision>>, ComplexElemFactory<BigFixedPointElem<LrgPrecision>, BigFixedPointElemFactory<LrgPrecision>>> _fac) {
+			super(_fac);
+			this.val = val;
+		}
+
+		@Override
+		public SymbolicElem<ComplexElem<BigFixedPointElem<LrgPrecision>, BigFixedPointElemFactory<LrgPrecision>>, ComplexElemFactory<BigFixedPointElem<LrgPrecision>, BigFixedPointElemFactory<LrgPrecision>>> eval(
+				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace)
+				throws NotInvertibleException, MultiplicativeDistributionRequiredException {
+			return( new BConst( val , fac.getFac() ) );
+		}
+
+		@Override
+		public SymbolicElem<ComplexElem<BigFixedPointElem<LrgPrecision>, BigFixedPointElemFactory<LrgPrecision>>, ComplexElemFactory<BigFixedPointElem<LrgPrecision>, BigFixedPointElemFactory<LrgPrecision>>> evalCached(
+				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace,
+				HashMap<SCacheKey<SymbolicElem<ComplexElem<BigFixedPointElem<LrgPrecision>, BigFixedPointElemFactory<LrgPrecision>>, ComplexElemFactory<BigFixedPointElem<LrgPrecision>, BigFixedPointElemFactory<LrgPrecision>>>, SymbolicElemFactory<ComplexElem<BigFixedPointElem<LrgPrecision>, BigFixedPointElemFactory<LrgPrecision>>, ComplexElemFactory<BigFixedPointElem<LrgPrecision>, BigFixedPointElemFactory<LrgPrecision>>>>, SymbolicElem<ComplexElem<BigFixedPointElem<LrgPrecision>, BigFixedPointElemFactory<LrgPrecision>>, ComplexElemFactory<BigFixedPointElem<LrgPrecision>, BigFixedPointElemFactory<LrgPrecision>>>> cache)
+				throws NotInvertibleException, MultiplicativeDistributionRequiredException {
+			return( eval( implicitSpace ) );
+		}
+
+		@Override
+		public SymbolicElem<ComplexElem<BigFixedPointElem<LrgPrecision>, BigFixedPointElemFactory<LrgPrecision>>, ComplexElemFactory<BigFixedPointElem<LrgPrecision>, BigFixedPointElemFactory<LrgPrecision>>> evalPartialDerivative(
+				ArrayList<? extends Elem<?, ?>> withRespectTo,
+				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace)
+				throws NotInvertibleException, MultiplicativeDistributionRequiredException {
+			return( fac.zero() );
 		}
 
 		@Override
@@ -588,6 +734,12 @@ public class TestNewtonianBasins extends TestCase {
 				col = colors.get( cnt );
 			}
 		}
+		final BigFixedPointElem<LrgPrecision> CUTOFF
+			= buildElem( BigInteger.valueOf( 1L ) , BigInteger.valueOf( 100L ) );
+		if( dst.compareTo( CUTOFF ) > 0 )
+		{
+			col = Color.BLACK;
+		}
 		return( col );
 	}
 	
@@ -624,6 +776,8 @@ public class TestNewtonianBasins extends TestCase {
 	 */
 	public void testNewtonianBasinA() throws NotInvertibleException, Throwable
 	{
+		ZOOM = buildElem( N , BigInteger.valueOf( 4L ) );
+		
 		File ofilePpm = new File( "testA" + ".ppm" );
 		FileOutputStream fo = new FileOutputStream( ofilePpm );
 		BufferedOutputStream baos = new BufferedOutputStream( fo );
@@ -756,6 +910,8 @@ public class TestNewtonianBasins extends TestCase {
 	 */
 	public void testNewtonianBasinB() throws NotInvertibleException, Throwable
 	{
+		ZOOM = buildElem( N , BigInteger.valueOf( 4L ) );
+		
 		File ofilePpm = new File( "testB" + ".ppm" );
 		FileOutputStream fo = new FileOutputStream( ofilePpm );
 		BufferedOutputStream baos = new BufferedOutputStream( fo );
@@ -887,6 +1043,8 @@ public class TestNewtonianBasins extends TestCase {
 	 */
 	public void testNewtonianBasinC() throws NotInvertibleException, Throwable
 	{
+		ZOOM = buildElem( N , BigInteger.valueOf( 4L ) );
+		
 		File ofilePpm = new File( "testC" + ".ppm" );
 		FileOutputStream fo = new FileOutputStream( ofilePpm );
 		BufferedOutputStream baos = new BufferedOutputStream( fo );
@@ -945,6 +1103,788 @@ public class TestNewtonianBasins extends TestCase {
 		
 		final SymbolicElem<SymbolicElem<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>,SymbolicElemFactory<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>> function =
 				mpow( z , 3 ).add( z.negate() );
+		
+		final StelemNewton stel = new StelemNewton( function , withRespectTo , implicitSpaceFirstLevel );
+		
+		
+		final BigInteger n2 = N.divide( BigInteger.valueOf( 2 ) );
+		final BigFixedPointElem<LrgPrecision> zoomInverse = ZOOM.invertLeft();
+		
+		for( BigInteger y = BigInteger.ZERO ; y.compareTo( N ) < 0 ; y = y.add( BigInteger.ONE ) )
+		{
+			
+			final BigFixedPointElem<LrgPrecision> yv = buildElem( y.subtract( n2 ) , BigInteger.ONE );
+			final BigFixedPointElem<LrgPrecision> yyv = Y_CENTER.add( yv.mult( zoomInverse ).negate() );
+			System.out.println( y );
+			
+			for( BigInteger x = BigInteger.ZERO ; x.compareTo( N ) < 0 ; x = x.add( BigInteger.ONE ) )
+			{
+				final BigFixedPointElem<LrgPrecision> xv = buildElem( x.subtract( n2 ) , BigInteger.ONE );
+				final BigFixedPointElem<LrgPrecision> xxv = X_CENTER.add( xv.mult( zoomInverse ) );
+				
+				final ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>> c
+					= new ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>( xxv , yyv );
+				
+				tempValue = c;
+				
+				iterationValueCache = c;
+				
+				stel.resetIterations();
+				
+				stel.eval( implicitSpaceInitialGuess );
+				
+				final ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>
+					updateValue = getUpdateValue();
+				
+				// System.out.println( updateValue.getRe().toDouble() + " " + updateValue.getIm().toDouble() );
+				
+				final Color col =
+					findClosestColor( updateValue , basins , colors );
+				
+				/* System.out.print( x );
+				System.out.print( " " );
+				System.out.print( y );
+				System.out.print( " " );
+				System.out.print( col.getRed() );
+				System.out.print( " " );
+				System.out.print( col.getGreen() );
+				System.out.print( " " );
+				System.out.println( col.getBlue() ); */
+				
+				baos.write( col.getRed() );
+				baos.write( col.getGreen() );
+				baos.write( col.getBlue() );
+			}
+		}
+		
+		
+		baos.close();
+		
+	}
+	
+	
+	
+	
+	/**
+	 * Finds the Newtonian Basins of (z^2-(1+3i)^2)(z^2-(5+i)^2)(z^2-(3-2i)^2).
+	 * 
+	 * Formula from https://mathcs.clarku.edu/~djoyce/newton/examples.html
+	 * 
+	 * @throws NotInvertibleException
+	 */
+	public void testNewtonianBasinD() throws NotInvertibleException, Throwable
+	{
+		ZOOM = buildElem( N , BigInteger.valueOf( 12L ) );
+		
+		File ofilePpm = new File( "testD" + ".ppm" );
+		FileOutputStream fo = new FileOutputStream( ofilePpm );
+		BufferedOutputStream baos = new BufferedOutputStream( fo );
+		
+		PrintStream ps = new PrintStream( baos );
+		ps.println( "P6" );
+		ps.println( "" + ( N ) + " " + ( N ) );
+		ps.println( "255" );
+		ps.flush();
+		ps = null;
+		
+		final BigFixedPointElemFactory<LrgPrecision> fac = new BigFixedPointElemFactory<LrgPrecision>( lrgPrecision );
+		
+		final ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>> cfac = new 
+				ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>( fac );
+		
+		final SymbolicElemFactory<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>> sfac = 
+				new SymbolicElemFactory<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>( cfac );
+		
+		final SymbolicElemFactory<SymbolicElem<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>,SymbolicElemFactory<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>> sfac2 =
+				new SymbolicElemFactory<SymbolicElem<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>,SymbolicElemFactory<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>>( sfac );
+		
+		final CNelem z = new CNelem( sfac );
+		
+		
+		final ArrayList ar = new ArrayList();
+		ar.add( z );
+		final ArrayList<? extends Elem<?, ?>> withRespectTo = (ArrayList<? extends Elem<?, ?>>)( ar );
+		
+		
+		final HashMap hm = new HashMap();
+		final HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpaceFirstLevel = (HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>>) hm;
+		
+		
+		final HashMap hm2 = new HashMap();
+		final HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpaceInitialGuess = (HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>>) hm2;
+		
+		
+		final ArrayList<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>> basins = new ArrayList<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>();
+		final ArrayList<Color> colors = new ArrayList<Color>();
+		
+
+		
+		
+		final ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>> C1 = new ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>( buildElem( BigInteger.valueOf( 1L ) , BigInteger.valueOf( 1L ) ) , 
+				buildElem( BigInteger.valueOf( 3L ) , BigInteger.valueOf( 1L ) ) );
+		
+		
+		final ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>> C2 = new ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>( buildElem( BigInteger.valueOf( 5L ) , BigInteger.valueOf( 1L ) ) , 
+				buildElem( BigInteger.valueOf( 1L ) , BigInteger.valueOf( 1L ) ) );
+		
+		
+		final ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>> C3 = new ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>( buildElem( BigInteger.valueOf( 3L ) , BigInteger.valueOf( 1L ) ) , 
+				buildElem( BigInteger.valueOf( -2L ) , BigInteger.valueOf( 1L ) ) );
+		
+		
+		{
+			
+			basins.add( C1 );
+			colors.add( Color.RED );
+			
+			basins.add( C1.negate() );
+			colors.add( Color.GREEN );
+			
+			basins.add( C2 );
+			colors.add( Color.CYAN );
+			
+			basins.add( C2.negate() );
+			colors.add( Color.ORANGE );
+			
+			basins.add( C3 );
+			colors.add( Color.YELLOW );
+			
+			basins.add( C3.negate() );
+			colors.add( Color.MAGENTA );
+			
+		}
+		
+		
+		final CConst c1A = new CConst( C1 , sfac );
+		
+		final CConst c2A = new CConst( C2 , sfac );
+		
+		final CConst c3A = new CConst( C3 , sfac );
+		
+		
+		final SymbolicElem<SymbolicElem<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>,SymbolicElemFactory<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>> 
+			fa = mpow( z , 2 ).add( c1A.mult( c1A ).negate() );
+		
+		final SymbolicElem<SymbolicElem<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>,SymbolicElemFactory<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>> 
+			fb = mpow( z , 2 ).add( c2A.mult( c2A ).negate() );
+		
+		final SymbolicElem<SymbolicElem<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>,SymbolicElemFactory<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>> 
+			fc = mpow( z , 2 ).add( c3A.mult( c3A ).negate() );
+		
+		final SymbolicElem<SymbolicElem<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>,SymbolicElemFactory<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>> 
+				function = fa.mult( fb ).mult( fc );
+		
+		final StelemNewton stel = new StelemNewton( function , withRespectTo , implicitSpaceFirstLevel );
+		
+		
+		final BigInteger n2 = N.divide( BigInteger.valueOf( 2 ) );
+		final BigFixedPointElem<LrgPrecision> zoomInverse = ZOOM.invertLeft();
+		
+		for( BigInteger y = BigInteger.ZERO ; y.compareTo( N ) < 0 ; y = y.add( BigInteger.ONE ) )
+		{
+			
+			final BigFixedPointElem<LrgPrecision> yv = buildElem( y.subtract( n2 ) , BigInteger.ONE );
+			final BigFixedPointElem<LrgPrecision> yyv = Y_CENTER.add( yv.mult( zoomInverse ).negate() );
+			System.out.println( y );
+			
+			for( BigInteger x = BigInteger.ZERO ; x.compareTo( N ) < 0 ; x = x.add( BigInteger.ONE ) )
+			{
+				final BigFixedPointElem<LrgPrecision> xv = buildElem( x.subtract( n2 ) , BigInteger.ONE );
+				final BigFixedPointElem<LrgPrecision> xxv = X_CENTER.add( xv.mult( zoomInverse ) );
+				
+				final ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>> c
+					= new ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>( xxv , yyv );
+				
+				tempValue = c;
+				
+				iterationValueCache = c;
+				
+				stel.resetIterations();
+				
+				stel.eval( implicitSpaceInitialGuess );
+				
+				final ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>
+					updateValue = getUpdateValue();
+				
+				// System.out.println( updateValue.getRe().toDouble() + " " + updateValue.getIm().toDouble() );
+				
+				final Color col =
+					findClosestColor( updateValue , basins , colors );
+				
+				/* System.out.print( x );
+				System.out.print( " " );
+				System.out.print( y );
+				System.out.print( " " );
+				System.out.print( col.getRed() );
+				System.out.print( " " );
+				System.out.print( col.getGreen() );
+				System.out.print( " " );
+				System.out.println( col.getBlue() ); */
+				
+				baos.write( col.getRed() );
+				baos.write( col.getGreen() );
+				baos.write( col.getBlue() );
+			}
+		}
+		
+		
+		baos.close();
+		
+	}
+	
+	
+	
+	
+	
+	
+	/**
+	 * Finds the Newtonian Basins of ( z ^ 4 - 1 ) ( z ^ 2 - ( 1 + i ) ^ 2 ).
+	 * 
+	 * Formula from https://mathcs.clarku.edu/~djoyce/newton/examples.html
+	 * 
+	 * @throws NotInvertibleException
+	 */
+	public void testNewtonianBasinF() throws NotInvertibleException, Throwable
+	{
+		ZOOM = buildElem( N , BigInteger.valueOf( 4L ) );
+		
+		File ofilePpm = new File( "testF" + ".ppm" );
+		FileOutputStream fo = new FileOutputStream( ofilePpm );
+		BufferedOutputStream baos = new BufferedOutputStream( fo );
+		
+		PrintStream ps = new PrintStream( baos );
+		ps.println( "P6" );
+		ps.println( "" + ( N ) + " " + ( N ) );
+		ps.println( "255" );
+		ps.flush();
+		ps = null;
+		
+		final BigFixedPointElemFactory<LrgPrecision> fac = new BigFixedPointElemFactory<LrgPrecision>( lrgPrecision );
+		
+		final ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>> cfac = new 
+				ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>( fac );
+		
+		final SymbolicElemFactory<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>> sfac = 
+				new SymbolicElemFactory<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>( cfac );
+		
+		final SymbolicElemFactory<SymbolicElem<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>,SymbolicElemFactory<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>> sfac2 =
+				new SymbolicElemFactory<SymbolicElem<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>,SymbolicElemFactory<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>>( sfac );
+		
+		final CNelem z = new CNelem( sfac );
+		
+		
+		final ArrayList ar = new ArrayList();
+		ar.add( z );
+		final ArrayList<? extends Elem<?, ?>> withRespectTo = (ArrayList<? extends Elem<?, ?>>)( ar );
+		
+		
+		final HashMap hm = new HashMap();
+		final HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpaceFirstLevel = (HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>>) hm;
+		
+		
+		final HashMap hm2 = new HashMap();
+		final HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpaceInitialGuess = (HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>>) hm2;
+		
+		
+		final ArrayList<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>> basins = new ArrayList<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>();
+		final ArrayList<Color> colors = new ArrayList<Color>();
+		
+		
+		{
+			
+			basins.add( new ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>( fac.identity() , fac.zero() ) );
+			colors.add( Color.RED );
+			
+			basins.add( new ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>( fac.identity().negate() , fac.zero() ) );
+			colors.add( Color.GREEN );
+			
+			basins.add( new ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>( fac.zero() , fac.identity() ) );
+			colors.add( Color.CYAN );
+			
+			basins.add( new ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>( fac.zero() , fac.identity().negate() ) );
+			colors.add( Color.ORANGE );
+			
+			basins.add( new ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>( fac.identity() , fac.identity() ) );
+			colors.add( Color.YELLOW );
+			
+			basins.add( new ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>( fac.identity().negate() , fac.identity().negate() ) );
+			colors.add( Color.MAGENTA );
+			
+		}
+		
+		
+		final CConst OPI = new CConst( new ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>( fac.identity() , fac.identity() ) , sfac );
+		
+		
+		final SymbolicElem<SymbolicElem<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>,SymbolicElemFactory<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>> 
+			fa = mpow( z , 4 ).add( sfac2.identity().negate() );
+		
+		final SymbolicElem<SymbolicElem<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>,SymbolicElemFactory<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>> 
+			fb = mpow( z , 2 ).add( OPI.mult( OPI ).negate() );
+		
+		final SymbolicElem<SymbolicElem<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>,SymbolicElemFactory<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>> 
+				function = fa.mult( fb );
+		
+		final StelemNewton stel = new StelemNewton( function , withRespectTo , implicitSpaceFirstLevel );
+		
+		
+		final BigInteger n2 = N.divide( BigInteger.valueOf( 2 ) );
+		final BigFixedPointElem<LrgPrecision> zoomInverse = ZOOM.invertLeft();
+		
+		for( BigInteger y = BigInteger.ZERO ; y.compareTo( N ) < 0 ; y = y.add( BigInteger.ONE ) )
+		{
+			
+			final BigFixedPointElem<LrgPrecision> yv = buildElem( y.subtract( n2 ) , BigInteger.ONE );
+			final BigFixedPointElem<LrgPrecision> yyv = Y_CENTER.add( yv.mult( zoomInverse ).negate() );
+			System.out.println( y );
+			
+			for( BigInteger x = BigInteger.ZERO ; x.compareTo( N ) < 0 ; x = x.add( BigInteger.ONE ) )
+			{
+				final BigFixedPointElem<LrgPrecision> xv = buildElem( x.subtract( n2 ) , BigInteger.ONE );
+				final BigFixedPointElem<LrgPrecision> xxv = X_CENTER.add( xv.mult( zoomInverse ) );
+				
+				final ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>> c
+					= new ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>( xxv , yyv );
+				
+				tempValue = c;
+				
+				iterationValueCache = c;
+				
+				stel.resetIterations();
+				
+				stel.eval( implicitSpaceInitialGuess );
+				
+				final ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>
+					updateValue = getUpdateValue();
+				
+				// System.out.println( updateValue.getRe().toDouble() + " " + updateValue.getIm().toDouble() );
+				
+				final Color col =
+					findClosestColor( updateValue , basins , colors );
+				
+				/* System.out.print( x );
+				System.out.print( " " );
+				System.out.print( y );
+				System.out.print( " " );
+				System.out.print( col.getRed() );
+				System.out.print( " " );
+				System.out.print( col.getGreen() );
+				System.out.print( " " );
+				System.out.println( col.getBlue() ); */
+				
+				baos.write( col.getRed() );
+				baos.write( col.getGreen() );
+				baos.write( col.getBlue() );
+			}
+		}
+		
+		
+		baos.close();
+		
+	}
+	
+	
+	
+	
+	/**
+	 * Finds the Newtonian Basins of ( z ^ 4 - 1 ) ( z ^ 4 - 16 ).
+	 * 
+	 * Formula from https://mathcs.clarku.edu/~djoyce/newton/examples.html
+	 * 
+	 * @throws NotInvertibleException
+	 */
+	public void testNewtonianBasinH() throws NotInvertibleException, Throwable
+	{
+		ZOOM = buildElem( N , BigInteger.valueOf( 8L ) );
+		
+		File ofilePpm = new File( "testH" + ".ppm" );
+		FileOutputStream fo = new FileOutputStream( ofilePpm );
+		BufferedOutputStream baos = new BufferedOutputStream( fo );
+		
+		PrintStream ps = new PrintStream( baos );
+		ps.println( "P6" );
+		ps.println( "" + ( N ) + " " + ( N ) );
+		ps.println( "255" );
+		ps.flush();
+		ps = null;
+		
+		final BigFixedPointElemFactory<LrgPrecision> fac = new BigFixedPointElemFactory<LrgPrecision>( lrgPrecision );
+		
+		final ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>> cfac = new 
+				ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>( fac );
+		
+		final SymbolicElemFactory<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>> sfac = 
+				new SymbolicElemFactory<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>( cfac );
+		
+		final SymbolicElemFactory<SymbolicElem<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>,SymbolicElemFactory<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>> sfac2 =
+				new SymbolicElemFactory<SymbolicElem<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>,SymbolicElemFactory<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>>( sfac );
+		
+		final CNelem z = new CNelem( sfac );
+		
+		
+		final ArrayList ar = new ArrayList();
+		ar.add( z );
+		final ArrayList<? extends Elem<?, ?>> withRespectTo = (ArrayList<? extends Elem<?, ?>>)( ar );
+		
+		
+		final HashMap hm = new HashMap();
+		final HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpaceFirstLevel = (HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>>) hm;
+		
+		
+		final HashMap hm2 = new HashMap();
+		final HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpaceInitialGuess = (HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>>) hm2;
+		
+		
+		final ArrayList<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>> basins = new ArrayList<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>();
+		final ArrayList<Color> colors = new ArrayList<Color>();
+		
+		
+		{
+			
+			basins.add( new ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>( fac.identity() , fac.zero() ) );
+			colors.add( Color.RED );
+			
+			basins.add( new ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>( fac.identity().negate() , fac.zero() ) );
+			colors.add( Color.GREEN );
+			
+			basins.add( new ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>( fac.zero() , fac.identity() ) );
+			colors.add( Color.CYAN );
+			
+			basins.add( new ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>( fac.zero() , fac.identity().negate() ) );
+			colors.add( Color.ORANGE );
+			
+			basins.add( new ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>(  buildElem( BigInteger.valueOf( 2L ) , BigInteger.valueOf( 1L ) ) , fac.zero() ) );
+			colors.add( Color.YELLOW );
+			
+			basins.add( new ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>(  buildElem( BigInteger.valueOf( -2L ) , BigInteger.valueOf( 1L ) ) , fac.zero() ) );
+			colors.add( Color.MAGENTA );
+			
+			basins.add( new ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>( fac.zero() , buildElem( BigInteger.valueOf( 2L ) , BigInteger.valueOf( 1L ) ) ) );
+			colors.add( Color.LIGHT_GRAY );
+			
+			basins.add( new ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>( fac.zero() , buildElem( BigInteger.valueOf( -2L ) , BigInteger.valueOf( 1L ) ) ) );
+			colors.add( Color.BLUE );
+			
+		}
+		
+		
+		final CConst SXTN = new CConst( new ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>( buildElem( BigInteger.valueOf( 16L ) , BigInteger.valueOf( 1L ) ) , fac.zero() ) , sfac );
+		
+		
+		final SymbolicElem<SymbolicElem<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>,SymbolicElemFactory<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>> 
+			fa = mpow( z , 4 ).add( sfac2.identity().negate() );
+		
+		final SymbolicElem<SymbolicElem<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>,SymbolicElemFactory<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>> 
+			fb = mpow( z , 4 ).add( SXTN.negate() );
+		
+		final SymbolicElem<SymbolicElem<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>,SymbolicElemFactory<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>> 
+				function = fa.mult( fb );
+		
+		final StelemNewton stel = new StelemNewton( function , withRespectTo , implicitSpaceFirstLevel );
+		
+		
+		final BigInteger n2 = N.divide( BigInteger.valueOf( 2 ) );
+		final BigFixedPointElem<LrgPrecision> zoomInverse = ZOOM.invertLeft();
+		
+		for( BigInteger y = BigInteger.ZERO ; y.compareTo( N ) < 0 ; y = y.add( BigInteger.ONE ) )
+		{
+			
+			final BigFixedPointElem<LrgPrecision> yv = buildElem( y.subtract( n2 ) , BigInteger.ONE );
+			final BigFixedPointElem<LrgPrecision> yyv = Y_CENTER.add( yv.mult( zoomInverse ).negate() );
+			System.out.println( y );
+			
+			for( BigInteger x = BigInteger.ZERO ; x.compareTo( N ) < 0 ; x = x.add( BigInteger.ONE ) )
+			{
+				final BigFixedPointElem<LrgPrecision> xv = buildElem( x.subtract( n2 ) , BigInteger.ONE );
+				final BigFixedPointElem<LrgPrecision> xxv = X_CENTER.add( xv.mult( zoomInverse ) );
+				
+				final ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>> c
+					= new ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>( xxv , yyv );
+				
+				tempValue = c;
+				
+				iterationValueCache = c;
+				
+				stel.resetIterations();
+				
+				stel.eval( implicitSpaceInitialGuess );
+				
+				final ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>
+					updateValue = getUpdateValue();
+				
+				// System.out.println( updateValue.getRe().toDouble() + " " + updateValue.getIm().toDouble() );
+				
+				final Color col =
+					findClosestColor( updateValue , basins , colors );
+				
+				/* System.out.print( x );
+				System.out.print( " " );
+				System.out.print( y );
+				System.out.print( " " );
+				System.out.print( col.getRed() );
+				System.out.print( " " );
+				System.out.print( col.getGreen() );
+				System.out.print( " " );
+				System.out.println( col.getBlue() ); */
+				
+				baos.write( col.getRed() );
+				baos.write( col.getGreen() );
+				baos.write( col.getBlue() );
+			}
+		}
+		
+		
+		baos.close();
+		
+	}
+	
+	
+	
+	
+	/**
+	 * Finds the Newtonian Basins of from https://mathcs.clarku.edu/~djoyce/newton/cube.html
+	 * 
+	 * See https://mathcs.clarku.edu/~djoyce/newton/examples.html
+	 * 
+	 * @throws NotInvertibleException
+	 */
+	public void testNewtonianBasinI() throws NotInvertibleException, Throwable
+	{
+		ZOOM = buildElem( N , BigInteger.valueOf( 2L ) );
+		
+		File ofilePpm = new File( "testI" + ".ppm" );
+		FileOutputStream fo = new FileOutputStream( ofilePpm );
+		BufferedOutputStream baos = new BufferedOutputStream( fo );
+		
+		PrintStream ps = new PrintStream( baos );
+		ps.println( "P6" );
+		ps.println( "" + ( N ) + " " + ( N ) );
+		ps.println( "255" );
+		ps.flush();
+		ps = null;
+		
+		final BigFixedPointElemFactory<LrgPrecision> fac = new BigFixedPointElemFactory<LrgPrecision>( lrgPrecision );
+		
+		final ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>> cfac = new 
+				ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>( fac );
+		
+		final SymbolicElemFactory<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>> sfac = 
+				new SymbolicElemFactory<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>( cfac );
+		
+		final SymbolicElemFactory<SymbolicElem<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>,SymbolicElemFactory<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>> sfac2 =
+				new SymbolicElemFactory<SymbolicElem<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>,SymbolicElemFactory<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>>( sfac );
+		
+		final CNelem z = new CNelem( sfac );
+		
+		
+		final ArrayList ar = new ArrayList();
+		ar.add( z );
+		final ArrayList<? extends Elem<?, ?>> withRespectTo = (ArrayList<? extends Elem<?, ?>>)( ar );
+		
+		
+		final HashMap hm = new HashMap();
+		final HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpaceFirstLevel = (HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>>) hm;
+		
+		
+		final HashMap hm2 = new HashMap();
+		final HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpaceInitialGuess = (HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>>) hm2;
+		
+		
+		final ArrayList<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>> basins = new ArrayList<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>();
+		final ArrayList<Color> colors = new ArrayList<Color>();
+		
+		
+		final ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>> C1 = new ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>( buildElem( BigInteger.valueOf( -1384609L ) , BigInteger.valueOf( 1000000L ) ) , 
+				buildElem( BigInteger.valueOf( -923100L ) , BigInteger.valueOf( 1000000L ) ) );
+		
+		
+		final ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>> C2 = new ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>( buildElem( BigInteger.valueOf( 384609L ) , BigInteger.valueOf( 1000000L ) ) , 
+				buildElem( BigInteger.valueOf( 923100L ) , BigInteger.valueOf( 1000000L ) ) );
+		
+		
+		{
+			
+			basins.add( new ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>( fac.identity() , fac.zero() ) );
+			colors.add( Color.RED );
+			
+			basins.add( C1 );
+			colors.add( Color.GREEN );
+			
+			basins.add( C2 );
+			colors.add( Color.BLUE );
+			
+		}
+		
+		
+		final CConst C1A = new CConst( C1 , sfac );
+		
+		final CConst C2A = new CConst( C2 , sfac );
+		
+		
+		final SymbolicElem<SymbolicElem<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>,SymbolicElemFactory<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>> 
+			fa = z.add( sfac2.identity().negate() );
+		
+		final SymbolicElem<SymbolicElem<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>,SymbolicElemFactory<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>> 
+			fb = z.add( C1A.negate() );
+		
+		final SymbolicElem<SymbolicElem<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>,SymbolicElemFactory<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>> 
+			fc = z.add( C2A.negate() );
+		
+		final SymbolicElem<SymbolicElem<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>,SymbolicElemFactory<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>> 
+				function = fa.mult( fb ).mult( fc );
+		
+		final StelemNewton stel = new StelemNewton( function , withRespectTo , implicitSpaceFirstLevel );
+		
+		
+		final BigInteger n2 = N.divide( BigInteger.valueOf( 2 ) );
+		final BigFixedPointElem<LrgPrecision> zoomInverse = ZOOM.invertLeft();
+		
+		for( BigInteger y = BigInteger.ZERO ; y.compareTo( N ) < 0 ; y = y.add( BigInteger.ONE ) )
+		{
+			
+			final BigFixedPointElem<LrgPrecision> yv = buildElem( y.subtract( n2 ) , BigInteger.ONE );
+			final BigFixedPointElem<LrgPrecision> yyv = Y_CENTER.add( yv.mult( zoomInverse ).negate() );
+			System.out.println( y );
+			
+			for( BigInteger x = BigInteger.ZERO ; x.compareTo( N ) < 0 ; x = x.add( BigInteger.ONE ) )
+			{
+				final BigFixedPointElem<LrgPrecision> xv = buildElem( x.subtract( n2 ) , BigInteger.ONE );
+				final BigFixedPointElem<LrgPrecision> xxv = X_CENTER.add( xv.mult( zoomInverse ) );
+				
+				final ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>> c
+					= new ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>( xxv , yyv );
+				
+				tempValue = c;
+				
+				iterationValueCache = c;
+				
+				stel.resetIterations();
+				
+				stel.eval( implicitSpaceInitialGuess );
+				
+				final ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>
+					updateValue = getUpdateValue();
+				
+				// System.out.println( updateValue.getRe().toDouble() + " " + updateValue.getIm().toDouble() );
+				
+				final Color col =
+					findClosestColor( updateValue , basins , colors );
+				
+				/* System.out.print( x );
+				System.out.print( " " );
+				System.out.print( y );
+				System.out.print( " " );
+				System.out.print( col.getRed() );
+				System.out.print( " " );
+				System.out.print( col.getGreen() );
+				System.out.print( " " );
+				System.out.println( col.getBlue() ); */
+				
+				baos.write( col.getRed() );
+				baos.write( col.getGreen() );
+				baos.write( col.getBlue() );
+			}
+		}
+		
+		
+		baos.close();
+		
+	}
+	
+	
+	
+	
+	/**
+	 * Finds the Newtonian Basins of from https://mathcs.clarku.edu/~djoyce/newton/cube2.html
+	 * 
+	 * See https://mathcs.clarku.edu/~djoyce/newton/examples.html
+	 * 
+	 * @throws NotInvertibleException
+	 */
+	public void testNewtonianBasinJ() throws NotInvertibleException, Throwable
+	{
+		ZOOM = buildElem( N.multiply( BigInteger.valueOf( 6 ) ) , BigInteger.valueOf( 2L ) );
+		
+		File ofilePpm = new File( "testJ" + ".ppm" );
+		FileOutputStream fo = new FileOutputStream( ofilePpm );
+		BufferedOutputStream baos = new BufferedOutputStream( fo );
+		
+		PrintStream ps = new PrintStream( baos );
+		ps.println( "P6" );
+		ps.println( "" + ( N ) + " " + ( N ) );
+		ps.println( "255" );
+		ps.flush();
+		ps = null;
+		
+		final BigFixedPointElemFactory<LrgPrecision> fac = new BigFixedPointElemFactory<LrgPrecision>( lrgPrecision );
+		
+		final ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>> cfac = new 
+				ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>( fac );
+		
+		final SymbolicElemFactory<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>> sfac = 
+				new SymbolicElemFactory<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>( cfac );
+		
+		final SymbolicElemFactory<SymbolicElem<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>,SymbolicElemFactory<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>> sfac2 =
+				new SymbolicElemFactory<SymbolicElem<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>,SymbolicElemFactory<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>>( sfac );
+		
+		final CNelem z = new CNelem( sfac );
+		
+		
+		final ArrayList ar = new ArrayList();
+		ar.add( z );
+		final ArrayList<? extends Elem<?, ?>> withRespectTo = (ArrayList<? extends Elem<?, ?>>)( ar );
+		
+		
+		final HashMap hm = new HashMap();
+		final HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpaceFirstLevel = (HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>>) hm;
+		
+		
+		final HashMap hm2 = new HashMap();
+		final HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpaceInitialGuess = (HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>>) hm2;
+		
+		
+		final ArrayList<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>> basins = new ArrayList<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>();
+		final ArrayList<Color> colors = new ArrayList<Color>();
+		
+		
+		final ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>> C1 = new ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>( buildElem( BigInteger.valueOf( -1384609L ) , BigInteger.valueOf( 1000000L ) ) , 
+				buildElem( BigInteger.valueOf( -900000L ) , BigInteger.valueOf( 1000000L ) ) );
+		
+		
+		final ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>> C2 = new ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>( buildElem( BigInteger.valueOf( 384609L ) , BigInteger.valueOf( 1000000L ) ) , 
+				buildElem( BigInteger.valueOf( 930000L ) , BigInteger.valueOf( 1000000L ) ) );
+		
+		
+		{
+			
+			basins.add( new ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>( fac.identity() , fac.zero() ) );
+			colors.add( Color.RED );
+			
+			basins.add( C1 );
+			colors.add( Color.GREEN );
+			
+			basins.add( C2 );
+			colors.add( Color.BLUE );
+			
+		}
+		
+		
+		final CConst C1A = new CConst( C1 , sfac );
+		
+		final CConst C2A = new CConst( C2 , sfac );
+		
+		
+		final SymbolicElem<SymbolicElem<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>,SymbolicElemFactory<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>> 
+			fa = z.add( sfac2.identity().negate() );
+		
+		final SymbolicElem<SymbolicElem<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>,SymbolicElemFactory<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>> 
+			fb = z.add( C1A.negate() );
+		
+		final SymbolicElem<SymbolicElem<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>,SymbolicElemFactory<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>> 
+			fc = z.add( C2A.negate() );
+		
+		final SymbolicElem<SymbolicElem<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>,SymbolicElemFactory<ComplexElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,ComplexElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>> 
+				function = fa.mult( fb ).mult( fc );
 		
 		final StelemNewton stel = new StelemNewton( function , withRespectTo , implicitSpaceFirstLevel );
 		
