@@ -33,9 +33,12 @@
 
 package test_simplealgebra;
 
+import java.awt.Color;
 import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.math.BigInteger;
 
 import junit.framework.TestCase;
@@ -239,6 +242,25 @@ public class TestMandelbrotSet extends TestCase {
 	
 	
 	
+	/**
+	 * Gets the color corresponding to an escape time.
+	 * @param escapeTime The input escape time.
+	 * @return The output color.
+	 */
+	static Color getColor( final BigInteger escapeTime )
+	{
+		final Color[] cols = { Color.RED , Color.GREEN , Color.CYAN , Color.ORANGE , Color.YELLOW , Color.MAGENTA };
+		final BigInteger len = BigInteger.valueOf( cols.length );
+		if( escapeTime.compareTo( MAX_ESCAPE_ITERATIONS ) == 0 )
+		{
+			return( Color.BLACK );
+		}
+		final int index = ( escapeTime.mod( len ) ).intValue();
+		return( cols[ index ] );
+	}
+	
+	
+	
 	
 	/**
 	 * Performs a Mandelbrot iteration z <-- z * z + c
@@ -312,9 +334,16 @@ public class TestMandelbrotSet extends TestCase {
 	 */
 	public void testMandelbrot() throws NotInvertibleException, Throwable
 	{
-		String filePath = "outRaw5.raw";
+		File ofilePpm = new File( "testMandelbrot" + ".ppm" );
+		FileOutputStream fo = new FileOutputStream( ofilePpm );
+		BufferedOutputStream baos = new BufferedOutputStream( fo );
 		
-		DataOutputStream dout = new DataOutputStream( new BufferedOutputStream( new FileOutputStream( filePath ) ) );
+		PrintStream ps = new PrintStream( baos );
+		ps.println( "P6" );
+		ps.println( "" + ( N ) + " " + ( N ) );
+		ps.println( "255" );
+		ps.flush();
+		ps = null;
 		
 		final BigInteger n2 = N.divide( BigInteger.valueOf( 2 ) );
 		final BigFixedPointElem<LrgPrecision> zoomInverse = ZOOM.invertLeft();
@@ -340,12 +369,16 @@ public class TestMandelbrotSet extends TestCase {
 				System.out.print( " " );
 				System.out.println( escapeTime );
 				
-				dout.writeLong( escapeTime.longValue() );
+				final Color col = getColor( escapeTime );
+				
+				baos.write( col.getRed() );
+				baos.write( col.getGreen() );
+				baos.write( col.getBlue() );
 			}
 		}
 		
 		
-		dout.close();
+		baos.close();
 		
 	}
 	

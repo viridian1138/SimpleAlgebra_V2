@@ -34,9 +34,12 @@
 package test_simplealgebra;
 
 
+import java.awt.Color;
 import java.io.BufferedOutputStream;
 import java.io.DataOutputStream;
+import java.io.File;
 import java.io.FileOutputStream;
+import java.io.PrintStream;
 import java.math.BigInteger;
 
 import junit.framework.TestCase;
@@ -249,6 +252,25 @@ public class TestMandelbrotSet_Ncore extends TestCase {
 	
 	
 	
+	/**
+	 * Gets the color corresponding to an escape time.
+	 * @param escapeTime The input escape time.
+	 * @return The output color.
+	 */
+	static Color getColor( final BigInteger escapeTime )
+	{
+		final Color[] cols = { Color.RED , Color.GREEN , Color.CYAN , Color.ORANGE , Color.YELLOW , Color.MAGENTA };
+		final BigInteger len = BigInteger.valueOf( cols.length );
+		if( escapeTime.compareTo( MAX_ESCAPE_ITERATIONS ) == 0 )
+		{
+			return( Color.BLACK );
+		}
+		final int index = ( escapeTime.mod( len ) ).intValue();
+		return( cols[ index ] );
+	}
+	
+	
+	
 	
 	/**
 	 * Performs a Mandelbrot iteration z <-- z * z + c
@@ -316,9 +338,6 @@ public class TestMandelbrotSet_Ncore extends TestCase {
 	
 	
 	
-	protected static final String filePath = "outRaw5.raw";
-	
-	
 	/**
 	 * The X-Axis cell size.
 	 */
@@ -338,10 +357,20 @@ public class TestMandelbrotSet_Ncore extends TestCase {
 	 */
 	public void testMandelbrot() throws NotInvertibleException, Throwable
 	{
+		File ofilePpm = new File( "testMandelbrot_Ncore" + ".ppm" );
+		FileOutputStream fo = new FileOutputStream( ofilePpm );
+		BufferedOutputStream baos = new BufferedOutputStream( fo );
+		
+		PrintStream ps = new PrintStream( baos );
+		ps.println( "P6" );
+		ps.println( "" + ( N_INT ) + " " + ( N_INT ) );
+		ps.println( "255" );
+		ps.flush();
+		ps = null;
+		
 		final int numCores = CpuInfo.NUM_CPU_CORES;
 		final Runnable[] runn = new Runnable[ numCores ];
-		final DataOutputStream dout = new DataOutputStream( new BufferedOutputStream( new FileOutputStream( filePath ) ) );
-		final long[] tempOutput = new long[ N_INT ];
+		final Color[] tempOutput = new Color[ N_INT ];
 		
 		
 		final BigInteger n2 = N.divide( BigInteger.valueOf( 2 ) );
@@ -380,7 +409,7 @@ public class TestMandelbrotSet_Ncore extends TestCase {
 								System.out.print( " " );
 								System.out.println( escapeTime );
 							
-								tempOutput[ x ] =  escapeTime.longValue();
+								tempOutput[ x ] =  getColor( escapeTime );
 							}
 						}
 						catch( Error ex  ) { ex.printStackTrace( System.out ); }
@@ -402,17 +431,17 @@ public class TestMandelbrotSet_Ncore extends TestCase {
 			
 			for( int cnt = 0 ; cnt < N_INT ; cnt++ )
 			{
-				dout.writeLong( tempOutput[ cnt ] );
+				final Color col = tempOutput[ cnt ];
+				baos.write( col.getRed() );
+				baos.write( col.getGreen() );
+				baos.write( col.getBlue() );
 			}
 			
 			
 		}
 		
 		
-		for( int cnt = 0 ; cnt < numCores ; cnt++ )
-		{
-			dout.close();
-		}
+		baos.close();
 		
 	}
 	
