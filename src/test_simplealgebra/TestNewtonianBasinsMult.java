@@ -261,7 +261,10 @@ public class TestNewtonianBasinsMult extends TestCase {
 	
 	
 	
-	
+	/**
+	 * Generates the real index on the multivariate Newton-Raphson vector.
+	 * @return The real index on the multivariate Newton-Raphson vector.
+	 */
 	static HashSet<BigInteger> genIndexRe()
 	{
 		HashSet<BigInteger> hs = new HashSet<BigInteger>();
@@ -272,7 +275,10 @@ public class TestNewtonianBasinsMult extends TestCase {
 	
 	
 	
-	
+	/**
+	 * Generates the imaginary index on the multivariate Newton-Raphson vector.
+	 * @return The imaginary index on the multivariate Newton-Raphson vector.
+	 */
 	static HashSet<BigInteger> genIndexIm()
 	{
 		HashSet<BigInteger> hs = new HashSet<BigInteger>();
@@ -281,9 +287,14 @@ public class TestNewtonianBasinsMult extends TestCase {
 	}
 	
 	
-	
+	/**
+	 * The real index on the multivariate Newton-Raphson vector.
+	 */
 	static final HashSet<BigInteger> VCT_INDEX_RE = genIndexRe();	
 	
+	/**
+	 * The imaginary index on the multivariate Newton-Raphson vector.
+	 */
 	static final HashSet<BigInteger> VCT_INDEX_IM = genIndexIm();
 	
 	
@@ -345,7 +356,9 @@ public class TestNewtonianBasinsMult extends TestCase {
 	}
 	
 	
-	
+	/**
+	 * Resets the Newton-Raphson iteration count to zero.
+	 */
 	protected static void resetIterations()
 	{
 		intCnt = 0;
@@ -359,6 +372,10 @@ public class TestNewtonianBasinsMult extends TestCase {
 	protected static int intCnt = 0;
 
 	
+	/**
+	 * Returns true iff. the Newton-Raphson iterations are complete.
+	 * @return True iff. the Newton-Raphson iterations are complete.
+	 */
 	protected static boolean iterationsDone() {
 		intCnt++;
 		return( intCnt > 40 );
@@ -369,7 +386,7 @@ public class TestNewtonianBasinsMult extends TestCase {
 	
 	
 	/**
-	 * Elem representing the value constrained by the differential equation.
+	 * Elem representing the real-axis value constrained by the differential equation.
 	 * 
 	 * @author thorngreen
 	 *
@@ -432,7 +449,7 @@ public class TestNewtonianBasinsMult extends TestCase {
 	
 	
 	/**
-	 * Elem representing the value constrained by the differential equation.
+	 * Elem representing the imaginary-axis value constrained by the differential equation.
 	 * 
 	 * @author thorngreen
 	 *
@@ -510,6 +527,7 @@ public class TestNewtonianBasinsMult extends TestCase {
 
 		/**
 		 * Constructs the elem.
+		 * @param val The constant value.
 		 * @param _fac The input factory.
 		 */
 		public BConst(
@@ -568,7 +586,7 @@ public class TestNewtonianBasinsMult extends TestCase {
 	
 	/**
 	 * Elem representing the symbolic expression for 
-	 * the value constrained by the differential equation.
+	 * the real-axis value constrained by the differential equation.
 	 * The partial derivatives of this elem generate
 	 * the slopes for producing Newton-Raphson iterations (e.g. the Jacobian slopes),
 	 * as opposed to partial derivatives for the underlying differential equation.
@@ -641,7 +659,7 @@ public class TestNewtonianBasinsMult extends TestCase {
 	
 	/**
 	 * Elem representing the symbolic expression for 
-	 * the value constrained by the differential equation.
+	 * the imaginary-axis value constrained by the differential equation.
 	 * The partial derivatives of this elem generate
 	 * the slopes for producing Newton-Raphson iterations (e.g. the Jacobian slopes),
 	 * as opposed to partial derivatives for the underlying differential equation.
@@ -734,6 +752,7 @@ public class TestNewtonianBasinsMult extends TestCase {
 
 		/**
 		 * Constructs the elem.
+		 * @param val The constant value.
 		 * @param _fac The input factory.
 		 */
 		public CConst(
@@ -788,13 +807,16 @@ public class TestNewtonianBasinsMult extends TestCase {
 
 	
 	/**
-	 * The internal multivariate descent algorithm.
+	 * The internal multivariate descent algorithm callbacks.
 	 * 
 	 * @author thorngreen
 	 *
 	 */
 	protected class StelemDescentEnt extends DescentAlgorithmMultiElemInputParamCallbacks<TestDimensionTwo, BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>
 	{
+		/**
+		 * Factory for generating a Jacobian matrix.
+		 */
 		protected SquareMatrixElemFactory<TestDimensionTwo,BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>> fac;
 		
 		@Override
@@ -831,7 +853,7 @@ public class TestNewtonianBasinsMult extends TestCase {
 		
 		@Override
 		protected SimplificationType useSimplification() {
-			return( SimplificationType.NONE );
+			return( SimplificationType.DISTRIBUTE_SIMPLIFY2 );
 		}
 		
 		@Override
@@ -864,7 +886,10 @@ public class TestNewtonianBasinsMult extends TestCase {
 			return( fac.identity() );
 		}
 		
-		
+		/**
+		 * Constructs the internal algorithm callbacks.
+		 * @param fac Factory for generating Jacobian matrices.
+		 */
 		public StelemDescentEnt( SquareMatrixElemFactory<TestDimensionTwo,BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>> fac )
 		{
 			super();
@@ -878,6 +903,16 @@ public class TestNewtonianBasinsMult extends TestCase {
 	
 	
 	
+	/**
+	 * Generates a recursive descent algorithm for Newtonian Basins.
+	 * @param slfac2 Factory for symbolic elems.
+	 * @param function The complex-number function for which the basins are to be found.
+	 * @param cnre Symbolic elem for the real component of the complex number.
+	 * @param cnim Symbolic elem for the imaginary part of the complex number.
+	 * @return The recursive descent algorithm for Newtonian Basins.
+	 * @throws NotInvertibleException
+	 * @throws MultiplicativeDistributionRequiredException
+	 */
 	protected DescentAlgorithmMultiElem<TestDimensionTwo, BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>> genDescent(
 			final SymbolicElemFactory<SymbolicElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,SymbolicElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>> slfac2 ,
 			final ComplexElem<SymbolicElem<SymbolicElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,SymbolicElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>,SymbolicElemFactory<SymbolicElem<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>,SymbolicElemFactory<BigFixedPointElem<LrgPrecision>,BigFixedPointElemFactory<LrgPrecision>>>>  function ,
@@ -961,7 +996,7 @@ public class TestNewtonianBasinsMult extends TestCase {
 	
 	/**
 	 * Assigns a color to a particular complex point.
-	 * @param updateValue The point to color.
+	 * @param updateValueI The point to color.
 	 * @param basins The list of potential solutions to check.
 	 * @param colors The list of colors.
 	 * @return The closest color.
