@@ -1059,6 +1059,8 @@ public class TestNewtonianBasinsMult extends TestCase {
 	 * 
 	 * Formula from https://mathcs.clarku.edu/~djoyce/newton/examples.html
 	 * 
+	 * Note: the generated image differs from the above link(s) due to the use of multivariate Newton-Raphson
+	 * 
 	 * @throws NotInvertibleException
 	 */
 	public void testNewtonianBasinA() throws NotInvertibleException, Throwable
@@ -1203,6 +1205,8 @@ public class TestNewtonianBasinsMult extends TestCase {
 	 * 
 	 * Formula from https://mathcs.clarku.edu/~djoyce/newton/examples.html
 	 * 
+	 * Note: the generated image differs from the above link(s) due to the use of multivariate Newton-Raphson
+	 * 
 	 * @throws NotInvertibleException
 	 */
 	public void testNewtonianBasinB() throws NotInvertibleException, Throwable
@@ -1346,6 +1350,8 @@ public class TestNewtonianBasinsMult extends TestCase {
 	 * 
 	 * Formula from https://mathcs.clarku.edu/~djoyce/newton/examples.html
 	 * 
+	 * Note: the generated image differs from the above link(s) due to the use of multivariate Newton-Raphson
+	 * 
 	 * @throws NotInvertibleException
 	 */
 	public void testNewtonianBasinC() throws NotInvertibleException, Throwable
@@ -1486,6 +1492,8 @@ public class TestNewtonianBasinsMult extends TestCase {
 	 * Finds the Newtonian Basins of (z^2-(1+3i)^2)(z^2-(5+i)^2)(z^2-(3-2i)^2).
 	 * 
 	 * Formula from https://mathcs.clarku.edu/~djoyce/newton/examples.html
+	 * 
+	 * Note: the generated image differs from the above link(s) due to the use of multivariate Newton-Raphson
 	 * 
 	 * @throws NotInvertibleException
 	 */
@@ -1675,6 +1683,8 @@ public class TestNewtonianBasinsMult extends TestCase {
 	 * 
 	 * Formula from https://mathcs.clarku.edu/~djoyce/newton/examples.html
 	 * 
+	 * Note: the generated image differs from the above link(s) due to the use of multivariate Newton-Raphson
+	 * 
 	 * @throws NotInvertibleException
 	 */
 	public void testNewtonianBasinF() throws NotInvertibleException, Throwable
@@ -1835,6 +1845,8 @@ public class TestNewtonianBasinsMult extends TestCase {
 	 * Finds the Newtonian Basins of ( z ^ 4 - 1 ) ( z ^ 4 - 16 ).
 	 * 
 	 * Formula from https://mathcs.clarku.edu/~djoyce/newton/examples.html
+	 * 
+	 * Note: the generated image differs from the above link(s) due to the use of multivariate Newton-Raphson
 	 * 
 	 * @throws NotInvertibleException
 	 */
@@ -2003,6 +2015,8 @@ public class TestNewtonianBasinsMult extends TestCase {
 	 * 
 	 * See https://mathcs.clarku.edu/~djoyce/newton/examples.html
 	 * 
+	 * Note: the generated image differs from the above link(s) due to the use of multivariate Newton-Raphson
+	 * 
 	 * @throws NotInvertibleException
 	 */
 	public void testNewtonianBasinI() throws NotInvertibleException, Throwable
@@ -2169,6 +2183,8 @@ public class TestNewtonianBasinsMult extends TestCase {
 	 * Finds the Newtonian Basins of from https://mathcs.clarku.edu/~djoyce/newton/cube2.html
 	 * 
 	 * See https://mathcs.clarku.edu/~djoyce/newton/examples.html
+	 * 
+	 * Note: the generated image differs from the above link(s) due to the use of multivariate Newton-Raphson
 	 * 
 	 * @throws NotInvertibleException
 	 */
