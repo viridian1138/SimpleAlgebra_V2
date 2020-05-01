@@ -1865,7 +1865,7 @@ protected static class TestMetricTensorFactory extends MetricTensorInvertingFact
 				{
 					aasa2.advanceDens( AStelem.HBAR_SQUARED_DENS , 1 );
 					aasa2.advanceDens( AStelem.M_SQUARED_DENS , -1 );
-					aasa1.advanceDens( AStelem.C_DENS , 2 );
+					aasa2.advanceDens( AStelem.C_DENS , 2 );
 				}
 				
 				g0.setVal( ab , t1.add( t2 ) );
@@ -2646,7 +2646,7 @@ protected static void hndlNode2( SymbolicElem<SymbolicElem<ComplexElem<DoubleEle
 		DoubleElem dvalA = cexp.mult( hbsexp ).mult( msexp );
 		
 		
-		if( ( ret.getDen( AStelem.NEGATION_DENS ) ) % 2 != 0 )
+		if( ( ( ret.getDen( AStelem.NEGATION_DENS ) ) & 1 ) != 0 )
 		{
 			dvalA = dvalA.negate();
 		}
@@ -3127,20 +3127,23 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 		final HashMap<ArrayList<Integer>,DoubleElem> hmm2 = new HashMap<ArrayList<Integer>,DoubleElem>();
 		
 		
-		hndlNode2( svvB , new DoubleElem( 0.1 ) , new DoubleElem( 0.2 ) , new DoubleElem( 0.4 ) , hmm2 );
-		
-		
-		
-		for( final Entry<ArrayList<Integer>, DoubleElem> grr : hmm2.entrySet()  )
+		if( true )
 		{
-			if( ( Math.abs( grr.getValue().getVal() ) ) > 1E-8 )
+			hndlNode2( svvB , new DoubleElem( 0.1 ) , new DoubleElem( 0.2 ) , new DoubleElem( 0.4 ) , hmm2 );
+		
+		
+		
+			for( final Entry<ArrayList<Integer>, DoubleElem> grr : hmm2.entrySet()  )
 			{
-				ArrayList<Integer> arr = grr.getKey();
+				if( ( Math.abs( grr.getValue().getVal() ) ) > 1E-8 )
+				{
+					ArrayList<Integer> arr = grr.getKey();
 			
-				ops.println( "************ " + ( arr.get( 0 ) ) + " // " + ( arr.get( 1 ) ) + " // " 
+					ops.println( "************ " + ( arr.get( 0 ) ) + " // " + ( arr.get( 1 ) ) + " // " 
 						+ ( arr.get( 2 ) ) + " // " + ( arr.get( 3 ) ) );
 			
-				ops.println( grr.getValue().getVal() );
+					ops.println( grr.getValue().getVal() );
+				}
 			}
 			
 		}
@@ -3171,7 +3174,7 @@ public void testStelemSimple() throws NotInvertibleException, MultiplicativeDist
 			
 			
 			if( /* ( arr.get( 0 ) == 0 ) && ( arr.get( 1 ) == 0 ) && 
-					( arr.get( 2 ) == 0 ) && ( arr.get( 3 ) == 0 ) */ /* true */ true )
+					( arr.get( 2 ) == 0 ) && ( arr.get( 3 ) == 0 ) */ /* true */ false )
 			{
 					
 				
