@@ -125,12 +125,12 @@ public class TestQuantB_NC_DR_Ncore extends TestCase {
 	/**
 	 * Arbitrary constant.
 	 */
-	private static final ComplexElem<DoubleElem,DoubleElemFactory> MM = genFromConst( 2.0 );
+	private static final ComplexElem<DoubleElem,DoubleElemFactory> MM = genFromConst( /* 2.0 */ 1000.0 );
 	
 	/**
 	 * Arbitrary constant.
 	 */
-	private static final ComplexElem<DoubleElem,DoubleElemFactory> CC = genFromConst( 0.4 );
+	private static final ComplexElem<DoubleElem,DoubleElemFactory> CC = genFromConst( /* 0.4 */ 0.05 );
 	
 	/**
 	 * Arbitrary constant.
@@ -265,29 +265,29 @@ public class TestQuantB_NC_DR_Ncore extends TestCase {
 	/**
 	 * The number of discretizations on the T-Axis over which to iterate.
 	 */
-	protected static final int NUM_T_ITER = 25; // 400; // 10; // IterConstants.LRG_ITER_T; // 400; // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	protected static final int NUM_T_ITER = 100; // 50; // 25 // 400; // 10; // IterConstants.LRG_ITER_T; // 400; // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	
 	/**
 	 * The number of discretizations on the X-Axis over which to iterate.
 	 */
-	protected static final int NUM_X_ITER = 10; // 50; // IterConstants.LRG_ITER_X; // 25
+	protected static final int NUM_X_ITER = 50; // 20; // 10 // 50; // IterConstants.LRG_ITER_X; // 25
 	
 	/**
 	 * The number of discretizations on the Y-Axis over which to iterate.
 	 */
-	protected static final int NUM_Y_ITER = 10; // 50; // IterConstants.LRG_ITER_Y; // 10
+	protected static final int NUM_Y_ITER = 50; // 20; // 10 // 50; // IterConstants.LRG_ITER_Y; // 10
 	
 	/**
 	 * The number of discretizations on the Z-Axis over which to iterate.
 	 */
-	protected static final int NUM_Z_ITER = 10; // 50; // IterConstants.LRG_ITER_Z; // 10
+	protected static final int NUM_Z_ITER = 50; // 20; // 10 // 50; // IterConstants.LRG_ITER_Z; // 10
 	
 	
 	
 	/**
 	 * Size of the T-Axis discretization.
 	 */
-	protected static final ComplexElem<DoubleElem,DoubleElemFactory> T_HH = genFromConst( 0.0001 /* 0.0025 */ ); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	protected static final ComplexElem<DoubleElem,DoubleElemFactory> T_HH = genFromConst( 0.0025 /* 0.0001 */ /* 0.0025 */ ); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	
 	/**
 	 * Size of the X-Axis discretization.
@@ -4647,7 +4647,9 @@ public class TestQuantB_NC_DR_Ncore extends TestCase {
 			
 			final int az = arr.get( 3 );
 			
-			if( ( at <= 4 ) && ( ax <= 4 ) && ( ay <= 4 ) && ( az <= 4 ) )
+			final int acnt = at + ax + ay + az;
+			
+			if( /* ( at <= 4 ) && ( ax <= 4 ) && ( ay <= 4 ) && ( az <= 4 ) */ acnt <= 5 )
 			{
 			
 				final SymbolicElem<SymbolicElem<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>,SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>,
