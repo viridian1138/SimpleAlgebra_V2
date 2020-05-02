@@ -258,6 +258,38 @@ public abstract class RawFileWriter
 	
 	/**
 	 * Calculates the maximum absolute value in the dataset.
+	 * @param t The T-index for which to calculate.
+	 * 
+	 * @throws Throwable
+	 */
+	public double calcMaxAbs( final int z , final int t ) throws Throwable
+	{
+		
+		final int Y_STRT = getYStrt();
+		final int Y_END = getYEnd();
+		
+		final int X_STRT = getXStrt();
+		final int X_END = getXEnd();
+		
+		
+		double dd = Math.abs( getVal( t , X_STRT , Y_STRT , z ) );
+		
+		
+		for( int y = Y_STRT ; y < Y_END ; y++ )
+		{
+			for( int x = X_STRT ; x < X_END ; x++ )
+			{
+				dd = Math.max( dd , Math.abs( getVal( t , x , y , z ) ) );
+			}
+		}
+		
+		return( dd );
+	}
+	
+	
+	
+	/**
+	 * Calculates the maximum absolute value in the dataset.
 	 * 
 	 * @throws Throwable
 	 */
