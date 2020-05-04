@@ -39,10 +39,10 @@ import simplealgebra.symbolic.SymbolicElem;
 import simplealgebra.symbolic.SymbolicElemFactory;
 
 /**
-* Factory for Einstein tensors as defined by the equation <math display="inline">
+* Factory for tensors with the equation <math display="inline">
 * <mrow>
 * <msub>
-*         <mi>G</mi>
+*         <mi>S</mi>
 *     <mrow>
 *       <mi>u</mi>
 *       <mi>v</mi>
@@ -51,14 +51,6 @@ import simplealgebra.symbolic.SymbolicElemFactory;
 * <mo>=</mo>
 * 
 *   <mrow>
-*     <msub>
-*             <mi>R</mi>
-*         <mrow>
-*           <mi>u</mi>
-*           <mi>v</mi>
-*         </mrow>
-*     </msub>
-*     <mo>-</mo>
 *     <mfrac>
 *       <mrow>
 *         <mn>1</mn>
@@ -144,11 +136,11 @@ public class QuantumConversionTestFactory<Z extends Object, U extends NumDimensi
 	
 	
 	/**
-	 * Constructs a factory for generating Einstein tensors.
+	 * Constructs a factory for generating the tensor.
 	 * 
 	 * @param _fac The factory for the enclosed type.
 	 * @param _metric A factory for generating metric tensors.
-	 * @param _temp A factory for generating temporary indices in the Einstein tensor.
+	 * @param _temp A factory for generating temporary indices in the tensor.
 	 * @param _deriv A factory for generating ordinary derivatives.
 	 */
 	public QuantumConversionTestFactory( EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, 
@@ -163,11 +155,11 @@ public class QuantumConversionTestFactory<Z extends Object, U extends NumDimensi
 	
 	
 	/**
-	 * Returns an expression for the Einstein tensor.
+	 * Returns an expression for generating the tensor.
 	 * 
 	 * @param u The tensor u index.
 	 * @param v The tensor v index.
-	 * @return An expression for the Einstein tensor.
+	 * @return An expression for the generated tensor.
 	 */
 	public SymbolicElem<EinsteinTensorElem<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>,EinsteinTensorElemFactory<Z, SymbolicElem<R, S>, SymbolicElemFactory<R, S>>> 
 		getEinsteinTensor( Z u , Z v )
