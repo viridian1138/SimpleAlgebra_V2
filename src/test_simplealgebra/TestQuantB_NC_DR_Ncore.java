@@ -231,6 +231,20 @@ public class TestQuantB_NC_DR_Ncore extends TestCase {
 	
 	
 	
+	private static final int XSST = 6;
+	
+	
+	private static final double DSSX = 10000.0;
+	
+	
+	private static final double ERATE = 20.0;
+	
+	
+	private static final double EPHASEB = 0.0;
+	
+	
+	
+	
 	
 	/**
 	 * Returns a complex-value scalar that is equal to the parameter value.
@@ -265,22 +279,22 @@ public class TestQuantB_NC_DR_Ncore extends TestCase {
 	/**
 	 * The number of discretizations on the T-Axis over which to iterate.
 	 */
-	protected static final int NUM_T_ITER = 100; // 50; // 25 // 400; // 10; // IterConstants.LRG_ITER_T; // 400; // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	protected static final int NUM_T_ITER = 200; // 100; // 50; // 25 // 400; // 10; // IterConstants.LRG_ITER_T; // 400; // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	
 	/**
 	 * The number of discretizations on the X-Axis over which to iterate.
 	 */
-	protected static final int NUM_X_ITER = 50; // 20; // 10 // 50; // IterConstants.LRG_ITER_X; // 25
+	protected static final int NUM_X_ITER = 100; // 50; // 20; // 10 // 50; // IterConstants.LRG_ITER_X; // 25
 	
 	/**
 	 * The number of discretizations on the Y-Axis over which to iterate.
 	 */
-	protected static final int NUM_Y_ITER = 50; // 20; // 10 // 50; // IterConstants.LRG_ITER_Y; // 10
+	protected static final int NUM_Y_ITER = 100; // 50; // 20; // 10 // 50; // IterConstants.LRG_ITER_Y; // 10
 	
 	/**
 	 * The number of discretizations on the Z-Axis over which to iterate.
 	 */
-	protected static final int NUM_Z_ITER = 50; // 20; // 10 // 50; // IterConstants.LRG_ITER_Z; // 10
+	protected static final int NUM_Z_ITER = 100; // 50; // 20; // 10 // 50; // IterConstants.LRG_ITER_Z; // 10
 	
 	
 	
@@ -955,11 +969,27 @@ public class TestQuantB_NC_DR_Ncore extends TestCase {
 		final int zv = zcnt + za;
 		double avRe = 0.0;
 		double avIm = 0.0;
-		if( ( tv >= 0 )  && ( xv >= 0 ) && ( yv >= 0 ) && ( zv >= 0 ) &&
-			( tv < NUM_T_ITER ) && ( xv < NUM_X_ITER ) && ( yv < NUM_Y_ITER ) && ( zv < NUM_Z_ITER )  )
+		final double dx = ( xv - HALF_X ) / RAD_X;
+		final double dy = ( yv - HALF_Y ) / RAD_Y;
+		final double dz = ( zv - HALF_Z ) / RAD_Z;
+		if( xv < XSST )
 		{
-			avRe = iterArrayRe.get( tv , xv , yv , zv );
-			avIm = iterArrayIm.get( tv , xv , yv , zv );;
+			avRe = DSSX * Math.cos( ERATE * tv / NUM_T_ITER );
+			avIm = DSSX * Math.sin( ERATE * tv / NUM_T_ITER );
+		}
+		else if( dx * dx + dy * dy + dz * dz < 1.0 )
+		{
+			avRe = DSSX * Math.cos( ERATE * tv / NUM_T_ITER + EPHASEB );
+			avIm = DSSX * Math.sin( ERATE * tv / NUM_T_ITER + EPHASEB );
+		}
+		else
+		{
+			if( ( tv >= 0 )  && ( xv >= 0 ) && ( yv >= 0 ) && ( zv >= 0 ) &&
+					( tv < NUM_T_ITER ) && ( xv < NUM_X_ITER ) && ( yv < NUM_Y_ITER ) && ( zv < NUM_Z_ITER )  )
+			{
+				avRe = iterArrayRe.get( tv , xv , yv , zv );
+				avIm = iterArrayIm.get( tv , xv , yv , zv );;
+			}
 		}
 		tempArrayRe[ ta + NSTPT ][ xa + NSTPX ][ ya + NSTPY ][ za + NSTPZ ] = avRe;
 		tempArrayIm[ ta + NSTPT ][ xa + NSTPX ][ ya + NSTPY ][ za + NSTPZ ] = avIm;
@@ -3812,17 +3842,24 @@ public class TestQuantB_NC_DR_Ncore extends TestCase {
 				final double dx = ( x - HALF_X ) / RAD_X;
 				final double dy = ( y - HALF_Y ) / RAD_Y;
 				final double dz = ( z - HALF_Z ) / RAD_Z;
-				if( dx * dx + dy * dy + dz * dz < 1.0 )
+				if( x < XSST )
 				{
-					final double mag = 10000.0 * ( d1 * d1 );
-					final double ph = PI2 * ( rrand.nextDouble() );
-					iterArrayRe.set( tcnt , x , y , z , mag * ( Math.cos( ph ) ) );
-					iterArrayIm.set( tcnt , x , y , z , mag * ( Math.sin( ph ) ) );
+					iterArrayRe.set( tcnt , x , y , z , DSSX * Math.cos( ERATE * tcnt / NUM_T_ITER ) );
+					iterArrayIm.set( tcnt , x , y , z , DSSX * Math.sin( ERATE * tcnt / NUM_T_ITER ) );
 				}
 				else
 				{
-					iterArrayRe.set( tcnt , x , y , z , 0.0 );
-					iterArrayIm.set( tcnt , x , y , z , 0.0 );
+					
+					if( dx * dx + dy * dy + dz * dz < 1.0 )
+					{
+						iterArrayRe.set( tcnt , x , y , z , DSSX * Math.cos( ERATE * tcnt / NUM_T_ITER + EPHASEB ) );
+						iterArrayIm.set( tcnt , x , y , z , DSSX * Math.sin( ERATE * tcnt / NUM_T_ITER + EPHASEB ) );
+					}
+					else
+					{
+						iterArrayRe.set( tcnt , x , y , z , 0.0 );
+						iterArrayIm.set( tcnt , x , y , z , 0.0 );
+					}
 				}
 				
 			}
@@ -4302,9 +4339,28 @@ public class TestQuantB_NC_DR_Ncore extends TestCase {
 											new DoubleElem( threadContext.getUpdateValueIm() ) );
 			
 			
+							ComplexElem<DoubleElem, DoubleElemFactory> err = ival;
+							
 		
-			
-							ComplexElem<DoubleElem, DoubleElemFactory> err = newton.eval( implicitSpace2 );
+							final double dx = ( im.getXcnt() - HALF_X ) / RAD_X;
+							final double dy = ( im.getYcnt() - HALF_Y ) / RAD_Y;
+							final double dz = ( im.getZcnt() - HALF_Z ) / RAD_Z;
+							if( im.getXcnt() < XSST )
+							{
+								threadContext.resetCorrectionValueRe( DSSX * Math.cos( ERATE * tval / NUM_T_ITER ) );
+								threadContext.resetCorrectionValueIm( DSSX * Math.sin( ERATE * tval / NUM_T_ITER ) );
+								threadContext.cacheIterationValue();
+							}
+							else if( dx * dx + dy * dy + dz * dz < 1.0 )
+							{
+								threadContext.resetCorrectionValueRe( DSSX * Math.cos( ERATE * tval / NUM_T_ITER + EPHASEB ) );
+								threadContext.resetCorrectionValueIm( DSSX * Math.sin( ERATE * tval / NUM_T_ITER + EPHASEB ) );
+								threadContext.cacheIterationValue();
+							}
+							else
+							{
+								err = newton.eval( implicitSpace2 );
+							}
 							
 							if( APPLY_NUMERICAL_VISCOSITY )
 							{

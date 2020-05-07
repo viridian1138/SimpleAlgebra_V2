@@ -66,22 +66,22 @@ public class TestPpmCplxPlneCutFileWriterAnim extends TestCase {
 	/**
 	 * The number of discretizations on the T-Axis.
 	 */
-	protected static final int NUM_T_ITER = 100; // IterConstants.LRG_ITER_T;
+	protected static final int NUM_T_ITER = 200; // 100; // IterConstants.LRG_ITER_T;
 	
 	/**
 	 * The number of discretizations on the X-Axis.
 	 */
-	protected static final int NUM_X_ITER = 50; // IterConstants.LRG_ITER_X;
+	protected static final int NUM_X_ITER = 100; // 50; // IterConstants.LRG_ITER_X;
 	
 	/**
 	 * The number of discretizations on the Y-Axis.
 	 */
-	protected static final int NUM_Y_ITER = 50; // IterConstants.LRG_ITER_Y;
+	protected static final int NUM_Y_ITER = 100; // 50; // IterConstants.LRG_ITER_Y;
 	
 	/**
 	 * The number of discretizations on the Z-Axis.
 	 */
-	protected static final int NUM_Z_ITER = 50; // IterConstants.LRG_ITER_Z;
+	protected static final int NUM_Z_ITER = 100; // 50; // IterConstants.LRG_ITER_Z;
 	
 
 	
@@ -199,19 +199,33 @@ public class TestPpmCplxPlneCutFileWriterAnim extends TestCase {
 			final double d0re = iterArrayRe.get(t, x, y, z);
 			final double d0im = iterArrayIm.get(t, x, y, z);
 			final double d0r = Math.sqrt( d0re * d0re + d0im * d0im );
-					
-			return( d0r / maxVal );
+			
+			if( ( d0r / maxVal ) < 1E-30 )
+			{
+				return( 0.0 );
 			}
+					
+			return( Math.log10( d0r / maxVal ) + 30.0 );
+		}
 		
 		protected void getValCplx( int t, int x, int y, int z , double maxVal , double[] out )
 				throws Throwable {
 
 			final double d0re = iterArrayRe.get(t, x, y, z);
 			final double d0im = iterArrayIm.get(t, x, y, z);
-					
-			out[ 0 ] = Math.abs( d0re ) / maxVal;
-			out[ 1 ] = Math.abs( d0im ) / maxVal;
+			final double d0r = Math.sqrt( d0re * d0re + d0im * d0im );
+			
+			if( ( d0r / maxVal ) < 1E-30 )
+			{
+				out[ 0 ] = 0.0;
+				out[ 1 ] = 0.0;
+				return;
 			}
+					
+			final double rv = Math.log10( d0r / maxVal ) + 30.0;
+			out[ 0 ] = ( d0re / d0r ) * rv;
+			out[ 1 ] = ( d0im / d0r ) * rv;
+		}
 
 		@Override
 		protected int getTStrt() {
@@ -318,6 +332,11 @@ public class TestPpmCplxPlneCutFileWriterAnim extends TestCase {
 			{
 				maxVal = 1.0;
 			}
+			
+			/* getValCplx( 35 , 8 , 8 , 8 , 1.0 , dval );
+			
+			System.out.println( "q1 " + dval[ 0]  );
+			System.out.println( "q2 " + dval[ 1]  ); */
 				
 			
 			for( int y = Y_STRT ; y < Y_END ; y++ )
