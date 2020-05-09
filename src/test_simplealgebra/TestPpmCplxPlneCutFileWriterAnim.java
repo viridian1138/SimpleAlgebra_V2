@@ -208,21 +208,23 @@ public class TestPpmCplxPlneCutFileWriterAnim extends TestCase {
 			return( Math.log10( d0r / maxVal ) + 30.0 );
 		}
 		
-		protected void getValCplx( int t, int x, int y, int z , double maxVal , double[] out )
+		protected void getValCplx( int t, int x, int y, int z , double minVal , double maxVal , double[] out )
 				throws Throwable {
 
 			final double d0re = iterArrayRe.get(t, x, y, z);
 			final double d0im = iterArrayIm.get(t, x, y, z);
 			final double d0r = Math.sqrt( d0re * d0re + d0im * d0im );
 			
-			if( ( d0r / maxVal ) < 1E-30 )
+			if( d0r < 1E-30 )
 			{
 				out[ 0 ] = 0.0;
 				out[ 1 ] = 0.0;
 				return;
 			}
-					
-			final double rv = Math.log10( d0r / maxVal ) + 30.0;
+
+			final double rva = Math.log10( d0r ) + 30.0;
+			double rv = ( rva - minVal ) / ( maxVal - minVal );
+			if( rv < 0.0 ) rv = 0.0;
 			out[ 0 ] = ( d0re / d0r ) * rv;
 			out[ 1 ] = ( d0im / d0r ) * rv;
 		}
@@ -265,6 +267,36 @@ public class TestPpmCplxPlneCutFileWriterAnim extends TestCase {
 		@Override
 		protected int getXEnd() {
 			return( NUM_X_ITER );
+		}
+		
+		
+		
+		public double calcMinAbs( final int z , final int t ) throws Throwable
+		{
+			
+			final int Y_STRT = getYStrt();
+			final int Y_END = getYEnd();
+			
+			final int X_STRT = getXStrt();
+			final int X_END = getXEnd();
+			
+			
+			double dd = 1E+60;
+			
+			
+			for( int y = Y_STRT ; y < Y_END ; y++ )
+			{
+				for( int x = X_STRT ; x < X_END ; x++ )
+				{
+					final double dval = Math.abs( getVal( t , x , y , z ) );
+					if( dval > 1E-30 )
+					{
+						dd = Math.min( dd , dval );
+					}
+				}
+			}
+			
+			return( dd );
 		}
 		
 		
@@ -325,6 +357,8 @@ public class TestPpmCplxPlneCutFileWriterAnim extends TestCase {
 			
 			
 			double maxVal = this.calcMaxAbs( z , t );
+			
+			double minVal = this.calcMinAbs( z , t );
 				
 			System.out.println( ">>>> " + maxVal );
 				
@@ -344,7 +378,7 @@ public class TestPpmCplxPlneCutFileWriterAnim extends TestCase {
 				for( int x = X_STRT ; x < X_END ; x++ )
 				{
 					// System.out.println( DV );
-					getValCplx( t , x , y , z , maxVal , dval );
+					getValCplx( t , x , y , z , minVal , maxVal , dval );
 							
 					int green = (int)( DV * dval[ 0 ] );
 					int blue = (int)( DV * dval[ 1 ] );
