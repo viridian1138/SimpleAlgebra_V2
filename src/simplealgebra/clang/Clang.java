@@ -62,6 +62,7 @@ import simplealgebra.symbolic.SymbolicZero;
  */
 public class Clang {
 	
+		
 	
 	/**
 	 * Class for storing individual variable names contributing to a complex number.

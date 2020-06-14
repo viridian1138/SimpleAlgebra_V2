@@ -57,12 +57,26 @@ public abstract class Clang_Cplx_Dbl extends SymbolicElem<ComplexElem<DoubleElem
 		super(_fac);
 	}
 	
+	/**
+	 * Evaluates the symbolic expression.  Results are placed in dvalRe and dvalIm.
+	 * 
+	 * @param implicitSpace The implicit space over which to evaluate the expression.
+	 * @throws NotInvertibleException
+	 * @throws MultiplicativeDistributionRequiredException
+	 */
 	public abstract void evalD(
 			HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace)
 			throws NotInvertibleException,
 			MultiplicativeDistributionRequiredException;
 	
+	/**
+	 * Stores real result of executing evalD().
+	 */
 	protected double dvalRe = 0.0;
+	
+	/**
+	 * Stores real result of executing evalD().
+	 */
 	protected double dvalIm = 0.0;
 
 	@Override

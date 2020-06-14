@@ -55,6 +55,14 @@ public abstract class Clang_Dbl extends SymbolicElem<DoubleElem, DoubleElemFacto
 		super(_fac);
 	}
 	
+	/**
+	 * Evaluates the symbolic expression.
+	 * 
+	 * @param implicitSpace The implicit space over which to evaluate the expression.
+	 * @return The result of the evaluation.
+	 * @throws NotInvertibleException
+	 * @throws MultiplicativeDistributionRequiredException
+	 */
 	public abstract double evalD(
 			HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace)
 			throws NotInvertibleException,
