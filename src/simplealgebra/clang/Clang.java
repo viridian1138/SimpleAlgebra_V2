@@ -110,7 +110,14 @@ public class Clang {
 	/**
 	 * Accumulated list of parameters for the constructor of the clang Elem.
 	 */
-	static ArrayList<Object> cnstParams;
+	static ArrayList<Object> cnstParamsOuter;
+	
+	
+	/**
+	 * Accumulated list of parameters for the constructor of the clang Elem.
+	 */
+	static ArrayList<Object> cnstParamsInner;
+	
 	
 	
 	/**
@@ -265,8 +272,8 @@ public class Clang {
 		final long memberNum = allocNum;
 		final String memberName = "m_" + memberNum;
 		jmemInst.println( "private SymbolicElem<DoubleElem,DoubleElemFactory> " + memberName + ";" );
-		jcnstInst.println( " , SymbolicElem<DoubleElem,DoubleElemFactory> _" + memberName );
-		jcimpInst.println( memberName + " = _" + memberName + ";" );
+		// jcnstInst.println( " , SymbolicElem<DoubleElem,DoubleElemFactory> _" + memberName );
+		jcimpInst.println( memberName + " = arr.get( " + ( cnstParamsInner.size() ) + " );" );
 		jlocmemInst.println( "jobject loc" + memberName + " = NULL;" );
 		
 		// jfldInst.println( "if( loc" + memberName + " == NULL )" );
@@ -281,7 +288,7 @@ public class Clang {
 		jfldInst.println( "   exit(1);" );
 		jfldInst.println( "}" );
 		
-		cnstParams.add( in );
+		cnstParamsInner.add( in );
 		allocNum++;
 		final String vNameZ = "t_" + allocNum;
 		psInst.println( "jobject " + vNameZ + " = env->CallObjectMethod( loc" + memberName + " , symEval , hsh );" );
@@ -442,8 +449,8 @@ public class Clang {
 		final long memberNum = allocNum;
 		final String memberName = "m_" + memberNum;
 		jmemInst.println( "private SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> " + memberName + ";" );
-		jcnstInst.println( " , SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> _" + memberName );
-		jcimpInst.println( memberName + " = _" + memberName + ";" );
+		// jcnstInst.println( " , SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> _" + memberName );
+		jcimpInst.println( memberName + " = arr.get( " + ( cnstParamsInner.size() ) + " );" );
 		jlocmemInst.println( "jobject loc" + memberName + " = NULL;" );
 		
 		// jfldInst.println( "if( loc" + memberName + " == NULL )" );
@@ -458,7 +465,7 @@ public class Clang {
 		jfldInst.println( "   exit(1);" );
 		jfldInst.println( "}" );
 		
-		cnstParams.add( in );
+		cnstParamsInner.add( in );
 		allocNum++;
 		final String vNameZ = "t_" + allocNum;
 		psInst.println( "jobject " + vNameZ + " = env->CallObjectMethod( loc" + memberName + " , symEval , hsh );" );
@@ -531,8 +538,10 @@ public class Clang {
 		final File fJfldInst = new File( tempDir , className + "F.txt" );
 		
 		
-		cnstParams = new ArrayList<Object>();
-		cnstParams.add( in.getFac().getFac() );
+		cnstParamsOuter = new ArrayList<Object>();
+		cnstParamsInner = new ArrayList<Object>();
+		cnstParamsOuter.add( in.getFac().getFac() );
+		cnstParamsOuter.add( cnstParamsInner );
 		psInst = new PrintStream( new FileOutputStream( fPsInst ) );
 		jmemInst = new PrintStream( new FileOutputStream( fJmemInst ) );
 		jcnstInst = new PrintStream( new FileOutputStream( fJcnstInst ) );
@@ -576,6 +585,7 @@ public class Clang {
 		ps.println( "public class " + className + " extends Clang_Dbl  {" );
 		ps.println( "" );
 		ps.println( "	public " + className + "(DoubleElemFactory _fac" );
+		ps.println( " , ArrayList<SymbolicElem<DoubleElem,DoubleElemFactory>> arr" );
 		
 		LineNumberReader li = new LineNumberReader( new FileReader( fJcnstInst ) );
 		String line = li.readLine();
@@ -800,8 +810,9 @@ public class Clang {
 		final Constructor<? extends SymbolicElem<DoubleElem,DoubleElemFactory>> cnst =
 				(Constructor<? extends SymbolicElem<DoubleElem,DoubleElemFactory>>)( ( clss.getConstructors() )[ 0 ] );
 		
-		final Object[] cparam = cnstParams.toArray();
-		cnstParams = null;
+		final Object[] cparam = cnstParamsOuter.toArray();
+		cnstParamsOuter = null;
+		cnstParamsInner = null;
 		
 		final SymbolicElem<DoubleElem,DoubleElemFactory> gen = cnst.newInstance( cparam );
 		
@@ -861,8 +872,10 @@ public class Clang {
 		final File fJfldInst= new File( tempDir , className + "F.txt" );
 		
 		
-		cnstParams = new ArrayList<Object>();
-		cnstParams.add( in.getFac().getFac() );
+		cnstParamsOuter = new ArrayList<Object>();
+		cnstParamsInner = new ArrayList<Object>();
+		cnstParamsOuter.add( in.getFac().getFac() );
+		cnstParamsOuter.add( cnstParamsInner );
 		psInst = new PrintStream( new FileOutputStream( fPsInst ) );
 		jmemInst = new PrintStream( new FileOutputStream( fJmemInst ) );
 		jcnstInst = new PrintStream( new FileOutputStream( fJcnstInst ) );
@@ -908,6 +921,7 @@ public class Clang {
 		ps.println( "public class " + className + " extends Clang_Cplx_Dbl  {" );
 		ps.println( "" );
 		ps.println( "	public " + className + "(ComplexElemFactory<DoubleElem,DoubleElemFactory> _fac" );
+		ps.println( " , ArrayList<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>> arr" );
 		
 		LineNumberReader li = new LineNumberReader( new FileReader( fJcnstInst ) );
 		String line = li.readLine();
@@ -1205,8 +1219,9 @@ public class Clang {
 		final Constructor<? extends SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>> cnst =
 				(Constructor<? extends SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>)( ( clss.getConstructors() )[ 0 ] );
 		
-		final Object[] cparam = cnstParams.toArray();
-		cnstParams = null;
+		final Object[] cparam = cnstParamsOuter.toArray();
+		cnstParamsOuter = null;
+		cnstParamsInner = null;
 		
 		final SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> gen = cnst.newInstance( cparam );
 		
