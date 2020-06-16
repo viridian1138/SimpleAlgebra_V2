@@ -38,7 +38,7 @@ public class JlangConstants {
 	 * Classpath to use for Javac compilation.
 	 * Modify this based on where SimpleAlgebra is being built.
 	 */
-	public static final String JLANG_SIMPLEALGEBRA_CLASSPATH = "/home/tgreen/workspace/workspace_simp_alg/SimpleAlgebraBuild/target/classes:.";
+	public static final String JLANG_SIMPLEALGEBRA_CLASSPATH = "/home/SimpleAlgebra/classes:.";
 	
 	/**
 	 * Command to run the Javac compiler.
