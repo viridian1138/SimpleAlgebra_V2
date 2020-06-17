@@ -102,6 +102,11 @@ public class Jlang {
 	static File tempDir = null;
 	
 	/**
+	 * ClassLoader for loading generated classes.
+	 */
+	static URLClassLoader ucl = null;
+	
+	/**
 	 * Allocation number used to assign unique IDs variables, classes, etc.
 	 */
 	static long allocNum = 0;
@@ -666,9 +671,12 @@ public class Jlang {
 		System.out.println( "Finished Javac." );
 		
 		
-		final URL tempUrl = tempDir.toURI().toURL();
-		final URL[] urls = { tempUrl };
-		URLClassLoader ucl = new URLClassLoader( urls );
+		if( ucl == null )
+		{
+			final URL tempUrl = tempDir.toURI().toURL();
+			final URL[] urls = { tempUrl };
+			ucl = new URLClassLoader( urls );
+		}
 		Class<? extends SymbolicElem<DoubleElem,DoubleElemFactory>> clss = 
 				(Class<? extends SymbolicElem<DoubleElem,DoubleElemFactory>>)( ucl.loadClass( className ) );
 		
@@ -874,9 +882,12 @@ public class Jlang {
 		System.out.println( "Finished Javac." );
 		
 		
-		final URL tempUrl = tempDir.toURI().toURL();
-		final URL[] urls = { tempUrl };
-		URLClassLoader ucl = new URLClassLoader( urls );
+		if( ucl == null )
+		{
+			final URL tempUrl = tempDir.toURI().toURL();
+			final URL[] urls = { tempUrl };
+			ucl = new URLClassLoader( urls );
+		}
 		Class<? extends SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>> clss = 
 				(Class<? extends SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>>)( ucl.loadClass( className ) );
 		
