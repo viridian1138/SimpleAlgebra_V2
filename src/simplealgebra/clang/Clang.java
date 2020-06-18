@@ -34,6 +34,7 @@ import java.lang.reflect.Constructor;
 import java.net.URL;
 import java.net.URLClassLoader;
 import java.util.ArrayList;
+import java.util.HashMap;
 
 import simplealgebra.ComplexElem;
 import simplealgebra.ComplexElemFactory;
@@ -155,6 +156,11 @@ public class Clang {
 	 */
 	static PrintStream jfldInst = null;
 	
+	/**
+	 * Map used to prevent redundant calculations by tracking re-use of SymbolicElems.
+	 */
+	static HashMap<SymbolicElem<?,?>,Object> reuseMap = null;
+	
 	
 	
 	
@@ -166,6 +172,10 @@ public class Clang {
 	 */
 	protected static String hndl_Dbl( SymbolicElem<DoubleElem,DoubleElemFactory> in ) throws Throwable
 	{
+		if( reuseMap.get( in ) != null )
+		{
+			return( (String)( reuseMap.get( in ) ) );
+		}
 		
 		if( in instanceof SymbolicZero )
 		{
@@ -188,6 +198,7 @@ public class Clang {
 			SymbolicNegate<DoubleElem,DoubleElemFactory> neg
 				= (SymbolicNegate<DoubleElem,DoubleElemFactory>) in;
 			String arg = hndl_Dbl( neg.getElem() );
+			reuseMap.put( neg.getElem() , arg );
 			allocNum++;
 			final String vName = "t_" + allocNum;
 			psInst.println( "const double " + vName + " = - " + arg + ";" );
@@ -199,7 +210,9 @@ public class Clang {
 			SymbolicAdd<DoubleElem,DoubleElemFactory> neg
 				= (SymbolicAdd<DoubleElem,DoubleElemFactory>) in;
 			String argA = hndl_Dbl( neg.getElemA() );
+			reuseMap.put( neg.getElemA() , argA );
 			String argB = hndl_Dbl( neg.getElemB() );
+			reuseMap.put( neg.getElemB() , argB );
 			allocNum++;
 			final String vName = "t_" + allocNum;
 			psInst.println( "const double " + vName + " = " + argA + " + " + argB + ";" );
@@ -211,7 +224,9 @@ public class Clang {
 			SymbolicMult<DoubleElem,DoubleElemFactory> neg
 				= (SymbolicMult<DoubleElem,DoubleElemFactory>) in;
 			String argA = hndl_Dbl( neg.getElemA() );
+			reuseMap.put( neg.getElemA() , argA );
 			String argB = hndl_Dbl( neg.getElemB() );
+			reuseMap.put( neg.getElemB() , argB );
 			allocNum++;
 			final String vName = "t_" + allocNum;
 			psInst.println( "const double " + vName + " = " + argA + " * " + argB + ";" );
@@ -223,6 +238,7 @@ public class Clang {
 			SymbolicDivideBy<DoubleElem,DoubleElemFactory> neg
 				= (SymbolicDivideBy<DoubleElem,DoubleElemFactory>) in;
 			String arg = hndl_Dbl( neg.getElem() );
+			reuseMap.put( neg.getElem() , arg );
 			allocNum++;
 			final String vName = "t_" + allocNum;
 			psInst.println( "const double " + vName + " = " + arg + " / " + ( neg.getIval() ) + "L;" );
@@ -234,6 +250,7 @@ public class Clang {
 			SymbolicInvertLeft<DoubleElem,DoubleElemFactory> neg
 				= (SymbolicInvertLeft<DoubleElem,DoubleElemFactory>) in;
 			String arg = hndl_Dbl( neg.getElem() );
+			reuseMap.put( neg.getElem() , arg );
 			allocNum++;
 			final String vName = "t_" + allocNum;
 			psInst.println( "const double " + vName + " = 1.0 / " + arg + ";" );
@@ -245,6 +262,7 @@ public class Clang {
 			SymbolicInvertRight<DoubleElem,DoubleElemFactory> neg
 				= (SymbolicInvertRight<DoubleElem,DoubleElemFactory>) in;
 			String arg = hndl_Dbl( neg.getElem() );
+			reuseMap.put( neg.getElem() , arg );
 			allocNum++;
 			final String vName = "t_" + allocNum;
 			psInst.println( "const double " + vName + " = 1.0 / " + arg + ";" );
@@ -265,6 +283,7 @@ public class Clang {
 			SymbolicAbsoluteValue<DoubleElem,DoubleElemFactory> neg
 				= (SymbolicAbsoluteValue<DoubleElem,DoubleElemFactory>) in;
 			String arg = hndl_Dbl( neg.getElem() );
+			reuseMap.put( neg.getElem() , arg );
 			allocNum++;
 			final String vName = "t_" + allocNum;
 			psInst.println( "const double " + vName + " = fabs( " + arg + " );" );
@@ -319,6 +338,11 @@ public class Clang {
 	 */
 	protected static CplxRec hndl_Cplx_Dbl( SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> in ) throws Throwable
 	{
+
+		if( reuseMap.get( in ) != null )
+		{
+			return( (CplxRec)( reuseMap.get( in ) ) );
+		}
 		
 		if( in instanceof SymbolicZero )
 		{
@@ -347,6 +371,7 @@ public class Clang {
 			SymbolicNegate<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> neg
 				= (SymbolicNegate<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>) in;
 			CplxRec arg = hndl_Cplx_Dbl( neg.getElem() );
+			reuseMap.put( neg.getElem() , arg );
 			allocNum++;
 			final String vNameRe = "t_" + allocNum;
 			psInst.println( "const double " + vNameRe + " = - " + arg.re + ";" );
@@ -361,7 +386,9 @@ public class Clang {
 			SymbolicAdd<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> neg
 				= (SymbolicAdd<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>) in;
 			CplxRec argA = hndl_Cplx_Dbl( neg.getElemA() );
+			reuseMap.put( neg.getElemA() , argA );
 			CplxRec argB = hndl_Cplx_Dbl( neg.getElemB() );
+			reuseMap.put( neg.getElemB() , argB );
 			allocNum++;
 			final String vNameRe = "t_" + allocNum;
 			psInst.println( "const double " + vNameRe + " = " + argA.re + " + " + argB.re + ";" );
@@ -376,7 +403,9 @@ public class Clang {
 			SymbolicMult<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> neg
 				= (SymbolicMult<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>) in;
 			CplxRec argA = hndl_Cplx_Dbl( neg.getElemA() );
+			reuseMap.put( neg.getElemA() , argA );
 			CplxRec argB = hndl_Cplx_Dbl( neg.getElemB() );
+			reuseMap.put( neg.getElemB() , argB );
 			allocNum++;
 			final String vNameRe = "t_" + allocNum;
 			psInst.println( "const double " + vNameRe + " = " + argA.re + " * " + argB.re 
@@ -393,6 +422,7 @@ public class Clang {
 			SymbolicDivideBy<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> neg
 				= (SymbolicDivideBy<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>) in;
 			CplxRec arg = hndl_Cplx_Dbl( neg.getElem() );
+			reuseMap.put( neg.getElem() , arg );
 			allocNum++;
 			final String vNameRe = "t_" + allocNum;
 			psInst.println( "const double " + vNameRe + " = " + arg.re + " / " + ( neg.getIval() ) + "L;" );
@@ -407,6 +437,7 @@ public class Clang {
 			SymbolicInvertLeft<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> neg
 				= (SymbolicInvertLeft<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>) in;
 			CplxRec arg = hndl_Cplx_Dbl( neg.getElem() );
+			reuseMap.put( neg.getElem() , arg );
 			allocNum++;
 			final String vNameConj = "t_" + allocNum;
 			psInst.println( "const double " + vNameConj + " = " + arg.re + " * " + arg.re + " + " + arg.im + " * " + arg.im + ";" );
@@ -424,6 +455,7 @@ public class Clang {
 			SymbolicInvertRight<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> neg
 				= (SymbolicInvertRight<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>) in;
 			CplxRec arg = hndl_Cplx_Dbl( neg.getElem() );
+			reuseMap.put( neg.getElem() , arg );
 			allocNum++;
 			final String vNameConj = "t_" + allocNum;
 			psInst.println( "const double " + vNameConj + " = " + arg.re + " * " + arg.re + " + " + arg.im + " * " + arg.im + ";" );
@@ -553,6 +585,7 @@ public class Clang {
 		jcimpInst = new PrintStream( new FileOutputStream( fJcimpInst ) );
 		jlocmemInst = new PrintStream( new FileOutputStream( fJlocmemInst ) );
 		jfldInst = new PrintStream( new FileOutputStream( fJfldInst ) );
+		reuseMap = new HashMap<SymbolicElem<?,?>,Object>();
 		final String vName = hndl_Dbl( in );
 		psInst.close();
 		jmemInst.close();
@@ -566,6 +599,7 @@ public class Clang {
 		jcimpInst = null;
 		jlocmemInst = null;
 		jfldInst = null;
+		reuseMap = null;
 		
 		
 		PrintStream ps = new PrintStream( new FileOutputStream( fjav ) );
@@ -890,6 +924,7 @@ public class Clang {
 		jcimpInst = new PrintStream( new FileOutputStream( fJcimpInst ) );
 		jlocmemInst = new PrintStream( new FileOutputStream( fJlocmemInst ) );
 		jfldInst = new PrintStream( new FileOutputStream( fJfldInst ) );
+		reuseMap = new HashMap<SymbolicElem<?,?>,Object>();
 		final CplxRec vNames = hndl_Cplx_Dbl( in );
 		psInst.close();
 		jmemInst.close();
@@ -903,6 +938,7 @@ public class Clang {
 		jcimpInst = null;
 		jlocmemInst = null;
 		jfldInst = null;
+		reuseMap = null;
 		
 		
 		PrintStream ps = new PrintStream( new FileOutputStream( fjav ) );
