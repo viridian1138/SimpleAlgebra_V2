@@ -295,16 +295,15 @@ public class Clang {
 		allocNum++;
 		final long memberNum = allocNum;
 		final String memberName = "m_" + memberNum;
-		jmemInst.println( "private SymbolicElem<DoubleElem,DoubleElemFactory> " + memberName + ";" );
+		// jmemInst.println( "private SymbolicElem<DoubleElem,DoubleElemFactory> " + memberName + ";" );
 		// jcnstInst.println( " , SymbolicElem<DoubleElem,DoubleElemFactory> _" + memberName );
-		jcimpInst.println( memberName + " = arr.get( " + ( cnstParamsInner.size() ) + " );" );
+		// jcimpInst.println( memberName + " = arr.get( " + ( cnstParamsInner.size() ) + " );" );
 		jlocmemInst.println( "jobject loc" + memberName + " = NULL;" );
 		
 		// jfldInst.println( "if( loc" + memberName + " == NULL )" );
 		jfldInst.println( "if( true )" );
 		jfldInst.println( "{" );
-		jfldInst.println( "   jfieldID fldID = env->GetFieldID( clangClass , \"" + memberName + "\" , \"Lsimplealgebra/symbolic/SymbolicElem;\" );" );
-		jfldInst.println( "   loc" + memberName + " = env->GetObjectField( ths , fldID );" );
+		jfldInst.println( "   loc" + memberName + " = env->GetObjectArrayElement( locnarr , " + cnstParamsInner.size() + " );" );
 		jfldInst.println( "}" );
 		jfldInst.println( "if( loc" + memberName + " == NULL )" );
 		jfldInst.println( "{" );
@@ -341,6 +340,7 @@ public class Clang {
 
 		if( reuseMap.get( in ) != null )
 		{
+			System.out.println( "Simplified !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!! " + in );
 			return( (CplxRec)( reuseMap.get( in ) ) );
 		}
 		
@@ -485,16 +485,15 @@ public class Clang {
 		allocNum++;
 		final long memberNum = allocNum;
 		final String memberName = "m_" + memberNum;
-		jmemInst.println( "private SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> " + memberName + ";" );
+		// jmemInst.println( "private SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> " + memberName + ";" );
 		// jcnstInst.println( " , SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> _" + memberName );
-		jcimpInst.println( memberName + " = arr.get( " + ( cnstParamsInner.size() ) + " );" );
+		// jcimpInst.println( memberName + " = arr.get( " + ( cnstParamsInner.size() ) + " );" );
 		jlocmemInst.println( "jobject loc" + memberName + " = NULL;" );
 		
 		// jfldInst.println( "if( loc" + memberName + " == NULL )" );
 		jfldInst.println( "if( true )" );
 		jfldInst.println( "{" );
-		jfldInst.println( "   jfieldID fldID = env->GetFieldID( clangClass , \"" + memberName + "\" , \"Lsimplealgebra/symbolic/SymbolicElem;\" );" );
-		jfldInst.println( "   loc" + memberName + " = env->GetObjectField( ths , fldID );" );
+		jfldInst.println( "   loc" + memberName + " = env->GetObjectArrayElement( locnarr , " + cnstParamsInner.size() + " );" );
 		jfldInst.println( "}" );
 		jfldInst.println( "if( loc" + memberName + " == NULL )" );
 		jfldInst.println( "{" );
@@ -637,6 +636,8 @@ public class Clang {
 		ps.println( " ) {" );
 		ps.println( "		super(_fac);" );
 		
+		ps.println( "final SymbolicElem<DoubleElem,DoubleElemFactory>[] tin = (SymbolicElem<DoubleElem,DoubleElemFactory>[])( new SymbolicElem[ 0 ] );" );
+		ps.println( "narr = arr.toArray( tin );" );
 		li = new LineNumberReader( new FileReader( fJcimpInst ) );
 		line = li.readLine();
 		while( line != null )
@@ -648,6 +649,7 @@ public class Clang {
 		ps.println( " }" );
 		ps.println( "" );
 		
+		ps.println( "SymbolicElem<DoubleElem,DoubleElemFactory>[] narr;" );
 		li = new LineNumberReader( new FileReader( fJmemInst ) );
 		line = li.readLine();
 		while( line != null )
@@ -715,6 +717,7 @@ public class Clang {
 		ps.println( "jmethodID symEval = NULL;" );
 		ps.println( "" );
 		
+		ps.println( "jobjectArray locnarr = NULL;" );
 		li = new LineNumberReader( new FileReader( fJlocmemInst ) );
 		line = li.readLine();
 		while( line != null )
@@ -783,6 +786,16 @@ public class Clang {
 		ps.println( "if( symEval == NULL )" );
 		ps.println( "{" );
 		ps.println( "   printf( \"Unable To Find symEval\\n\" );" );
+		ps.println( "   exit(1);" );
+		ps.println( "}" );
+		ps.println( "if( true )" );
+		ps.println( "{" );
+		ps.println( "   jfieldID fldID = env->GetFieldID( clangClass , \"narr\" , \"[Lsimplealgebra/symbolic/SymbolicElem;\" );" );
+		ps.println( "   locnarr = (jobjectArray)( env->GetObjectField( ths , fldID ) );" );
+		ps.println( "}" );
+		ps.println( "if( locnarr == NULL )" );
+		ps.println( "{" );
+		ps.println( "   printf( \"Unable To Find member narr\\n\" );" );
 		ps.println( "   exit(1);" );
 		ps.println( "}" );
 		
@@ -978,6 +991,8 @@ public class Clang {
 		ps.println( " ) {" );
 		ps.println( "		super(_fac);" );
 		
+		ps.println( "final SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>[] tin = (SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>[])( new SymbolicElem[ 0 ] );" );
+		ps.println( "narr = arr.toArray( tin );" );
 		li = new LineNumberReader( new FileReader( fJcimpInst ) );
 		line = li.readLine();
 		while( line != null )
@@ -989,6 +1004,7 @@ public class Clang {
 		ps.println( " }" );
 		ps.println( "" );
 		
+		ps.println( "SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>[] narr;" );
 		li = new LineNumberReader( new FileReader( fJmemInst ) );
 		line = li.readLine();
 		while( line != null )
@@ -1061,6 +1077,7 @@ public class Clang {
 		ps.println( "jfieldID dvalIm = NULL;" );
 		ps.println( "" );
 		
+		ps.println( "jobjectArray locnarr = NULL;" );
 		li = new LineNumberReader( new FileReader( fJlocmemInst ) );
 		line = li.readLine();
 		while( line != null )
@@ -1161,6 +1178,16 @@ public class Clang {
 		ps.println( "if( symEval == NULL )" );
 		ps.println( "{" );
 		ps.println( "   printf( \"Unable To Find symEval\\n\" );" );
+		ps.println( "   exit(1);" );
+		ps.println( "}" );
+		ps.println( "if( true )" );
+		ps.println( "{" );
+		ps.println( "   jfieldID fldID = env->GetFieldID( clangClass , \"narr\" , \"[Lsimplealgebra/symbolic/SymbolicElem;\" );" );
+		ps.println( "   locnarr = (jobjectArray)( env->GetObjectField( ths , fldID ) );" );
+		ps.println( "}" );
+		ps.println( "if( locnarr == NULL )" );
+		ps.println( "{" );
+		ps.println( "   printf( \"Unable To Find member narr\\n\" );" );
 		ps.println( "   exit(1);" );
 		ps.println( "}" );
 		
