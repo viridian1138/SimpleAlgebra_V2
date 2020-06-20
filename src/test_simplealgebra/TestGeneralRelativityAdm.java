@@ -1818,7 +1818,51 @@ private static class CoeffNode
 				return( symbolicCompareIndex( bn ) );
 			}
 			return( false );
+		}		
+		@Override
+		public boolean equals( Object b )
+		{
+			if( b instanceof BNelemMetric )
+			{
+				BNelemMetric bn = (BNelemMetric) b;
+				if( coord.keySet().size() != bn.coord.keySet().size() )
+				{
+					return( false );
+				}
+				for( Entry<Ordinate,BigInteger> ii : coord.entrySet() )
+				{
+					Ordinate key = ii.getKey();
+					BigInteger ka = ii.getValue();
+					BigInteger kb = bn.coord.get( key );
+					if( ( ka == null ) || ( kb == null ) )
+					{
+						return( false );
+					}
+					if( !( ka.equals( kb ) ) )
+					{
+						return( false );
+					}
+				}
+				return( true );
+			}
+			return( false );
 		}
+		
+		
+		@Override 
+		public int hashCode()
+		{
+			int sum = 0;
+			for( Entry<Ordinate,BigInteger> ii : coord.entrySet() )
+			{
+				Ordinate key = ii.getKey();
+				BigInteger ka = ii.getValue();
+				sum += key.hashCode();
+				sum += ka.hashCode();
+			}
+			return( sum );
+		}
+		
 		
 	}
 	
@@ -2018,6 +2062,51 @@ private static class CoeffNode
 			}
 			return( false );
 		}
+		
+		@Override
+		public boolean equals( Object b )
+		{
+			if( b instanceof BNelemConjugateMomentum )
+			{
+				BNelemConjugateMomentum bn = (BNelemConjugateMomentum) b;
+				if( coord.keySet().size() != bn.coord.keySet().size() )
+				{
+					return( false );
+				}
+				for( Entry<Ordinate,BigInteger> ii : coord.entrySet() )
+				{
+					Ordinate key = ii.getKey();
+					BigInteger ka = ii.getValue();
+					BigInteger kb = bn.coord.get( key );
+					if( ( ka == null ) || ( kb == null ) )
+					{
+						return( false );
+					}
+					if( !( ka.equals( kb ) ) )
+					{
+						return( false );
+					}
+				}
+				return( true );
+			}
+			return( false );
+		}
+		
+		
+		@Override 
+		public int hashCode()
+		{
+			int sum = 0;
+			for( Entry<Ordinate,BigInteger> ii : coord.entrySet() )
+			{
+				Ordinate key = ii.getKey();
+				BigInteger ka = ii.getValue();
+				sum += key.hashCode();
+				sum += ka.hashCode();
+			}
+			return( sum );
+		}
+		
 		
 	}
 	

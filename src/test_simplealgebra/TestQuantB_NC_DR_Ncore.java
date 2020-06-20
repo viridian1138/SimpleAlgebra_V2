@@ -49,7 +49,7 @@ import simplealgebra.NotInvertibleException;
 import simplealgebra.NumDimensions;
 import simplealgebra.WriteBigIntegerCache;
 import simplealgebra.WriteElemCache;
-import simplealgebra.algo.NewtonRaphsonSingleElem;
+import simplealgebra.algo.NewtonRaphsonSingleElemCompiled;
 import simplealgebra.algo.SimplificationType;
 import simplealgebra.constants.CpuInfo;
 import simplealgebra.ddx.DirectionalDerivativePartialFactory;
@@ -2579,6 +2579,50 @@ public class TestQuantB_NC_DR_Ncore extends TestCase {
 			return( false );
 		}
 		
+		@Override
+		public boolean equals( Object b )
+		{
+			if( b instanceof BNelem )
+			{
+				BNelem bn = (BNelem) b;
+				if( coord.keySet().size() != bn.coord.keySet().size() )
+				{
+					return( false );
+				}
+				for( Entry<Ordinate,BigInteger> ii : coord.entrySet() )
+				{
+					Ordinate key = ii.getKey();
+					BigInteger ka = ii.getValue();
+					BigInteger kb = bn.coord.get( key );
+					if( ( ka == null ) || ( kb == null ) )
+					{
+						return( false );
+					}
+					if( !( ka.equals( kb ) ) )
+					{
+						return( false );
+					}
+				}
+				return( true );
+			}
+			return( false );
+		}
+		
+		
+		@Override 
+		public int hashCode()
+		{
+			int sum = 0;
+			for( Entry<Ordinate,BigInteger> ii : coord.entrySet() )
+			{
+				Ordinate key = ii.getKey();
+				BigInteger ka = ii.getValue();
+				sum += key.hashCode();
+				sum += ka.hashCode();
+			}
+			return( sum );
+		}
+		
 		
 	}
 	
@@ -3655,7 +3699,7 @@ public class TestQuantB_NC_DR_Ncore extends TestCase {
 	 * @author thorngreen
 	 *
 	 */
-	protected static class StelemNewton extends NewtonRaphsonSingleElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
+	protected static class StelemNewton extends NewtonRaphsonSingleElemCompiled<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
 	{
 
 		/**
@@ -3759,7 +3803,7 @@ public class TestQuantB_NC_DR_Ncore extends TestCase {
 		}
 		
 		@Override
-		public NewtonRaphsonSingleElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> cloneThreadCached(
+		public NewtonRaphsonSingleElemCompiled<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>> cloneThreadCached(
 				CloneThreadCache<SymbolicElem<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>, SymbolicElemFactory<SymbolicElem<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<ComplexElem<DoubleElem, DoubleElemFactory>, ComplexElemFactory<DoubleElem, DoubleElemFactory>>>> cache,
 				CloneThreadCache<?, ?> cacheImplicit, BigInteger threadIndex) {
 			throw( new RuntimeException( "Not Supported" ) );
