@@ -634,10 +634,8 @@ public class Clang {
 		}
 		li.close();
 		ps.println( " ) {" );
-		ps.println( "		super(_fac);" );
+		ps.println( "		super(_fac, arr);" );
 		
-		ps.println( "final SymbolicElem<DoubleElem,DoubleElemFactory>[] tin = (SymbolicElem<DoubleElem,DoubleElemFactory>[])( new SymbolicElem[ 0 ] );" );
-		ps.println( "narr = arr.toArray( tin );" );
 		li = new LineNumberReader( new FileReader( fJcimpInst ) );
 		line = li.readLine();
 		while( line != null )
@@ -649,7 +647,6 @@ public class Clang {
 		ps.println( " }" );
 		ps.println( "" );
 		
-		ps.println( "SymbolicElem<DoubleElem,DoubleElemFactory>[] narr;" );
 		li = new LineNumberReader( new FileReader( fJmemInst ) );
 		line = li.readLine();
 		while( line != null )
@@ -662,7 +659,7 @@ public class Clang {
 		ps.println( "	@Override" );
 		// ps.println( "	public native DoubleElem eval(" );
 		ps.println( "	public native double evalD(" );
-		ps.println( "			HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace )" );
+		ps.println( "			HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace , SymbolicElem<DoubleElem, DoubleElemFactory>[] dvals )" );
 		ps.println( "			throws NotInvertibleException," );
 		ps.println( "			MultiplicativeDistributionRequiredException;" );
 		ps.println( "" );
@@ -717,7 +714,6 @@ public class Clang {
 		ps.println( "jmethodID symEval = NULL;" );
 		ps.println( "" );
 		
-		ps.println( "jobjectArray locnarr = NULL;" );
 		li = new LineNumberReader( new FileReader( fJlocmemInst ) );
 		line = li.readLine();
 		while( line != null )
@@ -729,7 +725,7 @@ public class Clang {
 		ps.println( "" );
 		// ps.println( "JNIEXPORT jobject JNICALL Java_Clang_1" + clangAlloc + "_eval" );
 		ps.println( "JNIEXPORT jdouble JNICALL Java_Clang_1" + clangAlloc + "_evalD" );
-		ps.println( "  (JNIEnv *env, jobject ths, jobject hsh)" );
+		ps.println( "  (JNIEnv *env, jobject ths, jobject hsh, jobjectArray locnarr)" );
 		ps.println( "{" );
 		ps.println( "" );
 		// ps.println( "if( clangClass == NULL )" );
@@ -786,16 +782,6 @@ public class Clang {
 		ps.println( "if( symEval == NULL )" );
 		ps.println( "{" );
 		ps.println( "   printf( \"Unable To Find symEval\\n\" );" );
-		ps.println( "   exit(1);" );
-		ps.println( "}" );
-		ps.println( "if( true )" );
-		ps.println( "{" );
-		ps.println( "   jfieldID fldID = env->GetFieldID( clangClass , \"narr\" , \"[Lsimplealgebra/symbolic/SymbolicElem;\" );" );
-		ps.println( "   locnarr = (jobjectArray)( env->GetObjectField( ths , fldID ) );" );
-		ps.println( "}" );
-		ps.println( "if( locnarr == NULL )" );
-		ps.println( "{" );
-		ps.println( "   printf( \"Unable To Find member narr\\n\" );" );
 		ps.println( "   exit(1);" );
 		ps.println( "}" );
 		
@@ -989,10 +975,8 @@ public class Clang {
 		}
 		li.close();
 		ps.println( " ) {" );
-		ps.println( "		super(_fac);" );
+		ps.println( "		super(_fac, arr);" );
 		
-		ps.println( "final SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>[] tin = (SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>[])( new SymbolicElem[ 0 ] );" );
-		ps.println( "narr = arr.toArray( tin );" );
 		li = new LineNumberReader( new FileReader( fJcimpInst ) );
 		line = li.readLine();
 		while( line != null )
@@ -1004,7 +988,6 @@ public class Clang {
 		ps.println( " }" );
 		ps.println( "" );
 		
-		ps.println( "SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>[] narr;" );
 		li = new LineNumberReader( new FileReader( fJmemInst ) );
 		line = li.readLine();
 		while( line != null )
@@ -1016,7 +999,7 @@ public class Clang {
 		ps.println( "" );
 		ps.println( "	@Override" );
 		ps.println( "	public native void evalD(" );
-		ps.println( "			HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace )" );
+		ps.println( "			HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace , SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>[] dvals )" );
 		ps.println( "			throws NotInvertibleException," );
 		ps.println( "			MultiplicativeDistributionRequiredException;" );
 		ps.println( "" );
@@ -1077,7 +1060,6 @@ public class Clang {
 		ps.println( "jfieldID dvalIm = NULL;" );
 		ps.println( "" );
 		
-		ps.println( "jobjectArray locnarr = NULL;" );
 		li = new LineNumberReader( new FileReader( fJlocmemInst ) );
 		line = li.readLine();
 		while( line != null )
@@ -1088,7 +1070,7 @@ public class Clang {
 		li.close();
 		ps.println( "" );
 		ps.println( "JNIEXPORT void JNICALL Java_Clang_1" + clangAlloc + "_evalD" );
-		ps.println( "  (JNIEnv *env, jobject ths, jobject hsh)" );
+		ps.println( "  (JNIEnv *env, jobject ths, jobject hsh, jobjectArray locnarr)" );
 		ps.println( "{" );
 		ps.println( "" );
 		// ps.println( "if( clangClass == NULL )" );
@@ -1178,16 +1160,6 @@ public class Clang {
 		ps.println( "if( symEval == NULL )" );
 		ps.println( "{" );
 		ps.println( "   printf( \"Unable To Find symEval\\n\" );" );
-		ps.println( "   exit(1);" );
-		ps.println( "}" );
-		ps.println( "if( true )" );
-		ps.println( "{" );
-		ps.println( "   jfieldID fldID = env->GetFieldID( clangClass , \"narr\" , \"[Lsimplealgebra/symbolic/SymbolicElem;\" );" );
-		ps.println( "   locnarr = (jobjectArray)( env->GetObjectField( ths , fldID ) );" );
-		ps.println( "}" );
-		ps.println( "if( locnarr == NULL )" );
-		ps.println( "{" );
-		ps.println( "   printf( \"Unable To Find member narr\\n\" );" );
 		ps.println( "   exit(1);" );
 		ps.println( "}" );
 		

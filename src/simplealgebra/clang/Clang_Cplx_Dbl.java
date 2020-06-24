@@ -53,9 +53,13 @@ public abstract class Clang_Cplx_Dbl extends SymbolicElem<ComplexElem<DoubleElem
 	 * Constructor.
 	 * @param _fac Input factory.
 	 */
-	public Clang_Cplx_Dbl(ComplexElemFactory<DoubleElem, DoubleElemFactory> _fac) {
+	public Clang_Cplx_Dbl(ComplexElemFactory<DoubleElem, DoubleElemFactory> _fac , ArrayList<SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>> _dvs ) {
 		super(_fac);
+		final SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>[] tin = (SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>[])( new SymbolicElem[ 0 ] );
+		dvs = _dvs.toArray( tin );
 	}
+	
+	protected SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>[] dvs;
 	
 	/**
 	 * Evaluates the symbolic expression.  Results are placed in dvalRe and dvalIm.
@@ -65,7 +69,7 @@ public abstract class Clang_Cplx_Dbl extends SymbolicElem<ComplexElem<DoubleElem
 	 * @throws MultiplicativeDistributionRequiredException
 	 */
 	public abstract void evalD(
-			HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace)
+			HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace , SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>[] dvals )
 			throws NotInvertibleException,
 			MultiplicativeDistributionRequiredException;
 	
@@ -85,7 +89,7 @@ public abstract class Clang_Cplx_Dbl extends SymbolicElem<ComplexElem<DoubleElem
 			throws NotInvertibleException,
 			MultiplicativeDistributionRequiredException
 	{
-		evalD( implicitSpace );
+		evalD( implicitSpace , dvs );
 		final DoubleElem dre = new DoubleElem( dvalRe );
 		final DoubleElem dim = new DoubleElem( dvalIm );
 		return( new ComplexElem<DoubleElem, DoubleElemFactory>( dre , dim ) );

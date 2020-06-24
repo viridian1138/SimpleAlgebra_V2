@@ -51,9 +51,13 @@ public abstract class Clang_Dbl extends SymbolicElem<DoubleElem, DoubleElemFacto
 	 * Constructor.
 	 * @param _fac Input factory.
 	 */
-	public Clang_Dbl(DoubleElemFactory _fac) {
+	public Clang_Dbl(DoubleElemFactory _fac , ArrayList<SymbolicElem<DoubleElem, DoubleElemFactory>> _dvs ) {
 		super(_fac);
+		final SymbolicElem<DoubleElem,DoubleElemFactory>[] tin = (SymbolicElem<DoubleElem,DoubleElemFactory>[])( new SymbolicElem[ 0 ] );
+		dvs = _dvs.toArray( tin );
 	}
+	
+	protected SymbolicElem<DoubleElem, DoubleElemFactory>[] dvs;
 	
 	/**
 	 * Evaluates the symbolic expression.
@@ -64,7 +68,7 @@ public abstract class Clang_Dbl extends SymbolicElem<DoubleElem, DoubleElemFacto
 	 * @throws MultiplicativeDistributionRequiredException
 	 */
 	public abstract double evalD(
-			HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace)
+			HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace , SymbolicElem<DoubleElem, DoubleElemFactory>[] dvals )
 			throws NotInvertibleException,
 			MultiplicativeDistributionRequiredException;
 
@@ -74,7 +78,7 @@ public abstract class Clang_Dbl extends SymbolicElem<DoubleElem, DoubleElemFacto
 			throws NotInvertibleException,
 			MultiplicativeDistributionRequiredException
 	{
-		final double dd = evalD( implicitSpace );
+		final double dd = evalD( implicitSpace , dvs );
 		return( new DoubleElem( dd ) );
 	}
 
