@@ -2426,6 +2426,10 @@ public class TestQuantB_NC_DR_Ncore extends TestCase {
 		 */
 		protected TestQuantB_NC_DR_Ncore.IterationThreadContext threadContext;
 		
+		protected double[][][][] tempArrayRe;
+		protected double[][][][] tempArrayIm;
+		protected int[][][][] spatialAssertArray;
+		
 		/**
 		 * Constructs the elem.
 		 * 
@@ -2435,6 +2439,9 @@ public class TestQuantB_NC_DR_Ncore extends TestCase {
 		public BNelem(ComplexElemFactory<DoubleElem,DoubleElemFactory> _fac, HashMap<Ordinate, BigInteger> _coord, int _threadIndex ) {
 			super(_fac, _coord);
 			threadContext = iterationThreadContexts[ _threadIndex ];
+			tempArrayRe = threadContext.tempArrayRe;
+			tempArrayIm = threadContext.tempArrayIm;
+			spatialAssertArray = threadContext.spatialAssertArray;
 		}
 		
 		
@@ -2449,35 +2456,43 @@ public class TestQuantB_NC_DR_Ncore extends TestCase {
 		 */
 		protected final boolean[] assertCols = new boolean[ 4 ];
 		
+		protected double[] idvRe = null;
+		
+		protected double[] idvIm = null;
+		
 
 		@Override
 		public ComplexElem<DoubleElem,DoubleElemFactory> eval(HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace)
 				throws NotInvertibleException,
 				MultiplicativeDistributionRequiredException {
+	if( idvRe == null ) {
 			cols[ 0 ] = 0;
 			cols[ 1 ] = 0;
 			cols[ 2 ] = 0;
 			cols[ 3 ] = 0;
-			assertCols[ 0 ] = false;
-			assertCols[ 1 ] = false;
-			assertCols[ 2 ] = false;
-			assertCols[ 3 ] = false;
-			Assert.assertTrue( coord.keySet().size() == 4 );
+//			assertCols[ 0 ] = false;
+//			assertCols[ 1 ] = false;
+//			assertCols[ 2 ] = false;
+//			assertCols[ 3 ] = false;
+//			Assert.assertTrue( coord.keySet().size() == 4 );
 			for( Entry<Ordinate,BigInteger> ii : coord.entrySet() )
 			{
 				Ordinate keyCoord = ii.getKey();
 				BigInteger coordVal = ii.getValue();
 				final int offset = keyCoord.getCol() == 3 ? NSTPZ : keyCoord.getCol() == 2 ? NSTPY : keyCoord.getCol() == 1 ? NSTPX : NSTPT;
 				cols[ keyCoord.getCol() ] = coordVal.intValue() + offset;
-				assertCols[ keyCoord.getCol() ] = true;
+//				assertCols[ keyCoord.getCol() ] = true;
 			}
-			( threadContext.spatialAssertArray[ cols[ 0 ] ][ cols[ 1 ] ][ cols[ 2 ] ][ cols[ 3 ] ] )++;
-			Assert.assertTrue( assertCols[ 0 ] );
-			Assert.assertTrue( assertCols[ 1 ] );
-			Assert.assertTrue( assertCols[ 2 ] );
-			Assert.assertTrue( assertCols[ 3 ] );
-			final DoubleElem re = new DoubleElem( threadContext.tempArrayRe[ cols[ 0 ] ][ cols[ 1 ] ][ cols[ 2 ] ][ cols[ 3 ] ] );
-			final DoubleElem im = new DoubleElem( threadContext.tempArrayIm[ cols[ 0 ] ][ cols[ 1 ] ][ cols[ 2 ] ][ cols[ 3 ] ] );
+			( spatialAssertArray[ cols[ 0 ] ][ cols[ 1 ] ][ cols[ 2 ] ][ cols[ 3 ] ] )++;
+//			Assert.assertTrue( assertCols[ 0 ] );
+//			Assert.assertTrue( assertCols[ 1 ] );
+//			Assert.assertTrue( assertCols[ 2 ] );
+//			Assert.assertTrue( assertCols[ 3 ] );
+	idvRe = tempArrayRe[ cols[ 0 ] ][ cols[ 1 ] ][ cols[ 2 ] ];
+	idvIm = tempArrayIm[ cols[ 0 ] ][ cols[ 1 ] ][ cols[ 2 ] ];
+	}
+			final DoubleElem re = new DoubleElem( idvRe[ cols[ 3 ] ] );
+			final DoubleElem im = new DoubleElem( idvIm[ cols[ 3 ] ] );
 			return( new ComplexElem<DoubleElem,DoubleElemFactory>( re , im ) );
 		}
 		
@@ -2501,6 +2516,9 @@ public class TestQuantB_NC_DR_Ncore extends TestCase {
 			super( in , threadIndex );
 			final int threadInd = threadIndex.intValue();
 			threadContext = iterationThreadContexts[ threadInd ];
+			tempArrayRe = threadContext.tempArrayRe;
+			tempArrayIm = threadContext.tempArrayIm;
+			spatialAssertArray = threadContext.spatialAssertArray;
 		}
 		
 		
@@ -2578,6 +2596,7 @@ public class TestQuantB_NC_DR_Ncore extends TestCase {
 			}
 			return( false );
 		}
+		
 		
 		@Override
 		public boolean equals( Object b )
