@@ -76,8 +76,8 @@ public class Clang {
 		
 		/**
 		 * Constructor.
-		 * @param _re
-		 * @param _im
+		 * @param _re Variable name for real value.
+		 * @param _im Variable name for imaginary value.
 		 */
 		public CplxRec( String _re , String _im )
 		{
@@ -166,7 +166,7 @@ public class Clang {
 	
 	/**
 	 * Handles a particular Elem of type SymbolicElem<DoubleElem,DoubleElemFactory>
-	 * @param in The Elem to be handles.
+	 * @param in The Elem to be handled.
 	 * @return The generated clang variable name for the Elem.
 	 * @throws Throwable
 	 */
@@ -331,7 +331,7 @@ public class Clang {
 	
 	/**
 	 * Handles a particular Elem of type SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
-	 * @param in The Elem to be handles.
+	 * @param in The Elem to be handled.
 	 * @return The generated clang variable names for the Elem.
 	 * @throws Throwable
 	 */

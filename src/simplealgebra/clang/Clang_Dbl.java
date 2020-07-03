@@ -50,6 +50,7 @@ public abstract class Clang_Dbl extends SymbolicElem<DoubleElem, DoubleElemFacto
 	/**
 	 * Constructor.
 	 * @param _fac Input factory.
+	 * @param _dvs Array of elems to be evaluated by the compiled code.
 	 */
 	public Clang_Dbl(DoubleElemFactory _fac , ArrayList<SymbolicElem<DoubleElem, DoubleElemFactory>> _dvs ) {
 		super(_fac);
@@ -57,12 +58,16 @@ public abstract class Clang_Dbl extends SymbolicElem<DoubleElem, DoubleElemFacto
 		dvs = _dvs.toArray( tin );
 	}
 	
+	/**
+	 * Array of elems to be evaluated by the compiled code.
+	 */
 	protected SymbolicElem<DoubleElem, DoubleElemFactory>[] dvs;
 	
 	/**
 	 * Evaluates the symbolic expression.
 	 * 
 	 * @param implicitSpace The implicit space over which to evaluate the expression.
+	 * @param dvals Array of elems to be evaluated by the compiled code.
 	 * @return The result of the evaluation.
 	 * @throws NotInvertibleException
 	 * @throws MultiplicativeDistributionRequiredException

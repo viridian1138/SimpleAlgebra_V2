@@ -37,7 +37,7 @@ import simplealgebra.symbolic.SymbolicElem;
 
 
 /**
- * Class for converting some symbolic expressions to Clang (C Language) native code
+ * Class for converting some symbolic expressions to Jlang (Java Language) bytecode
  * for execution-time performance optimization.
  * 
  * @author tgreen
@@ -53,9 +53,9 @@ public class JlangCompile<R extends Elem<R,?>, S extends ElemFactory<R,S>> {
 	
 	
 	/**
-	 * Attempts to convert a SymbolicElem to clang.
+	 * Attempts to convert a SymbolicElem to jlang.
 	 * @param in The SymbolicElem to be converted.
-	 * @return The clang-converted SymbolicElem, or the original SymbolicElem if clang-conversion failed.
+	 * @return The jlang-converted SymbolicElem, or the original SymbolicElem if jlang-conversion failed.
 	 */
 	public SymbolicElem<R,S> attemptJlangCompile( SymbolicElem<R,S> in )
 	{

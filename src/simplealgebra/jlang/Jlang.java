@@ -56,7 +56,7 @@ import simplealgebra.symbolic.SymbolicZero;
 
 
 /**
- * Class for converting some symbolic expressions to Jlang (C Language) native code
+ * Class for converting some symbolic expressions to Jlang (Java Language) bytecode
  * for execution-time performance optimization.
  * 
  * @author tgreen
@@ -77,8 +77,8 @@ public class Jlang {
 		
 		/**
 		 * Constructor.
-		 * @param _re
-		 * @param _im
+		 * @param _re Variable name for real value.
+		 * @param _im Variable name for imaginary value.
 		 */
 		public CplxRec( String _re , String _im )
 		{
@@ -167,7 +167,7 @@ public class Jlang {
 	
 	/**
 	 * Handles a particular Elem of type SymbolicElem<DoubleElem,DoubleElemFactory>
-	 * @param in The Elem to be handles.
+	 * @param in The Elem to be handled.
 	 * @return The generated jlang variable name for the Elem.
 	 * @throws Throwable
 	 */
@@ -333,7 +333,7 @@ public class Jlang {
 	
 	/**
 	 * Handles a particular Elem of type SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
-	 * @param in The Elem to be handles.
+	 * @param in The Elem to be handled.
 	 * @return The generated jlang variable names for the Elem.
 	 * @throws Throwable
 	 */
@@ -342,6 +342,7 @@ public class Jlang {
 
 		if( reuseMap.get( in ) != null )
 		{
+			System.out.println( "Got Reuse!!!!!!!!!!!!!!!! " + in );
 			return( (CplxRec)( reuseMap.get( in ) ) );
 		}
 		
