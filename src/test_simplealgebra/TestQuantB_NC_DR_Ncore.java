@@ -230,16 +230,24 @@ public class TestQuantB_NC_DR_Ncore extends TestCase {
 	
 	
 	
-	
+	/**
+	 * The start voxel location of the flat initial condition.
+	 */
 	private static final int XSST = 6;
 	
-	
+	/**
+	 * The amplitude of the initial condition phase oscillations.
+	 */
 	private static final double DSSX = 10000.0;
 	
-	
+	/**
+	 * The phase rate of the initial conditions in radians over the full NUM_T_ITER.
+	 */
 	private static final double ERATE = 20.0;
 	
-	
+	/**
+	 * The phase offset of the second initial condition in radians.
+	 */
 	private static final double EPHASEB = 0.0;
 	
 	
@@ -2426,8 +2434,19 @@ public class TestQuantB_NC_DR_Ncore extends TestCase {
 		 */
 		protected TestQuantB_NC_DR_Ncore.IterationThreadContext threadContext;
 		
+		/**
+		 * Copy of the real temp array reference loaded from the thread context.
+		 */
 		protected double[][][][] tempArrayRe;
+		
+		/**
+		 * Copy of the imaginary temp array reference loaded from the thread context.
+		 */
 		protected double[][][][] tempArrayIm;
+		
+		/**
+		 * Copy of the spatial assert array reference loaded from the thread cntext.
+		 */
 		protected int[][][][] spatialAssertArray;
 		
 		/**
@@ -2435,6 +2454,7 @@ public class TestQuantB_NC_DR_Ncore extends TestCase {
 		 * 
 		 * @param _fac The factory for the enclosed type.
 		 * @param _coord Map taking implicit space terms representing ordinates to discrete ordinates of type BigInteger.
+		 * @param _threadIndex The index of the thread context for the elem.
 		 */
 		public BNelem(ComplexElemFactory<DoubleElem,DoubleElemFactory> _fac, HashMap<Ordinate, BigInteger> _coord, int _threadIndex ) {
 			super(_fac, _coord);
@@ -2456,41 +2476,49 @@ public class TestQuantB_NC_DR_Ncore extends TestCase {
 		 */
 		protected final boolean[] assertCols = new boolean[ 4 ];
 		
+		/**
+		 * The tempArrayRe member dereferenced to all but the last column.
+		 */
 		protected double[] idvRe = null;
 		
+		/**
+		 * The tempArrayIm member dereferenced to all but the last column.
+		 */
 		protected double[] idvIm = null;
 		
 
 		@Override
 		public ComplexElem<DoubleElem,DoubleElemFactory> eval(HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace)
 				throws NotInvertibleException,
-				MultiplicativeDistributionRequiredException {
-	if( idvRe == null ) {
-			cols[ 0 ] = 0;
-			cols[ 1 ] = 0;
-			cols[ 2 ] = 0;
-			cols[ 3 ] = 0;
-//			assertCols[ 0 ] = false;
-//			assertCols[ 1 ] = false;
-//			assertCols[ 2 ] = false;
-//			assertCols[ 3 ] = false;
-//			Assert.assertTrue( coord.keySet().size() == 4 );
-			for( Entry<Ordinate,BigInteger> ii : coord.entrySet() )
+				MultiplicativeDistributionRequiredException 
+		{
+			if( idvRe == null ) 
 			{
-				Ordinate keyCoord = ii.getKey();
-				BigInteger coordVal = ii.getValue();
-				final int offset = keyCoord.getCol() == 3 ? NSTPZ : keyCoord.getCol() == 2 ? NSTPY : keyCoord.getCol() == 1 ? NSTPX : NSTPT;
-				cols[ keyCoord.getCol() ] = coordVal.intValue() + offset;
-//				assertCols[ keyCoord.getCol() ] = true;
+				cols[ 0 ] = 0;
+				cols[ 1 ] = 0;
+				cols[ 2 ] = 0;
+				cols[ 3 ] = 0;
+				assertCols[ 0 ] = false;
+				assertCols[ 1 ] = false;
+				assertCols[ 2 ] = false;
+				assertCols[ 3 ] = false;
+				Assert.assertTrue( coord.keySet().size() == 4 );
+				for( Entry<Ordinate,BigInteger> ii : coord.entrySet() )
+				{
+					Ordinate keyCoord = ii.getKey();
+					BigInteger coordVal = ii.getValue();
+					final int offset = keyCoord.getCol() == 3 ? NSTPZ : keyCoord.getCol() == 2 ? NSTPY : keyCoord.getCol() == 1 ? NSTPX : NSTPT;
+					cols[ keyCoord.getCol() ] = coordVal.intValue() + offset;
+					assertCols[ keyCoord.getCol() ] = true;
+				}
+				( spatialAssertArray[ cols[ 0 ] ][ cols[ 1 ] ][ cols[ 2 ] ][ cols[ 3 ] ] )++;
+				Assert.assertTrue( assertCols[ 0 ] );
+				Assert.assertTrue( assertCols[ 1 ] );
+				Assert.assertTrue( assertCols[ 2 ] );
+				Assert.assertTrue( assertCols[ 3 ] );
+				idvRe = tempArrayRe[ cols[ 0 ] ][ cols[ 1 ] ][ cols[ 2 ] ];
+				idvIm = tempArrayIm[ cols[ 0 ] ][ cols[ 1 ] ][ cols[ 2 ] ];
 			}
-			( spatialAssertArray[ cols[ 0 ] ][ cols[ 1 ] ][ cols[ 2 ] ][ cols[ 3 ] ] )++;
-//			Assert.assertTrue( assertCols[ 0 ] );
-//			Assert.assertTrue( assertCols[ 1 ] );
-//			Assert.assertTrue( assertCols[ 2 ] );
-//			Assert.assertTrue( assertCols[ 3 ] );
-	idvRe = tempArrayRe[ cols[ 0 ] ][ cols[ 1 ] ][ cols[ 2 ] ];
-	idvIm = tempArrayIm[ cols[ 0 ] ][ cols[ 1 ] ][ cols[ 2 ] ];
-	}
 			final DoubleElem re = new DoubleElem( idvRe[ cols[ 3 ] ] );
 			final DoubleElem im = new DoubleElem( idvIm[ cols[ 3 ] ] );
 			return( new ComplexElem<DoubleElem,DoubleElemFactory>( re , im ) );
