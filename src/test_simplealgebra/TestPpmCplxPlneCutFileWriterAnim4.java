@@ -52,14 +52,14 @@ import simplealgebra.store.RawFileWriter;
 /**  
  * Simple test of the RawFileWriter class for complex values.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
- * Tests generation of the X-Y plane at constant Z.
+ * Tests generation of the projection of a semi-spherical area onto a plane.  No integration of values across the boundary.
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
  * @author thorngreen
  *
  */
-public class TestPpmCplxPlneCutFileWriterAnim extends TestCase {
+public class TestPpmCplxPlneCutFileWriterAnim4 extends TestCase {
 	
 	
 	
@@ -98,7 +98,7 @@ public class TestPpmCplxPlneCutFileWriterAnim extends TestCase {
 	 * @author thorngreen
 	 *
 	 */
-	protected static class TstPpmFileWriterAnim extends RawFileWriter
+	protected static class TstPpmFileWriterAnim4 extends RawFileWriter
 	{
 
 
@@ -161,7 +161,7 @@ public class TestPpmCplxPlneCutFileWriterAnim extends TestCase {
 		 * @param _tval The T-Axis value at which to perform the write.
 		 * @throws Throwable
 		 */
-		public TstPpmFileWriterAnim( final int _tval ) throws Throwable
+		public TstPpmFileWriterAnim4( final int _tval ) throws Throwable
 		{
 			tval = _tval;
 			
@@ -273,24 +273,127 @@ public class TestPpmCplxPlneCutFileWriterAnim extends TestCase {
 		
 		
 		
-		public double calcMinAbs( final int z , final int t ) throws Throwable
+		
+		protected int xvv;
+		protected int yvv;
+		protected int zvv;
+		
+		
+		protected void calcSphLocs( final int yy , final int zz )
 		{
+			final int x2 = 0;
+			final int y2 = yy;
+			final int z2 = zz;
+			
+			final double RAD_X = NUM_X_ITER / 10.0;
+			
+			final double dmark = RAD_X;
+			
+			final double HALF_X = NUM_X_ITER / 2.0;
+			
+			final double x1 = HALF_X;
+			final double y1 = HALF_X;
+			final double z1 = HALF_X;
+			
+			
+			final double xvi = x2 - x1;
+			final double yvi = y2 - y1;
+			final double zvi = z2 - z1;
+			
+			final double vilen = Math.sqrt( xvi * xvi + yvi * yvi + zvi * zvi );
+			
+			final double xv = xvi / vilen;
+			final double yv = yvi / vilen;
+			final double zv = zvi / vilen;
+			
+			
+			double dx = dmark * xv;
+			double dy = dmark * yv;
+			double dz = dmark * zv;
+			
+			
+			int dxi = (int) dx;
+			int dyi = (int) dy;
+			int dzi = (int) dz;
+			
+			while( Math.sqrt( dxi * dxi + dyi * dyi + dzi * dzi ) < dmark )
+			{
+				dx += 0.1 * xv;
+				dy += 0.1 * yv;
+				dz += 0.1 * zv;
+				
+				dxi = (int) dx;
+				dyi = (int) dy;
+				dzi = (int) dz;
+			}
+			
+			
+			xvv = (int)( dx + x1 );
+			yvv = (int)( dy + y1 );
+			zvv = (int)( dz + z1 );
+			
+			// System.out.println( "%%% " + xvv + " " + yvv + " " + zvv );
+		}
+		
+		
+		
+		
+		
+		/**
+		 * Calculates the maximum absolute value in the dataset.
+		 * @param t The T-index for which to calculate.
+		 * 
+		 * @throws Throwable
+		 */
+		@Override
+		public double calcMaxAbs( final int x0 , final int t ) throws Throwable
+		{
+			
+			final int Z_STRT = getZStrt();
+			final int Z_END = getZEnd();
 			
 			final int Y_STRT = getYStrt();
 			final int Y_END = getYEnd();
 			
-			final int X_STRT = getXStrt();
-			final int X_END = getXEnd();
+			calcSphLocs( Y_STRT , Z_STRT );
+			double dd = Math.abs( getVal( t , xvv , yvv , zvv ) );
+			
+			
+			for( int zz = Z_STRT ; zz < Z_END ; zz++ )
+			{
+				for( int yy = Y_STRT ; yy < Y_END ; yy++ )
+				{
+					calcSphLocs( yy , zz );
+					// System.out.println( "%%% " + xvv + " " + yvv + " " + zvv );
+					// System.out.println( getVal( t , xvv , yvv , zvv ) );
+					dd = Math.max( dd , Math.abs( getVal( t , xvv , yvv , zvv ) ) );
+				}
+			}
+			
+			return( dd );
+		}
+		
+		
+		
+		public double calcMinAbs( final int t ) throws Throwable
+		{
+			
+			final int Z_STRT = getZStrt();
+			final int Z_END = getZEnd();
+			
+			final int Y_STRT = getYStrt();
+			final int Y_END = getYEnd();
 			
 			
 			double dd = 1E+60;
 			
 			
-			for( int y = Y_STRT ; y < Y_END ; y++ )
+			for( int zz = Z_STRT ; zz < Z_END ; zz++ )
 			{
-				for( int x = X_STRT ; x < X_END ; x++ )
+				for( int yy = Y_STRT ; yy < Y_END ; yy++ )
 				{
-					final double dval = Math.abs( getVal( t , x , y , z ) );
+					calcSphLocs( yy , zz );
+					final double dval = Math.abs( getVal( t , xvv , yvv , zvv ) );
 					if( dval > 1E-30 )
 					{
 						dd = Math.min( dd , dval );
@@ -308,7 +411,7 @@ public class TestPpmCplxPlneCutFileWriterAnim extends TestCase {
 		 * @param pathName The path to the output file containing positive values.
 		 * @throws Throwable
 		 */
-		public void writePpm( final int t , String pathName ) throws Throwable
+		public void writePpm( final int iter , String pathName ) throws Throwable
 		{			
 			final int Z_STRT = getZStrt();
 			final int Z_END = getZEnd();
@@ -320,7 +423,12 @@ public class TestPpmCplxPlneCutFileWriterAnim extends TestCase {
 			final int X_END = getXEnd();
 			
 			
-			final int z = ( Z_STRT + Z_END ) / 2;
+			final double ut = ( (double) iter ) / ( NUM_T_ITER - 1 );
+			
+			final int t = iter;
+			
+			final double u0 = 0.50; // 0.40;
+			final double u1 = 0.30;
 			
 			
 			System.out.println( "Starting calcMax" );
@@ -358,9 +466,9 @@ public class TestPpmCplxPlneCutFileWriterAnim extends TestCase {
 			final double[] dval = new double[ 2 ];
 			
 			
-			double maxVal = this.calcMaxAbs( z , t );
+			double maxVal = this.calcMaxAbs( 0 , t );
 			
-			double minVal = this.calcMinAbs( z , t );
+			double minVal = this.calcMinAbs( t );
 				
 			System.out.println( ">>>> " + maxVal );
 				
@@ -375,12 +483,13 @@ public class TestPpmCplxPlneCutFileWriterAnim extends TestCase {
 			System.out.println( "q2 " + dval[ 1]  ); */
 				
 			
-			for( int y = Y_STRT ; y < Y_END ; y++ )
+			for( int zz = Z_STRT ; zz < Z_END ; zz++ )
 			{
-				for( int x = X_STRT ; x < X_END ; x++ )
+				for( int yy = Y_STRT ; yy < Y_END ; yy++ )
 				{
 					// System.out.println( DV );
-					getValCplx( t , x , y , z , minVal , maxVal , dval );
+					calcSphLocs( yy , zz );
+					getValCplx( t , xvv , yvv , zvv , minVal , maxVal , dval );
 							
 					int green = (int)( DV * dval[ 0 ] );
 					int blue = (int)( DV * dval[ 1 ] );
@@ -441,7 +550,7 @@ public class TestPpmCplxPlneCutFileWriterAnim extends TestCase {
 			
 							String filePath = FILE_PATH_PREFIX + cnt + ".ppm";
 		
-							TstPpmFileWriterAnim writer = new TstPpmFileWriterAnim( tval );
+							TstPpmFileWriterAnim4 writer = new TstPpmFileWriterAnim4( tval );
 		
 							writer.writePpm( tval , filePath );
 						}

@@ -52,14 +52,14 @@ import simplealgebra.store.RawFileWriter;
 /**  
  * Simple test of the RawFileWriter class for complex values.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
- * Tests generation of the X-Y plane at constant Z.
+ * Tests generation of the Y-Z plane at constant Y.
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
  * @author thorngreen
  *
  */
-public class TestPpmCplxPlneCutFileWriterAnim extends TestCase {
+public class TestPpmCplxPlneCutFileWriterAnim2 extends TestCase {
 	
 	
 	
@@ -68,22 +68,22 @@ public class TestPpmCplxPlneCutFileWriterAnim extends TestCase {
 	/**
 	 * The number of discretizations on the T-Axis.
 	 */
-	protected static final int NUM_T_ITER = 200; // 100; // IterConstants.LRG_ITER_T;
+	protected static final int NUM_T_ITER = 250; // 200; // 100; // IterConstants.LRG_ITER_T;
 	
 	/**
 	 * The number of discretizations on the X-Axis.
 	 */
-	protected static final int NUM_X_ITER = 100; // 50; // IterConstants.LRG_ITER_X;
+	protected static final int NUM_X_ITER = 125; // 100; // 50; // IterConstants.LRG_ITER_X;
 	
 	/**
 	 * The number of discretizations on the Y-Axis.
 	 */
-	protected static final int NUM_Y_ITER = 100; // 50; // IterConstants.LRG_ITER_Y;
+	protected static final int NUM_Y_ITER = 125; // 100; // 50; // IterConstants.LRG_ITER_Y;
 	
 	/**
 	 * The number of discretizations on the Z-Axis.
 	 */
-	protected static final int NUM_Z_ITER = 100; // 50; // IterConstants.LRG_ITER_Z;
+	protected static final int NUM_Z_ITER = 125; // 100; // 50; // IterConstants.LRG_ITER_Z;
 	
 
 	
@@ -98,7 +98,7 @@ public class TestPpmCplxPlneCutFileWriterAnim extends TestCase {
 	 * @author thorngreen
 	 *
 	 */
-	protected static class TstPpmFileWriterAnim extends RawFileWriter
+	protected static class TstPpmFileWriterAnim2 extends RawFileWriter
 	{
 
 
@@ -161,7 +161,7 @@ public class TestPpmCplxPlneCutFileWriterAnim extends TestCase {
 		 * @param _tval The T-Axis value at which to perform the write.
 		 * @throws Throwable
 		 */
-		public TstPpmFileWriterAnim( final int _tval ) throws Throwable
+		public TstPpmFileWriterAnim2( final int _tval ) throws Throwable
 		{
 			tval = _tval;
 			
@@ -273,11 +273,44 @@ public class TestPpmCplxPlneCutFileWriterAnim extends TestCase {
 		
 		
 		
-		public double calcMinAbs( final int z , final int t ) throws Throwable
+		/**
+		 * Calculates the maximum absolute value in the dataset.
+		 * @param t The T-index for which to calculate.
+		 * 
+		 * @throws Throwable
+		 */
+		@Override
+		public double calcMaxAbs( final int y , final int t ) throws Throwable
 		{
 			
-			final int Y_STRT = getYStrt();
-			final int Y_END = getYEnd();
+			final int Z_STRT = getZStrt();
+			final int Z_END = getZEnd();
+			
+			final int X_STRT = getXStrt();
+			final int X_END = getXEnd();
+			
+			
+			double dd = Math.abs( getVal( t , X_STRT , y , Z_STRT ) );
+			
+			
+			for( int z = Z_STRT ; z < Z_END ; z++ )
+			{
+				for( int x = X_STRT ; x < X_END ; x++ )
+				{
+					dd = Math.max( dd , Math.abs( getVal( t , x , y , z ) ) );
+				}
+			}
+			
+			return( dd );
+		}
+		
+		
+		
+		public double calcMinAbs( final int y , final int t ) throws Throwable
+		{
+			
+			final int Z_STRT = getZStrt();
+			final int Z_END = getZEnd();
 			
 			final int X_STRT = getXStrt();
 			final int X_END = getXEnd();
@@ -286,7 +319,7 @@ public class TestPpmCplxPlneCutFileWriterAnim extends TestCase {
 			double dd = 1E+60;
 			
 			
-			for( int y = Y_STRT ; y < Y_END ; y++ )
+			for( int z = Z_STRT ; z < Z_END ; z++ )
 			{
 				for( int x = X_STRT ; x < X_END ; x++ )
 				{
@@ -320,7 +353,7 @@ public class TestPpmCplxPlneCutFileWriterAnim extends TestCase {
 			final int X_END = getXEnd();
 			
 			
-			final int z = ( Z_STRT + Z_END ) / 2;
+			final int y = ( Y_STRT + Y_END ) / 2;
 			
 			
 			System.out.println( "Starting calcMax" );
@@ -358,9 +391,9 @@ public class TestPpmCplxPlneCutFileWriterAnim extends TestCase {
 			final double[] dval = new double[ 2 ];
 			
 			
-			double maxVal = this.calcMaxAbs( z , t );
+			double maxVal = this.calcMaxAbs( y , t );
 			
-			double minVal = this.calcMinAbs( z , t );
+			double minVal = this.calcMinAbs( y , t );
 				
 			System.out.println( ">>>> " + maxVal );
 				
@@ -375,7 +408,7 @@ public class TestPpmCplxPlneCutFileWriterAnim extends TestCase {
 			System.out.println( "q2 " + dval[ 1]  ); */
 				
 			
-			for( int y = Y_STRT ; y < Y_END ; y++ )
+			for( int z = Z_STRT ; z < Z_END ; z++ )
 			{
 				for( int x = X_STRT ; x < X_END ; x++ )
 				{
@@ -441,7 +474,7 @@ public class TestPpmCplxPlneCutFileWriterAnim extends TestCase {
 			
 							String filePath = FILE_PATH_PREFIX + cnt + ".ppm";
 		
-							TstPpmFileWriterAnim writer = new TstPpmFileWriterAnim( tval );
+							TstPpmFileWriterAnim2 writer = new TstPpmFileWriterAnim2( tval );
 		
 							writer.writePpm( tval , filePath );
 						}
