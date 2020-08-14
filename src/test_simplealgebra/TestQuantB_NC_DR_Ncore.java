@@ -243,7 +243,7 @@ public class TestQuantB_NC_DR_Ncore extends TestCase {
 	/**
 	 * The phase rate of the initial conditions in radians over the full NUM_T_ITER.
 	 */
-	private static final double ERATE = 20.0;
+	private static final double ERATE = -20.0;
 	
 	/**
 	 * The phase offset of the second initial condition in radians.
@@ -287,22 +287,22 @@ public class TestQuantB_NC_DR_Ncore extends TestCase {
 	/**
 	 * The number of discretizations on the T-Axis over which to iterate.
 	 */
-	protected static final int NUM_T_ITER = 200; // 100; // 50; // 25 // 400; // 10; // IterConstants.LRG_ITER_T; // 400; // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
+	protected static final int NUM_T_ITER = 250; // 200; // 100; // 50; // 25 // 400; // 10; // IterConstants.LRG_ITER_T; // 400; // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 	
 	/**
 	 * The number of discretizations on the X-Axis over which to iterate.
 	 */
-	protected static final int NUM_X_ITER = 100; // 50; // 20; // 10 // 50; // IterConstants.LRG_ITER_X; // 25
+	protected static final int NUM_X_ITER = 125; // 100; // 50; // 20; // 10 // 50; // IterConstants.LRG_ITER_X; // 25
 	
 	/**
 	 * The number of discretizations on the Y-Axis over which to iterate.
 	 */
-	protected static final int NUM_Y_ITER = 100; // 50; // 20; // 10 // 50; // IterConstants.LRG_ITER_Y; // 10
+	protected static final int NUM_Y_ITER = 125; // 100; // 50; // 20; // 10 // 50; // IterConstants.LRG_ITER_Y; // 10
 	
 	/**
 	 * The number of discretizations on the Z-Axis over which to iterate.
 	 */
-	protected static final int NUM_Z_ITER = 100; // 50; // 20; // 10 // 50; // IterConstants.LRG_ITER_Z; // 10
+	protected static final int NUM_Z_ITER = 125; // 100; // 50; // 20; // 10 // 50; // IterConstants.LRG_ITER_Z; // 10
 	
 	
 	
