@@ -35,11 +35,14 @@ import java.util.Iterator;
 import java.util.Map.Entry;
 
 import junit.framework.TestCase;
+import simplealgebra.ComplexElem;
+import simplealgebra.ComplexElemFactory;
 import simplealgebra.DoubleElem;
 import simplealgebra.DoubleElemFactory;
 import simplealgebra.Mutator;
 import simplealgebra.NotInvertibleException;
 import simplealgebra.Sqrt;
+import simplealgebra.ComplexElem.ComplexCmd;
 import simplealgebra.constants.CpuInfo;
 import simplealgebra.ga.GeometricAlgebraMultivectorElem;
 import simplealgebra.ga.GeometricAlgebraOrd;
@@ -52,14 +55,14 @@ import simplealgebra.store.RawFileWriter;
 /**  
  * Simple test of the RawFileWriter class for complex values.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
- * Tests generation of the Y-Z plane at an X that sweeps over time.
+ * Tests generation of the projection of a semi-spherical area onto a plane.  No integration of values across the boundary.  Calculation of rough time derivatives.
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
  * @author thorngreen
  *
  */
-public class TestPpmCplxPlneCutFileWriterAnim3B extends TestCase {
+public class TestPpmCplxPlneCutFileWriterAnim4C extends TestCase {
 	
 	
 	
@@ -98,7 +101,7 @@ public class TestPpmCplxPlneCutFileWriterAnim3B extends TestCase {
 	 * @author thorngreen
 	 *
 	 */
-	protected static class TstPpmFileWriterAnim3B extends RawFileWriter
+	protected static class TstPpmFileWriterAnim4C extends RawFileWriter
 	{
 
 
@@ -161,7 +164,7 @@ public class TestPpmCplxPlneCutFileWriterAnim3B extends TestCase {
 		 * @param _tval The T-Axis value at which to perform the write.
 		 * @throws Throwable
 		 */
-		public TstPpmFileWriterAnim3B( final int _tval ) throws Throwable
+		public TstPpmFileWriterAnim4C( final int _tval ) throws Throwable
 		{
 			tval = _tval;
 			
@@ -194,12 +197,58 @@ public class TestPpmCplxPlneCutFileWriterAnim3B extends TestCase {
 			return( 8000 );
 		}
 
+		
+		final DoubleElemFactory dfac = new DoubleElemFactory();
+		final ComplexElemFactory<DoubleElem,DoubleElemFactory> cfac = new ComplexElemFactory<DoubleElem,DoubleElemFactory>( dfac );
+		final ComplexElem<DoubleElem,DoubleElemFactory> II = new ComplexElem<DoubleElem,DoubleElemFactory>( dfac.zero() , dfac.identity() );
+		
+		
+		protected double getActValRe( int t, int x, int y, int z )throws Throwable
+		{
+			final double d0re = iterArrayRe.get(t, x, y, z);
+			final double d0im = iterArrayIm.get(t, x, y, z);
+			final double d0rep = iterArrayRe.get(t+1, x, y, z);
+			final double d0imp = iterArrayIm.get(t+1, x, y, z);
+			
+			ComplexElem<DoubleElem,DoubleElemFactory> d0 = new ComplexElem<DoubleElem,DoubleElemFactory>( new DoubleElem( d0re ) , new DoubleElem( d0im ) );
+			ComplexElem<DoubleElem,DoubleElemFactory> d0p = new ComplexElem<DoubleElem,DoubleElemFactory>( new DoubleElem( d0rep ) , new DoubleElem( d0imp ) );
+			
+			ComplexElem<DoubleElem,DoubleElemFactory> d1 = d0p.add( d0.negate() );
+			
+			ComplexElem<DoubleElem,DoubleElemFactory> d2 = d0.handleOptionalOp( ComplexCmd.CONJUGATE_LEFT , null );
+			
+			ComplexElem<DoubleElem,DoubleElemFactory> d3 = II.mult( d1 );
+			
+			return( ( d2.mult( d3 ) ).getRe().getVal() );
+		}
+		
+		
+		protected double getActValIm( int t, int x, int y, int z )throws Throwable
+		{
+			final double d0re = iterArrayRe.get(t, x, y, z);
+			final double d0im = iterArrayIm.get(t, x, y, z);
+			final double d0rep = iterArrayRe.get(t+1, x, y, z);
+			final double d0imp = iterArrayIm.get(t+1, x, y, z);
+			
+			ComplexElem<DoubleElem,DoubleElemFactory> d0 = new ComplexElem<DoubleElem,DoubleElemFactory>( new DoubleElem( d0re ) , new DoubleElem( d0im ) );
+			ComplexElem<DoubleElem,DoubleElemFactory> d0p = new ComplexElem<DoubleElem,DoubleElemFactory>( new DoubleElem( d0rep ) , new DoubleElem( d0imp ) );
+			
+			ComplexElem<DoubleElem,DoubleElemFactory> d1 = d0p.add( d0.negate() );
+			
+			ComplexElem<DoubleElem,DoubleElemFactory> d2 = d0.handleOptionalOp( ComplexCmd.CONJUGATE_LEFT , null );
+			
+			ComplexElem<DoubleElem,DoubleElemFactory> d3 = II.mult( d1 );
+			
+			return( ( d2.mult( d3 ) ).getIm().getVal() );
+		}
+		
+		
 		@Override
 		protected double getVal( int t, int x, int y, int z )
 				throws Throwable {
 
-			final double d0re = iterArrayRe.get(t, x, y, z);
-			final double d0im = iterArrayIm.get(t, x, y, z);
+			final double d0re = getActValRe( t, x, y, z);
+			final double d0im = getActValIm( t, x, y, z);
 			final double d0r = Math.sqrt( d0re * d0re + d0im * d0im );
 			
 			final double logVal = Math.log10( d0r );
@@ -212,11 +261,12 @@ public class TestPpmCplxPlneCutFileWriterAnim3B extends TestCase {
 			return( logVal + 30.0 );
 		}
 		
+		
 		protected void getValCplx( int t, int x, int y, int z , double minVal , double maxVal , double[] out )
 				throws Throwable {
 
-			final double d0re = iterArrayRe.get(t, x, y, z);
-			final double d0im = iterArrayIm.get(t, x, y, z);
+			final double d0re = getActValRe( t, x, y, z);
+			final double d0im = getActValIm( t, x, y, z);
 			final double d0r = Math.sqrt( d0re * d0re + d0im * d0im );
 			
 			final double logVal = Math.log10( d0r );
@@ -234,6 +284,7 @@ public class TestPpmCplxPlneCutFileWriterAnim3B extends TestCase {
 			out[ 1 ] = ( d0im / d0r ) * rv;
 		}
 
+		
 		@Override
 		protected int getTStrt() {
 			return( tval );
@@ -276,6 +327,72 @@ public class TestPpmCplxPlneCutFileWriterAnim3B extends TestCase {
 		
 		
 		
+		
+		protected int xvv;
+		protected int yvv;
+		protected int zvv;
+		
+		
+		protected void calcSphLocs( final int yy , final int zz )
+		{
+			final int x2 = 0;
+			final int y2 = yy;
+			final int z2 = zz;
+			
+			final double RAD_X = NUM_X_ITER / 10.0;
+			
+			final double dmark = RAD_X;
+			
+			final double HALF_X = NUM_X_ITER / 2.0;
+			
+			final double x1 = HALF_X;
+			final double y1 = HALF_X;
+			final double z1 = HALF_X;
+			
+			
+			final double xvi = x2 - x1;
+			final double yvi = y2 - y1;
+			final double zvi = z2 - z1;
+			
+			final double vilen = Math.sqrt( xvi * xvi + yvi * yvi + zvi * zvi );
+			
+			final double xv = xvi / vilen;
+			final double yv = yvi / vilen;
+			final double zv = zvi / vilen;
+			
+			
+			double dx = dmark * xv;
+			double dy = dmark * yv;
+			double dz = dmark * zv;
+			
+			
+			int dxi = (int) dx;
+			int dyi = (int) dy;
+			int dzi = (int) dz;
+			
+			while( Math.sqrt( dxi * dxi + dyi * dyi + dzi * dzi ) < dmark )
+			{
+				dx += 0.1 * xv;
+				dy += 0.1 * yv;
+				dz += 0.1 * zv;
+				
+				dxi = (int) dx;
+				dyi = (int) dy;
+				dzi = (int) dz;
+			}
+			
+			
+			xvv = (int)( dx + x1 );
+			yvv = (int)( dy + y1 );
+			zvv = (int)( dz + z1 );
+			
+			// System.out.println( "%%% " + xvv + " " + yvv + " " + zvv );
+		}
+		
+		
+		
+		
+		
 		/**
 		 * Calculates the maximum absolute value in the dataset.
 		 * @param t The T-index for which to calculate.
@@ -283,7 +400,7 @@ public class TestPpmCplxPlneCutFileWriterAnim3B extends TestCase {
 		 * @throws Throwable
 		 */
 		@Override
-		public double calcMaxAbs( final int x , final int t ) throws Throwable
+		public double calcMaxAbs( final int x0 , final int t ) throws Throwable
 		{
 			
 			final int Z_STRT = getZStrt();
@@ -292,15 +409,18 @@ public class TestPpmCplxPlneCutFileWriterAnim3B extends TestCase {
 			final int Y_STRT = getYStrt();
 			final int Y_END = getYEnd();
 			
+			calcSphLocs( Y_STRT , Z_STRT );
+			double dd = Math.abs( getVal( t , xvv , yvv , zvv ) );
 			
-			double dd = Math.abs( getVal( t , x , Y_STRT , Z_STRT ) );
 			
-			
-			for( int z = Z_STRT ; z < Z_END ; z++ )
+			for( int zz = Z_STRT ; zz < Z_END ; zz++ )
 			{
-				for( int y = Y_STRT ; y < Y_END ; y++ )
+				for( int yy = Y_STRT ; yy < Y_END ; yy++ )
 				{
-					dd = Math.max( dd , Math.abs( getVal( t , x , y , z ) ) );
+					calcSphLocs( yy , zz );
+					// System.out.println( "%%% " + xvv + " " + yvv + " " + zvv );
+					// System.out.println( getVal( t , xvv , yvv , zvv ) );
+					dd = Math.max( dd , Math.abs( getVal( t , xvv , yvv , zvv ) ) );
 				}
 			}
 			
@@ -309,7 +429,7 @@ public class TestPpmCplxPlneCutFileWriterAnim3B extends TestCase {
 		
 		
 		
-		public double calcMinAbs( final int x , final int t ) throws Throwable
+		public double calcMinAbs( final int t ) throws Throwable
 		{
 			
 			final int Z_STRT = getZStrt();
@@ -322,11 +442,12 @@ public class TestPpmCplxPlneCutFileWriterAnim3B extends TestCase {
 			double dd = 1E+60;
 			
 			
-			for( int z = Z_STRT ; z < Z_END ; z++ )
+			for( int zz = Z_STRT ; zz < Z_END ; zz++ )
 			{
-				for( int y = Y_STRT ; y < Y_END ; y++ )
+				for( int yy = Y_STRT ; yy < Y_END ; yy++ )
 				{
-					final double dval = Math.abs( getVal( t , x , y , z ) );
+					calcSphLocs( yy , zz );
+					final double dval = Math.abs( getVal( t , xvv , yvv , zvv ) );
 					if( dval > 1E-30 )
 					{
 						dd = Math.min( dd , dval );
@@ -358,14 +479,10 @@ public class TestPpmCplxPlneCutFileWriterAnim3B extends TestCase {
 			
 			final double ut = ( (double) iter ) / ( NUM_T_ITER - 1 );
 			
-			final int t = NUM_T_ITER - 1;
+			final int t = iter;
 			
 			final double u0 = 0.50; // 0.40;
 			final double u1 = 0.30;
-			
-			final double x0 = ( (1-u0) * X_STRT + u0 * X_END );
-			final double x1 = ( (1-u1) * X_STRT + u1 * X_END );
-			final int x = (int)( (1-ut) * x0 + ut * x1 );
 			
 			
 			System.out.println( "Starting calcMax" );
@@ -403,9 +520,9 @@ public class TestPpmCplxPlneCutFileWriterAnim3B extends TestCase {
 			final double[] dval = new double[ 2 ];
 			
 			
-			double maxVal = this.calcMaxAbs( x , t );
+			double maxVal = this.calcMaxAbs( 0 , t );
 			
-			double minVal = this.calcMinAbs( x , t );
+			double minVal = this.calcMinAbs( t );
 				
 			System.out.println( ">>>> " + maxVal );
 				
@@ -420,17 +537,39 @@ public class TestPpmCplxPlneCutFileWriterAnim3B extends TestCase {
 			System.out.println( "q2 " + dval[ 1]  ); */
 				
 			
-			for( int z = Z_STRT ; z < Z_END ; z++ )
+			for( int zz = Z_STRT ; zz < Z_END ; zz++ )
 			{
-				for( int y = Y_STRT ; y < Y_END ; y++ )
+				for( int yy = Y_STRT ; yy < Y_END ; yy++ )
 				{
 					// System.out.println( DV );
-					getValCplx( t , x , y , z , minVal , maxVal , dval );
+					calcSphLocs( yy , zz );
+					getValCplx( t , xvv , yvv , zvv , minVal , maxVal , dval );
+					
+					int red = 0;
+					int green = 0;
+					int blue = 0;
 							
-					int green = (int)( Math.abs( DV * dval[ 0 ] ) );
-					int blue = (int)( Math.abs( DV * dval[ 1 ] ) );
+					if( dval[ 0 ] >= 0.0 )
+					{
+						blue += (int)( Math.abs( DV * dval[ 0 ] ) );
+					}
+					else
+					{
+						red += (int)( Math.abs( DV * dval[ 0 ] ) );
+						green += (int)( Math.abs( DV * dval[ 0 ] ) );
+						blue += (int)( Math.abs( DV * dval[ 0 ] ) );
+					}
+					
+					if( dval[ 1 ] >= 0.0 )
+					{
+						red += (int)( Math.abs( DV * dval[ 1 ] ) );
+					}
+					else
+					{
+						green += (int)( Math.abs( DV * dval[ 1 ] ) );
+					}
 							
-					baos.write( 0 /* col.getRed() */ );
+					baos.write( red );
 					baos.write( green );
 					baos.write( blue );
 							
@@ -478,7 +617,7 @@ public class TestPpmCplxPlneCutFileWriterAnim3B extends TestCase {
 				{
 					try
 					{
-						for( int cnt = core ; cnt < T_MAX ; cnt = cnt + numCores )
+						for( int cnt = core ; cnt < ( T_MAX - 1 ) ; cnt = cnt + numCores )
 						{
 							System.out.println( cnt );
 			
@@ -486,7 +625,7 @@ public class TestPpmCplxPlneCutFileWriterAnim3B extends TestCase {
 			
 							String filePath = FILE_PATH_PREFIX + cnt + ".ppm";
 		
-							TstPpmFileWriterAnim3B writer = new TstPpmFileWriterAnim3B( tval );
+							TstPpmFileWriterAnim4C writer = new TstPpmFileWriterAnim4C( tval );
 		
 							writer.writePpm( tval , filePath );
 						}

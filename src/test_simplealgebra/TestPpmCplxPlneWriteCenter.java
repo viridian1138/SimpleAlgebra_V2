@@ -52,14 +52,14 @@ import simplealgebra.store.RawFileWriter;
 /**  
  * Simple test of the RawFileWriter class for complex values.  Uses JUnit ( <A href="http://junit.org">http://junit.org</A> ).
  * 
- * Tests generation of the Y-Z plane at an X that sweeps over time.
+ * Writes the value at the center for each time.
  * 
  * This documentation should be viewed using Firefox version 33.1.1 or above.
  * 
  * @author thorngreen
  *
  */
-public class TestPpmCplxPlneCutFileWriterAnim3B extends TestCase {
+public class TestPpmCplxPlneWriteCenter extends TestCase {
 	
 	
 	
@@ -98,7 +98,7 @@ public class TestPpmCplxPlneCutFileWriterAnim3B extends TestCase {
 	 * @author thorngreen
 	 *
 	 */
-	protected static class TstPpmFileWriterAnim3B extends RawFileWriter
+	protected static class TstPpmFileWriterAnim extends RawFileWriter
 	{
 
 
@@ -161,7 +161,7 @@ public class TestPpmCplxPlneCutFileWriterAnim3B extends TestCase {
 		 * @param _tval The T-Axis value at which to perform the write.
 		 * @throws Throwable
 		 */
-		public TstPpmFileWriterAnim3B( final int _tval ) throws Throwable
+		public TstPpmFileWriterAnim( final int _tval ) throws Throwable
 		{
 			tval = _tval;
 			
@@ -202,37 +202,15 @@ public class TestPpmCplxPlneCutFileWriterAnim3B extends TestCase {
 			final double d0im = iterArrayIm.get(t, x, y, z);
 			final double d0r = Math.sqrt( d0re * d0re + d0im * d0im );
 			
-			final double logVal = Math.log10( d0r );
-			
-			if( d0r < 1E-30 )
+			if( ( d0r / maxVal ) < 1E-30 )
 			{
 				return( 0.0 );
 			}
 					
-			return( logVal + 30.0 );
+			return( Math.log10( d0r / maxVal ) + 30.0 );
 		}
 		
-		protected void getValCplx( int t, int x, int y, int z , double minVal , double maxVal , double[] out )
-				throws Throwable {
 
-			final double d0re = iterArrayRe.get(t, x, y, z);
-			final double d0im = iterArrayIm.get(t, x, y, z);
-			final double d0r = Math.sqrt( d0re * d0re + d0im * d0im );
-			
-			final double logVal = Math.log10( d0r );
-			
-			if( d0r < 1E-30 )
-			{
-				out[ 0 ] = 0.0;
-				out[ 1 ] = 0.0;
-				return;
-			}
-
-			double rv = ( ( logVal + 30.0 ) - minVal ) / ( maxVal - minVal );
-			if( rv < 0.0 ) rv = 0.0;
-			out[ 0 ] = ( d0re / d0r ) * rv;
-			out[ 1 ] = ( d0im / d0r ) * rv;
-		}
 
 		@Override
 		protected int getTStrt() {
@@ -277,74 +255,12 @@ public class TestPpmCplxPlneCutFileWriterAnim3B extends TestCase {
 		
 		
 		/**
-		 * Calculates the maximum absolute value in the dataset.
-		 * @param t The T-index for which to calculate.
-		 * 
-		 * @throws Throwable
-		 */
-		@Override
-		public double calcMaxAbs( final int x , final int t ) throws Throwable
-		{
-			
-			final int Z_STRT = getZStrt();
-			final int Z_END = getZEnd();
-			
-			final int Y_STRT = getYStrt();
-			final int Y_END = getYEnd();
-			
-			
-			double dd = Math.abs( getVal( t , x , Y_STRT , Z_STRT ) );
-			
-			
-			for( int z = Z_STRT ; z < Z_END ; z++ )
-			{
-				for( int y = Y_STRT ; y < Y_END ; y++ )
-				{
-					dd = Math.max( dd , Math.abs( getVal( t , x , y , z ) ) );
-				}
-			}
-			
-			return( dd );
-		}
-		
-		
-		
-		public double calcMinAbs( final int x , final int t ) throws Throwable
-		{
-			
-			final int Z_STRT = getZStrt();
-			final int Z_END = getZEnd();
-			
-			final int Y_STRT = getYStrt();
-			final int Y_END = getYEnd();
-			
-			
-			double dd = 1E+60;
-			
-			
-			for( int z = Z_STRT ; z < Z_END ; z++ )
-			{
-				for( int y = Y_STRT ; y < Y_END ; y++ )
-				{
-					final double dval = Math.abs( getVal( t , x , y , z ) );
-					if( dval > 1E-30 )
-					{
-						dd = Math.min( dd , dval );
-					}
-				}
-			}
-			
-			return( dd );
-		}
-		
-		
-		/**
 		 * Writes PPM to a file.
 		 * 
 		 * @param pathName The path to the output file containing positive values.
 		 * @throws Throwable
 		 */
-		public void writePpm( final int iter , String pathName ) throws Throwable
+		public void writePpm( final int t ) throws Throwable
 		{			
 			final int Z_STRT = getZStrt();
 			final int Z_END = getZEnd();
@@ -356,90 +272,13 @@ public class TestPpmCplxPlneCutFileWriterAnim3B extends TestCase {
 			final int X_END = getXEnd();
 			
 			
-			final double ut = ( (double) iter ) / ( NUM_T_ITER - 1 );
-			
-			final int t = NUM_T_ITER - 1;
-			
-			final double u0 = 0.50; // 0.40;
-			final double u1 = 0.30;
-			
-			final double x0 = ( (1-u0) * X_STRT + u0 * X_END );
-			final double x1 = ( (1-u1) * X_STRT + u1 * X_END );
-			final int x = (int)( (1-ut) * x0 + ut * x1 );
+			final int x = ( X_STRT + X_END ) / 2;
+			final int y = ( Y_STRT + Y_END ) / 2;
+			final int z = ( Z_STRT + Z_END ) / 2;
 			
 			
-			System.out.println( "Starting calcMax" );
-			
-			
-//			maxVal = this.calcMaxAbs();
-			
-			
-//			System.out.println( "Ended calcMax" );
-			
-//			System.out.println( maxVal );
-			
-			
-//			if( maxVal < 1E-30 )
-//			{
-//				maxVal = 1.0;
-//			}
-			
-			
-			final long DV = 255;
-			
-			
-			
-			final FileOutputStream fo = new FileOutputStream( pathName );
-			BufferedOutputStream baos = new BufferedOutputStream( fo );
-			
-			PrintStream ps = new PrintStream( baos );
-			ps.println( "P6" );
-			ps.println( "" + ( X_END - X_STRT ) + " " + ( Y_END - Y_STRT ) );
-			ps.println( "255" );
-			ps.flush();
-			ps = null;
-			
-			
-			final double[] dval = new double[ 2 ];
-			
-			
-			double maxVal = this.calcMaxAbs( x , t );
-			
-			double minVal = this.calcMinAbs( x , t );
-				
-			System.out.println( ">>>> " + maxVal );
-				
-			if( maxVal < 1E-30 )
-			{
-				maxVal = 1.0;
-			}
-			
-			/* getValCplx( 35 , 8 , 8 , 8 , 1.0 , dval );
-			
-			System.out.println( "q1 " + dval[ 0]  );
-			System.out.println( "q2 " + dval[ 1]  ); */
-				
-			
-			for( int z = Z_STRT ; z < Z_END ; z++ )
-			{
-				for( int y = Y_STRT ; y < Y_END ; y++ )
-				{
-					// System.out.println( DV );
-					getValCplx( t , x , y , z , minVal , maxVal , dval );
-							
-					int green = (int)( Math.abs( DV * dval[ 0 ] ) );
-					int blue = (int)( Math.abs( DV * dval[ 1 ] ) );
-							
-					baos.write( 0 /* col.getRed() */ );
-					baos.write( green );
-					baos.write( blue );
-							
-				}
-			}
-			
-			iterArrayRe.close();
-			iterArrayIm.close();
-			baos.close();
+			System.out.println( iterArrayRe.get(t, x, y, z) + "  //  " + iterArrayIm.get(t, x, y, z) );
+			System.out.println( ( iterArrayRe.get(t+1, x, y, z) - iterArrayRe.get(t, x, y, z) ) + "  //  " + ( iterArrayIm.get(t+1, x, y, z) - iterArrayIm.get(t, x, y, z) ) );
 			
 		}
 		
@@ -455,9 +294,6 @@ public class TestPpmCplxPlneCutFileWriterAnim3B extends TestCase {
 	 */
 	public void testDf3FileWriter() throws Throwable
 	{
-		final int numCores = CpuInfo.NUM_CPU_CORES;
-		final Runnable[] runn = new Runnable[ numCores ];
-		final boolean[] b = CpuInfo.createBool( false );
 		
 		final int T_MAX = NUM_T_ITER;
 		
@@ -467,46 +303,18 @@ public class TestPpmCplxPlneCutFileWriterAnim3B extends TestCase {
 		final String FILE_PATH_PREFIX = "outDfAnimPpm";
 		
 		
-		// System.out.println( "Started..." ); 
-		for( int ccnt = 0 ; ccnt < numCores ; ccnt++ )
+		
+		for( int cnt = 0 ; cnt < ( T_MAX - 1 ) ; cnt++ )
 		{
-			final int core = ccnt;
-			runn[ core ] = new Runnable()
-			{
-				@Override
-				public void run()
-				{
-					try
-					{
-						for( int cnt = core ; cnt < T_MAX ; cnt = cnt + numCores )
-						{
-							System.out.println( cnt );
+			System.out.println( cnt );
 			
-							final int tval = cnt + T_OFFSET;
-			
-							String filePath = FILE_PATH_PREFIX + cnt + ".ppm";
+			final int tval = cnt + T_OFFSET;
 		
-							TstPpmFileWriterAnim3B writer = new TstPpmFileWriterAnim3B( tval );
+			TstPpmFileWriterAnim writer = new TstPpmFileWriterAnim( tval );
 		
-							writer.writePpm( tval , filePath );
-						}
-					}
-					catch( Error ex  ) { ex.printStackTrace( System.out ); }
-					catch( Throwable ex ) { ex.printStackTrace( System.out ); }
-					
-					synchronized( this )
-					{
-						b[ core ] = true;
-						this.notify();
-					}
-					
-				}
-			};
+			writer.writePpm( tval );
 		}
 		
-		
-		CpuInfo.start( runn );
-		CpuInfo.wait( runn , b );
 		
 		
 	}

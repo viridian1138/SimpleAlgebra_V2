@@ -202,12 +202,14 @@ public class TestPpmCplxPlneCutFileWriterAnim4B extends TestCase {
 			final double d0im = iterArrayIm.get(t, x, y, z);
 			final double d0r = Math.sqrt( d0re * d0re + d0im * d0im );
 			
-			if( ( d0r / maxVal ) < 1E-30 )
+			final double logVal = Math.log10( d0r );
+			
+			if( d0r < 1E-30 )
 			{
 				return( 0.0 );
 			}
 					
-			return( Math.log10( d0r / maxVal ) + 30.0 );
+			return( logVal + 30.0 );
 		}
 		
 		protected void getValCplx( int t, int x, int y, int z /* , double minVal , double maxVal */ , double[] out )

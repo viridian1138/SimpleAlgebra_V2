@@ -68,22 +68,22 @@ public class TestPpmCplxPlneCutFileWriterAnim extends TestCase {
 	/**
 	 * The number of discretizations on the T-Axis.
 	 */
-	protected static final int NUM_T_ITER = 200; // 100; // IterConstants.LRG_ITER_T;
+	protected static final int NUM_T_ITER = 250; // 200; // 100; // IterConstants.LRG_ITER_T;
 	
 	/**
 	 * The number of discretizations on the X-Axis.
 	 */
-	protected static final int NUM_X_ITER = 100; // 50; // IterConstants.LRG_ITER_X;
+	protected static final int NUM_X_ITER = 125; // 100; // 50; // IterConstants.LRG_ITER_X;
 	
 	/**
 	 * The number of discretizations on the Y-Axis.
 	 */
-	protected static final int NUM_Y_ITER = 100; // 50; // IterConstants.LRG_ITER_Y;
+	protected static final int NUM_Y_ITER = 125; // 100; // 50; // IterConstants.LRG_ITER_Y;
 	
 	/**
 	 * The number of discretizations on the Z-Axis.
 	 */
-	protected static final int NUM_Z_ITER = 100; // 50; // IterConstants.LRG_ITER_Z;
+	protected static final int NUM_Z_ITER = 125; // 100; // 50; // IterConstants.LRG_ITER_Z;
 	
 
 	
@@ -202,12 +202,14 @@ public class TestPpmCplxPlneCutFileWriterAnim extends TestCase {
 			final double d0im = iterArrayIm.get(t, x, y, z);
 			final double d0r = Math.sqrt( d0re * d0re + d0im * d0im );
 			
-			if( ( d0r / maxVal ) < 1E-30 )
+			final double logVal = Math.log10( d0r );
+			
+			if( d0r < 1E-30 )
 			{
 				return( 0.0 );
 			}
 					
-			return( Math.log10( d0r / maxVal ) + 30.0 );
+			return( logVal + 30.0 );
 		}
 		
 		protected void getValCplx( int t, int x, int y, int z , double minVal , double maxVal , double[] out )
@@ -217,6 +219,8 @@ public class TestPpmCplxPlneCutFileWriterAnim extends TestCase {
 			final double d0im = iterArrayIm.get(t, x, y, z);
 			final double d0r = Math.sqrt( d0re * d0re + d0im * d0im );
 			
+			final double logVal = Math.log10( d0r );
+			
 			if( d0r < 1E-30 )
 			{
 				out[ 0 ] = 0.0;
@@ -224,8 +228,7 @@ public class TestPpmCplxPlneCutFileWriterAnim extends TestCase {
 				return;
 			}
 
-			final double rva = Math.log10( d0r ) + 30.0;
-			double rv = ( rva - minVal ) / ( maxVal - minVal );
+			double rv = ( ( logVal + 30.0 ) - minVal ) / ( maxVal - minVal );
 			if( rv < 0.0 ) rv = 0.0;
 			out[ 0 ] = ( d0re / d0r ) * rv;
 			out[ 1 ] = ( d0im / d0r ) * rv;
@@ -382,8 +385,8 @@ public class TestPpmCplxPlneCutFileWriterAnim extends TestCase {
 					// System.out.println( DV );
 					getValCplx( t , x , y , z , minVal , maxVal , dval );
 							
-					int green = (int)( DV * dval[ 0 ] );
-					int blue = (int)( DV * dval[ 1 ] );
+					int green = (int)( Math.abs( DV * dval[ 0 ] ) );
+					int blue = (int)( Math.abs( DV * dval[ 1 ] ) );
 							
 					baos.write( 0 /* col.getRed() */ );
 					baos.write( green );
