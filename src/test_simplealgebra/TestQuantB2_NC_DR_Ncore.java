@@ -469,6 +469,7 @@ public class TestQuantB2_NC_DR_Ncore extends TestCase {
 	protected static void initCtr() throws Throwable
 	{
 		System.out.println( "Initializing ctr..." );
+		final double IMMULT = 20.0;
 		double startRe = 1.0;
 		double startIm = 0.0;
 		final DoubleElemFactory dfac = new DoubleElemFactory();
@@ -484,9 +485,9 @@ public class TestQuantB2_NC_DR_Ncore extends TestCase {
 			double prevIm = startIm;
 			for( int tv = 0 ; tv < NUM_T_ITER ; tv++ )
 			{
-				double avRe = DSSX * Math.cos( ERATE * tv / NUM_T_ITER + EPHASEB );
+				double avRe = IMMULT * DSSX * Math.cos( ERATE * tv / NUM_T_ITER + EPHASEB );
 				double avIm = DSSX * Math.sin( ERATE * tv / NUM_T_ITER + EPHASEB );
-				double avRep = DSSX * - Math.sin( ERATE * tv / NUM_T_ITER + EPHASEB ) * ERATE / NUM_T_ITER;
+				double avRep = IMMULT * DSSX * - Math.sin( ERATE * tv / NUM_T_ITER + EPHASEB ) * ERATE / NUM_T_ITER;
 				double avImp = DSSX * Math.cos( ERATE * tv / NUM_T_ITER + EPHASEB ) * ERATE / NUM_T_ITER;
 				ComplexElem<DoubleElem,DoubleElemFactory> eval = new ComplexElem<DoubleElem,DoubleElemFactory>( new DoubleElem( avRep ) , new DoubleElem( avImp ) );
 				ComplexElem<DoubleElem,DoubleElemFactory> prev = new ComplexElem<DoubleElem,DoubleElemFactory>( new DoubleElem( prevRe ) , new DoubleElem( prevIm ) );
@@ -503,6 +504,15 @@ public class TestQuantB2_NC_DR_Ncore extends TestCase {
 				prevIm = ctrIm[ tv ];
 			}
 		}
+		
+
+		for( int tv = 0 ; tv < NUM_T_ITER ; tv++ )
+		{
+			ctrRe[ tv ] = ctrRe[ tv ] * 10.0;
+			ctrIm[ tv ] = ctrIm[ tv ] * 10.0;
+		}
+		
+		
 		System.out.println( "Finished Initializing ctr..." );
 	}
 	
@@ -4707,7 +4717,7 @@ public class TestQuantB2_NC_DR_Ncore extends TestCase {
 		
 		
 		
-		initIterArray( d1 );
+		initIterArray( d1 ); // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		
 		
 		
@@ -4941,7 +4951,7 @@ public class TestQuantB2_NC_DR_Ncore extends TestCase {
 		}
 		
 		
-		for( int tval = 1 ; tval < ( NUM_T_ITER - NSTPT ) ; tval++ )
+		for( int tval = 1 /* 38 */ /* 67 */ ; tval < ( NUM_T_ITER - NSTPT ) ; tval++ ) // !!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!!
 		{
 			performIterationT( tval , newtons , implicitSpace2 );	
 		}
