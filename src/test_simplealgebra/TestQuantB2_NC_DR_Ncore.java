@@ -49,6 +49,7 @@ import simplealgebra.NotInvertibleException;
 import simplealgebra.NumDimensions;
 import simplealgebra.WriteBigIntegerCache;
 import simplealgebra.WriteElemCache;
+import simplealgebra.ComplexElem.ComplexCmd;
 import simplealgebra.algo.NewtonRaphsonSingleElemCompiled;
 import simplealgebra.algo.SimplificationType;
 import simplealgebra.constants.CpuInfo;
@@ -479,19 +480,17 @@ public class TestQuantB2_NC_DR_Ncore extends TestCase {
 		{
 			startRe = startRe * 2.0;
 			startIm = startIm * 2.0;
-			System.out.println( startRe );
 			done = true;
 			double prevRe = startRe;
 			double prevIm = startIm;
 			for( int tv = 0 ; tv < NUM_T_ITER ; tv++ )
 			{
-				double avRe = IMMULT * DSSX * Math.cos( ERATE * tv / NUM_T_ITER + EPHASEB );
-				double avIm = DSSX * Math.sin( ERATE * tv / NUM_T_ITER + EPHASEB );
 				double avRep = IMMULT * DSSX * - Math.sin( ERATE * tv / NUM_T_ITER + EPHASEB ) * ERATE / NUM_T_ITER;
 				double avImp = DSSX * Math.cos( ERATE * tv / NUM_T_ITER + EPHASEB ) * ERATE / NUM_T_ITER;
+				avImp = -Math.abs( avImp );
 				ComplexElem<DoubleElem,DoubleElemFactory> eval = new ComplexElem<DoubleElem,DoubleElemFactory>( new DoubleElem( avRep ) , new DoubleElem( avImp ) );
 				ComplexElem<DoubleElem,DoubleElemFactory> prev = new ComplexElem<DoubleElem,DoubleElemFactory>( new DoubleElem( prevRe ) , new DoubleElem( prevIm ) );
-				ComplexElem<DoubleElem,DoubleElemFactory> prevConj = new ComplexElem<DoubleElem,DoubleElemFactory>( new DoubleElem( prevRe ) , new DoubleElem( -prevIm ) );
+				ComplexElem<DoubleElem,DoubleElemFactory> prevConj = prev.handleOptionalOp( ComplexCmd.CONJUGATE_LEFT , null );
 				ComplexElem<DoubleElem,DoubleElemFactory> prevConjInv = prevConj.invertLeft();
 				ComplexElem<DoubleElem,DoubleElemFactory> sdv = prev.add( eval.mult( prevConjInv ) );
 				ctrRe[ tv ] = sdv.getRe().getVal();
@@ -505,7 +504,7 @@ public class TestQuantB2_NC_DR_Ncore extends TestCase {
 			}
 		}
 		
-
+		
 		for( int tv = 0 ; tv < NUM_T_ITER ; tv++ )
 		{
 			ctrRe[ tv ] = ctrRe[ tv ] * 10.0;
