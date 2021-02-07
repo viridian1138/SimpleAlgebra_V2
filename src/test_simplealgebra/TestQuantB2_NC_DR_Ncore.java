@@ -1050,8 +1050,8 @@ public class TestQuantB2_NC_DR_Ncore extends TestCase {
 		}
 		else if( dx * dx + dy * dy + dz * dz < 1.0 )
 		{
-			avRe = ctrRe[ Math.max( tv , 0 ) ];
-			avIm = ctrIm[ Math.max( tv , 0 ) ];
+			avRe = ctrRe[ Math.abs( tv ) ];
+			avIm = tv >= 0 ? ctrIm[ tv ] : -ctrIm[ -tv ];
 		}
 		else
 		{
