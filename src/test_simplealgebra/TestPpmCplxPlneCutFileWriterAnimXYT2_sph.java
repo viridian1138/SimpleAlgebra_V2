@@ -230,6 +230,64 @@ public class TestPpmCplxPlneCutFileWriterAnimXYT2_sph extends TestCase {
 		final HashSet<BigInteger> ays = cnst( AY );
 		final HashSet<BigInteger> azs = cnst( AZ );
 		
+	
+
+		/**
+		 * Generates the unit vector from the input.
+		 * @param in The input vector.
+		 * @return The unit vector.
+		 */
+		protected static GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> calcUnit( GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> in )
+			throws NotInvertibleException
+		{
+			final DoubleElemFactory de = new DoubleElemFactory();
+					
+			DoubleElem total = de.zero();
+			
+			for( final DoubleElem dd : in.getValueSet() )
+			{
+				total = total.add( dd.mult( dd ) );
+			}
+			
+			// final ArrayList<DoubleElem> args = new ArrayList<DoubleElem>();
+			
+			final DoubleElem invSqrtTotal = ( new DoubleElem( Math.sqrt( total.getVal() ) ) ).invertLeft();
+			
+			final Mutator<DoubleElem> mutr = new Mutator<DoubleElem>()
+			{
+
+				@Override
+				public DoubleElem mutate(DoubleElem in)
+						throws NotInvertibleException {
+					return( in.mult( invSqrtTotal ) );
+				}
+
+				@Override
+				public boolean exposesDerivatives() {
+					return( false );
+				}
+
+				@Override
+				public String writeString() {
+					return( "Mult" );
+				}
+
+				@Override
+				public Mutator<DoubleElem> cloneThread(BigInteger threadIndex) {
+					throw( new RuntimeException( "Not Supported" ) );
+				}
+				
+			};
+			
+			
+			final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>
+				ret = in.mutate( mutr );
+			
+			
+			return( ret );
+			
+		}
+		
 		
 		protected GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> mapPt(
 				GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> in ) throws Throwable 
@@ -239,8 +297,9 @@ public class TestPpmCplxPlneCutFileWriterAnimXYT2_sph extends TestCase {
 			ix = ix.invertLeft();
 			GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> iy = g3fac.zero();
 			iy.setVal( axs , new DoubleElem( 1.0 ) );
-			iy.setVal( ays , new DoubleElem( 0.1 ) );
-			iy.setVal( azs , new DoubleElem( 0.1 ) );
+			iy.setVal( ays , new DoubleElem( 0.28 ) );
+			iy.setVal( azs , new DoubleElem( 0.28 ) );
+			iy = calcUnit( iy );
 			GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> im = ix.mult( iy );
 			return( in.mult( im ) );
 		}
