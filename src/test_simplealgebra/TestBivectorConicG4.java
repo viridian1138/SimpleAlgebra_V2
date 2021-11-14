@@ -357,6 +357,221 @@ public class TestBivectorConicG4 extends TestCase {
 	
 	
 	
+	
+	
+	
+	/**
+	 * Test similar to TestBivectorConicG4() except that the terms for the final meet of
+	 * the "p" vector are distributed across the meet.  
+	 * 
+	 * @throws NotInvertibleException
+	 */
+	public void TestBivectorConicG4A_Dist( ) throws Throwable
+	{
+		Random rand = new Random( 5432 );
+		
+		final TestDimensionFour td = new TestDimensionFour();
+		
+		final GeometricAlgebraOrd<TestDimensionFour> ord = new GeometricAlgebraOrd<TestDimensionFour>();
+		
+		final DoubleElemFactory dl = new DoubleElemFactory();
+		
+		final GeometricAlgebraMultivectorElemFactory<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> se = 
+				new GeometricAlgebraMultivectorElemFactory<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>(dl, td, ord);
+		
+		
+		/**
+		 * The A bivector from equation 5.9 of the projective geometry paper.
+		 */
+		final GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> A = createRandomBivector(rand, se);
+		
+		
+		/**
+		 * The B bivector from equation 5.9 of the projective geometry paper.
+		 */
+		final GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> B = createRandomBivector(rand, se);	
+		
+		
+		/**
+		 * The C bivector from equation 5.9 of the projective geometry paper.
+		 */
+		final GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> C = createRandomBivector(rand, se);
+		
+		
+		/**
+		 * The Phi trivector from equation 5.9 of the projective geometry paper.
+		 */
+		final GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> Phi = createRandomTrivector(rand, se);
+		
+		
+		/**
+		 * The Psi trivector from equation 5.9 of the projective geometry paper.
+		 */
+		final GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> Psi = createRandomTrivector(rand, se);
+		
+		
+		/**
+		 * The Omega trivector from equation 5.9 of the projective geometry paper.
+		 */
+		final GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> Omega = createRandomTrivector(rand, se);
+		
+		
+
+		
+		/**
+		 * The unit pseudoscalar of the projective geometry paper.
+		 */
+		final GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> I = se.zero();
+		
+		final HashSet<BigInteger> hsi = new HashSet<BigInteger>();
+		hsi.add( BigInteger.ZERO );
+		hsi.add( BigInteger.ONE );
+		hsi.add( BigInteger.valueOf( 2 ) );
+		hsi.add( BigInteger.valueOf( 3 ) );
+		I.setVal( hsi , dl.identity() );
+		
+		
+		
+		
+		
+		
+		final GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> nullCoeff =
+				meetOp( A , Phi , I );
+		
+		
+		final GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> lambdaCoeff =
+				( meetOp( B , Phi , I ) ).add( meetOp( A , Psi , I ) );
+		
+		
+		final GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> muCoeff =
+				( meetOp( A , Omega , I ) ).add( meetOp( C , Phi , I ) );
+		
+		
+		final GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> lambdaMuCoeff =
+				( meetOp( B , Omega , I ) ).add( meetOp( C , Psi , I ) );
+		
+		
+		final GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> lambdaSqCoeff =
+				meetOp( B , Psi , I );
+		
+		
+		final GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> muSqCoeff =
+				meetOp( C , Omega , I );
+		
+		
+		
+		
+		
+		final int MAX = 30;
+		for( int cntA = 0 ; cntA < MAX ; cntA++ )
+		{
+			final double lam = (double) cntA / (MAX - 1);
+			
+			/**
+			 * The lambda scalar from equation 5.9 of the projective geometry paper.
+			 */
+			final GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> lambda = se.zero();
+			
+			{
+				final HashSet<BigInteger> li = new HashSet<BigInteger>();
+				lambda.setVal( li , new DoubleElem( lam ) );
+			}
+			
+			
+		
+		
+			/**
+			 * The lambda-squared scalar from equation 5.10 of the projective geometry paper.
+			 */
+			final GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> lambdaSq 
+				= lambda.mult( lambda );
+			
+			
+			
+			for( int cntB = 0 ; cntB < MAX ; cntB++ )
+			{
+				final double muu = (double) cntB / (MAX - 1);
+				
+				/**
+				 * The mu scalar from equation 5.9 of the projective geometry paper.
+				 */
+				final GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> mu = se.zero();
+				
+				{
+					final HashSet<BigInteger> li = new HashSet<BigInteger>();
+					mu.setVal( li , new DoubleElem( muu ) );
+				}
+				
+				
+				
+				
+				/**
+				 * The mu-squared scalar from equation 5.10 of the projective geometry paper.
+				 */
+				final GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> muSq 
+					= mu.mult( mu );
+				
+				
+				
+				
+				final GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> lambdaMu 
+					= lambda.mult( mu );
+				
+
+			
+			
+				
+
+				/**
+				 * Equation 5.9 of the projective geometry paper with terms distributed.
+				 */
+				final GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> p 
+					= nullCoeff
+						.add( lambda.mult( lambdaCoeff ) )
+						.add( mu.mult( muCoeff ) )
+						.add( lambdaMu.mult( lambdaMuCoeff ) )
+						.add( lambdaSq.mult( lambdaSqCoeff ) )
+						.add( muSq.mult( muSqCoeff ) );
+				
+				
+
+			
+				// Divide x, y, and z by x3 to projectively map to the x3 = 1 volume.
+				{
+					final HashSet<BigInteger> hs0 = new HashSet<BigInteger>();
+					final HashSet<BigInteger> hs1 = new HashSet<BigInteger>();
+					final HashSet<BigInteger> hs2 = new HashSet<BigInteger>();
+					final HashSet<BigInteger> hs3 = new HashSet<BigInteger>();
+					hs0.add( BigInteger.ZERO);
+					hs1.add( BigInteger.ONE );
+					hs2.add( BigInteger.valueOf( 2 ) );
+					hs3.add( BigInteger.valueOf( 3 ) );
+					final double xd = p.getVal( hs0 ).getVal();
+					final double yd = p.getVal( hs1 ).getVal();
+					final double zd = p.getVal( hs2 ).getVal();
+					final double x3d = p.getVal( hs3 ).getVal();
+					System.out.println( "---" );
+					System.out.println( xd / x3d );
+					System.out.println( yd / x3d );
+					System.out.println( zd / x3d );
+				} 
+			
+			
+				// System.out.println( "Run " + cnt );
+			}
+			
+			
+		}
+		
+		
+		System.out.println( "Finished" );
+		
+		
+	}
+	
+	
+	
+	
 }
 
 
