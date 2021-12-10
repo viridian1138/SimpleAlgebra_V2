@@ -40,6 +40,10 @@ import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
  * 
  * @author tgreen
  *
+ * @param <U>
+ * @param <A>
+ * @param <R>
+ * @param <S>
  */
 public class Tdg_Facade<U extends NumDimensions, A extends Ord<U>, R extends Elem<R,?>, S extends ElemFactory<R,S>>
 {
