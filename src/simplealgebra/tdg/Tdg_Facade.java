@@ -40,10 +40,10 @@ import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
  * 
  * @author tgreen
  *
- * @param <U>
- * @param <A>
- * @param <R>
- * @param <S>
+ * @param <U> The number of dimensions in the multivectors used.
+ * @param <A> The Ord of the multivectors.
+ * @param <R> The enclosed type of the multivectors.
+ * @param <S> The factory for the enclosed type of the multivectors.
  */
 public class Tdg_Facade<U extends NumDimensions, A extends Ord<U>, R extends Elem<R,?>, S extends ElemFactory<R,S>>
 {
