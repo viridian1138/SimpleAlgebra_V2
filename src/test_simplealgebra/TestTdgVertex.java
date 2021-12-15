@@ -2432,6 +2432,279 @@ public class TestTdgVertex extends TestCase {
 	
 	
 	
+	/**
+	 * Tests convex polygon areas in 4-D.
+	 * 
+	 * @throws NotInvertibleException
+	 */
+	public void testPolygonArea_4D( ) throws Throwable
+	{
+		Random rand = new Random( 5432 );
+		
+		final TestDimensionFour td = new TestDimensionFour();
+		
+		final GeometricAlgebraOrd<TestDimensionFour> ord = new GeometricAlgebraOrd<TestDimensionFour>();
+		
+		final DoubleElemFactory dl = new DoubleElemFactory();
+		
+		final GeometricAlgebraMultivectorElemFactory<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> se = 
+				new GeometricAlgebraMultivectorElemFactory<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>(dl, td, ord);
+		
+		
+		final Tdg_Facade<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> facade = new Tdg_Facade<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>();
+		
+		
+		final int MAX = 30;
+		for( int cntA = 0 ; cntA < MAX ; cntA++ )
+		{
+			
+			
+			final GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> p1 = createRandomVector4D(rand, se);
+			
+			final HashSet<BigInteger> axes = new HashSet<BigInteger>();
+			
+			
+			
+			final GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> p2del = se.zero();
+			buildDel4D( rand , axes , p2del );
+			
+			
+			
+			final GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> p3del = se.zero();
+			buildDel4D( rand , axes , p3del );
+			
+			
+			final int numVertices = rand.nextInt( 7 ) + 3;
+			
+			
+			GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>[] loop
+				= (GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>[])( new GeometricAlgebraMultivectorElem[ numVertices ] );
+			
+			
+			DoubleElem chk = new DoubleElem( 0.0 );
+			
+			
+			for( int cnt = 0 ; cnt < numVertices ; cnt++ )
+			{
+				final double rot = 2.0 * Math.PI * cnt / numVertices;
+				final DoubleElem da = new DoubleElem( Math.cos( rot ) );
+				final DoubleElem db = new DoubleElem( Math.sin( rot ) );
+				final GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> dav = se.zero();
+				final GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> dbv = se.zero();
+				dav.setVal( new HashSet<BigInteger>() , da);
+				dbv.setVal( new HashSet<BigInteger>() , db);
+				final GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> dv = ( dav.mult( p2del ) ).add( dbv.mult( p3del ) ).add( p1 );
+				loop[ cnt ] = dv;
+				if( cnt > 0 )
+				{
+					chk = chk.add( facade.calcTriangleArea(p1, loop[cnt-1], loop[cnt], 20, 20) );
+				}
+			}
+			
+			chk = chk.add( facade.calcTriangleArea(p1, loop[numVertices-1], loop[0], 20, 20) );
+			
+			
+			VertexLoop2D<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> lp 
+				= new VertexLoop2D<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>( loop );
+			
+			
+			final DoubleElem r = lp.calcM1(2, se, 20, 20);
+			
+			
+			Assert.assertTrue( Math.abs( r.add( chk.negate() ).getVal() ) < 0.00001 );
+			
+			
+		}
+		
+		
+	}
+	
+	
+	
+	
+	
+	/**
+	 * Tests convex polygon areas in 3-D.
+	 * 
+	 * @throws NotInvertibleException
+	 */
+	public void testPolygonArea_3D( ) throws Throwable
+	{
+		Random rand = new Random( 5432 );
+		
+		final TestDimensionThree td = new TestDimensionThree();
+		
+		final GeometricAlgebraOrd<TestDimensionThree> ord = new GeometricAlgebraOrd<TestDimensionThree>();
+		
+		final DoubleElemFactory dl = new DoubleElemFactory();
+		
+		final GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> se = 
+				new GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>(dl, td, ord);
+		
+		
+		final Tdg_Facade<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> facade = new Tdg_Facade<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>();
+		
+		
+		final int MAX = 30;
+		for( int cntA = 0 ; cntA < MAX ; cntA++ )
+		{
+			
+			
+			final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> p1 = createRandomVector3D(rand, se);
+			
+			final HashSet<BigInteger> axes = new HashSet<BigInteger>();
+			
+			
+			
+			final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> p2del = se.zero();
+			buildDel3D( rand , axes , p2del );
+			
+			
+			
+			final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> p3del = se.zero();
+			buildDel3D( rand , axes , p3del );
+			
+			
+			final int numVertices = rand.nextInt( 7 ) + 3;
+			
+			
+			GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>[] loop
+				= (GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>[])( new GeometricAlgebraMultivectorElem[ numVertices ] );
+			
+			
+			DoubleElem chk = new DoubleElem( 0.0 );
+			
+			
+			for( int cnt = 0 ; cnt < numVertices ; cnt++ )
+			{
+				final double rot = 2.0 * Math.PI * cnt / numVertices;
+				final DoubleElem da = new DoubleElem( Math.cos( rot ) );
+				final DoubleElem db = new DoubleElem( Math.sin( rot ) );
+				final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> dav = se.zero();
+				final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> dbv = se.zero();
+				dav.setVal( new HashSet<BigInteger>() , da);
+				dbv.setVal( new HashSet<BigInteger>() , db);
+				final GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> dv = ( dav.mult( p2del ) ).add( dbv.mult( p3del ) ).add( p1 );
+				loop[ cnt ] = dv;
+				if( cnt > 0 )
+				{
+					chk = chk.add( facade.calcTriangleArea(p1, loop[cnt-1], loop[cnt], 20, 20) );
+				}
+			}
+			
+			chk = chk.add( facade.calcTriangleArea(p1, loop[numVertices-1], loop[0], 20, 20) );
+			
+			
+			VertexLoop2D<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> lp 
+				= new VertexLoop2D<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>( loop );
+			
+			
+			final DoubleElem r = lp.calcM1(2, se, 20, 20);
+			
+			
+			Assert.assertTrue( Math.abs( r.add( chk.negate() ).getVal() ) < 0.00001 );
+			
+			
+		}
+		
+		
+	}
+	
+	
+	
+	
+	
+	/**
+	 * Tests convex polygon areas in 2-D.
+	 * 
+	 * @throws NotInvertibleException
+	 */
+	public void testPolygonArea_2D( ) throws Throwable
+	{
+		Random rand = new Random( 5432 );
+		
+		final TestDimensionTwo td = new TestDimensionTwo();
+		
+		final GeometricAlgebraOrd<TestDimensionTwo> ord = new GeometricAlgebraOrd<TestDimensionTwo>();
+		
+		final DoubleElemFactory dl = new DoubleElemFactory();
+		
+		final GeometricAlgebraMultivectorElemFactory<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory> se = 
+				new GeometricAlgebraMultivectorElemFactory<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory>(dl, td, ord);
+		
+		
+		final Tdg_Facade<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory> facade = new Tdg_Facade<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory>();
+		
+		
+		final int MAX = 30;
+		for( int cntA = 0 ; cntA < MAX ; cntA++ )
+		{
+			
+			
+			final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory> p1 = createRandomVector2D(rand, se);
+			
+			final HashSet<BigInteger> axes = new HashSet<BigInteger>();
+			
+			
+			
+			final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory> p2del = se.zero();
+			buildDel2D( rand , axes , p2del );
+			
+			
+			
+			final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory> p3del = se.zero();
+			buildDel2D( rand , axes , p3del );
+			
+			
+			final int numVertices = rand.nextInt( 7 ) + 3;
+			
+			
+			GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory>[] loop
+				= (GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory>[])( new GeometricAlgebraMultivectorElem[ numVertices ] );
+			
+			
+			DoubleElem chk = new DoubleElem( 0.0 );
+			
+			
+			for( int cnt = 0 ; cnt < numVertices ; cnt++ )
+			{
+				final double rot = 2.0 * Math.PI * cnt / numVertices;
+				final DoubleElem da = new DoubleElem( Math.cos( rot ) );
+				final DoubleElem db = new DoubleElem( Math.sin( rot ) );
+				final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory> dav = se.zero();
+				final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory> dbv = se.zero();
+				dav.setVal( new HashSet<BigInteger>() , da);
+				dbv.setVal( new HashSet<BigInteger>() , db);
+				final GeometricAlgebraMultivectorElem<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory> dv = ( dav.mult( p2del ) ).add( dbv.mult( p3del ) ).add( p1 );
+				loop[ cnt ] = dv;
+				if( cnt > 0 )
+				{
+					chk = chk.add( facade.calcTriangleArea(p1, loop[cnt-1], loop[cnt], 20, 20) );
+				}
+			}
+			
+			chk = chk.add( facade.calcTriangleArea(p1, loop[numVertices-1], loop[0], 20, 20) );
+			
+			
+			VertexLoop2D<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory> lp 
+				= new VertexLoop2D<TestDimensionTwo,GeometricAlgebraOrd<TestDimensionTwo>,DoubleElem,DoubleElemFactory>( loop );
+			
+			
+			final DoubleElem r = lp.calcM1(2, se, 20, 20);
+			
+			
+			Assert.assertTrue( Math.abs( r.add( chk.negate() ).getVal() ) < 0.00001 );
+			
+			
+		}
+		
+		
+	}
+	
+	
+	
+	
+	
 	
 	
 	
