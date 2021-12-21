@@ -122,6 +122,11 @@ public abstract class NewtonRaphsonSingleElemCuda<R extends Elem<R,?>, S extends
 	 */
 	protected SymbolicElem<R,S> partialEvalClone;
 	
+	/**
+	 * Compiler for Nvidia Cuda code generation.
+	 */
+	protected CulangCompile<R,S> compiler = new CulangCompile<R,S>();
+	
 	
 	/**
 	 * Constructs the evaluator.
@@ -150,7 +155,6 @@ public abstract class NewtonRaphsonSingleElemCuda<R extends Elem<R,?>, S extends
 				: function.evalPartialDerivative(_withRespectTo, implicitSpaceFirstLevel );
 		evalClone = handleSimplification( evalClone , useSimplification() );
 		partialEvalClone = handleSimplification( partialEvalClone , useSimplification() );
-		CulangCompile<R,S> compiler = new CulangCompile<R,S>();
 		compiler.attemptCulangCompile( evalClone , partialEvalClone , templatePath , replaceMap );
 	}
 	
@@ -179,7 +183,7 @@ public abstract class NewtonRaphsonSingleElemCuda<R extends Elem<R,?>, S extends
 	
 	
 	/**
-	 * Runs Newton-Raphson.
+	 * Evaluates (runs) generated Nvidia Cuda code.
 	 * 
 	 * @param implicitSpaceInitialGuess The implicit space for the initial guess.
 	 * @return An iterated result.
@@ -188,7 +192,6 @@ public abstract class NewtonRaphsonSingleElemCuda<R extends Elem<R,?>, S extends
 	 */
 	public void eval( ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
-		CulangCompile<R,S> compiler = new CulangCompile<R,S>();
 		compiler.eval();
 	}
 	

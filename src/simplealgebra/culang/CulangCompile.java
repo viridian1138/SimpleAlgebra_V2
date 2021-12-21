@@ -27,6 +27,7 @@
 
 package simplealgebra.culang;
 
+import java.io.File;
 import java.util.HashMap;
 
 import simplealgebra.ComplexElem;
@@ -53,6 +54,11 @@ public class CulangCompile<R extends Elem<R,?>, S extends ElemFactory<R,S>> {
 	public CulangCompile() {
 	}
 	
+	/**
+	 * The compiled executable file.
+	 */
+	protected File execFile = null;
+	
 	
 	/**
 	 * Attempts to convert a SymbolicElem to culang.
@@ -73,9 +79,10 @@ public class CulangCompile<R extends Elem<R,?>, S extends ElemFactory<R,S>> {
 			{
 				String f1 = ( new Culang() ).culang_Dbl( (SymbolicElem<DoubleElem,DoubleElemFactory>) in , templatePath , 
 						"__device__ void evalValue( DblEnt* arr ," , replaceMap );
-				String f2 = ( new Culang() ).culang_Dbl( (SymbolicElem<DoubleElem,DoubleElemFactory>) in2 , f1 , 
+				final Culang c2 = new Culang();
+				String f2 = c2.culang_Dbl( (SymbolicElem<DoubleElem,DoubleElemFactory>) in2 , f1 , 
 						"__device__ void evalPartialDerivative( DblEnt* arr ," , replaceMap );
-				( new Culang() ).runNativeBuild();
+				execFile = c2.runNativeBuild( f2 );
 			}
 			
 			if( fac instanceof ComplexElemFactory )
@@ -85,9 +92,10 @@ public class CulangCompile<R extends Elem<R,?>, S extends ElemFactory<R,S>> {
 				{	
 					String f1 = ( new Culang() ).culang_Cplx_Dbl( (SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>) in ,  templatePath , 
 							"__device__ void evalValue( CplxEnt* arr ," , replaceMap  );
-					String f2 = ( new Culang() ).culang_Cplx_Dbl( (SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>) in2 , f1 , 
+					final Culang c2 = new Culang();
+					String f2 = c2.culang_Cplx_Dbl( (SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>) in2 , f1 , 
 							"__device__ void evalPartialDerivative( CplxEnt* arr ," , replaceMap );
-					( new Culang() ).runNativeBuild();
+					execFile = c2.runNativeBuild( f2 );
 					
 				}
 			}
@@ -106,8 +114,20 @@ public class CulangCompile<R extends Elem<R,?>, S extends ElemFactory<R,S>> {
 	 */
 	public void eval()
 	{
-		throw( new RuntimeException( "Not Implemented Yet" ) );
-		// fldfksdlfkdslfksdl;f; // Implementation Here
+		System.out.println( "Starting Eval..." );
+		
+		try
+		{
+			Process p = Runtime.getRuntime().exec( execFile.getAbsolutePath() );
+			p.waitFor();
+		}
+		catch( Throwable ex )
+		{
+			ex.printStackTrace( System.out );
+			throw( new RuntimeException( "Exec Failed" ) );
+		}
+		
+		System.out.println( "Completed Eval..." );
 	}
 	
 

@@ -133,6 +133,10 @@ public class Culang {
 	
 	
 	
+	/**
+	 * The script file that invokes gcc compilation.
+	 */
+	static File fgcc = null;
 
 	
 	
@@ -509,7 +513,7 @@ public class Culang {
 	
 		final File fculang = new File( tempDir , className + ".cpp" );
 		
-		final File fgcc =new File( tempDir , "runGCC.sh" );
+		fgcc = new File( tempDir , "runGCC.sh" );
 		
 		final File fPsInst = new File( tempDir , className + "A.txt" );
 		final File fJmemInst = new File( tempDir , className + "B.txt" );
@@ -628,7 +632,7 @@ public class Culang {
 		
 		final File fculang = new File( tempDir , className + ".cpp" );
 		
-		final File fgcc =new File( tempDir , "runGCC.sh" );
+		fgcc = new File( tempDir , "runGCC.sh" );
 		
 		final File fPsInst= new File( tempDir , className + "A.txt" );
 		final File fJmemInst= new File( tempDir , className + "B.txt" );
@@ -714,27 +718,34 @@ public class Culang {
 	
 	
 	
-	public void runNativeBuild() throws Throwable
+	public File runNativeBuild( final String fculang ) throws Throwable
 	{
 		
-throw( new RuntimeException( "Not Implemented Yet" ) );		
-//		PrintStream ps = new PrintStream( new FileOutputStream( fgcc ) );
-//		
-//		
-//		ps.println( "cd " + tempDir.getAbsolutePath() );
-//		ps.println( CulangConstants.CULANG_NATIVE_COMPILATION_COMMAND + className + ".cpp -o " + className + ".o" );
-//		ps.println( CulangConstants.CULANG_NATIVE_LINK_COMMAND + libName + ".so " + className + ".o -lc -lm" );
-//		
-//		
-//		ps.close();
-//		
-//		
-//		
-//		Process p = Runtime.getRuntime().exec( "sh " + fgcc.getAbsolutePath() );
-//		p.waitFor();
-//		
-//		
-//		System.out.println( "Finished Native Culang Compile." );
+		PrintStream ps = new PrintStream( new FileOutputStream( fgcc ) );
+		
+		
+		ps.println( "cd " + tempDir.getAbsolutePath() );
+		ps.println( CulangConstants.CULANG_NATIVE_COMPILATION_COMMAND + fculang + CulangConstants.CULANG_NATIVE_LINK_OUTPUT + " dpar " + CulangConstants.CULANG_NATIVE_LINK_OUTPUT2 );
+		
+		
+		ps.close();
+		
+		
+		
+		Process p = Runtime.getRuntime().exec( "sh " + fgcc.getAbsolutePath() );
+		p.waitFor();
+		
+		
+		File fo = new File( tempDir , "dpar" );
+		
+		if( !( fo.exists() ) )
+		{
+			throw( new RuntimeException( "Compilation Failed" ) );
+		}
+		
+		
+		System.out.println( "Finished Native Culang Compile." );
+		return( fo );
 	}
 
 	

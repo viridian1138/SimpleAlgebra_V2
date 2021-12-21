@@ -37,12 +37,17 @@ public class CulangConstants {
 	/**
 	 * Command to compile the culang source code.  Modify this to suit the OS, OS version, and compiler on the destination machine.
 	 */
-	public static final String CULANG_NATIVE_COMPILATION_COMMAND = "g++ -c -fPIC -O3 -I/usr/lib/jvm/java-8-openjdk-amd64/include -I/usr/lib/jvm/java-8-openjdk-amd64/include/linux ";
+	public static final String CULANG_NATIVE_COMPILATION_COMMAND = "g++ ";
 
 	/**
-	 * Command to link culang-compiled code.  Modify this to suit the OS, OS version, and compiler on the destination machine.
+	 * Tag to output culang-compiled code.  Modify this to suit the OS, OS version, and compiler on the destination machine.
 	 */
-	public static final String CULANG_NATIVE_LINK_COMMAND = "g++ -shared -fPIC -o ";
+	public static final String CULANG_NATIVE_LINK_OUTPUT = " -o ";
+
+	/**
+	 * Tag to output culang-compiled code.  Modify this to suit the OS, OS version, and compiler on the destination machine.
+	 */
+	public static final String CULANG_NATIVE_LINK_OUTPUT2 = " -I/usr/local/cuda/include -L/usr/local/cuda/lib64 -lnvrtc -lnvrtc-builtins -lcuda -lpthread -lm";
 	
 	
 }
