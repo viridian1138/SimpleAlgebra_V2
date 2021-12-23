@@ -17,10 +17,10 @@
 
 #define NSTPT 3
 
-#define NUM_X_ITER 340
-#define NUM_Y_ITER 340
-#define NUM_Z_ITER 340
-#define NUM_T_ITER ( NUM_X_ITER * 2 )
+#define NUM_X_ITER 351
+#define NUM_Y_ITER 351
+#define NUM_Z_ITER 351
+#define NUM_T_ITER 701
 #define SZ_T ( NSTPT * 2 + 1 )
 
 
@@ -212,19 +212,22 @@ void divideBy( const double d , CplxEnt& out )
 const char* calcUpdate = " \n\
 \n\
 \n\
-#define NUM_THREADS 256 \n\
-#define NUM_BLOCKS 32 \n\
+#define NUM_THREADS 256\n\
+#define NUM_BLOCKS 32\n\
 \n\
 #define NUM_CUDA_CORES ( NUM_BLOCKS * NUM_THREADS )\n\
 \n\
 \n\
 #define NSTPT 3\n\
 \n\
-#define NUM_X_ITER 340 \n\
-#define NUM_Y_ITER 340 \n\
-#define NUM_Z_ITER 340 \n\
-#define NUM_T_ITER ( NUM_X_ITER * 2 )\n\
+#define NUM_X_ITER 350\n\
+#define NUM_Y_ITER 350\n\
+#define NUM_Z_ITER 350\n\
+#define NUM_T_ITER 700\n\
 #define SZ_T ( NSTPT * 2 + 1 )\n\
+\n\
+\n\
+#define APPLY_NUMERICAL_VISCOSITY true \n\
 \n\
 \n\
 #define HALF_X ( NUM_X_ITER / 2 )\n\
@@ -426,8 +429,8 @@ out.getIm().setVal( avIm ); \n\
 __device__ void evalValue( CplxEnt* arr , const int tt , const size_t x , const size_t y , const size_t z , CplxEnt& out ) \n\
 { \n\
 \n\
-const double t_3 = -9.37479492169188E-8; \n\
-const double t_4 = 0.0; \n\ kjhjkhjkhjkhjkhkjhjkhjkhjkhjkh
+const double t_3 = -9.37479492169188E-8; sffsdfsdfdsfdsfdsfdsfsdfd \n\
+const double t_4 = 0.0; dsfdsfsdfdsdfsf \n\
 CplxEnt t_5_ii; \n\
 fillTempArrayInner( arr , tt , x   , y  , z  , tt  - 4 , t_5_ii ); \n\
 const double t_5 = t_5_ii.getRe().getVal(); \n\
@@ -491,7 +494,7 @@ const double t_56 = t_54 * t_22 - t_55 * t_23; \n\
 const double t_57 = t_54 * t_23 + t_55 * t_22; \n\
 const double t_58 = t_50 * t_56 - t_51 * t_57; \n\
 const double t_59 = t_50 * t_57 + t_51 * t_56; \n\
-const double t_60 = 8.65051903114187E-8; \n\
+const double t_60 = 8.163265306122451E-8; \n\
 const double t_61 = 0.0; \n\
 const double t_62 = t_11 * t_60 - t_12 * t_61; \n\
 const double t_63 = t_11 * t_61 + t_12 * t_60; \n\
@@ -636,7 +639,7 @@ const double t_189 = - t_187; \n\
 const double t_190 = - t_188; \n\
 const double t_191 = t_185 * t_189 - t_186 * t_190; \n\
 const double t_192 = t_185 * t_190 + t_186 * t_189; \n\
-const double t_193 = 5.882352941176471E-4; \n\
+const double t_193 = 5.714285714285715E-4; \n\
 const double t_194 = 0.0; \n\
 const double t_195 = t_11 * t_193 - t_12 * t_194; \n\
 const double t_196 = t_11 * t_194 + t_12 * t_193; \n\
@@ -1256,7 +1259,7 @@ const double t_749 = - t_747; \n\
 const double t_750 = - t_748; \n\
 const double t_751 = t_741 * t_749 - t_742 * t_750; \n\
 const double t_752 = t_741 * t_750 + t_742 * t_749; \n\
-const double t_753 = 5.088540606554042E-11; \n\
+const double t_753 = 4.664723032069972E-11; \n\
 const double t_754 = 0.0; \n\
 const double t_755 = t_753 * t_193 - t_754 * t_194; \n\
 const double t_756 = t_753 * t_194 + t_754 * t_193; \n\
@@ -5742,8 +5745,8 @@ out.getIm().setVal( t_5052 ); \n\
 __device__ void evalPartialDerivative( CplxEnt* arr , const int tt , const size_t x , const size_t y , const size_t z , CplxEnt& out ) \
 { \n\
 \n\
-const double t_5054 = -3.7498769523010075E-13; \n\
-const double t_5055 = 0.0; \n\ jhjkhjkhjkhjkhjkhkjhjkhjkhk
+const double t_5054 = -3.7498769523010075E-13; fsfsfsdfsdfsdfs \n\
+const double t_5055 = 0.0; sdfdsfsfdsfsdfdsfsdf \n\
 const double t_5056 = 3.1250000000000005E-8; \n\
 const double t_5057 = 0.0; \n\
 const double t_5058 = 0.005; \n\
@@ -5898,8 +5901,71 @@ while( !( iterationsDone( intCnt ) ) && !iterationsStopped ) \n\
 } \n\
 // return( lastValue ); \n\
 } \n\
-\
-\
+\n\
+\n\
+/** \n\
+* Approximate maximum change allowed by nonlinear viscosity. \n\
+*/ \n\
+#define MAX_CHG 10000.0 \n\
+\n\
+/** \n\
+* Multiplicative inverse of MAX_CHG. \n\
+*/ \n\
+#define I_MAX_CHG 1.0 / MAX_CHG \n\
+\n\
+/** \n\
+* Size of change below which numerical viscosity isn't applied. \n\
+*/ \n\
+#define NUMERICAL_VISCOSITY_EXIT_CUTOFF 20.0 \n\
+\n\
+\n\
+__device__ void applyNumericViscosityRe(CplxEnt* arr , const int tval , const size_t x , const size_t y , const size_t z , CplxEnt& p) \n\
+{ \n\
+		CplxEnt pim; \n\
+		fillTempArrayInner( arr , tval , x   , y  , z  , tval  - 1 , pim ); \n\
+		const double delt = p.getRe().getVal() \n\
+			- pim.getRe().getVal(); \n\
+		const double adelt = fabs( delt ); \n\
+		if( adelt < NUMERICAL_VISCOSITY_EXIT_CUTOFF ) \n\
+		{ \n\
+			return; \n\
+		} \n\
+		const double iadelt = 1.0 / adelt; \n\
+		const double iadiv = pow( iadelt * iadelt + I_MAX_CHG * I_MAX_CHG , 0.5 ); \n\
+		const double adiv = 1.0 / iadiv; \n\
+		p.getRe().setVal( \n\
+				pim.getRe().getVal() + \n\
+				( delt > 0.0 ? adiv : -adiv ) ); \n\
+} \n\
+\n\
+\n\
+__device__ void applyNumericViscosityIm(CplxEnt* arr , const int tval , const size_t x , const size_t y , const size_t z , CplxEnt& p) \n\
+{ \n\
+	CplxEnt pim; \n\
+	fillTempArrayInner( arr , tval , x   , y  , z  , tval  - 1 , pim ); \n\
+	const double delt = p.getIm().getVal() \n\
+		- pim.getIm().getVal(); \n\
+	const double adelt = fabs( delt ); \n\
+	if( adelt < NUMERICAL_VISCOSITY_EXIT_CUTOFF ) \n\
+	{ \n\
+		return; \n\
+	} \n\
+	const double iadelt = 1.0 / adelt; \n\
+	const double iadiv = pow( iadelt * iadelt + I_MAX_CHG * I_MAX_CHG , 0.5 ); \n\
+	const double adiv = 1.0 / iadiv; \n\
+	p.getIm().setVal( \n\
+			pim.getIm().getVal() + \n\
+			( delt > 0.0 ? adiv : -adiv ) ); \n\
+} \n\
+\n\
+\n\
+__device__ void applyNumericViscosity(CplxEnt* arr , const int tval , const size_t x , const size_t y , const size_t z , CplxEnt& p) \n\
+{ \n\
+	applyNumericViscosityRe(arr, tval, x, y, z, p); \n\
+	applyNumericViscosityIm(arr, tval, x, y, z, p); \n\
+} \n\
+\n\
+\n\
 extern \"C\" __global__ \n\
 void calcUpdate(int tval, double *outx)  \n\
 { \n\
@@ -5941,6 +6007,12 @@ else \n\
 { \n\
 	eval_newton(arr , tval , x , y , z , p , iterationValueCache ); \n\
 } \n\
+\n\
+if( APPLY_NUMERICAL_VISCOSITY ) \n\
+{\n\
+	applyNumericViscosity(arr , tval , x , y , z , p);\n\
+}\n\
+\n\
 \n\
 } \n\
 \n\
@@ -6001,7 +6073,7 @@ else \n\
 
 
 
-#define OUT_FILEPATH "outdir/outD_"
+#define OUT_FILEPATH "/d/outdir/outD_"
 
 
 
