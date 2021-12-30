@@ -570,11 +570,11 @@ public class TestTdgDodecahedron extends TestCase {
 		final DoubleElem r = dodecahedron.calcM1(3, se, 20, 20);
 		
 		
-		final double vertexLength = facade.calcLineSegmentLength( vertices[0], vertices[1], 20, 20).getVal();
-		final double vertexLengthCubed = vertexLength * vertexLength * vertexLength;
+		final double edgeLength = facade.calcLineSegmentLength( vertices[0], vertices[1], 20, 20).getVal();
+		final double edgeLengthCubed = edgeLength * edgeLength * edgeLength;
 	
 		final double dodecMult = ( 15 + 7 * Math.sqrt( 5.0 ) ) / 4.0;
-		final double chk = dodecMult * vertexLengthCubed; // dodecahedron volume check
+		final double chk = dodecMult * edgeLengthCubed; // dodecahedron volume check
 		
 		Assert.assertTrue( Math.abs( r.getVal() - chk ) < 0.00001 );
 		
@@ -719,16 +719,317 @@ public class TestTdgDodecahedron extends TestCase {
 		final DoubleElem r = dodecahedron.calcM1(3, se, 20, 20);
 		
 		
-		final double vertexLength = facade.calcLineSegmentLength( vertices[0], vertices[1], 20, 20).getVal();
-		final double vertexLengthCubed = vertexLength * vertexLength * vertexLength;
+		final double edgeLength = facade.calcLineSegmentLength( vertices[0], vertices[1], 20, 20).getVal();
+		final double edgeLengthCubed = edgeLength * edgeLength * edgeLength;
 	
 		final double dodecMult = ( 15 + 7 * Math.sqrt( 5.0 ) ) / 4.0;
-		final double chk = dodecMult * vertexLengthCubed; // dodecahedron volume check
+		final double chk = dodecMult * edgeLengthCubed; // dodecahedron volume check
 		
 		Assert.assertTrue( Math.abs( r.getVal() - chk ) < 0.00001 );
 		
 	}
 
+	
+	
+	
+	
+	
+	/**
+	 * Tests the surface area of a dodecahedron in 3-D.
+	 * 
+	 * @throws NotInvertibleException
+	 */
+	public void testDodecahedronSurfaceArea_3D( ) throws Throwable
+	{
+		final int NVERT = 20;
+		final int NFACE = 12;
+		
+		final TestDimensionThree td = new TestDimensionThree();
+		
+		final GeometricAlgebraOrd<TestDimensionThree> ord = new GeometricAlgebraOrd<TestDimensionThree>();
+		
+		final DoubleElemFactory dl = new DoubleElemFactory();
+		
+		final GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> se = 
+				new GeometricAlgebraMultivectorElemFactory<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>(dl, td, ord);
+		
+		
+		final Tdg_Facade<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> facade = new Tdg_Facade<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>();
+		
+		
+		final ArrayList<GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>> 
+			topVertices = new ArrayList<GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>>();
+	
+	
+	
+		final ArrayList<VertexCollection<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>> 
+			topSubs = new ArrayList<VertexCollection<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>>();
+		
+		
+		
+		final double L = 4.0 / ( Math.sqrt( 3.0 ) * ( 1.0 + Math.sqrt( 5.0 ) ) );
+		final double d = 0.5 * L / Math.sin( 0.2 * Math.PI );
+		final double ztop = Math.sqrt( 1.0 - d * d );
+	
+		
+		GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>[] vertices =
+				(GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>[])( 
+						new GeometricAlgebraMultivectorElem[ NVERT ] );
+		
+
+		vertices[0] = initVect_3D( 0.0 , -d , ztop  , se );
+		
+		for( int i = 1 ; i <= 4 ; i++ )
+		{
+			vertices[ i ] = rotXY_3D( vertices[0] , 0.4 * Math.PI * i , se, 20 );
+		}
+		
+		vertices[ 5 ] = rotYZ_3D( vertices[ 0 ] , 2.0 * Math.asin( 0.5 * L ) , se , 20 );
+				
+		vertices[ 10 ] = reflectInPlane_3D(
+				vertices[1],
+				vertices[0].add( vertices[5].negate() ),
+				vertices[0].add( vertices[5] ).divideBy( 2 ),
+				se
+				);
+		
+		{
+			GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> tmp = vertices[ 2 ];
+			GeometricAlgebraMultivectorElem<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> tmp2 = se.zero();
+			
+			{
+				final HashSet<BigInteger> hs = new HashSet<BigInteger>();
+				hs.add( BigInteger.ZERO );
+				tmp2.setVal( hs , tmp.getVal( hs ) );
+			}
+			
+			{
+				final HashSet<BigInteger> hs = new HashSet<BigInteger>();
+				hs.add( BigInteger.ONE );
+				tmp2.setVal( hs , tmp.getVal( hs ).negate() );
+			}
+			
+			{
+				final HashSet<BigInteger> hs = new HashSet<BigInteger>();
+				hs.add( BigInteger.valueOf( 2 ) );
+				tmp2.setVal( hs , tmp.getVal( hs ).negate() );
+			}
+			
+			vertices[ 15 ] = tmp2;
+		}
+		
+		
+		for( int t = 1 ; t < 4 ; t++ )
+		{
+			for( int i = 1 ; i <= 4 ; i++ )
+			{
+				vertices[ 5 * t + i ] = rotXY_3D( vertices[5*t] , 0.4 * Math.PI * i , se , 20 );
+			}
+		}
+		
+		
+		for( int cnt = 0 ; cnt < NVERT ; cnt++ )
+		{
+			topVertices.add( vertices[ cnt ] );
+		}
+		
+		
+		
+		
+		int p = 0;
+		topSubs.add( buildPentagon3D( vertices[0] , vertices[1] , vertices[2] , vertices[3] , vertices[4] ) );
+		
+		
+		for( p = 1 ; p <= 5 ; p++ )
+		{
+			int off1 = (p-1)%5;
+			int off2 = p%5;
+			topSubs.add( buildPentagon3D( vertices[off1] , vertices[5+off1] , vertices[10+off1] , vertices[5+off2] , vertices[off2] ) );
+		}
+		
+		
+		for( p = 6 ; p <= 10 ; p++ )
+		{
+			int off1 = (p-6)%5;
+			int off2 = (p-2)%5;
+			topSubs.add( buildPentagon3D( vertices[5+off1] , vertices[10+off2] , vertices[15+off2] , vertices[15+off1] , vertices[10+off1] ) );
+		}
+		
+		p = 11;
+		topSubs.add( buildPentagon3D( vertices[19] , vertices[18] , vertices[17] , vertices[16] , vertices[15] ) );
+		
+		
+		
+		VertexUnorderedCollection<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory> dodecahedron 
+			= new VertexUnorderedCollection<TestDimensionThree,GeometricAlgebraOrd<TestDimensionThree>,DoubleElem,DoubleElemFactory>( topSubs , topVertices );
+		
+		
+		
+		final DoubleElem r = dodecahedron.calcM2(3, se, 20, 20);
+		
+		
+		final double edgeLength = facade.calcLineSegmentLength( vertices[0], vertices[1], 20, 20).getVal();
+		final double edgeLengthSquared = edgeLength * edgeLength;
+	
+		final double dodecMult = 3.0 * Math.sqrt( 25 + 10 * Math.sqrt( 5.0 ) );
+		final double chk = dodecMult * edgeLengthSquared; // dodecahedron surface area check
+		
+		Assert.assertTrue( Math.abs( r.getVal() - chk ) < 0.00001 );
+		
+	}
+
+	
+	
+	
+	
+	
+	/**
+	 * Tests the surface area of a dodecahedron in 4-D.
+	 * 
+	 * @throws NotInvertibleException
+	 */
+	public void testDodecahedronSurfaceArea_4D( ) throws Throwable
+	{
+		final int NVERT = 20;
+		final int NFACE = 12;
+		
+		final TestDimensionFour td = new TestDimensionFour();
+		
+		final GeometricAlgebraOrd<TestDimensionFour> ord = new GeometricAlgebraOrd<TestDimensionFour>();
+		
+		final DoubleElemFactory dl = new DoubleElemFactory();
+		
+		final GeometricAlgebraMultivectorElemFactory<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> se = 
+				new GeometricAlgebraMultivectorElemFactory<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>(dl, td, ord);
+		
+		
+		final Tdg_Facade<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> facade = new Tdg_Facade<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>();
+		
+		
+		final ArrayList<GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>> 
+			topVertices = new ArrayList<GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>>();
+	
+	
+	
+		final ArrayList<VertexCollection<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>> 
+			topSubs = new ArrayList<VertexCollection<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>>();
+		
+		
+		
+		final double L = 4.0 / ( Math.sqrt( 3.0 ) * ( 1.0 + Math.sqrt( 5.0 ) ) );
+		final double d = 0.5 * L / Math.sin( 0.2 * Math.PI );
+		final double ztop = Math.sqrt( 1.0 - d * d );
+	
+		
+		GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>[] vertices =
+				(GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>[])( 
+						new GeometricAlgebraMultivectorElem[ NVERT ] );
+		
+
+		vertices[0] = initVect_4D( 0.0 , -d , ztop  , se );
+		
+		for( int i = 1 ; i <= 4 ; i++ )
+		{
+			vertices[ i ] = rotXY_4D( vertices[0] , 0.4 * Math.PI * i , se, 20 );
+		}
+		
+		vertices[ 5 ] = rotYZ_4D( vertices[ 0 ] , 2.0 * Math.asin( 0.5 * L ) , se , 20 );
+				
+		vertices[ 10 ] = reflectInPlane_4D(
+				vertices[1],
+				vertices[0].add( vertices[5].negate() ),
+				vertices[0].add( vertices[5] ).divideBy( 2 ),
+				se
+				);
+		
+		{
+			GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> tmp = vertices[ 2 ];
+			GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> tmp2 = se.zero();
+			
+			{
+				final HashSet<BigInteger> hs = new HashSet<BigInteger>();
+				hs.add( BigInteger.ZERO );
+				tmp2.setVal( hs , tmp.getVal( hs ) );
+			}
+			
+			{
+				final HashSet<BigInteger> hs = new HashSet<BigInteger>();
+				hs.add( BigInteger.ONE );
+				tmp2.setVal( hs , tmp.getVal( hs ).negate() );
+			}
+			
+			{
+				final HashSet<BigInteger> hs = new HashSet<BigInteger>();
+				hs.add( BigInteger.valueOf( 2 ) );
+				tmp2.setVal( hs , tmp.getVal( hs ).negate() );
+			}
+			
+			vertices[ 15 ] = tmp2;
+		}
+		
+		
+		for( int t = 1 ; t < 4 ; t++ )
+		{
+			for( int i = 1 ; i <= 4 ; i++ )
+			{
+				vertices[ 5 * t + i ] = rotXY_4D( vertices[5*t] , 0.4 * Math.PI * i , se , 20 );
+			}
+		}
+		
+		
+		for( int cnt = 0 ; cnt < NVERT ; cnt++ )
+		{
+			topVertices.add( vertices[ cnt ] );
+		}
+		
+		
+		
+		
+		int p = 0;
+		topSubs.add( buildPentagon4D( vertices[0] , vertices[1] , vertices[2] , vertices[3] , vertices[4] ) );
+		
+		
+		for( p = 1 ; p <= 5 ; p++ )
+		{
+			int off1 = (p-1)%5;
+			int off2 = p%5;
+			topSubs.add( buildPentagon4D( vertices[off1] , vertices[5+off1] , vertices[10+off1] , vertices[5+off2] , vertices[off2] ) );
+		}
+		
+		
+		for( p = 6 ; p <= 10 ; p++ )
+		{
+			int off1 = (p-6)%5;
+			int off2 = (p-2)%5;
+			topSubs.add( buildPentagon4D( vertices[5+off1] , vertices[10+off2] , vertices[15+off2] , vertices[15+off1] , vertices[10+off1] ) );
+		}
+		
+		p = 11;
+		topSubs.add( buildPentagon4D( vertices[19] , vertices[18] , vertices[17] , vertices[16] , vertices[15] ) );
+		
+		
+		
+		VertexUnorderedCollection<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> dodecahedron 
+			= new VertexUnorderedCollection<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>( topSubs , topVertices );
+		
+		
+		
+		final DoubleElem r = dodecahedron.calcM2(3, se, 20, 20);
+		
+		
+		final double edgeLength = facade.calcLineSegmentLength( vertices[0], vertices[1], 20, 20).getVal();
+		final double edgeLengthSquared = edgeLength * edgeLength;
+	
+		final double dodecMult = 3.0 * Math.sqrt( 25 + 10 * Math.sqrt( 5.0 ) );
+		final double chk = dodecMult * edgeLengthSquared; // dodecahedron surface area check
+		
+		Assert.assertTrue( Math.abs( r.getVal() - chk ) < 0.00001 );
+		
+	}
+
+	
+	
+	
 	
 	
 }

@@ -879,11 +879,11 @@ public class TestTdgVertex extends TestCase {
 	
 	
 	/**
-	 * Tests triangle circumfrence in 4-D.
+	 * Tests triangle perimeter in 4-D.
 	 * 
 	 * @throws NotInvertibleException
 	 */
-	public void testTriangleCircumfrence_4D( ) throws Throwable
+	public void testTrianglePerimeter_4D( ) throws Throwable
 	{
 		Random rand = new Random( 5432 );
 		
@@ -955,11 +955,11 @@ public class TestTdgVertex extends TestCase {
 	
 	
 	/**
-	 * Tests triangle circumfrence in 3-D.
+	 * Tests triangle perimeter in 3-D.
 	 * 
 	 * @throws NotInvertibleException
 	 */
-	public void testTriangleCircumfrence_3D( ) throws Throwable
+	public void testTrianglePerimeter_3D( ) throws Throwable
 	{
 		Random rand = new Random( 5432 );
 		
@@ -1031,11 +1031,11 @@ public class TestTdgVertex extends TestCase {
 	
 	
 	/**
-	 * Tests triangle circumfrence in 2-D.
+	 * Tests triangle perimeter in 2-D.
 	 * 
 	 * @throws NotInvertibleException
 	 */
-	public void testTriangleCircumfrence_2D( ) throws Throwable
+	public void testTrianglePerimeter_2D( ) throws Throwable
 	{
 		Random rand = new Random( 5432 );
 		
@@ -1359,11 +1359,11 @@ public class TestTdgVertex extends TestCase {
 	
 	
 	/**
-	 * Tests paralellogram circumfrence in 4-D.
+	 * Tests paralellogram perimeter in 4-D.
 	 * 
 	 * @throws NotInvertibleException
 	 */
-	public void testParalellogramCircumfrence_4D( ) throws Throwable
+	public void testParalellogramPerimeter_4D( ) throws Throwable
 	{
 		Random rand = new Random( 5432 );
 		
@@ -1445,11 +1445,11 @@ public class TestTdgVertex extends TestCase {
 	
 	
 	/**
-	 * Tests paralellogram circumfrence in 3-D.
+	 * Tests paralellogram perimeter in 3-D.
 	 * 
 	 * @throws NotInvertibleException
 	 */
-	public void testParalellogramCircumfrence_3D( ) throws Throwable
+	public void testParalellogramPerimeter_3D( ) throws Throwable
 	{
 		Random rand = new Random( 5432 );
 		
@@ -1531,11 +1531,11 @@ public class TestTdgVertex extends TestCase {
 	
 	
 	/**
-	 * Tests paralellogram circumfrence in 2-D.
+	 * Tests paralellogram perimeter in 2-D.
 	 * 
 	 * @throws NotInvertibleException
 	 */
-	public void testParalellogramCircumfrence_2D( ) throws Throwable
+	public void testParalellogramPerimeter_2D( ) throws Throwable
 	{
 		Random rand = new Random( 5432 );
 		
@@ -2758,11 +2758,11 @@ public class TestTdgVertex extends TestCase {
 	
 	
 	/**
-	 * Tests convex polygon circumfrences in 4-D.
+	 * Tests convex polygon perimeters in 4-D.
 	 * 
 	 * @throws NotInvertibleException
 	 */
-	public void testPolygonCircumfrence_4D( ) throws Throwable
+	public void testPolygonPerimeter_4D( ) throws Throwable
 	{
 		Random rand = new Random( 5432 );
 		
@@ -2849,11 +2849,11 @@ public class TestTdgVertex extends TestCase {
 	
 	
 	/**
-	 * Tests convex polygon circumfrences in 3-D.
+	 * Tests convex polygon perimeters in 3-D.
 	 * 
 	 * @throws NotInvertibleException
 	 */
-	public void testPolygonCircumfrence_3D( ) throws Throwable
+	public void testPolygonPerimeter_3D( ) throws Throwable
 	{
 		Random rand = new Random( 5432 );
 		
@@ -2940,11 +2940,11 @@ public class TestTdgVertex extends TestCase {
 	
 	
 	/**
-	 * Tests convex polygon circumfrences in 2-D.
+	 * Tests convex polygon perimeters in 2-D.
 	 * 
 	 * @throws NotInvertibleException
 	 */
-	public void testPolygonCircumfrence_2D( ) throws Throwable
+	public void testPolygonPerimeter_2D( ) throws Throwable
 	{
 		Random rand = new Random( 5432 );
 		

@@ -92,17 +92,17 @@ public class Tdg_Facade<U extends NumDimensions, A extends Ord<U>, R extends Ele
 
 	
 	/**
-	 * Returns the circumfrence of a triangle.
+	 * Returns the perimeter of a triangle.
 	 * @param p1 Vector to a vertex of the triangle.
 	 * @param p2 Vector to a vertex of the triangle.
 	 * @param p3 Vector to a vertex of the triangle.
 	 * @param numIterExp Number of exponential iterations to use during square root calculations.
 	 * @param numIterLn Number of log iterations to use during square root calculations.
-	 * @return The circumfrence.
+	 * @return The perimeter.
 	 * @throws NotInvertibleException
 	 * @throws MultiplicativeDistributionRequiredException
 	 */
-	public R calcTriangleCircumfrence( GeometricAlgebraMultivectorElem<U,A,R,S> p1 , GeometricAlgebraMultivectorElem<U,A,R,S> p2 , GeometricAlgebraMultivectorElem<U,A,R,S> p3 , int numIterExp , int numIterLn ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	public R calcTrianglePerimeter( GeometricAlgebraMultivectorElem<U,A,R,S> p1 , GeometricAlgebraMultivectorElem<U,A,R,S> p2 , GeometricAlgebraMultivectorElem<U,A,R,S> p3 , int numIterExp , int numIterLn ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
 		GeometricAlgebraMultivectorElem[] vectsI = { p1 , p2 , p3 };
 		GeometricAlgebraMultivectorElem<U,A,R,S>[] vects = (GeometricAlgebraMultivectorElem<U,A,R,S>[])( vectsI );
@@ -130,17 +130,17 @@ public class Tdg_Facade<U extends NumDimensions, A extends Ord<U>, R extends Ele
 
 	
 	/**
-	 * Returns the circumfrence of a parallelogram.
+	 * Returns the perimeter of a parallelogram.
 	 * @param corner Vector to a vertex on one corner of the paralellogram.
 	 * @param p2 Vector to a vertex neighboring the vertex passed in the parameter "corner".
 	 * @param p3 Vector to a vertex neighboring the vertex passed in the parameter "corner".
 	 * @param numIterExp Number of exponential iterations to use during square root calculations.
 	 * @param numIterLn Number of log iterations to use during square root calculations.
-	 * @return The circumfrence.
+	 * @return The perimeter.
 	 * @throws NotInvertibleException
 	 * @throws MultiplicativeDistributionRequiredException
 	 */
-	public R calcParalellogramCircumfrence( GeometricAlgebraMultivectorElem<U,A,R,S> corner , GeometricAlgebraMultivectorElem<U,A,R,S> p2 , GeometricAlgebraMultivectorElem<U,A,R,S> p3 , int numIterExp , int numIterLn ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
+	public R calcParalellogramPerimeter( GeometricAlgebraMultivectorElem<U,A,R,S> corner , GeometricAlgebraMultivectorElem<U,A,R,S> p2 , GeometricAlgebraMultivectorElem<U,A,R,S> p3 , int numIterExp , int numIterLn ) throws NotInvertibleException, MultiplicativeDistributionRequiredException
 	{
 		GeometricAlgebraMultivectorElem[] vectsI = { p2 , p3 };
 		GeometricAlgebraMultivectorElem<U,A,R,S>[] vects = (GeometricAlgebraMultivectorElem<U,A,R,S>[])( vectsI );

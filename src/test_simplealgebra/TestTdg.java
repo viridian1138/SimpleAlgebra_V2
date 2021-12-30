@@ -700,11 +700,11 @@ public class TestTdg extends TestCase {
 	
 	
 	/**
-	 * Tests triangle circumfrence in 4-D.
+	 * Tests triangle perimeter in 4-D.
 	 * 
 	 * @throws NotInvertibleException
 	 */
-	public void testTriangleCircumfrence_4D( ) throws Throwable
+	public void testTrianglePerimeter_4D( ) throws Throwable
 	{
 		Random rand = new Random( 5432 );
 		
@@ -733,7 +733,7 @@ public class TestTdg extends TestCase {
 			
 		
 			
-			final DoubleElem r = facade.calcTriangleCircumfrence(p1, p2, p3, 20, 20);
+			final DoubleElem r = facade.calcTrianglePerimeter(p1, p2, p3, 20, 20);
 			
 	
 			final DoubleElem chk = ( facade.calcLineSegmentLength(p1, p2, 20, 20) ).add( facade.calcLineSegmentLength(p2, p3, 20, 20) ).add( facade.calcLineSegmentLength(p3, p1, 20, 20) );
@@ -752,11 +752,11 @@ public class TestTdg extends TestCase {
 	
 	
 	/**
-	 * Tests triangle circumfrence in 3-D.
+	 * Tests triangle perimeter in 3-D.
 	 * 
 	 * @throws NotInvertibleException
 	 */
-	public void testTriangleCircumfrence_3D( ) throws Throwable
+	public void testTrianglePerimeter_3D( ) throws Throwable
 	{
 		Random rand = new Random( 5432 );
 		
@@ -785,7 +785,7 @@ public class TestTdg extends TestCase {
 			
 		
 			
-			final DoubleElem r = facade.calcTriangleCircumfrence(p1, p2, p3, 20, 20);
+			final DoubleElem r = facade.calcTrianglePerimeter(p1, p2, p3, 20, 20);
 			
 	
 			final DoubleElem chk = ( facade.calcLineSegmentLength(p1, p2, 20, 20) ).add( facade.calcLineSegmentLength(p2, p3, 20, 20) ).add( facade.calcLineSegmentLength(p3, p1, 20, 20) );
@@ -804,11 +804,11 @@ public class TestTdg extends TestCase {
 	
 	
 	/**
-	 * Tests triangle circumfrence in 2-D.
+	 * Tests triangle perimeter in 2-D.
 	 * 
 	 * @throws NotInvertibleException
 	 */
-	public void testTriangleCircumfrence_2D( ) throws Throwable
+	public void testTrianglePerimeter_2D( ) throws Throwable
 	{
 		Random rand = new Random( 5432 );
 		
@@ -837,7 +837,7 @@ public class TestTdg extends TestCase {
 			
 		
 			
-			final DoubleElem r = facade.calcTriangleCircumfrence(p1, p2, p3, 20, 20);
+			final DoubleElem r = facade.calcTrianglePerimeter(p1, p2, p3, 20, 20);
 			
 	
 			final DoubleElem chk = ( facade.calcLineSegmentLength(p1, p2, 20, 20) ).add( facade.calcLineSegmentLength(p2, p3, 20, 20) ).add( facade.calcLineSegmentLength(p3, p1, 20, 20) );
@@ -1042,11 +1042,11 @@ public class TestTdg extends TestCase {
 	
 	
 	/**
-	 * Tests paralellogram circumfrence in 4-D.
+	 * Tests paralellogram perimeter in 4-D.
 	 * 
 	 * @throws NotInvertibleException
 	 */
-	public void testParalellogramCircumfrence_4D( ) throws Throwable
+	public void testParalellogramPerimeter_4D( ) throws Throwable
 	{
 		Random rand = new Random( 5432 );
 		
@@ -1075,7 +1075,7 @@ public class TestTdg extends TestCase {
 			
 		
 			
-			final DoubleElem r = facade.calcParalellogramCircumfrence(p1, p2, p3, 20, 20);
+			final DoubleElem r = facade.calcParalellogramPerimeter(p1, p2, p3, 20, 20);
 			
 	
 			final DoubleElem chk = ( ( facade.calcLineSegmentLength(p1, p2, 20, 20) ).add( facade.calcLineSegmentLength(p1, p3, 20, 20) ) ).mult( new DoubleElem( 2.0 ) );
@@ -1094,11 +1094,11 @@ public class TestTdg extends TestCase {
 	
 	
 	/**
-	 * Tests paralellogram circumfrence in 3-D.
+	 * Tests paralellogram perimeter in 3-D.
 	 * 
 	 * @throws NotInvertibleException
 	 */
-	public void testParalellogramCircumfrence_3D( ) throws Throwable
+	public void testParalellogramPerimeter_3D( ) throws Throwable
 	{
 		Random rand = new Random( 5432 );
 		
@@ -1127,7 +1127,7 @@ public class TestTdg extends TestCase {
 			
 		
 			
-			final DoubleElem r = facade.calcParalellogramCircumfrence(p1, p2, p3, 20, 20);
+			final DoubleElem r = facade.calcParalellogramPerimeter(p1, p2, p3, 20, 20);
 			
 	
 			final DoubleElem chk = ( ( facade.calcLineSegmentLength(p1, p2, 20, 20) ).add( facade.calcLineSegmentLength(p1, p3, 20, 20) ) ).mult( new DoubleElem( 2.0 ) );
@@ -1146,11 +1146,11 @@ public class TestTdg extends TestCase {
 	
 	
 	/**
-	 * Tests paralellogram circumfrence in 2-D.
+	 * Tests paralellogram perimeter in 2-D.
 	 * 
 	 * @throws NotInvertibleException
 	 */
-	public void testParalellogramCircumfrence_2D( ) throws Throwable
+	public void testParalellogramPerimeter_2D( ) throws Throwable
 	{
 		Random rand = new Random( 5432 );
 		
@@ -1179,7 +1179,7 @@ public class TestTdg extends TestCase {
 			
 		
 			
-			final DoubleElem r = facade.calcParalellogramCircumfrence(p1, p2, p3, 20, 20);
+			final DoubleElem r = facade.calcParalellogramPerimeter(p1, p2, p3, 20, 20);
 			
 	
 			final DoubleElem chk = ( ( facade.calcLineSegmentLength(p1, p2, 20, 20) ).add( facade.calcLineSegmentLength(p1, p3, 20, 20) ) ).mult( new DoubleElem( 2.0 ) );
