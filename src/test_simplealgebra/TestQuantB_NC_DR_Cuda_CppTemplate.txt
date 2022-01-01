@@ -108,16 +108,25 @@ void add( DblEnt& b , DblEnt& out )
    out.val = val + b.val;
 }
 
+/**
+ * Multiplies by the real number in "b" and places the result in "out".
+ */
 void mult( DblEnt& b , DblEnt& out )
 {
    out.val = val * b.val;
 }
 
+/**
+ * Inverts the real number and places the result in "out".
+ */
 void invert( DblEnt& out )
 {
    out.val = 1.0 / val;
 }
 
+/**
+ * Divides the real number by the double "d".  Saves the results in "out".
+ */
 void divideBy( const double d , DblEnt& out )
 {
    out.val = val / d;
@@ -127,40 +136,68 @@ void divideBy( const double d , DblEnt& out )
 };
 
 
+/**
+ * Entity representing a complex number.
+ */
 class CplxEnt
 {
 
 protected:
 
+/**
+ * The real part of the complex number.
+ */
 DblEnt re;
+
+/**
+ * The imaginary part of the complex nnumber.
+ */
 DblEnt im;
 
 public:
 
+/**
+ * Constructor.
+ */
 CplxEnt() {}
 
+/**
+ * Gets the real part of the complex number.
+ */
 DblEnt& getRe()
 {
 return(re);
 }
 
+/**
+ * Gets the imaginary part of the complex number.
+ */
 DblEnt& getIm()
 {
 return(im);
 }
 
+/**
+ * Negates the complex number and places the result in "out".
+ */
 void negate( CplxEnt& out )
 {
    re.negate( out.re );
    im.negate( out.im );
 }
 
+/**
+* Adds the complex number in "b" and places the result in "out".
+*/
 void add( CplxEnt& b , CplxEnt& out )
 {
    re.add( b.re , out.re );
    im.add( b.im , out.im );
 }
 
+/**
+ * Multiplies by the complex number in "b" and places the result in "out".
+ */
 void mult( CplxEnt& b , CplxEnt& out )
 {
    DblEnt rere;
@@ -177,6 +214,9 @@ void mult( CplxEnt& b , CplxEnt& out )
    reim.add( imre , out.im );
 }
 
+/**
+ * Inverts the complex number and places the result in "out".
+ */
 void invert( CplxEnt& out )
 {
    DblEnt resq;
@@ -193,6 +233,9 @@ void invert( CplxEnt& out )
    imneg.mult( div , out.im );
 }
 
+/**
+ * Divides the complex number by the double "d".  Saves the results in "out".
+ */
 void divideBy( const double d , CplxEnt& out )
 {
    re.divideBy( d , out.re );
@@ -204,11 +247,16 @@ void divideBy( const double d , CplxEnt& out )
 
 
 
+/**
+ * The total size of the byte array to be used.
+ */
 #define ARRAY_SIZE ( NUM_ITER_XYZT * sizeof(CplxEnt) )
 
 
 
-
+/**
+ * Code to compile and execute on the CUDA cores.
+ */
 const char* calcUpdate = " \n\
 \n\
 \n\
@@ -220,10 +268,10 @@ const char* calcUpdate = " \n\
 \n\
 #define NSTPT 3\n\
 \n\
-#define NUM_X_ITER 350\n\
-#define NUM_Y_ITER 350\n\
-#define NUM_Z_ITER 350\n\
-#define NUM_T_ITER 700\n\
+#define NUM_X_ITER 351\n\
+#define NUM_Y_ITER 351\n\
+#define NUM_Z_ITER 351\n\
+#define NUM_T_ITER 701\n\
 #define SZ_T ( NSTPT * 2 + 1 )\n\
 \n\
 \n\
@@ -294,17 +342,26 @@ __device__ void add( DblEnt& b , DblEnt& out ) \n\
 { \n\
    out.val = val + b.val; \n\
 } \n\
-\
+\n\
+/** \n\
+* Multiplies by the real number in \"b\" and places the result in \"out\". \n\
+*/ \n\
 __device__ void mult( DblEnt& b , DblEnt& out ) \n\
 { \n\
    out.val = val * b.val; \n\
 } \n\
-\
+\n\
+/** \n\
+ * Inverts the real number and places the result in \"out\". \n\
+ */ \n\
 __device__ void invert( DblEnt& out ) \n\
 { \n\
    out.val = 1.0 / val; \n\
 } \n\
-\
+\n\
+/** \n\
+ * Divides the real number by the double \"d\".  Saves the results in \"out\". \n\
+ */ \n\
 __device__ void divideBy( const double d , DblEnt& out ) \n\
 { \n\
    out.val = val / d; \n\
@@ -312,42 +369,70 @@ __device__ void divideBy( const double d , DblEnt& out ) \n\
 \
 \
 }; \n\
-\
-\
+\n\
+\n\
+/** \n\
+ * Entity representing a complex number. \n\
+ */ \n\
 class CplxEnt \n\
 { \n\
-\
+\n\
 protected: \n\
-\
+\n\
+/** \n\
+ * The real part of the complex number. \n\
+ */ \n\
 DblEnt re; \n\
+\n\
+/** \n\
+ * The imaginary part of the complex nnumber. \n\
+ */ \n\
 DblEnt im; \n\
-\
+\n\
 public: \n\
-\
+\n\
+/** \n\
+ * Constructor. \n\
+ */ \n\
 __device__ CplxEnt() {} \n\
-\
+\n\
+/** \n\
+ * Gets the real part of the complex number. \n\
+ */ \n\
 __device__ DblEnt& getRe() \n\
 { \n\
 return(re); \n\
 } \n\
-\
+\n\
+/** \n\
+ * Gets the imaginary part of the complex number. \n\
+ */ \n\
 __device__ DblEnt& getIm() \n\
 { \n\
 return(im); \n\
 } \n\
-\
+\n\
+/** \n\
+ * Negates the complex number and places the result in \"out\". \n\
+ */ \n\
 __device__ void negate( CplxEnt& out ) \n\
 { \n\
    re.negate( out.re ); \n\
    im.negate( out.im ); \n\
 } \n\
-\
+\n\
+/** \n\
+* Adds the complex number in \"b\" and places the result in \"out\". \n\
+*/ \n\
 __device__ void add( CplxEnt& b , CplxEnt& out ) \n\
 { \n\
    re.add( b.re , out.re ); \n\
    im.add( b.im , out.im ); \n\
 } \n\
-\
+\n\
+/** \n\
+* Multiplies by the complex number in \"b\" and places the result in \"out\". \n\
+*/ \n\
 __device__ void mult( CplxEnt& b , CplxEnt& out ) \n\
 { \n\
    DblEnt rere; \n\
@@ -363,7 +448,10 @@ __device__ void mult( CplxEnt& b , CplxEnt& out ) \n\
    rere.add( imimneg , out.re ); \n\
    reim.add( imre , out.im ); \n\
 } \n\
-\
+\n\
+/** \n\
+ * Inverts the complex number and places the result in \"out\". \n\
+ */ \n\
 __device__ void invert( CplxEnt& out ) \n\
 { \n\
    DblEnt resq; \n\
@@ -379,22 +467,25 @@ __device__ void invert( CplxEnt& out ) \n\
    im.negate( imneg ); \n\
    imneg.mult( div , out.im ); \n\
 } \n\
-\
+\n\
+/** \n\
+ * Divides the complex number by the double \"d\".  Saves the results in \"out\". \n\
+ */ \n\
 __device__ void divideBy( const double d , CplxEnt& out ) \n\
 { \n\
    re.divideBy( d , out.re ); \n\
    im.divideBy( d , out.im ); \n\
 } \n\
-\
-\
+\n\
+\n\
 }; \n\
 \
 __device__ size_t calcIdx( const size_t x , const size_t y , const size_t z , const size_t t ) \n\
 { \n\
 return( x + y * MULTIPLIER_Y + z * MULTIPLIER_Z + t * MULTIPLIER_T ); \n\
 } \n\
-\
-\
+\n\
+\n\
 __device__ void fillTempArrayInner( CplxEnt* arr , const int tt , const size_t xv , const size_t yv , const size_t zv , const int tv , CplxEnt& out ) \n\
 { \n\
 double avRe = 0.0; \n\
@@ -6072,13 +6163,19 @@ else \n\
 
 
 
-
+/**
+ * Prefix for the path to which to save results.
+ */
 #define OUT_FILEPATH "/d/outdir/outD_"
 
 
 
 
-
+/**
+ * Reverses the endian of a double-precision number.
+ * Takes in the number to be endian-reversed, and
+ * returns the endian-reversed equivalent.
+ */
 double changeEndian(double in)
 {
 	char* const p = reinterpret_cast<char*>(&in);
@@ -6091,6 +6188,13 @@ double changeEndian(double in)
 
 
 
+/**
+ * Stores the current set of results on the file system.
+ * Takes in the current iteration count in tcnt,
+ * the current array space in hOut, and a temporary
+ * buffer array in writeBuffer.  Writes results to the file
+ * system.
+ */
 void storeValues( int tcnt , double* hOut , double* writeBuffer )
 {
 	double maxD = 0.0;
@@ -6163,6 +6267,8 @@ void storeValues( int tcnt , double* hOut , double* writeBuffer )
 
 /**
  * Gets the expected number of CUDA cores.
+ * Takes in the number of multiprocessors in mp, the major version number in devPropMajor,
+ * and the minor version number in devPropMinor.  Returns the expected number of CUDA cores.
  * Copied from https://stackoverflow.com/questions/32530604/how-can-i-get-number-of-cores-in-cuda-device
  */
 int getSPcores( int mp , int devPropMajor , int devPropMinor )
@@ -6204,7 +6310,9 @@ int getSPcores( int mp , int devPropMajor , int devPropMinor )
 
 
 
-
+/**
+ * Main entry point for execution.
+ */
 int main(void)
 {
 
@@ -6282,6 +6390,7 @@ int main(void)
    // Sanity check to make sure enough space is available
    size_t deviceBytes;
    CUDA_SAFE_CALL( cuDeviceTotalMem( &deviceBytes , cuDevice ) );
+   std::cout << "DeviceMemoryBytes : " << deviceBytes << std::endl;
    const size_t deviceChunks = deviceBytes / ( SZ_T * sizeof( CplxEnt ) );
    std::cout << "AppxSz : " << pow( deviceChunks , 1.0 / 3.0 ) << std::endl;
    std::cout << "AppxSz (80%) : " << 0.8 * pow( deviceChunks / 2 , 1.0 / 3.0 ) << std::endl;
