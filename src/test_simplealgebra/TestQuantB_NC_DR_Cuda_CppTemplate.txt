@@ -9,48 +9,116 @@
 #include <algorithm>
 
 
+/**
+ * Number of threads per CUDA thread block.
+ */
 #define NUM_THREADS 256
+
+/**
+ * Number of CUDA thread blocks.
+ */
 #define NUM_BLOCKS 32
 
+/**
+ * Number of CUDA core threads over which to distribute computation.
+ */
 #define NUM_CUDA_CORES ( NUM_BLOCKS * NUM_THREADS )
 
 
+/**
+ * Temp step size in the T-direction.
+ */
 #define NSTPT 3
 
+
+/**
+ * The number of discretizations on the X-Axis over which to iterate.
+ */
 #define NUM_X_ITER 351
+
+/**
+ * The number of discretizations on the Y-Axis over which to iterate.
+ */
 #define NUM_Y_ITER 351
+
+/**
+ * The number of discretizations on the Z-Axis over which to iterate.
+ */
 #define NUM_Z_ITER 351
+
+/**
+ * The number of discretizations on the T-Axis over which to iterate.
+ */
 #define NUM_T_ITER 701
+
+/**
+* The size of the compute space on the T-Axis.
+*/
 #define SZ_T ( NSTPT * 2 + 1 )
 
 
+/**
+ * The multiplier along the Y-Axis to get the compute-space index.
+ */
 #define MULTIPLIER_Y ( NUM_X_ITER )
 
+/**
+ * The multiplier along the Z-Axis to get the compute-space index.
+ */
 #define MULTIPLIER_Z ( MULTIPLIER_Y * NUM_Y_ITER )
 
+/**
+ * The multiplier along the T-Axis to get the compute-space index.
+ */
 #define MULTIPLIER_T ( MULTIPLIER_Z * NUM_Z_ITER )
 
+/**
+ * Total number of entities to iterate over in XYZ to cover one T-level of the compute space.
+ */
 #define NUM_ITER_XYZ ( NUM_X_ITER * NUM_Y_ITER * NUM_Z_ITER )
 
+/**
+ * Total number of entities to iterate over to cover the entire XYZT compute space.
+ */
 #define NUM_ITER_XYZT ( NUM_ITER_XYZ * SZ_T )
 
 
-
+/**
+ * The halfway iteration point in X.
+ */
 #define HALF_X ( NUM_X_ITER / 2 )
 
+/**
+ * The halfway iteration point in Y.
+ */
 #define HALF_Y ( NUM_Y_ITER / 2 )
 
+/**
+ * The halfway iteration point in Z.
+ */
 #define HALF_Z ( NUM_Z_ITER / 2 )
 
 
+/**
+ * The initial condition radius in X.
+ */
 #define RAD_X ( NUM_X_ITER / 10.0 )
 
+/**
+ * The initial condition radius in Y.
+ */
 #define RAD_Y ( NUM_Y_ITER / 10.0 )
 
+/**
+ * The initial condition radius in Z.
+ */
 #define RAD_Z ( NUM_Z_ITER / 10.0 )
 
 
 
+/**
+ * Wrapper for catching errors from a NVRTC API call.
+ */
 #define NVRTC_SAFE_CALL(x) \
 { \
 nvrtcResult result = x; \
@@ -63,6 +131,9 @@ exit(1); \
 
 
 
+/**
+ * Wrapper for catching errors from a CUDA API call.
+ */
 #define CUDA_SAFE_CALL(x) \
 { \
 CUresult result = x; \
@@ -76,33 +147,53 @@ exit(1); \
 }
 
 
-
+/**
+ * Entity representing a real number.
+ */
 class DblEnt
 {
 
 protected:
 
+/**
+ * The value of the real number.
+ */
 double val;
 
 public:
 
+/**
+ * Constructor.
+ */
 DblEnt() {}
 
+/**
+ * Gets the value of the real number.
+ */
 double& getVal()
 {
    return(val);
 }
 
+/**
+ * Sets the value of the real number to the value in "in".
+ */
 void setVal( double in )
 {
    val = in;
 }
 
+/**
+ * Negates the real number and places the result in "out".
+ */
 void negate( DblEnt& out )
 {
    out.val = -( val );
 }
 
+/**
+* Adds the real number in "b" and places the result in "out".
+*/
 void add( DblEnt& b , DblEnt& out )
 {
    out.val = val + b.val;
@@ -260,84 +351,186 @@ void divideBy( const double d , CplxEnt& out )
 const char* calcUpdate = " \n\
 \n\
 \n\
+/** \n\
+ * Number of threads per CUDA thread block. \n\
+ */ \n\
 #define NUM_THREADS 256\n\
+\n\
+/** \n\
+ * Number of CUDA thread blocks. \n\
+ */ \n\
 #define NUM_BLOCKS 32\n\
 \n\
+/** \n\
+ * Number of CUDA core threads over which to distribute computation. \n\
+ */ \n\
 #define NUM_CUDA_CORES ( NUM_BLOCKS * NUM_THREADS )\n\
 \n\
 \n\
+/** \n\
+ * Temp step size in the T-direction. \n\
+ */ \n\
 #define NSTPT 3\n\
 \n\
+\n\
+/** \n\
+ * The number of discretizations on the X-Axis over which to iterate. \n\
+ */ \n\
 #define NUM_X_ITER 351\n\
+\n\
+/** \n\
+ * The number of discretizations on the Y-Axis over which to iterate. \n\
+ */ \n\
 #define NUM_Y_ITER 351\n\
+\n\
+/** \n\
+ * The number of discretizations on the Z-Axis over which to iterate. \n\
+ */ \n\
 #define NUM_Z_ITER 351\n\
+\n\
+/** \n\
+ * The number of discretizations on the T-Axis over which to iterate. \n\
+ */ \n\
 #define NUM_T_ITER 701\n\
+\n\
+/** \n\
+* The size of the compute space on the T-Axis. \n\
+*/ \n\
 #define SZ_T ( NSTPT * 2 + 1 )\n\
 \n\
 \n\
+/** \n\
+ * Indicates whether a form of nonlinear numerical viscosity should be used while iterating. \n\
+ */ \n\
 #define APPLY_NUMERICAL_VISCOSITY true \n\
 \n\
 \n\
+/** \n\
+ * The halfway iteration point in X. \n\
+ */ \n\
 #define HALF_X ( NUM_X_ITER / 2 )\n\
 \n\
+/** \n\
+ * The halfway iteration point in Y. \n\
+ */ \n\
 #define HALF_Y ( NUM_Y_ITER / 2 )\n\
 \n\
+/** \n\
+ * The halfway iteration point in Z. \n\
+ */ \n\
 #define HALF_Z ( NUM_Z_ITER / 2 )\n\
 \n\
 \n\
+/** \n\
+ * The initial condition radius in X. \n\
+ */ \n\
 #define RAD_X ( NUM_X_ITER / 10.0 )\n\
 \n\
+/** \n\
+ * The initial condition radius in Y. \n\
+ */ \n\
 #define RAD_Y ( NUM_Y_ITER / 10.0 )\n\
 \n\
+/** \n\
+ * The initial condition radius in Z. \n\
+ */ \n\
 #define RAD_Z ( NUM_Z_ITER / 10.0 )\n\
 \n\
 \n\
+/** \n\
+ * The start voxel location of the flat initial condition. \n\
+ */ \n\
 #define XSST 6\n\
 \n\
+/** \n\
+ * The amplitude of the initial condition phase oscillations. \n\
+ */ \n\
 #define DSSX 10000.0\n\
 \n\
+/** \n\
+ * The phase rate of the initial conditions in radians over the full NUM_T_ITER. \n\
+ */ \n\
 #define ERATE -20.0\n\
 \n\
+/** \n\
+ * The phase offset of the second initial condition in radians. \n\
+ */ \n\
 #define EPHASEB 0.0\n\
 \n\
 \n\
+/** \n\
+ * The multiplier along the Y-Axis to get the compute-space index. \n\
+ */ \n\
 #define MULTIPLIER_Y ( NUM_X_ITER )\n\
 \n\
+/** \n\
+ * The multiplier along the Z-Axis to get the compute-space index. \n\
+ */ \n\
 #define MULTIPLIER_Z ( MULTIPLIER_Y * NUM_Y_ITER )\n\
 \n\
+/** \n\
+ * The multiplier along the T-Axis to get the compute-space index. \n\
+ */ \n\
 #define MULTIPLIER_T ( MULTIPLIER_Z * NUM_Z_ITER )\n\
 \n\
+/** \n\
+ * Total number of entities to iterate over in XYZ to cover one T-level of the compute space. \n\
+ */ \n\
 #define NUM_ITER_XYZ ( NUM_X_ITER * NUM_Y_ITER * NUM_Z_ITER )\n\
 \n\
+/** \n\
+ * Total number of entities to iterate over to cover the entire XYZT compute space. \n\
+ */ \n\
 #define NUM_ITER_XYZT ( NUM_ITER_XYZ * SZ_T )\n\
 \n\
 \n\
+/** \n\
+ * Entity representing a real number. \n\
+ */ \n\
 class DblEnt \n\
 { \n\
 \n\
 protected: \n\
-\
+\n\
+/** \n\
+ * The value of the real number. \n\
+ */ \n\
 double val; \n\
-\
+\n\
 public: \n\
-\
+\n\
+/** \n\
+ * Constructor. \n\
+ */ \n\
 __device__ DblEnt() {} \n\
-\
+\n\
+/** \n\
+ * Gets the value of the real number. \n\
+ */ \n\
 __device__ double& getVal() \n\
 { \n\
    return(val); \n\
 } \n\
-\
+\n\
+/** \n\
+ * Sets the value of the real number to the value in \"in\". \n\
+ */ \n\
 __device__ void setVal( double in ) \n\
 { \n\
    val = in; \n\
 } \n\
-\
+\n\
+/** \n\
+ * Negates the real number and places the result in \"out\". \n\
+ */ \n\
 __device__ void negate( DblEnt& out ) \n\
 { \n\
    out.val = -( val ); \n\
 } \n\
-\
+\n\
+/** \n\
+* Adds the real number in \"b\" and places the result in \"out\". \n\
+*/ \n\
 __device__ void add( DblEnt& b , DblEnt& out ) \n\
 { \n\
    out.val = val + b.val; \n\
@@ -366,8 +559,8 @@ __device__ void divideBy( const double d , DblEnt& out ) \n\
 { \n\
    out.val = val / d; \n\
 } \n\
-\
-\
+\n\
+\n\
 }; \n\
 \n\
 \n\
@@ -479,7 +672,11 @@ __device__ void divideBy( const double d , CplxEnt& out ) \n\
 \n\
 \n\
 }; \n\
-\
+\n\
+\n\
+/** \n\
+* Returns the index into the compute space given the X-Axis, Y-Axis, Z-Axis, and T-Axis indices. \n\
+*/ \n\
 __device__ size_t calcIdx( const size_t x , const size_t y , const size_t z , const size_t t ) \n\
 { \n\
 return( x + y * MULTIPLIER_Y + z * MULTIPLIER_Z + t * MULTIPLIER_T ); \n\
@@ -5978,6 +6175,9 @@ else \n\
 } \n\
 \n\
 \n\
+/** \n\
+* Evaluates Newton-Raphson given the pointer to the compute space in \"arr\", the [x,y,z,t] coordinate of the update, and the update point in \"p\". \n\
+*/ \n\
 __device__ void eval_newton(CplxEnt* arr , const int tval , const size_t x , const size_t y , const size_t z , CplxEnt& p , \n\
 CplxEnt& iterationValueCache \n\
 )  \n\
@@ -6010,6 +6210,9 @@ while( !( iterationsDone( intCnt ) ) && !iterationsStopped ) \n\
 #define NUMERICAL_VISCOSITY_EXIT_CUTOFF 20.0 \n\
 \n\
 \n\
+/** \n\
+* Applies numeric viscosity to the real part of an update given the pointer to the compute space in \"arr\", the [x,y,z,t] coordinate of the update, and the update point in \"p\". \n\
+*/ \n\
 __device__ void applyNumericViscosityRe(CplxEnt* arr , const int tval , const size_t x , const size_t y , const size_t z , CplxEnt& p) \n\
 { \n\
 		CplxEnt pim; \n\
@@ -6030,6 +6233,9 @@ __device__ void applyNumericViscosityRe(CplxEnt* arr , const int tval , const si
 } \n\
 \n\
 \n\
+/** \n\
+* Applies numeric viscosity to the imaginary part of an update given the pointer to the compute space in \"arr\", the [x,y,z,t] coordinate of the update, and the update point in \"p\". \n\
+*/ \n\
 __device__ void applyNumericViscosityIm(CplxEnt* arr , const int tval , const size_t x , const size_t y , const size_t z , CplxEnt& p) \n\
 { \n\
 	CplxEnt pim; \n\
@@ -6050,6 +6256,9 @@ __device__ void applyNumericViscosityIm(CplxEnt* arr , const int tval , const si
 } \n\
 \n\
 \n\
+/** \n\
+* Applies numeric viscosity to an update given the pointer to the compute space in \"arr\", the [x,y,z,t] coordinate of the update, and the update point in \"p\". \n\
+*/ \n\
 __device__ void applyNumericViscosity(CplxEnt* arr , const int tval , const size_t x , const size_t y , const size_t z , CplxEnt& p) \n\
 { \n\
 	applyNumericViscosityRe(arr, tval, x, y, z, p); \n\
@@ -6057,6 +6266,9 @@ __device__ void applyNumericViscosity(CplxEnt* arr , const int tval , const size
 } \n\
 \n\
 \n\
+/** \n\
+ * Calculates an iteration update to the compute space given the current time value in \"tval\" and the pointer to the compute space in \"outx\". \n\
+ */ \n\
 extern \"C\" __global__ \n\
 void calcUpdate(int tval, double *outx)  \n\
 { \n\
@@ -6110,6 +6322,9 @@ if( APPLY_NUMERICAL_VISCOSITY ) \n\
 } \n\
 \n\
 \n\
+/** \n\
+ * Initializes the iteration array.  Takes in a pointer to the compute space in \"outx\". \n\
+ */ \n\
 extern \"C\" __global__ \n\
 void initIterArray( double *outx ) \n\
 { \n\
