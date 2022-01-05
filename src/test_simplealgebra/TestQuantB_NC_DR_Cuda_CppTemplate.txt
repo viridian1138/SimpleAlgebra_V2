@@ -683,6 +683,10 @@ return( x + y * MULTIPLIER_Y + z * MULTIPLIER_Z + t * MULTIPLIER_T ); \n\
 } \n\
 \n\
 \n\
+/** \n\
+* Fils the initial \"guess\" for iterations given the compute array in \"arr\", the [x,y,z,t] point for which to get the initial value, \n\
+* and the reference to which to place the output in \"out\".  The current compute array t-vaue is passed in \"tt\". \n\
+*/ \n\
 __device__ void fillTempArrayInner( CplxEnt* arr , const int tt , const size_t xv , const size_t yv , const size_t zv , const int tv , CplxEnt& out ) \n\
 { \n\
 double avRe = 0.0; \n\
@@ -714,6 +718,10 @@ out.getIm().setVal( avIm ); \n\
 } \n\
 \n\
 \n\
+/** \n\
+* Calculates the Newton-Raphson function value given the compute array in \"arr\", the [x,y,z,t] point for which to get the initial value, \n\
+* and the reference to which to place the output in \"out\". \n\
+*/ \n\
 __device__ void evalValue( CplxEnt* arr , const int tt , const size_t x , const size_t y , const size_t z , CplxEnt& out ) \n\
 { \n\
 \n\
@@ -6030,6 +6038,10 @@ out.getIm().setVal( t_5052 ); \n\
 } \n\
 \n\
 \n\
+/** \n\
+* Calculates partial derivative of the Newton-Raphson function value given the compute array in \"arr\", the [x,y,z,t] point for which to get the initial value, \n\
+* and the reference to which to place the output in \"out\". \n\
+*/ \n\
 __device__ void evalPartialDerivative( CplxEnt* arr , const int tt , const size_t x , const size_t y , const size_t z , CplxEnt& out ) \
 { \n\
 \n\
@@ -6051,12 +6063,18 @@ out.getIm().setVal( t_5066 ); \n\
 } \n\
 \n\
 \n\
+/** \n\
+* Returns whether the number in \"in\" is normal.  Used as a replacement given that the Cuda version of the normal stdlib call doesn't seem to work. \n\
+*/ \n\
 __device__ bool isnormal( const double in ) \n\
 { \n\
 	return( !isnan( in ) && isfinite( in ) ); \n\
 } \n\
 \n\
 \n\
+/** \n\
+* Returns whether iterations are done.  Takes in the iteration count in \"intCnt\". \n\
+*/ \n\
 __device__ bool iterationsDone( int& intCnt ) \n\
 { \n\
    intCnt++; \n\
@@ -6064,24 +6082,36 @@ __device__ bool iterationsDone( int& intCnt ) \n\
 } \n\
 \n\
 \n\
+/** \n\
+* Returns the maximum number of iterations for backtracking. \n\
+*/ \n\
 __device__ int getMaxIterationsBacktrack( ) \n\
 { \n\
    return( 100 ); \n\
 } \n\
 \n\
 \n\
+/** \n\
+* Caches the iteration value \"p\" in the iteration value cache \"iterationValueCache\". \n\
+*/ \n\
 __device__ void cacheIterationValue( CplxEnt& p , CplxEnt& iterationValueCache ) \n\
 { \n\
    iterationValueCache = p; \n\
 } \n\
 \n\
 \n\
+/** \n\
+* Retrieves the iteration value \"p\" from the iteration value cache \"iterationValueCache\". \n\
+*/ \n\
 __device__ void retrieveIterationValue( CplxEnt& p , CplxEnt& iterationValueCache ) \n\
 { \n\
    p = iterationValueCache; \n\
 } \n\
 \n\
 \n\
+/** \n\
+* Applies the iteration offset \"iterationOffset\" to the iteration value \"p\". \n\
+*/ \n\
 __device__ void performIterationUpdate( CplxEnt& iterationOffset , CplxEnt& p ) \n\
 { \n\
    CplxEnt tmp; \n\
@@ -6090,6 +6120,9 @@ __device__ void performIterationUpdate( CplxEnt& iterationOffset , CplxEnt& p ) 
 } \n\
 \n\
 \n\
+/** \n\
+* Returns whether the iteration result in \"nextValue\" represents an improvement over the iteration result in \"lastValue\". \n\
+*/ \n\
 __device__ bool evalIterationImproved( CplxEnt& lastValue , CplxEnt& nextValue ) \n\
 { \n\
 	const double distLast = ( lastValue.getRe().getVal() ) * ( lastValue.getRe().getVal() ) + ( lastValue.getIm().getVal() ) * ( lastValue.getIm().getVal() ); \n\
@@ -6098,6 +6131,10 @@ __device__ bool evalIterationImproved( CplxEnt& lastValue , CplxEnt& nextValue )
 } \n\
 \n\
 \n\
+/** \n\
+* Returns whether the function value generated from the compute array \"arr\" represents an improvement over the \n\
+* previous functional value in \"lastValue\" for the given [x,y,z,t] point. \n\
+*/ \n\
 __device__ void evalIndicatesImprovement( CplxEnt* arr , const int tt , const size_t x , const size_t y , const size_t z , CplxEnt& lastValue , CplxEnt& out ) \n\
 { \n\
 CplxEnt ev; \n\
@@ -6113,6 +6150,11 @@ out = ev; \n\
 } \n\
 \n\
 \n\
+/** \n\
+* Performs an iteration of Newton-Raphson given the pointer to the compute space in \"arr\", the [x,y,z,t] coordinate of the update, \n\
+* the update point in \"p\", the last iteration value in \"lastValue\", the iteration cache value in \n\
+* \"iterationValueCache\" and a reference to whether iterations should be stopped in \"iterationsStopped\". \n\
+*/ \n\
 __device__ void performIteration(CplxEnt* arr , const int tval , const size_t x , const size_t y , const size_t z , CplxEnt& p , \n\
 CplxEnt& lastValue , CplxEnt& iterationValueCache , bool& iterationsStopped \n\
 )  \n\
