@@ -280,6 +280,7 @@ public class TolerantElem<R extends Elem<R,?>, S extends ElemFactory<R,S>,T exte
 		String st = cache.get( this );
 		if( st == null )
 		{
+			cache.applyAuxCache( new WriteTolerantResultFactoryCache<R,S,T>( cache.getCacheVal() ) );
 			final String res = value.writeDesc( (WriteElemCache)( cache.getInnerCache() ) , ps);
 			final String ims = trf.writeDesc( (WriteTolerantResultFactoryCache<R,S,T>)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) ((Class)(WriteTolerantResultFactoryCache.class)) ) ) , ps);
 			st = cache.getIncrementVal();

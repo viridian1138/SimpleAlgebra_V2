@@ -154,7 +154,9 @@ public class TolerantElemFactory<R extends Elem<R,?>, S extends ElemFactory<R,S>
 		String st = cache.getFac( this );
 		if( st == null )
 		{
+			cache.applyAuxCache( new WriteTolerantResultFactoryCache<R,S,T>( cache.getCacheVal() ) );
 			final String sta = fac.writeDesc( (WriteElemCache<R,S>)( cache.getInnerCache() ) , ps);
+			final String stb = trf.writeDesc( (WriteTolerantResultFactoryCache<R,S,T>)( cache.getAuxCache( (Class<? extends AbstractCache<?, ?, ?, ?>>) ((Class)(WriteTolerantResultFactoryCache.class)) ) ) , ps);
 			st = cache.getIncrementVal();
 			cache.putFac(this, st);
 			writeElemFactoryTypeString( ps );
@@ -164,6 +166,8 @@ public class TolerantElemFactory<R extends Elem<R,?>, S extends ElemFactory<R,S>
 			writeElemFactoryTypeString( ps );
 			ps.print( "( " );
 			ps.print( sta );
+			ps.print( " , " );
+			ps.print( stb );
 			ps.println( " );" );
 		}
 		return( st );
@@ -177,6 +181,8 @@ public class TolerantElemFactory<R extends Elem<R,?>, S extends ElemFactory<R,S>
 		fac.writeElemTypeString(ps);
 		ps.print( "," );
 		fac.writeElemFactoryTypeString(ps);
+		ps.print( "," );
+		trf.writeTypeString(ps);
 		ps.print( ">" );
 	}
 	
@@ -189,6 +195,8 @@ public class TolerantElemFactory<R extends Elem<R,?>, S extends ElemFactory<R,S>
 		fac.writeElemTypeString(ps);
 		ps.print( "," );
 		fac.writeElemFactoryTypeString(ps);
+		ps.print( "," );
+		trf.writeTypeString(ps);
 		ps.print( ">" );
 	}
 	

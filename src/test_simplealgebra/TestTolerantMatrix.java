@@ -29,6 +29,8 @@ import java.math.BigInteger;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
+import simplealgebra.ComplexElem;
+import simplealgebra.ComplexElemFactory;
 import simplealgebra.DoubleElem;
 import simplealgebra.DoubleElemFactory;
 import simplealgebra.NotInvertibleException;
@@ -337,6 +339,94 @@ public class TestTolerantMatrix extends TestCase {
 			}
 		}
 		
+		
+	}
+	
+	
+	/**
+	 * Test method for performing a tolerant left-inverse of a zero complex number.
+	 */
+	public void testInvertCplxZeroLeft() throws NotInvertibleException
+	{
+		
+		final DoubleElemFactory de = new DoubleElemFactory();
+		
+		final DefaultDoubleElemTolerantResultFactory dtrf = new DefaultDoubleElemTolerantResultFactory();
+		
+		TolerantElemFactory<DoubleElem,DoubleElemFactory,DefaultDoubleElemTolerantResultFactory> tf = new TolerantElemFactory<DoubleElem,DoubleElemFactory,DefaultDoubleElemTolerantResultFactory>(de, dtrf);
+		
+		ComplexElemFactory<TolerantElem<DoubleElem,DoubleElemFactory,DefaultDoubleElemTolerantResultFactory>,TolerantElemFactory<DoubleElem,DoubleElemFactory,DefaultDoubleElemTolerantResultFactory>> ce
+			= new ComplexElemFactory<TolerantElem<DoubleElem,DoubleElemFactory,DefaultDoubleElemTolerantResultFactory>,TolerantElemFactory<DoubleElem,DoubleElemFactory,DefaultDoubleElemTolerantResultFactory>>(tf);
+		
+		ComplexElem<TolerantElem<DoubleElem,DoubleElemFactory,DefaultDoubleElemTolerantResultFactory>,TolerantElemFactory<DoubleElem,DoubleElemFactory,DefaultDoubleElemTolerantResultFactory>> cplx
+			= ce.zero();
+		
+		ComplexElem<TolerantElem<DoubleElem,DoubleElemFactory,DefaultDoubleElemTolerantResultFactory>,TolerantElemFactory<DoubleElem,DoubleElemFactory,DefaultDoubleElemTolerantResultFactory>> cplxI
+			= cplx.invertLeft();
+		
+		Assert.assertTrue( cplxI != null );
+		
+		
+		System.out.println( "re: " + ( cplxI.getRe().getValue().getVal() ) );
+		
+		System.out.println( "im: " + ( cplxI.getIm().getValue().getVal() ) );
+		
+		
+	}
+	
+	
+	/**
+	 * Test method for performing a tolerant right-inverse of a zero complex number.
+	 */
+	public void testInvertCplxZeroRight() throws NotInvertibleException
+	{
+		
+		final DoubleElemFactory de = new DoubleElemFactory();
+		
+		final DefaultDoubleElemTolerantResultFactory dtrf = new DefaultDoubleElemTolerantResultFactory();
+		
+		TolerantElemFactory<DoubleElem,DoubleElemFactory,DefaultDoubleElemTolerantResultFactory> tf = new TolerantElemFactory<DoubleElem,DoubleElemFactory,DefaultDoubleElemTolerantResultFactory>(de, dtrf);
+		
+		ComplexElemFactory<TolerantElem<DoubleElem,DoubleElemFactory,DefaultDoubleElemTolerantResultFactory>,TolerantElemFactory<DoubleElem,DoubleElemFactory,DefaultDoubleElemTolerantResultFactory>> ce
+			= new ComplexElemFactory<TolerantElem<DoubleElem,DoubleElemFactory,DefaultDoubleElemTolerantResultFactory>,TolerantElemFactory<DoubleElem,DoubleElemFactory,DefaultDoubleElemTolerantResultFactory>>(tf);
+		
+		ComplexElem<TolerantElem<DoubleElem,DoubleElemFactory,DefaultDoubleElemTolerantResultFactory>,TolerantElemFactory<DoubleElem,DoubleElemFactory,DefaultDoubleElemTolerantResultFactory>> cplx
+			= ce.zero();
+		
+		ComplexElem<TolerantElem<DoubleElem,DoubleElemFactory,DefaultDoubleElemTolerantResultFactory>,TolerantElemFactory<DoubleElem,DoubleElemFactory,DefaultDoubleElemTolerantResultFactory>> cplxI
+			= cplx.invertRight();
+		
+		Assert.assertTrue( cplxI != null );
+		
+		
+		System.out.println( "re: " + ( cplxI.getRe().getValue().getVal() ) );
+		
+		System.out.println( "im: " + ( cplxI.getIm().getValue().getVal() ) );
+		
+		
+	}
+	
+	
+	/**
+	 * Tests running writeDesc() on tolerant elems.
+	 */
+	public void testWriteTolerant()
+	{
+		final DoubleElemFactory de = new DoubleElemFactory();
+		
+		final DefaultDoubleElemTolerantResultFactory dtrf = new DefaultDoubleElemTolerantResultFactory();
+		
+		TolerantElemFactory<DoubleElem,DoubleElemFactory,DefaultDoubleElemTolerantResultFactory> tf = new TolerantElemFactory<DoubleElem,DoubleElemFactory,DefaultDoubleElemTolerantResultFactory>(de, dtrf);
+		
+		TolerantElem<DoubleElem,DoubleElemFactory,DefaultDoubleElemTolerantResultFactory> ident = tf.identity();
+		
+		String aa = tf.writeDesc( tf.generateWriteElemCache() , System.out );
+		
+		System.out.println( "### " + aa );
+		
+		String bb = ident.writeDesc( ident.getFac().generateWriteElemCache() , System.out );
+		
+		System.out.println( "### " + bb );
 		
 	}
 	
