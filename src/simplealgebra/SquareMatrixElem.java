@@ -1026,6 +1026,10 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	{
 		HashMap<BigInteger,R> subMapSrc = columnMap.get( srcCol );
 		HashMap<BigInteger,R> subMapDest = columnMap.get( destCol );
+		if( subMapDest == null )
+		{
+			subMapDest = new HashMap<BigInteger,R>();
+		}
 		if( subMapSrc != null )
 		{
 			for( final Entry<BigInteger, R> rowie : subMapSrc.entrySet() )
@@ -1058,6 +1062,10 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	{
 		HashMap<BigInteger,R> subMapSrc = rowMap.get( srcRow );
 		HashMap<BigInteger,R> subMapDest = rowMap.get( destRow );
+		if( subMapDest == null )
+		{
+			subMapDest = new HashMap<BigInteger,R>();
+		}
 		if( subMapSrc != null )
 		{
 			for( final Entry<BigInteger, R> colie : subMapSrc.entrySet() )
@@ -1192,12 +1200,7 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	{
 		try
 		{
-			final R ap = this.get(coli, coli);
-			if( ap == null )
-			{
-				throw( new NotInvertibleException() );
-			}
-			final R tp = ap.invertLeft();
+			final R tp = this.getVal(coli, coli).invertLeft();
 			return( tp );
 		}
 		catch( NotInvertibleException ex )
@@ -1208,12 +1211,7 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 			{
 				try
 				{
-					final R ap = this.get(cnt, coli);
-					if( ap == null )
-					{
-						throw( new NotInvertibleException() );
-					}
-					final R tp = ap.invertLeft();
+					final R tp = this.getVal(cnt, coli).invertLeft();
 					exchangeColumns( coli , cnt );
 					ret.exchangeColumns( coli , cnt );
 					return( tp );
@@ -1241,12 +1239,7 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	{
 		try
 		{
-			final R ap = this.get(rowi, rowi);
-			if( ap == null )
-			{
-				throw( new NotInvertibleException() );
-			}
-			final R tp = ap.invertLeft();
+			final R tp = this.getVal(rowi, rowi).invertLeft();
 			return( tp );
 		}
 		catch( NotInvertibleException ex )
@@ -1257,12 +1250,7 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 			{
 				try
 				{
-					final R ap = this.get(cnt, rowi);
-					if( ap == null )
-					{
-						throw( new NotInvertibleException() );
-					}
-					final R tp = ap.invertLeft();
+					final R tp = this.getVal(cnt, rowi).invertLeft();
 					exchangeRows( rowi , cnt );
 					ret.exchangeRows( rowi , cnt );
 					return( tp );
@@ -1289,12 +1277,7 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	{
 		try
 		{
-			final R ap = this.get(coli, coli);
-			if( ap == null )
-			{
-				throw( new NotInvertibleException() );
-			}
-			final R tp = ap.invertRight();
+			final R tp = this.getVal(coli, coli).invertRight();
 			return( tp );
 		}
 		catch( NotInvertibleException ex )
@@ -1305,12 +1288,7 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 			{
 				try
 				{
-					final R ap = this.get(coli, cnt);
-					if( ap == null )
-					{
-						throw( new NotInvertibleException() );
-					}
-					final R tp = ap.invertRight();
+					final R tp = this.getVal(coli, cnt).invertRight();
 					exchangeColumns( coli , cnt );
 					ret.exchangeColumns( coli , cnt );
 					return( tp );
@@ -1338,12 +1316,7 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	{
 		try
 		{
-			final R ap = this.get(rowi, rowi);
-			if( ap == null )
-			{
-				throw( new NotInvertibleException() );
-			}
-			final R tp = ap.invertRight();
+			final R tp = this.getVal(rowi, rowi).invertRight();
 			return( tp );
 		}
 		catch( NotInvertibleException ex )
@@ -1354,12 +1327,7 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 			{
 				try
 				{
-					final R ap = this.get(cnt, rowi);
-					if( ap == null )
-					{
-						throw( new NotInvertibleException() );
-					}
-					final R tp = ap.invertRight();
+					final R tp = this.getVal(cnt, rowi).invertRight();
 					exchangeRows( rowi , cnt );
 					ret.exchangeRows( rowi , cnt );
 					return( tp );

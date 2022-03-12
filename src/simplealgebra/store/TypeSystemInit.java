@@ -72,6 +72,9 @@ import simplealgebra.symbolic.db.SymbolicPlaceholderType;
 import simplealgebra.symbolic.db.SymbolicReductionType;
 import simplealgebra.symbolic.db.SymbolicSqrtType;
 import simplealgebra.symbolic.db.SymbolicZeroType;
+import simplealgebra.tolerant.db.TolerantElemFactoryType;
+import simplealgebra.tolerant.db.TolerantElemType;
+import simplealgebra.tolerant.db.DefaultDoubleElemTolerantResultFactoryType;
 
 
 /**
@@ -160,6 +163,10 @@ public class TypeSystemInit {
 		CovariantDerivativeFactoryType.initType( graph );
 		MaterialDerivativeFactoryType.initType( graph );
 		SymbolicRankTwoTraceType.initType( graph );
+		
+		TolerantElemType.initType(graph);
+		TolerantElemFactoryType.initType(graph);
+		DefaultDoubleElemTolerantResultFactoryType.initType(graph);
 		
 		MemoryClearingSystem.initMemoryClearing( graph );
 		
