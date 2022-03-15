@@ -962,6 +962,10 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	{
 		HashMap<BigInteger,R> subMapSrc = columnMap.get( srcCol );
 		HashMap<BigInteger,R> subMapDest = columnMap.get( destCol );
+		if( subMapDest == null )
+		{
+			subMapDest = new HashMap<BigInteger,R>();
+		}
 		if( subMapSrc != null )
 		{
 			for( final Entry<BigInteger, R> rowie : subMapSrc.entrySet() )
@@ -994,6 +998,10 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 	{
 		HashMap<BigInteger,R> subMapSrc = rowMap.get( srcRow );
 		HashMap<BigInteger,R> subMapDest = rowMap.get( destRow );
+		if( subMapDest == null )
+		{
+			subMapDest = new HashMap<BigInteger,R>();
+		}
 		if( subMapSrc != null )
 		{
 			for( final Entry<BigInteger, R> colie : subMapSrc.entrySet() )

@@ -343,6 +343,133 @@ public class TestTolerantMatrix extends TestCase {
 	}
 	
 	
+	
+	
+	
+	
+	
+	
+
+	
+	
+	/**
+	 * Test method for performing a tolerant left-inverse of a matrix with repeated columns.
+	 */
+	public void testInvertRepeatedColumnLeft() throws NotInvertibleException
+	{
+		
+		final DoubleElemFactory de = new DoubleElemFactory();
+		
+		final TestDimensionFive td = new TestDimensionFive();
+		
+		final DefaultDoubleElemTolerantResultFactory dtrf = new DefaultDoubleElemTolerantResultFactory();
+		
+		TolerantElemFactory<DoubleElem,DoubleElemFactory,DefaultDoubleElemTolerantResultFactory> tf = new TolerantElemFactory<DoubleElem,DoubleElemFactory,DefaultDoubleElemTolerantResultFactory>(de, dtrf);
+		
+		SquareMatrixElem<TestDimensionFive,TolerantElem<DoubleElem,DoubleElemFactory,DefaultDoubleElemTolerantResultFactory>,TolerantElemFactory<DoubleElem,DoubleElemFactory,DefaultDoubleElemTolerantResultFactory>> mat
+			= new SquareMatrixElem<TestDimensionFive,TolerantElem<DoubleElem,DoubleElemFactory,DefaultDoubleElemTolerantResultFactory>,TolerantElemFactory<DoubleElem,DoubleElemFactory,DefaultDoubleElemTolerantResultFactory>>(tf, td);
+		
+
+		
+		for( int cnt = 0; cnt < TestDimensionFive.FIVE ; cnt++ )
+		{
+			if( cnt == 1 )
+			{
+
+				mat.setVal( BigInteger.valueOf(0) , 
+						BigInteger.valueOf(1), tf.identity() );
+			}
+			else
+			{
+				mat.setVal( BigInteger.valueOf(cnt) , 
+						BigInteger.valueOf(cnt), tf.identity() );
+			}
+		}
+		
+		
+		SquareMatrixElem<TestDimensionFive,TolerantElem<DoubleElem,DoubleElemFactory,DefaultDoubleElemTolerantResultFactory>,TolerantElemFactory<DoubleElem,DoubleElemFactory,DefaultDoubleElemTolerantResultFactory>> matI
+			= mat.invertLeft();
+		
+		Assert.assertTrue( matI != null );
+		
+		
+		for( int row = 0 ; row < TestDimensionFive.FIVE ; row++ )
+		{
+			for( int col = 0 ; col < TestDimensionFive.FIVE ; col++ )
+			{
+				TolerantElem<DoubleElem,DoubleElemFactory,DefaultDoubleElemTolerantResultFactory> el = matI.getVal( BigInteger.valueOf(row) , 
+						BigInteger.valueOf(col) );
+				DoubleElem dv = el.getValue();
+				System.out.println( row + " " + col + " " + ( dv.getVal() ) );
+			}
+		}
+		
+		
+	}
+	
+	
+	/**
+	 * Test method for performing a tolerant right-inverse of a matrix with repeated columns.
+	 */
+	public void testInvertRepeatedColumnRight() throws NotInvertibleException
+	{
+		
+		final DoubleElemFactory de = new DoubleElemFactory();
+		
+		final TestDimensionFive td = new TestDimensionFive();
+		
+		final DefaultDoubleElemTolerantResultFactory dtrf = new DefaultDoubleElemTolerantResultFactory();
+		
+		TolerantElemFactory<DoubleElem,DoubleElemFactory,DefaultDoubleElemTolerantResultFactory> tf = new TolerantElemFactory<DoubleElem,DoubleElemFactory,DefaultDoubleElemTolerantResultFactory>(de, dtrf);
+		
+		SquareMatrixElem<TestDimensionFive,TolerantElem<DoubleElem,DoubleElemFactory,DefaultDoubleElemTolerantResultFactory>,TolerantElemFactory<DoubleElem,DoubleElemFactory,DefaultDoubleElemTolerantResultFactory>> mat
+			= new SquareMatrixElem<TestDimensionFive,TolerantElem<DoubleElem,DoubleElemFactory,DefaultDoubleElemTolerantResultFactory>,TolerantElemFactory<DoubleElem,DoubleElemFactory,DefaultDoubleElemTolerantResultFactory>>(tf, td);
+		
+
+		
+		for( int cnt = 0; cnt < TestDimensionFive.FIVE ; cnt++ )
+		{
+			if( cnt == 1 )
+			{
+
+				mat.setVal( BigInteger.valueOf(0) , 
+						BigInteger.valueOf(1), tf.identity() );
+			}
+			else
+			{
+				mat.setVal( BigInteger.valueOf(cnt) , 
+						BigInteger.valueOf(cnt) , tf.identity() );
+			}
+		}
+		
+		
+		SquareMatrixElem<TestDimensionFive,TolerantElem<DoubleElem,DoubleElemFactory,DefaultDoubleElemTolerantResultFactory>,TolerantElemFactory<DoubleElem,DoubleElemFactory,DefaultDoubleElemTolerantResultFactory>> matI
+			= mat.invertRight();
+		
+		Assert.assertTrue( matI != null );
+		
+		
+		for( int row = 0 ; row < TestDimensionFive.FIVE ; row++ )
+		{
+			for( int col = 0 ; col < TestDimensionFive.FIVE ; col++ )
+			{
+				TolerantElem<DoubleElem,DoubleElemFactory,DefaultDoubleElemTolerantResultFactory> el = matI.getVal( BigInteger.valueOf(row) , 
+						BigInteger.valueOf(col) );
+				DoubleElem dv = el.getValue();
+				System.out.println( row + " " + col + " " + ( dv.getVal() ) );
+			}
+		}
+		
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
 	/**
 	 * Test method for performing a tolerant left-inverse of a zero complex number.
 	 */
