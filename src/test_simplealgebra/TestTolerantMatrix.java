@@ -26,19 +26,25 @@ package test_simplealgebra;
 
 
 import java.math.BigInteger;
+import java.util.ArrayList;
 
 import junit.framework.Assert;
 import junit.framework.TestCase;
+import simplealgebra.BadCreationException;
 import simplealgebra.ComplexElem;
 import simplealgebra.ComplexElemFactory;
 import simplealgebra.DoubleElem;
 import simplealgebra.DoubleElemFactory;
+import simplealgebra.Elem;
+import simplealgebra.Mutator;
 import simplealgebra.NotInvertibleException;
+import simplealgebra.PrimitiveRandom;
 import simplealgebra.SquareMatrixElem;
 import simplealgebra.SquareMatrixElemFactory;
 import simplealgebra.tolerant.DefaultDoubleElemTolerantResultFactory;
 import simplealgebra.tolerant.TolerantElem;
 import simplealgebra.tolerant.TolerantElemFactory;
+import simplealgebra.tolerant.TolerantResultFactory;
 
 
 
@@ -557,6 +563,140 @@ public class TestTolerantMatrix extends TestCase {
 		
 	}
 	
+	
+	
+	
+	
+	static class TestTolerantFactory extends TolerantResultFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>,TestTolerantFactory>
+	{
+
+		@Override
+		public ComplexElem<DoubleElem, DoubleElemFactory> getTolerantInvertLeft(
+				ComplexElem<DoubleElem, DoubleElemFactory> in, Exception ex)
+				throws NotInvertibleException {
+			return( new ComplexElem<DoubleElem, DoubleElemFactory>( new DoubleElem( Double.MAX_VALUE ) , new DoubleElem( 0.0 ) )  );
+		}
+
+		@Override
+		public ComplexElem<DoubleElem, DoubleElemFactory> getTolerantInvertRight(
+				ComplexElem<DoubleElem, DoubleElemFactory> in, Exception ex)
+				throws NotInvertibleException {
+			return( new ComplexElem<DoubleElem, DoubleElemFactory>( new DoubleElem( Double.MAX_VALUE ) , new DoubleElem( 0.0 ) )  );
+		}
+
+		@Override
+		public ComplexElem<DoubleElem, DoubleElemFactory> getTolerantDivideBy(
+				ComplexElem<DoubleElem, DoubleElemFactory> in, BigInteger val,
+				Exception ex) {
+			throw( new BadCreationException() );
+		}
+
+		@Override
+		public Elem<?, ?> getTolerantTotalMagnitude(
+				ComplexElem<DoubleElem, DoubleElemFactory> in, Exception ex) {
+			throw( new BadCreationException() );
+		}
+
+		@Override
+		public ComplexElem<DoubleElem, DoubleElemFactory> getTolerantAdd(
+				ComplexElem<DoubleElem, DoubleElemFactory> a,
+				ComplexElem<DoubleElem, DoubleElemFactory> b, Exception ex) {
+			throw( new BadCreationException() );
+		}
+
+		@Override
+		public ComplexElem<DoubleElem, DoubleElemFactory> getTolerantMult(
+				ComplexElem<DoubleElem, DoubleElemFactory> a,
+				ComplexElem<DoubleElem, DoubleElemFactory> b, Exception ex) {
+			throw( new BadCreationException() );
+		}
+
+		@Override
+		public ComplexElem<DoubleElem, DoubleElemFactory> getTolerantNegate(
+				ComplexElem<DoubleElem, DoubleElemFactory> a, Exception ex) {
+			throw( new BadCreationException() );
+		}
+
+		@Override
+		public ComplexElem<DoubleElem, DoubleElemFactory> getTolerantOptionalOp(
+				ComplexElem<DoubleElem, DoubleElemFactory> value, Object id,
+				ArrayList<ComplexElem<DoubleElem, DoubleElemFactory>> args,
+				Exception ex) throws NotInvertibleException {
+			throw( new BadCreationException() );
+		}
+
+		@Override
+		public ComplexElem<DoubleElem, DoubleElemFactory> getTolerantMutate(
+				ComplexElem<DoubleElem, DoubleElemFactory> value,
+				Mutator<ComplexElem<DoubleElem, DoubleElemFactory>> mutr,
+				Exception ex) throws NotInvertibleException {
+			throw( new BadCreationException() );
+		}
+
+		@Override
+		public ComplexElem<DoubleElem, DoubleElemFactory> getTolerantRandom(
+				ComplexElem<DoubleElem, DoubleElemFactory> value,
+				PrimitiveRandom in, Exception ex) {
+			throw( new BadCreationException() );
+		}
+
+		
+		
+	}
+	
+	
+	
+	
+	public void testAltComplexInvertLeft() throws NotInvertibleException
+	{
+		final DoubleElemFactory de = new DoubleElemFactory();
+		
+		final ComplexElemFactory<DoubleElem,DoubleElemFactory> ce = new ComplexElemFactory<DoubleElem,DoubleElemFactory>( de );
+		
+		final TestTolerantFactory te = new TestTolerantFactory();
+		
+		final TolerantElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>,TestTolerantFactory> tf = new TolerantElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>,TestTolerantFactory>(ce, te);
+		
+		final TolerantElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>,TestTolerantFactory> ze = tf.zero();
+		
+		final TolerantElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>,TestTolerantFactory> zi = ze.invertLeft();
+		
+		final double d0 = zi.getValue().getRe().getVal();
+		
+		final double d1 = zi.getValue().getIm().getVal();
+		
+		System.out.println( d0 );
+		
+		System.out.println( d1 );
+		
+	}
+	
+	
+	
+	
+	public void testAltComplexInvertRight() throws NotInvertibleException
+	{
+		final DoubleElemFactory de = new DoubleElemFactory();
+		
+		final ComplexElemFactory<DoubleElem,DoubleElemFactory> ce = new ComplexElemFactory<DoubleElem,DoubleElemFactory>( de );
+		
+		final TestTolerantFactory te = new TestTolerantFactory();
+		
+		final TolerantElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>,TestTolerantFactory> tf = new TolerantElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>,TestTolerantFactory>(ce, te);
+		
+		final TolerantElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>,TestTolerantFactory> ze = tf.zero();
+		
+		final TolerantElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>,TestTolerantFactory> zi = ze.invertRight();
+		
+		final double d0 = zi.getValue().getRe().getVal();
+		
+		final double d1 = zi.getValue().getIm().getVal();
+		
+		System.out.println( d0 );
+		
+		System.out.println( d1 );
+		
+	}
 	
 
 	
