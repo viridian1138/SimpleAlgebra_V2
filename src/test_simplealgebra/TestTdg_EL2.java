@@ -35,6 +35,8 @@ import java.math.BigInteger;
 
 import junit.framework.TestCase;
 import simplealgebra.ComplexElem;
+import simplealgebra.DoubleElem;
+import simplealgebra.DoubleElemFactory;
 import simplealgebra.bigfixedpoint.BigFixedPointElem;
 import simplealgebra.bigfixedpoint.BigFixedPointElemFactory;
 import simplealgebra.bigfixedpoint.Precision;
@@ -216,6 +218,83 @@ public class TestTdg_EL2 extends TestCase
 		System.out.println( m2.toDouble() );
 		
 	}
+	
+	
+	
+	/**
+	 * Tests the ability to calculate the measurement of an equidistant locus of points in higher dimensions.
+	 */
+	public void testTdg_E2() throws Throwable
+	{
+	
+		System.out.println( "Started..." );
+		
+		final DoubleElem pi_l = new DoubleElem( Math.PI );
+		
+		final ComplexElem<DoubleElem,DoubleElemFactory>
+			pi = new ComplexElem<DoubleElem,DoubleElemFactory>( pi_l , pi_l.getFac().zero() );
+		
+		final Tdg_EL<DoubleElem,DoubleElemFactory> tdg = 
+				new Tdg_EL<DoubleElem,DoubleElemFactory>( pi );
+		
+		final DoubleElem radius = pi_l.getFac().identity().add( pi_l.getFac().identity() );
+		
+		final BigInteger numDimensions = BigInteger.valueOf( 7 );
+		
+		System.out.println( "Running M1" );
+		
+		DoubleElem m1 = tdg.calcM1(numDimensions, radius, 20);
+		
+		System.out.println( "Running M2" );
+		
+		DoubleElem m2 = tdg.calcM2(numDimensions, radius, 20);
+		
+		System.out.println( "Printing" );
+		
+		System.out.println( m1.getVal() );
+		
+		System.out.println( m2.getVal() );
+		
+	}
+	
+	
+	
+	/**
+	 * Tests the ability to calculate the measurement of an equidistant locus of points in higher dimensions.
+	 */
+	public void testTdg_E3() throws Throwable
+	{
+	
+		System.out.println( "Started..." );
+		
+		final DoubleElem pi_l = new DoubleElem( Math.PI );
+		
+		final ComplexElem<DoubleElem,DoubleElemFactory>
+			pi = new ComplexElem<DoubleElem,DoubleElemFactory>( pi_l , pi_l.getFac().zero() );
+		
+		final Tdg_EL<DoubleElem,DoubleElemFactory> tdg = 
+				new Tdg_EL<DoubleElem,DoubleElemFactory>( pi );
+		
+		final DoubleElem radius = pi_l.getFac().identity().add( pi_l.getFac().identity() );
+		
+		final BigInteger numDimensions = BigInteger.valueOf( 15 );
+		
+		System.out.println( "Running M1" );
+		
+		DoubleElem m1 = tdg.calcM1(numDimensions, radius, 20);
+		
+		System.out.println( "Running M2" );
+		
+		DoubleElem m2 = tdg.calcM2(numDimensions, radius, 20);
+		
+		System.out.println( "Printing" );
+		
+		System.out.println( m1.getVal() );
+		
+		System.out.println( m2.getVal() );
+		
+	}
+	
 	
 	
 }
