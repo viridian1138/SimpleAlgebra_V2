@@ -159,7 +159,7 @@ public class DbElemFactory<R extends Elem<R,?>, S extends ElemFactory<R,S>> exte
 		{
 			return( ctmp );
 		}
-		S sfac = fac.cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
+		S sfac = (S) fac.cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
 		if( fac != sfac )
 		{
 			final DbElemFactory<R,S> rtmp = new DbElemFactory<R,S>( sfac , graph );

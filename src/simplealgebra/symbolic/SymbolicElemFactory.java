@@ -119,7 +119,7 @@ public class SymbolicElemFactory<R extends Elem<R,?>, S extends ElemFactory<R,S>
 		{
 			return( ctmp );
 		}
-		S sfac = fac.cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
+		S sfac = (S) fac.cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
 		if( fac != sfac )
 		{
 			final SymbolicElemFactory<R,S> rtmp = new SymbolicElemFactory<R,S>( sfac );

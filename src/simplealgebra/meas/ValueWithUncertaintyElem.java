@@ -41,7 +41,7 @@ import simplealgebra.symbolic.SymbolicElem.EVAL_MODE;
 import java.io.PrintStream;
 import java.math.BigInteger;
 
-import org.kie.internal.runtime.StatefulKnowledgeSession;
+import org.kie.api.runtime.KieSession;
 
 /**
  * Elem for a value with an uncertainty (e.g. a measurement error).
@@ -186,8 +186,8 @@ public class ValueWithUncertaintyElem<R extends Elem<R,?>, S extends ElemFactory
 		{
 			return( ctmp );
 		}
-		final R val2 = value.cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
-		final R unc2 = uncertainty.cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
+		final R val2 = (R) value.cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
+		final R unc2 = (R) uncertainty.cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
 		if( ( value != val2 ) || ( uncertainty != unc2 ) )
 		{
 			final ValueWithUncertaintyElem<R,S> rtmp = new ValueWithUncertaintyElem<R,S>( val2 , unc2 );
@@ -200,7 +200,7 @@ public class ValueWithUncertaintyElem<R extends Elem<R,?>, S extends ElemFactory
 	
 	
 	@Override
-	public void performInserts( StatefulKnowledgeSession session )
+	public void performInserts( KieSession session )
 	{
 		value.performInserts( session );
 		uncertainty.performInserts( session );

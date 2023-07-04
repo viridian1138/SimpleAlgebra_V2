@@ -28,7 +28,7 @@ import java.io.PrintStream;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.kie.internal.runtime.StatefulKnowledgeSession;
+import org.kie.api.runtime.KieSession;
 
 import simplealgebra.AbstractCache;
 import simplealgebra.CloneThreadCache;
@@ -161,7 +161,7 @@ public class SymbolicDivideBy<R extends Elem<R,?>, S extends ElemFactory<R,S>> e
 		{
 			return( ctmp );
 		}
-		final S facs = this.getFac().getFac().cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
+		final S facs = (S) this.getFac().getFac().cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
 		final SymbolicElem<R,S> elems = elem.cloneThreadCached(threadIndex, cache);
 		if( ( elems != elem ) || ( facs != fac ) )
 		{
@@ -242,7 +242,7 @@ public class SymbolicDivideBy<R extends Elem<R,?>, S extends ElemFactory<R,S>> e
 	}
 
 	@Override
-	public void performInserts( StatefulKnowledgeSession session )
+	public void performInserts( KieSession session )
 	{
 		elem.performInserts( session );
 		super.performInserts( session );

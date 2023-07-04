@@ -30,13 +30,15 @@
 
 package simplealgebra.store;
 
-import org.kie.api.io.ResourceType;
-import org.kie.internal.KnowledgeBase;
-import org.kie.internal.KnowledgeBaseFactory;
-import org.kie.internal.builder.KnowledgeBuilder;
-import org.kie.internal.builder.KnowledgeBuilderFactory;
+import org.kie.api.KieBase;
+import org.kie.api.KieServices;
+import org.kie.api.builder.KieBuilder;
+import org.kie.api.builder.KieFileSystem;
+import org.kie.api.builder.Message;
+import org.kie.api.builder.Results;
+import org.kie.api.runtime.KieContainer;
+import org.kie.api.runtime.KieSession;
 import org.kie.internal.io.ResourceFactory;
-import org.kie.internal.runtime.StatefulKnowledgeSession;
 import org.mvel2.optimizers.OptimizerFactory;
 
 
@@ -65,17 +67,28 @@ public class DaqHg<T extends Object>
 			DaqHgContext<T> context , DaqHgResultHandler<T> resultHandler )
 	{
 		OptimizerFactory.setDefaultOptimizer( OptimizerFactory.SAFE_REFLECTIVE );
+
+
+		KieServices kieServices = KieServices.Factory.get();
+	    KieFileSystem kfs = kieServices.newKieFileSystem();
+	    
+	    kfs.write( "src/main/resources/sort.drl",
+	    		ResourceFactory.newClassPathResource( drlPath )  );
+
+
+		KieBuilder kieBuilder = kieServices.newKieBuilder( kfs ).buildAll();
+	    Results results = kieBuilder.getResults();
+	    if( results.hasMessages( Message.Level.ERROR ) )
+	    {
+	        throw new RuntimeException( results.getMessages().toString() );
+	    }
 		
-		KnowledgeBuilder builder = KnowledgeBuilderFactory.newKnowledgeBuilder();
-		
-		builder.add( ResourceFactory.newClassPathResource( drlPath )  , 
-				ResourceType.DRL );
-		
-		KnowledgeBase knowledgeBase = KnowledgeBaseFactory.newKnowledgeBase();
-		knowledgeBase.addKnowledgePackages( builder.getKnowledgePackages() );
-		
-		StatefulKnowledgeSession session = knowledgeBase.newStatefulKnowledgeSession();
-		
+	    KieContainer kieContainer =
+	        kieServices.newKieContainer( kieServices.getRepository().getDefaultReleaseId() );
+	    KieBase kieBase = kieContainer.getKieBase();
+	    
+	    
+		KieSession session = kieContainer.newKieSession();		
 		context.setResultHandler( resultHandler );
 		
 		session.insert( context );

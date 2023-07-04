@@ -31,16 +31,21 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
+import org.kie.api.KieBase;
+import org.kie.api.KieServices;
+import org.kie.api.builder.KieBuilder;
+import org.kie.api.builder.KieFileSystem;
+import org.kie.api.builder.Message;
+import org.kie.api.builder.Results;
 import org.kie.api.definition.rule.Rule;
 import org.kie.api.event.rule.BeforeMatchFiredEvent;
 import org.kie.api.event.rule.DefaultAgendaEventListener;
 import org.kie.api.io.ResourceType;
-import org.kie.internal.KnowledgeBase;
-import org.kie.internal.KnowledgeBaseFactory;
+import org.kie.api.runtime.KieContainer;
+import org.kie.api.runtime.KieSession;
 import org.kie.internal.builder.KnowledgeBuilder;
 import org.kie.internal.builder.KnowledgeBuilderFactory;
 import org.kie.internal.io.ResourceFactory;
-import org.kie.internal.runtime.StatefulKnowledgeSession;
 import org.mvel2.optimizers.OptimizerFactory;
 
 import simplealgebra.algo.NewtonRaphsonSingleElem;
@@ -1161,7 +1166,7 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 	 * 
 	 * @param session The session into which to insert the configuration items.
 	 */
-	protected void insertSessionConfigItems( final StatefulKnowledgeSession session )
+	protected void insertSessionConfigItems( final KieSession session )
 	{
 		session.insert( new DroolsSession( session ) );
 		
@@ -1185,13 +1190,13 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 	protected T handleDistributeSimplify()
 	{
 		T prev = (T)( this );
-		StatefulKnowledgeSession session = null;
+		KieSession session = null;
 		SymbolicPlaceholder<T,R> place = null;
 		while( true )
 		{
 			try
 			{
-				session = getDistributeSimplifyKnowledgeBase().newStatefulKnowledgeSession();
+				session = getDistributeSimplifyKieContainer().newKieSession();
 		
 				insertSessionConfigItems( session );
 			
@@ -1254,13 +1259,13 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 	protected T handleDistributeSimplify2()
 	{
 		T prev = (T)( this );
-		StatefulKnowledgeSession session = null;
+		KieSession session = null;
 		SymbolicPlaceholder<T,R> place = null;
 		while( true )
 		{
 			try
 			{
-				session = getDistributeSimplify2KnowledgeBase().newStatefulKnowledgeSession();
+				session = getDistributeSimplify2KieContainer().newKieSession();
 		
 				insertSessionConfigItems( session );
 			
@@ -1322,7 +1327,7 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 	 * 
 	 * @param session The session in which to insert the elem.
 	 */
-	public void performInserts( StatefulKnowledgeSession session )
+	public void performInserts( KieSession session )
 	{
 		session.insert( this );
 	}
@@ -1362,91 +1367,108 @@ public abstract class Elem<T extends Elem<T,?>, R extends ElemFactory<T,R>> {
 	
 	
 	/**
-	 * Returns Drools ( <A href="http://drools.org">http://drools.org</A> ) knowledge base for algebraic simplification.
+	 * Returns Drools ( <A href="http://drools.org">http://drools.org</A> ) container for algebraic simplification.
 	 * 
-	 * @return Drools ( <A href="http://drools.org">http://drools.org</A> ) knowledge base for algebraic simplification.
+	 * @return Drools ( <A href="http://drools.org">http://drools.org</A> ) container for algebraic simplification.
 	 */
-	public static KnowledgeBase getDistributeSimplifyKnowledgeBase()
+	public static KieContainer getDistributeSimplifyKieContainer()
 	{
-		if( distributeSimplifyKnowledgeBase == null )
+		if( distributeSimplifyKieContainer == null )
 		{
 			OptimizerFactory.setDefaultOptimizer( OptimizerFactory.SAFE_REFLECTIVE );
 			
-			KnowledgeBuilder builder = KnowledgeBuilderFactory.newKnowledgeBuilder();
-			
-			// Load in the reng support as a separate cross-cutting concern.
-			builder.add( ResourceFactory.newClassPathResource( "reng.drl" )  , 
-					ResourceType.DRL );
-			
-			builder.add( ResourceFactory.newClassPathResource( "distributeSimplify.drl" )  , 
-					ResourceType.DRL );
-			
+			KieServices kieServices = KieServices.Factory.get();
+		    KieFileSystem kfs = kieServices.newKieFileSystem();
+		    
+		    // Load in the reng support as a separate cross-cutting concern.
+		    kfs.write( "src/main/resources/reng.drl",
+		    		ResourceFactory.newClassPathResource( "reng.drl" )  );
+
+		    kfs.write( "src/main/resources/distributeSimplify.drl",
+		    		ResourceFactory.newClassPathResource( "distributeSimplify.drl" )  );
+		   
 			if( LoggingConfiguration.LOGGING_ON )
 			{
-				builder.add( ResourceFactory.newClassPathResource( "logging.drl" )  , 
-						ResourceType.DRL );
+				kfs.write( "src/main/resources/logging.drl",
+			    		ResourceFactory.newClassPathResource( "logging.drl" )  );
+			   
 			}
-			
-			if( builder.hasErrors() )
-			{
-				throw( new RuntimeException( builder.getErrors().toString() ) );
-			}
-			distributeSimplifyKnowledgeBase = KnowledgeBaseFactory.newKnowledgeBase();
-			distributeSimplifyKnowledgeBase.addKnowledgePackages( builder.getKnowledgePackages() );
+	    
+		    
+		    KieBuilder kieBuilder = kieServices.newKieBuilder( kfs ).buildAll();
+		    Results results = kieBuilder.getResults();
+		    if( results.hasMessages( Message.Level.ERROR ) )
+		    {
+		        throw new RuntimeException( results.getMessages().toString() );
+		    }
+		    
+		    KieContainer kieContainer =
+		        kieServices.newKieContainer( kieServices.getRepository().getDefaultReleaseId() );
+		    KieBase kieBase = kieContainer.getKieBase();
+		    // KieSession kieSession = kieContainer.newKieSession();
+			distributeSimplifyKieContainer = kieContainer;
 		}
 		
-		return( distributeSimplifyKnowledgeBase );
+		return( distributeSimplifyKieContainer );
 	}
 	
 	
 	
 	/**
-	 * Returns Drools ( <A href="http://drools.org">http://drools.org</A> ) knowledge base for algebraic simplification.
+	 * Returns Drools ( <A href="http://drools.org">http://drools.org</A> ) container for algebraic simplification.
 	 * 
-	 * @return Drools ( <A href="http://drools.org">http://drools.org</A> ) knowledge base for algebraic simplification.
+	 * @return Drools ( <A href="http://drools.org">http://drools.org</A> ) container for algebraic simplification.
 	 */
-	public static KnowledgeBase getDistributeSimplify2KnowledgeBase()
+	public static KieContainer getDistributeSimplify2KieContainer()
 	{
-		if( distributeSimplify2KnowledgeBase == null )
+		if( distributeSimplify2KieContainer == null )
 		{
 			OptimizerFactory.setDefaultOptimizer( OptimizerFactory.SAFE_REFLECTIVE );
 			
-			KnowledgeBuilder builder = KnowledgeBuilderFactory.newKnowledgeBuilder();
-			
-			// Load in the reng support as a separate cross-cutting concern.
-			builder.add( ResourceFactory.newClassPathResource( "reng.drl" )  , 
-					ResourceType.DRL );
-			
-			builder.add( ResourceFactory.newClassPathResource( "distributeSimplify2.drl" )  , 
-					ResourceType.DRL );
-			
+			KieServices kieServices = KieServices.Factory.get();
+		    KieFileSystem kfs = kieServices.newKieFileSystem();
+		    
+		    // Load in the reng support as a separate cross-cutting concern.
+		    kfs.write( "src/main/resources/reng.drl",
+		    		ResourceFactory.newClassPathResource( "reng.drl" )  );
+
+		    kfs.write( "src/main/resources/distributeSimplify2.drl",
+		    		ResourceFactory.newClassPathResource( "distributeSimplify2.drl" )  );
+		   
 			if( LoggingConfiguration.LOGGING_ON )
 			{
-				builder.add( ResourceFactory.newClassPathResource( "logging.drl" )  , 
-						ResourceType.DRL );
+				kfs.write( "src/main/resources/logging.drl",
+			    		ResourceFactory.newClassPathResource( "logging.drl" )  );
+			   
 			}
 			
-			if( builder.hasErrors() )
-			{
-				throw( new RuntimeException( builder.getErrors().toString() ) );
-			}
-			distributeSimplify2KnowledgeBase = KnowledgeBaseFactory.newKnowledgeBase();
-			distributeSimplify2KnowledgeBase.addKnowledgePackages( builder.getKnowledgePackages() );
+			KieBuilder kieBuilder = kieServices.newKieBuilder( kfs ).buildAll();
+		    Results results = kieBuilder.getResults();
+		    if( results.hasMessages( Message.Level.ERROR ) )
+		    {
+		        throw new RuntimeException( results.getMessages().toString() );
+		    }
+		    
+		    KieContainer kieContainer =
+		        kieServices.newKieContainer( kieServices.getRepository().getDefaultReleaseId() );
+		    KieBase kieBase = kieContainer.getKieBase();
+		    // KieSession kieSession = kieContainer.newKieSession();
+			distributeSimplify2KieContainer = kieContainer;
 		}
 		
-		return( distributeSimplify2KnowledgeBase );
+		return( distributeSimplify2KieContainer );
 	}
 
 	
 	/**
-	 * Drools ( <A href="http://drools.org">http://drools.org</A> ) knowledge base for algebraic simplification.
+	 * Drools ( <A href="http://drools.org">http://drools.org</A> ) container for algebraic simplification.
 	 */
-	private static KnowledgeBase distributeSimplifyKnowledgeBase = null;
+	private static KieContainer distributeSimplifyKieContainer = null;
 	
 	/**
-	 * Drools ( <A href="http://drools.org">http://drools.org</A> ) knowledge base for algebraic simplification.
+	 * Drools ( <A href="http://drools.org">http://drools.org</A> ) container base for algebraic simplification.
 	 */
-	private static KnowledgeBase distributeSimplify2KnowledgeBase = null;
+	private static KieContainer distributeSimplify2KieContainer = null;
 	
 	
 }

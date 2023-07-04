@@ -26,7 +26,7 @@
 
 package simplealgebra.symbolic;
 
-import org.kie.internal.runtime.StatefulKnowledgeSession;
+import org.kie.api.runtime.KieSession;
 
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
@@ -93,7 +93,7 @@ public class SymbolicPlaceholder<R extends Elem<R,?>, S extends ElemFactory<R,S>
 	 * 
 	 * @param session The session in which to insert the elem.
 	 */
-	public void performInserts( StatefulKnowledgeSession session )
+	public void performInserts( KieSession session )
 	{
 		if(elem != null ) elem.performInserts( session );
 		session.insert( this );

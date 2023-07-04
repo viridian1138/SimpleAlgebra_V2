@@ -29,7 +29,7 @@ package simplealgebra.symbolic;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.kie.internal.runtime.StatefulKnowledgeSession;
+import org.kie.api.runtime.KieSession;
 
 import simplealgebra.CloneThreadCache;
 import simplealgebra.DoubleElem;
@@ -233,7 +233,7 @@ public class SymbolicReduction<R extends Elem<R,?>, S extends ElemFactory<R,S>> 
 	
 	
 	@Override
-	public void performInserts( StatefulKnowledgeSession session )
+	public void performInserts( KieSession session )
 	{
 		elem.performInserts(session);
 		super.performInserts( session );
@@ -285,8 +285,8 @@ public class SymbolicReduction<R extends Elem<R,?>, S extends ElemFactory<R,S>> 
 		{
 			return( ctmp );
 		}
-		final S facs = this.getFac().getFac().cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
-		final R elems = elem.cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
+		final S facs = (S) this.getFac().getFac().cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
+		final R elems = (R) elem.cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
 		if( ( elems != elem ) || ( facs != fac ) )
 		{
 			final SymbolicReduction<R,S> rtmp = new SymbolicReduction<R,S>( elems , facs );

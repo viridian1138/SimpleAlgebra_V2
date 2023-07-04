@@ -30,7 +30,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.HashSet;
 
-import org.kie.internal.runtime.StatefulKnowledgeSession;
+import org.kie.api.runtime.KieSession;
 
 import simplealgebra.AbstractCache;
 import simplealgebra.CloneThreadCache;
@@ -238,7 +238,7 @@ public class SymbolicIndexReduction<Z extends Object, R extends Elem<R,?>, S ext
 
 	
 	@Override
-	public void performInserts( StatefulKnowledgeSession session )
+	public void performInserts( KieSession session )
 	{
 		elem.performInserts( session );
 		super.performInserts( session );

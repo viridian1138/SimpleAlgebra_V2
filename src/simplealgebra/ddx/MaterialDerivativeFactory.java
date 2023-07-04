@@ -30,7 +30,7 @@ import java.io.PrintStream;
 import java.math.BigInteger;
 import java.util.HashMap;
 
-import org.kie.internal.runtime.StatefulKnowledgeSession;
+import org.kie.api.runtime.KieSession;
 
 import simplealgebra.AbstractCache;
 import simplealgebra.Elem;
@@ -453,7 +453,7 @@ public class MaterialDerivativeFactory<Z extends Object, U extends NumDimensions
 	
 	
 	@Override
-	public void performInserts( StatefulKnowledgeSession session )
+	public void performInserts( KieSession session )
 	{
 		tensorWithRespectTo.performInserts( session );
 		super.performInserts( session );

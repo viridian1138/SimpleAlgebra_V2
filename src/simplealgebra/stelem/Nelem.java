@@ -126,7 +126,7 @@ public abstract class Nelem<R extends Elem<R,?>, S extends ElemFactory<R,S>, K e
 	 */
 	protected Nelem( Nelem<R,S,K> in , final BigInteger threadIndex , CloneThreadCache<SymbolicElem<R, S>, SymbolicElemFactory<R, S>> cache )
 	{
-		super( in.getFac().getFac().cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) ) );
+		super( (S) in.getFac().getFac().cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) ) );
 		coord = new HashMap<K,BigInteger>();
 		for( Entry<K,BigInteger> ii : in.coord.entrySet() )
 		{

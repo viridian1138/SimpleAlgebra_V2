@@ -32,7 +32,7 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.Iterator;
 
-import org.kie.internal.runtime.StatefulKnowledgeSession;
+import org.kie.api.runtime.KieSession;
 
 import simplealgebra.AbstractCache;
 import simplealgebra.Elem;
@@ -515,7 +515,7 @@ public class CovariantDerivativeFactory<Z extends Object, U extends NumDimension
 	
 	
 	@Override
-	public void performInserts( StatefulKnowledgeSession session )
+	public void performInserts( KieSession session )
 	{
 		tensorWithRespectTo.performInserts( session );
 		super.performInserts( session );

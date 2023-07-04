@@ -181,7 +181,7 @@ public class SymbolicIdentity<R extends Elem<R,?>, S extends ElemFactory<R,S>> e
 		{
 			return( ctmp );
 		}
-		final S facs = this.getFac().getFac().cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
+		final S facs = (S) this.getFac().getFac().cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
 		if( facs != fac )
 		{
 			final SymbolicIdentity<R,S> rtmp = new SymbolicIdentity<R,S>( facs );

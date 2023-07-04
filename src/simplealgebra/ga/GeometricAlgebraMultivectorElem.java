@@ -36,7 +36,7 @@ import java.util.Set;
 import java.util.TreeMap;
 import java.util.TreeSet;
 
-import org.kie.internal.runtime.StatefulKnowledgeSession;
+import org.kie.api.runtime.KieSession;
 
 import simplealgebra.AbstractCache;
 import simplealgebra.BadCreationException;
@@ -1550,7 +1550,7 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 			return( ctmp );
 		}
 		// The NumDimensions dim and the Ord ord are presumed to be immutable.
-		final S facs = fac.cloneThreadCached( threadIndex , (CloneThreadCache)( cache.getInnerCache() ) );
+		final S facs = (S) fac.cloneThreadCached( threadIndex , (CloneThreadCache)( cache.getInnerCache() ) );
 		final GeometricAlgebraMultivectorElem<U,A, R, S> ret 
 			= new GeometricAlgebraMultivectorElem<U,A, R, S>( facs , dim , ord );
 		for( final Entry<HashSet<BigInteger>,R> ii : map.entrySet() )
@@ -1558,7 +1558,7 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 			final HashSet<BigInteger> key = ii.getKey();
 			final R val = ii.getValue();
 			final HashSet<BigInteger> keyClone = ( HashSet<BigInteger> )( key.clone() );
-			ret.setVal( keyClone , val.cloneThreadCached( threadIndex , (CloneThreadCache)( cache.getInnerCache() ) ) );
+			ret.setVal( keyClone , (R) val.cloneThreadCached( threadIndex , (CloneThreadCache)( cache.getInnerCache() ) ) );
 		}
 		cache.put(this, ret);
 		return( ret );
@@ -1630,15 +1630,15 @@ public class GeometricAlgebraMultivectorElem<U extends NumDimensions, A extends 
 		}
 		
 		GeometricAlgebraMultivectorElem<U, A, R, S> prev = this;
-		StatefulKnowledgeSession session = null;
+		KieSession session = null;
 		HashMap<HashSet<BigInteger>,SymbolicPlaceholder<R,S>> place = null;
 		while( true )
 		{
 			try
 			{
 				session = mode == EVAL_MODE.SIMPLIFY ?
-						getDistributeSimplifyKnowledgeBase().newStatefulKnowledgeSession() : 
-						getDistributeSimplify2KnowledgeBase().newStatefulKnowledgeSession();
+						getDistributeSimplifyKieContainer().newKieSession() : 
+						getDistributeSimplify2KieContainer().newKieSession();
 		
 				insertSessionConfigItems( session );
 				

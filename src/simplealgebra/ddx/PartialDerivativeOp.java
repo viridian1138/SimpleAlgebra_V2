@@ -137,7 +137,7 @@ public class PartialDerivativeOp<R extends Elem<R,?>, S extends ElemFactory<R,S>
 			return( ctmp );
 		}
 		// The indices of the ArrayList are presumed to be immutable.
-		final S facs = this.getFac().getFac().cloneThreadCached( threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
+		final S facs = (S) this.getFac().getFac().cloneThreadCached( threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
 		final ArrayList<K> wrts = (ArrayList<K>)( withRespectTo.clone() );
 		final PartialDerivativeOp<R,S,K> rtmp = new PartialDerivativeOp<R,S,K>( facs , wrts );
 		cache.put(this, rtmp);

@@ -31,7 +31,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.kie.internal.runtime.StatefulKnowledgeSession;
+import org.kie.api.runtime.KieSession;
 
 import simplealgebra.symbolic.DroolsSession;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
@@ -294,7 +294,7 @@ public class SymbolicConjugateRight<R extends Elem<R,?>, S extends ElemFactory<R
 	
 	
 	@Override
-	public void performInserts( StatefulKnowledgeSession session )
+	public void performInserts( KieSession session )
 	{
 		elem.performInserts( session );
 		super.performInserts( session );

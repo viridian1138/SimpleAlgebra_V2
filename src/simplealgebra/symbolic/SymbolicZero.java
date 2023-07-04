@@ -160,7 +160,7 @@ public class SymbolicZero<R extends Elem<R,?>, S extends ElemFactory<R,S>> exten
 		{
 			return( ctmp );
 		}
-		final S facs = this.getFac().getFac().cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
+		final S facs = (S) this.getFac().getFac().cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
 		if( facs != fac )
 		{
 			final SymbolicZero<R,S> rtmp = new SymbolicZero<R,S>( facs );

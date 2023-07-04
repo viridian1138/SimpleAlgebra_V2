@@ -361,7 +361,7 @@ public abstract class NewtonRaphsonSingleElemFunctional<R extends Elem<R,?>, S e
 		final CloneThreadCache<R,S> cacheB = (CloneThreadCache<R,S>)( cacheA.getInnerCache() );
 		if( in.lastValue != null )
 		{
-			lastValue = in.lastValue.cloneThreadCached( threadIndex , (CloneThreadCache) cacheB );
+			lastValue = (R) in.lastValue.cloneThreadCached( threadIndex , (CloneThreadCache) cacheB );
 		}
 		
 		if( in.implicitSpace != null )

@@ -152,7 +152,7 @@ public class ComplexElemFactory<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 		{
 			return( ctmp );
 		}
-		S sfac = fac.cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
+		S sfac = (S) fac.cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
 		if( fac != sfac )
 		{
 			final ComplexElemFactory<R,S> rtmp = new ComplexElemFactory<R,S>( sfac );

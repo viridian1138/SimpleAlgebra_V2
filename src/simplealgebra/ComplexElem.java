@@ -28,7 +28,7 @@ import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
 
-import org.kie.internal.runtime.StatefulKnowledgeSession;
+import org.kie.api.runtime.KieSession;
 
 import simplealgebra.ga.GeometricAlgebraMultivectorElem;
 import simplealgebra.ga.GeometricAlgebraMultivectorElemFactory;
@@ -609,8 +609,8 @@ public class ComplexElem<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 		{
 			return( ctmp );
 		}
-		final R re2 = re.cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
-		final R im2 = im.cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
+		final R re2 = (R) re.cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
+		final R im2 = (R) im.cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
 		if( ( re2 != re ) || ( im2 != im ) )
 		{
 			final ComplexElem<R,S> rtmp = new ComplexElem<R,S>( re2 , im2 );
@@ -623,7 +623,7 @@ public class ComplexElem<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 	
 	
 	@Override
-	public void performInserts( StatefulKnowledgeSession session )
+	public void performInserts( KieSession session )
 	{
 		re.performInserts( session );
 		im.performInserts( session );

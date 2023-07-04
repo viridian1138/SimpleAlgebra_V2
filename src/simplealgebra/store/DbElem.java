@@ -182,7 +182,7 @@ public class DbElem<R extends Elem<R,?>, S extends ElemFactory<R,S>>
 			return( ctmp );
 		}
 		// The HyperGraph graph and the HGHandle hbase are assumed to be thread-safe.
-		S sfac = fac.cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
+		S sfac = (S) fac.cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
 		if( fac != sfac )
 		{
 			final DbElem<R,S> rtmp = new DbElem<R,S>( hbase , sfac , graph );

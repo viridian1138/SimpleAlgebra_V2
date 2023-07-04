@@ -41,7 +41,7 @@ import simplealgebra.DoubleElem;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
-import simplealgebra.clang.ClangCompile;
+import simplealgebra.jlang.JlangCompile;
 import simplealgebra.symbolic.*;
 
 
@@ -169,9 +169,9 @@ public abstract class NewtonRaphsonSingleElemCompiled<R extends Elem<R,?>, S ext
 				: function.evalPartialDerivative(_withRespectTo, implicitSpaceFirstLevel );
 		evalClone = handleSimplification( evalClone , useSimplification() );
 		partialEvalClone = handleSimplification( partialEvalClone , useSimplification() );
-		ClangCompile<R,S> compiler = new ClangCompile<R,S>();
-		evalNoClone = compiler.attemptClangCompile( evalClone );
-		partialEvalNoClone = compiler.attemptClangCompile( partialEvalClone );
+		JlangCompile<R,S> compiler = new JlangCompile<R,S>();
+		evalNoClone = compiler.attemptJlangCompile( evalClone );
+		partialEvalNoClone = compiler.attemptJlangCompile( partialEvalClone );
 	}
 	
 	
@@ -357,9 +357,9 @@ public abstract class NewtonRaphsonSingleElemCompiled<R extends Elem<R,?>, S ext
 		
 		partialEvalClone = in.partialEvalClone.cloneThread( threadIndex );
 		
-		ClangCompile<R,S> compiler = new ClangCompile<R,S>();
-		evalNoClone = compiler.attemptClangCompile( evalClone );
-		partialEvalNoClone = compiler.attemptClangCompile( partialEvalClone );
+		JlangCompile<R,S> compiler = new JlangCompile<R,S>();
+		evalNoClone = compiler.attemptJlangCompile( evalClone );
+		partialEvalNoClone = compiler.attemptJlangCompile( partialEvalClone );
 	}
 	
 	
@@ -380,7 +380,7 @@ public abstract class NewtonRaphsonSingleElemCompiled<R extends Elem<R,?>, S ext
 		function = in.function.cloneThreadCached(threadIndex, cache);
 		if( in.lastValue != null )
 		{
-			lastValue = in.lastValue.cloneThreadCached( threadIndex , (CloneThreadCache) cacheB );
+			lastValue = (R) in.lastValue.cloneThreadCached( threadIndex , (CloneThreadCache) cacheB );
 		}
 		
 		if( in.implicitSpace != null )
@@ -400,9 +400,9 @@ public abstract class NewtonRaphsonSingleElemCompiled<R extends Elem<R,?>, S ext
 		
 		partialEvalClone = in.partialEvalClone.cloneThreadCached( threadIndex , cacheA );
 		
-		ClangCompile<R,S> compiler = new ClangCompile<R,S>();
-		evalNoClone = compiler.attemptClangCompile( evalClone );
-		partialEvalNoClone = compiler.attemptClangCompile( partialEvalClone );
+		JlangCompile<R,S> compiler = new JlangCompile<R,S>();
+		evalNoClone = compiler.attemptJlangCompile( evalClone );
+		partialEvalNoClone = compiler.attemptJlangCompile( partialEvalClone );
 	}
 	
 	

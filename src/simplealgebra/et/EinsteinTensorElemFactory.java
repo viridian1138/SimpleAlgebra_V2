@@ -163,7 +163,7 @@ public class EinsteinTensorElemFactory<Z extends Object, R extends Elem<R,?>, S 
 		{
 			return( ctmp );
 		}
-		S sfac = fac.cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
+		S sfac = (S) fac.cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
 		if( fac != sfac )
 		{
 			final EinsteinTensorElemFactory<Z,R,S> rtmp = new EinsteinTensorElemFactory<Z,R,S>( sfac );

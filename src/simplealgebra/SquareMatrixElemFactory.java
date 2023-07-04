@@ -185,7 +185,7 @@ public class SquareMatrixElemFactory<U extends NumDimensions, R extends Elem<R,?
 		{
 			return( ctmp );
 		}
-		S sfac = fac.cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
+		S sfac = (S) fac.cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
 		if( fac != sfac )
 		{
 			// The NumDimensions dim is presumed to be immutable.

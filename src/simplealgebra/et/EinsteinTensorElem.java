@@ -36,7 +36,7 @@ import java.util.TreeSet;
 import java.util.Map.Entry;
 import java.util.Set;
 
-import org.kie.internal.runtime.StatefulKnowledgeSession;
+import org.kie.api.runtime.KieSession;
 
 import simplealgebra.AbstractCache;
 import simplealgebra.Elem;
@@ -1280,15 +1280,15 @@ public class EinsteinTensorElem<Z extends Object, R extends Elem<R,?>, S extends
 		}
 		
 		EinsteinTensorElem<Z, R, S> prev = this;
-		StatefulKnowledgeSession session = null;
+		KieSession session = null;
 		HashMap<ArrayList<BigInteger>,SymbolicPlaceholder<R,S>> place = null;
 		while( true )
 		{
 			try
 			{
 				session = mode == EVAL_MODE.SIMPLIFY ?
-						getDistributeSimplifyKnowledgeBase().newStatefulKnowledgeSession() : 
-						getDistributeSimplify2KnowledgeBase().newStatefulKnowledgeSession();
+						getDistributeSimplifyKieContainer().newKieSession() : 
+						getDistributeSimplify2KieContainer().newKieSession();
 		
 				insertSessionConfigItems( session );
 				

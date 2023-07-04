@@ -33,7 +33,7 @@ import java.util.HashSet;
 import java.util.Iterator;
 import java.util.Map.Entry;
 
-import org.kie.internal.runtime.StatefulKnowledgeSession;
+import org.kie.api.runtime.KieSession;
 
 import simplealgebra.et.EinsteinTensorElem;
 import simplealgebra.ga.GeometricAlgebraMultivectorElem;
@@ -1905,7 +1905,7 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 		}
 		
 		// The NumDimensions dim is presumed to be immutable.
-		SquareMatrixElem<U,R,S> ret = new SquareMatrixElem<U,R,S>( fac.cloneThreadCached( threadIndex , (CloneThreadCache)( cache.getInnerCache() ) ) , dim );
+		SquareMatrixElem<U,R,S> ret = new SquareMatrixElem<U,R,S>( (S) fac.cloneThreadCached( threadIndex , (CloneThreadCache)( cache.getInnerCache() ) ) , dim );
 		for( final Entry<BigInteger, HashMap<BigInteger, R>> rowie : rowMap.entrySet() )
 		{
 			BigInteger row = rowie.getKey();
@@ -1913,7 +1913,7 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 			for( final Entry<BigInteger, R> colie : subMap.entrySet() )
 			{
 				BigInteger col = colie.getKey();
-				R vali = colie.getValue().cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
+				R vali = (R) colie.getValue().cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
 				ret.setVal(row, col, vali );
 			}
 		}
@@ -1989,15 +1989,15 @@ public class SquareMatrixElem<U extends NumDimensions, R extends Elem<R,?>, S ex
 		}
 		
 		SquareMatrixElem<U,R,S> prev = this;
-		StatefulKnowledgeSession session = null;
+		KieSession session = null;
 		HashMap<ArrayList<BigInteger>,SymbolicPlaceholder<R,S>> place = null;
 		while( true )
 		{
 			try
 			{
 				session = mode == EVAL_MODE.SIMPLIFY ?
-						getDistributeSimplifyKnowledgeBase().newStatefulKnowledgeSession() : 
-						getDistributeSimplify2KnowledgeBase().newStatefulKnowledgeSession();
+						getDistributeSimplifyKieContainer().newKieSession() : 
+						getDistributeSimplify2KieContainer().newKieSession();
 		
 				insertSessionConfigItems( session );
 				

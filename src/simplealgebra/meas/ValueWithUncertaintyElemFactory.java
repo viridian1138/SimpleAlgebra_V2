@@ -149,7 +149,7 @@ public class ValueWithUncertaintyElemFactory<R extends Elem<R,?>, S extends Elem
 		{
 			return( ctmp );
 		}
-		S sfac = fac.cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
+		S sfac = (S) fac.cloneThreadCached(threadIndex, (CloneThreadCache)( cache.getInnerCache() ) );
 		if( fac != sfac )
 		{
 			final ValueWithUncertaintyElemFactory<R,S> rtmp = new ValueWithUncertaintyElemFactory<R,S>( sfac );

@@ -31,7 +31,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.kie.internal.runtime.StatefulKnowledgeSession;
+import org.kie.api.runtime.KieSession;
 
 import simplealgebra.CloneThreadCache;
 import simplealgebra.Elem;
@@ -246,7 +246,7 @@ public class SymbolicRankTwoTrace<Z extends Object, R extends Elem<R,?>, S exten
 	
 	
 	@Override
-	public void performInserts( StatefulKnowledgeSession session )
+	public void performInserts( KieSession session )
 	{
 		elemA.performInserts( session );
 		super.performInserts( session );

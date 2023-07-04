@@ -24,7 +24,7 @@
 
 package simplealgebra.symbolic;
 
-import org.kie.internal.runtime.StatefulKnowledgeSession;
+import org.kie.api.runtime.KieSession;
 
 
 
@@ -43,7 +43,7 @@ public class DroolsSession {
 	 * 
 	 * @param _elem The Drools stateful knowledge session.
 	 */
-	public DroolsSession( StatefulKnowledgeSession _elem )
+	public DroolsSession( KieSession _elem )
 	{
 		elem = _elem;
 	}
@@ -53,7 +53,7 @@ public class DroolsSession {
 	 * 
 	 * @return The Drools stateful knowledge session.
 	 */
-	public StatefulKnowledgeSession getElem() {
+	public KieSession getElem() {
 		return elem;
 	}
 	
@@ -70,7 +70,7 @@ public class DroolsSession {
 	/**
 	 * The Drools stateful knowledge session.
 	 */
-	private StatefulKnowledgeSession elem;
+	private KieSession elem;
 
 }
 

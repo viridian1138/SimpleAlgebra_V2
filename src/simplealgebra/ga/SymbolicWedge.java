@@ -31,7 +31,7 @@ import java.math.BigInteger;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import org.kie.internal.runtime.StatefulKnowledgeSession;
+import org.kie.api.runtime.KieSession;
 
 import simplealgebra.CloneThreadCache;
 import simplealgebra.Elem;
@@ -326,7 +326,7 @@ public class SymbolicWedge<U extends NumDimensions, A extends Ord<U>, R extends 
 	
 	
 	@Override
-	public void performInserts( StatefulKnowledgeSession session )
+	public void performInserts( KieSession session )
 	{
 		elemA.performInserts( session );
 		elemB.performInserts( session );

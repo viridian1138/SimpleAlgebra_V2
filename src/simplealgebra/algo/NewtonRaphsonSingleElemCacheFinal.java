@@ -365,7 +365,7 @@ public abstract class NewtonRaphsonSingleElemCacheFinal<R extends Elem<R,?>, S e
 		function = in.function.cloneThreadCached(threadIndex, cache);
 		if( in.lastValue != null )
 		{
-			lastValue = in.lastValue.cloneThreadCached( threadIndex , (CloneThreadCache) cacheB );
+			lastValue = (R) in.lastValue.cloneThreadCached( threadIndex , (CloneThreadCache) cacheB );
 		}
 		
 		if( in.implicitSpace != null )

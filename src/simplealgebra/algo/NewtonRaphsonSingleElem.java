@@ -37,6 +37,7 @@ import java.util.Map.Entry;
 
 import simplealgebra.BadCreationException;
 import simplealgebra.CloneThreadCache;
+import simplealgebra.DoubleElem;
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
 import simplealgebra.NotInvertibleException;
@@ -223,7 +224,7 @@ public abstract class NewtonRaphsonSingleElem<R extends Elem<R,?>, S extends Ele
 			}
 			catch( NotInvertibleException ex )
 			{
-				derivative = handleDescentInverseFailed( derivative , ex );
+				derivative = handleDescentInverseFailed( derivative , (NotInvertibleException) ex );
 			}
 		}
 		
@@ -362,7 +363,7 @@ public abstract class NewtonRaphsonSingleElem<R extends Elem<R,?>, S extends Ele
 		function = in.function.cloneThreadCached(threadIndex, cache);
 		if( in.lastValue != null )
 		{
-			lastValue = in.lastValue.cloneThreadCached( threadIndex , (CloneThreadCache) cacheB );
+			lastValue = (R) in.lastValue.cloneThreadCached( threadIndex , (CloneThreadCache) cacheB );
 		}
 		
 		if( in.implicitSpace != null )
