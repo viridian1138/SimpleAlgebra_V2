@@ -30,19 +30,21 @@ package test_simplealgebra.sort_test;
 
 import java.util.Random;
 
-import org.kie.api.io.ResourceType;
-import org.kie.internal.KnowledgeBase;
-import org.kie.internal.KnowledgeBaseFactory;
-import org.kie.internal.builder.KnowledgeBuilder;
-import org.kie.internal.builder.KnowledgeBuilderFactory;
+import org.kie.api.KieBase;
+import org.kie.api.KieServices;
+import org.kie.api.builder.KieBuilder;
+import org.kie.api.builder.KieFileSystem;
+import org.kie.api.builder.Message;
+import org.kie.api.builder.Results;
+import org.kie.api.runtime.KieContainer;
+import org.kie.api.runtime.KieSession;
 import org.kie.internal.io.ResourceFactory;
-import org.kie.internal.runtime.StatefulKnowledgeSession;
 import org.mvel2.optimizers.OptimizerFactory;
 
-import simplealgebra.DoubleElem;
-import simplealgebra.symbolic.DroolsSession;
 import junit.framework.Assert;
 import junit.framework.TestCase;
+import simplealgebra.DoubleElem;
+import simplealgebra.symbolic.DroolsSession;
 
 
 
@@ -68,15 +70,27 @@ public class TestSort extends TestCase {
 		
 		OptimizerFactory.setDefaultOptimizer( OptimizerFactory.SAFE_REFLECTIVE );
 		
-		KnowledgeBuilder builder = KnowledgeBuilderFactory.newKnowledgeBuilder();
-		
-		builder.add( ResourceFactory.newClassPathResource( "test_simplealgebra/sort_test/sort.drl" )  , 
-				ResourceType.DRL );
-		
-		KnowledgeBase knowledgeBase = KnowledgeBaseFactory.newKnowledgeBase();
-		knowledgeBase.addKnowledgePackages( builder.getKnowledgePackages() );
-		
-		StatefulKnowledgeSession session = knowledgeBase.newStatefulKnowledgeSession();
+
+		KieServices kieServices = KieServices.Factory.get();
+	    KieFileSystem kfs = kieServices.newKieFileSystem();
+	    
+	    kfs.write( "src/main/resources/sort.drl",
+	    		ResourceFactory.newClassPathResource( "test_simplealgebra/sort_test/sort.drl" )  );
+
+
+		KieBuilder kieBuilder = kieServices.newKieBuilder( kfs ).buildAll();
+	    Results results = kieBuilder.getResults();
+	    if( results.hasMessages( Message.Level.ERROR ) )
+	    {
+	        throw new RuntimeException( results.getMessages().toString() );
+	    }
+	    
+	    KieContainer kieContainer =
+	        kieServices.newKieContainer( kieServices.getRepository().getDefaultReleaseId() );
+	    KieBase kieBase = kieContainer.getKieBase();
+	    
+	    
+		KieSession session = kieContainer.newKieSession();
 		
 		session.insert( new DroolsSession( session ) );
 		
