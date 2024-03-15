@@ -52,6 +52,7 @@ import simplealgebra.WriteElemCache;
 import simplealgebra.ga.GeometricAlgebraMultivectorElem;
 import simplealgebra.ga.GeometricAlgebraMultivectorElemFactory;
 import simplealgebra.ga.GeometricAlgebraOrd;
+import simplealgebra.ga.SymbolicDot;
 import simplealgebra.symbolic.MultiplicativeDistributionRequiredException;
 import simplealgebra.symbolic.SCacheKey;
 import simplealgebra.symbolic.SymbolicElem;
@@ -164,6 +165,102 @@ public class TestChangeVectorBasis extends TestCase
 		public boolean symbolicEquals( SymbolicElem<GeometricAlgebraMultivectorElem<Bdim,GeometricAlgebraOrd<Bdim>,DoubleElem,DoubleElemFactory>,GeometricAlgebraMultivectorElemFactory<Bdim,GeometricAlgebraOrd<Bdim>,DoubleElem,DoubleElemFactory>> b )
 		{
 			if( b instanceof VectElem )
+			{
+				return( true );
+			}
+			
+			return( false );
+		}
+
+		@Override
+		public String writeDesc(
+				WriteElemCache<SymbolicElem<GeometricAlgebraMultivectorElem<Bdim, GeometricAlgebraOrd<Bdim>, DoubleElem, DoubleElemFactory>, GeometricAlgebraMultivectorElemFactory<Bdim, GeometricAlgebraOrd<Bdim>, DoubleElem, DoubleElemFactory>>, SymbolicElemFactory<GeometricAlgebraMultivectorElem<Bdim, GeometricAlgebraOrd<Bdim>, DoubleElem, DoubleElemFactory>, GeometricAlgebraMultivectorElemFactory<Bdim, GeometricAlgebraOrd<Bdim>, DoubleElem, DoubleElemFactory>>> cache,
+				PrintStream ps) {
+			String st = cache.get( this );
+			if( st == null )
+			{
+				final String sta = fac.writeDesc( (WriteElemCache<GeometricAlgebraMultivectorElem<Bdim, GeometricAlgebraOrd<Bdim>, DoubleElem, DoubleElemFactory>,GeometricAlgebraMultivectorElemFactory<Bdim, GeometricAlgebraOrd<Bdim>, DoubleElem, DoubleElemFactory>>)( cache.getInnerCache() ) , ps);
+				final String els = el.writeDesc( (WriteElemCache)( cache.getInnerCache() ) , ps);
+				st = cache.getIncrementVal();
+				cache.put(this, st);
+				ps.print( MatrixElem.class.getSimpleName() );
+				ps.print( " " );
+				ps.print( st );
+				ps.print( " = new " );
+				ps.print( MatrixElem.class.getSimpleName() );
+				ps.print( "( " );
+				ps.print( sta );
+				ps.print( " , " );
+				ps.print( els );
+				ps.println( " );" );
+			}
+			return( st );
+		}
+		
+		
+	}
+
+
+	/**
+	 * Node representing the vector to be tested.
+	 * 
+	 * @author thorngreen
+	 *
+	 */
+	private static class VectElem2 extends SymbolicElem<GeometricAlgebraMultivectorElem<Bdim,GeometricAlgebraOrd<Bdim>,DoubleElem,DoubleElemFactory>,GeometricAlgebraMultivectorElemFactory<Bdim,GeometricAlgebraOrd<Bdim>,DoubleElem,DoubleElemFactory>>
+	{
+		/**
+		 * The result for running eval()
+		 */
+		protected GeometricAlgebraMultivectorElem<Bdim,GeometricAlgebraOrd<Bdim>,DoubleElem,DoubleElemFactory> el;
+
+		/**
+		 * Constructs the node.
+		 * 
+		 * @param _fac The factory for the enclosed type.
+		 */
+		public VectElem2(GeometricAlgebraMultivectorElemFactory<Bdim,GeometricAlgebraOrd<Bdim>,DoubleElem,DoubleElemFactory> _fac , 
+				GeometricAlgebraMultivectorElem<Bdim,GeometricAlgebraOrd<Bdim>,DoubleElem,DoubleElemFactory> _el ) {
+			super(_fac);
+			el = _el;
+		}
+
+		@Override
+		public GeometricAlgebraMultivectorElem<Bdim,GeometricAlgebraOrd<Bdim>,DoubleElem,DoubleElemFactory> eval( HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace ) throws NotInvertibleException,
+				MultiplicativeDistributionRequiredException {
+			return( el );
+		}
+		
+		@Override
+		public GeometricAlgebraMultivectorElem<Bdim, GeometricAlgebraOrd<Bdim>,DoubleElem, DoubleElemFactory> evalCached(
+				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace,
+				HashMap<SCacheKey<GeometricAlgebraMultivectorElem<Bdim, GeometricAlgebraOrd<Bdim>,DoubleElem, DoubleElemFactory>, GeometricAlgebraMultivectorElemFactory<Bdim, GeometricAlgebraOrd<Bdim>,DoubleElem, DoubleElemFactory>>, GeometricAlgebraMultivectorElem<Bdim, GeometricAlgebraOrd<Bdim>,DoubleElem, DoubleElemFactory>> cache)
+				throws NotInvertibleException,
+				MultiplicativeDistributionRequiredException {
+			throw( new RuntimeException( "NotSupported" ) );
+		}
+
+		@Override
+		public GeometricAlgebraMultivectorElem<Bdim,GeometricAlgebraOrd<Bdim>,DoubleElem,DoubleElemFactory> evalPartialDerivative(ArrayList<? extends Elem<?, ?>> withRespectTo , HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace)
+				throws NotInvertibleException,
+				MultiplicativeDistributionRequiredException {
+			throw( new RuntimeException( "NotSupported" ) );
+		}
+		
+		@Override
+		public GeometricAlgebraMultivectorElem<Bdim, GeometricAlgebraOrd<Bdim>,DoubleElem, DoubleElemFactory> evalPartialDerivativeCached(
+				ArrayList<? extends Elem<?, ?>> withRespectTo,
+				HashMap<? extends Elem<?, ?>, ? extends Elem<?, ?>> implicitSpace,
+				HashMap<SCacheKey<GeometricAlgebraMultivectorElem<Bdim, GeometricAlgebraOrd<Bdim>,DoubleElem, DoubleElemFactory>, GeometricAlgebraMultivectorElemFactory<Bdim, GeometricAlgebraOrd<Bdim>,DoubleElem, DoubleElemFactory>>, GeometricAlgebraMultivectorElem<Bdim, GeometricAlgebraOrd<Bdim>,DoubleElem, DoubleElemFactory>> cache)
+				throws NotInvertibleException,
+				MultiplicativeDistributionRequiredException {
+			throw( new RuntimeException( "NotSupported" ) );
+		}
+		
+		@Override
+		public boolean symbolicEquals( SymbolicElem<GeometricAlgebraMultivectorElem<Bdim,GeometricAlgebraOrd<Bdim>,DoubleElem,DoubleElemFactory>,GeometricAlgebraMultivectorElemFactory<Bdim,GeometricAlgebraOrd<Bdim>,DoubleElem,DoubleElemFactory>> b )
+		{
+			if( b instanceof VectElem2 )
 			{
 				return( true );
 			}
@@ -385,6 +482,106 @@ public class TestChangeVectorBasis extends TestCase
 		}
 		
 		Assert.assertTrue( elemCount == 2 );
+		
+	}
+	
+	
+	
+	/**
+	 * Tests the evaluation of an inner product between vectors of different bases
+	 * 
+	 * @throws NotInvertibleException
+	 * @throws DimensionMismatchException 
+	 * @throws MultiplicativeDistributionRequiredException 
+	 */
+	public void testInnerProductBetweenBases() throws NotInvertibleException, DimensionMismatchException, MultiplicativeDistributionRequiredException
+	{
+		final Bdim tdB = new Bdim();
+		
+		final DoubleElemFactory dl = new DoubleElemFactory();
+		
+		final GeometricAlgebraOrd<Bdim> ordB = new GeometricAlgebraOrd<Bdim>();
+		
+		final SquareMatrixElemFactory<Bdim,DoubleElem,DoubleElemFactory> seA = 
+				new SquareMatrixElemFactory<Bdim,DoubleElem,DoubleElemFactory>(dl, tdB);
+		
+		final GeometricAlgebraMultivectorElemFactory<Bdim,GeometricAlgebraOrd<Bdim>,DoubleElem,DoubleElemFactory> seB = 
+				new GeometricAlgebraMultivectorElemFactory<Bdim,GeometricAlgebraOrd<Bdim>,DoubleElem,DoubleElemFactory>(dl, tdB, ordB);
+		
+		final SquareMatrixElem<Bdim, DoubleElem, DoubleElemFactory> mA =
+				seA.identity();
+		
+		final GeometricAlgebraMultivectorElem<Bdim,GeometricAlgebraOrd<Bdim>,DoubleElem,DoubleElemFactory> geB = 
+				seB.zero();
+		
+		final GeometricAlgebraMultivectorElem<Bdim,GeometricAlgebraOrd<Bdim>,DoubleElem,DoubleElemFactory> geC = 
+				seB.zero();
+		
+		final HashSet<BigInteger> axisA = new HashSet<BigInteger>();
+		
+		axisA.add(BigInteger.valueOf(7));
+		
+		final HashSet<BigInteger> axisB = new HashSet<BigInteger>();
+		
+		axisB.add(BigInteger.valueOf(8));
+		
+		geB.setVal(axisA, new DoubleElem(3.0) );
+		
+		geB.setVal(axisB, new DoubleElem(5.0) );
+		
+		geC.setVal(axisB, new DoubleElem(13.0) );
+		
+		mA.remove(BigInteger.valueOf(7), BigInteger.valueOf(7));
+		
+		mA.remove(BigInteger.valueOf(8), BigInteger.valueOf(8));
+		
+		mA.setVal(BigInteger.valueOf(7), BigInteger.valueOf(8), new DoubleElem(7.0));
+		
+		mA.setVal(BigInteger.valueOf(8), BigInteger.valueOf(7), new DoubleElem(11.0));
+		
+		final SymbolicElemFactory<SquareMatrixElem<Bdim,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<Bdim,DoubleElem,DoubleElemFactory>> yeA = 
+				new SymbolicElemFactory<SquareMatrixElem<Bdim,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<Bdim,DoubleElem,DoubleElemFactory>>(seA);
+		
+		final SymbolicElemFactory<GeometricAlgebraMultivectorElem<Bdim,GeometricAlgebraOrd<Bdim>,DoubleElem,DoubleElemFactory>,GeometricAlgebraMultivectorElemFactory<Bdim,GeometricAlgebraOrd<Bdim>,DoubleElem,DoubleElemFactory>> yeB = 
+				new SymbolicElemFactory<GeometricAlgebraMultivectorElem<Bdim,GeometricAlgebraOrd<Bdim>,DoubleElem,DoubleElemFactory>,GeometricAlgebraMultivectorElemFactory<Bdim,GeometricAlgebraOrd<Bdim>,DoubleElem,DoubleElemFactory>>(seB);
+		
+		SymbolicElem<SquareMatrixElem<Bdim,DoubleElem,DoubleElemFactory>,SquareMatrixElemFactory<Bdim,DoubleElem,DoubleElemFactory>>
+			d0 = new MatrixElem( seA , mA );
+		
+		SymbolicElem<GeometricAlgebraMultivectorElem<Bdim,GeometricAlgebraOrd<Bdim>,DoubleElem,DoubleElemFactory>,GeometricAlgebraMultivectorElemFactory<Bdim,GeometricAlgebraOrd<Bdim>,DoubleElem,DoubleElemFactory>>
+			d1 = new VectElem( seB , geB );
+		
+		SymbolicElem<GeometricAlgebraMultivectorElem<Bdim,GeometricAlgebraOrd<Bdim>,DoubleElem,DoubleElemFactory>,GeometricAlgebraMultivectorElemFactory<Bdim,GeometricAlgebraOrd<Bdim>,DoubleElem,DoubleElemFactory>>
+			d2 = new VectElem2( seB , geC );
+		
+		final ChangeVectorBasis<Bdim,GeometricAlgebraOrd<Bdim>,DoubleElem, DoubleElemFactory>
+			d01 = new ChangeVectorBasis<Bdim,GeometricAlgebraOrd<Bdim>,DoubleElem, DoubleElemFactory>(seB, d1, d0);
+		
+		ArrayList<SymbolicElem<GeometricAlgebraMultivectorElem<Bdim,GeometricAlgebraOrd<Bdim>,DoubleElem,DoubleElemFactory>,GeometricAlgebraMultivectorElemFactory<Bdim,GeometricAlgebraOrd<Bdim>,DoubleElem,DoubleElemFactory>>> params = new ArrayList<SymbolicElem<GeometricAlgebraMultivectorElem<Bdim,GeometricAlgebraOrd<Bdim>,DoubleElem,DoubleElemFactory>,GeometricAlgebraMultivectorElemFactory<Bdim,GeometricAlgebraOrd<Bdim>,DoubleElem,DoubleElemFactory>>>();
+		
+		params.add( d2 );
+		
+		final SymbolicElem<GeometricAlgebraMultivectorElem<Bdim,GeometricAlgebraOrd<Bdim>,DoubleElem,DoubleElemFactory>,GeometricAlgebraMultivectorElemFactory<Bdim,GeometricAlgebraOrd<Bdim>,DoubleElem,DoubleElemFactory>>
+			d02 = d01.handleOptionalOp( GeometricAlgebraMultivectorElem.GeometricAlgebraMultivectorCmd.DOT , params ); /* Inner Product */
+		
+		Assert.assertTrue( d02 instanceof SymbolicDot );
+		
+		final HashMap<? extends Elem<?,?>,? extends Elem<?,?>> implicitSpace = (HashMap<? extends Elem<?,?>,? extends Elem<?,?>>)( new HashMap() );
+		
+		GeometricAlgebraMultivectorElem<Bdim, GeometricAlgebraOrd<Bdim>, DoubleElem, DoubleElemFactory> 
+			result = d02.eval( implicitSpace );
+		
+		int elemCount = 0;
+		
+		for( final Entry<HashSet<BigInteger>, DoubleElem> val : result.getEntrySet() )
+		{
+			elemCount++;
+			Assert.assertTrue( val.getKey().size() == 0 ); /* Scalar */
+			final double vl = val.getValue().getVal();
+			Assert.assertEquals(429.0, vl, 1E-6);
+		}
+		
+		Assert.assertTrue( elemCount == 1 );
 		
 	}
 	
