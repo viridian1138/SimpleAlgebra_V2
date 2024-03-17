@@ -228,6 +228,14 @@ public class RaiseMultivectorDimension<U extends NumDimensions, A extends Ord<U>
 		ps.print( "</mrow>" );
 	}
 
+	/**
+	 * Gets the lowerVect
+	 * @return the lowerVect
+	 */
+	public SymbolicElem<GeometricAlgebraMultivectorElem<Ulower, Alower, R, S>, GeometricAlgebraMultivectorElemFactory<Ulower, Alower, R, S>> getLowerVect() {
+		return lowerVect;
+	}
+
 	
 }
 
