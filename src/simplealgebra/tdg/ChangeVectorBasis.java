@@ -275,6 +275,24 @@ public class ChangeVectorBasis<U extends NumDimensions, A extends Ord<U>, R exte
 		ps.print( "</mrow>" );
 	}
 
+	/**
+	 * Gets the columnVect
+	 * 
+	 * @return the columnVect
+	 */
+	public SymbolicElem<GeometricAlgebraMultivectorElem<U, A, R, S>, GeometricAlgebraMultivectorElemFactory<U, A, R, S>> getColumnVect() {
+		return columnVect;
+	}
+
+	/**
+	 * Gets the transform
+	 * 
+	 * @return the transform
+	 */
+	public SymbolicElem<SquareMatrixElem<U, R, S>, SquareMatrixElemFactory<U, R, S>> getTransform() {
+		return transform;
+	}
+
 	
 }
 

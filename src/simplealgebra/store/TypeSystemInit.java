@@ -72,6 +72,7 @@ import simplealgebra.symbolic.db.SymbolicPlaceholderType;
 import simplealgebra.symbolic.db.SymbolicReductionType;
 import simplealgebra.symbolic.db.SymbolicSqrtType;
 import simplealgebra.symbolic.db.SymbolicZeroType;
+import simplealgebra.tdg.db.ChangeVectorBasisType;
 import simplealgebra.tdg.db.RaiseMultivectorDimensionType;
 import simplealgebra.tolerant.db.TolerantElemFactoryType;
 import simplealgebra.tolerant.db.TolerantElemType;
@@ -170,6 +171,7 @@ public class TypeSystemInit {
 		DefaultDoubleElemTolerantResultFactoryType.initType(graph);
 		
 		RaiseMultivectorDimensionType.initType( graph );
+		ChangeVectorBasisType.initType( graph );
 		
 		MemoryClearingSystem.initMemoryClearing( graph );
 		
