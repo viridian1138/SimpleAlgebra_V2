@@ -158,8 +158,38 @@ public abstract class SymbolicElem<R extends Elem<R,?>, S extends ElemFactory<R,
 	}
 	
 	@Override
+	public SymbolicElem<R, S> ln( int numIterExp , int numIterLn ) {
+		return( new SymbolicLogarithm<R,S>( this , fac , numIterExp , numIterLn ) );
+	}
+	
+	@Override
+	public SymbolicElem<R, S>  sinh( int numIter ) {
+		return( new SymbolicSinh<R,S>( this , fac , numIter ) );
+	}
+	
+	@Override
+	public SymbolicElem<R, S>  cosh( int numIter ) {
+		return( new SymbolicCosh<R,S>( this , fac , numIter ) );
+	}
+	
+	@Override
 	public SymbolicElem<R, S> random( PrimitiveRandom in ) {
 		return( new SymbolicRandom<R,S>( this , fac , in ) );
+	}
+	
+	@Override
+	public SymbolicElem<R, S> powL( final SymbolicElem<R, S> b , final int numIterExp , final int numIterLn ) {
+		return( new SymbolicPowL<R,S>( this , b , fac , numIterExp , numIterLn ) );
+	}
+	
+	@Override
+	public SymbolicElem<R, S> powR( final SymbolicElem<R, S> b , final int numIterExp , final int numIterLn ) {
+		return( new SymbolicPowR<R,S>( this , b , fac , numIterExp , numIterLn ) );
+	}
+	
+	@Override
+	public SymbolicElem<R, S> powC( final SymbolicElem<R, S> b , final int numIterExp , final int numIterLn ) {
+		return( new SymbolicPowC<R,S>( this , b , fac , numIterExp , numIterLn ) );
 	}
 	
 	@Override
