@@ -104,7 +104,7 @@ public abstract class AiOllamaInteraction<R1 extends Elem<R1,?>, S1 extends Elem
 	 * @return The output expression from the AI.
 	 * @throws Throwable Throws an exception upon an unfixable error.
 	 */
-	public SymbolicElem<R2,S2> generate( SymbolicElem<R1, S1> in ) throws Throwable
+	protected SymbolicElem<R2,S2> produce( SymbolicElem<R1, S1> in ) throws Throwable
 	{
 		String cmd = generateCommand( in );
 		

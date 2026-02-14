@@ -27,6 +27,7 @@ package simplealgebra.algo.ai_ollama;
 
 import simplealgebra.Elem;
 import simplealgebra.ElemFactory;
+import simplealgebra.symbolic.SymbolicElem;
 
 
 /**
@@ -42,6 +43,11 @@ import simplealgebra.ElemFactory;
  * @param <S2> The factory for the enclosed type for the output SymbolicElems.
  */
 public class AiOllamaInteractionIntegral<R1 extends Elem<R1,?>, S1 extends ElemFactory<R1,S1>, R2 extends Elem<R2,?>, S2 extends ElemFactory<R2,S2>> extends AiOllamaInteraction<R1, S1, R2, S2> {
+	
+	/**
+	 * The variable with respect to which to take the integral.  To be compatible with AI training, this should be a single-character name.
+	 */
+	protected String wrt = "x";
 
 	/**
 	 * Constructor.
@@ -51,11 +57,24 @@ public class AiOllamaInteractionIntegral<R1 extends Elem<R1,?>, S1 extends ElemF
 	public AiOllamaInteractionIntegral(AiOllamaWriter<R1, S1> _aiOllamaWriter, AiOllamaParse<R2, S2> _aiOllamaParse) {
 		super(_aiOllamaWriter, _aiOllamaParse);
 	}
+	
+	/**
+	 * Generates an output expression from the AI given an input expression to the AI.
+	 * @param in The input expression to the AI.
+	 * @param _wrt The variable with respect to which to take the integral.  To be compatible with AI training, this should be a single-character name.
+	 * @return The output expression from the AI.
+	 * @throws Throwable Throws an exception upon an unfixable error.
+	 */
+	public SymbolicElem<R2,S2> generate( SymbolicElem<R1, S1> in , String _wrt ) throws Throwable
+	{
+		wrt = _wrt;
+		return( produce( in ) );
+	}
 
 	@Override
 	protected String generateCommand(String expr) throws Throwable {
 		String cmdPath = AiResourceLocator.locateResourceAsFile( "AiSimpleIntegral.py" );
-		String cmdX2 = "python" + " " + cmdPath + " --expr \"" + expr + "\"";
+		String cmdX2 = "python" + " " + cmdPath + " --expr \"" + expr + "\"" + " --wrt \"" + wrt + "\"";
 		String cmd = cmdX2;
 		System.out.println( cmd );
 		return( cmd );

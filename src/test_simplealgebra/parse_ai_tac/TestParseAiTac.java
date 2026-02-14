@@ -1667,10 +1667,11 @@ public class TestParseAiTac extends TestCase {
 	 * Tests running a derivative through Ollama
 	 * @throws Throwable Throws an exception if e.g. not able to parse
 	 */
-	public void testAiDerivativeInteraction() throws Throwable
+	public void testAiDerivativeInteractionX() throws Throwable
 	{
 		
 
+		final String varName = "x";
 		
 		final DoubleElemFactory dfac = new DoubleElemFactory();
 		
@@ -1683,7 +1684,7 @@ public class TestParseAiTac extends TestCase {
 		
 
 		
-		VarElem var = new VarElem( dfac, "x" );
+		VarElem var = new VarElem( dfac, varName );
 		
 		
 		
@@ -1707,7 +1708,69 @@ public class TestParseAiTac extends TestCase {
 		TestAiOllamaInteractionDerivative deriv = new TestAiOllamaInteractionDerivative(write, testParse);
 		
 		
-		SymbolicElem<DoubleElem,DoubleElemFactory> output = deriv.generate( elem );
+		SymbolicElem<DoubleElem,DoubleElemFactory> output = deriv.generate( elem , varName );
+		
+		
+		System.out.println( "Done." );
+		
+		String aa = output.writeDesc( output.getFac().generateWriteElemCache() , System.out );
+		
+		System.out.println( "### " + aa );
+		
+		System.out.println( "***" );
+		
+		
+	}
+	
+	
+	
+	
+	/**
+	 * Tests running a derivative through Ollama
+	 * @throws Throwable Throws an exception if e.g. not able to parse
+	 */
+	public void testAiDerivativeInteractionY() throws Throwable
+	{
+		
+
+		final String varName = "y";
+		
+		final DoubleElemFactory dfac = new DoubleElemFactory();
+		
+		final SymbolicElemFactory<DoubleElem,DoubleElemFactory> sfac = new SymbolicElemFactory<DoubleElem,DoubleElemFactory>( dfac );
+		
+		
+
+		TestAiOllamaParse testParse = new TestAiOllamaParse( sfac , false , true );
+		
+		
+
+		
+		VarElem var = new VarElem( dfac, varName );
+		
+		
+		
+		
+		SymbolicElem<DoubleElem,DoubleElemFactory> expT = var.sin( 10 );
+		
+		
+		SymbolicElem<DoubleElem,DoubleElemFactory> fullTerm = expT.negate();
+		
+		
+		
+		
+		
+		SymbolicElem<DoubleElem,DoubleElemFactory> elem = fullTerm;
+		
+		TestAiOllamaWrite write = new TestAiOllamaWrite(sfac);
+		
+		
+		
+		
+		TestAiOllamaInteractionDerivative deriv = new TestAiOllamaInteractionDerivative(write, testParse);
+		
+		
+		SymbolicElem<DoubleElem,DoubleElemFactory> output = deriv.generate( elem , varName );
 		
 		
 		System.out.println( "Done." );
@@ -1727,10 +1790,11 @@ public class TestParseAiTac extends TestCase {
 	 * Tests running a definite integral through Ollama
 	 * @throws Throwable Throws an exception if e.g. not able to parse
 	 */
-	public void testAiIntegralInteraction() throws Throwable
+	public void testAiIntegralInteractionX() throws Throwable
 	{
 		
 
+		final String varName = "x";
 		
 		final DoubleElemFactory dfac = new DoubleElemFactory();
 		
@@ -1743,7 +1807,7 @@ public class TestParseAiTac extends TestCase {
 		
 
 		
-		VarElem var = new VarElem( dfac, "x" );
+		VarElem var = new VarElem( dfac, varName );
 		
 		
 		
@@ -1767,7 +1831,68 @@ public class TestParseAiTac extends TestCase {
 		TestAiOllamaInteractionIntegral integ = new TestAiOllamaInteractionIntegral(write, testParse);
 		
 		
-		SymbolicElem<DoubleElem,DoubleElemFactory> output = integ.generate( elem );
+		SymbolicElem<DoubleElem,DoubleElemFactory> output = integ.generate( elem , varName );
+		
+		
+		System.out.println( "Done." );
+		
+		String aa = output.writeDesc( output.getFac().generateWriteElemCache() , System.out );
+		
+		System.out.println( "### " + aa );
+		
+		System.out.println( "***" );
+		
+		
+	}
+	
+	
+	
+	/**
+	 * Tests running a definite integral through Ollama
+	 * @throws Throwable Throws an exception if e.g. not able to parse
+	 */
+	public void testAiIntegralInteractionY() throws Throwable
+	{
+		
+
+		final String varName = "y";
+		
+		final DoubleElemFactory dfac = new DoubleElemFactory();
+		
+		final SymbolicElemFactory<DoubleElem,DoubleElemFactory> sfac = new SymbolicElemFactory<DoubleElem,DoubleElemFactory>( dfac );
+		
+		
+
+		TestAiOllamaParse testParse = new TestAiOllamaParse( sfac , true , true );
+		
+		
+
+		
+		VarElem var = new VarElem( dfac, varName );
+		
+		
+		
+		
+		SymbolicElem<DoubleElem,DoubleElemFactory> expT = var.sin( 10 );
+		
+		
+		SymbolicElem<DoubleElem,DoubleElemFactory> fullTerm = expT.negate();
+		
+		
+		
+		
+		
+		SymbolicElem<DoubleElem,DoubleElemFactory> elem = fullTerm;
+		
+		TestAiOllamaWrite write = new TestAiOllamaWrite(sfac);
+		
+		
+		
+		
+		TestAiOllamaInteractionIntegral integ = new TestAiOllamaInteractionIntegral(write, testParse);
+		
+		
+		SymbolicElem<DoubleElem,DoubleElemFactory> output = integ.generate( elem , varName );
 		
 		
 		System.out.println( "Done." );
