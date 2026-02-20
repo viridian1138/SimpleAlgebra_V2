@@ -1,0 +1,10 @@
+=== TAC-like output ===
+      t_0 = ImaginaryUnit  <<>> I
+      t_1 = Symbol  <<>> x
+    t_2 = Mul  , t_0 , t_1
+  t_3 = exp  , t_2
+    t_4 = ImaginaryUnit  <<>> I
+  t_5 = invert  , t_4
+t_6 = Mul  , t_3 , t_5
+Final: t_6
+

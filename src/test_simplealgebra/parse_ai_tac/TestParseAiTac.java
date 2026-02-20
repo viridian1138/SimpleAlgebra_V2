@@ -1590,21 +1590,79 @@ public class TestParseAiTac extends TestCase {
 
 		
 		
-		/* LineNumberReader liB = new LineNumberReader( new InputStreamReader( new FileInputStream( "/home/tgreen/workspace/workspace_alg/SimpleAlgebra_Build_Updated/src/test_simplealgebra/parse_ai_tac/ArchiveB_FinalResults.txt" ) ) );
 		
 		
-		line = liB.readLine();
+		
+		System.out.println( "Done" );
+		
+		
+	}
+	
+	
+	
+	
+	
+	
+	
+	
+	
+	/**
+	 * Verifies parsing of TAC-like expressions for imaginary numbers.
+	 */
+	public void testParseAiTacImCplx() throws Throwable
+	{
+		
+		final DoubleElemFactory dfac = new DoubleElemFactory();
+		
+		final SymbolicElemFactory<DoubleElem,DoubleElemFactory> sfac = new SymbolicElemFactory<DoubleElem,DoubleElemFactory>( dfac );
+		
+		
+		InputStream is = TestParseAiTacCplx.class.getResourceAsStream( "ImUnit_Reduced.txt" );
+		
+		
+		LineNumberReader liA = new LineNumberReader( new InputStreamReader( is ) );
+		
+		
+		String line = liA.readLine();
 		while( line != null )
 		{
 			if( line.equals( "=== TAC-like output ===" ) )
 			{
-				ArrayList<String> ar = readArrayList( liB );
-				TestAiOllamaParse test = new TestAiOllamaParse( sfac , sfac , true );
-				SymbolicElem<DoubleElem, DoubleElemFactory> expr = test.genParsedExpr( ar );
-				Assert.assertTrue( expr != null );
+				ArrayList<String> ar = readArrayList( liA );
+				TestAiOllamaParse test = new TestAiOllamaParse( sfac , true , true );
+				
+				try
+				{
+					SymbolicElem<DoubleElem, DoubleElemFactory> expr = test.genParsedExpr( ar );
+					Assert.assertTrue( expr != null );
+				}
+				catch ( Throwable ex )
+				{
+					Assert.assertTrue( ex instanceof ImaginaryNotSupportedException );
+					return;
+				}
+			
+				
+				throw( new RuntimeException( "Failed To Catch Imaginary" ) );
+				
+				
+				/* System.out.println( "Done." );
+				
+				String aa = expr.writeDesc( expr.getFac().generateWriteElemCache() , System.out );
+				
+				System.out.println( "### " + aa );
+				
+				System.out.println( "***" ); */
+				
 			}
-			line = liB.readLine();
-		} */
+			line = liA.readLine();
+		}
+		
+
+		
+		
+		
+		
 		
 		
 		System.out.println( "Done" );
@@ -1729,6 +1787,83 @@ public class TestParseAiTac extends TestCase {
 	 * Tests running a derivative through Ollama
 	 * @throws Throwable Throws an exception if e.g. not able to parse
 	 */
+	public void testAiDerivativeInteractionCplxX() throws Throwable
+	{
+		
+
+		final String varName = "x";
+		
+		final DoubleElemFactory dfac = new DoubleElemFactory();
+		
+		final SymbolicElemFactory<DoubleElem,DoubleElemFactory> sfac = new SymbolicElemFactory<DoubleElem,DoubleElemFactory>( dfac );
+		
+		
+
+		TestAiOllamaParse testParse = new TestAiOllamaParse( sfac , false , true );
+		
+		
+
+		
+		VarElem var = new VarElem( dfac, varName );
+		
+		// For now just use an elem that will write "i" as its "variable name"
+		// This is just being done as a "trick" because imaginary numbers do not exist in this algebra
+		VarElem imag = new VarElem( dfac, "i" );
+		
+		
+		
+		
+		SymbolicElem<DoubleElem,DoubleElemFactory> expT = ( imag.mult( var ) ).exp( 10 );
+		
+		
+		SymbolicElem<DoubleElem,DoubleElemFactory> fullTerm = expT;
+		
+		
+		
+		
+		
+		SymbolicElem<DoubleElem,DoubleElemFactory> elem = fullTerm;
+		
+		TestAiOllamaWrite write = new TestAiOllamaWrite(sfac);
+		
+		
+		
+		
+		TestAiOllamaInteractionDerivative deriv = new TestAiOllamaInteractionDerivative(write, testParse);
+		
+		
+		try
+		{
+			SymbolicElem<DoubleElem,DoubleElemFactory> output = deriv.generate( elem , varName );
+		
+		
+			System.out.println( "Done." );
+		
+			String aa = output.writeDesc( output.getFac().generateWriteElemCache() , System.out );
+		
+			System.out.println( "### " + aa );
+		
+			System.out.println( "***" );
+		}
+		catch( Throwable ex )
+		{
+			Assert.assertTrue( ex instanceof ImaginaryNotSupportedException );
+			return;
+		}
+		
+		
+		throw( new RuntimeException( "Failed To Catch Imaginary" ) );
+		
+		
+	}
+	
+	
+	
+	
+	/**
+	 * Tests running a derivative through Ollama
+	 * @throws Throwable Throws an exception if e.g. not able to parse
+	 */
 	public void testAiDerivativeInteractionY() throws Throwable
 	{
 		
@@ -1841,6 +1976,82 @@ public class TestParseAiTac extends TestCase {
 		System.out.println( "### " + aa );
 		
 		System.out.println( "***" );
+		
+		
+	}
+	
+	
+	
+	/**
+	 * Tests running a definite integral through Ollama
+	 * @throws Throwable Throws an exception if e.g. not able to parse
+	 */
+	public void testAiIntegralInteractionCplxX() throws Throwable
+	{
+		
+
+		final String varName = "x";
+		
+		final DoubleElemFactory dfac = new DoubleElemFactory();
+		
+		final SymbolicElemFactory<DoubleElem,DoubleElemFactory> sfac = new SymbolicElemFactory<DoubleElem,DoubleElemFactory>( dfac );
+		
+		
+
+		TestAiOllamaParse testParse = new TestAiOllamaParse( sfac , true , true );
+		
+		
+
+		
+		VarElem var = new VarElem( dfac, varName );
+		
+		// For now just use an elem that will write "i" as its "variable name"
+		// This is just being done as a "trick" because imaginary numbers do not exist in this algebra
+		VarElem imag = new VarElem( dfac, "i" );
+		
+		
+		
+		
+		SymbolicElem<DoubleElem,DoubleElemFactory> expT = ( imag.mult( var ) ).exp( 10 );
+		
+		
+		SymbolicElem<DoubleElem,DoubleElemFactory> fullTerm = expT;
+		
+		
+		
+		
+		
+		SymbolicElem<DoubleElem,DoubleElemFactory> elem = fullTerm;
+		
+		TestAiOllamaWrite write = new TestAiOllamaWrite(sfac);
+		
+		
+		
+		
+		TestAiOllamaInteractionIntegral integ = new TestAiOllamaInteractionIntegral(write, testParse);
+		
+		
+		try
+		{
+			SymbolicElem<DoubleElem,DoubleElemFactory> output = integ.generate( elem , varName );
+		
+		
+			System.out.println( "Done." );
+		
+			String aa = output.writeDesc( output.getFac().generateWriteElemCache() , System.out );
+		
+			System.out.println( "### " + aa );
+		
+			System.out.println( "***" );
+		}
+		catch( Throwable ex )
+		{
+			Assert.assertTrue( ex instanceof ImaginaryNotSupportedException );
+			return;
+		}
+		
+		
+		throw( new RuntimeException( "Failed To Catch Imaginary" ) );
 		
 		
 	}

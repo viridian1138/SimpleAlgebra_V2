@@ -178,6 +178,19 @@ public abstract class AiOllamaParse<R2 extends Elem<R2,?>, S2 extends ElemFactor
 		
 		
 		
+		hndl.put( "ImaginaryUnit" ,
+			new SymHandler()
+			{
+
+				@Override
+				public SymbolicElem<R2, S2> hndl(StringTokenizer st) throws Throwable {
+					return( generateImaginaryNumber() );
+				}
+			
+			} );
+		
+		
+		
 		hndl.put( "Half" ,
 			new SymHandler()
 			{
@@ -1067,9 +1080,9 @@ public abstract class AiOllamaParse<R2 extends Elem<R2,?>, S2 extends ElemFactor
 	 * Override this method to provide imaginary number support.
 	 * @return SymbolicElem containing the zero.
 	 */
-	protected SymbolicElem<R2,S2> generateImaginaryNumber()
+	protected SymbolicElem<R2,S2> generateImaginaryNumber() throws Throwable
 	{
-		throw( new RuntimeException( "Fail.  Imaginary number in a non-imaginary algebra." ) );
+		throw( new ImaginaryNotSupportedException() );
 	}
 	
 	
