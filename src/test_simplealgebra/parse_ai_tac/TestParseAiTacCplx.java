@@ -124,6 +124,7 @@ public class TestParseAiTacCplx extends TestCase {
 			if( st == null )
 			{
 				final String sta = fac.writeDesc( (WriteElemCache<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>)( cache.getInnerCache() ) , ps);
+				final String colA = col == null ? "null" : col.writeDesc( (WriteElemCache<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>)( cache.getInnerCache() ) , ps);
 				st = cache.getIncrementVal();
 				cache.put(this, st);
 				ps.print( ConstLiteralElem.class.getSimpleName() );
@@ -134,7 +135,7 @@ public class TestParseAiTacCplx extends TestCase {
 				ps.print( "( " );
 				ps.print( sta );
 				ps.print( " , " );
-				ps.print( col );
+				ps.print( colA );
 				ps.print( " , " );
 				ps.print( intSeed );
 				ps.println( " );" );
