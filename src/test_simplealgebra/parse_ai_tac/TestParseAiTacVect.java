@@ -39,11 +39,9 @@ import java.util.*;
 
 import simplealgebra.*;
 import simplealgebra.ga.*;
-
 import simplealgebra.symbolic.*;
 import simplealgebra.algo.ai_ollama.*;
-
-import test_simplealgebra.TestDimensionFour;;
+import test_simplealgebra.TestDimensionFour;
 
 
 /**
@@ -1852,6 +1850,30 @@ public class TestParseAiTacVect extends TestCase {
 	
 	
 	
+	
+	/**
+	 * Test class for running a symbolic simplification through Ollama
+	 * @author Thorn
+	 *
+	 */
+	protected class TestAiOllamaInteractionSimplification extends AiOllamaInteractionSimplification<GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>,GeometricAlgebraMultivectorElemFactory<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>,GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>,GeometricAlgebraMultivectorElemFactory<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>>
+	{
+		
+		/**
+		 * Constructor.
+		 * @param _aiOllamaWriter Instance for generating expression strings for Ollama from SymbolicElems.
+		 * @param _aiOllamaParse Instance for parsing a Tac-like syntax from Ollama result strings into SymbolicElems
+		 */
+		public TestAiOllamaInteractionSimplification(AiOllamaWriter<GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>,GeometricAlgebraMultivectorElemFactory<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>> _aiOllamaWriter,
+				AiOllamaParse<GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>,GeometricAlgebraMultivectorElemFactory<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>> _aiOllamaParse) {
+			super(_aiOllamaWriter, _aiOllamaParse);
+		}
+		
+	}
+	
+	
+	
+	
 	/**
 	 * Tests running a derivative through Ollama
 	 * @throws Throwable Throws an exception if e.g. not able to parse
@@ -2263,6 +2285,84 @@ public class TestParseAiTacVect extends TestCase {
 		
 		
 		SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>,GeometricAlgebraMultivectorElemFactory<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>> output = integ.generate( elem , varName );
+		
+		
+		System.out.println( "Done." );
+		
+		String aa = output.writeDesc( output.getFac().generateWriteElemCache() , System.out );
+		
+		System.out.println( "### " + aa );
+		
+		System.out.println( "***" );
+		
+		
+	}
+	
+	
+	
+	
+	/**
+	 * Tests running a symbolic simplification through Ollama
+	 * @throws Throwable Throws an exception if e.g. not able to parse
+	 */
+	public void testAiSimplificationA() throws Throwable
+	{
+		
+
+		final String varNameA = "a";
+		
+		final String varNameB = "b";
+		
+		final String varNameC = "c";
+		
+		final DoubleElemFactory dfac = new DoubleElemFactory();
+		
+		final TestDimensionFour td = new TestDimensionFour();
+		
+		final GeometricAlgebraOrd<TestDimensionFour> ord = new GeometricAlgebraOrd<TestDimensionFour>();
+		
+		final GeometricAlgebraMultivectorElemFactory<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory> cfac = new GeometricAlgebraMultivectorElemFactory<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>( dfac , td , ord );
+		
+		final SymbolicElemFactory<GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>,GeometricAlgebraMultivectorElemFactory<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>> sfac = new SymbolicElemFactory<GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>,GeometricAlgebraMultivectorElemFactory<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>>( cfac );
+		
+		
+
+		TestAiOllamaParse testParse = new TestAiOllamaParse( sfac , false , true );
+		
+		
+
+		
+		VarElem varA = new VarElem( cfac, varNameA );
+		
+		VarElem varB = new VarElem( cfac, varNameB );
+		
+		VarElem varC = new VarElem( cfac, varNameC );
+		
+		
+		
+		
+		SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>,GeometricAlgebraMultivectorElemFactory<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>> multA = varC.mult( varA );
+		
+		SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>,GeometricAlgebraMultivectorElemFactory<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>> multB = varC.mult( varB );
+		
+		
+		SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>,GeometricAlgebraMultivectorElemFactory<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>> fullTerm = multA.add( multB );
+		
+		
+		
+		
+		
+		SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>,GeometricAlgebraMultivectorElemFactory<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>> elem = fullTerm;
+		
+		TestAiOllamaWrite write = new TestAiOllamaWrite(sfac);
+		
+		
+		
+		
+		TestAiOllamaInteractionSimplification simpl = new TestAiOllamaInteractionSimplification(write, testParse);
+		
+		
+		SymbolicElem<GeometricAlgebraMultivectorElem<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>,GeometricAlgebraMultivectorElemFactory<TestDimensionFour,GeometricAlgebraOrd<TestDimensionFour>,DoubleElem,DoubleElemFactory>> output = simpl.generate( elem );
 		
 		
 		System.out.println( "Done." );

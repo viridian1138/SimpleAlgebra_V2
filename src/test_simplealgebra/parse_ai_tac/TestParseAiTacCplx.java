@@ -1736,6 +1736,30 @@ public class TestParseAiTacCplx extends TestCase {
 	
 	
 	/**
+	 * Test class for running a symbolic simplification through Ollama
+	 * @author Thorn
+	 *
+	 */
+	protected class TestAiOllamaInteractionSimplification extends AiOllamaInteractionSimplification<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>,ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>
+	{
+		
+		/**
+		 * Constructor.
+		 * @param _aiOllamaWriter Instance for generating expression strings for Ollama from SymbolicElems.
+		 * @param _aiOllamaParse Instance for parsing a Tac-like syntax from Ollama result strings into SymbolicElems
+		 */
+		public TestAiOllamaInteractionSimplification(AiOllamaWriter<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> _aiOllamaWriter,
+				AiOllamaParse<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> _aiOllamaParse) {
+			super(_aiOllamaWriter, _aiOllamaParse);
+		}
+		
+	}
+	
+	
+	
+	
+	
+	/**
 	 * Test class for running a definite integral through Ollama
 	 * @author Thorn
 	 *
@@ -2129,6 +2153,80 @@ public class TestParseAiTacCplx extends TestCase {
 		
 		
 		SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> output = integ.generate( elem , varName );
+		
+		
+		System.out.println( "Done." );
+		
+		String aa = output.writeDesc( output.getFac().generateWriteElemCache() , System.out );
+		
+		System.out.println( "### " + aa );
+		
+		System.out.println( "***" );
+		
+		
+	}
+	
+	
+	
+	
+	/**
+	 * Tests running a symbolic simplification through Ollama
+	 * @throws Throwable Throws an exception if e.g. not able to parse
+	 */
+	public void testAiSimplificationA() throws Throwable
+	{
+		
+
+		final String varNameA = "a";
+		
+		final String varNameB = "b";
+		
+		final String varNameC = "c";
+		
+		final DoubleElemFactory dfac = new DoubleElemFactory();
+		
+		final ComplexElemFactory<DoubleElem,DoubleElemFactory> cfac = new ComplexElemFactory<DoubleElem,DoubleElemFactory>( dfac );
+		
+		final SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> sfac = new SymbolicElemFactory<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>>( cfac );
+		
+		
+
+		TestAiOllamaParse testParse = new TestAiOllamaParse( sfac , false , true );
+		
+		
+
+		
+		VarElem varA = new VarElem( cfac, varNameA );
+		
+		VarElem varB = new VarElem( cfac, varNameB );
+		
+		VarElem varC = new VarElem( cfac, varNameC );
+		
+		
+		
+		
+		SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> multA = varC.mult( varA );
+		
+		SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> multB = varC.mult( varB );
+		
+		
+		SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> fullTerm = multA.add( multB );
+		
+		
+		
+		
+		
+		SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> elem = fullTerm;
+		
+		TestAiOllamaWrite write = new TestAiOllamaWrite(sfac);
+		
+		
+		
+		
+		TestAiOllamaInteractionSimplification simpl = new TestAiOllamaInteractionSimplification(write, testParse);
+		
+		
+		SymbolicElem<ComplexElem<DoubleElem,DoubleElemFactory>,ComplexElemFactory<DoubleElem,DoubleElemFactory>> output = simpl.generate( elem );
 		
 		
 		System.out.println( "Done." );
